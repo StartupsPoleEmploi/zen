@@ -1,0 +1,12 @@
+FROM node:8.11.1
+
+WORKDIR /home/back
+
+CMD if [ "$NODE_ENV" = "production" ]; then \
+        npm install --only=production && \
+        npm run sequelize db:migrate -- --url $DATABASE_URL && \
+        npm start; \
+    else \
+        npm install && \
+        npm start; \
+    fi

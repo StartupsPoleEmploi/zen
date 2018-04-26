@@ -1,0 +1,18 @@
+# All commented environment infos need to be provided
+version: '2'
+services:
+
+  node:
+    environment:
+#      - DATABASE_URL=postgres://a-prod-user:a-prod-password@172.0.0.150:5432/actualisation
+      - NODE_ENV=production
+  
+  front:
+    environment:
+      - NODE_ENV=production
+
+#  db:
+#    environment:
+#      - POSTGRES_DB=actualisation
+#      - POSTGRES_USER=a-prod-user
+#      - POSTGRES_PASSWORD=a-prod-password

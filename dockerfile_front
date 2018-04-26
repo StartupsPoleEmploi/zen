@@ -1,0 +1,12 @@
+FROM node:8.11.1
+
+WORKDIR /home/front
+
+CMD if [ "$NODE_ENV" = "production" ]; then \
+        npm install --only=production && \
+        npm run build && \
+        tail -f /dev/null; \
+    else \
+        npm install && \
+        npm start; \
+    fi

@@ -1,0 +1,19 @@
+{
+  "name": "node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "pm2 start --no-daemon bin/www",
+    "sequelize": "sequelize"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "morgan": "~1.9.0",
+    "pg": "^7.4.1",
+    "pm2": "^2.10.3",
+    "sequelize": "^4.37.6",
+    "sequelize-cli": "^4.0.0"
+  }
+}

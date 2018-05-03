@@ -15,3 +15,5 @@ Dev containers start with :
 * nginx (last React production build) on port 80
 
 Production containers only open port 443 & 80
+
+A `.env` file must be created and populated with configuration values for the database.

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pm2 start --no-daemon bin/www",
-    "sequelize": "sequelize"
+    "db:migrate": "sequelize db:migrate --url $DATABASE_URL"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

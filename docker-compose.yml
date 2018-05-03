@@ -22,6 +22,8 @@ services:
         ipv4_address: 172.0.0.100
     depends_on:
       - "db"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
 
   front:
     restart: always
@@ -42,6 +44,10 @@ services:
         ipv4_address: 172.0.0.150
     volumes:
       - postgres-data:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
 networks:
   actualisation_network:

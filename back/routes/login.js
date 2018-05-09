@@ -43,10 +43,11 @@ const authorizationUri = oauth2.authorizationCode.authorizeURL({
 
 
 router.get('/', function(req, res, next) {
-  // TODO save state and nonce in session here
-
   const state = crypto.randomBytes(64).toString('hex')
   const nonce = crypto.randomBytes(64).toString('hex')
+
+  req.session.state = state
+  req.session.nonce = nonce
 
   const authorizationUri = oauth2.authorizationCode.authorizeURL({
     ...tokenConfig,
@@ -58,7 +59,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/callback', (req, res, next) => {
-  // TODO compare req.query state with session state here
+  if (req.session.state !== req.query.state) return res.status(401).json('Authentication failed')
 
   oauth2.authorizationCode.getToken({
     redirect_uri: redirectUri,
@@ -72,9 +73,9 @@ router.get('/callback', (req, res, next) => {
     if (tokenClaims.aud !== clientId) throw new Error('Wrong aud')
     if (tokenClaims.azp && tokenClaims.azp !== clientId) throw new Error('Wrong azp')
     if (tokenClaims.realm !== realm) throw new Error('Wrong realm')
+    if (tokenClaims.nonce !== req.session.nonce) throw new Error('Wrong nonce')
 
     // https://www.emploi-store-dev.fr/portail-developpeur-cms/home/catalogue-des-api/documentation-des-api/utiliser-les-api/authorization-code-flow/securite-et-verification.html
-    // TODO check nonce here
     // TODO check access_token against at_hash here - possible code:
     // base64url(crypto.createHash('sha256').update(authToken.token.access_token).digest('hex'))
 

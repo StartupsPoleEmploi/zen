@@ -3,6 +3,9 @@ const router = express.Router();
 const crypto = require('crypto');
 const superagent = require('superagent')
 const jwt = require('jsonwebtoken')
+const { isMatch, startCase, toLower } = require('lodash')
+
+const { User } = require('../models')
 
 const clientId = process.env.CLIENT_OAUTH_ID
 const clientSecret = process.env.CLIENT_OAUTH_SECRET
@@ -85,9 +88,25 @@ router.get('/callback', (req, res, next) => {
     .get(`https://api.emploi-store.fr/partenaire/peconnect-individu/v1/userinfo`)
     .set('Authorization', `Bearer ${authToken.token.access_token}`)
   )
-  .then(result => {
-    console.log(res.body, res.status)
-    res.status(200).json(result.body)
+  .then(({ body }) => {
+    const user = {
+      peId: body.sub,
+      email: toLower(body.email),
+      firstName: startCase(toLower(body.given_name)),
+      lastName: startCase(toLower(body.family_name)),
+    }
+    return User.findOne({ where: { peId: user.peId } }).then((dbUser) => {
+      let promise
+      if (dbUser) {
+        if (isMatch(user, dbUser.get({ plain: true }))) return dbUser
+        return dbUser.update(user)
+      }
+
+      return User.create(user)
+    })
+  })
+  .then(user => {
+    res.status(200).json(user)
   })
   .catch(error => {
     console.error(error)

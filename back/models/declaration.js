@@ -1,68 +1,67 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Declaration = sequelize.define('Declaration', {
     userId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       references: {
-        deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
-        model: User,
+        deferrable: sequelize.Deferrable.INITIALLY_IMMEDIATE,
+        model: 'Users',
         key: 'id'
       }
     },
     declaredMonth: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     hasWorked: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
     workSalary: {
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     },
     hasInternship: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
     internshipDate: {
       defaultValue: null,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     hasIllness: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
     illnessDate: {
       defaultValue: null,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     hasMaternityLeave: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
     maternityLeaveDate: {
       defaultValue: null,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     hasRetirement: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
     retirementDate: {
       defaultValue: null,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     hasInvalidity: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
     invalidityDate: {
       defaultValue: null,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     isLookingForJob: {
       allowNull: false,
-      type: Sequelize.BOOLEAN,
+      type: DataTypes.BOOLEAN,
     },
   }, {});
 

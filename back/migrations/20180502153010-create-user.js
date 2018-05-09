@@ -9,17 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       peId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       firstName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(85)
       },
       lastName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(30)
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(60)
       },
       createdAt: {
         allowNull: false,

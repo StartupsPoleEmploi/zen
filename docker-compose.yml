@@ -29,6 +29,10 @@ services:
       - "db"
     environment:
       - DATABASE_URL=${DATABASE_URL}
+      - CLIENT_OAUTH_ID=${CLIENT_OAUTH_ID}
+      - CLIENT_OAUTH_SECRET=${CLIENT_OAUTH_SECRET}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+
 
   front:
     restart: always

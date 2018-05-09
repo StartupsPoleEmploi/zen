@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start --no-daemon bin/www",
-    "db:migrate": "sequelize db:migrate --url $DATABASE_URL"
+    "db:migrate": "sequelize db:migrate --url $DATABASE_URL",
+    "production": "pm2 start --no-daemon bin/www",
+    "start": "pm2-dev start bin/www",
+    "sequelize": "sequelize"
   },
   "dependencies": {
     "connect-pg-simple": "^4.2.1",

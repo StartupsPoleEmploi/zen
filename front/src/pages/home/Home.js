@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
+import { Button, Typography } from '@material-ui/core'
+import styled from 'styled-components';
+
 import PEConnectLink from '../../components/PEConnect/PEConnectLink';
+
+const HomeContainer = styled.div`
+  text-align: center;
+  width: 50rem;
+  margin: 5rem auto;
+`
 
 export class Home extends Component {
   static propTypes = {
@@ -15,18 +24,19 @@ export class Home extends Component {
     const { user } = this.props
 
     return (
-      <div className="Home">
+      <HomeContainer>
         <header>
+          <Typography variant="title">Actualisation Proto</Typography>
           {user ?
-            `${user.firstName} ${user.lastName}` :
+            <Typography variant="subheading">{user.firstName} {user.lastName}</Typography> :
             <PEConnectLink />
           }
         </header>
         <main>
-          <h1>Il n'a jamais été aussi simple de faire son actualisation</h1>
-          {!user ? 'Connectez-vous pour commencer' : 'Commencer'}
+          <Typography variant="headline">Il n'a jamais été aussi simple de faire son actualisation</Typography>
+          {!user ? <Typography variant="body2">Connectez-vous pour commencer</Typography> : <Button variant="raised">Commencer</Button>}
         </main>
-      </div>
+      </HomeContainer>
     )
   }
 };

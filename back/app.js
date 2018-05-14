@@ -5,6 +5,7 @@ var logger = require('morgan');
 const session = require('express-session');
 
 var loginRouter = require('./routes/login');
+var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -21,7 +22,13 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   store: new (require('connect-pg-simple')(session))(),
 }));
+app.use(function ensureLoggedIn(req, res, next) {
+  if (!req.path.startsWith('/login') && !req.session.user) return res.status(401).json('Unauthorized')
+
+  next()
+})
 
 app.use('/login', loginRouter);
+app.use('/user', userRouter);
 
 module.exports = app;

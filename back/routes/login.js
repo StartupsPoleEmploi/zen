@@ -106,7 +106,8 @@ router.get('/callback', (req, res, next) => {
     })
   })
   .then(user => {
-    res.status(200).json(user)
+    req.session.user = user
+    res.redirect('/')
   })
   .catch(error => {
     console.error(error)

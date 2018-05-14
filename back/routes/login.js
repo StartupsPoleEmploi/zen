@@ -9,9 +9,9 @@ const { User } = require('../models')
 
 const clientId = process.env.CLIENT_OAUTH_ID
 const clientSecret = process.env.CLIENT_OAUTH_SECRET
-
-const redirectUri = 'http://localhost:8080/login/callback'
-const tokenHost = 'https://authentification-candidat.pole-emploi.fr'
+const redirectUri = process.env.AUTH_REDIRECT_URI
+const tokenHost = process.env.AUTH_TOKEN_HOST
+const apiHost = process.env.PE_API_HOST
 const realm = '/individu'
 
 const credentials = {
@@ -85,7 +85,7 @@ router.get('/callback', (req, res, next) => {
     return authToken
   })
   .then((authToken) => superagent
-    .get(`https://api.emploi-store.fr/partenaire/peconnect-individu/v1/userinfo`)
+    .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
     .set('Authorization', `Bearer ${authToken.token.access_token}`)
   )
   .then(({ body }) => {

@@ -7,8 +7,11 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-    - "./nginx:/etc/nginx/conf.d"
-    - "./front:/home/front"
+      - "./nginx:/etc/nginx/conf.d"
+      - "./front:/home/front"
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.10
 
   node:
     restart: always
@@ -17,6 +20,8 @@ services:
       dockerfile: dockerfile_back
     volumes:
      - "./back:/home/back"
+    expose:
+      - "8080"
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.100
@@ -32,6 +37,8 @@ services:
       dockerfile: dockerfile_front
     volumes:
      - "./front:/home/front"
+    expose:
+      - "3000"
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.110

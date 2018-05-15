@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import styled from 'styled-components'
+
+import LinkButton from '../../components/Generic/LinkButton'
 
 const StyledHome = styled.div`
   margin: auto;
@@ -37,7 +39,9 @@ export class Home extends Component {
         {!user ? (
           <Typography variant="title">Connectez-vous pour commencer</Typography>
         ) : (
-          <Button variant="raised">Commencer ma première actualisation</Button>
+          <LinkButton to="/actu">
+            Commencer ma première actualisation
+          </LinkButton>
         )}
       </StyledHome>
     )

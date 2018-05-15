@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Layout from './pages/Layout'
 import Home from './pages/home/Home'
 
 import { getUser } from './lib/user'
@@ -17,7 +18,11 @@ class App extends Component {
   render() {
     if (this.state.isLoading) return null
 
-    return <Home user={this.state.user} />
+    return (
+      <Layout user={this.state.user}>
+        <Home user={this.state.user} />
+      </Layout>
+    )
   }
 }
 

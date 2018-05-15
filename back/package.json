@@ -5,6 +5,8 @@
   "scripts": {
     "db:migrate": "sequelize db:migrate --url $DATABASE_URL",
     "production": "pm2 start --no-daemon bin/www",
+    "precise-commits": "precise-commits",
+    "precommit": "npm run precise-commits",
     "start": "pm2-dev start bin/www",
     "sequelize": "sequelize"
   },
@@ -25,5 +27,10 @@
     "sequelize-cli": "^4.0.0",
     "simple-oauth2": "^2.0.1",
     "superagent": "^3.8.3"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "precise-commits": "^1.0.2",
+    "prettier": "^1.12.1"
   }
 }

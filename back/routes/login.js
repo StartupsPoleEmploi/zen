@@ -3,15 +3,13 @@ const router = express.Router();
 const crypto = require('crypto');
 const superagent = require('superagent')
 const jwt = require('jsonwebtoken')
+const config = require('config')
 const { isMatch, startCase, toLower } = require('lodash')
 
 const { User } = require('../models')
 
-const clientId = process.env.CLIENT_OAUTH_ID
-const clientSecret = process.env.CLIENT_OAUTH_SECRET
-const redirectUri = process.env.AUTH_REDIRECT_URI
-const tokenHost = process.env.AUTH_TOKEN_HOST
-const apiHost = process.env.PE_API_HOST
+const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
+
 const realm = '/individu'
 
 const credentials = {
@@ -96,7 +94,6 @@ router.get('/callback', (req, res, next) => {
       lastName: startCase(toLower(body.family_name)),
     }
     return User.findOne({ where: { peId: user.peId } }).then((dbUser) => {
-      let promise
       if (dbUser) {
         if (isMatch(user, dbUser.get({ plain: true }))) return dbUser
         return dbUser.update(user)

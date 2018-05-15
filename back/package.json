@@ -9,6 +9,7 @@
     "sequelize": "sequelize"
   },
   "dependencies": {
+    "config": "^1.30.0",
     "connect-pg-simple": "^4.2.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",

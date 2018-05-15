@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
+const config = require('config')
 
 var loginRouter = require('./routes/login');
 var userRouter = require('./routes/user');
@@ -19,7 +20,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   secure: false, // TODO set to true when in production
-  secret: process.env.COOKIE_SECRET,
+  secret: config.cookieSecret,
   store: new (require('connect-pg-simple')(session))(),
 }));
 app.use(function ensureLoggedIn(req, res, next) {

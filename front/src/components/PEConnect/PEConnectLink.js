@@ -1,8 +1,8 @@
-import React from 'react';
-import blueIcon from './PEConnectIcon-blue.svg';
-import whiteIcon from './PEConnectIcon-white.svg';
+import React from 'react'
+import blueIcon from './PEConnectIcon-blue.svg'
+import whiteIcon from './PEConnectIcon-white.svg'
 
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const BLUE = '#1b2e57'
 const WHITE = '#fff'
@@ -14,7 +14,7 @@ const WHITE = '#fff'
 
 const PEConnectLink = styled.a`
   font-size: 14px;
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Lato', sans-serif !important;
   display: inline-block;
   padding: 6px 10px 5px 13px;
   border-radius: 100px;
@@ -22,10 +22,11 @@ const PEConnectLink = styled.a`
   font-weight: bold;
   text-decoration: none;
 
-  color: ${props => props.useDarkVersion ? WHITE : BLUE};
-  background-color: ${props => props.useDarkVersion ? BLUE : WHITE};
+  color: ${(props) => (props.useDarkVersion ? WHITE : BLUE)};
+  background-color: ${(props) => (props.useDarkVersion ? BLUE : WHITE)};
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     text-decoration: none;
   }
 
@@ -50,11 +51,15 @@ const PEConnectText = styled.span`
 `
 
 export default ({ useDarkVersion = false }) => {
-
   return (
     <PEConnectLink href="/api/login" useDarkVersion={useDarkVersion}>
-      <PEConnectIcon src={useDarkVersion ? whiteIcon : blueIcon} alt="" width="34" height="31" />
+      <PEConnectIcon
+        src={useDarkVersion ? whiteIcon : blueIcon}
+        alt=""
+        width="34"
+        height="31"
+      />
       <PEConnectText>Se connecter avec pôle emploi</PEConnectText>
     </PEConnectLink>
   )
-};
+}

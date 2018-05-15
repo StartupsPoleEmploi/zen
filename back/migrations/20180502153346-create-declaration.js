@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -7,25 +7,25 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       declaredMonth: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       hasWorked: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
       workSalary: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       hasInternship: {
         allowNull: false,
@@ -33,7 +33,7 @@ module.exports = {
       },
       internshipDate: {
         defaultValue: null,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       hasIllness: {
         allowNull: false,
@@ -41,7 +41,7 @@ module.exports = {
       },
       illnessDate: {
         defaultValue: null,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       hasMaternityLeave: {
         allowNull: false,
@@ -49,7 +49,7 @@ module.exports = {
       },
       maternityLeaveDate: {
         defaultValue: null,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       hasRetirement: {
         allowNull: false,
@@ -57,7 +57,7 @@ module.exports = {
       },
       retirementDate: {
         defaultValue: null,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       hasInvalidity: {
         allowNull: false,
@@ -65,7 +65,7 @@ module.exports = {
       },
       invalidityDate: {
         defaultValue: null,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       isLookingForJob: {
         allowNull: false,
@@ -73,15 +73,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Declarations');
-  }
-};
+    return queryInterface.dropTable('Declarations')
+  },
+}

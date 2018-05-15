@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Paper, Typography } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import styled from 'styled-components'
 
 const StyledMaternalAssistantCheck = styled.div`

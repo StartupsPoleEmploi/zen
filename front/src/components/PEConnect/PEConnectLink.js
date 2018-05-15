@@ -52,7 +52,7 @@ const PEConnectText = styled.span`
 export default ({ useDarkVersion = false }) => {
 
   return (
-    <PEConnectLink href="#" useDarkVersion={useDarkVersion}>
+    <PEConnectLink href="/api/login" useDarkVersion={useDarkVersion}>
       <PEConnectIcon src={useDarkVersion ? whiteIcon : blueIcon} alt="" width="34" height="31" />
       <PEConnectText>Se connecter avec pôle emploi</PEConnectText>
     </PEConnectLink>

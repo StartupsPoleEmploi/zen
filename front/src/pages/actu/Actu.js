@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { isNull } from 'lodash'
+import superagent from 'superagent'
 import styled from 'styled-components'
 import {
   Button,
@@ -173,6 +174,8 @@ export class Actu extends Component {
         })
       }
     }
+
+    superagent.post('/api/declarations', this.state).then(() => alert('Envoyé'))
   }
 
   setIsMaternalAssistant = () => this.setState({ isMaternalAssistant: true })

@@ -7,6 +7,7 @@ const config = require('config')
 
 var loginRouter = require('./routes/login')
 var userRouter = require('./routes/user')
+var declarationsRouter = require('./routes/declarations')
 
 var app = express()
 
@@ -34,5 +35,6 @@ app.use(function ensureLoggedIn(req, res, next) {
 
 app.use('/login', loginRouter)
 app.use('/user', userRouter)
+app.use('/declarations', declarationsRouter)
 
 module.exports = app

@@ -58,7 +58,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "precise-commits": "precise-commits",
-    "precommit": "npm run precise-commits"
+    "precommit": "npm run precise-commits",
+    "analyze": "source-map-explorer build/static/js/main.*"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -105,6 +106,7 @@
   "devDependencies": {
     "husky": "^0.14.3",
     "precise-commits": "^1.0.2",
-    "prettier": "^1.12.1"
+    "prettier": "^1.12.1",
+    "source-map-explorer": "^1.5.0"
   }
 }

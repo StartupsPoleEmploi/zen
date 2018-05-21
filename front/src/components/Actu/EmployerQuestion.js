@@ -1,6 +1,7 @@
 import {
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Radio,
   RadioGroup,
@@ -15,7 +16,7 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #000;
+  border: 1px solid #9c9c9c;
   border-radius: 0.5rem;
   padding: 0.5rem;
   margin-bottom: 1rem;
@@ -33,7 +34,7 @@ const StyledFormControl = styled(FormControl)`
     flex-direction: row;
     align-items: center;
     flex: 0 1 auto;
-    border-left: 1px solid #000;
+    border-left: 1px solid #9c9c9c;
     padding-left: 1rem;
   }
 `
@@ -45,25 +46,42 @@ const StyledFormLabel = styled(FormLabel)`
 
 export class EmployerQuestion extends Component {
   static propTypes = {
-    employerName: PropTypes.string,
-    workHours: PropTypes.string,
-    salary: PropTypes.string,
-    hasEndedThisMonth: PropTypes.bool,
+    employerName: PropTypes.shape({
+      value: PropTypes.string,
+      error: PropTypes.string,
+    }).isRequired,
+    workHours: PropTypes.shape({
+      value: PropTypes.string,
+      error: PropTypes.string,
+    }).isRequired,
+    salary: PropTypes.shape({
+      value: PropTypes.string,
+      error: PropTypes.string,
+    }).isRequired,
+    hasEndedThisMonth: PropTypes.shape({
+      value: PropTypes.bool,
+      error: PropTypes.string,
+    }),
     index: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
   onChange = ({ target: { name, value } }) =>
     this.props.onChange({
-      ...this.props,
-      [name]: name !== 'hasEndedThisMonth' ? value : value === 'yes',
+      name,
+      value: name !== 'hasEndedThisMonth' ? value : value === 'yes',
+      index: this.props.index,
     })
 
   render() {
     const { employerName, workHours, salary, hasEndedThisMonth } = this.props
 
     const hasEndedThisMonthValue =
-      hasEndedThisMonth === null ? '' : hasEndedThisMonth ? 'yes' : 'no'
+      hasEndedThisMonth.value === null
+        ? ''
+        : hasEndedThisMonth.value
+          ? 'yes'
+          : 'no'
 
     return (
       <StyledContainer>
@@ -71,24 +89,33 @@ export class EmployerQuestion extends Component {
           <StyledTextField
             label="Nom de l'employeur"
             name="employerName"
-            value={employerName}
+            value={employerName.value}
             onChange={this.onChange}
+            error={!!employerName.error}
+            helperText={employerName.error}
           />
           <StyledTextField
             label="Nombre d'heures"
             name="workHours"
-            value={workHours}
+            value={workHours.value}
             onChange={this.onChange}
+            error={!!workHours.error}
+            helperText={workHours.error}
           />
           <StyledTextField
             label="Salaire brut €"
             name="salary"
-            value={salary}
+            value={salary.value}
             onChange={this.onChange}
+            error={!!salary.error}
+            helperText={salary.error}
           />
         </div>
-        <StyledFormControl required>
-          <StyledFormLabel>Ce contrat se termine-t-il en mai ?</StyledFormLabel>
+        <StyledFormControl>
+          <StyledFormLabel>
+            Ce contrat se termine-t-il en mai ?
+            <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
+          </StyledFormLabel>
           <RadioGroup
             row
             aria-label="oui ou non"

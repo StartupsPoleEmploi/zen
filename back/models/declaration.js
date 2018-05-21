@@ -18,22 +18,39 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
-      workSalary: {
-        type: DataTypes.INTEGER,
+      hasTrained: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+      },
+      trainingStartDate: {
+        defaultValue: null,
+        type: DataTypes.DATE,
+      },
+      trainingEndDate: {
+        defaultValue: null,
+        type: DataTypes.DATE,
       },
       hasInternship: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
-      internshipDate: {
+      internshipStartDate: {
         defaultValue: null,
         type: DataTypes.DATE,
       },
-      hasIllness: {
+      internshipEndDate: {
+        defaultValue: null,
+        type: DataTypes.DATE,
+      },
+      hasSickLeave: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
-      illnessDate: {
+      sickLeaveStartDate: {
+        defaultValue: null,
+        type: DataTypes.DATE,
+      },
+      sickLeaveEndDate: {
         defaultValue: null,
         type: DataTypes.DATE,
       },
@@ -41,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
-      maternityLeaveDate: {
+      maternityLeaveStartDate: {
         defaultValue: null,
         type: DataTypes.DATE,
       },
@@ -49,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
-      retirementDate: {
+      retirementStartDate: {
         defaultValue: null,
         type: DataTypes.DATE,
       },
@@ -57,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
-      invalidityDate: {
+      invalidityStartDate: {
         defaultValue: null,
         type: DataTypes.DATE,
       },
@@ -65,8 +82,27 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
+      jobSearchEndDate: {
+        type: DataTypes.DATE,
+      },
+      jobSearchStopMotive: {
+        type: DataTypes.STRING,
+      },
     },
-    {},
+    {
+      indexes: [
+        {
+          fields: ['userId'],
+        },
+        {
+          fields: ['declaredMonth'],
+        },
+        {
+          fields: ['userId', 'declaredMonth'],
+          unique: true,
+        },
+      ],
+    },
   )
 
   Declaration.associate = function(models) {

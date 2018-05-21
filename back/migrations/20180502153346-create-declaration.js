@@ -75,10 +75,6 @@ module.exports = {
           defaultValue: null,
           type: Sequelize.DATE,
         },
-        maternityLeaveEndDate: {
-          defaultValue: null,
-          type: Sequelize.DATE,
-        },
         hasRetirement: {
           allowNull: false,
           type: Sequelize.BOOLEAN,

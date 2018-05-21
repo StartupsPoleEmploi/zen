@@ -93,7 +93,6 @@ export class Actu extends Component {
       sickLeaveEndDate,
       hasMaternityLeave,
       maternityLeaveStartDate,
-      maternityLeaveEndDate,
       hasRetirement,
       retirementStartDate,
       hasInvalidity,
@@ -136,12 +135,10 @@ export class Actu extends Component {
       })
     }
 
-    if (
-      hasMaternityLeave &&
-      (!maternityLeaveStartDate || !maternityLeaveEndDate)
-    ) {
+    if (hasMaternityLeave && !maternityLeaveStartDate) {
       return this.setState({
-        errorMessage: "Merci d'indiquer vos dates de congé maternité",
+        errorMessage:
+          "Merci d'indiquer votre date de départ en congé maternité",
       })
     }
 
@@ -254,11 +251,6 @@ export class Actu extends Component {
                   label="Date de début"
                   onSelectDate={this.onSetDate}
                   name="maternityLeaveStartDate"
-                />
-                <DatePicker
-                  label="Date de fin"
-                  onSelectDate={this.onSetDate}
-                  name="maternityLeaveEndDate"
                 />
               </DeclarationQuestion>
               <DeclarationQuestion

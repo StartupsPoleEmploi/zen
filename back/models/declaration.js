@@ -62,10 +62,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         type: DataTypes.DATE,
       },
-      maternityLeaveEndDate: {
-        defaultValue: null,
-        type: DataTypes.DATE,
-      },
       hasRetirement: {
         allowNull: false,
         type: DataTypes.BOOLEAN,

@@ -102,7 +102,18 @@ export class Employers extends Component {
     }))
   }
 
+  onRemove = (index) =>
+    this.setState(({ employers }) => ({
+      employers: employers.filter((e, key) => key !== index),
+    }))
+
   onSubmit = () => {
+    if (this.state.employers.length === 0) {
+      return this.setState({
+        error: `Merci d'entrer les informations sur vos employeurs`,
+      })
+    }
+
     const isFormValid = this.state.employers.some((employer) =>
       Object.keys(employer).some((fieldName) => !!employer[fieldName].error),
     )
@@ -135,6 +146,7 @@ export class Employers extends Component {
       key={index}
       index={index}
       onChange={this.onChange}
+      onRemove={this.onRemove}
     />
   )
 

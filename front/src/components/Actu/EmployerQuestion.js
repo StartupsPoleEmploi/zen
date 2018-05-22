@@ -7,12 +7,18 @@ import {
   RadioGroup,
   TextField,
 } from '@material-ui/core'
+import Clear from '@material-ui/icons/Clear'
 import React, { Component } from 'react'
 
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledMain = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -44,6 +50,14 @@ const StyledFormLabel = styled(FormLabel)`
   margin-right: 1rem;
 `
 
+const StyledClear = styled(Clear)`
+  && {
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+`
+
 export class EmployerQuestion extends Component {
   static propTypes = {
     employerName: PropTypes.shape({
@@ -64,6 +78,7 @@ export class EmployerQuestion extends Component {
     }),
     index: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
   }
 
   onChange = ({ target: { name, value } }) =>
@@ -72,6 +87,8 @@ export class EmployerQuestion extends Component {
       value: name !== 'hasEndedThisMonth' ? value : value === 'yes',
       index: this.props.index,
     })
+
+  onRemove = () => this.props.onRemove(this.props.index)
 
   render() {
     const { employerName, workHours, salary, hasEndedThisMonth } = this.props
@@ -85,56 +102,59 @@ export class EmployerQuestion extends Component {
 
     return (
       <StyledContainer>
-        <div>
-          <StyledTextField
-            label="Nom de l'employeur"
-            name="employerName"
-            value={employerName.value}
-            onChange={this.onChange}
-            error={!!employerName.error}
-            helperText={employerName.error}
-          />
-          <StyledTextField
-            label="Nombre d'heures"
-            name="workHours"
-            value={workHours.value}
-            onChange={this.onChange}
-            error={!!workHours.error}
-            helperText={workHours.error}
-          />
-          <StyledTextField
-            label="Salaire brut €"
-            name="salary"
-            value={salary.value}
-            onChange={this.onChange}
-            error={!!salary.error}
-            helperText={salary.error}
-          />
-        </div>
-        <StyledFormControl>
-          <StyledFormLabel>
-            Ce contrat se termine-t-il en mai ?
-            <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
-          </StyledFormLabel>
-          <RadioGroup
-            row
-            aria-label="oui ou non"
-            name="hasEndedThisMonth"
-            value={hasEndedThisMonthValue}
-            onChange={this.onChange}
-          >
-            <FormControlLabel
-              value="yes"
-              control={<Radio color="primary" />}
-              label="Oui"
+        <StyledMain>
+          <div>
+            <StyledTextField
+              label="Nom de l'employeur"
+              name="employerName"
+              value={employerName.value}
+              onChange={this.onChange}
+              error={!!employerName.error}
+              helperText={employerName.error}
             />
-            <FormControlLabel
-              value="no"
-              control={<Radio color="primary" />}
-              label="Non"
+            <StyledTextField
+              label="Nombre d'heures"
+              name="workHours"
+              value={workHours.value}
+              onChange={this.onChange}
+              error={!!workHours.error}
+              helperText={workHours.error}
             />
-          </RadioGroup>
-        </StyledFormControl>
+            <StyledTextField
+              label="Salaire brut €"
+              name="salary"
+              value={salary.value}
+              onChange={this.onChange}
+              error={!!salary.error}
+              helperText={salary.error}
+            />
+          </div>
+          <StyledFormControl>
+            <StyledFormLabel>
+              Ce contrat se termine-t-il en mai ?
+              <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
+            </StyledFormLabel>
+            <RadioGroup
+              row
+              aria-label="oui ou non"
+              name="hasEndedThisMonth"
+              value={hasEndedThisMonthValue}
+              onChange={this.onChange}
+            >
+              <FormControlLabel
+                value="yes"
+                control={<Radio color="primary" />}
+                label="Oui"
+              />
+              <FormControlLabel
+                value="no"
+                control={<Radio color="primary" />}
+                label="Non"
+              />
+            </RadioGroup>
+          </StyledFormControl>
+        </StyledMain>
+        <StyledClear onClick={this.onRemove} role="button" />
       </StyledContainer>
     )
   }

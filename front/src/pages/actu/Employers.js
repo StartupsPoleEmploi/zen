@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { EmployerQuestion } from '../../components/Actu/EmployerQuestion'
 import { isBoolean } from 'lodash'
 import styled from 'styled-components'
+import superagent from 'superagent'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -55,6 +56,17 @@ const calculateTotal = (employers, field) => {
   )
   return isNaN(total) || total === 0 ? '—' : total.toString()
 }
+
+const getEmployersMapFromFormData = (employers) =>
+  employers.map((employerFormData) =>
+    Object.keys(employerFormData).reduce(
+      (obj, fieldName) => ({
+        ...obj,
+        [fieldName]: employerFormData[fieldName].value,
+      }),
+      {},
+    ),
+  )
 
 // TODO the whole logic of this component needs to be sanitized
 export class Employers extends Component {
@@ -109,6 +121,12 @@ export class Employers extends Component {
         error: 'Merci de corriger les erreurs du formulaire',
       })
     }
+
+    superagent
+      .post('/api/employers', {
+        employers: getEmployersMapFromFormData(this.state.employers),
+      })
+      .then(() => alert('sent'))
   }
 
   renderEmployerQuestion = (data, index) => (

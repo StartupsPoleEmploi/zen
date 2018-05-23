@@ -1,9 +1,11 @@
-import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import PEConnectLink from '../components/PEConnect/PEConnectLink'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
 
 const StyledLayout = styled.div`
   max-width: 80rem;
@@ -36,7 +38,7 @@ export class Layout extends Component {
         <AppBar position="static">
           <Toolbar>
             <Title color="inherit" variant="title">
-              Actualisation Proto
+              La Bonne Actualisation
             </Title>
             {user ? (
               <Typography color="inherit" variant="subheading">

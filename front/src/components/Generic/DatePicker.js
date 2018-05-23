@@ -1,11 +1,12 @@
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import moment from 'moment'
 import 'moment/locale/fr'
+
+import MuiDatePicker from 'material-ui-pickers/DatePicker'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
-import MuiDatePicker from 'material-ui-pickers/DatePicker'
+import moment from 'moment'
+import PropTypes from 'prop-types'
+import React, { PureComponent } from 'react'
+import styled from 'styled-components'
 
 const StyledMuiDatePicker = styled(MuiDatePicker)`
   && {

@@ -1,11 +1,11 @@
-import { Button, Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import { cloneDeep, isBoolean } from 'lodash'
 import React, { Component } from 'react'
-import { cloneDeep } from 'lodash'
-
-import { EmployerQuestion } from '../../components/Actu/EmployerQuestion'
-import { isBoolean } from 'lodash'
 import styled from 'styled-components'
 import superagent from 'superagent'
+
+import { EmployerQuestion } from '../../components/Actu/EmployerQuestion'
 
 const StyledEmployers = styled.div`
   display: flex;

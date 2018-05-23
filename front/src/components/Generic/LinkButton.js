@@ -1,7 +1,7 @@
-import React from 'react'
+import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from '@material-ui/core'
 
 const LinkButton = ({ children, to, ...props }) => (
   <Button variant="raised" component={(props) => <Link to={to} {...props} />}>

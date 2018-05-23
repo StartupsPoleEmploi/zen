@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 
+import PrivateRoute from './components/Generic/PrivateRoute'
+import { getUser } from './lib/user'
 import Actu from './pages/actu/Actu'
 import { Employers } from './pages/actu/Employers'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
-import PrivateRoute from './components/Generic/PrivateRoute'
-import { getUser } from './lib/user'
 
 class App extends Component {
   constructor(props) {

@@ -1,16 +1,13 @@
-import React, { Component, Fragment } from 'react'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
 import PropTypes from 'prop-types'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
-
-import {
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-} from '@material-ui/core'
 
 const classes = {} // FIXME REMOVE ME
 

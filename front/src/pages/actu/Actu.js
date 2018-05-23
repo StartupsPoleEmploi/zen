@@ -1,12 +1,10 @@
-import {
-  Button,
-  FormControlLabel,
-  List,
-  Paper,
-  Radio,
-  RadioGroup,
-  Typography,
-} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import List from '@material-ui/core/List'
+import Paper from '@material-ui/core/Paper'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import Typography from '@material-ui/core/Typography'
 import { isNull } from 'lodash'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'

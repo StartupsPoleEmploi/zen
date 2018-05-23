@@ -1,12 +1,10 @@
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from '@material-ui/core'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormLabel from '@material-ui/core/FormLabel'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import TextField from '@material-ui/core/TextField'
 import Clear from '@material-ui/icons/Clear'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'

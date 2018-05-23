@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Link } from 'react-router-dom'

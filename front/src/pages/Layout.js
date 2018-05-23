@@ -36,7 +36,7 @@ export class Layout extends Component {
         <AppBar position="static">
           <Toolbar>
             <Title color="inherit" variant="title">
-              Actualisation Proto
+              La Bonne Actualisation
             </Title>
             {user ? (
               <Typography color="inherit" variant="subheading">

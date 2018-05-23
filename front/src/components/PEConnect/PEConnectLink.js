@@ -1,8 +1,8 @@
 import React from 'react'
+import styled from 'styled-components'
+
 import blueIcon from './PEConnectIcon-blue.svg'
 import whiteIcon from './PEConnectIcon-white.svg'
-
-import styled from 'styled-components'
 
 const BLUE = '#1b2e57'
 const WHITE = '#fff'

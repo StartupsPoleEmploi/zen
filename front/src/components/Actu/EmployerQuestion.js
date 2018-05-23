@@ -8,9 +8,8 @@ import {
   TextField,
 } from '@material-ui/core'
 import Clear from '@material-ui/icons/Clear'
-import React, { Component } from 'react'
-
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`

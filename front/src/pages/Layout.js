@@ -1,9 +1,9 @@
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import PEConnectLink from '../components/PEConnect/PEConnectLink'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
 
 const StyledLayout = styled.div`
   max-width: 80rem;

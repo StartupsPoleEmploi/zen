@@ -1,16 +1,15 @@
-import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-
 import {
   FormControl,
   FormControlLabel,
-  RadioGroup,
-  Radio,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Radio,
+  RadioGroup,
 } from '@material-ui/core'
+import PropTypes from 'prop-types'
+import React, { Component, Fragment } from 'react'
+import styled from 'styled-components'
 
 const classes = {} // FIXME REMOVE ME
 

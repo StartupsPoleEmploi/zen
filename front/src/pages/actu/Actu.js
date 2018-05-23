@@ -1,22 +1,21 @@
-import React, { Component } from 'react'
-import { isNull } from 'lodash'
-import superagent from 'superagent'
-import styled from 'styled-components'
-import { withRouter } from 'react-router'
 import {
   Button,
+  FormControlLabel,
   List,
   Paper,
-  Typography,
-  RadioGroup,
-  FormControlLabel,
   Radio,
+  RadioGroup,
+  Typography,
 } from '@material-ui/core'
-
+import { isNull } from 'lodash'
+import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 import store from 'store2'
+import styled from 'styled-components'
+import superagent from 'superagent'
 
-import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
+import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
 import DatePicker from '../../components/Generic/DatePicker'
 
 const StyledActu = styled.div`

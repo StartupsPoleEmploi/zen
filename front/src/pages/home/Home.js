@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Typography } from '@material-ui/core'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import LinkButton from '../../components/Generic/LinkButton'

@@ -1,5 +1,6 @@
 import { Button, Typography } from '@material-ui/core'
 import React, { Component } from 'react'
+import { cloneDeep } from 'lodash'
 
 import { EmployerQuestion } from '../../components/Actu/EmployerQuestion'
 import { isBoolean } from 'lodash'
@@ -43,10 +44,10 @@ const ButtonsContainer = styled.div`
 `
 
 const employerTemplate = {
-  employerName: { value: '', error: null, pristine: true },
-  workHours: { value: '', error: null, pristine: true },
-  salary: { value: '', error: null, pristine: true },
-  hasEndedThisMonth: { value: null, error: null, pristine: true },
+  employerName: { value: '', error: null },
+  workHours: { value: '', error: null },
+  salary: { value: '', error: null },
+  hasEndedThisMonth: { value: null, error: null },
 }
 
 const calculateTotal = (employers, field) => {
@@ -68,6 +69,20 @@ const getEmployersMapFromFormData = (employers) =>
     ),
   )
 
+const getFieldError = ({ index, name, value }) => {
+  let isValid = !!value
+  let error = isValid ? null : 'Champ obligatoire'
+  if (name === 'workHours' || name === 'salary') {
+    isValid = !!value && !isNaN(value)
+    error = isValid ? null : `Merci d'entrer un nombre entier`
+  } else if (name === 'hasEndedThisMonth') {
+    isValid = isBoolean(value)
+    error = isValid ? null : 'Merci de répondre à la question'
+  }
+
+  return error
+}
+
 // TODO the whole logic of this component needs to be sanitized
 export class Employers extends Component {
   static propTypes = {}
@@ -83,15 +98,7 @@ export class Employers extends Component {
     }))
 
   onChange = ({ index, name, value }) => {
-    let isValid = !!value
-    let error = isValid ? null : 'Champ obligatoire'
-    if (name === 'workHours' || name === 'salary') {
-      isValid = !!value && !isNaN(value)
-      error = isValid ? null : `Merci d'entrer un nombre entier`
-    } else if (name === 'hasEndedThisMonth') {
-      isValid = isBoolean(value)
-      error = isValid ? null : 'Merci de répondre à la question'
-    }
+    const error = getFieldError({ index, name, value })
 
     this.setState(({ employers: prevEmployers }) => ({
       employers: prevEmployers.map(
@@ -114,22 +121,32 @@ export class Employers extends Component {
       })
     }
 
-    const isFormValid = this.state.employers.some((employer) =>
-      Object.keys(employer).some((fieldName) => !!employer[fieldName].error),
+    let isFormValid = true
+    const employersFormData = cloneDeep(this.state.employers)
+
+    this.state.employers.forEach((employer, index) =>
+      Object.keys(employer).forEach((fieldName) => {
+        const error = getFieldError({
+          index,
+          name: fieldName,
+          value: employer[fieldName].value,
+        })
+
+        if (error) isFormValid = false
+
+        employersFormData[index][fieldName] = {
+          value: employer[fieldName].value,
+          error,
+        }
+      }),
     )
 
     if (!isFormValid) {
-      this.state.employers.forEach((employer, index) =>
-        Object.keys(employer).forEach((fieldName) =>
-          this.onChange({
-            index,
-            name: fieldName,
-            value: employer[fieldName].value,
-          }),
-        ),
-      )
       return this.setState({
-        error: 'Merci de corriger les erreurs du formulaire',
+        employers: employersFormData,
+        error: isFormValid
+          ? null
+          : `Merci de corriger les erreurs du formulaire`,
       })
     }
 

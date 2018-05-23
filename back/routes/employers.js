@@ -4,12 +4,27 @@ const { Op } = require('sequelize')
 
 const { Declaration, Employer } = require('../models')
 
-router.get('/')
+const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
+
+router.get('/', (req, res) => {
+  Declaration.find({
+    where: {
+      userId: req.session.user.id,
+      declaredMonth: currentMonth,
+    },
+  }).then((declaration) => {
+    if (!declaration) throw new Error('Please send declaration first')
+
+    return Employer.findAll({
+      where: {
+        declarationId: declaration.id,
+      },
+    }).then((employers) => res.json(employers))
+  })
+})
 router.post('/', (req, res) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(404).json('No data')
-
-  const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
 
   Declaration.find({
     where: {

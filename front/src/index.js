@@ -13,6 +13,6 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Fragment>,
-  document.getElementsByTagName('body')[0],
+  document.getElementById('root'),
 )
 registerServiceWorker()

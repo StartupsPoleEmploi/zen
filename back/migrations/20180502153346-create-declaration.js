@@ -20,12 +20,7 @@ module.exports = {
         },
         declaredMonth: {
           allowNull: false,
-          type: Sequelize.DATE,
-        },
-
-        declaredMonth: {
-          allowNull: false,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         hasWorked: {
           allowNull: false,
@@ -37,11 +32,11 @@ module.exports = {
         },
         trainingStartDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         trainingEndDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         hasInternship: {
           allowNull: false,
@@ -49,11 +44,11 @@ module.exports = {
         },
         internshipStartDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         internshipEndDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         hasSickLeave: {
           allowNull: false,
@@ -61,11 +56,11 @@ module.exports = {
         },
         sickLeaveStartDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         sickLeaveEndDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         hasMaternityLeave: {
           allowNull: false,
@@ -73,7 +68,7 @@ module.exports = {
         },
         maternityLeaveStartDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         hasRetirement: {
           allowNull: false,
@@ -81,7 +76,7 @@ module.exports = {
         },
         retirementStartDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         hasInvalidity: {
           allowNull: false,
@@ -89,14 +84,14 @@ module.exports = {
         },
         invalidityStartDate: {
           defaultValue: null,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         isLookingForJob: {
           allowNull: false,
           type: Sequelize.BOOLEAN,
         },
         jobSearchEndDate: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         jobSearchStopMotive: {
           type: Sequelize.STRING,

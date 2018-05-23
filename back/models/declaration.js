@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       declaredMonth: {
         allowNull: false,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       hasWorked: {
         allowNull: false,
@@ -24,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       trainingStartDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       trainingEndDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       hasInternship: {
         allowNull: false,
@@ -36,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       internshipStartDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       internshipEndDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       hasSickLeave: {
         allowNull: false,
@@ -48,11 +48,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       sickLeaveStartDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       sickLeaveEndDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       hasMaternityLeave: {
         allowNull: false,
@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       maternityLeaveStartDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       hasRetirement: {
         allowNull: false,
@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       retirementStartDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       hasInvalidity: {
         allowNull: false,
@@ -76,14 +76,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       invalidityStartDate: {
         defaultValue: null,
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       isLookingForJob: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
       jobSearchEndDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
       jobSearchStopMotive: {
         type: DataTypes.STRING,

@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
-import styled from 'styled-components'
+import React, { Component } from 'react'
 
 import PEConnectLink from '../components/PEConnect/PEConnectLink'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 const StyledLayout = styled.div`
   max-width: 80rem;
@@ -15,7 +15,7 @@ const Title = styled(Typography)`
 `
 
 const Main = styled.main`
-  padding-top: 5rem;
+  padding: 5rem 1rem 0 1rem;
 `
 
 export class Layout extends Component {

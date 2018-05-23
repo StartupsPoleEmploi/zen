@@ -106,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   Declaration.associate = function(models) {
-    Declaration.belongsTo(models.User)
+    // Declaration.belongsTo(models.User, { as: 'user' })
   }
   return Declaration
 }

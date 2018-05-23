@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { cloneDeep, isBoolean } from 'lodash'
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -154,7 +155,7 @@ export class Employers extends Component {
       .post('/api/employers', {
         employers: getEmployersMapFromFormData(this.state.employers),
       })
-      .then(() => alert('sent'))
+      .then(() => this.props.history.push('/files'))
   }
 
   renderEmployerQuestion = (data, index) => (
@@ -205,4 +206,4 @@ export class Employers extends Component {
   }
 }
 
-export default Employers
+export default withRouter(Employers)

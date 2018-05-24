@@ -38,22 +38,19 @@ const StyledSummaryTypography = styled(Typography)`
   flex: 1 1 33%;
 `
 
-const StyledWarning = styled.div`
+const StyledInfo = styled.div`
   display: flex;
   align-items: center;
 `
 
-const StyledWarningTypography = styled(Typography)`
+const StyledInfoTypography = styled(Typography)`
   padding-left: 0.5rem;
-`
-
-const StyledForm = styled.form`
-  width: 100%;
 `
 
 const StyledList = styled(List)`
   && {
     margin-bottom: 1rem;
+    width: 100%;
   }
 `
 
@@ -85,15 +82,58 @@ export class Files extends Component {
     superagent
       .get('/api/employers')
       .then((res) => res.body)
-      .then(
-        (employers) => console.log(employers) || this.setState({ employers }),
+      .then((employers) => this.setState({ employers }))
+  }
+
+  submitFile = ({ file, employerId }) => {
+    this.setState({
+      employers: this.state.employers.map(
+        (employer) =>
+          employer.id === employerId
+            ? { ...employer, isLoading: true }
+            : employer,
+      ),
+    })
+    superagent
+      .post('/api/employers/files')
+      .field('employerId', employerId)
+      .attach('employerFile', file)
+      .then((res) => res.body)
+      .then((updatedEmployer) =>
+        this.setState({
+          employers: this.state.employers.map(
+            (employer) =>
+              employer.id === updatedEmployer.id ? updatedEmployer : employer,
+          ),
+        }),
+      )
+      .catch(() =>
+        this.setState({
+          employers: this.state.employers.map(
+            (employer) =>
+              employer.id === employerId
+                ? {
+                    ...employer,
+                    isLoading: false,
+                    error: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
+                  }
+                : employer,
+          ),
+        }),
       )
   }
 
-  renderEmployerRow = (employer) => <EmployerDocumentUpload {...employer} />
+  renderEmployerRow = (employer) => (
+    <EmployerDocumentUpload {...employer} submitFile={this.submitFile} />
+  )
 
   render() {
     const { employers } = this.state
+
+    const remainingDocuments = employers.reduce(
+      (prev, employer) => prev + (employer.file ? 0 : 1),
+      0,
+    )
 
     return (
       <StyledFiles>
@@ -117,24 +157,25 @@ export class Files extends Component {
             Salaire brut : {calculateTotal(employers, 'salary')}€
           </StyledSummaryTypography>
         </StyledSummary>
-        <StyledWarning>
-          <Warning />
-          <StyledWarningTypography variant="body2">
-            Reste X documents à fournir
-          </StyledWarningTypography>
-        </StyledWarning>
-        <StyledForm>
-          <StyledList>{employers.map(this.renderEmployerRow)}</StyledList>
 
-          <ButtonsContainer>
-            <Button variant="raised" disabled>
-              Enregistrer et finir plus tard
-            </Button>
-            <Button variant="raised" onClick={this.onSubmit}>
-              Envoyer à Pôle Emploi
-            </Button>
-          </ButtonsContainer>
-        </StyledForm>
+        <StyledInfo>
+          {remainingDocuments > 0 && <Warning />}
+          <StyledInfoTypography variant="body2">
+            {remainingDocuments > 0
+              ? `Reste ${remainingDocuments} documents à fournir`
+              : 'Les documents sont prêts à être envoyés'}
+          </StyledInfoTypography>
+        </StyledInfo>
+        <StyledList>{employers.map(this.renderEmployerRow)}</StyledList>
+
+        <ButtonsContainer>
+          <Button variant="raised" disabled>
+            Enregistrer et finir plus tard
+          </Button>
+          <Button variant="raised" onClick={this.onSubmit}>
+            Envoyer à Pôle Emploi
+          </Button>
+        </ButtonsContainer>
       </StyledFiles>
     )
   }

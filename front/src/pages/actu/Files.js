@@ -77,9 +77,7 @@ export class Files extends Component {
     employers: [],
   }
 
-  constructor(props) {
-    super(props)
-
+  componentDidMount() {
     superagent
       .get('/api/employers')
       .then((res) => res.body)
@@ -137,6 +135,13 @@ export class Files extends Component {
 
   render() {
     const { employers } = this.state
+
+    if (!employers.length)
+      return (
+        <StyledFiles>
+          <CircularProgress />
+        </StyledFiles>
+      )
 
     const remainingDocuments = employers.reduce(
       (prev, employer) => prev + (employer.file ? 0 : 1),

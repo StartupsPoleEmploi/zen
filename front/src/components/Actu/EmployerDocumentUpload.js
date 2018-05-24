@@ -72,6 +72,7 @@ export class EmployerDocumentUpload extends Component {
       employerName,
       error,
       file,
+      id,
       hasEndedThisMonth,
       isLoading,
     } = this.props
@@ -91,7 +92,10 @@ export class EmployerDocumentUpload extends Component {
               <CircularProgress />
             ) : file ? (
               <SentDocumentContainer>
-                <StyledA href={file} target="_blank">
+                <StyledA
+                  href={`/api/employers/files?employerId=${id}`}
+                  target="_blank"
+                >
                   <StyledTypography variant="caption">
                     Voir le {documentToGive}
                   </StyledTypography>

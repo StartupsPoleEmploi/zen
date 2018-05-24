@@ -126,7 +126,7 @@ export class Files extends Component {
     superagent
       .post('/api/declarations/finish')
       .then((res) => res.body)
-      .then((declaration) => alert('Déclaration terminée !'))
+      .then((declaration) => this.props.history.push('/thanks'))
   }
 
   renderEmployerRow = (employer) => (

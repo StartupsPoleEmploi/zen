@@ -6,6 +6,7 @@ import { getUser } from './lib/user'
 import Actu from './pages/actu/Actu'
 import { Employers } from './pages/actu/Employers'
 import { Files } from './pages/actu/Files'
+import { Thanks } from './pages/actu/Thanks'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 
@@ -49,6 +50,12 @@ class App extends Component {
             isLoggedIn={!!user}
             path="/files"
             render={(props) => <Files {...props} />}
+          />
+          <PrivateRoute
+            exact
+            isLoggedIn={!!user}
+            path="/thanks"
+            render={(props) => <Thanks {...props} />}
           />
           <Route
             exact

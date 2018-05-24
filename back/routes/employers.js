@@ -1,15 +1,61 @@
 const express = require('express')
 const router = express.Router()
 const { Op } = require('sequelize')
+const multer = require('multer')
+const path = require('path')
+
+const uploadDestination =
+  process.env.NODE_ENV === 'production' ? 'uploads/' : '/tmp/uploads/'
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: uploadDestination,
+    filename: function(req, file, cb) {
+      path.extname(file.originalname)
+      cb(
+        null,
+        `${req.session.user.id}-${Date.now()}-${path.extname(
+          file.originalname,
+        )}`,
+      )
+    },
+  }),
+  fileFilter: function(req, file, callback) {
+    const filetypes = /jpeg|jpg|png|pdf/i
+    const mimetype = filetypes.test(file.mimetype)
+    const extname = filetypes.test(path.extname(file.originalname))
+
+    callback(null, mimetype && extname)
+  },
+  limits: {
+    files: 1,
+  },
+})
 
 const { Declaration, Employer } = require('../models')
 
-router.get('/')
+const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
+
+router.get('/', (req, res) => {
+  Declaration.find({
+    where: {
+      userId: req.session.user.id,
+      declaredMonth: currentMonth,
+    },
+  }).then((declaration) => {
+    if (!declaration) throw new Error('Please send declaration first')
+
+    return Employer.findAll({
+      where: {
+        declarationId: declaration.id,
+      },
+    }).then((employers) => res.json(employers))
+  })
+})
+
 router.post('/', (req, res) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(404).json('No data')
-
-  const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
 
   Declaration.find({
     where: {
@@ -79,6 +125,33 @@ router.post('/', (req, res) => {
         )
         .then((employers) => res.json(employers))
     })
+})
+
+router.get('/files', (req, res, next) => {
+  if (!req.query.employerId) return res.status(400).json('Missing employerId')
+  Employer.find({
+    where: { id: req.query.employerId, userId: req.session.user.id },
+  }).then((employer) => {
+    if (!employer) return res.status(400).json('No such employer')
+    if (!employer.file) return res.status(404).json('No such file')
+    res.sendfile(employer.file, { root: uploadDestination })
+  })
+})
+
+router.post('/files', upload.single('employerFile'), (req, res, next) => {
+  if (!req.file) return res.status(400).json('Missing file')
+  if (!req.body.employerId) return res.status(400).json('Missing employerId')
+
+  Employer.find({
+    where: { id: req.body.employerId, userId: req.session.user.id },
+  })
+    .then((employer) => {
+      if (!employer) return res.status(400).json('No such employer')
+
+      employer.file = req.file.filename
+      return employer.save().then(() => res.json(employer))
+    })
+    .catch(() => res.json(400).json('Error'))
 })
 
 module.exports = router

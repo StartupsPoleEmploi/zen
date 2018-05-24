@@ -96,6 +96,10 @@ module.exports = {
         jobSearchStopMotive: {
           type: Sequelize.STRING,
         },
+        isFinished: {
+          defaultValue: false,
+          type: Sequelize.BOOLEAN,
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

@@ -88,6 +88,10 @@ module.exports = (sequelize, DataTypes) => {
       jobSearchStopMotive: {
         type: DataTypes.STRING,
       },
+      isFinished: {
+        defaultValue: false,
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       indexes: [

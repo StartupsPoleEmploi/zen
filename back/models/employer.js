@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       workHours: DataTypes.INTEGER,
       salary: DataTypes.INTEGER,
       hasEndedThisMonth: DataTypes.BOOLEAN,
+      file: DataTypes.STRING,
     },
     {
       indexes: [

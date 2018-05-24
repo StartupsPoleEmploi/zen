@@ -1,6 +1,33 @@
 const express = require('express')
 const router = express.Router()
 const { Op } = require('sequelize')
+const multer = require('multer')
+const path = require('path')
+const upload = multer({
+  storage: multer.diskStorage({
+    destination:
+      process.env.NODE_ENV === 'production' ? 'uploads/' : '/tmp/uploads/',
+    filename: function(req, file, cb) {
+      path.extname(file.originalname)
+      cb(
+        null,
+        `${req.session.user.id}-${Date.now()}-${path.extname(
+          file.originalname,
+        )}`,
+      )
+    },
+  }),
+  fileFilter: function(req, file, callback) {
+    const filetypes = /jpeg|jpg|png|pdf/i
+    const mimetype = filetypes.test(file.mimetype)
+    const extname = filetypes.test(path.extname(file.originalname))
+
+    callback(null, mimetype && extname)
+  },
+  limits: {
+    files: 1,
+  },
+})
 
 const { Declaration, Employer } = require('../models')
 
@@ -22,6 +49,7 @@ router.get('/', (req, res) => {
     }).then((employers) => res.json(employers))
   })
 })
+
 router.post('/', (req, res) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(404).json('No data')
@@ -94,6 +122,23 @@ router.post('/', (req, res) => {
         )
         .then((employers) => res.json(employers))
     })
+})
+
+router.post('/files', upload.single('employerFile'), (req, res, next) => {
+  if (!req.file) return res.status(400).json('Missing file')
+  if (!req.body.employerId) return res.status(400).json('Missing employerId')
+
+  Employer.find({ where: { id: req.body.employerId } })
+    .then((employer) => {
+      if (!employer) return res.status(400).json('No such employer')
+      if (employer.userId !== req.session.user.id) {
+        return res.status(401).json('Wrong user')
+      }
+
+      employer.file = req.file.filename
+      return employer.save().then(() => res.json(employer))
+    })
+    .catch(() => res.json(400).json('Error'))
 })
 
 module.exports = router

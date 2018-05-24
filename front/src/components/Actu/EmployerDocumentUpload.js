@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import superagent from 'superagent'
 
 const StyledListItem = styled(ListItem)`
   && {
@@ -32,7 +33,18 @@ const StyledFormHelperText = styled(FormHelperText)`
 `
 
 export class EmployerDocumentUpload extends Component {
-  static propTypes = {}
+  static propTypes = {
+    id: PropTypes.number.isRequired,
+    employerName: PropTypes.string.isRequired,
+  }
+
+  submitFile = ({ target: { files } }) => {
+    superagent
+      .post('/api/employers/files')
+      .field('employerId', this.props.id)
+      .attach('employerFile', files[0])
+      .then(() => alert('cool'))
+  }
 
   render() {
     const { employerName } = this.props
@@ -42,7 +54,11 @@ export class EmployerDocumentUpload extends Component {
         <ListItemSecondaryAction>
           <FormControl>
             <StyledFormLabel>
-              <input style={{ display: 'none' }} type="file" />
+              <input
+                style={{ display: 'none' }}
+                type="file"
+                onChange={this.submitFile}
+              />
               <StyledFormHelperText>
                 Bulletin de salaire à envoyer
               </StyledFormHelperText>

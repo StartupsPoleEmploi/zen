@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import Warning from '@material-ui/icons/Warning'
@@ -123,6 +124,13 @@ export class Files extends Component {
       )
   }
 
+  onSubmit = () => {
+    superagent
+      .post('/api/declarations/finish')
+      .then((res) => res.body)
+      .then((declaration) => alert('Déclaration terminée !'))
+  }
+
   renderEmployerRow = (employer) => (
     <EmployerDocumentUpload {...employer} submitFile={this.submitFile} />
   )
@@ -172,7 +180,11 @@ export class Files extends Component {
           <Button variant="raised" disabled>
             Enregistrer et finir plus tard
           </Button>
-          <Button variant="raised" onClick={this.onSubmit}>
+          <Button
+            variant="raised"
+            disabled={remainingDocuments > 0}
+            onClick={this.onSubmit}
+          >
             Envoyer à Pôle Emploi
           </Button>
         </ButtonsContainer>

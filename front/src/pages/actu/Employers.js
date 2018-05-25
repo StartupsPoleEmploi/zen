@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import { cloneDeep, isBoolean } from 'lodash'
+import { cloneDeep, isBoolean, pick } from 'lodash'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
@@ -90,7 +91,38 @@ export class Employers extends Component {
 
   state = {
     employers: [{ ...employerTemplate }],
+    isLoading: true,
     error: null,
+  }
+
+  componentDidMount() {
+    superagent
+      .get('/api/employers')
+      .then((res) => res.body)
+      .then((employers) => {
+        if (employers.length === 0) return this.setState({ isLoading: false })
+
+        this.setState({
+          isLoading: false,
+          employers: employers.map((employer) =>
+            Object.keys(
+              pick(employer, [
+                'employerName',
+                'workHours',
+                'salary',
+                'hasEndedThisMonth',
+                'id',
+              ]),
+            ).reduce(
+              (obj, fieldName) => ({
+                ...obj,
+                [fieldName]: { value: employer[fieldName], error: null },
+              }),
+              {},
+            ),
+          ),
+        })
+      })
   }
 
   addEmployer = () =>
@@ -169,7 +201,15 @@ export class Employers extends Component {
   )
 
   render() {
-    const { employers, error } = this.state
+    const { employers, error, isLoading } = this.state
+
+    if (isLoading) {
+      return (
+        <StyledEmployers>
+          <CircularProgress />
+        </StyledEmployers>
+      )
+    }
     return (
       <StyledEmployers>
         <Title variant="title">

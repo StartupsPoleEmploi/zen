@@ -90,7 +90,9 @@ router.post('/', (req, res) => {
         .map((employer) => employer.id)
 
       updatedEmployers.forEach((updatedEmployer) => {
-        const dbEmployer = dbEmployers.find(({ id }) => id === employer.id)
+        const dbEmployer = dbEmployers.find(
+          ({ id }) => id === updatedEmployer.id,
+        )
         if (!dbEmployer) return
 
         Object.assign(dbEmployer, updatedEmployer)

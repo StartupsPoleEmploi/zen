@@ -281,7 +281,7 @@ export class Actu extends Component {
           <StyledPaper>
             <List>
               <DeclarationQuestion
-                label="Êtes-vous toujours à la recherche d'un emploi ?"
+                label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
                 name="isLookingForJob"
                 onAnswer={this.onAnswer}
                 withChildrenOnNo

@@ -7,12 +7,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import { capitalize } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-// refactor styles with SickLeaveUpload
+// refactor styles with EmployerDocumentUpload
 
 const StyledListItem = styled(ListItem)`
   && {
@@ -59,40 +58,22 @@ const StyledA = styled.a`
 
 export class EmployerDocumentUpload extends Component {
   static propTypes = {
-    id: PropTypes.number.isRequired,
-    employerName: PropTypes.string.isRequired,
+    declarationId: PropTypes.number.isRequired,
+    error: PropTypes.string,
     file: PropTypes.string,
     isLoading: PropTypes.bool,
-    hasEndedThisMonth: PropTypes.bool.isRequired,
     submitFile: PropTypes.func.isRequired,
   }
 
   submitFile = ({ target: { files } }) =>
-    this.props.submitFile({ file: files[0], employerId: this.props.id })
+    this.props.submitFile({ file: files[0] })
 
   render() {
-    const {
-      employerName,
-      error,
-      file,
-      id,
-      hasEndedThisMonth,
-      isLoading,
-    } = this.props
-
-    const documentToGive = hasEndedThisMonth
-      ? 'justificatif de travail'
-      : 'bulletin de salaire'
+    const { declarationId, error, file, isLoading } = this.props
 
     return (
       <StyledListItem divider>
-        <ListItemText
-          primary={
-            <b>
-              {capitalize(documentToGive)} : {employerName}
-            </b>
-          }
-        />
+        <ListItemText primary={<b>Feuille maladie</b>} />
         <ListItemSecondaryAction>
           <FormControl>
             {error ? (
@@ -102,11 +83,11 @@ export class EmployerDocumentUpload extends Component {
             ) : file ? (
               <SentDocumentContainer>
                 <StyledA
-                  href={`/api/employers/files?employerId=${id}`}
+                  href={`/api/declarations/files?declarationId=${declarationId}`}
                   target="_blank"
                 >
                   <StyledTypography variant="caption">
-                    Voir le {documentToGive}
+                    Voir la feuille maladie
                   </StyledTypography>
                 </StyledA>
                 <StyledFormLabel>
@@ -128,7 +109,7 @@ export class EmployerDocumentUpload extends Component {
                   onChange={this.submitFile}
                 />
                 <StyledFormHelperText>
-                  {capitalize(documentToGive)} à envoyer
+                  Feuille maladie à envoyer
                 </StyledFormHelperText>
                 <Button component="span" size="small">
                   Parcourir

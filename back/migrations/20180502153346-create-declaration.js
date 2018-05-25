@@ -38,6 +38,10 @@ module.exports = {
           defaultValue: null,
           type: Sequelize.DATEONLY,
         },
+        trainingDocument: {
+          defaultValue: null,
+          type: Sequelize.STRING,
+        },
         hasInternship: {
           allowNull: false,
           type: Sequelize.BOOLEAN,
@@ -49,6 +53,10 @@ module.exports = {
         internshipEndDate: {
           defaultValue: null,
           type: Sequelize.DATEONLY,
+        },
+        internshipDocument: {
+          defaultValue: null,
+          type: Sequelize.STRING,
         },
         hasSickLeave: {
           allowNull: false,
@@ -74,6 +82,10 @@ module.exports = {
           defaultValue: null,
           type: Sequelize.DATEONLY,
         },
+        maternityLeaveDocument: {
+          defaultValue: null,
+          type: Sequelize.STRING,
+        },
         hasRetirement: {
           allowNull: false,
           type: Sequelize.BOOLEAN,
@@ -82,6 +94,10 @@ module.exports = {
           defaultValue: null,
           type: Sequelize.DATEONLY,
         },
+        retirementDocument: {
+          defaultValue: null,
+          type: Sequelize.STRING,
+        },
         hasInvalidity: {
           allowNull: false,
           type: Sequelize.BOOLEAN,
@@ -89,6 +105,10 @@ module.exports = {
         invalidityStartDate: {
           defaultValue: null,
           type: Sequelize.DATEONLY,
+        },
+        invalidityDocument: {
+          defaultValue: null,
+          type: Sequelize.STRING,
         },
         isLookingForJob: {
           allowNull: false,

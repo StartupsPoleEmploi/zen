@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-// refactor styles with EmployerDocumentUpload
+// refactor styles with AdditionalDocumentUpload
 
 const StyledListItem = styled(ListItem)`
   && {
@@ -56,11 +56,12 @@ const StyledA = styled.a`
   color: #7b7b7b;
 `
 
-export class EmployerDocumentUpload extends Component {
+export class AdditionalDocumentUpload extends Component {
   static propTypes = {
     declarationId: PropTypes.number.isRequired,
     error: PropTypes.string,
     file: PropTypes.string,
+    name: PropTypes.string,
     isLoading: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
   }
@@ -69,11 +70,11 @@ export class EmployerDocumentUpload extends Component {
     this.props.submitFile({ file: files[0] })
 
   render() {
-    const { declarationId, error, file, isLoading } = this.props
+    const { declarationId, error, file, isLoading, name, label } = this.props
 
     return (
       <StyledListItem divider>
-        <ListItemText primary={<b>Feuille maladie</b>} />
+        <ListItemText primary={<b>{label}</b>} />
         <ListItemSecondaryAction>
           <FormControl>
             {error ? (
@@ -83,11 +84,11 @@ export class EmployerDocumentUpload extends Component {
             ) : file ? (
               <SentDocumentContainer>
                 <StyledA
-                  href={`/api/declarations/files?declarationId=${declarationId}`}
+                  href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
                   target="_blank"
                 >
                   <StyledTypography variant="caption">
-                    Voir la feuille maladie
+                    Voir l'attestation
                   </StyledTypography>
                 </StyledA>
                 <StyledFormLabel>
@@ -108,9 +109,7 @@ export class EmployerDocumentUpload extends Component {
                   type="file"
                   onChange={this.submitFile}
                 />
-                <StyledFormHelperText>
-                  Feuille maladie à envoyer
-                </StyledFormHelperText>
+                <StyledFormHelperText>{label} à envoyer</StyledFormHelperText>
                 <Button component="span" size="small">
                   Parcourir
                 </Button>
@@ -123,4 +122,4 @@ export class EmployerDocumentUpload extends Component {
   }
 }
 
-export default EmployerDocumentUpload
+export default AdditionalDocumentUpload

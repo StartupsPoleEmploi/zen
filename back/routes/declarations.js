@@ -26,8 +26,8 @@ router.post('/', (req, res) => {
 })
 
 router.get('/files', (req, res, next) => {
-  if (!req.query.declarationId)
-    return res.status(400).json('Missing declarationId')
+  if (!req.query.declarationId || !req.query.name)
+    return res.status(400).json('Missing parameters')
   Declaration.find({
     where: {
       id: req.query.declarationId,
@@ -35,16 +35,17 @@ router.get('/files', (req, res, next) => {
     },
   }).then((declaration) => {
     if (!declaration) return res.status(400).json('No such declaration')
-    if (!declaration.sickLeaveDocument)
+    if (!declaration[req.query.name])
       return res.status(404).json('No such file')
-    res.sendfile(declaration.sickLeaveDocument, { root: uploadDestination })
+    res.sendfile(declaration[req.query.name], { root: uploadDestination })
   })
 })
 
-router.post('/files', upload.single('sickLeaveDocument'), (req, res) => {
+router.post('/files', upload.single('document'), (req, res) => {
   if (!req.file) return res.status(400).json('Missing file')
   if (!req.body.declarationId)
     return res.status(400).json('Missing declarationId')
+  if (!req.body.name) return res.status(400)
 
   Declaration.find({
     where: { id: req.body.declarationId, userId: req.session.user.id },
@@ -52,7 +53,7 @@ router.post('/files', upload.single('sickLeaveDocument'), (req, res) => {
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
 
-      declaration.sickLeaveDocument = req.file.filename
+      declaration[req.body.name] = req.file.filename
       return declaration.save().then(() => res.json(declaration))
     })
     .catch(() => res.json(400).json('Error'))

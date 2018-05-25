@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
+import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
-import SickLeaveUpload from '../../components/Actu/SickLeaveUpload'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -72,14 +72,52 @@ const calculateTotal = (employers, field) => {
   return isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
+const additionalDocuments = [
+  {
+    name: 'trainingDocument',
+    fieldToCheck: 'hasTrained',
+    label: 'Attestation de formation',
+  },
+  {
+    name: 'sickLeaveDocument',
+    fieldToCheck: 'hasSickLeave',
+    label: 'Feuille maladie',
+  },
+  {
+    name: 'internshipDocument',
+    fieldToCheck: 'hasInternship',
+    label: 'Attestation de stage',
+  },
+  {
+    name: 'maternityLeaveDocument',
+    fieldToCheck: 'hasMaternityLeave',
+    label: 'Attestation de congé maternité',
+  },
+  {
+    name: 'retirementDocument',
+    fieldToCheck: 'hasRetirement',
+    label: 'Attestation retraite',
+  },
+  {
+    name: 'invalidityDocument',
+    fieldToCheck: 'hasInvalidity',
+    label: 'Attestation invalidité',
+  },
+]
+
 export class Files extends Component {
   static propTypes = {}
 
   state = {
     declaration: null,
     employers: [],
-    isLoadingSickLeaveDocument: false,
-    sickLeaveUploadError: null,
+    ...additionalDocuments.reduce(
+      (prev, doc) => ({
+        [`isLoading{doc.name}`]: false,
+        [`{doc.name}Error`]: null,
+      }),
+      {},
+    ),
   }
 
   componentDidMount() {
@@ -129,25 +167,29 @@ export class Files extends Component {
       )
   }
 
-  submitSickLeaveFile = ({ file, employerId }) => {
+  submitAdditionalFile = ({ file, name }) => {
+    const loadingKey = `isLoading${name}`
+    const errorKey = `${name}Error`
+
     this.setState({
       isLoadingSickLeaveDocument: true,
     })
     superagent
       .post('/api/declarations/files')
       .field('declarationId', this.state.declaration.id)
-      .attach('sickLeaveDocument', file)
+      .field('name', name)
+      .attach('document', file)
       .then((res) => res.body)
       .then((declaration) =>
         this.setState({
           declaration,
-          isLoadingSickLeaveDocument: false,
+          [loadingKey]: false,
         }),
       )
       .catch(() =>
         this.setState({
-          isLoadingSickLeaveDocument: false,
-          sickLeaveUploadError: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
+          [loadingKey]: false,
+          [errorKey]: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
         }),
       )
   }
@@ -158,6 +200,20 @@ export class Files extends Component {
       .then((res) => res.body)
       .then((declaration) => this.props.history.push('/thanks'))
   }
+
+  renderAdditionalDocument = (document) => (
+    <AdditionalDocumentUpload
+      declarationId={this.state.declaration.id}
+      label={document.label}
+      name={document.name}
+      error={this.state[`${document.name}Error`]}
+      file={this.state.declaration[document.name]}
+      isLoading={this.state[`isLoading${document.name}`]}
+      submitFile={({ file }) =>
+        this.submitAdditionalFile({ file, name: document.name })
+      }
+    />
+  )
 
   renderEmployerRow = (employer) => (
     <EmployerDocumentUpload {...employer} submitFile={this.submitFile} />
@@ -172,6 +228,10 @@ export class Files extends Component {
           <CircularProgress />
         </StyledFiles>
       )
+
+    const neededAdditionalDocuments = additionalDocuments.filter(
+      (doc) => !!declaration[doc.fieldToCheck],
+    )
 
     const needsSickLeaveDocument = !!declaration.sickLeaveStartDate
     const hasSickLeaveDocument = !!declaration.sickLeaveDocument
@@ -213,15 +273,7 @@ export class Files extends Component {
         </StyledInfo>
         <StyledList>
           {employers.map(this.renderEmployerRow)}
-          {needsSickLeaveDocument && (
-            <SickLeaveUpload
-              declarationId={this.state.declaration.id}
-              error={this.state.sickLeaveUploadError}
-              file={this.state.declaration.sickLeaveDocument}
-              isLoading={this.state.isLoadingSickLeaveDocument}
-              submitFile={this.submitSickLeaveFile}
-            />
-          )}
+          {neededAdditionalDocuments.map(this.renderAdditionalDocument)}
         </StyledList>
 
         <ButtonsContainer>

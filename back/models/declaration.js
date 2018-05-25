@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         type: DataTypes.DATEONLY,
       },
+      trainingDocument: {
+        defaultValue: null,
+        type: DataTypes.STRING,
+      },
       hasInternship: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
@@ -41,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
       internshipEndDate: {
         defaultValue: null,
         type: DataTypes.DATEONLY,
+      },
+      internshipDocument: {
+        defaultValue: null,
+        type: DataTypes.STRING,
       },
       hasSickLeave: {
         allowNull: false,
@@ -66,6 +74,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         type: DataTypes.DATEONLY,
       },
+      maternityLeaveDocument: {
+        defaultValue: null,
+        type: DataTypes.STRING,
+      },
       hasRetirement: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
@@ -74,6 +86,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         type: DataTypes.DATEONLY,
       },
+      retirementDocument: {
+        defaultValue: null,
+        type: DataTypes.STRING,
+      },
       hasInvalidity: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
@@ -81,6 +97,10 @@ module.exports = (sequelize, DataTypes) => {
       invalidityStartDate: {
         defaultValue: null,
         type: DataTypes.DATEONLY,
+      },
+      invalidityDocument: {
+        defaultValue: null,
+        type: DataTypes.STRING,
       },
       isLookingForJob: {
         allowNull: false,

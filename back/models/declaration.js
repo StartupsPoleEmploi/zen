@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         type: DataTypes.DATEONLY,
       },
+      sickLeaveDocument: {
+        defaultValue: null,
+        type: DataTypes.STRING,
+      },
       hasMaternityLeave: {
         allowNull: false,
         type: DataTypes.BOOLEAN,

@@ -62,6 +62,10 @@ module.exports = {
           defaultValue: null,
           type: Sequelize.DATEONLY,
         },
+        sickLeaveDocument: {
+          defaultValue: null,
+          type: Sequelize.STRING,
+        },
         hasMaternityLeave: {
           allowNull: false,
           type: Sequelize.BOOLEAN,

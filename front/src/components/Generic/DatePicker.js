@@ -20,15 +20,11 @@ export default class DatePicker extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     onSelectDate: PropTypes.func.isRequired,
+    value: PropTypes.object, // date
     name: PropTypes.string.isRequired,
   }
 
-  state = {
-    selectedDate: null,
-  }
-
   handleDateChange = (date) => {
-    this.setState({ selectedDate: date })
     this.props.onSelectDate({ controlName: this.props.name, date })
   }
 
@@ -40,7 +36,7 @@ export default class DatePicker extends PureComponent {
           label={this.props.label}
           format="DD/MM/YYYY"
           onChange={this.handleDateChange}
-          value={this.state.selectedDate}
+          value={this.props.value || null}
         />
       </MuiPickersUtilsProvider>
     )

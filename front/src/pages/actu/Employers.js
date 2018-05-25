@@ -147,6 +147,14 @@ export class Employers extends Component {
       employers: employers.filter((e, key) => key !== index),
     }))
 
+  onSave = () => {
+    superagent
+      .post('/api/employers', {
+        employers: getEmployersMapFromFormData(this.state.employers),
+      })
+      .then(() => this.props.history.push('/thanks?later'))
+  }
+
   onSubmit = () => {
     if (this.state.employers.length === 0) {
       return this.setState({
@@ -234,7 +242,7 @@ export class Employers extends Component {
         {error && <Typography type="body2">{error}</Typography>}
 
         <ButtonsContainer>
-          <Button variant="raised" disabled>
+          <Button variant="raised" onClick={this.onSave}>
             Enregistrer et finir plus tard
           </Button>
           <Button variant="raised" onClick={this.onSubmit}>

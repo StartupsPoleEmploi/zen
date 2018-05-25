@@ -79,6 +79,11 @@ router.post('/', (req, res) => {
           ...employer,
           userId: req.session.user.id,
           declarationId: declaration.id,
+          // Save temp data as much as possible
+          workHours: isNaN(employer.workHours)
+            ? null
+            : employer.workHours || null,
+          salary: isNaN(employer.salary) ? null : employer.salary || null,
         }))
       const updatedEmployers = sentEmployers.filter(({ id }) =>
         dbEmployers.some((employer) => employer.id === id),

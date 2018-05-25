@@ -83,7 +83,13 @@ export class EmployerDocumentUpload extends Component {
 
     return (
       <StyledListItem divider>
-        <ListItemText primary={<b>Bulletin de salaire : {employerName}</b>} />
+        <ListItemText
+          primary={
+            <b>
+              {capitalize(documentToGive)} : {employerName}
+            </b>
+          }
+        />
         <ListItemSecondaryAction>
           <FormControl>
             {error ? (

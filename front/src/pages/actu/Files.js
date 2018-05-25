@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import { EmployerDocumentUpload } from '../../components/Actu/EmployerDocumentUpload'
+import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
+import SickLeaveUpload from '../../components/Actu/SickLeaveUpload'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -75,14 +76,19 @@ export class Files extends Component {
   static propTypes = {}
 
   state = {
+    declaration: null,
     employers: [],
+    isLoadingSickLeaveDocument: false,
+    sickLeaveUploadError: null,
   }
 
   componentDidMount() {
-    superagent
-      .get('/api/employers')
-      .then((res) => res.body)
-      .then((employers) => this.setState({ employers }))
+    Promise.all([
+      superagent.get('/api/employers').then((res) => res.body),
+      superagent.get('/api/declarations?last').then((res) => res.body),
+    ]).then(([employers, declaration]) =>
+      this.setState({ employers, declaration }),
+    )
   }
 
   submitFile = ({ file, employerId }) => {
@@ -123,6 +129,29 @@ export class Files extends Component {
       )
   }
 
+  submitSickLeaveFile = ({ file, employerId }) => {
+    this.setState({
+      isLoadingSickLeaveDocument: true,
+    })
+    superagent
+      .post('/api/declarations/files')
+      .field('declarationId', this.state.declaration.id)
+      .attach('sickLeaveDocument', file)
+      .then((res) => res.body)
+      .then((declaration) =>
+        this.setState({
+          declaration,
+          isLoadingSickLeaveDocument: false,
+        }),
+      )
+      .catch(() =>
+        this.setState({
+          isLoadingSickLeaveDocument: false,
+          sickLeaveUploadError: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
+        }),
+      )
+  }
+
   onSubmit = () => {
     superagent
       .post('/api/declarations/finish')
@@ -135,7 +164,7 @@ export class Files extends Component {
   )
 
   render() {
-    const { employers } = this.state
+    const { declaration, employers } = this.state
 
     if (!employers.length)
       return (
@@ -144,10 +173,12 @@ export class Files extends Component {
         </StyledFiles>
       )
 
-    const remainingDocuments = employers.reduce(
-      (prev, employer) => prev + (employer.file ? 0 : 1),
-      0,
-    )
+    const needsSickLeaveDocument = !!declaration.sickLeaveStartDate
+    const hasSickLeaveDocument = !!declaration.sickLeaveDocument
+
+    const remainingDocuments =
+      employers.reduce((prev, employer) => prev + (employer.file ? 0 : 1), 0) +
+      (needsSickLeaveDocument && !hasSickLeaveDocument ? 1 : 0)
 
     return (
       <StyledFiles>
@@ -156,7 +187,7 @@ export class Files extends Component {
         </StyledTitle>
         <StyledSummary>
           <StyledSummaryTypography variant="body2">
-            <b>Actualisation du moi de mai</b>
+            <b>Actualisation du mois de mai</b>
           </StyledSummaryTypography>
           <StyledSummaryTypography
             variant="body2"
@@ -180,7 +211,18 @@ export class Files extends Component {
               : 'Les documents sont prêts à être envoyés'}
           </StyledInfoTypography>
         </StyledInfo>
-        <StyledList>{employers.map(this.renderEmployerRow)}</StyledList>
+        <StyledList>
+          {employers.map(this.renderEmployerRow)}
+          {needsSickLeaveDocument && (
+            <SickLeaveUpload
+              declarationId={this.state.declaration.id}
+              error={this.state.sickLeaveUploadError}
+              file={this.state.declaration.sickLeaveDocument}
+              isLoading={this.state.isLoadingSickLeaveDocument}
+              submitFile={this.submitSickLeaveFile}
+            />
+          )}
+        </StyledList>
 
         <ButtonsContainer>
           <Button variant="raised" component={Link} to="/thanks?later">

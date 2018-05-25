@@ -49,6 +49,7 @@ router.get('/', (req, res) => {
       where: {
         declarationId: declaration.id,
       },
+      order: [['id']],
     }).then((employers) => res.json(employers))
   })
 })
@@ -79,6 +80,11 @@ router.post('/', (req, res) => {
           ...employer,
           userId: req.session.user.id,
           declarationId: declaration.id,
+          // Save temp data as much as possible
+          workHours: isNaN(employer.workHours)
+            ? null
+            : employer.workHours || null,
+          salary: isNaN(employer.salary) ? null : employer.salary || null,
         }))
       const updatedEmployers = sentEmployers.filter(({ id }) =>
         dbEmployers.some((employer) => employer.id === id),
@@ -90,7 +96,9 @@ router.post('/', (req, res) => {
         .map((employer) => employer.id)
 
       updatedEmployers.forEach((updatedEmployer) => {
-        const dbEmployer = dbEmployers.find(({ id }) => id === employer.id)
+        const dbEmployer = dbEmployers.find(
+          ({ id }) => id === updatedEmployer.id,
+        )
         if (!dbEmployer) return
 
         Object.assign(dbEmployer, updatedEmployer)

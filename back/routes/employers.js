@@ -49,6 +49,7 @@ router.get('/', (req, res) => {
       where: {
         declarationId: declaration.id,
       },
+      order: [['id']],
     }).then((employers) => res.json(employers))
   })
 })

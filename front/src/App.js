@@ -1,5 +1,9 @@
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
 import React, { Component } from 'react'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Link, Route, Switch, withRouter } from 'react-router-dom'
+import styled from 'styled-components'
 import superagent from 'superagent'
 
 import PrivateRoute from './components/Generic/PrivateRoute'
@@ -10,6 +14,19 @@ import { Files } from './pages/actu/Files'
 import { Thanks } from './pages/actu/Thanks'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
+
+const steps = ['Déclaration', 'Employeurs', 'Documents']
+
+const stepsNumbers = ['/actu', '/employers', '/files']
+
+const StyledLink = styled(Link)`
+  color: #3f51b5;
+  text-decoration: none;
+
+  &:visited {
+    color: #3f51b5;
+  }
+`
 
 class App extends Component {
   state = { declaration: null, user: null, isLoading: true }
@@ -36,11 +53,32 @@ class App extends Component {
   }
 
   render() {
+    const {
+      location: { pathname },
+    } = this.props
     const { isLoading, user } = this.state
     if (isLoading) return null
 
+    const activeStep = stepsNumbers.indexOf(pathname)
+
     return (
       <Layout user={user}>
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label, index) => {
+            return (
+              <Step key={label}>
+                <StepLabel>
+                  {index >= activeStep ? (
+                    label
+                  ) : (
+                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                  )}
+                </StepLabel>
+              </Step>
+            )
+          })}
+        </Stepper>
+
         <Switch>
           <Route
             exact

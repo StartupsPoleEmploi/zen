@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
+import superagent from 'superagent'
 
 import PrivateRoute from './components/Generic/PrivateRoute'
 import { getUser } from './lib/user'
@@ -11,14 +12,27 @@ import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
+  state = { declaration: null, user: null, isLoading: true }
 
-    this.state = { user: null, isLoading: true }
-
-    getUser()
-      .then((user) => this.setState({ user, isLoading: false }))
-      .catch((err) => this.setState({ isLoading: false, err }))
+  componentDidMount() {
+    Promise.all([
+      getUser().then((user) => this.setState({ user })),
+      superagent.get('/api/declarations?last').then((res) => res.body),
+    ])
+      .then(([user, declaration]) => {
+        // Redirect the user to the last page he hasn't completed
+        this.setState({ isLoading: false })
+        if (declaration) {
+          if (declaration.hasFinishedDeclaringEmployers) {
+            return this.props.history.push('/files')
+          }
+          return this.props.history.push('/employers')
+        }
+      })
+      .catch(() => {
+        /* no declaration or session is normal */
+        this.setState({ isLoading: false })
+      })
   }
 
   render() {
@@ -69,4 +83,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default withRouter(App)

@@ -194,6 +194,7 @@ export class Employers extends Component {
     superagent
       .post('/api/employers', {
         employers: getEmployersMapFromFormData(this.state.employers),
+        isFinished: true,
       })
       .then(() => this.props.history.push('/files'))
   }

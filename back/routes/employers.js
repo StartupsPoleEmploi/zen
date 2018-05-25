@@ -29,6 +29,8 @@ router.post('/', (req, res) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(404).json('No data')
 
+  const isEmployersDeclarationFinished = !!req.body.isFinished
+
   Declaration.find({
     where: {
       userId: req.session.user.id,
@@ -37,6 +39,11 @@ router.post('/', (req, res) => {
   })
     .then((declaration) => {
       if (!declaration) throw new Error('Please send declaration first')
+
+      if (isEmployersDeclarationFinished) {
+        // We do not want to revert a "finished" employers declaration
+        declaration.hasFinishedDeclaringEmployers = true
+      }
 
       return Employer.findAll({
         where: {
@@ -94,6 +101,7 @@ router.post('/', (req, res) => {
         createEmployersPromise,
         Promise.all(dbEmployers.map((employer) => employer.save())),
         deleteEmployersPromise,
+        declaration.save(),
       ])
         .then(() =>
           Employer.findAll({

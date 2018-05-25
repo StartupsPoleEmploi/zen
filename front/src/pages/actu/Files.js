@@ -62,6 +62,7 @@ const ButtonsContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  padding-top: 1rem;
 `
 
 const calculateTotal = (employers, field) => {
@@ -223,6 +224,13 @@ export class Files extends Component {
             />
           )}
         </StyledList>
+
+        <StyledInfo>
+          <StyledInfoTypography variant="caption">
+            L'envoi final à Pôle Emploi pour procéder à votre actualisation sera
+            possible une fois tous les documents ajoutés
+          </StyledInfoTypography>
+        </StyledInfo>
 
         <ButtonsContainer>
           <Button variant="raised" component={Link} to="/thanks?later">

@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import Warning from '@material-ui/icons/Warning'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -182,7 +183,7 @@ export class Files extends Component {
         <StyledList>{employers.map(this.renderEmployerRow)}</StyledList>
 
         <ButtonsContainer>
-          <Button variant="raised" disabled>
+          <Button variant="raised" component={Link} to="/thanks?later">
             Enregistrer et finir plus tard
           </Button>
           <Button

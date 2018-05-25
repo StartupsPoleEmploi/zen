@@ -1,5 +1,6 @@
 import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
 
 const StyledThanks = styled.div`
@@ -16,15 +17,19 @@ const LandingText = styled(Typography)`
   padding: 5rem 0;
 `
 
-export class Thanks extends Component {
-  render() {
-    return (
-      <StyledThanks>
-        <LandingText variant="headline">Merci !</LandingText>
-        <LandingText variant="title">Vous avez terminé !</LandingText>
-      </StyledThanks>
-    )
-  }
+export const Thanks = ({ location: { search } }) => (
+  <StyledThanks>
+    <LandingText variant="headline">Merci !</LandingText>
+    <LandingText variant="title">
+      {search.includes('later')
+        ? 'Vous pourrez reprendre votre actualisation ultérieurement'
+        : 'Vous avez terminé !'}
+    </LandingText>
+  </StyledThanks>
+)
+
+Thanks.propTypes = {
+  location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
 }
 
 export default Thanks

@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import List from '@material-ui/core/List'
 import Paper from '@material-ui/core/Paper'
@@ -58,6 +59,8 @@ export class Actu extends Component {
     hasSickLeave: null,
     sickLeaveStartDate: null,
     sickLeaveEndDate: null,
+    hasMaternityLeave: null,
+    maternityLeaveStartDate: null,
     hasRetirement: null,
     retirementStartDate: null,
     hasInvalidity: null,
@@ -66,6 +69,17 @@ export class Actu extends Component {
     jobSearchEndDate: null,
     stopJobSearchMotive: null,
     errorMessage: null,
+    isLoading: true,
+  }
+
+  componentDidMount() {
+    superagent
+      .get('/api/declarations?last')
+      .then((res) => res.body)
+      .then((declaration) =>
+        this.setState({ ...declaration, isLoading: false }),
+      )
+      .catch(() => this.setState({ isLoading: false }))
   }
 
   onAnswer = ({ controlName, hasAnsweredYes }) =>
@@ -175,10 +189,21 @@ export class Actu extends Component {
       .then(() => this.props.history.push('/employers'))
   }
 
-  setIsMaternalAssistant = () => this.setState({ isMaternalAssistant: true })
+  setIsMaternalAssistant = () => {
+    store.set('isMaternalAssistant', true)
+    this.setState({ isMaternalAssistant: true })
+  }
 
   render() {
-    const { errorMessage, isMaternalAssistant } = this.state
+    const { errorMessage, isMaternalAssistant, isLoading } = this.state
+
+    if (isLoading)
+      return (
+        <StyledActu>
+          <CircularProgress />
+        </StyledActu>
+      )
+
     if (!isMaternalAssistant) {
       return <MaternalAssistantCheck onValidate={this.setIsMaternalAssistant} />
     }
@@ -192,87 +217,103 @@ export class Actu extends Component {
               <DeclarationQuestion
                 label="Avez-vous travaillé ?"
                 name="hasWorked"
+                value={this.state.hasWorked}
                 onAnswer={this.onAnswer}
               />
               <DeclarationQuestion
                 label="Avez-vous été en formation ?"
                 name="hasTrained"
+                value={this.state.hasTrained}
                 onAnswer={this.onAnswer}
               >
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
                   name="trainingStartDate"
+                  value={this.state.trainingStartDate}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   name="trainingEndDate"
+                  value={this.state.trainingEndDate}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
                 label="Avez-vous été en stage ?"
                 name="hasInternship"
+                value={this.state.hasInternship}
                 onAnswer={this.onAnswer}
               >
                 <DatePicker
-                  name="internshipStartDate"
                   label="Date de début"
                   onSelectDate={this.onSetDate}
+                  name="internshipStartDate"
+                  value={this.state.internshipStartDate}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   name="internshipEndDate"
+                  value={this.state.internshipEndDate}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
                 label="Avez-vous été en arrêt maladie ?"
                 name="hasSickLeave"
+                value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
               >
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
                   name="sickLeaveStartDate"
+                  value={this.state.sickLeaveStartDate}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   name="sickLeaveEndDate"
+                  value={this.state.sickLeaveEndDate}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
                 label="Avez-vous été en congé maternité ?"
                 name="hasMaternityLeave"
+                value={this.state.hasMaternityLeave}
                 onAnswer={this.onAnswer}
               >
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
                   name="maternityLeaveStartDate"
+                  value={this.state.maternityLeaveStartDate}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
                 label="Percevez-vous une nouvelle pension retraite ?"
                 name="hasRetirement"
+                value={this.state.hasRetirement}
                 onAnswer={this.onAnswer}
               >
                 <DatePicker
                   label="Depuis le"
                   onSelectDate={this.onSetDate}
                   name="retirementStartDate"
+                  value={this.state.retirementStartDate}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
                 label="Percevez-vous une nouvelle pension d'invalidité de 2eme ou 3eme catégorie ?"
                 name="hasInvalidity"
+                value={this.state.hasInvalidity}
                 onAnswer={this.onAnswer}
               >
                 <DatePicker
                   label="Depuis le"
                   onSelectDate={this.onSetDate}
                   name="invalidityStartDate"
+                  value={this.state.invalidityStartDate}
                 />
               </DeclarationQuestion>
             </List>
@@ -283,6 +324,7 @@ export class Actu extends Component {
               <DeclarationQuestion
                 label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
                 name="isLookingForJob"
+                value={this.state.isLookingForJob}
                 onAnswer={this.onAnswer}
                 withChildrenOnNo
               >
@@ -290,6 +332,7 @@ export class Actu extends Component {
                   label="Date de fin de recherche"
                   onSelectDate={this.onSetDate}
                   name="jobSearchEndDate"
+                  value={this.state.jobSearchEndDate}
                 />
 
                 <RadioGroup

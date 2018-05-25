@@ -26,6 +26,8 @@ const SubListItem = styled(ListItem)`
   }
 `
 
+const getFormValue = (value) => (value === null ? value : value ? 'yes' : 'no')
+
 export class DeclarationQuestion extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
@@ -33,14 +35,7 @@ export class DeclarationQuestion extends Component {
     withChildrenOnNo: PropTypes.bool,
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = { value: null }
-  }
-
   handleChange = ({ target: { value } }) => {
-    this.setState({ value })
     this.props.onAnswer({
       hasAnsweredYes: value === 'yes',
       controlName: this.props.name,
@@ -48,7 +43,7 @@ export class DeclarationQuestion extends Component {
   }
 
   render() {
-    const { children, label, withChildrenOnNo } = this.props
+    const { children, label, value, withChildrenOnNo } = this.props
     return (
       <Fragment>
         <MainListItem>
@@ -65,7 +60,7 @@ export class DeclarationQuestion extends Component {
                 aria-label="oui ou non"
                 name="yesOrNo"
                 className={classes.group}
-                value={this.state.value}
+                value={getFormValue(value)}
                 onChange={this.handleChange}
               >
                 <FormControlLabel
@@ -82,7 +77,7 @@ export class DeclarationQuestion extends Component {
             </FormControl>
           </ListItemSecondaryAction>
         </MainListItem>
-        {this.state.value === (withChildrenOnNo ? 'no' : 'yes') &&
+        {getFormValue(value) === (withChildrenOnNo ? 'no' : 'yes') &&
           children && <SubListItem>{children}</SubListItem>}
       </Fragment>
     )

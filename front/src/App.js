@@ -63,21 +63,23 @@ class App extends Component {
 
     return (
       <Layout user={user}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepLabel>
-                  {index >= activeStep ? (
-                    label
-                  ) : (
-                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
-                  )}
-                </StepLabel>
-              </Step>
-            )
-          })}
-        </Stepper>
+        {user && (
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label, index) => {
+              return (
+                <Step key={label}>
+                  <StepLabel>
+                    {index >= activeStep ? (
+                      label
+                    ) : (
+                      <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                    )}
+                  </StepLabel>
+                </Step>
+              )
+            })}
+          </Stepper>
+        )}
 
         <Switch>
           <Route

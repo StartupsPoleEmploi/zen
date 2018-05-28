@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(
   session({
-    cookie: { maxAge: 2 * 60 * 60 * 1000 },
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     httpOnly: true,
     resave: false,
     saveUninitialized: false,

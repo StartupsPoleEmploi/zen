@@ -12,6 +12,7 @@ import Actu from './pages/actu/Actu'
 import { Employers } from './pages/actu/Employers'
 import { Files } from './pages/actu/Files'
 import { Thanks } from './pages/actu/Thanks'
+import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 
@@ -111,11 +112,7 @@ class App extends Component {
             path="/thanks"
             render={(props) => <Thanks {...props} />}
           />
-          <Route
-            exact
-            path="/loggedOut"
-            render={() => <div>Merci de vous reconnecter</div>}
-          />
+          <Route exact path="/loggedOut" component={LoggedOut} />
           <Route render={() => <div>404</div>} />
         </Switch>
       </Layout>

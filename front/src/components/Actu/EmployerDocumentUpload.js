@@ -81,7 +81,7 @@ export class EmployerDocumentUpload extends Component {
     } = this.props
 
     const documentToGive = hasEndedThisMonth
-      ? 'attenstation employeur'
+      ? 'attestation employeur'
       : 'bulletin de salaire'
 
     return (
@@ -106,7 +106,7 @@ export class EmployerDocumentUpload extends Component {
                   target="_blank"
                 >
                   <StyledTypography variant="caption">
-                    Voir le {documentToGive}
+                    Voir {documentToGive}
                   </StyledTypography>
                 </StyledA>
                 <StyledFormLabel>

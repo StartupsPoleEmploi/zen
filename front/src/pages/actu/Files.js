@@ -234,9 +234,13 @@ export class Files extends Component {
       (doc) => !!declaration[doc.fieldToCheck],
     )
 
+    const missingAdditionalDocuments = neededAdditionalDocuments.filter(
+      (doc) => !this.state.declaration[doc.name],
+    )
+
     const remainingDocuments =
       employers.reduce((prev, employer) => prev + (employer.file ? 0 : 1), 0) +
-      neededAdditionalDocuments.length
+      missingAdditionalDocuments.length
 
     return (
       <StyledFiles>
@@ -287,7 +291,7 @@ export class Files extends Component {
           </Button>
           <Button
             variant="raised"
-            disabled={remainingDocuments > 0}
+            disabled={missingAdditionalDocuments > 0}
             onClick={this.onSubmit}
           >
             Envoyer à Pôle Emploi

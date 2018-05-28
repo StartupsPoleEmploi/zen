@@ -81,7 +81,7 @@ export class EmployerDocumentUpload extends Component {
     } = this.props
 
     const documentToGive = hasEndedThisMonth
-      ? 'justificatif de travail'
+      ? 'attenstation employeur'
       : 'bulletin de salaire'
 
     return (

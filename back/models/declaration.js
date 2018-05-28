@@ -112,6 +112,10 @@ module.exports = (sequelize, DataTypes) => {
       jobSearchStopMotive: {
         type: DataTypes.STRING,
       },
+      hasFinishedDeclaringEmployers: {
+        defaultValue: false,
+        type: DataTypes.BOOLEAN,
+      },
       isFinished: {
         defaultValue: false,
         type: DataTypes.BOOLEAN,

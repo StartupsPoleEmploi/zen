@@ -1,5 +1,10 @@
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Link, Route, Switch, withRouter } from 'react-router-dom'
+import styled from 'styled-components'
+import superagent from 'superagent'
 
 import PrivateRoute from './components/Generic/PrivateRoute'
 import { getUser } from './lib/user'
@@ -10,23 +15,72 @@ import { Thanks } from './pages/actu/Thanks'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 
+const steps = ['Déclaration', 'Employeurs', 'Documents']
+
+const stepsNumbers = ['/actu', '/employers', '/files']
+
+const StyledLink = styled(Link)`
+  color: #3f51b5;
+  text-decoration: none;
+
+  &:visited {
+    color: #3f51b5;
+  }
+`
+
 class App extends Component {
-  constructor(props) {
-    super(props)
+  state = { declaration: null, user: null, isLoading: true }
 
-    this.state = { user: null, isLoading: true }
-
-    getUser()
-      .then((user) => this.setState({ user, isLoading: false }))
-      .catch((err) => this.setState({ isLoading: false, err }))
+  componentDidMount() {
+    Promise.all([
+      getUser().then((user) => this.setState({ user })),
+      superagent.get('/api/declarations?last').then((res) => res.body),
+    ])
+      .then(([user, declaration]) => {
+        // Redirect the user to the last page he hasn't completed
+        this.setState({ isLoading: false })
+        if (declaration) {
+          if (declaration.hasFinishedDeclaringEmployers) {
+            return this.props.history.push('/files')
+          }
+          return this.props.history.push('/employers')
+        }
+      })
+      .catch(() => {
+        /* no declaration or session is normal */
+        this.setState({ isLoading: false })
+      })
   }
 
   render() {
+    const {
+      location: { pathname },
+    } = this.props
     const { isLoading, user } = this.state
     if (isLoading) return null
 
+    const activeStep = stepsNumbers.indexOf(pathname)
+
     return (
       <Layout user={user}>
+        {user && (
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label, index) => {
+              return (
+                <Step key={label}>
+                  <StepLabel>
+                    {index >= activeStep ? (
+                      label
+                    ) : (
+                      <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                    )}
+                  </StepLabel>
+                </Step>
+              )
+            })}
+          </Stepper>
+        )}
+
         <Switch>
           <Route
             exact
@@ -69,4 +123,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default withRouter(App)

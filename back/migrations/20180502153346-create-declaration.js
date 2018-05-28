@@ -120,6 +120,10 @@ module.exports = {
         jobSearchStopMotive: {
           type: Sequelize.STRING,
         },
+        hasFinishedDeclaringEmployers: {
+          defaultValue: false,
+          type: Sequelize.BOOLEAN,
+        },
         isFinished: {
           defaultValue: false,
           type: Sequelize.BOOLEAN,

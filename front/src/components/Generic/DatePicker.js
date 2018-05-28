@@ -1,5 +1,8 @@
 import 'moment/locale/fr'
 
+import ChevronLeft from '@material-ui/icons/ChevronLeft'
+import ChevronRight from '@material-ui/icons/ChevronRight'
+import Keyboard from '@material-ui/icons/Keyboard'
 import MuiDatePicker from 'material-ui-pickers/DatePicker'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
@@ -37,6 +40,9 @@ export default class DatePicker extends PureComponent {
           format="DD/MM/YYYY"
           onChange={this.handleDateChange}
           value={this.props.value || null}
+          rightArrowIcon={<ChevronRight />}
+          leftArrowIcon={<ChevronLeft />}
+          keyboardIcon={<Keyboard />}
         />
       </MuiPickersUtilsProvider>
     )

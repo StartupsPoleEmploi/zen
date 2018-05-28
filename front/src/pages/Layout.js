@@ -1,9 +1,12 @@
 import AppBar from '@material-ui/core/AppBar'
+import Button from '@material-ui/core/Button'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
+import superagent from 'superagent'
 
 const StyledLayout = styled.div`
   max-width: 80rem;
@@ -18,6 +21,13 @@ const Main = styled.main`
   padding: 5rem 1rem 0 1rem;
 `
 
+const StyledButton = styled(Button)`
+  && {
+    color: #fff;
+    margin-left: 1rem;
+  }
+`
+
 export class Layout extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -26,6 +36,13 @@ export class Layout extends Component {
       lastName: PropTypes.string,
       email: PropTypes.string,
     }),
+  }
+
+  logout = () => {
+    // TODO do not redirect with window.location anymore when we
+    // have a global store.
+    // (This is done so everything is reloaded)
+    superagent.delete('/api/user').then(() => (window.location = '/loggedOut'))
   }
 
   render() {
@@ -39,9 +56,14 @@ export class Layout extends Component {
               La Bonne Actualisation
             </Title>
             {user && (
-              <Typography color="inherit" variant="subheading">
-                {user.firstName} {user.lastName}
-              </Typography>
+              <Fragment>
+                <Typography color="inherit" variant="subheading">
+                  {user.firstName} {user.lastName}
+                </Typography>
+                <StyledButton onClick={this.logout} variant="outlined">
+                  Déconnexion
+                </StyledButton>
+              </Fragment>
             )}
           </Toolbar>
         </AppBar>
@@ -51,4 +73,4 @@ export class Layout extends Component {
   }
 }
 
-export default Layout
+export default withRouter(Layout)

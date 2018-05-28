@@ -291,7 +291,7 @@ export class Files extends Component {
           </Button>
           <Button
             variant="raised"
-            disabled={missingAdditionalDocuments > 0}
+            disabled={missingAdditionalDocuments.length > 0}
             onClick={this.onSubmit}
           >
             Envoyer à Pôle Emploi

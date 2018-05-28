@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import PEConnectLink from '../components/PEConnect/PEConnectLink'
-
 const StyledLayout = styled.div`
   max-width: 80rem;
   margin: auto;
@@ -40,12 +38,10 @@ export class Layout extends Component {
             <Title color="inherit" variant="title">
               La Bonne Actualisation
             </Title>
-            {user ? (
+            {user && (
               <Typography color="inherit" variant="subheading">
                 {user.firstName} {user.lastName}
               </Typography>
-            ) : (
-              <PEConnectLink />
             )}
           </Toolbar>
         </AppBar>

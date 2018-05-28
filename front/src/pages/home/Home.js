@@ -1,9 +1,10 @@
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import LinkButton from '../../components/Generic/LinkButton'
+import PEConnectLink from '../../components/PEConnect/PEConnectLink'
 
 const StyledHome = styled.div`
   margin: auto;
@@ -16,7 +17,11 @@ const StyledHome = styled.div`
 `
 
 const LandingText = styled(Typography)`
-  padding: 5rem 0;
+  padding: 4rem 0;
+`
+
+const StyledTitle = styled(Typography)`
+  padding-bottom: 1rem;
 `
 
 export class Home extends Component {
@@ -33,11 +38,16 @@ export class Home extends Component {
 
     return (
       <StyledHome>
-        <LandingText color="inherit" variant="headline">
-          Il n'a jamais été aussi simple de faire son actualisation
-        </LandingText>
         {!user ? (
-          <Typography variant="title">Connectez-vous pour commencer</Typography>
+          <Fragment>
+            <LandingText color="inherit" variant="headline">
+              Il n'a jamais été aussi simple de faire son actualisation
+            </LandingText>
+            <StyledTitle variant="title">
+              Connectez-vous pour commencer
+            </StyledTitle>
+            <PEConnectLink />
+          </Fragment>
         ) : (
           <LinkButton to="/actu">
             Commencer ma première actualisation

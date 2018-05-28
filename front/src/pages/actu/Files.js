@@ -234,12 +234,9 @@ export class Files extends Component {
       (doc) => !!declaration[doc.fieldToCheck],
     )
 
-    const needsSickLeaveDocument = !!declaration.sickLeaveStartDate
-    const hasSickLeaveDocument = !!declaration.sickLeaveDocument
-
     const remainingDocuments =
       employers.reduce((prev, employer) => prev + (employer.file ? 0 : 1), 0) +
-      (needsSickLeaveDocument && !hasSickLeaveDocument ? 1 : 0)
+      neededAdditionalDocuments.length
 
     return (
       <StyledFiles>

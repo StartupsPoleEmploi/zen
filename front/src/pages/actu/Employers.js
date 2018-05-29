@@ -71,18 +71,24 @@ const getEmployersMapFromFormData = (employers) =>
     ),
   )
 
-const getFieldError = ({ index, name, value }) => {
+const validateField = ({ index, name, value }) => {
   let isValid = !!value
   let error = isValid ? null : 'Champ obligatoire'
+  let sanitizedValue = value
+  if (name === 'employerName') {
+    sanitizedValue = value.trim()
+  }
   if (name === 'workHours' || name === 'salary') {
-    isValid = !!value && !isNaN(value)
-    error = isValid ? null : `Merci d'entrer un nombre entier`
+    let intValue = parseInt(value, 10)
+    isValid = !!value && !isNaN(intValue)
+    sanitizedValue = isValid ? intValue.toString() : value.trim()
+    error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {
     isValid = isBoolean(value)
     error = isValid ? null : 'Merci de répondre à la question'
   }
 
-  return error
+  return { error, sanitizedValue }
 }
 
 // TODO the whole logic of this component needs to be sanitized
@@ -130,9 +136,21 @@ export class Employers extends Component {
       employers: employers.concat({ ...employerTemplate }),
     }))
 
+  // onChange - let the user type whatever he wants, show errors
   onChange = ({ index, name, value }) => {
-    const error = getFieldError({ index, name, value })
+    const { error } = validateField({ index, name, value })
 
+    this.updateValue({ index, name, value, error })
+  }
+
+  // onBlur - sanitize user inputs, show errors
+  onBlur = ({ index, name, value }) => {
+    const { error, sanitizedValue } = validateField({ index, name, value })
+
+    this.updateValue({ index, name, value: sanitizedValue, error })
+  }
+
+  updateValue = ({ index, name, value, error }) =>
     this.setState(({ employers: prevEmployers }) => ({
       employers: prevEmployers.map(
         (employer, key) =>
@@ -140,7 +158,6 @@ export class Employers extends Component {
       ),
       error: null,
     }))
-  }
 
   onRemove = (index) =>
     this.setState(({ employers }) => ({
@@ -167,7 +184,7 @@ export class Employers extends Component {
 
     this.state.employers.forEach((employer, index) =>
       Object.keys(employer).forEach((fieldName) => {
-        const error = getFieldError({
+        const { error } = validateField({
           index,
           name: fieldName,
           value: employer[fieldName].value,
@@ -205,6 +222,7 @@ export class Employers extends Component {
       key={index}
       index={index}
       onChange={this.onChange}
+      onBlur={this.onBlur}
       onRemove={this.onRemove}
     />
   )

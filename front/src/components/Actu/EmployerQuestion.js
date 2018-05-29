@@ -78,12 +78,15 @@ export class EmployerQuestion extends Component {
     onRemove: PropTypes.func.isRequired,
   }
 
-  onChange = ({ target: { name, value } }) =>
-    this.props.onChange({
+  inputHandler = (string) => ({ target: { name, value } }) =>
+    this.props[string]({
       name,
       value: name !== 'hasEndedThisMonth' ? value : value === 'yes',
       index: this.props.index,
     })
+
+  onChange = this.inputHandler('onChange')
+  onBlur = this.inputHandler('onBlur')
 
   onRemove = () => this.props.onRemove(this.props.index)
 
@@ -106,6 +109,7 @@ export class EmployerQuestion extends Component {
               name="employerName"
               value={employerName.value}
               onChange={this.onChange}
+              onBlur={this.onBlur}
               error={!!employerName.error}
               helperText={employerName.error}
             />
@@ -114,6 +118,7 @@ export class EmployerQuestion extends Component {
               name="workHours"
               value={workHours.value}
               onChange={this.onChange}
+              onBlur={this.onBlur}
               error={!!workHours.error}
               helperText={workHours.error}
             />
@@ -122,6 +127,7 @@ export class EmployerQuestion extends Component {
               name="salary"
               value={salary.value}
               onChange={this.onChange}
+              onBlur={this.onBlur}
               error={!!salary.error}
               helperText={salary.error}
             />

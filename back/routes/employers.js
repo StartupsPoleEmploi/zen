@@ -101,8 +101,8 @@ router.post('/', (req, res) => {
         createEmployersPromise,
         Promise.all(dbEmployers.map((employer) => employer.save())),
         deleteEmployersPromise,
-        declaration.save(),
       ])
+        .then(() => declaration.save()) // Save after all modifications are validated
         .then(() =>
           Employer.findAll({
             where: {

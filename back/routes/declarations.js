@@ -71,7 +71,7 @@ router.post('/finish', (req, res) => {
         userId: req.session.user.id,
       },
     }).then((employers) => {
-      if (employers.some(({ file }) => !file))
+      if (employers.length === 0 || employers.some(({ file }) => !file))
         return res.status(400).json('Declaration not complete')
 
       declaration.isFinished = true

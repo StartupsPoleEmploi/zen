@@ -238,7 +238,7 @@ export class Files extends Component {
       (doc) => !this.state.declaration[doc.name],
     )
 
-    const remainingDocuments =
+    const remainingDocumentsNb =
       employers.reduce((prev, employer) => prev + (employer.file ? 0 : 1), 0) +
       missingAdditionalDocuments.length
 
@@ -266,10 +266,10 @@ export class Files extends Component {
         </StyledSummary>
 
         <StyledInfo>
-          {remainingDocuments > 0 && <Warning />}
+          {remainingDocumentsNb > 0 && <Warning />}
           <StyledInfoTypography variant="body2">
-            {remainingDocuments > 0
-              ? `Reste ${remainingDocuments} documents à fournir`
+            {remainingDocumentsNb > 0
+              ? `Reste ${remainingDocumentsNb} documents à fournir`
               : 'Les documents sont prêts à être envoyés'}
           </StyledInfoTypography>
         </StyledInfo>
@@ -291,7 +291,7 @@ export class Files extends Component {
           </Button>
           <Button
             variant="raised"
-            disabled={missingAdditionalDocuments.length > 0}
+            disabled={remainingDocumentsNb > 0}
             onClick={this.onSubmit}
           >
             Envoyer à Pôle Emploi

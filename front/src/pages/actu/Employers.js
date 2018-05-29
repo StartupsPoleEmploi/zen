@@ -214,6 +214,11 @@ export class Employers extends Component {
         isFinished: true,
       })
       .then(() => this.props.history.push('/files'))
+      .catch(() =>
+        this.setState({
+          error: `Une erreur s'est produite, merci de réessayer ultérieurement`,
+        }),
+      )
   }
 
   renderEmployerQuestion = (data, index) => (

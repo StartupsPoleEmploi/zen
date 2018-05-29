@@ -66,8 +66,10 @@ router.post('/finish', (req, res) => {
     if (!declaration) return res.status(404).json('Declaration not found')
 
     Employer.findAll({
-      declarationId: declaration.id,
-      userId: req.session.user.id,
+      where: {
+        declarationId: declaration.id,
+        userId: req.session.user.id,
+      },
     }).then((employers) => {
       if (employers.some(({ file }) => !file))
         return res.status(400).json('Declaration not complete')

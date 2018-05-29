@@ -65,6 +65,14 @@ const ButtonsContainer = styled.div`
   padding-top: 1rem;
 `
 
+const ErrorMessage = styled(Typography)`
+  && {
+    color: red;
+    text-align: center;
+    padding-top: 1rem;
+  }
+`
+
 const calculateTotal = (employers, field) => {
   const total = employers.reduce(
     (total, employer) => parseInt(employer[field], 10) + total,
@@ -110,6 +118,8 @@ export class Files extends Component {
   static propTypes = {}
 
   state = {
+    isLoading: true,
+    error: null,
     declaration: null,
     employers: [],
     ...additionalDocuments.reduce(
@@ -126,7 +136,7 @@ export class Files extends Component {
       superagent.get('/api/employers').then((res) => res.body),
       superagent.get('/api/declarations?last').then((res) => res.body),
     ]).then(([employers, declaration]) =>
-      this.setState({ employers, declaration }),
+      this.setState({ employers, declaration, isLoading: false }),
     )
   }
 
@@ -200,6 +210,7 @@ export class Files extends Component {
       .post('/api/declarations/finish')
       .then((res) => res.body)
       .then((declaration) => this.props.history.push('/thanks'))
+      .catch((error) => this.setState({ error }))
   }
 
   renderAdditionalDocument = (document) => (
@@ -221,14 +232,24 @@ export class Files extends Component {
   )
 
   render() {
-    const { declaration, employers } = this.state
+    const { declaration, employers, error, isLoading } = this.state
 
-    if (!employers.length)
+    if (isLoading) {
       return (
         <StyledFiles>
           <CircularProgress />
         </StyledFiles>
       )
+    }
+
+    if (!employers.length) {
+      return (
+        <StyledFiles>
+          Nous n'avons pu trouver les informations de vos employeurs. Merci de
+          retourner à l'étape précédente pour les remplir.
+        </StyledFiles>
+      )
+    }
 
     const neededAdditionalDocuments = additionalDocuments.filter(
       (doc) => !!declaration[doc.fieldToCheck],
@@ -284,6 +305,12 @@ export class Files extends Component {
             possible une fois tous les documents ajoutés
           </StyledInfoTypography>
         </StyledInfo>
+
+        {error && (
+          <ErrorMessage variant="body2">
+            Une erreur s'est produite, merci de réessayer ultérieurement
+          </ErrorMessage>
+        )}
 
         <ButtonsContainer>
           <Button variant="raised" component={Link} to="/thanks?later">

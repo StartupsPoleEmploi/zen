@@ -5,6 +5,7 @@ WORKDIR /home/front
 CMD if [ "$NODE_ENV" = "production" ]; then \
         npm install --only=production && \
         npm run build && \
+        cp -R build/* dist && \
         tail -f /dev/null; \
     else \
         npm install && \

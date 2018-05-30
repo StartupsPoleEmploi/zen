@@ -13,15 +13,27 @@
 
   <title>La Bonne Actualisation</title>
 
+  <!-- Sentry -->
+  <script src=https://cdn.ravenjs.com/3.24.0/raven.min.js crossorigin=anonymous></script>
+  <script>
+    Raven.config('https://a1844e1ab4404bf9b6b63fe127874cdf@sentry.io/1216087', {
+      release: '0-0-0',
+      environment: '%REACT_APP_SENTRY_ENV%' || '%NODE_ENV%',
+    }).install()
+  </script>
+  <!-- End Sentry -->
+
   <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-58WMQPJ');</script>
+  <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+          'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-58WMQPJ');
+  </script>
   <!-- End Google Tag Manager -->
 
   <!--Start of Zendesk Chat Script-->

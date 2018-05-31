@@ -33,7 +33,8 @@ services:
       - CLIENT_OAUTH_SECRET=${CLIENT_OAUTH_SECRET}
       - COOKIE_SECRET=${COOKIE_SECRET}
       - AUTH_REDIRECT_URI=${AUTH_REDIRECT_URI}
-
+      - SENTRY_ENV=${SENTRY_ENV}
+      - SENTRY_URL=${SENTRY_URL}
 
   front:
     restart: always

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 const { isMatch, startCase, toLower } = require('lodash')
 
-const { User } = require('../models')
+const User = require('../models/User')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 
@@ -97,14 +97,20 @@ router.get('/callback', (req, res, next) => {
         firstName: startCase(toLower(body.given_name)),
         lastName: startCase(toLower(body.family_name)),
       }
-      return User.findOne({ where: { peId: user.peId } }).then((dbUser) => {
-        if (dbUser) {
-          if (isMatch(user, dbUser.get({ plain: true }))) return dbUser
-          return dbUser.update(user)
-        }
+      return User.query()
+        .findOne({ peId: user.peId })
+        .then((dbUser) => {
+          if (dbUser) {
+            return dbUser
+              .$query()
+              .update(user)
+              .returning('*')
+          }
 
-        return User.create(user)
-      })
+          return User.query()
+            .insert(user)
+            .returning('*')
+        })
     })
     .then((user) => {
       req.session.user = user

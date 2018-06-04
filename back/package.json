@@ -3,12 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "db:migrate": "sequelize db:migrate --url $DATABASE_URL",
     "production": "pm2 start --no-daemon bin/www",
     "precise-commits": "precise-commits",
     "precommit": "npm run precise-commits",
     "start": "pm2-dev start bin/www",
-    "sequelize": "sequelize"
+    "knex": "knex"
   },
   "dependencies": {
     "config": "^1.30.0",
@@ -28,8 +27,6 @@
     "pg-hstore": "^2.3.2",
     "pm2": "^2.10.3",
     "raven": "^2.6.2",
-    "sequelize": "^4.37.10",
-    "sequelize-cli": "^4.0.0",
     "simple-oauth2": "^2.0.1",
     "superagent": "^3.8.3"
   },

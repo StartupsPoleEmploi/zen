@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   const declarationData = omit(
     {
       ...req.body,
@@ -46,6 +46,7 @@ router.post('/', (req, res) => {
     return Declaration.query()
       .upsertGraph(declarationData)
       .then(() => res.json(declarationData))
+      .catch(next)
   })
 })
 
@@ -59,13 +60,15 @@ router.get('/files', (req, res, next) => {
     })
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
-      if (!declaration[req.query.name])
+      if (!declaration[req.query.name]) {
         return res.status(404).json('No such file')
+      }
+
       res.sendfile(declaration[req.query.name], { root: uploadDestination })
     })
 })
 
-router.post('/files', upload.single('document'), (req, res) => {
+router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.file) return res.status(400).json('Missing file')
   if (!req.body.declarationId)
     return res.status(400).json('Missing declarationId')
@@ -86,9 +89,10 @@ router.post('/files', upload.single('document'), (req, res) => {
         })
         .then(() => res.json(declaration))
     })
+    .catch(next)
 })
 
-router.post('/finish', (req, res) => {
+router.post('/finish', (req, res, next) => {
   Declaration.query()
     .eager('employers')
     .findOne({
@@ -109,6 +113,7 @@ router.post('/finish', (req, res) => {
         .patch({ isFinished: true })
         .then(() => res.json(declaration))
     })
+    .catch(next)
 })
 
 module.exports = router

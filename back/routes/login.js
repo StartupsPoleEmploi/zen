@@ -116,10 +116,7 @@ router.get('/callback', (req, res, next) => {
       req.session.user = user
       res.redirect('/')
     })
-    .catch((error) => {
-      console.error(error)
-      res.status(500).json('Authentication failed')
-    })
+    .catch(next)
 })
 
 module.exports = router

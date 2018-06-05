@@ -1,7 +1,7 @@
 var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
-var logger = require('morgan')
+const morgan = require('morgan')
 const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
@@ -20,11 +20,11 @@ if (sentryUrl) {
     release: '0-0-0',
     environment: process.env.SENTRY_ENV || process.env.NODE_ENV,
   }).install()
+  // Raven requestHandler must be the first middleware
+  app.use(Raven.requestHandler())
 }
 
-// Raven requestHandler must be the first middleware
-app.use(Raven.requestHandler())
-
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -51,7 +51,13 @@ app.use('/user', userRouter)
 app.use('/declarations', declarationsRouter)
 app.use('/employers', employersRouter)
 
-app.use(Raven.errorHandler())
-app.use((err, req, res, next) => res.status(500).json({ sentry: res.sentry }))
+if (sentryUrl) {
+  app.use(Raven.errorHandler())
+  app.use((err, req, res, next) =>
+    res.status(500).json({
+      sentry: res.sentry,
+    }),
+  )
+}
 
 module.exports = app

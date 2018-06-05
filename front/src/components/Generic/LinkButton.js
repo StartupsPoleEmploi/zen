@@ -4,7 +4,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const LinkButton = ({ children, to, ...props }) => (
-  <Button variant="raised" component={(props) => <Link to={to} {...props} />}>
+  <Button
+    component={(childProps) => <Link to={to} {...childProps} />}
+    variant="raised"
+    {...props}
+  >
     {children}
   </Button>
 )

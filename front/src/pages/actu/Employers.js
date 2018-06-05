@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import { cloneDeep, isBoolean, pick } from 'lodash'
+import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
@@ -54,10 +55,10 @@ const employerTemplate = {
 
 const calculateTotal = (employers, field) => {
   const total = employers.reduce(
-    (total, employer) => parseInt(employer[field].value, 10) + total,
+    (prev, employer) => parseInt(employer[field].value, 10) + prev,
     0,
   )
-  return isNaN(total) || total === 0 ? '—' : total.toString()
+  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
 const getEmployersMapFromFormData = (employers) =>
@@ -71,7 +72,7 @@ const getEmployersMapFromFormData = (employers) =>
     ),
   )
 
-const validateField = ({ index, name, value }) => {
+const validateField = ({ name, value }) => {
   let isValid = !!value
   let error = isValid ? null : 'Champ obligatoire'
   let sanitizedValue = value
@@ -80,7 +81,7 @@ const validateField = ({ index, name, value }) => {
   }
   if (name === 'workHours' || name === 'salary') {
     const intValue = parseInt(value, 10)
-    isValid = !!value && !isNaN(intValue)
+    isValid = !!value && !Number.isNaN(intValue)
     sanitizedValue = isValid ? intValue.toString() : value.trim()
     error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {
@@ -93,7 +94,9 @@ const validateField = ({ index, name, value }) => {
 
 // TODO the whole logic of this component needs to be sanitized
 export class Employers extends Component {
-  static propTypes = {}
+  static propTypes = {
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  }
 
   state = {
     employers: [{ ...employerTemplate }],
@@ -256,10 +259,10 @@ export class Employers extends Component {
 
         <SummaryContainer>
           <Typography type="body2">
-            Heures déclarées : {calculateTotal(employers, 'workHours')}
+            Heures déclarées{' '}: {calculateTotal(employers, 'workHours')}
           </Typography>
           <Typography type="body2">
-            Salaire brut déclaré : {calculateTotal(employers, 'salary')} €
+            Salaire brut déclaré{' '}: {calculateTotal(employers, 'salary')} €
           </Typography>
         </SummaryContainer>
 

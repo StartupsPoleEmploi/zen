@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
 import LinkButton from '../../components/Generic/LinkButton'
@@ -24,38 +24,28 @@ const StyledTitle = styled(Typography)`
   padding-bottom: 1rem;
 `
 
-export class Home extends Component {
-  static propTypes = {
-    user: PropTypes.shape({
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      email: PropTypes.string,
-    }),
-  }
+export const Home = ({ user }) => (
+  <StyledHome>
+    {!user ? (
+      <Fragment>
+        <LandingText color="inherit" variant="headline">
+          Il n'a jamais été aussi simple de faire son actualisation
+        </LandingText>
+        <StyledTitle variant="title">Connectez-vous pour commencer</StyledTitle>
+        <PEConnectLink />
+      </Fragment>
+    ) : (
+      <LinkButton to="/actu">Commencer ma première actualisation</LinkButton>
+    )}
+  </StyledHome>
+)
 
-  render() {
-    const { user } = this.props
-
-    return (
-      <StyledHome>
-        {!user ? (
-          <Fragment>
-            <LandingText color="inherit" variant="headline">
-              Il n'a jamais été aussi simple de faire son actualisation
-            </LandingText>
-            <StyledTitle variant="title">
-              Connectez-vous pour commencer
-            </StyledTitle>
-            <PEConnectLink />
-          </Fragment>
-        ) : (
-          <LinkButton to="/actu">
-            Commencer ma première actualisation
-          </LinkButton>
-        )}
-      </StyledHome>
-    )
-  }
+Home.propTypes = {
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+  }),
 }
 
 export default Home

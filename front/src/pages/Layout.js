@@ -42,7 +42,9 @@ export class Layout extends Component {
     // TODO do not redirect with window.location anymore when we
     // have a global store.
     // (This is done so everything is reloaded)
-    superagent.delete('/api/user').then(() => (window.location = '/loggedOut'))
+    superagent.delete('/api/user').then(() => {
+      window.location = '/loggedOut'
+    })
   }
 
   render() {

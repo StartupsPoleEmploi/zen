@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -12,7 +13,7 @@ const WHITE = '#fff'
  * https://www.emploi-store-dev.fr/portail-developpeur-cms/home/catalogue-des-api/documentation-des-api/utiliser-les-api/authorization-code-flow/bouton-de-connexion.html
  */
 
-const PEConnectLink = styled.a`
+const StyledA = styled.a`
   font-size: 14px;
   font-family: 'Lato', sans-serif !important;
   display: inline-block;
@@ -50,8 +51,8 @@ const PEConnectText = styled.span`
   margin-top: 6px;
 `
 
-export default ({ useDarkVersion = false }) => (
-  <PEConnectLink href="/api/login" useDarkVersion={useDarkVersion}>
+export const PEConnectLink = ({ useDarkVersion = false }) => (
+  <StyledA href="/api/login" useDarkVersion={useDarkVersion}>
     <PEConnectIcon
       src={useDarkVersion ? whiteIcon : blueIcon}
       alt=""
@@ -59,5 +60,11 @@ export default ({ useDarkVersion = false }) => (
       height="31"
     />
     <PEConnectText>Se connecter avec pôle emploi</PEConnectText>
-  </PEConnectLink>
+  </StyledA>
 )
+
+PEConnectLink.propTypes = {
+  useDarkVersion: PropTypes.bool,
+}
+
+export default PEConnectLink

@@ -61,6 +61,7 @@ export class EmployerDocumentUpload extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
     employerName: PropTypes.string.isRequired,
+    error: PropTypes.string,
     file: PropTypes.string,
     isLoading: PropTypes.bool,
     hasEndedThisMonth: PropTypes.bool.isRequired,

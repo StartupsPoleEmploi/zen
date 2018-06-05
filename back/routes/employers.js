@@ -27,8 +27,6 @@ router.post('/', (req, res, next) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(404).json('No data')
 
-  const isEmployersDeclarationFinished = !!req.body.isFinished
-
   Declaration.query()
     .eager('employers')
     .findOne({
@@ -56,7 +54,9 @@ router.post('/', (req, res, next) => {
         declaration.employers.some((employer) => employer.id === id),
       )
 
-      declaration.hasFinishedDeclaringEmployers = true
+      if (req.body.isFinished) {
+        declaration.hasFinishedDeclaringEmployers = true
+      }
       declaration.employers = newEmployers.concat(updatedEmployers)
 
       transaction(Declaration.knex(), (trx) =>

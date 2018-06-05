@@ -1,3 +1,4 @@
+/* eslint-disable */
 exports.up = function(knex) {
   return knex.schema
     .hasTable('Employers')

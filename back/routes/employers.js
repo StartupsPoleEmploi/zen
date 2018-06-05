@@ -1,4 +1,5 @@
 const express = require('express')
+
 const router = express.Router()
 const { transaction } = require('objection')
 
@@ -39,18 +40,18 @@ router.post('/', (req, res, next) => {
 
       const newEmployers = sentEmployers
         .filter((employer) => !employer.id)
-        .map((employer) => ({
-          ...employer,
-          userId: req.session.user.id,
-          declarationId: declaration.id,
-          // Save temp data as much as possible
-          workHours: isNaN(employer.workHours)
-            ? null
-            : parseInt(employer.workHours, 10) || null,
-          salary: isNaN(employer.salary)
-            ? null
-            : parseInt(employer.salary, 10) || null,
-        }))
+        .map((employer) => {
+          const intWorkHours = parseInt(employer.workHours, 10)
+          const intSalary = parseInt(employer.salary, 10)
+          return {
+            ...employer,
+            userId: req.session.user.id,
+            declarationId: declaration.id,
+            // Save temp data as much as possible
+            workHours: Number.isNaN(intWorkHours) ? intWorkHours : null,
+            salary: Number.isNaN(intSalary) ? intWorkHours : null,
+          }
+        })
       const updatedEmployers = sentEmployers.filter(({ id }) =>
         declaration.employers.some((employer) => employer.id === id),
       )
@@ -60,12 +61,12 @@ router.post('/', (req, res, next) => {
 
       transaction(Declaration.knex(), (trx) =>
         declaration.$query(trx).upsertGraph(),
-      ).then((declaration) => res.json(declaration.employers))
+      ).then(() => res.json(declaration.employers))
     })
     .catch(next)
 })
 
-router.get('/files', (req, res, next) => {
+router.get('/files', (req, res) => {
   if (!req.query.employerId) return res.status(400).json('Missing employerId')
   Employer.query()
     .findOne({
@@ -97,7 +98,7 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
         .$query()
         .update()
         .returning('*')
-        .then((employer) => res.json(employer))
+        .then(() => res.json(employer))
     })
     .catch(next)
 })

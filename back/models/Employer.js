@@ -29,7 +29,7 @@ class Employer extends BaseModel {
     return {
       user: {
         relation: BelongsToOneRelation,
-        modelClass: __dirname + '/User',
+        modelClass: `${__dirname}/User`,
         join: {
           from: 'Employers.userId',
           to: 'Users.id',
@@ -37,7 +37,7 @@ class Employer extends BaseModel {
       },
       declaration: {
         relation: BelongsToOneRelation,
-        modelClass: __dirname + '/Declaration',
+        modelClass: `${__dirname}/Declaration`,
         join: {
           from: 'Employers.declarationId',
           to: 'Declarations.id',

@@ -26,7 +26,7 @@ class User extends BaseModel {
     return {
       employers: {
         relation: HasManyRelation,
-        modelClass: __dirname + '/Employer',
+        modelClass: `${__dirname  }/Employer`,
         join: {
           from: 'Users.id',
           to: 'Employers.userId',
@@ -34,7 +34,7 @@ class User extends BaseModel {
       },
       declarations: {
         relation: HasManyRelation,
-        modelClass: __dirname + '/Declaration',
+        modelClass: `${__dirname  }/Declaration`,
         join: {
           from: 'Users.id',
           to: 'Declarations.userId',

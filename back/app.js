@@ -1,6 +1,5 @@
-var express = require('express')
-var path = require('path')
-var cookieParser = require('cookie-parser')
+const express = require('express')
+const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
@@ -8,10 +7,10 @@ const objection = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
 
-var loginRouter = require('./routes/login')
-var userRouter = require('./routes/user')
-var declarationsRouter = require('./routes/declarations')
-var employersRouter = require('./routes/employers')
+const loginRouter = require('./routes/login')
+const userRouter = require('./routes/user')
+const declarationsRouter = require('./routes/declarations')
+const employersRouter = require('./routes/employers')
 
 const { Model } = objection
 
@@ -22,7 +21,7 @@ const knex = Knex({
 })
 Model.knex(knex)
 
-var app = express()
+const app = express()
 
 const sentryUrl = process.env.SENTRY_URL
 
@@ -47,10 +46,10 @@ app.use(
     saveUninitialized: false,
     secure: false, // TODO set to true when in production
     secret: config.cookieSecret,
-    store: new (require('connect-pg-simple')(session))(),
+    store: new (require('connect-pg-simple')(session))(), // eslint-disable-line
   }),
 )
-app.use(function ensureLoggedIn(req, res, next) {
+app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)
     return res.status(401).json('Unauthorized')
 
@@ -64,7 +63,7 @@ app.use('/employers', employersRouter)
 
 if (sentryUrl) {
   app.use(Raven.errorHandler())
-  app.use((err, req, res, next) =>
+  app.use((err, req, res) =>
     res.status(500).json({
       sentry: res.sentry,
     }),

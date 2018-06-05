@@ -1,10 +1,11 @@
 const express = require('express')
+
 const router = express.Router()
 const crypto = require('crypto')
 const superagent = require('superagent')
 const jwt = require('jsonwebtoken')
 const config = require('config')
-const { isMatch, startCase, toLower } = require('lodash')
+const { startCase, toLower } = require('lodash')
 
 const User = require('../models/User')
 
@@ -36,13 +37,7 @@ const tokenConfig = {
   scope: `application_${clientId} api_peconnect-individuv1 openid profile email`,
 }
 
-const authorizationUri = oauth2.authorizationCode.authorizeURL({
-  ...tokenConfig,
-  nonce: crypto.randomBytes(64).toString('hex'),
-  state: crypto.randomBytes(64).toString('hex'),
-})
-
-router.get('/', function(req, res, next) {
+router.get('/', (req, res) => {
   const state = crypto.randomBytes(64).toString('hex')
   const nonce = crypto.randomBytes(64).toString('hex')
 
@@ -58,7 +53,7 @@ router.get('/', function(req, res, next) {
   res.redirect(authorizationUri)
 })
 
-router.get('/callback', (req, res, next) => {
+router.get('/callback', (req, res) => {
   if (req.session.state !== req.query.state)
     return res.status(401).json('Authentication failed')
 

@@ -79,7 +79,7 @@ const validateField = ({ index, name, value }) => {
     sanitizedValue = value.trim()
   }
   if (name === 'workHours' || name === 'salary') {
-    let intValue = parseInt(value, 10)
+    const intValue = parseInt(value, 10)
     isValid = !!value && !isNaN(intValue)
     sanitizedValue = isValid ? intValue.toString() : value.trim()
     error = isValid ? null : `Merci d'entrer un nombre sans virgule`

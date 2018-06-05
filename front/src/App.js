@@ -67,8 +67,7 @@ class App extends Component {
       <Layout user={user}>
         {user && (
           <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label, index) => {
-              return (
+            {steps.map((label, index) => (
                 <Step key={label}>
                   <StepLabel>
                     {index >= activeStep ? (
@@ -78,8 +77,7 @@ class App extends Component {
                     )}
                   </StepLabel>
                 </Step>
-              )
-            })}
+              ))}
           </Stepper>
         )}
 

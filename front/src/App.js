@@ -2,6 +2,7 @@ import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Stepper from '@material-ui/core/Stepper'
 import React, { Component } from 'react'
+import { hot } from 'react-hot-loader'
 import { Link, Route, Switch, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
@@ -120,4 +121,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App)
+export default hot(module)(withRouter(App))

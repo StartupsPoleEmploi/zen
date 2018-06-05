@@ -1,15 +1,26 @@
 var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
-const morgan = require('morgan')
 const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
+const objection = require('objection')
+const Knex = require('knex')
+const morgan = require('morgan')
 
 var loginRouter = require('./routes/login')
 var userRouter = require('./routes/user')
 var declarationsRouter = require('./routes/declarations')
 var employersRouter = require('./routes/employers')
+
+const { Model } = objection
+
+const knex = Knex({
+  client: 'pg',
+  useNullAsDefault: true,
+  connection: process.env.DATABASE_URL,
+})
+Model.knex(knex)
 
 var app = express()
 

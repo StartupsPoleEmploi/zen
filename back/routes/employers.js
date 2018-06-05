@@ -1,28 +1,25 @@
 const express = require('express')
 const router = express.Router()
-const { Op } = require('sequelize')
+const { transaction } = require('objection')
 
 const { upload, uploadDestination } = require('../lib/upload')
-const { Declaration, Employer } = require('../models')
+const Declaration = require('../models/Declaration')
+const Employer = require('../models/Employer')
 
 const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
 
 router.get('/', (req, res) => {
-  Declaration.find({
-    where: {
+  Declaration.query()
+    .eager('employers')
+    .findOne({
       userId: req.session.user.id,
       declaredMonth: currentMonth,
-    },
-  }).then((declaration) => {
-    if (!declaration) throw new Error('Please send declaration first')
+    })
+    .then((declaration) => {
+      if (!declaration) throw new Error('Please send declaration first')
 
-    return Employer.findAll({
-      where: {
-        declarationId: declaration.id,
-      },
-      order: [['id']],
-    }).then((employers) => res.json(employers))
-  })
+      res.json(declaration.employers)
+    })
 })
 
 router.post('/', (req, res) => {
@@ -31,27 +28,15 @@ router.post('/', (req, res) => {
 
   const isEmployersDeclarationFinished = !!req.body.isFinished
 
-  Declaration.find({
-    where: {
+  Declaration.query()
+    .eager('employers')
+    .findOne({
       userId: req.session.user.id,
       declaredMonth: currentMonth,
-    },
-  })
+    })
     .then((declaration) => {
       if (!declaration) throw new Error('Please send declaration first')
 
-      if (isEmployersDeclarationFinished) {
-        // We do not want to revert a "finished" employers declaration
-        declaration.hasFinishedDeclaringEmployers = true
-      }
-
-      return Employer.findAll({
-        where: {
-          declarationId: declaration.id,
-        },
-      }).then((employers) => ({ employers, declaration }))
-    })
-    .then(({ employers: dbEmployers, declaration }) => {
       const newEmployers = sentEmployers
         .filter((employer) => !employer.id)
         .map((employer) => ({
@@ -61,84 +46,62 @@ router.post('/', (req, res) => {
           // Save temp data as much as possible
           workHours: isNaN(employer.workHours)
             ? null
-            : employer.workHours || null,
-          salary: isNaN(employer.salary) ? null : employer.salary || null,
+            : parseInt(employer.workHours, 10) || null,
+          salary: isNaN(employer.salary)
+            ? null
+            : parseInt(employer.salary, 10) || null,
         }))
       const updatedEmployers = sentEmployers.filter(({ id }) =>
-        dbEmployers.some((employer) => employer.id === id),
+        declaration.employers.some((employer) => employer.id === id),
       )
-      const removedEmployersIds = dbEmployers
-        .filter(
-          ({ id }) => !sentEmployers.some((employer) => employer.id === id),
-        )
-        .map((employer) => employer.id)
 
-      updatedEmployers.forEach((updatedEmployer) => {
-        const dbEmployer = dbEmployers.find(
-          ({ id }) => id === updatedEmployer.id,
-        )
-        if (!dbEmployer) return
+      declaration.hasFinishedDeclaringEmployers = true
+      declaration.employers = newEmployers.concat(updatedEmployers)
 
-        Object.assign(dbEmployer, updatedEmployer)
-      })
-
-      const createEmployersPromise =
-        newEmployers.length > 0
-          ? Employer.bulkCreate(newEmployers)
-          : Promise.resolve()
-      const deleteEmployersPromise =
-        removedEmployersIds.length > 0
-          ? Employer.destroy({
-              where: {
-                id: {
-                  [Op.in]: removedEmployersIds,
-                },
-              },
-            })
-          : Promise.resolve()
-
-      Promise.all([
-        createEmployersPromise,
-        Promise.all(dbEmployers.map((employer) => employer.save())),
-        deleteEmployersPromise,
-      ])
-        .then(() => declaration.save()) // Save after all modifications are validated
-        .then(() =>
-          Employer.findAll({
-            where: {
-              declarationId: declaration.id,
-            },
-          }),
-        )
-        .then((employers) => res.json(employers))
+      transaction(Declaration.knex(), (trx) =>
+        declaration.$query(trx).upsertGraph(),
+      ).then((declaration) => res.json(declaration.employers))
     })
 })
 
 router.get('/files', (req, res, next) => {
   if (!req.query.employerId) return res.status(400).json('Missing employerId')
-  Employer.find({
-    where: { id: req.query.employerId, userId: req.session.user.id },
-  }).then((employer) => {
-    if (!employer) return res.status(400).json('No such employer')
-    if (!employer.file) return res.status(404).json('No such file')
-    res.sendfile(employer.file, { root: uploadDestination })
-  })
+  Employer.query()
+    .findOne({
+      id: req.query.employerId,
+      userId: req.session.user.id,
+    })
+    .then((employer) => {
+      if (!employer) return res.status(400).json('No such employer')
+      if (!employer.file) return res.status(404).json('No such file')
+      res.sendfile(employer.file, { root: uploadDestination })
+    })
 })
 
 router.post('/files', upload.single('employerFile'), (req, res, next) => {
   if (!req.file) return res.status(400).json('Missing file')
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
 
-  Employer.find({
-    where: { id: req.body.employerId, userId: req.session.user.id },
-  })
+  Employer.query()
+    .findOne({
+      id: req.body.employerId,
+      userId: req.session.user.id,
+    })
     .then((employer) => {
       if (!employer) return res.status(400).json('No such employer')
 
       employer.file = req.file.filename
-      return employer.save().then(() => res.json(employer))
+
+      return employer
+        .$query()
+        .update()
+        .returning('*')
+        .then((employer) => res.json(employer))
     })
-    .catch(() => res.json(400).json('Error'))
+    .catch((err) => next(err))
 })
 
 module.exports = router
+
+// Make sure the person has the correct id because `upsertGraph` uses the id fields
+// to determine which models need to be updated and which inserted.

@@ -4,10 +4,10 @@ WORKDIR /home/back
 
 CMD if [ "$NODE_ENV" = "production" ]; then \
         npm install --only=production && \
-        npm run db:migrate && \
+        npm run knex migrate:latest && \
         npm run production; \
     else \
         npm install && \
-        npm run db:migrate && \
+        npm run knex migrate:latest && \
         npm start; \
     fi

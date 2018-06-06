@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(404).json('No data')
 
@@ -62,6 +62,7 @@ router.post('/', (req, res) => {
         declaration.$query(trx).upsertGraph(),
       ).then((declaration) => res.json(declaration.employers))
     })
+    .catch(next)
 })
 
 router.get('/files', (req, res, next) => {
@@ -98,7 +99,7 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
         .returning('*')
         .then((employer) => res.json(employer))
     })
-    .catch((err) => next(err))
+    .catch(next)
 })
 
 module.exports = router

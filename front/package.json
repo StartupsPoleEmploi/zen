@@ -107,6 +107,7 @@
     "husky": "^0.14.3",
     "precise-commits": "^1.0.2",
     "prettier": "^1.12.1",
+    "react-hot-loader": "^4.2.0",
     "source-map-explorer": "^1.5.0"
   }
 }

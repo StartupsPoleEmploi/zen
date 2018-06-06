@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
   res.redirect(authorizationUri)
 })
 
-router.get('/callback', (req, res) => {
+router.get('/callback', (req, res, next) => {
   if (req.session.state !== req.query.state)
     return res.status(401).json('Authentication failed')
 

@@ -70,7 +70,7 @@ export class Actu extends Component {
     invalidityStartDate: null,
     isLookingForJob: null,
     jobSearchEndDate: null,
-    stopJobSearchMotive: null,
+    jobSearchStopMotive: null,
     errorMessage: null,
     isLoading: true,
   }
@@ -91,8 +91,8 @@ export class Actu extends Component {
   onSetDate = ({ controlName, date }) =>
     this.setState({ [controlName]: date, errorMessage: null })
 
-  onStopJobSearchMotive = ({ target: { value: stopJobSearchMotive } }) =>
-    this.setState({ stopJobSearchMotive, errorMessage: null })
+  onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
+    this.setState({ jobSearchStopMotive, errorMessage: null })
 
   onSubmit = () => {
     const {
@@ -114,7 +114,7 @@ export class Actu extends Component {
       invalidityStartDate,
       isLookingForJob,
       jobSearchEndDate,
-      stopJobSearchMotive,
+      jobSearchStopMotive,
     } = this.state
     if (
       [
@@ -179,7 +179,7 @@ export class Actu extends Component {
         })
       }
 
-      if (!stopJobSearchMotive) {
+      if (!jobSearchStopMotive) {
         return this.setState({
           errorMessage:
             "Merci d'indiquer pourquoi vous ne recherchez plus d'emploi",
@@ -342,8 +342,8 @@ export class Actu extends Component {
                   row
                   aria-label="motif d'arrêt de recherche d'emploi"
                   name="search"
-                  value={this.state.stopJobSearchMotive}
-                  onChange={this.onStopJobSearchMotive}
+                  value={this.state.jobSearchStopMotive}
+                  onChange={this.onJobSearchStopMotive}
                 >
                   <FormControlLabel
                     value="work"

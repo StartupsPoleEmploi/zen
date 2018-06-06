@@ -60,6 +60,7 @@ app.use('/login', loginRouter)
 app.use('/user', userRouter)
 app.use('/declarations', declarationsRouter)
 app.use('/employers', employersRouter)
+app.use('/ping', (req, res) => res.send('pong'))
 
 if (sentryUrl) {
   app.use(Raven.errorHandler())

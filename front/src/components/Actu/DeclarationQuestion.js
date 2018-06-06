@@ -30,8 +30,11 @@ const getFormValue = (value) => (value === null ? value : value ? 'yes' : 'no')
 
 export class DeclarationQuestion extends Component {
   static propTypes = {
+    children: PropTypes.node,
+    label: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     onAnswer: PropTypes.func.isRequired,
+    value: PropTypes.bool,
     withChildrenOnNo: PropTypes.bool,
   }
 

@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import Warning from '@material-ui/icons/Warning'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -75,10 +76,10 @@ const ErrorMessage = styled(Typography)`
 
 const calculateTotal = (employers, field) => {
   const total = employers.reduce(
-    (total, employer) => parseInt(employer[field], 10) + total,
+    (prev, employer) => parseInt(employer[field], 10) + prev,
     0,
   )
-  return isNaN(total) || total === 0 ? '—' : total.toString()
+  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
 const additionalDocuments = [
@@ -115,7 +116,9 @@ const additionalDocuments = [
 ]
 
 export class Files extends Component {
-  static propTypes = {}
+  static propTypes = {
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  }
 
   state = {
     isLoading: true,
@@ -124,8 +127,8 @@ export class Files extends Component {
     employers: [],
     ...additionalDocuments.reduce(
       (prev, doc) => ({
-        [`isLoading{doc.name}`]: false,
-        [`{doc.name}Error`]: null,
+        [`isLoading${doc.name}`]: false,
+        [`${doc.name}Error`]: null,
       }),
       {},
     ),
@@ -209,7 +212,7 @@ export class Files extends Component {
     superagent
       .post('/api/declarations/finish')
       .then((res) => res.body)
-      .then((declaration) => this.props.history.push('/thanks'))
+      .then(() => this.props.history.push('/thanks'))
       .catch((error) => this.setState({ error }))
   }
 

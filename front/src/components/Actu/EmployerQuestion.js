@@ -74,7 +74,7 @@ export class EmployerQuestion extends Component {
       error: PropTypes.string,
     }),
     index: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired, // eslint-disable-line
     onRemove: PropTypes.func.isRequired,
   }
 

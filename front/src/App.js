@@ -1,6 +1,7 @@
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Stepper from '@material-ui/core/Stepper'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import { Link, Route, Switch, withRouter } from 'react-router-dom'
@@ -31,14 +32,20 @@ const StyledLink = styled(Link)`
 `
 
 class App extends Component {
-  state = { declaration: null, user: null, isLoading: true }
+  static propTypes = {
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
+      .isRequired,
+  }
+
+  state = { user: null, isLoading: true }
 
   componentDidMount() {
     Promise.all([
       getUser().then((user) => this.setState({ user })),
       superagent.get('/api/declarations?last').then((res) => res.body),
     ])
-      .then(([user, declaration]) => {
+      .then(([, declaration]) => {
         // Redirect the user to the last page he hasn't completed
         this.setState({ isLoading: false })
         if (declaration) {
@@ -67,19 +74,17 @@ class App extends Component {
       <Layout user={user}>
         {user && (
           <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label, index) => {
-              return (
-                <Step key={label}>
-                  <StepLabel>
-                    {index >= activeStep ? (
-                      label
-                    ) : (
-                      <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
-                    )}
-                  </StepLabel>
-                </Step>
-              )
-            })}
+            {steps.map((label, index) => (
+              <Step key={label}>
+                <StepLabel>
+                  {index >= activeStep ? (
+                    label
+                  ) : (
+                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                  )}
+                </StepLabel>
+              </Step>
+            ))}
           </Stepper>
         )}
 

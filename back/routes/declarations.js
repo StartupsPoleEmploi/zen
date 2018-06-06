@@ -1,10 +1,11 @@
 const express = require('express')
+
 const router = express.Router()
-const { reduce, omit, pickBy } = require('lodash')
+const { omit } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
-const Employer = require('../models/Employer')
+
 const declaredMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
 
 router.get('/', (req, res) => {
@@ -50,7 +51,7 @@ router.post('/', (req, res, next) => {
   })
 })
 
-router.get('/files', (req, res, next) => {
+router.get('/files', (req, res) => {
   if (!req.query.declarationId || !req.query.name)
     return res.status(400).json('Missing parameters')
   Declaration.query()

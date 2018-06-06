@@ -7,7 +7,7 @@ const uploadDestination =
 const upload = multer({
   storage: multer.diskStorage({
     destination: uploadDestination,
-    filename: function(req, file, cb) {
+    filename(req, file, cb) {
       path.extname(file.originalname)
       cb(
         null,
@@ -17,7 +17,7 @@ const upload = multer({
       )
     },
   }),
-  fileFilter: function(req, file, callback) {
+  fileFilter(req, file, callback) {
     const filetypes = /jpeg|jpg|png|pdf/i
     const mimetype = filetypes.test(file.mimetype)
     const extname = filetypes.test(path.extname(file.originalname))

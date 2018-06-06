@@ -7,6 +7,7 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
 import { isNull } from 'lodash'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import store from 'store2'
@@ -45,7 +46,9 @@ const FinalButtonsContainer = styled.div`
 `
 
 export class Actu extends Component {
-  static propTypes = {}
+  static propTypes = {
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  }
 
   state = {
     isMaternalAssistant: store.get('isMaternalAssistant'),

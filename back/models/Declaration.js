@@ -123,7 +123,7 @@ class Declaration extends BaseModel {
     return {
       user: {
         relation: BelongsToOneRelation,
-        modelClass: __dirname + '/User',
+        modelClass: `${__dirname  }/User`,
         join: {
           from: 'Declarations.userId',
           to: 'Users.id',
@@ -131,7 +131,7 @@ class Declaration extends BaseModel {
       },
       employers: {
         relation: HasManyRelation,
-        modelClass: __dirname + '/Employer',
+        modelClass: `${__dirname  }/Employer`,
         join: {
           from: 'Declarations.id',
           to: 'Employers.declarationId',

@@ -61,6 +61,7 @@ export class AdditionalDocumentUpload extends Component {
     declarationId: PropTypes.number.isRequired,
     error: PropTypes.string,
     file: PropTypes.string,
+    label: PropTypes.string.isRequired,
     name: PropTypes.string,
     isLoading: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,

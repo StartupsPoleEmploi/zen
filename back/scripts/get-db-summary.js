@@ -1,10 +1,12 @@
-const { Declaration, Employer, User } = require('../models')
+/* eslint-disable no-console */
+const Declaration = require('../models/Declaration')
+const User = require('../models/User')
 
 Promise.all([
   User.count(),
   Declaration.count(),
-  Declaration.count({ where: { hasFinishedDeclaringEmployers: true } }),
-  Declaration.count({ where: { isFinished: true } }),
+  Declaration.count({ hasFinishedDeclaringEmployers: true }),
+  Declaration.count({ isFinished: true }),
 ])
   .then(
     ([

@@ -7,13 +7,11 @@ const StyledDiv = styled.div`
   text-align: center;
 `
 
-export const LoggedOut = () => {
-  return (
-    <StyledDiv>
-      <p>Vous avez été déconnecté</p>
-      <LinkButton to="/">Retour à la page d'accueil</LinkButton>
-    </StyledDiv>
-  )
-}
+export const LoggedOut = () => (
+  <StyledDiv>
+    <p>Vous avez été déconnecté</p>
+    <LinkButton to="/">Retour à la page d'accueil</LinkButton>
+  </StyledDiv>
+)
 
 export default LoggedOut

@@ -6,6 +6,7 @@ const Raven = require('raven')
 const objection = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
+const helmet = require('helmet')
 
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
@@ -34,6 +35,7 @@ if (sentryUrl) {
   app.use(Raven.requestHandler())
 }
 
+app.use(helmet())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))

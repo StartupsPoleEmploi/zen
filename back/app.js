@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
-const objection = require('objection')
+const { Model } = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
@@ -12,8 +12,6 @@ const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const employersRouter = require('./routes/employers')
-
-const { Model } = objection
 
 const knex = Knex({
   client: 'pg',

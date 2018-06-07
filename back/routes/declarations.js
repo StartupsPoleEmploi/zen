@@ -6,7 +6,7 @@ const { omit } = require('lodash')
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
 
-const declaredMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
+const declaredMonth = '2018-05-01' // TODO handle other months later
 
 router.get('/', (req, res) => {
   if (!('last' in req.query)) return res.status(400).json('Route not ready')
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
       userId: req.session.user.id,
     })
     .then((declaration) => {
-      if (!declaration) return res.status(400).json('No such declaration')
+      if (!declaration) return res.status(404).json('No such declaration')
       res.json(declaration)
     })
 })

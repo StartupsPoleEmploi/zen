@@ -61,8 +61,11 @@ const addDeclarationWithEmployers = ({ withFile = false }) =>
 describe('declarations routes', () => {
   beforeAll(() => User.query().insert(user))
   afterEach(() =>
-    Promise.all([Declaration.query().truncate(), Employer.query().truncate()]))
-  afterAll(() => User.query().truncate())
+    Promise.all([
+      Declaration.knex().raw('TRUNCATE "Declarations" CASCADE'),
+      Employer.knex().raw('TRUNCATE "Employers" CASCADE'),
+    ]))
+  afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE'))
 
   describe('GET /', () => {
     test('HTTP 400 if no querystring specified', () =>

@@ -1,6 +1,4 @@
-const Knex = require('knex')
+const knex = require('./getKnexTestInstance')
 const knexCleaner = require('knex-cleaner') // eslint-disable-line
 
-const knex = Knex(require('../knexfile').test)
-
-module.exports = () => knexCleaner.clean(knex)
+module.exports = () => knex.migrate.latest().then(() => knexCleaner.clean(knex))

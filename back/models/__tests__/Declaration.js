@@ -21,9 +21,9 @@ describe('Declaration Model', () => {
       .then((savedUser) => {
         user = savedUser
       }))
-  afterAll(() => User.query().truncate())
+  afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE'))
 
-  afterEach(() => Declaration.query().truncate())
+  afterEach(() => Declaration.knex().raw('TRUNCATE "Declarations" CASCADE'))
 
   describe('Validation', () => {
     const validDeclaration = {

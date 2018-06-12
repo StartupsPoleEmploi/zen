@@ -6,13 +6,14 @@
     "production": "pm2 start --no-daemon bin/www",
     "start": "pm2-dev start bin/www",
     "knex": "knex",
-    "test": "knex migrate:latest --env=test && jest"
+    "test": "jest --runInBand --forceExit"
   },
   "jest": {
     "setupFiles": [
       "./tests/setup.js"
     ],
-    "globalSetup": "./tests/globalSetup.js"
+    "globalSetup": "./tests/globalSetup.js",
+    "globalTeardown": "./tests/globalTeardown.js"
   },
   "dependencies": {
     "config": "^1.30.0",

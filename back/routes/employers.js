@@ -9,7 +9,7 @@ const Employer = require('../models/Employer')
 
 const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   Declaration.query()
     .eager('employers')
     .findOne({
@@ -17,15 +17,18 @@ router.get('/', (req, res) => {
       declaredMonth: currentMonth,
     })
     .then((declaration) => {
-      if (!declaration) throw new Error('Please send declaration first')
+      if (!declaration) {
+        return res.status(404).json('No declaration found')
+      }
 
       res.json(declaration.employers)
     })
+    .catch(next)
 })
 
 router.post('/', (req, res, next) => {
   const sentEmployers = req.body.employers || []
-  if (!sentEmployers.length) return res.status(404).json('No data')
+  if (!sentEmployers.length) return res.status(400).json('No data')
 
   Declaration.query()
     .eager('employers')
@@ -34,20 +37,23 @@ router.post('/', (req, res, next) => {
       declaredMonth: currentMonth,
     })
     .then((declaration) => {
-      if (!declaration) throw new Error('Please send declaration first')
+      if (!declaration) {
+        return res.status(400).json('Please send declaration first')
+      }
 
       const newEmployers = sentEmployers
         .filter((employer) => !employer.id)
         .map((employer) => {
           const intWorkHours = parseInt(employer.workHours, 10)
           const intSalary = parseInt(employer.salary, 10)
+
           return {
             ...employer,
             userId: req.session.user.id,
             declarationId: declaration.id,
             // Save temp data as much as possible
-            workHours: Number.isNaN(intWorkHours) ? intWorkHours : null,
-            salary: Number.isNaN(intSalary) ? intWorkHours : null,
+            workHours: !Number.isNaN(intWorkHours) ? intWorkHours : null,
+            salary: !Number.isNaN(intSalary) ? intSalary : null,
           }
         })
       const updatedEmployers = sentEmployers.filter(({ id }) =>

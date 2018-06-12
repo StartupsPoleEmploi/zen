@@ -39,16 +39,17 @@ router.post('/', (req, res, next) => {
       })
     : Promise.resolve()
 
-  declarationFetchPromise.then((declaration) => {
-    if (declaration) {
-      declarationData.id = declaration.id
-    }
+  return declarationFetchPromise
+    .then((declaration) => {
+      if (declaration) {
+        declarationData.id = declaration.id
+      }
 
-    return Declaration.query()
-      .upsertGraph(declarationData)
-      .then(() => res.json(declarationData))
-      .catch(next)
-  })
+      return Declaration.query()
+        .upsertGraph(declarationData)
+        .then(() => res.json(declarationData))
+    })
+    .catch(next)
 })
 
 router.get('/files', (req, res) => {
@@ -109,7 +110,7 @@ router.post('/finish', (req, res, next) => {
       )
         return res.status(400).json('Declaration not complete')
 
-      declaration
+      return declaration
         .$query()
         .patch({ isFinished: true })
         .then(() => res.json(declaration))

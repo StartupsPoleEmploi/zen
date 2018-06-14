@@ -9,6 +9,10 @@ module.exports = {
   },
   rules: {
     'consistent-return': 0, // Often bothering with early returns
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['**/__tests__/*.js', '**/__stories__/*.js'] },
+    ],
     'import/no-named-as-default': 0,
     'import/prefer-default-export': 0,
     'no-nested-ternary': 0,

@@ -10,6 +10,7 @@ services:
       - "db"
     environment:
       - DATABASE_URL=postgres://test-user:test-pass@db:5432/test-db
+      - COOKIE_SECRET=IAmSoSecret
       - SENTRY_ENV=test
 
   front:

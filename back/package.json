@@ -12,6 +12,10 @@
     "setupFiles": [
       "./tests/setup.js"
     ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/config/test.js"
+    ],
     "globalSetup": "./tests/globalSetup.js",
     "globalTeardown": "./tests/globalTeardown.js"
   },

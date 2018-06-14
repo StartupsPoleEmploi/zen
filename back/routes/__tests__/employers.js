@@ -40,21 +40,35 @@ const employer1 = {
 const employer2 = { ...employer1, employerName: 'Jacques' }
 
 const addBasicDeclaration = () =>
-  Declaration.query().insert({ ...validDeclaration, userId: user.id })
+  Declaration.query()
+    .insert({ ...validDeclaration, userId: user.id })
+    .returning('*')
 
 const addDeclarationWithEmployers = () =>
-  Declaration.query().upsertGraph({
-    ...validDeclaration,
-    userId: user.id,
-    employers: [
-      {
-        ...employer1,
-        userId: user.id,
-      },
-    ],
-  })
+  Declaration.query()
+    .upsertGraph({
+      ...validDeclaration,
+      userId: user.id,
+      employers: [
+        {
+          ...employer1,
+          userId: user.id,
+        },
+      ],
+    })
+    .returning('*')
 
-describe.only('employers routes', () => {
+const postEmployerDocument = () =>
+  addDeclarationWithEmployers().then((declaration) =>
+    supertest(app)
+      .post(`/files`)
+      .field('employerId', declaration.employers[0].id)
+      .attach('employerFile', 'tests/mockDocument.pdf')
+      .expect(200)
+      .then((res) => res.body),
+  )
+
+describe('employers routes', () => {
   beforeAll(() =>
     User.query()
       .insert({
@@ -113,5 +127,57 @@ describe.only('employers routes', () => {
           .expect(200)
           .then(({ body }) => expect(body).toMatchObject([employer2])),
       ))
+  })
+
+  describe('GET /files', () => {
+    test('HTTP 400 if no employerId is sent', () =>
+      supertest(app)
+        .get('/files')
+        .expect(400))
+
+    test('HTTP 404 if no employer is found', () =>
+      supertest(app)
+        .get('/files?employerId=666')
+        .expect(404))
+
+    test('HTTP 404 if no file is found', () =>
+      addDeclarationWithEmployers().then(() =>
+        supertest(app)
+          .get('/files?employerId=666')
+          .expect(404),
+      ))
+
+    test('HTTP 200 if a file is found', () =>
+      postEmployerDocument().then((employer) =>
+        supertest(app)
+          .get(`/files?employerId=${employer.id}`)
+          .expect(200),
+      ))
+  })
+
+  describe('POST /files', () => {
+    test('HTTP 400 if no file is sent', () =>
+      supertest(app)
+        .post(`/files`)
+        .field('employerId', 666))
+
+    test('HTTP 400 if no employerId is sent', () =>
+      supertest(app)
+        .post(`/files`)
+        .attach('employerFile', 'tests/mockDocument.pdf'))
+
+    test('HTTP 404 if no employer is found', () =>
+      supertest(app)
+        .post(`/files`)
+        .field('employerId', 666)
+        .attach('employerFile', 'tests/mockDocument.pdf')
+        .expect(404))
+
+    test('HTTP 200 if the file is processed', () => {
+      // HTTP 200 is checked in postEmployerDocument
+      postEmployerDocument().then((employer) =>
+        expect(employer.file).toMatch(/pdf$/),
+      )
+    })
   })
 })

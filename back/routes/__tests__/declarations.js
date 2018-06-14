@@ -34,8 +34,10 @@ const validDeclaration = {
   ...declarationFormData,
 }
 
-const addBasicDeclaration = () =>
-  Declaration.query().insert({ ...validDeclaration, userId: user.id })
+const addBasicDeclaration = (params = {}) =>
+  Declaration.query()
+    .insert({ ...validDeclaration, userId: user.id, ...params })
+    .returning('*')
 
 const addDeclarationWithEmployers = ({ withFile = false }) =>
   Declaration.query().upsertGraph({
@@ -51,6 +53,21 @@ const addDeclarationWithEmployers = ({ withFile = false }) =>
       },
     ],
   })
+
+const postSickLeaveDocument = () =>
+  addBasicDeclaration({
+    hasSickLeave: true,
+    sickLeaveStartDate: new Date(),
+    sickLeaveEndDate: new Date(),
+  }).then((declaration) =>
+    supertest(app)
+      .post(`/files`)
+      .field('declarationId', declaration.id)
+      .field('name', 'sickLeaveDocument')
+      .attach('document', 'tests/mockDocument.pdf')
+      .expect(200)
+      .then((res) => res.body),
+  )
 
 describe('declarations routes', () => {
   beforeAll(() =>
@@ -104,6 +121,48 @@ describe('declarations routes', () => {
         .post('/')
         .send({})
         .expect(400))
+  })
+
+  describe('GET /files', () => {
+    test('HTTP 400 if no declaration id or document name was given', () =>
+      Promise.all([
+        supertest(app)
+          .get('/files')
+          .expect(400),
+        supertest(app)
+          .get('/files?declarationId=1')
+          .expect(400),
+        supertest(app)
+          .get('/files?name=sickLeaveDocument')
+          .expect(400),
+      ]))
+
+    test('HTTP 404 if no declaration was found', () =>
+      supertest(app)
+        .get('/files?name=sickLeaveDocument&declarationId=666')
+        .expect(404))
+
+    test('HTTP 404 if no file was found', () =>
+      addBasicDeclaration().then((declaration) =>
+        supertest(app)
+          .get(`/files?name=sickLeaveDocument&declarationId=${declaration.id}`)
+          .expect(404),
+      ))
+
+    test('HTTP 200 if the file was found', () =>
+      postSickLeaveDocument().then((declaration) =>
+        supertest(app)
+          .get(`/files?name=sickLeaveDocument&declarationId=${declaration.id}`)
+          .expect(200),
+      ))
+  })
+
+  describe('POST /files', () => {
+    test('HTTP 200 if the file was correctly processed', () =>
+      postSickLeaveDocument() // HTTP 200 checked here
+        .then((declaration) =>
+          expect(declaration.sickLeaveDocument).toMatch(/\.pdf$/),
+        ))
   })
 
   describe('POST /finish', () => {

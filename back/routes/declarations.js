@@ -61,12 +61,12 @@ router.get('/files', (req, res) => {
       userId: req.session.user.id,
     })
     .then((declaration) => {
-      if (!declaration) return res.status(400).json('No such declaration')
+      if (!declaration) return res.status(404).json('No such declaration')
       if (!declaration[req.query.name]) {
         return res.status(404).json('No such file')
       }
 
-      res.sendfile(declaration[req.query.name], { root: uploadDestination })
+      res.sendFile(declaration[req.query.name], { root: uploadDestination })
     })
 })
 
@@ -74,7 +74,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.file) return res.status(400).json('Missing file')
   if (!req.body.declarationId)
     return res.status(400).json('Missing declarationId')
-  if (!req.body.name) return res.status(400)
+  if (!req.body.name) return res.status(400).json('Missing document name')
 
   Declaration.query()
     .findOne({

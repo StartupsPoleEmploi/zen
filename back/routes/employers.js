@@ -80,9 +80,9 @@ router.get('/files', (req, res) => {
       userId: req.session.user.id,
     })
     .then((employer) => {
-      if (!employer) return res.status(400).json('No such employer')
+      if (!employer) return res.status(404).json('No such employer')
       if (!employer.file) return res.status(404).json('No such file')
-      res.sendfile(employer.file, { root: uploadDestination })
+      res.sendFile(employer.file, { root: uploadDestination })
     })
 })
 
@@ -96,7 +96,7 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
       userId: req.session.user.id,
     })
     .then((employer) => {
-      if (!employer) return res.status(400).json('No such employer')
+      if (!employer) return res.status(404).json('No such employer')
 
       employer.file = req.file.filename
 
@@ -104,7 +104,7 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
         .$query()
         .update()
         .returning('*')
-        .then(() => res.json(employer))
+        .then((updatedEmployer) => res.json(updatedEmployer))
     })
     .catch(next)
 })

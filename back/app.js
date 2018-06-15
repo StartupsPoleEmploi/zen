@@ -12,6 +12,7 @@ const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const employersRouter = require('./routes/employers')
+const adminRouter = require('./routes/admin')
 
 const knex = Knex({
   client: 'pg',
@@ -51,6 +52,7 @@ app.use(
 )
 
 app.use('/ping', (req, res) => res.send('pong'))
+app.use('/admin', adminRouter)
 
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)

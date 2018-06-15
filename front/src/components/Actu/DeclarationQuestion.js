@@ -9,8 +9,6 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-const classes = {} // FIXME REMOVE ME
-
 const MainListItem = styled(ListItem)`
   && {
     padding-top: 1.5rem;
@@ -52,17 +50,11 @@ export class DeclarationQuestion extends Component {
         <MainListItem>
           <ListItemText primary={label} />
           <ListItemSecondaryAction>
-            <FormControl
-              component="fieldset"
-              required
-              error
-              className={classes.formControl}
-            >
+            <FormControl component="fieldset" required error>
               <RadioGroup
                 row
                 aria-label="oui ou non"
                 name="yesOrNo"
-                className={classes.group}
                 value={getFormValue(value)}
                 onChange={this.handleChange}
               >

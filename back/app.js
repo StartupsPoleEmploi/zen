@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
-const objection = require('objection')
+const { Model } = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
@@ -12,8 +12,6 @@ const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const employersRouter = require('./routes/employers')
-
-const { Model } = objection
 
 const knex = Knex({
   client: 'pg',
@@ -51,6 +49,9 @@ app.use(
     store: new (require('connect-pg-simple')(session))(), // eslint-disable-line
   }),
 )
+
+app.use('/ping', (req, res) => res.send('pong'))
+
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)
     return res.status(401).json('Unauthorized')
@@ -62,7 +63,6 @@ app.use('/login', loginRouter)
 app.use('/user', userRouter)
 app.use('/declarations', declarationsRouter)
 app.use('/employers', employersRouter)
-app.use('/ping', (req, res) => res.send('pong'))
 
 if (sentryUrl) {
   app.use(Raven.errorHandler())

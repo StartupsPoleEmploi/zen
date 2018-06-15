@@ -5,7 +5,19 @@
   "scripts": {
     "production": "pm2 start --no-daemon bin/www",
     "start": "pm2-dev start bin/www",
-    "knex": "knex"
+    "knex": "knex",
+    "test": "jest --runInBand --forceExit"
+  },
+  "jest": {
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/config/test.js"
+    ],
+    "globalSetup": "./tests/globalSetup.js",
+    "globalTeardown": "./tests/globalTeardown.js"
   },
   "dependencies": {
     "config": "^1.30.0",
@@ -29,5 +41,9 @@
     "simple-oauth2": "^2.0.1",
     "superagent": "^3.8.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^23.1.0",
+    "knex-cleaner": "^1.1.4",
+    "supertest": "^3.1.0"
+  }
 }

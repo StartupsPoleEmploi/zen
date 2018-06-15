@@ -1,0 +1,28 @@
+version: '2'
+services:
+  node:
+    build:
+      context: .
+      dockerfile: dockerfile_back
+    volumes:
+     - "./back:/home/back"
+    depends_on:
+      - "db"
+    environment:
+      - DATABASE_URL=postgres://test-user:test-pass@db:5432/test-db
+      - COOKIE_SECRET=IAmSoSecret
+      - SENTRY_ENV=test
+
+  front:
+    build:
+      context: .
+      dockerfile: dockerfile_front
+    volumes:
+     - "./front:/home/front"
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=test-db
+      - POSTGRES_USER=test-user
+      - POSTGRES_PASSWORD=test-pass

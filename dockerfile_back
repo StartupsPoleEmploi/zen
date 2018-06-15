@@ -2,12 +2,14 @@ FROM node:8.11.1
 
 WORKDIR /home/back
 
+COPY package.json /home/back/package.json
+COPY package-lock.json /home/back/package-lock.json
+RUN npm install
+
 CMD if [ "$NODE_ENV" = "production" ]; then \
-        npm install --only=production && \
         npm run knex migrate:latest && \
         npm run production; \
     else \
-        npm install && \
         npm run knex migrate:latest && \
         npm start; \
     fi

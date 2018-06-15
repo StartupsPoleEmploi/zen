@@ -4,19 +4,14 @@ exports.up = function(knex) {
     .hasTable('session')
     .then((exists) => {
       if (exists) return Promise.reject({ done: true })
-      return knex
-        .raw(
-          `CREATE TABLE "session" (
-        "sid" varchar NOT NULL COLLATE "default",
-        "sess" json NOT NULL,
-        "expire" timestamp(6) NOT NULL
-      ) WITH (OIDS=FALSE);`,
-        )
-        .then((created) =>
-          knex.raw(
-            `ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE`,
-          ),
-        )
+      return knex.schema.createTable('session', (table) => {
+        table
+          .string('sid')
+          .notNullable()
+          .primary()
+        table.json('sess').notNullable()
+        table.timestamp('expire').notNullable()
+      })
     })
     .catch((err) => {
       if (err.done) return Promise.resolve()

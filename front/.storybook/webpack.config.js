@@ -12,7 +12,14 @@ module.exports = {
   ],
   module: {
     rules: [
-      // add your custom rules.
+      // for some reason, svg wouldn't load with the default config.
+      {
+        test: /\.svg(\?.*)?$/,
+        loader: require.resolve('file-loader'),
+        query: {
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      },
     ],
   },
-};
+}

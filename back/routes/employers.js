@@ -6,6 +6,7 @@ const { transaction } = require('objection')
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
 const Employer = require('../models/Employer')
+const ActivityLog = require('../models/ActivityLog')
 
 const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
 
@@ -59,14 +60,24 @@ router.post('/', (req, res, next) => {
       const updatedEmployers = sentEmployers.filter(({ id }) =>
         declaration.employers.some((employer) => employer.id === id),
       )
+      declaration.employers = newEmployers.concat(updatedEmployers)
 
+      const shouldLog =
+        req.body.isFinished && !declaration.hasFinishedDeclaringEmployers
       if (req.body.isFinished) {
         declaration.hasFinishedDeclaringEmployers = true
       }
-      declaration.employers = newEmployers.concat(updatedEmployers)
 
       transaction(Declaration.knex(), (trx) =>
-        declaration.$query(trx).upsertGraph(),
+        Promise.all([
+          declaration.$query(trx).upsertGraph(),
+          shouldLog
+            ? ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+              })
+            : Promise.resolve(),
+        ]),
       ).then(() => res.json(declaration.employers))
     })
     .catch(next)

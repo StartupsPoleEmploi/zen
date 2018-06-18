@@ -20,6 +20,7 @@
     "globalTeardown": "./tests/globalTeardown.js"
   },
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "config": "^1.30.0",
     "connect-pg-simple": "^4.2.1",
     "cookie-parser": "~1.4.3",
@@ -28,6 +29,7 @@
     "express": "~4.16.0",
     "express-session": "^1.15.6",
     "helmet": "^3.12.1",
+    "http-auth": "^3.2.3",
     "jsonwebtoken": "^8.2.1",
     "knex": "^0.14.6",
     "lodash": "^4.17.10",

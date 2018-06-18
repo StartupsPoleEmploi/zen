@@ -5,6 +5,7 @@ const { omit } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
+const ActivityLog = require('../models/ActivityLog')
 
 const declaredMonth = '2018-05-01' // TODO handle other months later
 
@@ -23,6 +24,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res, next) => {
+  // TODO change this so the client sends a month, not an id
   const declarationData = omit(
     {
       ...req.body,
@@ -41,13 +43,20 @@ router.post('/', (req, res, next) => {
 
   return declarationFetchPromise
     .then((declaration) => {
+      let activityLogPromise = Promise.resolve()
       if (declaration) {
         declarationData.id = declaration.id
+      } else {
+        activityLogPromise = ActivityLog.query().insert({
+          userId: req.session.user.id,
+          action: ActivityLog.actions.VALIDATE_DECLARATION,
+        })
       }
 
-      return Declaration.query()
-        .upsertGraph(declarationData)
-        .then(() => res.json(declarationData))
+      return Promise.all([
+        Declaration.query().upsertGraphAndFetch(declarationData),
+        activityLogPromise,
+      ]).then(([dbDeclaration]) => res.json(dbDeclaration))
     })
     .catch(next)
 })
@@ -110,10 +119,16 @@ router.post('/finish', (req, res, next) => {
       )
         return res.status(400).json('Declaration not complete')
 
-      return declaration
-        .$query()
-        .patch({ isFinished: true })
-        .then(() => res.json(declaration))
+      return Promise.all([
+        declaration
+          .$query()
+          .patch({ isFinished: true })
+          .returning('*'),
+        ActivityLog.query().insert({
+          userId: req.session.user.id,
+          action: ActivityLog.actions.VALIDATE_FILES,
+        }),
+      ]).then(([savedDeclaration]) => res.json(savedDeclaration))
     })
     .catch(next)
 })

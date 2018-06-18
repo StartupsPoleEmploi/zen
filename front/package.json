@@ -36,6 +36,7 @@
     "react": "^16.3.2",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.3.2",
+    "react-hot-loader": "^4.3.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "resolve": "1.6.0",
@@ -107,7 +108,6 @@
     "@storybook/addon-storyshots": "^3.4.7",
     "@storybook/addons": "^3.4.7",
     "@storybook/react": "^3.4.7",
-    "react-hot-loader": "^4.3.0",
     "react-test-renderer": "^16.4.1",
     "source-map-explorer": "^1.5.0",
     "storybook-host": "^5.0.0"

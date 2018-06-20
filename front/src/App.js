@@ -68,6 +68,10 @@ class App extends Component {
     const { isLoading, user } = this.state
     if (isLoading) return null
 
+    if (pathname === '/') {
+      return <Home user={user} />
+    }
+
     const activeStep = stepsNumbers.indexOf(pathname)
 
     return (
@@ -89,11 +93,6 @@ class App extends Component {
         )}
 
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => <Home {...props} user={user} />}
-          />
           <PrivateRoute
             exact
             isLoggedIn={!!user}

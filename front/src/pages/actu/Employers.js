@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import { cloneDeep, isBoolean, pick } from 'lodash'
+import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
@@ -95,6 +96,7 @@ const validateField = ({ name, value }) => {
 // TODO the whole logic of this component needs to be sanitized
 export class Employers extends Component {
   static propTypes = {
+    activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   }
 
@@ -232,6 +234,7 @@ export class Employers extends Component {
       onChange={this.onChange}
       onBlur={this.onBlur}
       onRemove={this.onRemove}
+      activeMonth={this.props.activeMonth}
     />
   )
 
@@ -248,7 +251,10 @@ export class Employers extends Component {
     return (
       <StyledEmployers>
         <Title variant="title">
-          Pour quels employeurs avez-vous travaillé en Mai 2018 ?
+          Pour quels employeurs avez-vous travaillé en{' '}
+          {moment(this.props.activeMonth).format('MMMM YYYY')}
+          {' '}
+          ?
         </Title>
         <Form>
           {employers.map(this.renderEmployerQuestion)}

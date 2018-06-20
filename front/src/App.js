@@ -1,6 +1,7 @@
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Stepper from '@material-ui/core/Stepper'
+import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
@@ -33,31 +34,41 @@ const StyledLink = styled(Link)`
 
 class App extends Component {
   static propTypes = {
-    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    history: PropTypes.shape({
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
     location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
       .isRequired,
   }
 
-  state = { user: null, isLoading: true }
+  state = { activeMonth: null, error: null, isLoading: true, user: null }
 
   componentDidMount() {
     Promise.all([
       getUser().then((user) => this.setState({ user })),
-      superagent.get('/api/declarations?last').then((res) => res.body),
+      superagent
+        .get('/api/declarations?last')
+        .then((res) => res.body)
+        .catch((err) => {
+          // 404 are the normal status when no declaration was made.
+          if (err.status !== 404) throw err
+        }),
+      superagent.get('/api/declarationMonths?active').then((res) => res.body),
     ])
-      .then(([, declaration]) => {
+      .then(([, declaration, activeMonth]) => {
         // Redirect the user to the last page he hasn't completed
-        this.setState({ isLoading: false })
+        this.setState({ activeMonth, isLoading: false })
         if (declaration) {
           if (declaration.hasFinishedDeclaringEmployers) {
-            return this.props.history.push('/files')
+            return this.props.history.replace('/files')
           }
-          return this.props.history.push('/employers')
+          return this.props.history.replace('/employers')
         }
+        return this.props.history.replace('/')
       })
-      .catch(() => {
-        /* no declaration or session is normal */
-        this.setState({ isLoading: false })
+      .catch((err) => {
+        /* No active month > service is unavailable */
+        this.setState({ isLoading: false, error: err })
       })
   }
 
@@ -65,12 +76,23 @@ class App extends Component {
     const {
       location: { pathname },
     } = this.props
-    const { isLoading, user } = this.state
+    const { activeMonth, error, isLoading, user } = this.state
     if (isLoading) return null
 
     if (pathname === '/') {
       if (!user) return <Home />
       return <Redirect from="/" to="/actu" />
+    }
+
+    if (error || !activeMonth) {
+      return (
+        <Layout user={user}>
+          <Typography>
+            Désolé, le service est actuellement indisponible, merci de réessayer
+            ultérieurement.
+          </Typography>
+        </Layout>
+      )
     }
 
     const activeStep = stepsNumbers.indexOf(pathname)
@@ -96,19 +118,21 @@ class App extends Component {
             exact
             isLoggedIn={!!user}
             path="/actu"
-            render={(props) => <Actu {...props} />}
+            render={(props) => <Actu {...props} activeMonth={activeMonth} />}
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/employers"
-            render={(props) => <Employers {...props} />}
+            render={(props) => (
+              <Employers {...props} activeMonth={activeMonth} />
+            )}
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/files"
-            render={(props) => <Files {...props} />}
+            render={(props) => <Files {...props} activeMonth={activeMonth} />}
           />
           <PrivateRoute
             exact

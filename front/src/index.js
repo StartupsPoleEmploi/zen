@@ -1,11 +1,16 @@
+import 'moment/locale/fr'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import moment from 'moment'
 import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
+
+moment.locale('fr')
 
 const theme = createMuiTheme({
   typography: {

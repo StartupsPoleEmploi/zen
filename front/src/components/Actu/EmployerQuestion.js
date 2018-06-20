@@ -6,6 +6,7 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import TextField from '@material-ui/core/TextField'
 import Clear from '@material-ui/icons/Clear'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
@@ -77,6 +78,7 @@ export class EmployerQuestion extends Component {
     index: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired, // eslint-disable-line
     onRemove: PropTypes.func.isRequired,
+    activeMonth: PropTypes.instanceOf(Date).isRequired,
   }
 
   inputHandler = (string) => ({ target: { name, value } }) =>
@@ -135,7 +137,8 @@ export class EmployerQuestion extends Component {
           </div>
           <StyledFormControl>
             <StyledFormLabel>
-              Ce contrat se termine-t-il en mai ?
+              Ce contrat se termine-t-il en{' '}
+              {moment(this.props.activeMonth).format('MMMM')} ?
               <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
             </StyledFormLabel>
             <RadioGroup

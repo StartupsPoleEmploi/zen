@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import Warning from '@material-ui/icons/Warning'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
@@ -117,6 +118,7 @@ const additionalDocuments = [
 
 export class Files extends Component {
   static propTypes = {
+    activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   }
 
@@ -269,11 +271,15 @@ export class Files extends Component {
     return (
       <StyledFiles>
         <StyledTitle variant="title">
-          Envoi des documents du mois de Mai 2018
+          Envoi des documents du mois de{' '}
+          {moment(this.props.activeMonth).format('MMMM YYYY')}
         </StyledTitle>
         <StyledSummary>
           <StyledSummaryTypography variant="body2">
-            <b>Actualisation du mois de mai</b>
+            <b>
+              Actualisation du mois de{' '}
+              {moment(this.props.activeMonth).format('MMMM')}
+            </b>
           </StyledSummaryTypography>
           <StyledSummaryTypography
             variant="body2"

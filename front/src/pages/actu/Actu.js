@@ -7,6 +7,7 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
 import { isNull } from 'lodash'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
@@ -47,6 +48,7 @@ const FinalButtonsContainer = styled.div`
 
 export class Actu extends Component {
   static propTypes = {
+    activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   }
 
@@ -213,7 +215,10 @@ export class Actu extends Component {
 
     return (
       <StyledActu>
-        <Typography variant="title">Déclarer ma situation de mai</Typography>
+        <Typography variant="title">
+          Déclarer ma situation de{' '}
+          {moment(this.props.activeMonth).format('MMMM')}
+        </Typography>
         <form>
           <StyledPaper>
             <List>

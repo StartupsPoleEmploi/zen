@@ -11,6 +11,7 @@ app.use((req, res, next) => {
   req.session = {
     user,
   }
+  req.activeMonth = new Date('2018-05-01')
 
   next()
 })

@@ -18,14 +18,14 @@ const StyledEmployers = styled.div`
 
 const Title = styled(Typography)`
   text-align: center;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
 `
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
 `
 
 const SummaryContainer = styled.div`
@@ -33,9 +33,9 @@ const SummaryContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   border: 1px solid #9c9c9c;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
   width: 100%;
 `
 

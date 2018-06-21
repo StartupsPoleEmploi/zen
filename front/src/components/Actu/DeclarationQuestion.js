@@ -11,7 +11,7 @@ import styled from 'styled-components'
 
 const MainListItem = styled(ListItem)`
   && {
-    padding-top: 1.5rem;
+    padding-top: 2rem;
   }
 `
 

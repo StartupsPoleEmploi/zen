@@ -20,14 +20,15 @@ const StyledMain = styled.div`
   align-items: center;
   justify-content: space-between;
   border: 1px solid #9c9c9c;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
 `
 
 const StyledTextField = styled(TextField)`
   && {
-    margin-right: 1rem;
+    margin-right: 1.5rem;
+    width: 20rem;
   }
 `
 
@@ -38,19 +39,19 @@ const StyledFormControl = styled(FormControl)`
     align-items: center;
     flex: 0 1 auto;
     border-left: 1px solid #9c9c9c;
-    padding-left: 1rem;
+    padding-left: 1.5rem;
   }
 `
 
 const StyledFormLabel = styled(FormLabel)`
   flex-shrink: 1;
-  margin-right: 1rem;
+  margin-right: 1.5rem;
 `
 
 const StyledClear = styled(Clear)`
   && {
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
     cursor: pointer;
   }
 `

@@ -14,8 +14,8 @@ const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   flex: 1;
-  padding-top: 1rem;
-  width: 20rem;
+  padding-top: 1.5rem;
+  width: 32rem;
 `
 
 export class MaternalAssistantCheck extends Component {

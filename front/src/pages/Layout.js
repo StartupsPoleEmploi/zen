@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import superagent from 'superagent'
 
 const StyledLayout = styled.div`
-  max-width: 80rem;
+  max-width: 128rem;
   margin: auto;
 `
 

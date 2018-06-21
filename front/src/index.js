@@ -24,6 +24,9 @@ const theme = createMuiTheme({
       main: '#78E08F',
       contrastText: '#fff',
     },
+    secondary: {
+      main: '#78E08F',
+    },
   },
   overrides: {
     MuiButton: {

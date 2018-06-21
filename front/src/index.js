@@ -19,6 +19,19 @@ const theme = createMuiTheme({
       'sans-serif',
     ].join(','),
   },
+  palette: {
+    primary: {
+      main: '#78E08F',
+      contrastText: '#fff',
+    },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        textTransform: 'none',
+      },
+    },
+  },
 })
 
 ReactDOM.render(

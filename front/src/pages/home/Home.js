@@ -13,6 +13,8 @@ import step2ToStep3 from './images/step2-to-step3.svg'
 import step2 from './images/step2.svg'
 import step3 from './images/step3.svg'
 
+const GREEN = '#78E08F'
+
 const StyledHome = styled.div`
   display: flex;
   flex-direction: column;
@@ -146,11 +148,11 @@ export const Home = ({ user }) => (
     <Header>
       <HeaderMain>
         <AppTitle>
-          zen<span style={{ color: '#78E08F' }}>.</span>
+          zen<span style={{ color: GREEN }}>.</span>
         </AppTitle>
         <div /* This is a colored rectangle */
           style={{
-            backgroundColor: '#78E08F',
+            backgroundColor: GREEN,
             width: '2rem',
             height: '0.5rem',
             marginTop: '2rem',

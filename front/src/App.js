@@ -4,7 +4,7 @@ import Stepper from '@material-ui/core/Stepper'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
-import { Link, Route, Switch, withRouter } from 'react-router-dom'
+import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -69,28 +69,27 @@ class App extends Component {
     if (isLoading) return null
 
     if (pathname === '/') {
-      return <Home user={user} />
+      if (!user) return <Home />
+      return <Redirect from="/" to="/actu" />
     }
 
     const activeStep = stepsNumbers.indexOf(pathname)
 
     return (
       <Layout user={user}>
-        {user && (
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label, index) => (
-              <Step key={label}>
-                <StepLabel>
-                  {index >= activeStep ? (
-                    label
-                  ) : (
-                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
-                  )}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        )}
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel>
+                {index >= activeStep ? (
+                  label
+                ) : (
+                  <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                )}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
         <Switch>
           <PrivateRoute

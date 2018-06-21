@@ -1,5 +1,4 @@
 import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -143,7 +142,7 @@ const FooterImg = styled.img`
   height: auto;
 `
 
-export const Home = ({ user }) => (
+export const Home = () => (
   <StyledHome>
     <Header>
       <HeaderMain>
@@ -172,8 +171,8 @@ export const Home = ({ user }) => (
             documents sont plus clairs et simplifiés.
           </b>
         </BodyTypography>
-        <BigLinkButton to="/actu" disabled={!user}>
-          {user ? `J'actualise ma situation` : `Connectez-vous pour commencer`}
+        <BigLinkButton to="/api/login" target="_self">
+          J'actualise ma situation
         </BigLinkButton>
         <Caption>
           Propulsé par Pôle Emploi{' '}
@@ -183,7 +182,7 @@ export const Home = ({ user }) => (
         </Caption>
       </HeaderMain>
       <PEConnectLinkContainer>
-        {!user && <PEConnectLink useDarkVersion />}
+        <PEConnectLink useDarkVersion />
       </PEConnectLinkContainer>
     </Header>
 
@@ -221,13 +220,5 @@ export const Home = ({ user }) => (
     </footer>
   </StyledHome>
 )
-
-Home.propTypes = {
-  user: PropTypes.shape({
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    email: PropTypes.string,
-  }),
-}
 
 export default Home

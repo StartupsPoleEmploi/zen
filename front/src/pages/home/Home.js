@@ -8,10 +8,10 @@ import PEConnectLink from '../../components/PEConnect/PEConnectLink'
 import landingBackground from './images/landingBackground.svg'
 import logoPE from './images/logoPE.jpg'
 import step1ToStep2 from './images/step1-to-step2.svg'
-import step1 from './images/step1.jpg'
+import step1 from './images/step1.svg'
 import step2ToStep3 from './images/step2-to-step3.svg'
-import step2 from './images/step2.jpg'
-import step3 from './images/step3.jpg'
+import step2 from './images/step2.svg'
+import step3 from './images/step3.svg'
 
 const StyledHome = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const StyledHome = styled.div`
 `
 
 const Header = styled.header`
-  min-height: 36rem;
+  min-height: 71rem;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -33,11 +33,54 @@ const Header = styled.header`
   background-position: top right;
   background-repeat: no-repeat;
   background-size: contain;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
 `
 
 const HeaderMain = styled.div`
-  max-width: 35rem;
+  max-width: 50rem;
+`
+
+const AppTitle = styled(Typography).attrs({
+  variant: 'display1',
+})`
+  && {
+    color: #000;
+    font-weight: bold;
+  }
+`
+
+const Tagline = styled(Typography).attrs({
+  variant: 'title',
+})`
+  && {
+    font-size: 3.6rem;
+    margin-bottom: 3rem;
+  }
+`
+
+const BodyTypography = styled(Typography).attrs({ variant: 'body1' })`
+  && {
+    font-size: 2rem;
+  }
+`
+
+const BigLinkButton = styled(LinkButton).attrs({ color: 'primary' })`
+  && {
+    width: 100%;
+    max-width: 38.4rem;
+    height: 6.4rem;
+    font-size: 2.2rem;
+  }
+`
+
+const Caption = styled(Typography).attrs({ variant: 'caption' })`
+  && {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 38.4rem;
+    text-align: center;
+    font-size: 1.8rem;
+  }
 `
 
 const PEConnectLinkContainer = styled.div`
@@ -46,8 +89,10 @@ const PEConnectLinkContainer = styled.div`
 
 const StepsContainer = styled.div`
   margin-top: 7.5rem;
+  padding: 0 10rem;
   text-align: center;
-  width: 80rem;
+  max-width: 100rem;
+  width: 100%;
 `
 
 const Step = styled.div`
@@ -57,6 +102,29 @@ const Step = styled.div`
   width: 100%;
 `
 
+const StepTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const StepTitle = styled(Typography).attrs({
+  variant: 'subheading',
+  gutterBottom: true,
+})`
+  && {
+    font-size: 2.8rem;
+    font-weight: bold;
+  }
+`
+
+const StepText = styled(Typography).attrs({ variant: 'body1' })`
+  && {
+    font-size: 2rem;
+    width: 30rem;
+  }
+`
+
 const StepImg = styled.img`
   width: 35rem;
   height: auto;
@@ -64,7 +132,6 @@ const StepImg = styled.img`
 
 const IntermediateImg = styled.img`
   margin-bottom: -5rem;
-  position: relative;
 `
 
 const FooterImg = styled.img`
@@ -78,10 +145,10 @@ export const Home = ({ user }) => (
   <StyledHome>
     <Header>
       <HeaderMain>
-        <Typography variant="display1">
+        <AppTitle>
           zen<span style={{ color: '#78E08F' }}>.</span>
-        </Typography>
-        <div
+        </AppTitle>
+        <div /* This is a colored rectangle */
           style={{
             backgroundColor: '#78E08F',
             width: '2rem',
@@ -90,71 +157,63 @@ export const Home = ({ user }) => (
             marginBottom: '2rem',
           }}
         />
-        <Typography variant="title" style={{ marginTop: '3rem' }}>
+        <Tagline>
           Actualisez-vous<br />en toute simplicité
-        </Typography>
-        <Typography style={{ marginTop: '3rem' }}>
+        </Tagline>
+        <BodyTypography>
           Vous êtes multi-employeur ?<br />
           L’actualisation n’est pas claire ou compliquée{' '}?
-        </Typography>
-        <Typography style={{ marginTop: '3rem', marginBottom: '3rem' }}>
+        </BodyTypography>
+        <BodyTypography style={{ marginTop: '3rem', marginBottom: '6rem' }}>
           <b>
             Avec Zen la mise à jour de votre situation et l’envoi de vos
             documents sont plus clairs et simplifiés.
           </b>
-        </Typography>
-        <LinkButton to="/actu" disabled={!user} color="primary">
+        </BodyTypography>
+        <BigLinkButton to="/actu" disabled={!user}>
           {user ? `J'actualise ma situation` : `Connectez-vous pour commencer`}
-        </LinkButton>
-        <Typography variant="caption" style={{ marginTop: '2rem' }}>
+        </BigLinkButton>
+        <Caption>
           Propulsé par Pôle Emploi{' '}
           <span role="img" aria-label="Fusée">
             🚀
           </span>
-        </Typography>
+        </Caption>
       </HeaderMain>
       <PEConnectLinkContainer>
         {!user && <PEConnectLink useDarkVersion />}
       </PEConnectLinkContainer>
     </Header>
+
     <StepsContainer>
-      <Typography variant="title">Seulement 3 étapes !</Typography>
+      <Tagline>Seulement 3 étapes !</Tagline>
       <Step>
         <StepImg src={step1} alt="Étape 1" />
-        <div>
-          <Typography variant="title" gutterBottom>
-            Mise à jour de ma situation
-          </Typography>
-          <Typography style={{ width: '30rem' }}>
-            J’actualise ma situation en fonction de chaque employeur.!
-          </Typography>
-        </div>
+        <StepTextContainer>
+          <StepTitle>Mise à jour de ma situation</StepTitle>
+          <StepText>
+            J’actualise ma situation en fonction de chaque employeur.
+          </StepText>
+        </StepTextContainer>
       </Step>
       <IntermediateImg src={step1ToStep2} alt="" />
       <Step>
-        <div>
-          <Typography variant="title" gutterBottom>
-            Envoi simple et rapide
-          </Typography>
-          <Typography style={{ width: '30rem' }}>
-            On me dit les documents que je dois envoyer.
-          </Typography>
-        </div>
+        <StepTextContainer>
+          <StepTitle>Envoi simple et rapide</StepTitle>
+          <StepText>On me dit les documents que je dois envoyer.</StepText>
+        </StepTextContainer>
         <StepImg src={step2} alt="Étape 2" />
       </Step>
       <IntermediateImg src={step2ToStep3} alt="" />
       <Step>
         <StepImg src={step3} alt="Étape 3" />
-        <div>
-          <Typography variant="title" gutterBottom>
-            Indemnisation sans erreur
-          </Typography>
-          <Typography style={{ width: '30rem' }}>
-            Je suis payé le bon montant, au bon moment.
-          </Typography>
-        </div>
+        <StepTextContainer>
+          <StepTitle>Indemnisation sans erreur</StepTitle>
+          <StepText>Je suis payé le bon montant, au bon moment.</StepText>
+        </StepTextContainer>
       </Step>
     </StepsContainer>
+
     <footer>
       <FooterImg src={logoPE} alt="" />
     </footer>

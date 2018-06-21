@@ -16,7 +16,7 @@ import styled from 'styled-components'
 
 const StyledListItem = styled(ListItem)`
   && {
-    padding-top: 1.5rem;
+    padding-top: 2rem;
   }
 `
 
@@ -24,8 +24,8 @@ const StyledFormLabel = styled(FormLabel)`
   && {
     display: flex;
     background-color: #f5f5f5;
-    border-radius: 0.5rem;
-    padding: 0 0.5rem;
+    border-radius: 1rem;
+    padding: 0 1rem;
     align-items: center;
   }
 `
@@ -49,7 +49,7 @@ const ErrorTypography = styled(Typography)`
 
 const StyledTypography = styled(Typography)`
   && {
-    padding-right: 0.5rem;
+    padding-right: 1rem;
   }
 `
 

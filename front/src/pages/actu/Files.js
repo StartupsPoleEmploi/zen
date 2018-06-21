@@ -17,13 +17,13 @@ const StyledFiles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 55rem;
+  width: 88rem;
   margin: auto;
 `
 
 const StyledTitle = styled(Typography)`
   && {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 `
 
@@ -31,11 +31,11 @@ const StyledSummary = styled.div`
   display: flex;
   justify-content: space-between;
   border: 1px solid #d7d7d7;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   background-color: #fbfbfb;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 `
 
 const StyledSummaryTypography = styled(Typography)`
@@ -48,12 +48,12 @@ const StyledInfo = styled.div`
 `
 
 const StyledInfoTypography = styled(Typography)`
-  padding-left: 0.5rem;
+  padding-left: 1rem;
 `
 
 const StyledList = styled(List)`
   && {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     width: 100%;
   }
 `
@@ -63,14 +63,14 @@ const ButtonsContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
 `
 
 const ErrorMessage = styled(Typography)`
   && {
     color: red;
     text-align: center;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
   }
 `
 
@@ -320,6 +320,7 @@ export class Files extends Component {
             Enregistrer et finir plus tard
           </Button>
           <Button
+            color="primary"
             variant="raised"
             disabled={remainingDocumentsNb > 0}
             onClick={this.onSubmit}

@@ -4,7 +4,7 @@ import Stepper from '@material-ui/core/Stepper'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
-import { Link, Route, Switch, withRouter } from 'react-router-dom'
+import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -23,11 +23,11 @@ const steps = ['Déclaration', 'Employeurs', 'Documents']
 const stepsNumbers = ['/actu', '/employers', '/files']
 
 const StyledLink = styled(Link)`
-  color: #3f51b5;
+  color: #7cdd91;
   text-decoration: none;
 
   &:visited {
-    color: #3f51b5;
+    color: #7cdd91;
   }
 `
 
@@ -68,32 +68,30 @@ class App extends Component {
     const { isLoading, user } = this.state
     if (isLoading) return null
 
+    if (pathname === '/') {
+      if (!user) return <Home />
+      return <Redirect from="/" to="/actu" />
+    }
+
     const activeStep = stepsNumbers.indexOf(pathname)
 
     return (
       <Layout user={user}>
-        {user && (
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label, index) => (
-              <Step key={label}>
-                <StepLabel>
-                  {index >= activeStep ? (
-                    label
-                  ) : (
-                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
-                  )}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        )}
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel>
+                {index >= activeStep ? (
+                  label
+                ) : (
+                  <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                )}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => <Home {...props} user={user} />}
-          />
           <PrivateRoute
             exact
             isLoggedIn={!!user}

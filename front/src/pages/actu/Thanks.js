@@ -10,11 +10,11 @@ const StyledThanks = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-width: 30rem;
+  max-width: 48rem;
 `
 
 const LandingText = styled(Typography)`
-  padding: 5rem 0;
+  padding: 8rem 0;
 `
 
 export const Thanks = ({ location: { search } }) => (

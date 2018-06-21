@@ -25,7 +25,7 @@ const StyledActu = styled.div`
 `
 
 const StyledPaper = styled(Paper)`
-  width: 50rem;
+  width: 80rem;
   margin: 1rem auto 0;
 `
 
@@ -33,16 +33,16 @@ const ErrorMessage = styled(Typography)`
   && {
     color: red;
     text-align: center;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
   }
 `
 
 const FinalButtonsContainer = styled.div`
   margin: auto;
-  width: 20rem;
+  width: 32rem;
   display: flex;
   justify-content: space-around;
-  padding-top: 2rem;
+  padding-top: 3rem;
 `
 
 export class Actu extends Component {
@@ -370,7 +370,7 @@ export class Actu extends Component {
           )}
 
           <FinalButtonsContainer>
-            <Button onClick={this.onSubmit} variant="raised">
+            <Button onClick={this.onSubmit} variant="raised" color="primary">
               Suivant
             </Button>
           </FinalButtonsContainer>

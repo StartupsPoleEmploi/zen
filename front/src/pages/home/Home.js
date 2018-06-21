@@ -12,7 +12,7 @@ import step2ToStep3 from './images/step2-to-step3.svg'
 import step2 from './images/step2.svg'
 import step3 from './images/step3.svg'
 
-const GREEN = '#78E08F'
+const GREEN = '#7cdd91'
 
 const StyledHome = styled.div`
   display: flex;

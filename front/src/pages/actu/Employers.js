@@ -272,7 +272,7 @@ export class Employers extends Component {
           <Button variant="raised" onClick={this.onSave}>
             Enregistrer et finir plus tard
           </Button>
-          <Button variant="raised" onClick={this.onSubmit}>
+          <Button variant="raised" onClick={this.onSubmit} color="primary">
             Envoyer mon actualisation
           </Button>
         </ButtonsContainer>

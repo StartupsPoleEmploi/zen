@@ -320,6 +320,7 @@ export class Files extends Component {
             Enregistrer et finir plus tard
           </Button>
           <Button
+            color="primary"
             variant="raised"
             disabled={remainingDocumentsNb > 0}
             onClick={this.onSubmit}

@@ -21,11 +21,11 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#78E08F',
+      main: '#7cdd91',
       contrastText: '#fff',
     },
     secondary: {
-      main: '#78E08F',
+      main: '#7cdd91',
     },
   },
   overrides: {

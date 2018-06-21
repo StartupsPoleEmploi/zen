@@ -370,7 +370,7 @@ export class Actu extends Component {
           )}
 
           <FinalButtonsContainer>
-            <Button onClick={this.onSubmit} variant="raised">
+            <Button onClick={this.onSubmit} variant="raised" color="primary">
               Suivant
             </Button>
           </FinalButtonsContainer>

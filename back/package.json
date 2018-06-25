@@ -27,6 +27,7 @@
     "date-fns": "^1.29.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-easy-zip": "^1.1.4",
     "express-session": "^1.15.6",
     "helmet": "^3.12.1",
     "http-auth": "^3.2.3",

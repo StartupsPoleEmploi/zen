@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 
   DeclarationMonth.query()
     .where('endDate', '>', new Date())
-    .andWhere('startDate', '<', 'now')
+    .andWhere('startDate', '<=', 'now')
     .first()
     .then((activeMonth) => {
       value = activeMonth

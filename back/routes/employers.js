@@ -8,14 +8,12 @@ const Declaration = require('../models/Declaration')
 const Employer = require('../models/Employer')
 const ActivityLog = require('../models/ActivityLog')
 
-const currentMonth = new Date('2018-05-01T00:00:00.000Z') // TODO handle other months later
-
 router.get('/', (req, res, next) => {
   Declaration.query()
     .eager('employers')
     .findOne({
       userId: req.session.user.id,
-      declaredMonth: currentMonth,
+      monthId: req.activeMonth.id,
     })
     .then((declaration) => {
       if (!declaration) {
@@ -35,7 +33,7 @@ router.post('/', (req, res, next) => {
     .eager('employers')
     .findOne({
       userId: req.session.user.id,
-      declaredMonth: currentMonth,
+      monthId: req.activeMonth.id,
     })
     .then((declaration) => {
       if (!declaration) {

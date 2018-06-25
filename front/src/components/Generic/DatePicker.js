@@ -1,5 +1,3 @@
-import 'moment/locale/fr'
-
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import Keyboard from '@material-ui/icons/Keyboard'
@@ -16,8 +14,6 @@ const StyledMuiDatePicker = styled(MuiDatePicker)`
     padding-right: 1rem;
   }
 `
-
-moment.locale('fr')
 
 export default class DatePicker extends PureComponent {
   static propTypes = {

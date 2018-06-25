@@ -8,9 +8,12 @@ const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
 
+const activeMonthMiddleware = require('./lib/activeMonthMiddleware')
+
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
+const declarationMonthsRouter = require('./routes/declarationMonths')
 const employersRouter = require('./routes/employers')
 const adminRouter = require('./routes/admin')
 
@@ -63,7 +66,11 @@ app.use((req, res, next) => {
 
 app.use('/login', loginRouter)
 app.use('/user', userRouter)
+
+app.use(activeMonthMiddleware)
+
 app.use('/declarations', declarationsRouter)
+app.use('/declarationMonths', declarationMonthsRouter)
 app.use('/employers', employersRouter)
 
 if (sentryUrl) {

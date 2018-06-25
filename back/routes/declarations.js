@@ -7,14 +7,12 @@ const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
 const ActivityLog = require('../models/ActivityLog')
 
-const declaredMonth = '2018-05-01' // TODO handle other months later
-
 router.get('/', (req, res) => {
   if (!('last' in req.query)) return res.status(400).json('Route not ready')
 
   Declaration.query()
     .findOne({
-      declaredMonth,
+      monthId: req.activeMonth.id,
       userId: req.session.user.id,
     })
     .then((declaration) => {
@@ -29,7 +27,7 @@ router.post('/', (req, res, next) => {
     {
       ...req.body,
       userId: req.session.user.id,
-      declaredMonth,
+      monthId: req.activeMonth.id,
     },
     'id',
   ) // prevent malicious overriding of other user declaration
@@ -107,7 +105,7 @@ router.post('/finish', (req, res, next) => {
   Declaration.query()
     .eager('employers')
     .findOne({
-      declaredMonth,
+      monthId: req.activeMonth.id,
       userId: req.session.user.id,
     })
     .then((declaration) => {

@@ -2,9 +2,12 @@ const express = require('express')
 const employersRouter = require('../employers')
 const supertest = require('supertest')
 const Declaration = require('../../models/Declaration')
+const DeclarationMonth = require('../../models/DeclarationMonth')
 const User = require('../../models/User')
 
 let user
+
+const getActiveMonth = () => DeclarationMonth.query().first()
 
 const app = express()
 app.use((req, res, next) => {
@@ -12,7 +15,10 @@ app.use((req, res, next) => {
     user,
   }
 
-  next()
+  getActiveMonth().then((month) => {
+    req.activeMonth = month
+    next()
+  })
 })
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -28,7 +34,6 @@ const validDeclaration = {
   hasInvalidity: false,
   isLookingForJob: true,
   userId: 1,
-  declaredMonth: '2018-05-01',
 }
 
 const employer1 = {
@@ -40,23 +45,32 @@ const employer1 = {
 const employer2 = { ...employer1, employerName: 'Jacques' }
 
 const addBasicDeclaration = () =>
-  Declaration.query()
-    .insert({ ...validDeclaration, userId: user.id })
-    .returning('*')
+  getActiveMonth().then((activeMonth) =>
+    Declaration.query()
+      .insert({
+        ...validDeclaration,
+        userId: user.id,
+        monthId: activeMonth.id,
+      })
+      .returning('*'),
+  )
 
 const addDeclarationWithEmployers = () =>
-  Declaration.query()
-    .upsertGraph({
-      ...validDeclaration,
-      userId: user.id,
-      employers: [
-        {
-          ...employer1,
-          userId: user.id,
-        },
-      ],
-    })
-    .returning('*')
+  getActiveMonth().then((activeMonth) =>
+    Declaration.query()
+      .upsertGraph({
+        ...validDeclaration,
+        userId: user.id,
+        employers: [
+          {
+            ...employer1,
+            userId: user.id,
+          },
+        ],
+        monthId: activeMonth.id,
+      })
+      .returning('*'),
+  )
 
 const postEmployerDocument = () =>
   addDeclarationWithEmployers().then((declaration) =>

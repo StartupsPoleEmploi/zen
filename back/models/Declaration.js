@@ -65,7 +65,6 @@ class Declaration extends BaseModel {
       type: 'object',
       required: [
         'userId',
-        'declaredMonth',
         'hasWorked',
         'hasTrained',
         'hasInternship',
@@ -80,7 +79,7 @@ class Declaration extends BaseModel {
       properties: {
         id: { type: 'integer' },
         userId: { type: 'integer' },
-        declaredMonth: { type: ['string', 'object', 'null'] },
+        monthId: { type: ['integer'] },
         hasWorked: { type: 'boolean' },
         hasTrained: { type: 'boolean' },
         trainingStartDate: { type: ['string', 'object', 'null'] },
@@ -123,7 +122,7 @@ class Declaration extends BaseModel {
     return {
       user: {
         relation: BelongsToOneRelation,
-        modelClass: `${__dirname  }/User`,
+        modelClass: `${__dirname}/User`,
         join: {
           from: 'Declarations.userId',
           to: 'Users.id',
@@ -131,10 +130,18 @@ class Declaration extends BaseModel {
       },
       employers: {
         relation: HasManyRelation,
-        modelClass: `${__dirname  }/Employer`,
+        modelClass: `${__dirname}/Employer`,
         join: {
           from: 'Declarations.id',
           to: 'Employers.declarationId',
+        },
+      },
+      declarationMonth: {
+        relation: BelongsToOneRelation,
+        modelClass: `${__dirname}/DeclarationMonth`,
+        join: {
+          from: 'Declarations.monthId',
+          to: 'declaration_months.id',
         },
       },
     }

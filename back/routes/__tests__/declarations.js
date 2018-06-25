@@ -2,18 +2,23 @@ const express = require('express')
 const declarationsRouter = require('../declarations')
 const supertest = require('supertest')
 const Declaration = require('../../models/Declaration')
+const DeclarationMonth = require('../../models/DeclarationMonth')
 const User = require('../../models/User')
 
 let user
+
+const getActiveMonth = () => DeclarationMonth.query().first()
 
 const app = express()
 app.use((req, res, next) => {
   req.session = {
     user,
   }
-  req.activeMonth = new Date('2018-05-01')
 
-  next()
+  getActiveMonth().then((month) => {
+    req.activeMonth = month
+    next()
+  })
 })
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -30,30 +35,35 @@ const declarationFormData = {
   isLookingForJob: true,
 }
 
-const validDeclaration = {
-  declaredMonth: '2018-05-01',
-  ...declarationFormData,
-}
-
 const addBasicDeclaration = (params = {}) =>
-  Declaration.query()
-    .insert({ ...validDeclaration, userId: user.id, ...params })
-    .returning('*')
+  getActiveMonth().then((activeMonth) =>
+    Declaration.query()
+      .insert({
+        ...declarationFormData,
+        userId: user.id,
+        monthId: activeMonth.id,
+        ...params,
+      })
+      .returning('*'),
+  )
 
 const addDeclarationWithEmployers = ({ withFile = false }) =>
-  Declaration.query().upsertGraph({
-    ...validDeclaration,
-    userId: user.id,
-    employers: [
-      {
-        userId: user.id,
-        employerName: 'Paul',
-        workHours: 20,
-        salary: 200,
-        file: withFile ? 'file.pdf' : null,
-      },
-    ],
-  })
+  getActiveMonth().then((activeMonth) =>
+    Declaration.query().upsertGraph({
+      ...declarationFormData,
+      userId: user.id,
+      employers: [
+        {
+          userId: user.id,
+          employerName: 'Paul',
+          workHours: 20,
+          salary: 200,
+          file: withFile ? 'file.pdf' : null,
+        },
+      ],
+      monthId: activeMonth.id,
+    }),
+  )
 
 const postSickLeaveDocument = () =>
   addBasicDeclaration({

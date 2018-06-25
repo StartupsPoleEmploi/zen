@@ -41,55 +41,71 @@ class App extends Component {
       .isRequired,
   }
 
-  state = { activeMonth: null, error: null, isLoading: true, user: null }
+  state = { activeMonth: null, err: null, isLoading: true, user: null }
 
   componentDidMount() {
-    Promise.all([
-      getUser().then((user) => this.setState({ user })),
-      superagent
-        .get('/api/declarations?last')
-        .then((res) => res.body)
-        .catch((err) => {
-          // 404 are the normal status when no declaration was made.
-          if (err.status !== 404) throw err
-        }),
-      superagent.get('/api/declarationMonths?active').then((res) => res.body),
-    ])
-      .then(([, declaration, activeMonth]) => {
-        // Redirect the user to the last page he hasn't completed
-        this.setState({ activeMonth, isLoading: false })
-        if (declaration) {
-          if (declaration.hasFinishedDeclaringEmployers) {
-            return this.props.history.replace('/files')
+    getUser()
+      .then((user) => {
+        this.setState({ user })
+
+        if (!user) return this.setState({ isLoading: false })
+
+        return Promise.all([
+          superagent
+            .get('/api/declarations?last')
+            .then((res) => res.body)
+            .catch((err) => {
+              // 404 are the normal status when no declaration was made.
+              if (err.status !== 404) throw err
+            }),
+          superagent
+            .get('/api/declarationMonths?active')
+            .then((res) => res.body),
+        ]).then(([declaration, activeMonth]) => {
+          // Redirect the user to the last page he hasn't completed
+          this.setState({ activeMonth, isLoading: false })
+          if (declaration) {
+            if (declaration.hasFinishedDeclaringEmployers) {
+              return this.props.history.replace('/files')
+            }
+            return this.props.history.replace('/employers')
           }
-          return this.props.history.replace('/employers')
-        }
-        return this.props.history.replace('/')
+          return this.props.history.replace('/')
+        })
       })
-      .catch((err) => {
-        /* No active month > service is unavailable */
-        this.setState({ isLoading: false, error: err })
-      })
+      .catch((err) => this.setState({ isLoading: false, err }))
   }
 
   render() {
     const {
       location: { pathname },
     } = this.props
-    const { activeMonth, error, isLoading, user } = this.state
+    const { activeMonth, err, isLoading, user } = this.state
     if (isLoading) return null
 
-    if (pathname === '/') {
-      if (!user) return <Home />
-      return <Redirect from="/" to="/actu" />
+    if (!user) {
+      if (pathname === '/') return <Home />
+      return <Redirect to="/" />
     }
 
-    if (error || !activeMonth) {
+    if (pathname === '/') return <Redirect from="/" to="/actu" />
+
+    if (!activeMonth) {
       return (
         <Layout user={user}>
           <Typography>
-            Désolé, le service est actuellement indisponible, merci de réessayer
-            ultérieurement.
+            Le service d'actualisation n'est pas encore actif, merci de
+            réessayer ultérieurement
+          </Typography>
+        </Layout>
+      )
+    }
+
+    if (err) {
+      return (
+        <Layout user={user}>
+          <Typography>
+            Une erreur s'est produite, merci de réessayer ultérieurement
           </Typography>
         </Layout>
       )

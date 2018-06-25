@@ -15,6 +15,7 @@ class ActivityLog extends BaseModel {
         id: { type: 'integer' },
         userId: { type: 'integer' },
         action: { type: 'string' },
+        metadata: { type: 'json' },
       },
     }
   }

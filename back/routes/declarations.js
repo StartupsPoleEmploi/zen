@@ -125,6 +125,7 @@ router.post('/finish', (req, res, next) => {
         ActivityLog.query().insert({
           userId: req.session.user.id,
           action: ActivityLog.actions.VALIDATE_FILES,
+          metadata: JSON.stringify({ declarationId: declaration.id }),
         }),
       ]).then(([savedDeclaration]) => res.json(savedDeclaration))
     })

@@ -73,6 +73,7 @@ router.post('/', (req, res, next) => {
             ? ActivityLog.query(trx).insert({
                 userId: req.session.user.id,
                 action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                metadata: JSON.stringify({ declarationId: declaration.id }),
               })
             : Promise.resolve(),
         ]),

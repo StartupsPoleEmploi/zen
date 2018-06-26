@@ -1,6 +1,6 @@
 {
-  "name": "node",
-  "version": "0.0.0",
+  "name": "zen-back",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "production": "pm2 start --no-daemon bin/www",

@@ -1,4 +1,4 @@
-# Actualisation - Prototype
+# Zen - front-end
 
 ## Environment variables
 

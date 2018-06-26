@@ -55,7 +55,7 @@ export class Layout extends Component {
         <AppBar position="static">
           <Toolbar>
             <Title color="inherit" variant="title">
-              La Bonne Actualisation
+              zen.
             </Title>
             {user && (
               <Fragment>

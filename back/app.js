@@ -7,6 +7,7 @@ const { Model } = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
+const { version } = require('./package.json')
 
 const activeMonthMiddleware = require('./lib/activeMonthMiddleware')
 
@@ -30,7 +31,7 @@ const sentryUrl = process.env.SENTRY_URL
 
 if (sentryUrl) {
   Raven.config(sentryUrl, {
-    release: '0-0-0',
+    release: version,
     environment: process.env.SENTRY_ENV || process.env.NODE_ENV,
   }).install()
   // Raven requestHandler must be the first middleware

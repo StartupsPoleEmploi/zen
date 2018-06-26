@@ -8,11 +8,6 @@ let valueStoreDate = new Date(0)
 // set it in req.activeMonth
 module.exports = (req, res, next) => {
   if (valueStoreDate > subMinutes(new Date(), 10)) {
-    if (!value) {
-      return res
-        .status(503)
-        .json('Actualization is currently unavailable (no active month)')
-    }
     req.activeMonth = value
     return next()
   }
@@ -24,12 +19,6 @@ module.exports = (req, res, next) => {
     .then((activeMonth) => {
       value = activeMonth
       valueStoreDate = new Date()
-
-      if (!value) {
-        return res
-          .status(503)
-          .json('Actualization is currently unavailable (no active month)')
-      }
 
       req.activeMonth = activeMonth
       next()

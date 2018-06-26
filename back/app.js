@@ -69,8 +69,16 @@ app.use('/user', userRouter)
 
 app.use(activeMonthMiddleware)
 
-app.use('/declarations', declarationsRouter)
 app.use('/declarationMonths', declarationMonthsRouter)
+
+app.use((req, res, next) => {
+  if (!req.activeMonth) {
+    return res.status(503).json('Service unavailable (no active month)')
+  }
+  next()
+})
+
+app.use('/declarations', declarationsRouter)
 app.use('/employers', employersRouter)
 
 if (sentryUrl) {

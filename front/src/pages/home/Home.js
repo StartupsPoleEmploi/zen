@@ -162,7 +162,7 @@ export const Home = () => (
           Actualisez-vous<br />en toute simplicité
         </Tagline>
         <BodyTypography>
-          Vous êtes multi-employeur ?<br />
+          Vous avez plusieurs employeurs ?<br />
           L’actualisation n’est pas claire ou compliquée{' '}?
         </BodyTypography>
         <BodyTypography style={{ marginTop: '3rem', marginBottom: '6rem' }}>

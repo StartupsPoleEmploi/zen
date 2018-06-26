@@ -2,8 +2,8 @@ const bcrypt = require('bcrypt')
 const express = require('express')
 const auth = require('http-auth')
 const { format } = require('date-fns')
-const { compact } = require('lodash')
 const zip = require('express-easy-zip')
+const path = require('path')
 
 const ActivityLog = require('../models/ActivityLog')
 const Administrator = require('../models/Administrators')
@@ -183,19 +183,41 @@ router.get('/:declarationId/files', (req, res) => {
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
 
+      // TODO duplicated in lib/upload, refactor
+
       const uploadDestination =
         process.env.NODE_ENV === 'production' ? 'uploads/' : '/tmp/uploads/'
 
-      const files = compact(
-        [
-          declaration.trainingDocument,
-          declaration.internshipDocument,
-          declaration.sickLeaveDocument,
-          declaration.maternityLeaveDocument,
-          declaration.retirementDocument,
-          declaration.invalidityDocument,
-        ].concat(declaration.employers.map((employer) => employer.file)),
-      ).map((file) => ({ path: `${uploadDestination}${file}`, name: file }))
+      const formattedMonth = format(
+        declaration.declarationMonth.month,
+        'MM-YYYY',
+      )
+
+      const files = [
+        'trainingDocument',
+        'internshipDocument',
+        'sickLeaveDocument',
+        'maternityLeaveDocument',
+        'retirementDocument',
+        'invalidityDocument',
+      ]
+        .map((label) => ({
+          label,
+          value: declaration[label],
+        }))
+        .concat(
+          declaration.employers.map((employer) => ({
+            label: `employer-${employer.employerName}`,
+            value: employer.file,
+          })),
+        )
+        .filter(({ value }) => value) // remove null values
+        .map((file) => ({
+          path: `${uploadDestination}${file.value}`,
+          name: `${declaration.user.firstName}-${declaration.user.lastName}-${
+            file.label
+          }-${formattedMonth}${path.extname(file.value)}`,
+        }))
 
       if (files.length === 0) return res.send('Pas de fichiers disponibles')
 
@@ -203,7 +225,7 @@ router.get('/:declarationId/files', (req, res) => {
         files,
         filename: `${declaration.user.firstName}-${
           declaration.user.lastName
-        }-${format(declaration.declarationMonth.month, 'MMMM YYYY')}-fichiers-${
+        }-${formattedMonth}-fichiers-${
           declaration.isFinished ? 'validés' : 'non-validés'
         }.zip`,
       })

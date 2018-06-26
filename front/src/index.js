@@ -7,8 +7,21 @@ import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
+import { version } from '../package.json'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
+
+const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
+
+if (environment !== 'development') {
+  window.Raven.config(
+    'https://a1844e1ab4404bf9b6b63fe127874cdf@sentry.io/1216087',
+    {
+      release: version,
+      environment,
+    },
+  ).install()
+}
 
 moment.locale('fr')
 

@@ -61,9 +61,13 @@ class App extends Component {
           superagent
             .get('/api/declarationMonths?active')
             .then((res) => res.body),
-        ]).then(([declaration, activeMonth]) => {
+        ]).then(([declaration, activeMonthString]) => {
           // Redirect the user to the last page he hasn't completed
-          this.setState({ activeMonth, isLoading: false })
+          this.setState({
+            activeMonth:
+              (activeMonthString && new Date(activeMonthString)) || null,
+            isLoading: false,
+          })
           if (declaration) {
             if (declaration.hasFinishedDeclaringEmployers) {
               return this.props.history.replace('/files')

@@ -233,7 +233,11 @@ export class Files extends Component {
   )
 
   renderEmployerRow = (employer) => (
-    <EmployerDocumentUpload {...employer} submitFile={this.submitFile} />
+    <EmployerDocumentUpload
+      key={employer.id}
+      {...employer}
+      submitFile={this.submitFile}
+    />
   )
 
   render() {

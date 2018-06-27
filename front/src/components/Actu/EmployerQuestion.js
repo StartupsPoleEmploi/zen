@@ -64,11 +64,11 @@ export class EmployerQuestion extends Component {
       error: PropTypes.string,
     }).isRequired,
     workHours: PropTypes.shape({
-      value: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       error: PropTypes.string,
     }).isRequired,
     salary: PropTypes.shape({
-      value: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       error: PropTypes.string,
     }).isRequired,
     hasEndedThisMonth: PropTypes.shape({

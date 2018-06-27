@@ -81,12 +81,18 @@ export class EmployerQuestion extends Component {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
   }
 
-  inputHandler = (string) => ({ target: { name, value } }) =>
+  inputHandler = (string) => ({ target: { name: fieldName, value } }) => {
+    // The input 'name' attribute needs an array format
+    // to avoid confusions (for example, browser autocompletions)
+    // but the parent component here juste needs 'employerName'
+    // for example.
+    const name = fieldName.substr(0, fieldName.indexOf('['))
     this.props[string]({
       name,
       value: name !== 'hasEndedThisMonth' ? value : value === 'yes',
       index: this.props.index,
     })
+  }
 
   onChange = this.inputHandler('onChange')
   onBlur = this.inputHandler('onBlur')
@@ -94,7 +100,13 @@ export class EmployerQuestion extends Component {
   onRemove = () => this.props.onRemove(this.props.index)
 
   render() {
-    const { employerName, workHours, salary, hasEndedThisMonth } = this.props
+    const {
+      employerName,
+      index,
+      workHours,
+      salary,
+      hasEndedThisMonth,
+    } = this.props
 
     const hasEndedThisMonthValue =
       hasEndedThisMonth.value === null
@@ -109,7 +121,7 @@ export class EmployerQuestion extends Component {
           <div>
             <StyledTextField
               label="Nom de l'employeur"
-              name="employerName"
+              name={`employerName[${index}]`}
               value={employerName.value}
               onChange={this.onChange}
               onBlur={this.onBlur}
@@ -118,7 +130,7 @@ export class EmployerQuestion extends Component {
             />
             <StyledTextField
               label="Nombre d'heures"
-              name="workHours"
+              name={`workHours[${index}]`}
               value={workHours.value}
               onChange={this.onChange}
               onBlur={this.onBlur}
@@ -127,7 +139,7 @@ export class EmployerQuestion extends Component {
             />
             <StyledTextField
               label="Salaire brut €"
-              name="salary"
+              name={`salary[${index}]`}
               value={salary.value}
               onChange={this.onChange}
               onBlur={this.onBlur}
@@ -144,7 +156,7 @@ export class EmployerQuestion extends Component {
             <RadioGroup
               row
               aria-label="oui ou non"
-              name="hasEndedThisMonth"
+              name={`hasEndedThisMonth[${index}]`}
               value={hasEndedThisMonthValue}
               onChange={this.onChange}
             >

@@ -1,20 +1,7 @@
 version: '2'
 services:
-  nginx:
-    restart: always
-    image: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
-      - "./front:/home/front"
-    networks:
-      actualisation_network:
-        ipv4_address: 172.0.0.10
-
   node:
-    restart: always
+    restart: unless-stopped
     build:
       context: .
       dockerfile: dockerfile_back
@@ -37,7 +24,7 @@ services:
       - SENTRY_URL=${SENTRY_URL}
 
   front:
-    restart: always
+    restart: unless-stopped
     build:
       context: .
       dockerfile: dockerfile_front

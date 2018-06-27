@@ -1,6 +1,20 @@
-# All commented environment infos need to be provided
 version: '2'
 services:
+  nginx:
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    build:
+      context: .
+      dockerfile: dockerfile_nginx
+    environment:
+      - CERTBOT_EMAIL=hugo+certbot-pe@codeheroics.com
+    volumes:
+      - "./front:/home/front"
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.10
 
   node:
     environment:

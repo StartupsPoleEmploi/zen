@@ -29,12 +29,16 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 5rem 15rem 0 10rem;
   background-image: url(${landingBackground});
   background-position: top right;
   background-repeat: no-repeat;
   background-size: contain;
   flex-wrap: wrap-reverse;
+  padding: 5rem 10rem 0;
+
+  @media (max-width: 42rem) {
+    padding: 5rem 2rem 0;
+  }
 `
 
 const HeaderMain = styled.div`
@@ -85,6 +89,7 @@ const Caption = styled(Typography).attrs({ variant: 'caption' })`
 `
 
 const PEConnectLinkContainer = styled.div`
+  margin-right: 5rem;
   flex-shrink: 0;
 `
 
@@ -94,19 +99,27 @@ const StepsContainer = styled.div`
   text-align: center;
   max-width: 100rem;
   width: 100%;
+
+  @media (max-width: 42rem) {
+    padding: 0 2rem;
+  }
 `
 
 const Step = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
+  flex-wrap: wrap;
 `
 
 const StepTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 1rem;
+  flex-grow: 1;
+  flex-shrink: 0;
 `
 
 const StepTitle = styled(Typography).attrs({
@@ -127,8 +140,11 @@ const StepText = styled(Typography).attrs({ variant: 'body1' })`
 `
 
 const StepImg = styled.img`
-  width: 35rem;
+  max-width: 35rem;
+  width: 100%;
+  min-width: 22.2rem;
   height: auto;
+  flex-shrink: 1;
 `
 
 const IntermediateImg = styled.img`
@@ -198,7 +214,7 @@ export const Home = () => (
         </StepTextContainer>
       </Step>
       <IntermediateImg src={step1ToStep2} alt="" />
-      <Step>
+      <Step style={{ flexWrap: 'wrap-reverse' }}>
         <StepTextContainer>
           <StepTitle>Envoi simple et rapide</StepTitle>
           <StepText>On me dit les documents que je dois envoyer.</StepText>

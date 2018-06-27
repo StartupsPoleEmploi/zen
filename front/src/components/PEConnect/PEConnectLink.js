@@ -22,6 +22,7 @@ const StyledA = styled.a`
   border: 2px ${BLUE} solid;
   font-weight: bold;
   text-decoration: none;
+  white-space: nowrap;
 
   color: ${(props) => (props.useDarkVersion ? WHITE : BLUE)};
   background-color: ${(props) => (props.useDarkVersion ? BLUE : WHITE)};

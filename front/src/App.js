@@ -88,7 +88,9 @@ class App extends Component {
     if (isLoading) return null
 
     if (!user) {
-      if (pathname === '/') return <Home />
+      if (pathname === '/') {
+        return <Route exact path="/" component={Home} />
+      }
       return <Redirect to="/" />
     }
 

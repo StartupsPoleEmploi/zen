@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography'
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -22,6 +23,13 @@ const StyledHome = styled.div`
   max-width: 144rem;
   width: 100%;
   margin: auto;
+`
+
+const LoginError = styled.div`
+  padding: 1rem;
+  background-color: #f57264;
+  width: 100%;
+  text-align: center;
 `
 
 const Header = styled.header`
@@ -158,8 +166,15 @@ const FooterImg = styled.img`
   height: auto;
 `
 
-export const Home = () => (
+export const Home = ({ location: { search } }) => (
   <StyledHome>
+    {search === '?loginFailed' && (
+      <LoginError>
+        <BodyTypography>
+          La connexion a échoué, merci de bien vouloir réessayer ultérieurement.
+        </BodyTypography>
+      </LoginError>
+    )}
     <Header>
       <HeaderMain>
         <AppTitle>
@@ -236,5 +251,9 @@ export const Home = () => (
     </footer>
   </StyledHome>
 )
+
+Home.propTypes = {
+  location: PropTypes.shape({ search: PropTypes.string }),
+}
 
 export default Home

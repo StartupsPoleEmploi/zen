@@ -54,8 +54,9 @@ router.get('/', (req, res) => {
 })
 
 router.get('/callback', (req, res, next) => {
-  if (req.session.state !== req.query.state)
-    return res.status(401).json('Authentication failed')
+  if (req.session.state !== req.query.state || !req.query.code) {
+    return res.redirect('/?loginFailed')
+  }
 
   oauth2.authorizationCode
     .getToken({

@@ -10,8 +10,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { version } from '../package.json'
 import App from './App'
 
-// import registerServiceWorker from './registerServiceWorker'
-
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
 
 if (environment !== 'development') {
@@ -67,8 +65,3 @@ ReactDOM.render(
   </Fragment>,
   document.getElementById('root'),
 )
-
-/*
-TODO restore and configure this correctly in production.
-registerServiceWorker()
-*/

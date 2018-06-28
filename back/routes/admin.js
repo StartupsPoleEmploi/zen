@@ -60,7 +60,7 @@ router.get('/', auth.connect(basic), (req, res) => {
                 }
               </td>
               <td style="padding: 10px;">
-                ${format(log.createdAt, 'DD/MM HH:ss')}
+                ${format(log.createdAt, 'DD/MM HH:mm')}
               </td>
             </tr>
           `,

@@ -40,6 +40,9 @@ const statuses = {
   hasInvalidity: { label: 'est invalide', dateFields: ['invalidityStartDate'] },
 }
 
+const calculateTotal = (employers, field) =>
+  employers.reduce((prev, employer) => parseInt(employer[field], 10) + prev, 0)
+
 const basic = auth.basic(
   {
     realm: 'Admin interface',
@@ -187,6 +190,12 @@ router.get('/:declarationId', (req, res) => {
                       }`,
                   )
                   .join('<br />')}
+            </p>
+            <p>
+              Total: ${calculateTotal(
+                declaration.employers,
+                'workHours',
+              )}h, ${calculateTotal(declaration.employers, 'salary')}€
             </p>
             <p>
               <a href="/api/admin/${declaration.id}/files">

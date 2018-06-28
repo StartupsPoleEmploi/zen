@@ -1,5 +1,15 @@
 version: '2'
 services:
+  nginx:
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.10
+
+
   node:
     restart: unless-stopped
     build:

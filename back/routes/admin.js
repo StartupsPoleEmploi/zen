@@ -241,8 +241,8 @@ router.get('/:declarationId/files', (req, res) => {
           name: kebabCase(
             `${declaration.user.firstName}-${declaration.user.lastName}-${
               file.label
-            }-${formattedMonth}${path.extname(file.value)}`,
-          ),
+            }-${formattedMonth}`,
+          ).concat(path.extname(file.value)),
         }))
 
       if (files.length === 0) return res.send('Pas de fichiers disponibles')

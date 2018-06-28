@@ -15,6 +15,30 @@ const actionsLabels = {
   VALIDATE_FILES: `Étape 3 (envoi des fichiers) terminée`,
 }
 
+const statuses = {
+  hasTrained: {
+    label: 'a été en formation',
+    dateFields: ['trainingStartDate', 'trainingEndDate'],
+  },
+  hasInternship: {
+    label: 'a été en stage',
+    dateFields: ['internshipStartDate', 'internshipEndDate'],
+  },
+  hasSickLeave: {
+    label: 'a été en congé maladie',
+    dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
+  },
+  hasMaternityLeave: {
+    label: 'a été en congé maternité',
+    dateFields: ['maternityLeaveStartDate'],
+  },
+  hasRetirement: {
+    label: 'est en retraite',
+    dateFields: ['retirementStartDate'],
+  },
+  hasInvalidity: { label: 'est invalide', dateFields: ['invalidityStartDate'] },
+}
+
 const basic = auth.basic(
   {
     realm: 'Admin interface',
@@ -136,15 +160,14 @@ router.get('/:declarationId', (req, res) => {
               declaration.isFinished ? 'validé' : 'non validé'
             }</p>
             <p>
-              Infos complémentaires : ${[
-                'hasTrained',
-                'hasInternship',
-                'hasSickLeave',
-                'hasMaternityLeave',
-                'hasRetirement',
-                'hasInvalidity',
-              ]
+              Infos complémentaires : ${Object.keys(statuses)
                 .filter((key) => declaration[key])
+                .map(
+                  (key) =>
+                    `${statuses[key].label} (${statuses[key].dateFields
+                      .map((field) => format(declaration[field], 'DD/MM'))
+                      .join(' - ')})`,
+                )
                 .join(', ')}
             </p>
             <p>

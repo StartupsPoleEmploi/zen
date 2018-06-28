@@ -4,6 +4,7 @@ const auth = require('http-auth')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
+const { kebabCase } = require('lodash')
 
 const ActivityLog = require('../models/ActivityLog')
 const Administrator = require('../models/Administrators')
@@ -13,6 +14,30 @@ const actionsLabels = {
   VALIDATE_DECLARATION: `Étape 1 (déclaration initiale) terminée`,
   VALIDATE_EMPLOYERS: `Étape 2 (employeurs, salaires et heures travaillée) terminée`,
   VALIDATE_FILES: `Étape 3 (envoi des fichiers) terminée`,
+}
+
+const statuses = {
+  hasTrained: {
+    label: 'a été en formation',
+    dateFields: ['trainingStartDate', 'trainingEndDate'],
+  },
+  hasInternship: {
+    label: 'a été en stage',
+    dateFields: ['internshipStartDate', 'internshipEndDate'],
+  },
+  hasSickLeave: {
+    label: 'a été en congé maladie',
+    dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
+  },
+  hasMaternityLeave: {
+    label: 'a été en congé maternité',
+    dateFields: ['maternityLeaveStartDate'],
+  },
+  hasRetirement: {
+    label: 'est en retraite',
+    dateFields: ['retirementStartDate'],
+  },
+  hasInvalidity: { label: 'est invalide', dateFields: ['invalidityStartDate'] },
 }
 
 const basic = auth.basic(
@@ -136,15 +161,14 @@ router.get('/:declarationId', (req, res) => {
               declaration.isFinished ? 'validé' : 'non validé'
             }</p>
             <p>
-              Infos complémentaires : ${[
-                'hasTrained',
-                'hasInternship',
-                'hasSickLeave',
-                'hasMaternityLeave',
-                'hasRetirement',
-                'hasInvalidity',
-              ]
+              Infos complémentaires : ${Object.keys(statuses)
                 .filter((key) => declaration[key])
+                .map(
+                  (key) =>
+                    `${statuses[key].label} (${statuses[key].dateFields
+                      .map((field) => format(declaration[field], 'DD/MM'))
+                      .join(' - ')})`,
+                )
                 .join(', ')}
             </p>
             <p>
@@ -214,9 +238,11 @@ router.get('/:declarationId/files', (req, res) => {
         .filter(({ value }) => value) // remove null values
         .map((file) => ({
           path: `${uploadDestination}${file.value}`,
-          name: `${declaration.user.firstName}-${declaration.user.lastName}-${
-            file.label
-          }-${formattedMonth}${path.extname(file.value)}`,
+          name: kebabCase(
+            `${declaration.user.firstName}-${declaration.user.lastName}-${
+              file.label
+            }-${formattedMonth}${path.extname(file.value)}`,
+          ),
         }))
 
       if (files.length === 0) return res.send('Pas de fichiers disponibles')

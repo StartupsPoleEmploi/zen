@@ -4,6 +4,7 @@ const auth = require('http-auth')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
+const { kebabCase } = require('lodash')
 
 const ActivityLog = require('../models/ActivityLog')
 const Administrator = require('../models/Administrators')
@@ -237,9 +238,11 @@ router.get('/:declarationId/files', (req, res) => {
         .filter(({ value }) => value) // remove null values
         .map((file) => ({
           path: `${uploadDestination}${file.value}`,
-          name: `${declaration.user.firstName}-${declaration.user.lastName}-${
-            file.label
-          }-${formattedMonth}${path.extname(file.value)}`,
+          name: kebabCase(
+            `${declaration.user.firstName}-${declaration.user.lastName}-${
+              file.label
+            }-${formattedMonth}${path.extname(file.value)}`,
+          ),
         }))
 
       if (files.length === 0) return res.send('Pas de fichiers disponibles')

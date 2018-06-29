@@ -91,9 +91,10 @@ router.post('/', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/files', (req, res) => {
+router.get('/files', (req, res, next) => {
   if (!req.query.employerId) return res.status(400).json('Missing employerId')
-  Employer.query()
+
+  return Employer.query()
     .findOne({
       id: req.query.employerId,
       userId: req.session.user.id,
@@ -103,13 +104,14 @@ router.get('/files', (req, res) => {
       if (!employer.file) return res.status(404).json('No such file')
       res.sendFile(employer.file, { root: uploadDestination })
     })
+    .catch(next)
 })
 
 router.post('/files', upload.single('employerFile'), (req, res, next) => {
   if (!req.file) return res.status(400).json('Missing file')
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
 
-  Employer.query()
+  return Employer.query()
     .findOne({
       id: req.body.employerId,
       userId: req.session.user.id,
@@ -129,6 +131,3 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
 })
 
 module.exports = router
-
-// Make sure the person has the correct id because `upsertGraph` uses the id fields
-// to determine which models need to be updated and which inserted.

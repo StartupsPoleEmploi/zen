@@ -7,18 +7,16 @@ const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
 const ActivityLog = require('../models/ActivityLog')
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   if (!('last' in req.query)) return res.status(400).json('Route not ready')
 
-  Declaration.query()
-    .findOne({
-      monthId: req.activeMonth.id,
-      userId: req.session.user.id,
-    })
+  return Declaration.query()
+    .findOne({ monthId: req.activeMonth.id, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
       res.json(declaration)
     })
+    .catch(next)
 })
 
 router.post('/', (req, res, next) => {
@@ -59,14 +57,12 @@ router.post('/', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/files', (req, res) => {
+router.get('/files', (req, res, next) => {
   if (!req.query.declarationId || !req.query.name)
     return res.status(400).json('Missing parameters')
-  Declaration.query()
-    .findOne({
-      id: req.query.declarationId,
-      userId: req.session.user.id,
-    })
+
+  return Declaration.query()
+    .findOne({ id: req.query.declarationId, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
       if (!declaration[req.query.name]) {
@@ -75,6 +71,7 @@ router.get('/files', (req, res) => {
 
       res.sendFile(declaration[req.query.name], { root: uploadDestination })
     })
+    .catch(next)
 })
 
 router.post('/files', upload.single('document'), (req, res, next) => {
@@ -83,25 +80,20 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     return res.status(400).json('Missing declarationId')
   if (!req.body.name) return res.status(400).json('Missing document name')
 
-  Declaration.query()
-    .findOne({
-      id: req.body.declarationId,
-      userId: req.session.user.id,
-    })
+  return Declaration.query()
+    .findOne({ id: req.body.declarationId, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
 
       return declaration
         .$query()
-        .patch({
-          [req.body.name]: req.file.filename,
-        })
+        .patch({ [req.body.name]: req.file.filename })
         .then(() => res.json(declaration))
     })
     .catch(next)
 })
 
-router.post('/finish', (req, res, next) => {
+router.post('/finish', (req, res, next) =>
   Declaration.query()
     .eager('employers')
     .findOne({
@@ -129,7 +121,7 @@ router.post('/finish', (req, res, next) => {
         }),
       ]).then(([savedDeclaration]) => res.json(savedDeclaration))
     })
-    .catch(next)
-})
+    .catch(next),
+)
 
 module.exports = router

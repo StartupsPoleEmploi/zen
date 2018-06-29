@@ -251,7 +251,12 @@ router.get('/:declarationId/files', (req, res) => {
             `${declaration.user.firstName}-${declaration.user.lastName}-${
               file.label
             }-${formattedMonth}`,
-          ).concat(path.extname(file.value)),
+          ).concat(
+            // PE.fr uploads do not handle "jpeg" files (-_-), so renaming on the fly.
+            path.extname(file.value) === '.jpeg'
+              ? '.jpg'
+              : path.extname(file.value),
+          ),
         }))
 
       if (files.length === 0) return res.send('Pas de fichiers disponibles')

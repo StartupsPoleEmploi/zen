@@ -33,6 +33,7 @@ if (sentryUrl) {
   Raven.config(sentryUrl, {
     release: version,
     environment: process.env.SENTRY_ENV || process.env.NODE_ENV,
+    captureUnhandledRejections: true,
   }).install()
   // Raven requestHandler must be the first middleware
   app.use(Raven.requestHandler())

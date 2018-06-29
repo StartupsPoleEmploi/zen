@@ -192,6 +192,7 @@ export class Actu extends Component {
     superagent
       .post('/api/declarations', this.state)
       .then(() => this.props.history.push('/employers'))
+      .catch((err) => window.Raven.captureException(err))
   }
 
   setIsMaternalAssistant = () => {

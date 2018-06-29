@@ -167,7 +167,10 @@ export class Files extends Component {
           ),
         }),
       )
-      .catch(() =>
+      .catch((err) => {
+        // TODO this should be refined to not send all common errors
+        // (file too big, etc)
+        window.Raven.captureException(err)
         this.setState({
           employers: this.state.employers.map(
             (employer) =>
@@ -179,8 +182,8 @@ export class Files extends Component {
                   }
                 : employer,
           ),
-        }),
-      )
+        })
+      })
   }
 
   submitAdditionalFile = ({ file, name }) => {
@@ -202,12 +205,16 @@ export class Files extends Component {
           [loadingKey]: false,
         }),
       )
-      .catch(() =>
+      .catch((err) => {
+        // TODO this should be refined to not send all common errors
+        // (file too big, etc)
+        window.Raven.captureException(err)
+
         this.setState({
           [loadingKey]: false,
           [errorKey]: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
-        }),
-      )
+        })
+      })
   }
 
   onSubmit = () => {
@@ -215,7 +222,10 @@ export class Files extends Component {
       .post('/api/declarations/finish')
       .then((res) => res.body)
       .then(() => this.props.history.push('/thanks'))
-      .catch((error) => this.setState({ error }))
+      .catch((error) => {
+        window.Raven.captureException(error)
+        this.setState({ error })
+      })
   }
 
   renderAdditionalDocument = (document) => (

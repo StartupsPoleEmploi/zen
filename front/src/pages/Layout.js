@@ -43,6 +43,7 @@ export class Layout extends Component {
     // have a global store.
     // (This is done so everything is reloaded)
     superagent.delete('/api/user').then(() => {
+      window.Raven.setUserContext()
       window.location = '/loggedOut'
     })
   }

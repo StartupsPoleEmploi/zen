@@ -168,6 +168,12 @@ export class Files extends Component {
         }),
       )
       .catch((err) => {
+        const errorLabel =
+          err.status === 413
+            ? 'Erreur : Fichier trop lourd (limite : 10mo)'
+            : err.status === 400
+              ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf)'
+              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -178,7 +184,7 @@ export class Files extends Component {
                 ? {
                     ...employer,
                     isLoading: false,
-                    error: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
+                    error: errorLabel,
                   }
                 : employer,
           ),
@@ -191,8 +197,9 @@ export class Files extends Component {
     const errorKey = `${name}Error`
 
     this.setState({
-      isLoadingSickLeaveDocument: true,
+      [loadingKey]: true,
     })
+
     superagent
       .post('/api/declarations/files')
       .field('declarationId', this.state.declaration.id)
@@ -203,16 +210,23 @@ export class Files extends Component {
         this.setState({
           declaration,
           [loadingKey]: false,
+          [errorKey]: null,
         }),
       )
       .catch((err) => {
+        const errorLabel =
+          err.status === 413
+            ? 'Erreur : Fichier trop lourd (limite : 10mo)'
+            : err.status === 400
+              ? 'Fichier invalide (accepté : .png, .jpg, .pdf)'
+              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
 
         this.setState({
           [loadingKey]: false,
-          [errorKey]: `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`,
+          [errorKey]: errorLabel,
         })
       })
   }

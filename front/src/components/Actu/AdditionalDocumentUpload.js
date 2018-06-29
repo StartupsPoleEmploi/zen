@@ -32,17 +32,19 @@ const StyledFormLabel = styled(FormLabel)`
 const StyledFormHelperText = styled(FormHelperText)`
   && {
     margin-top: 0;
+    padding-right: 1rem;
   }
 `
 
-const SentDocumentContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
 `
 
-const ErrorTypography = styled(Typography)`
+const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
+    padding-right: 1rem;
   }
 `
 
@@ -73,48 +75,51 @@ export class AdditionalDocumentUpload extends Component {
   render() {
     const { declarationId, error, file, isLoading, name, label } = this.props
 
+    const formattedError = <ErrorTypography>{error}</ErrorTypography>
+
+    const input = (
+      <input
+        accept=".png, .jpg, .jpeg, .pdf"
+        style={{ display: 'none' }}
+        type="file"
+        onChange={this.submitFile}
+      />
+    )
+
     return (
       <StyledListItem divider>
         <ListItemText primary={<b>{label}</b>} />
         <ListItemSecondaryAction>
           <FormControl>
-            {error ? (
-              <ErrorTypography>{error}</ErrorTypography>
-            ) : isLoading ? (
+            {isLoading ? (
               <CircularProgress />
-            ) : file ? (
-              <SentDocumentContainer>
-                <StyledA
-                  href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
-                  target="_blank"
-                >
-                  <StyledTypography variant="caption">
-                    Voir l'attestation
-                  </StyledTypography>
-                </StyledA>
+            ) : (
+              <Container>
+                {error
+                  ? formattedError
+                  : file && (
+                      <StyledA
+                        href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
+                        target="_blank"
+                      >
+                        <StyledTypography variant="caption">
+                          Voir l'attestation
+                        </StyledTypography>
+                      </StyledA>
+                    )}
                 <StyledFormLabel>
-                  <input
-                    style={{ display: 'none' }}
-                    type="file"
-                    onChange={this.submitFile}
-                  />
+                  {input}
+                  {!file &&
+                    !error && (
+                      <StyledFormHelperText>
+                        {label} à envoyer
+                      </StyledFormHelperText>
+                    )}
                   <Button component="span" size="small">
-                    Remplacer
+                    {file ? 'Remplacer' : 'Parcourir'}
                   </Button>
                 </StyledFormLabel>
-              </SentDocumentContainer>
-            ) : (
-              <StyledFormLabel>
-                <input
-                  style={{ display: 'none' }}
-                  type="file"
-                  onChange={this.submitFile}
-                />
-                <StyledFormHelperText>{label} à envoyer</StyledFormHelperText>
-                <Button component="span" size="small">
-                  Parcourir
-                </Button>
-              </StyledFormLabel>
+              </Container>
             )}
           </FormControl>
         </ListItemSecondaryAction>

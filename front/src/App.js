@@ -47,6 +47,9 @@ class App extends Component {
     getUser()
       .then((user) => {
         this.setState({ user })
+        window.Raven.setUserContext({
+          id: user.id,
+        })
 
         if (!user) return this.setState({ isLoading: false })
 

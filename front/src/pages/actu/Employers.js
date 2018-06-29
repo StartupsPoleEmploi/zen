@@ -219,11 +219,12 @@ export class Employers extends Component {
         isFinished: true,
       })
       .then(() => this.props.history.push('/files'))
-      .catch(() =>
+      .catch((err) => {
+        window.Raven.captureException(err)
         this.setState({
           error: `Une erreur s'est produite, merci de réessayer ultérieurement`,
-        }),
-      )
+        })
+      })
   }
 
   renderEmployerQuestion = (data, index) => (

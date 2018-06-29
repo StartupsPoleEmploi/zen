@@ -18,7 +18,8 @@ const StyledFiles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 88rem;
+  max-width: 88rem;
+  width: 100%;
   margin: auto;
 `
 

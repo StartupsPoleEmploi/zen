@@ -1,7 +1,6 @@
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
@@ -12,6 +11,7 @@ import styled from 'styled-components'
 const MainListItem = styled(ListItem)`
   && {
     padding-top: 2rem;
+    flex-wrap: wrap;
   }
 `
 
@@ -21,6 +21,7 @@ const SubListItem = styled(ListItem)`
     padding-bottom: 0;
     margin-top: 0;
     margin-top: 0;
+    flex-wrap: wrap;
   }
 `
 
@@ -49,28 +50,26 @@ export class DeclarationQuestion extends Component {
       <Fragment>
         <MainListItem>
           <ListItemText primary={label} />
-          <ListItemSecondaryAction>
-            <FormControl component="fieldset" required error>
-              <RadioGroup
-                row
-                aria-label="oui ou non"
-                name="yesOrNo"
-                value={getFormValue(value)}
-                onChange={this.handleChange}
-              >
-                <FormControlLabel
-                  value="yes"
-                  control={<Radio color="primary" />}
-                  label="Oui"
-                />
-                <FormControlLabel
-                  value="no"
-                  control={<Radio color="primary" />}
-                  label="Non"
-                />
-              </RadioGroup>
-            </FormControl>
-          </ListItemSecondaryAction>
+          <FormControl component="fieldset" required error>
+            <RadioGroup
+              row
+              aria-label="oui ou non"
+              name="yesOrNo"
+              value={getFormValue(value)}
+              onChange={this.handleChange}
+            >
+              <FormControlLabel
+                value="yes"
+                control={<Radio color="primary" />}
+                label="Oui"
+              />
+              <FormControlLabel
+                value="no"
+                control={<Radio color="primary" />}
+                label="Non"
+              />
+            </RadioGroup>
+          </FormControl>
         </MainListItem>
         {getFormValue(value) === (withChildrenOnNo ? 'no' : 'yes') &&
           children && <SubListItem>{children}</SubListItem>}

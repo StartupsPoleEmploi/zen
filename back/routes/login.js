@@ -110,6 +110,7 @@ router.get('/callback', (req, res, next) => {
     })
     .then((user) => {
       req.session.user = user
+      req.user = user // For sentry reporting
       res.redirect('/')
     })
     .catch(next)

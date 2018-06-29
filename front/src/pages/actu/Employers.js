@@ -265,15 +265,15 @@ export class Employers extends Component {
         </Form>
 
         <SummaryContainer>
-          <Typography type="body2">
-            Heures déclarées{' '}: {calculateTotal(employers, 'workHours')}
+          <Typography variant="body2">
+            Heures déclarées{' '}: {calculateTotal(employers, 'workHours')}h
           </Typography>
-          <Typography type="body2">
+          <Typography variant="body2" style={{ textAlign: 'right' }}>
             Salaire brut déclaré{' '}: {calculateTotal(employers, 'salary')} €
           </Typography>
         </SummaryContainer>
 
-        {error && <Typography type="body2">{error}</Typography>}
+        {error && <Typography variant="body2">{error}</Typography>}
 
         <ButtonsContainer>
           <Button variant="raised" onClick={this.onSave}>

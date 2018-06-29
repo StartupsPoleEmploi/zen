@@ -18,12 +18,19 @@ const StyledContainer = styled.div`
 
 const StyledMain = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   border: 1px solid #9c9c9c;
   border-radius: 1rem;
   padding: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+`
+
+const FieldsContainer = styled.div`
+  flex: 1 1 30rem;
+  border-right: 1px solid #9c9c9c;
 `
 
 const StyledTextField = styled(TextField)`
@@ -38,8 +45,8 @@ const StyledFormControl = styled(FormControl)`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     flex: 0 1 auto;
-    border-left: 1px solid #9c9c9c;
     padding-left: 1.5rem;
   }
 `
@@ -118,7 +125,7 @@ export class EmployerQuestion extends Component {
     return (
       <StyledContainer>
         <StyledMain>
-          <div>
+          <FieldsContainer>
             <StyledTextField
               label="Nom de l'employeur"
               name={`employerName[${index}]`}
@@ -146,12 +153,14 @@ export class EmployerQuestion extends Component {
               error={!!salary.error}
               helperText={salary.error}
             />
-          </div>
+          </FieldsContainer>
           <StyledFormControl>
             <StyledFormLabel>
               Ce contrat se termine-t-il en{' '}
               {moment(this.props.activeMonth).format('MMMM')} ?
-              <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
+              {hasEndedThisMonth.error && (
+                <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
+              )}
             </StyledFormLabel>
             <RadioGroup
               row

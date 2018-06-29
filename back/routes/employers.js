@@ -8,6 +8,20 @@ const Declaration = require('../models/Declaration')
 const Employer = require('../models/Employer')
 const ActivityLog = require('../models/ActivityLog')
 
+const getSanitizedEmployer = ({ employer, declaration, user }) => {
+  const intWorkHours = parseInt(employer.workHours, 10)
+  const intSalary = parseInt(employer.salary, 10)
+
+  return {
+    ...employer,
+    userId: user.id,
+    declarationId: declaration.id,
+    // Save temp data as much as possible
+    workHours: !Number.isNaN(intWorkHours) ? intWorkHours : null,
+    salary: !Number.isNaN(intSalary) ? intSalary : null,
+  }
+}
+
 router.get('/', (req, res, next) => {
   Declaration.query()
     .eager('employers')
@@ -40,25 +54,20 @@ router.post('/', (req, res, next) => {
         return res.status(400).json('Please send declaration first')
       }
 
-      const newEmployers = sentEmployers
-        .filter((employer) => !employer.id)
-        .map((employer) => {
-          const intWorkHours = parseInt(employer.workHours, 10)
-          const intSalary = parseInt(employer.salary, 10)
-
-          return {
-            ...employer,
-            userId: req.session.user.id,
-            declarationId: declaration.id,
-            // Save temp data as much as possible
-            workHours: !Number.isNaN(intWorkHours) ? intWorkHours : null,
-            salary: !Number.isNaN(intSalary) ? intSalary : null,
-          }
-        })
+      const newEmployers = sentEmployers.filter((employer) => !employer.id)
       const updatedEmployers = sentEmployers.filter(({ id }) =>
         declaration.employers.some((employer) => employer.id === id),
       )
-      declaration.employers = newEmployers.concat(updatedEmployers)
+
+      declaration.employers = newEmployers
+        .concat(updatedEmployers)
+        .map((employer) =>
+          getSanitizedEmployer({
+            employer,
+            user: req.session.user,
+            declaration,
+          }),
+        )
 
       const shouldLog =
         req.body.isFinished && !declaration.hasFinishedDeclaringEmployers
@@ -66,7 +75,7 @@ router.post('/', (req, res, next) => {
         declaration.hasFinishedDeclaringEmployers = true
       }
 
-      transaction(Declaration.knex(), (trx) =>
+      return transaction(Declaration.knex(), (trx) =>
         Promise.all([
           declaration.$query(trx).upsertGraph(),
           shouldLog

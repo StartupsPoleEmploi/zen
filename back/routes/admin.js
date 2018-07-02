@@ -66,13 +66,24 @@ router.use(zip())
 // No login form for now, users must be inserted in db manually.
 router.get('/', auth.connect(basic), (req, res) => {
   req.session.isAdmin = true
-  ActivityLog.query()
-    .eager('user')
-    .orderBy('createdAt', 'desc')
-    .then((logs) => {
-      const tableRows = logs
-        .map(
-          (log) => `
+  Promise.all([
+    ActivityLog.query()
+      .eager('user')
+      .orderBy('createdAt', 'desc'),
+    Declaration.query()
+      .orderBy('createdAt', 'desc')
+      .first()
+      .then((lastDeclaration) =>
+        Declaration.query()
+          .eager('declarationMonth')
+          .where({
+            monthId: lastDeclaration.monthId,
+          }),
+      ),
+  ]).then(([logs, declarations]) => {
+    const tableRows = logs
+      .map(
+        (log) => `
             <tr>
               <td style="padding: 10px;">
                 ${log.user.firstName} ${log.user.lastName}
@@ -92,14 +103,15 @@ router.get('/', auth.connect(basic), (req, res) => {
               </td>
             </tr>
           `,
-        )
-        .join('')
+      )
+      .join('')
 
-      return res.send(`
+    return res.send(`
         <html>
           <head>
             <title>Zen Admin</title>
             <style>
+              p { text-align: center; }
               table {
                 margin: auto;
               }
@@ -109,6 +121,22 @@ router.get('/', auth.connect(basic), (req, res) => {
             </style>
           </head>
           <body>
+            <p>
+              <b>${format(
+                declarations[0].declarationMonth.month,
+                'MMMM YYYY',
+              )}</b><br />
+              Page 1 validée (questions) : ${declarations.length}<br />
+              Page 2 validée (employeurs): ${
+                declarations.filter(
+                  ({ hasFinishedDeclaringEmployers }) =>
+                    hasFinishedDeclaringEmployers,
+                ).length
+              }<br />
+              Page 3 validée : ${
+                declarations.filter(({ isFinished }) => isFinished).length
+              }<br />
+            </p>
             <table>
               <thead>
                 <th>Nom</th>
@@ -123,7 +151,7 @@ router.get('/', auth.connect(basic), (req, res) => {
           </body>
         </html>
       `)
-    })
+  })
 })
 
 router.use((req, res, next) => {
@@ -245,12 +273,12 @@ router.get('/:declarationId/files', (req, res) => {
           })),
         )
         .filter(({ value }) => value) // remove null values
-        .map((file) => ({
+        .map((file, key) => ({
           path: `${uploadDestination}${file.value}`,
           name: kebabCase(
             `${declaration.user.firstName}-${declaration.user.lastName}-${
               file.label
-            }-${formattedMonth}`,
+            }-${formattedMonth}-${String.fromCharCode(key + 97)}`, // identifier to avoid duplicates
           ).concat(
             // PE.fr uploads do not handle "jpeg" files (-_-), so renaming on the fly.
             path.extname(file.value) === '.jpeg'

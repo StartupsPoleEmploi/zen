@@ -36,14 +36,15 @@ const StyledFormHelperText = styled(FormHelperText)`
   }
 `
 
-const SentDocumentContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
 `
 
-const ErrorTypography = styled(Typography)`
+const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
+    padding-right: 1rem;
   }
 `
 
@@ -85,6 +86,17 @@ export class EmployerDocumentUpload extends Component {
       ? 'attestation employeur'
       : 'bulletin de salaire'
 
+    const formattedError = <ErrorTypography>{error}</ErrorTypography>
+
+    const input = (
+      <input
+        accept=".png, .jpg, .jpeg, .pdf"
+        style={{ display: 'none' }}
+        type="file"
+        onChange={this.submitFile}
+      />
+    )
+
     return (
       <StyledListItem divider>
         <ListItemText
@@ -96,45 +108,35 @@ export class EmployerDocumentUpload extends Component {
         />
         <ListItemSecondaryAction>
           <FormControl>
-            {error ? (
-              <ErrorTypography>{error}</ErrorTypography>
-            ) : isLoading ? (
+            {isLoading ? (
               <CircularProgress />
-            ) : file ? (
-              <SentDocumentContainer>
-                <StyledA
-                  href={`/api/employers/files?employerId=${id}`}
-                  target="_blank"
-                >
-                  <StyledTypography variant="caption">
-                    Voir {documentToGive}
-                  </StyledTypography>
-                </StyledA>
+            ) : (
+              <Container>
+                {error
+                  ? formattedError
+                  : file && (
+                      <StyledA
+                        href={`/api/employers/files?employerId=${id}`}
+                        target="_blank"
+                      >
+                        <StyledTypography variant="caption">
+                          Voir {documentToGive}
+                        </StyledTypography>
+                      </StyledA>
+                    )}
                 <StyledFormLabel>
-                  <input
-                    style={{ display: 'none' }}
-                    type="file"
-                    onChange={this.submitFile}
-                  />
+                  {input}
+                  {!file &&
+                    !error && (
+                      <StyledFormHelperText>
+                        {capitalize(documentToGive)} à envoyer
+                      </StyledFormHelperText>
+                    )}
                   <Button component="span" size="small">
-                    Remplacer
+                    {file ? 'Remplacer' : 'Parcourir'}
                   </Button>
                 </StyledFormLabel>
-              </SentDocumentContainer>
-            ) : (
-              <StyledFormLabel>
-                <input
-                  style={{ display: 'none' }}
-                  type="file"
-                  onChange={this.submitFile}
-                />
-                <StyledFormHelperText>
-                  {capitalize(documentToGive)} à envoyer
-                </StyledFormHelperText>
-                <Button component="span" size="small">
-                  Parcourir
-                </Button>
-              </StyledFormLabel>
+              </Container>
             )}
           </FormControl>
         </ListItemSecondaryAction>

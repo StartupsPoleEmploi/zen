@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { capitalize } from 'lodash'
@@ -17,6 +16,7 @@ import styled from 'styled-components'
 const StyledListItem = styled(ListItem)`
   && {
     padding-top: 2rem;
+    flex-wrap: wrap;
   }
 `
 
@@ -106,40 +106,38 @@ export class EmployerDocumentUpload extends Component {
             </b>
           }
         />
-        <ListItemSecondaryAction>
-          <FormControl>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Container>
-                {error
-                  ? formattedError
-                  : file && (
-                      <StyledA
-                        href={`/api/employers/files?employerId=${id}`}
-                        target="_blank"
-                      >
-                        <StyledTypography variant="caption">
-                          Voir {documentToGive}
-                        </StyledTypography>
-                      </StyledA>
-                    )}
-                <StyledFormLabel>
-                  {input}
-                  {!file &&
-                    !error && (
-                      <StyledFormHelperText>
-                        {capitalize(documentToGive)} à envoyer
-                      </StyledFormHelperText>
-                    )}
-                  <Button component="span" size="small">
-                    {file ? 'Remplacer' : 'Parcourir'}
-                  </Button>
-                </StyledFormLabel>
-              </Container>
-            )}
-          </FormControl>
-        </ListItemSecondaryAction>
+        <FormControl>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Container>
+              {error
+                ? formattedError
+                : file && (
+                    <StyledA
+                      href={`/api/employers/files?employerId=${id}`}
+                      target="_blank"
+                    >
+                      <StyledTypography variant="caption">
+                        Voir {documentToGive}
+                      </StyledTypography>
+                    </StyledA>
+                  )}
+              <StyledFormLabel>
+                {input}
+                {!file &&
+                  !error && (
+                    <StyledFormHelperText>
+                      {capitalize(documentToGive)} à envoyer
+                    </StyledFormHelperText>
+                  )}
+                <Button component="span" size="small">
+                  {file ? 'Remplacer' : 'Parcourir'}
+                </Button>
+              </StyledFormLabel>
+            </Container>
+          )}
+        </FormControl>
       </StyledListItem>
     )
   }

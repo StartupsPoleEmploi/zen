@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
@@ -16,6 +15,7 @@ import styled from 'styled-components'
 const StyledListItem = styled(ListItem)`
   && {
     padding-top: 2.2rem;
+    flex-wrap: wrap;
   }
 `
 
@@ -89,40 +89,38 @@ export class AdditionalDocumentUpload extends Component {
     return (
       <StyledListItem divider>
         <ListItemText primary={<b>{label}</b>} />
-        <ListItemSecondaryAction>
-          <FormControl>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Container>
-                {error
-                  ? formattedError
-                  : file && (
-                      <StyledA
-                        href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
-                        target="_blank"
-                      >
-                        <StyledTypography variant="caption">
-                          Voir l'attestation
-                        </StyledTypography>
-                      </StyledA>
-                    )}
-                <StyledFormLabel>
-                  {input}
-                  {!file &&
-                    !error && (
-                      <StyledFormHelperText>
-                        {label} à envoyer
-                      </StyledFormHelperText>
-                    )}
-                  <Button component="span" size="small">
-                    {file ? 'Remplacer' : 'Parcourir'}
-                  </Button>
-                </StyledFormLabel>
-              </Container>
-            )}
-          </FormControl>
-        </ListItemSecondaryAction>
+        <FormControl>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Container>
+              {error
+                ? formattedError
+                : file && (
+                    <StyledA
+                      href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
+                      target="_blank"
+                    >
+                      <StyledTypography variant="caption">
+                        Voir l'attestation
+                      </StyledTypography>
+                    </StyledA>
+                  )}
+              <StyledFormLabel>
+                {input}
+                {!file &&
+                  !error && (
+                    <StyledFormHelperText>
+                      {label} à envoyer
+                    </StyledFormHelperText>
+                  )}
+                <Button component="span" size="small">
+                  {file ? 'Remplacer' : 'Parcourir'}
+                </Button>
+              </StyledFormLabel>
+            </Container>
+          )}
+        </FormControl>
       </StyledListItem>
     )
   }

@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -13,8 +13,13 @@ const StyledLayout = styled.div`
   margin: auto;
 `
 
-const Title = styled(Typography)`
+const Title = styled(Typography).attrs({ variant: 'title', color: 'inherit' })`
   flex: 1;
+`
+
+const TitleLink = styled(Link).attrs({ to: '/', href: '/' })`
+  color: inherit;
+  text-decoration: none;
 `
 
 const Main = styled.main`
@@ -55,8 +60,8 @@ export class Layout extends Component {
       <StyledLayout>
         <AppBar position="static">
           <Toolbar>
-            <Title color="inherit" variant="title">
-              zen.
+            <Title>
+              <TitleLink>zen.</TitleLink>
             </Title>
             {user && (
               <Fragment>

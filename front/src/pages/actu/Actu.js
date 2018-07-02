@@ -22,12 +22,17 @@ import DatePicker from '../../components/Generic/DatePicker'
 const StyledActu = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 `
 
 const StyledPaper = styled(Paper)`
-  width: 80rem;
+  max-width: 80rem;
+  width: 100%;
   margin: 1rem auto 0;
+`
+
+const Title = styled(Typography).attrs({ variant: 'title' })`
+  text-align: center;
 `
 
 const ErrorMessage = styled(Typography)`
@@ -40,7 +45,8 @@ const ErrorMessage = styled(Typography)`
 
 const FinalButtonsContainer = styled.div`
   margin: auto;
-  width: 32rem;
+  max-width: 32rem;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   padding-top: 3rem;
@@ -216,10 +222,11 @@ export class Actu extends Component {
 
     return (
       <StyledActu>
-        <Typography variant="title">
+        <Title>
           Déclarer ma situation de{' '}
           {moment(this.props.activeMonth).format('MMMM')}
-        </Typography>
+        </Title>
+
         <form>
           <StyledPaper>
             <List>

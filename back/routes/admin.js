@@ -245,12 +245,12 @@ router.get('/:declarationId/files', (req, res) => {
           })),
         )
         .filter(({ value }) => value) // remove null values
-        .map((file) => ({
+        .map((file, key) => ({
           path: `${uploadDestination}${file.value}`,
           name: kebabCase(
             `${declaration.user.firstName}-${declaration.user.lastName}-${
               file.label
-            }-${formattedMonth}`,
+            }-${formattedMonth}-${String.fromCharCode(key + 97)}`, // identifier to avoid duplicates
           ).concat(
             // PE.fr uploads do not handle "jpeg" files (-_-), so renaming on the fly.
             path.extname(file.value) === '.jpeg'

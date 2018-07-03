@@ -11,7 +11,6 @@ services:
       actualisation_network:
         ipv4_address: 172.0.0.10
 
-
   node:
     restart: unless-stopped
     build:
@@ -64,6 +63,19 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Europe/Paris
+
+  browserless:
+    image: browserless/chrome
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    shm_size: "1gb"
+    volumes:
+     - "./back:/home/back"
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.200
 
 networks:
   actualisation_network:

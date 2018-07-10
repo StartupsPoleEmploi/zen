@@ -162,7 +162,7 @@ router.use((req, res, next) => {
 
 router.get('/:declarationId', (req, res) => {
   Declaration.query()
-    .eager('employers')
+    .eager('[employers, user, declarationMonth]')
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
@@ -181,6 +181,13 @@ router.get('/:declarationId', (req, res) => {
             </style>
           </head>
           <body>
+          <h3>
+            ${declaration.user.firstName} ${declaration.user.lastName}
+          </h3>
+          <h4>
+            Declaration
+            ${format(declaration.declarationMonth.month, 'MM/YYYY')}
+          </h4>
           <p>
             Déclaration des employeurs ${
               declaration.hasFinishedDeclaringEmployers

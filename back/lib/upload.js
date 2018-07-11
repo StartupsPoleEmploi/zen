@@ -1,9 +1,6 @@
 const multer = require('multer')
 const path = require('path')
-
-// TODO duplicated in routes/admin, refactor
-const uploadDestination =
-  process.env.NODE_ENV === 'production' ? 'uploads/' : '/tmp/uploads/'
+const { uploadsDirectory: uploadDestination } = require('config')
 
 const upload = multer({
   storage: multer.diskStorage({

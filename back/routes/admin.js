@@ -5,6 +5,7 @@ const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
 const { kebabCase } = require('lodash')
+const { uploadsDirectory: uploadDestination } = require('config')
 
 const ActivityLog = require('../models/ActivityLog')
 const Administrator = require('../models/Administrators')
@@ -250,11 +251,6 @@ router.get('/:declarationId/files', (req, res) => {
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
-
-      // TODO duplicated in lib/upload, refactor
-
-      const uploadDestination =
-        process.env.NODE_ENV === 'production' ? 'uploads/' : '/tmp/uploads/'
 
       const formattedMonth = format(
         declaration.declarationMonth.month,

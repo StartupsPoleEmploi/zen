@@ -35,7 +35,7 @@ const REDIRECTION_TO_DECLARATION_URL = isProd
   ? 'https://authentification-candidat.pole-emploi.fr/compte/redirigervers?url=https://actualisation-authent.pole-emploi.fr/acces.htm&actu=true'
   : 'https://authentification-candidat-r.pe-qvr.fr/compte/redirigervers?url=https://actualisation-authent.pe-qvr.fr/acces.htm&actu=true'
 const SEND_DOCUMENTS_URL = isProd
-  ? 'FIXME'
+  ? 'https://candidat.pole-emploi.fr/candidat/situationadministrative/uploaddocuments/tableaudebord.boutonenvoyer'
   : 'https://candidat-r.pe-qvr.fr/candidat/situationadministrative/uploaddocuments/tableaudebord.boutonenvoyer'
 
 async function clickAndWaitForNavigation(selector) {
@@ -121,8 +121,9 @@ async function doDeclaration(declaration) {
 
   const isNormalDeclarationPage = await page.$('.note-form')
   if (!isNormalDeclarationPage) {
-    console.warn(`Warning : Declaration already done, or can't be modified.
-    Exiting Declaration update.`)
+    console.warn(
+      `Warning : Declaration already done. Exiting Declaration update.`,
+    )
     await screenshot()
     return
   }
@@ -133,10 +134,7 @@ async function doDeclaration(declaration) {
 
   // page change
   try {
-    await clickAndWaitForNavigation({
-      selector: '.nav.button-list button[type=submit]',
-      page,
-    })
+    await clickAndWaitForNavigation('.nav.button-list button[type=submit]')
   } catch (e) {
     // We've waited until the timeout, which means something has hanged.
     // Still, the page's js may have been loaded so we still try to fill in the form
@@ -164,19 +162,23 @@ async function doDeclaration(declaration) {
     )
   }
 
-  await page.click(
-    declaration.hasInternship ? '#blocStage-open' : '#blocStage-close',
-  )
-  if (declaration.hasInternship) {
-    await page.waitFor('#blocStage.js-show')
-    await page.focus('#dateDebutStage')
-    await page.keyboard.type(
-      format(declaration.internshipStartDate, 'DD/MM/YYYY'),
+  const internshipInput = await page.$('.subgroup:not(.hide) #stageBloc')
+
+  if (internshipInput) {
+    await page.click(
+      declaration.hasInternship ? '#blocStage-open' : '#blocStage-close',
     )
-    await page.focus('#dateFinStage')
-    await page.keyboard.type(
-      format(declaration.internshipEndDate, 'DD/MM/YYYY'),
-    )
+    if (declaration.hasInternship) {
+      await page.waitFor('#blocStage.js-show')
+      await page.focus('#dateDebutStage')
+      await page.keyboard.type(
+        format(declaration.internshipStartDate, 'DD/MM/YYYY'),
+      )
+      await page.focus('#dateFinStage')
+      await page.keyboard.type(
+        format(declaration.internshipEndDate, 'DD/MM/YYYY'),
+      )
+    }
   }
 
   await page.click(
@@ -193,18 +195,26 @@ async function doDeclaration(declaration) {
     await page.keyboard.type(format(declaration.sickLeaveEndDate, 'DD/MM/YYYY'))
   }
 
-  await page.click(
-    declaration.hasMaternityLeave
-      ? '#blocMaternite-open'
-      : '#blocMaternite-close',
-  )
+  // Only women get this input displayed on pe.fr:
+  // men do get it, but it's automatically checked to "no" and hidden.
+  // We don't have the info so we need this check to avoid trying
+  // clicking on hidden fields
+  const maternityInput = await page.$('.subgroup:not(.hide) #materniteBloc')
 
-  if (declaration.hasMaternityLeave) {
-    await page.waitFor('#blocMaternite.js-show')
-    await page.focus('#dateDebutMaternite')
-    await page.keyboard.type(
-      format(declaration.maternityLeaveStartDate, 'DD/MM/YYYY'),
+  if (maternityInput) {
+    await page.click(
+      declaration.hasMaternityLeave
+        ? '#blocMaternite-open'
+        : '#blocMaternite-close',
     )
+
+    if (declaration.hasMaternityLeave) {
+      await page.waitFor('#blocMaternite.js-show')
+      await page.focus('#dateDebutMaternite')
+      await page.keyboard.type(
+        format(declaration.maternityLeaveStartDate, 'DD/MM/YYYY'),
+      )
+    }
   }
 
   await page.click(
@@ -258,10 +268,7 @@ async function doDeclaration(declaration) {
 
     // Validate form
     try {
-      await clickAndWaitForNavigation({
-        selector: 'button.js-only[type="submit"]',
-        page,
-      })
+      await clickAndWaitForNavigation('button.js-only[type="submit"]')
     } catch (e) {
       console.log('timeout 1', e)
     }
@@ -274,26 +281,23 @@ async function doDeclaration(declaration) {
       // Do this once more in case we went on inconsistency page.
 
       try {
-        await clickAndWaitForNavigation({
-          selector: 'button.js-only[type="submit"]',
-          page,
-        })
+        await clickAndWaitForNavigation('button.js-only[type="submit"]')
       } catch (e) {
         console.log('timeout 2', e)
       }
     }
 
     try {
-      await clickAndWaitForNavigation({
-        selector: 'button.js-only[type="submit"]',
-        page,
-      })
+      await clickAndWaitForNavigation('button.js-only[type="submit"]')
     } catch (e) {
       console.log('timeout 3', e)
     }
 
-    // Summary page
-    await new Promise((resolve) => setTimeout(resolve, 5000))
+    // Ensure we got on the final redirection page by checking the link to the
+    // confirmation pdf exists.
+    await page.waitFor('.pdf-fat-link')
+
+    await screenshot()
   }
 }
 

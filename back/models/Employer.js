@@ -19,7 +19,7 @@ class Employer extends BaseModel {
         workHours: { type: ['integer', 'null'] },
         salary: { type: ['integer', 'null'] },
         hasEndedThisMonth: { type: 'boolean' },
-        file: { type: ['string', null] },
+        file: { type: ['string', 'integer', null] },
       },
     }
   }

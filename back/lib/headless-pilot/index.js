@@ -486,6 +486,23 @@ module.exports = (async () => {
   page.on('close', (msg) => console.log('page closed', msg))
   page.on('error', (error) => console.log('page closed', error))
 
+  // Prevent PDF preview from loading (causes crashes)
+  await page.setRequestInterception(true)
+  page.on('request', (interceptedRequest) => {
+    console.log(interceptedRequest.url())
+    if (
+      interceptedRequest
+        .url()
+        .includes(
+          '/candidat/situationadministrative/uploaddocuments/previsualiserdocument:generationdupdf/false/$N',
+        )
+    ) {
+      interceptedRequest.abort()
+    } else {
+      interceptedRequest.continue()
+    }
+  })
+
   const declaration = await Declaration.query()
     .eager('[employers, declarationMonth]')
     .findById(68) // for tests purposes, 67 is ingrid, 68 is hugo

@@ -2,15 +2,20 @@ const express = require('express')
 
 const router = express.Router()
 const { omit } = require('lodash')
+const { transaction } = require('objection')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
+const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
 
 router.get('/', (req, res, next) => {
   if (!('last' in req.query)) return res.status(400).json('Route not ready')
 
   return Declaration.query()
+    .eager(
+      '[trainingDocument, internshipDocument, sickLeaveDocument, maternityLeaveDocument, retirementDocument, invalidityDocument]',
+    )
     .findOne({ monthId: req.activeMonth.id, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
@@ -39,20 +44,26 @@ router.post('/', (req, res, next) => {
 
   return declarationFetchPromise
     .then((declaration) => {
+      let declarationPromise
       let activityLogPromise = Promise.resolve()
       if (declaration) {
-        declarationData.id = declaration.id
+        declarationPromise = declaration
+          .$query()
+          .patch(declarationData)
+          .returning('*')
       } else {
+        declarationPromise = Declaration.query()
+          .insert(declarationData)
+          .returning('*')
         activityLogPromise = ActivityLog.query().insert({
           userId: req.session.user.id,
           action: ActivityLog.actions.VALIDATE_DECLARATION,
         })
       }
 
-      return Promise.all([
-        Declaration.query().upsertGraphAndFetch(declarationData),
-        activityLogPromise,
-      ]).then(([dbDeclaration]) => res.json(dbDeclaration))
+      return Promise.all([declarationPromise, activityLogPromise]).then(
+        ([dbDeclaration]) => res.json(dbDeclaration),
+      )
     })
     .catch(next)
 })
@@ -62,14 +73,19 @@ router.get('/files', (req, res, next) => {
     return res.status(400).json('Missing parameters')
 
   return Declaration.query()
+    .eager(
+      '[trainingDocument, internshipDocument, sickLeaveDocument, maternityLeaveDocument, retirementDocument, invalidityDocument]',
+    )
     .findOne({ id: req.query.declarationId, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
-      if (!declaration[req.query.name]) {
+      if (!declaration[req.query.name] || !declaration[req.query.name].file) {
         return res.status(404).json('No such file')
       }
 
-      res.sendFile(declaration[req.query.name], { root: uploadDestination })
+      res.sendFile(declaration[req.query.name].file, {
+        root: uploadDestination,
+      })
     })
     .catch(next)
 })
@@ -78,19 +94,57 @@ router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.file) return res.status(400).json('Missing file')
   if (!req.body.declarationId)
     return res.status(400).json('Missing declarationId')
-  if (!req.body.name) return res.status(400).json('Missing document name')
+
+  const userDocumentName = req.body.name
+
+  const possibleDocumentTypes = [
+    'trainingDocument',
+    'internshipDocument',
+    'sickLeaveDocument',
+    'maternityLeaveDocument',
+    'retirementDocument',
+    'invalidityDocument',
+  ]
+
+  if (!possibleDocumentTypes.includes(userDocumentName)) {
+    return res.status(400).json('Missing document name')
+  }
 
   return Declaration.query()
+    .eager(`[${possibleDocumentTypes.join(', ')}]`)
     .findOne({ id: req.body.declarationId, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
 
-      return declaration
-        .$query()
-        .patch({ [req.body.name]: req.file.filename })
-        .then(() => res.json(declaration))
+      // FIXME all the following should be replaced using an upsertGraph
+      // which failed because of null value in column "id" violates not-null constraint
+      // (also, validation of id field in model should probably be removed)
+
+      return transaction(Declaration.knex(), (trx) => {
+        const documentFileObj = {
+          file: req.file.filename,
+        }
+
+        const documentPromise = declaration[userDocumentName]
+          ? declaration[userDocumentName]
+              .$query()
+              .debug()
+              .patch(documentFileObj)
+          : Document.query()
+              .debug()
+              .insert(documentFileObj)
+
+        return documentPromise
+          .returning('*')
+          .then((savedDocument) =>
+            declaration
+              .$query(trx)
+              .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
+              .eager(`[${possibleDocumentTypes.join(', ')}]`),
+          )
+          .then((savedDeclaration) => res.json(savedDeclaration))
+      }).catch(next)
     })
-    .catch(next)
 })
 
 router.post('/finish', (req, res, next) =>
@@ -103,9 +157,22 @@ router.post('/finish', (req, res, next) =>
     .then((declaration) => {
       if (!declaration) return res.status(404).json('Declaration not found')
 
+      const hasMissingEmployersDocuments = declaration.employers.some(
+        ({ documentId }) => !documentId,
+      )
+      const hasMissingDeclarationDocuments =
+        (declaration.hasTrained && !declaration.trainingDocumentId) ||
+        (declaration.hasInternship && !declaration.internshipDocumentId) ||
+        (declaration.hasSickLeave && !declaration.sickLeaveDocumentId) ||
+        (declaration.hasMaternityLeave &&
+          !declaration.maternityLeaveDocumentId) ||
+        (declaration.hasRetirement && !declaration.retirementDocumentId) ||
+        (declaration.hasInvalidity && !declaration.invalidityDocumentId)
+
       if (
         declaration.employers.length === 0 ||
-        declaration.employers.some(({ file }) => !file)
+        hasMissingEmployersDocuments ||
+        hasMissingDeclarationDocuments
       )
         return res.status(400).json('Declaration not complete')
 

@@ -262,6 +262,7 @@ export class Files extends Component {
       key={employer.id}
       {...employer}
       submitFile={this.submitFile}
+      file={employer.document} // TODO refactor this
     />
   )
 
@@ -294,8 +295,11 @@ export class Files extends Component {
     )
 
     const remainingDocumentsNb =
-      employers.reduce((prev, employer) => prev + (employer.file ? 0 : 1), 0) +
-      missingAdditionalDocuments.length
+      employers.reduce(
+        // TODO does this work if there is an upload during the same session?
+        (prev, employer) => prev + (employer.document ? 0 : 1),
+        0,
+      ) + missingAdditionalDocuments.length
 
     return (
       <StyledFiles>

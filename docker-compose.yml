@@ -5,6 +5,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - TZ=Europe/Paris
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.10
@@ -32,6 +34,7 @@ services:
       - AUTH_REDIRECT_URI=${AUTH_REDIRECT_URI}
       - SENTRY_ENV=${SENTRY_ENV}
       - SENTRY_URL=${SENTRY_URL}
+      - TZ=Europe/Paris
 
   front:
     restart: unless-stopped
@@ -42,6 +45,8 @@ services:
      - "./front:/home/front"
     expose:
       - "3000"
+    environment:
+      - TZ=Europe/Paris
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.110
@@ -58,6 +63,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TZ=Europe/Paris
 
 networks:
   actualisation_network:

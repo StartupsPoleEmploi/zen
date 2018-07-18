@@ -1,4 +1,4 @@
-const { BelongsToOneRelation } = require('objection')
+const { BelongsToOneRelation, HasOneRelation } = require('objection')
 const BaseModel = require('./BaseModel')
 
 class Employer extends BaseModel {
@@ -19,7 +19,7 @@ class Employer extends BaseModel {
         workHours: { type: ['integer', 'null'] },
         salary: { type: ['integer', 'null'] },
         hasEndedThisMonth: { type: 'boolean' },
-        file: { type: ['string', null] },
+        documentId: { type: ['integer'] },
       },
     }
   }
@@ -41,6 +41,14 @@ class Employer extends BaseModel {
         join: {
           from: 'Employers.declarationId',
           to: 'Declarations.id',
+        },
+      },
+      document: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Employers.documentId',
+          to: 'documents.id',
         },
       },
     }

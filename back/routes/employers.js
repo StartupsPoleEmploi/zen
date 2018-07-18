@@ -5,6 +5,7 @@ const { transaction } = require('objection')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
+const Document = require('../models/Document')
 const Employer = require('../models/Employer')
 const ActivityLog = require('../models/ActivityLog')
 
@@ -24,7 +25,7 @@ const getSanitizedEmployer = ({ employer, declaration, user }) => {
 
 router.get('/', (req, res, next) => {
   Declaration.query()
-    .eager('employers')
+    .eager('employers.document')
     .findOne({
       userId: req.session.user.id,
       monthId: req.activeMonth.id,
@@ -95,14 +96,16 @@ router.get('/files', (req, res, next) => {
   if (!req.query.employerId) return res.status(400).json('Missing employerId')
 
   return Employer.query()
+    .eager('document')
     .findOne({
       id: req.query.employerId,
       userId: req.session.user.id,
     })
     .then((employer) => {
       if (!employer) return res.status(404).json('No such employer')
-      if (!employer.file) return res.status(404).json('No such file')
-      res.sendFile(employer.file, { root: uploadDestination })
+      if (!employer.document || !employer.document.id)
+        return res.status(404).json('No such file')
+      res.sendFile(employer.document.file, { root: uploadDestination })
     })
     .catch(next)
 })
@@ -112,6 +115,7 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
 
   return Employer.query()
+    .eager('document')
     .findOne({
       id: req.body.employerId,
       userId: req.session.user.id,
@@ -119,15 +123,35 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
     .then((employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
-      employer.file = req.file.filename
+      // FIXME all the following should be replaced using an upsertGraph
+      // which failed because of null value in column "id" violates not-null constraint
+      // (also, validation of id field in model should probably be removed)
 
-      return employer
-        .$query()
-        .update()
-        .returning('*')
-        .then((updatedEmployer) => res.json(updatedEmployer))
+      return transaction(Employer.knex(), (trx) => {
+        const documentFileObj = {
+          file: req.file.filename,
+        }
+
+        const documentPromise = employer.document
+          ? employer.document
+              .$query()
+              .debug()
+              .patch(documentFileObj)
+          : Document.query()
+              .debug()
+              .insert(documentFileObj)
+
+        return documentPromise
+          .returning('*')
+          .then((savedDocument) =>
+            employer
+              .$query(trx)
+              .patchAndFetch({ documentId: savedDocument.id })
+              .eager('document'),
+          )
+          .then((savedEmployer) => res.json(savedEmployer))
+      }).catch(next)
     })
-    .catch(next)
 })
 
 module.exports = router

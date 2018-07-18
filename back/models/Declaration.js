@@ -1,6 +1,7 @@
 const {
   BelongsToOneRelation,
   HasManyRelation,
+  HasOneRelation,
   ValidationError,
 } = require('objection')
 const { isValid } = require('date-fns')
@@ -84,24 +85,24 @@ class Declaration extends BaseModel {
         hasTrained: { type: 'boolean' },
         trainingStartDate: { type: ['string', 'object', 'null'] },
         trainingEndDate: { type: ['string', 'object', 'null'] },
-        trainingDocument: { type: ['string', 'null'] },
+        trainingDocumentId: { type: ['integer', 'null'] },
         hasInternship: { type: 'boolean' },
         internshipStartDate: { type: ['string', 'object', 'null'] },
         internshipEndDate: { type: ['string', 'object', 'null'] },
-        internshipDocument: { type: ['string', 'null'] },
+        internshipDocumentId: { type: ['integer', 'null'] },
         hasSickLeave: { type: 'boolean' },
         sickLeaveStartDate: { type: ['string', 'object', 'null'] },
         sickLeaveEndDate: { type: ['string', 'object', 'null'] },
-        sickLeaveDocument: { type: ['string', 'null'] },
+        sickLeaveDocumentId: { type: ['integer', 'null'] },
         hasMaternityLeave: { type: 'boolean' },
         maternityLeaveStartDate: { type: ['string', 'object', 'null'] },
-        maternityLeaveDocument: { type: ['string', 'null'] },
+        maternityLeaveDocumentId: { type: ['integer', 'null'] },
         hasRetirement: { type: 'boolean' },
         retirementStartDate: { type: ['string', 'object', 'null'] },
-        retirementDocument: { type: ['string', 'null'] },
+        retirementDocumentId: { type: ['integer', 'null'] },
         hasInvalidity: { type: 'boolean' },
         invalidityStartDate: { type: ['string', 'object', 'null'] },
-        invalidityDocument: { type: ['string', 'null'] },
+        invalidityDocumentId: { type: ['integer', 'null'] },
         isLookingForJob: { type: 'boolean' },
         jobSearchEndDate: { type: ['string', 'object', 'null'] },
         jobSearchStopMotive: { type: ['string', 'null'] },
@@ -142,6 +143,55 @@ class Declaration extends BaseModel {
         join: {
           from: 'Declarations.monthId',
           to: 'declaration_months.id',
+        },
+      },
+
+      trainingDocument: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Declarations.trainingDocumentId',
+          to: 'documents.id',
+        },
+      },
+      internshipDocument: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Declarations.internshipDocumentId',
+          to: 'documents.id',
+        },
+      },
+      sickLeaveDocument: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Declarations.sickLeaveDocumentId',
+          to: 'documents.id',
+        },
+      },
+      maternityLeaveDocument: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Declarations.maternityLeaveDocumentId',
+          to: 'documents.id',
+        },
+      },
+      retirementDocument: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Declarations.retirementDocumentId',
+          to: 'documents.id',
+        },
+      },
+      invalidityDocument: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/Document`,
+        join: {
+          from: 'Declarations.invalidityDocumentId',
+          to: 'documents.id',
         },
       },
     }

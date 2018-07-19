@@ -174,35 +174,35 @@ module.exports = async function sendDeclaration(declaration) {
             : '#motifFinRechAutre',
       )
     }
-
-    // Validate form
-    await clickAndWaitForNavigation(page, 'button.js-only[type="submit"]')
-
-    const hiddenInconsistencyInput = await page.$(
-      'input[name="incoherenceValidee"]',
-    )
-
-    if (hiddenInconsistencyInput) {
-      // Do this once more in case we went on inconsistency page.
-
-      await clickAndWaitForNavigation(page, 'button.js-only[type="submit"]')
-    }
-
-    await clickAndWaitForNavigation(page, 'button.js-only[type="submit"]')
-
-    // Ensure we got on the final redirection page by checking the link to the
-    // confirmation pdf exists.
-    await page.waitFor('.pdf-fat-link')
-
-    await transaction(ActivityLog.knex(), (trx) =>
-      Promise.all([
-        declaration.$query(trx).patch({ isTransmitted: true }),
-        ActivityLog.query(trx).insert({
-          userId: declaration.user.id,
-          action: ActivityLog.actions.TRANSMIT_DECLARATION,
-          metadata: JSON.stringify({}),
-        }),
-      ]),
-    )
   }
+
+  // Validate form
+  await clickAndWaitForNavigation(page, 'button.js-only[type="submit"]')
+
+  const hiddenInconsistencyInput = await page.$(
+    'input[name="incoherenceValidee"]',
+  )
+
+  if (hiddenInconsistencyInput) {
+    // Do this once more in case we went on inconsistency page.
+
+    await clickAndWaitForNavigation(page, 'button.js-only[type="submit"]')
+  }
+
+  await clickAndWaitForNavigation(page, 'button.js-only[type="submit"]')
+
+  // Ensure we got on the final redirection page by checking the link to the
+  // confirmation pdf exists.
+  await page.waitFor('.pdf-fat-link')
+
+  await transaction(ActivityLog.knex(), (trx) =>
+    Promise.all([
+      declaration.$query(trx).patch({ isTransmitted: true }),
+      ActivityLog.query(trx).insert({
+        userId: declaration.user.id,
+        action: ActivityLog.actions.TRANSMIT_DECLARATION,
+        metadata: JSON.stringify({}),
+      }),
+    ]),
+  )
 }

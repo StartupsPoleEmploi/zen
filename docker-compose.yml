@@ -66,10 +66,9 @@ services:
 
   browserless:
     image: browserless/chrome
+    restart: unless-stopped
     expose:
       - "3000"
-    ports:
-      - "3000:3000"
     shm_size: "1gb"
     volumes:
      - "./back:/home/back"

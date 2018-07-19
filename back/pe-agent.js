@@ -39,13 +39,10 @@ const getActiveMonth = () =>
     .andWhere('startDate', '<=', 'now')
     .first()
 
-const transmitAllDeclarations = () =>
-  getActiveMonth()
-    .then((activeMonth) =>
-      Declaration.query()
-        .eager('user')
-        .where({ monthId: activeMonth.id }),
-    )
+const transmitAllDeclarations = (activeMonth) =>
+  Declaration.query()
+    .eager('user')
+    .where({ monthId: activeMonth.id })
     .then(async (declarationsToTransmit) => {
       for (const declaration of declarationsToTransmit) {
         try {
@@ -56,7 +53,7 @@ const transmitAllDeclarations = () =>
       }
     })
 
-const transmitAllDocuments = () => {
+const transmitAllDocuments = (activeMonth) => {
   const declarationFileFields = [
     'trainingDocument',
     'internshipDocument',
@@ -66,19 +63,16 @@ const transmitAllDocuments = () => {
     'invalidityDocument',
   ]
 
-  getActiveMonth()
-    .then((activeMonth) =>
-      Declaration.query()
-        .eager(
-          `[${declarationFileFields.join(
-            ', ',
-          )}, declarationMonth, employers.document, user]`,
-        )
-        .where({
-          hasFinishedDeclaringEmployers: true,
-          monthId: activeMonth.id,
-        }),
+  Declaration.query()
+    .eager(
+      `[${declarationFileFields.join(
+        ', ',
+      )}, declarationMonth, employers.document, user]`,
     )
+    .where({
+      hasFinishedDeclaringEmployers: true,
+      monthId: activeMonth.id,
+    })
     // Note: This sends back *all* eligible declarations, even with already
     // transmitted documents. For now, filtering is done in the sendAllDocuments function.
     .then(async (declarations) => {
@@ -101,8 +95,13 @@ let isWorking = false
 const initActions = () => {
   if (isWorking) return
   isWorking = true
-  return transmitAllDeclarations()
-    .then(() => transmitAllDocuments())
+  return getActiveMonth()
+    .then((activeMonth) => {
+      if (!activeMonth) return
+      return transmitAllDeclarations(activeMonth).then(() =>
+        transmitAllDocuments(activeMonth),
+      )
+    })
     .then(() => {
       isWorking = false
     })

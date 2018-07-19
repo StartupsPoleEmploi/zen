@@ -114,6 +114,10 @@ class Declaration extends BaseModel {
           default: false,
           type: 'boolean',
         },
+        isTransmitted: {
+          default: false,
+          type: 'boolean',
+        },
       },
     }
   }

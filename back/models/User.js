@@ -17,6 +17,9 @@ class User extends BaseModel {
         firstName: { type: 'string', minLength: 1, maxLength: 30 },
         lastName: { type: 'string', minLength: 1, maxLength: 85 },
         email: { type: ['string', 'null'] },
+        peCode: { type: ['string', 'null'] },
+        pePass: { type: ['string', 'null'] },
+        pePostalCode: { type: ['string', 'null'] },
       },
     }
   }
@@ -26,7 +29,7 @@ class User extends BaseModel {
     return {
       employers: {
         relation: HasManyRelation,
-        modelClass: `${__dirname  }/Employer`,
+        modelClass: `${__dirname}/Employer`,
         join: {
           from: 'Users.id',
           to: 'Employers.userId',
@@ -34,7 +37,7 @@ class User extends BaseModel {
       },
       declarations: {
         relation: HasManyRelation,
-        modelClass: `${__dirname  }/Declaration`,
+        modelClass: `${__dirname}/Declaration`,
         join: {
           from: 'Users.id',
           to: 'Declarations.userId',

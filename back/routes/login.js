@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const superagent = require('superagent')
 const jwt = require('jsonwebtoken')
 const config = require('config')
-const { startCase, toLower } = require('lodash')
+const { pick, startCase, toLower } = require('lodash')
 
 const User = require('../models/User')
 
@@ -109,7 +109,10 @@ router.get('/callback', (req, res, next) => {
         })
     })
     .then((user) => {
-      req.session.user = user
+      req.session.user = {
+        ...pick(user, ['id', 'firstName', 'lastName']),
+        isAuthorizedForTests: !!user.peCode,
+      }
       req.user = user // For sentry reporting
       res.redirect('/')
     })

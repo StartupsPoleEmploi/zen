@@ -21,6 +21,8 @@ export default class DatePicker extends PureComponent {
     onSelectDate: PropTypes.func.isRequired,
     value: PropTypes.object, // date
     name: PropTypes.string.isRequired,
+    maxDate: PropTypes.instanceOf('Date'),
+    minDate: PropTypes.instanceOf('Date'),
   }
 
   handleDateChange = (date) => {
@@ -39,6 +41,10 @@ export default class DatePicker extends PureComponent {
           rightArrowIcon={<ChevronRight />}
           leftArrowIcon={<ChevronLeft />}
           keyboardIcon={<Keyboard />}
+          maxDate={this.props.maxDate}
+          minDate={this.props.minDate}
+          maxDateMessage="La date doit faire partie du mois déclaré"
+          minDateMessage="La date doit faire partie du mois déclaré"
         />
       </MuiPickersUtilsProvider>
     )

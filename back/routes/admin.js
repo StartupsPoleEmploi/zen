@@ -4,7 +4,8 @@ const auth = require('http-auth')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
-const { kebabCase } = require('lodash')
+const { get, kebabCase } = require('lodash')
+const { uploadsDirectory: uploadDestination } = require('config')
 
 const ActivityLog = require('../models/ActivityLog')
 const Administrator = require('../models/Administrators')
@@ -14,6 +15,8 @@ const actionsLabels = {
   VALIDATE_DECLARATION: `Étape 1 (déclaration initiale) terminée`,
   VALIDATE_EMPLOYERS: `Étape 2 (employeurs, salaires et heures travaillée) terminée`,
   VALIDATE_FILES: `Étape 3 (envoi des fichiers) terminée`,
+  TRANSMIT_FILE: `Fichier transmis sur pole-emploi.fr`,
+  TRANSMIT_DECLARATION: `Déclaration transmise sur pole-emploi.fr`,
 }
 
 const statuses = {
@@ -95,7 +98,7 @@ router.get('/', auth.connect(basic), (req, res) => {
                     ? `<a href="/api/admin/${
                         log.metadata.declarationId
                       }">Voir la déclaration</a>`
-                    : ''
+                    : log.metadata.file || ''
                 }
               </td>
               <td style="padding: 10px;">
@@ -245,38 +248,38 @@ router.get('/:declarationId', (req, res) => {
 })
 
 router.get('/:declarationId/files', (req, res) => {
+  const documentKeys = [
+    'trainingDocument',
+    'internshipDocument',
+    'sickLeaveDocument',
+    'maternityLeaveDocument',
+    'retirementDocument',
+    'invalidityDocument',
+  ]
   Declaration.query()
-    .eager('[employers, user, declarationMonth]')
+    .eager(
+      `[${documentKeys.join(
+        ', ',
+      )}, employers.document, user, declarationMonth]`,
+    )
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
-
-      // TODO duplicated in lib/upload, refactor
-
-      const uploadDestination =
-        process.env.NODE_ENV === 'production' ? 'uploads/' : '/tmp/uploads/'
 
       const formattedMonth = format(
         declaration.declarationMonth.month,
         'MM-YYYY',
       )
 
-      const files = [
-        'trainingDocument',
-        'internshipDocument',
-        'sickLeaveDocument',
-        'maternityLeaveDocument',
-        'retirementDocument',
-        'invalidityDocument',
-      ]
+      const files = documentKeys
         .map((label) => ({
           label,
-          value: declaration[label],
+          value: get(declaration, `${label}.file`),
         }))
         .concat(
           declaration.employers.map((employer) => ({
             label: `employer-${employer.employerName}`,
-            value: employer.file,
+            value: get(employer, 'document.file'),
           })),
         )
         .filter(({ value }) => value) // remove null values

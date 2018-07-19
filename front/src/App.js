@@ -110,6 +110,25 @@ class App extends Component {
       )
     }
 
+    if (!user.isAuthorizedForTests) {
+      return (
+        <Layout user={user}>
+          <Typography>
+            Bonjour, merci de l'intérêt que vous portez au service Zen.
+          </Typography>
+          <Typography>
+            {' '}
+            Notre service n'est actuellement ouvert en beta qu'à quelques
+            testeurs, merci de réessayer un prochain mois.{' '}
+          </Typography>
+          <Typography>
+            Si vous souhaitez contacter l'équipe, vous pouvez envoyer un message
+            à <a href="mailto:zen@pole-emploi.fr">zen@pole-emploi.fr</a>
+          </Typography>
+        </Layout>
+      )
+    }
+
     if (err) {
       return (
         <Layout user={user}>

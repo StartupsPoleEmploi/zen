@@ -1,12 +1,14 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
+const { transaction } = require('objection')
 const { format } = require('date-fns')
 const spawnBrowserPage = require('./spawn-browser-page')
 const login = require('./login')
 
 const { clickAndWaitForNavigation } = require('./utils')
 const { uploadsDirectory } = require('../../config/default')
+const ActivityLog = require('../../models/ActivityLog')
 
 const isProd = process.env.NODE_ENV === 'production'
 const SEND_DOCUMENTS_URL = isProd
@@ -210,7 +212,18 @@ async function sendDocuments(declaration) {
     )
     try {
       await sendOneDocument(page, documentFormData).then(() =>
-        documentFormData.document.$query().patch({ isTransmitted: true }),
+        transaction(ActivityLog.knex(), (trx) =>
+          Promise.all([
+            documentFormData.document
+              .$query(trx)
+              .patch({ isTransmitted: true }),
+            ActivityLog.query(trx).insert({
+              userId: declaration.user.id,
+              action: ActivityLog.actions.TRANSMIT_FILE,
+              metadata: JSON.stringify({ file: documentFormData.label }),
+            }),
+          ]),
+        ),
       )
     } catch (e) {
       console.error(

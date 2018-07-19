@@ -15,6 +15,8 @@ const actionsLabels = {
   VALIDATE_DECLARATION: `Étape 1 (déclaration initiale) terminée`,
   VALIDATE_EMPLOYERS: `Étape 2 (employeurs, salaires et heures travaillée) terminée`,
   VALIDATE_FILES: `Étape 3 (envoi des fichiers) terminée`,
+  TRANSMIT_FILE: `Fichier transmis sur pole-emploi.fr`,
+  TRANSMIT_DECLARATION: `Déclaration transmise sur pole-emploi.fr`,
 }
 
 const statuses = {
@@ -96,7 +98,7 @@ router.get('/', auth.connect(basic), (req, res) => {
                     ? `<a href="/api/admin/${
                         log.metadata.declarationId
                       }">Voir la déclaration</a>`
-                    : ''
+                    : log.metadata.file || ''
                 }
               </td>
               <td style="padding: 10px;">

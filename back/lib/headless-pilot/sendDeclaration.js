@@ -1,10 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
+const { transaction } = require('objection')
 const { format } = require('date-fns')
+
 const { clickAndWaitForNavigation } = require('./utils')
 const spawnBrowserPage = require('./spawn-browser-page')
 const login = require('./login')
+const ActivityLog = require('../../models/ActivityLog')
 
 const isProd = process.env.NODE_ENV === 'production'
 const REDIRECTION_TO_DECLARATION_URL = isProd
@@ -191,6 +194,15 @@ module.exports = async function sendDeclaration(declaration) {
     // confirmation pdf exists.
     await page.waitFor('.pdf-fat-link')
 
-    await declaration.$query().patch({ isTransmitted: true })
+    await transaction(ActivityLog.knex(), (trx) =>
+      Promise.all([
+        declaration.$query(trx).patch({ isTransmitted: true }),
+        ActivityLog.query(trx).insert({
+          userId: declaration.user.id,
+          action: ActivityLog.actions.TRANSMIT_DECLARATION,
+          metadata: JSON.stringify({}),
+        }),
+      ]),
+    )
   }
 }

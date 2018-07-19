@@ -48,7 +48,7 @@ const transmitAllDeclarations = (activeMonth) =>
         try {
           await sendDeclaration(declaration)
         } catch (e) {
-          console.error(`Error transmitting declaration ${declaration.id}`)
+          console.error(`Error transmitting declaration ${declaration.id}`, e)
         }
       }
     })

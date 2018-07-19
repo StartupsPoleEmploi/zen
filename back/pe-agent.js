@@ -42,7 +42,7 @@ const getActiveMonth = () =>
 const transmitAllDeclarations = (activeMonth) =>
   Declaration.query()
     .eager('user')
-    .where({ monthId: activeMonth.id })
+    .where({ monthId: activeMonth.id, isTransmitted: false })
     .then(async (declarationsToTransmit) => {
       for (const declaration of declarationsToTransmit) {
         try {

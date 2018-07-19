@@ -4,7 +4,7 @@ const auth = require('http-auth')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
-const { kebabCase } = require('lodash')
+const { get, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
 const ActivityLog = require('../models/ActivityLog')
@@ -246,8 +246,20 @@ router.get('/:declarationId', (req, res) => {
 })
 
 router.get('/:declarationId/files', (req, res) => {
+  const documentKeys = [
+    'trainingDocument',
+    'internshipDocument',
+    'sickLeaveDocument',
+    'maternityLeaveDocument',
+    'retirementDocument',
+    'invalidityDocument',
+  ]
   Declaration.query()
-    .eager('[employers, user, declarationMonth]')
+    .eager(
+      `[${documentKeys.join(
+        ', ',
+      )}, employers.document, user, declarationMonth]`,
+    )
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
@@ -257,22 +269,15 @@ router.get('/:declarationId/files', (req, res) => {
         'MM-YYYY',
       )
 
-      const files = [
-        'trainingDocument',
-        'internshipDocument',
-        'sickLeaveDocument',
-        'maternityLeaveDocument',
-        'retirementDocument',
-        'invalidityDocument',
-      ]
+      const files = documentKeys
         .map((label) => ({
           label,
-          value: declaration[label],
+          value: get(declaration, `${label}.file`),
         }))
         .concat(
           declaration.employers.map((employer) => ({
             label: `employer-${employer.employerName}`,
-            value: employer.file,
+            value: get(employer, 'document.file'),
           })),
         )
         .filter(({ value }) => value) // remove null values

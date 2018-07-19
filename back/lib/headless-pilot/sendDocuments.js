@@ -42,7 +42,6 @@ async function sendOneDocument(
   // This is because when the select appear, the options
   // may not be loaded, are they seem to be loaded via ajax.
   await page.goto(SEND_DOCUMENTS_URL)
-  console.log('On send documents page')
 
   await page
     .select('#listeDeroulanteContexte', DOC_CONTEXT.DECLARATION)
@@ -54,8 +53,6 @@ async function sendOneDocument(
     page.waitForNavigation(),
     page.click('#listeDeroulanteContexte + noscript input[type="submit"]'),
   ])
-
-  console.log('Gonna select the situation')
 
   await page
     .select('#listeDeroulanteSituation', selectOptionValue)
@@ -69,8 +66,6 @@ async function sendOneDocument(
   ])
 
   if (selectOptionValue === DOC_SITUATION_SELECT_VALUES.ACTIVITY_WITH_SALARY) {
-    console.log('Gonna choose to send either a salary sheet or a certificate')
-
     await page.select(
       '#listeDeroulanteTypeDocument',
       isFileCertificate
@@ -87,44 +82,36 @@ async function sendOneDocument(
     ])
   }
 
-  console.log('Gonna write the document name')
-
   await page.focus('#nomDocument')
   await page.click('#nomDocument', { clickCount: 3 })
   await page.keyboard.type(label)
 
-  console.log('Gonna validate document infos')
-
   await clickAndWaitForNavigation(page, 'input[type="submit"][value="Valider"]')
-
-  console.log('On page to upload document')
 
   const fileInput = await page.$('#filePourMultiple')
   await fileInput.uploadFile(filePath)
-
-  console.log('Gonna upload the document')
 
   await Promise.all([
     page.click('#boutonAjouterFichier + noscript input[type="submit"]'),
     page.waitForNavigation(),
   ])
 
-  console.log('Gonna check that the document was uploaded')
-
   await page.waitFor('#multi-upload .nom-doc')
 
-  console.log('Gonna validate')
   await clickAndWaitForNavigation(page, 'input[type="submit"][value="Valider"]')
   // Get to the confirmation page
-
-  console.log('Waiting 5s before moving on')
 
   // Waiting for 5000ms. At this step, a preview of pdf is displayed in the browser
   // And everything crashes if we try to validate right away.
   // So we let the time to Chrome to finish whatever it's doing before moving on.
+  // (We have configurated the browser to intercept the pdf loading
+  // but the wait still helps)
   await page.waitFor(5000)
 
-  console.log('Gonna do final confirmation')
+  const url = await page.url()
+  if (!url.includes('previsualiserdocument')) {
+    throw new Error(`Couldn't get to previsualisation page.`)
+  }
 
   await clickAndWaitForNavigation(
     page,
@@ -217,7 +204,7 @@ async function sendDocuments(declaration) {
 
   for (const documentFormData of documentsFormData) {
     console.log(
-      `Going send document ${documentFormData.label}(id: ${
+      `Going send document ${documentFormData.label} (id: ${
         documentFormData.document.id
       })`,
     )
@@ -230,6 +217,7 @@ async function sendDocuments(declaration) {
         `Error sending some documents from declaration ${
           declaration.id
         } (docId: ${documentFormData.document.id})`,
+        e,
       )
     }
   }

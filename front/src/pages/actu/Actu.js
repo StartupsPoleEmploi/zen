@@ -220,11 +220,21 @@ export class Actu extends Component {
       return <MaternalAssistantCheck onValidate={this.setIsMaternalAssistant} />
     }
 
+    const activeMonthMoment = moment(this.props.activeMonth)
+
+    const datePickerMinDate = activeMonthMoment
+      .clone()
+      .startOf('month')
+      .toDate()
+    const datePickerMaxDate = activeMonthMoment
+      .clone()
+      .endOf('month')
+      .toDate()
+
     return (
       <StyledActu>
         <Title>
-          Déclarer ma situation de{' '}
-          {moment(this.props.activeMonth).format('MMMM')}
+          Déclarer ma situation de {activeMonthMoment.format('MMMM')}
         </Title>
 
         <form>
@@ -245,12 +255,16 @@ export class Actu extends Component {
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="trainingStartDate"
                   value={this.state.trainingStartDate}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="trainingEndDate"
                   value={this.state.trainingEndDate}
                 />
@@ -264,12 +278,16 @@ export class Actu extends Component {
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="internshipStartDate"
                   value={this.state.internshipStartDate}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="internshipEndDate"
                   value={this.state.internshipEndDate}
                 />
@@ -283,12 +301,16 @@ export class Actu extends Component {
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="sickLeaveStartDate"
                   value={this.state.sickLeaveStartDate}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="sickLeaveEndDate"
                   value={this.state.sickLeaveEndDate}
                 />
@@ -302,6 +324,8 @@ export class Actu extends Component {
                 <DatePicker
                   label="Date de début"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="maternityLeaveStartDate"
                   value={this.state.maternityLeaveStartDate}
                 />
@@ -315,6 +339,8 @@ export class Actu extends Component {
                 <DatePicker
                   label="Depuis le"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="retirementStartDate"
                   value={this.state.retirementStartDate}
                 />
@@ -328,6 +354,8 @@ export class Actu extends Component {
                 <DatePicker
                   label="Depuis le"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="invalidityStartDate"
                   value={this.state.invalidityStartDate}
                 />
@@ -347,6 +375,8 @@ export class Actu extends Component {
                 <DatePicker
                   label="Date de fin de recherche"
                   onSelectDate={this.onSetDate}
+                  minDate={datePickerMinDate}
+                  maxDate={datePickerMaxDate}
                   name="jobSearchEndDate"
                   value={this.state.jobSearchEndDate}
                 />

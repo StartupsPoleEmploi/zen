@@ -209,9 +209,9 @@ async function sendDocuments(declaration) {
       })`,
     )
     try {
-      await sendOneDocument(page, documentFormData).then(() => {
-        documentFormData.document.$query().patch({ isTransmitted: true })
-      })
+      await sendOneDocument(page, documentFormData).then(() =>
+        documentFormData.document.$query().patch({ isTransmitted: true }),
+      )
     } catch (e) {
       console.error(
         `Error sending some documents from declaration ${

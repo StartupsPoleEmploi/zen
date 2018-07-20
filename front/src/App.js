@@ -147,7 +147,8 @@ class App extends Component {
           {steps.map((label, index) => (
             <Step key={label}>
               <StepLabel>
-                {index >= activeStep ? (
+                {// Disable navigation back on last step
+                index >= activeStep || activeStep >= 2 ? (
                   label
                 ) : (
                   <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>

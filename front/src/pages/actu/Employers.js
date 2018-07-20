@@ -1,5 +1,10 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import Typography from '@material-ui/core/Typography'
 import { cloneDeep, isBoolean, pick } from 'lodash'
 import moment from 'moment'
@@ -104,6 +109,7 @@ export class Employers extends Component {
     employers: [{ ...employerTemplate }],
     isLoading: true,
     error: null,
+    isDialogOpened: false,
   }
 
   componentDidMount() {
@@ -178,6 +184,8 @@ export class Employers extends Component {
   }
 
   onSubmit = () => {
+    this.setState({ isDialogOpened: false })
+
     if (this.state.employers.length === 0) {
       return this.setState({
         error: `Merci d'entrer les informations sur vos employeurs`,
@@ -226,6 +234,9 @@ export class Employers extends Component {
         })
       })
   }
+
+  openDialog = () => this.setState({ isDialogOpened: true })
+  closeDialog = () => this.setState({ isDialogOpened: false })
 
   renderEmployerQuestion = (data, index) => (
     <EmployerQuestion
@@ -279,10 +290,32 @@ export class Employers extends Component {
           <Button variant="raised" onClick={this.onSave}>
             Enregistrer et finir plus tard
           </Button>
-          <Button variant="raised" onClick={this.onSubmit} color="primary">
+          <Button variant="raised" onClick={this.openDialog} color="primary">
             Envoyer mon actualisation
           </Button>
         </ButtonsContainer>
+
+        <Dialog
+          open={this.state.isDialogOpened}
+          onClose={this.closeDialog}
+          aria-labelledby="ActuDialogContentText"
+        >
+          <DialogTitle>Valider votre déclaration ?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="ActuDialogContentText">
+              Votre déclaration et nombre d'heures travaillées seront transmis à
+              Pôle-Emploi. Vous ne pourrez plus modifier ces informations.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.closeDialog} color="primary">
+              Annuler
+            </Button>
+            <Button onClick={this.onSubmit} color="primary" autoFocus>
+              Valider
+            </Button>
+          </DialogActions>
+        </Dialog>
       </StyledEmployers>
     )
   }

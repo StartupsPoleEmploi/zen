@@ -42,7 +42,12 @@ const getActiveMonth = () =>
 const transmitAllDeclarations = (activeMonth) =>
   Declaration.query()
     .eager('user')
-    .where({ monthId: activeMonth.id, isTransmitted: false })
+    .where({
+      monthId: activeMonth.id,
+      isTransmitted: false,
+      // PE declaration is both declaration an work hours / salary
+      hasFinishedDeclaringEmployers: true,
+    })
     .then(async (declarationsToTransmit) => {
       for (const declaration of declarationsToTransmit) {
         try {

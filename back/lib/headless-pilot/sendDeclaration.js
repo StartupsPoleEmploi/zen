@@ -56,13 +56,16 @@ module.exports = async function sendDeclaration(declaration) {
     declaration.hasWorked ? '#blocTravail-open' : '#blocTravail-close',
   )
   if (declaration.hasWorked) {
+    // We cannot declare more than 450 hours to PE.fr
+    // or the form will refuse our input
+    const actualWorkHours = declaration.employers.reduce(
+      (prev, { workHours }) => prev + workHours,
+      0,
+    )
+    const declaredWorkHours = actualWorkHours > 450 ? 450 : actualWorkHours
     await page.waitFor('#blocTravail.js-show')
     await page.focus('#nbHeuresTrav')
-    await page.keyboard.type(
-      declaration.employers
-        .reduce((prev, { workHours }) => prev + workHours, 0)
-        .toString(),
-    )
+    await page.keyboard.type(declaredWorkHours.toString())
     await page.focus('#montSalaire')
     await page.keyboard.type(
       declaration.employers

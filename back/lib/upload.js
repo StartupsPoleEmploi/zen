@@ -12,7 +12,7 @@ const upload = multer({
       cb(
         null,
         `${req.session.user.id}-${Date.now()}-${
-          fileExtension === 'jpeg' ? 'jpg' : fileExtension
+          fileExtension === '.jpeg' ? '.jpg' : fileExtension
         }`,
       )
     },

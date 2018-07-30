@@ -6,12 +6,14 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: uploadDestination,
     filename(req, file, cb) {
-      path.extname(file.originalname)
+      const fileExtension = path.extname(file.originalname).toLowerCase()
+      // Renaming jpeg files, since when transferring data to it, pole-emploi.fr does not handle
+      // "jpeg" files >_<
       cb(
         null,
-        `${req.session.user.id}-${Date.now()}-${path.extname(
-          file.originalname,
-        )}`,
+        `${req.session.user.id}-${Date.now()}-${
+          fileExtension === 'jpeg' ? 'jpg' : fileExtension
+        }`,
       )
     },
   }),

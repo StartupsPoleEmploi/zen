@@ -72,6 +72,9 @@ class App extends Component {
             isLoading: false,
           })
           if (declaration) {
+            if (declaration.isFinished) {
+              return this.props.history.replace('/thanks')
+            }
             if (declaration.hasFinishedDeclaringEmployers) {
               return this.props.history.replace('/files')
             }
@@ -183,7 +186,7 @@ class App extends Component {
             exact
             isLoggedIn={!!user}
             path="/thanks"
-            render={(props) => <Thanks {...props} />}
+            render={(props) => <Thanks {...props} activeMonth={activeMonth} />}
           />
           <Route exact path="/loggedOut" component={LoggedOut} />
           <Route render={() => <div>404</div>} />

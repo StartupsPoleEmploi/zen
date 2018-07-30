@@ -75,11 +75,11 @@ const transmitAllDocuments = (activeMonth) => {
       )}, declarationMonth, employers.document, user]`,
     )
     .where({
-      hasFinishedDeclaringEmployers: true,
+      isFinished: true,
       monthId: activeMonth.id,
     })
     // Note: This sends back *all* eligible declarations, even with already
-    // transmitted documents. For now, filtering is done in the sendAllDocuments function.
+    // transmitted documents. For now, filtering is done in the sendDocuments function.
     .then(async (declarations) => {
       for (const declaration of declarations) {
         try {

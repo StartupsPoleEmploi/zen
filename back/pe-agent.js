@@ -41,7 +41,7 @@ const getActiveMonth = () =>
 
 const transmitAllDeclarations = (activeMonth) =>
   Declaration.query()
-    .eager('user')
+    .eager('[user, employers]')
     .where({
       monthId: activeMonth.id,
       isTransmitted: false,

@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -17,18 +18,21 @@ const LandingText = styled(Typography)`
   padding: 8rem 0;
 `
 
-export const Thanks = ({ location: { search } }) => (
+export const Thanks = ({ activeMonth, location: { search } }) => (
   <StyledThanks>
     <LandingText variant="headline">Merci !</LandingText>
     <LandingText variant="title">
       {search.includes('later')
         ? 'Vous pourrez reprendre votre actualisation ultérieurement'
-        : 'Vous avez terminé !'}
+        : `Vous avez terminé votre declaration de ${moment(activeMonth).format(
+            'MMMM',
+          )}!`}
     </LandingText>
   </StyledThanks>
 )
 
 Thanks.propTypes = {
+  activeMonth: PropTypes.instanceOf(Date),
   location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
 }
 

@@ -62,7 +62,7 @@ export class AdditionalDocumentUpload extends Component {
   static propTypes = {
     declarationId: PropTypes.number.isRequired,
     error: PropTypes.string,
-    file: PropTypes.string,
+    fileExistsOnServer: PropTypes.bool,
     label: PropTypes.string.isRequired,
     name: PropTypes.string,
     isLoading: PropTypes.bool,
@@ -73,7 +73,14 @@ export class AdditionalDocumentUpload extends Component {
     this.props.submitFile({ file: files[0] })
 
   render() {
-    const { declarationId, error, file, isLoading, name, label } = this.props
+    const {
+      declarationId,
+      error,
+      fileExistsOnServer,
+      isLoading,
+      name,
+      label,
+    } = this.props
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
 
@@ -96,7 +103,7 @@ export class AdditionalDocumentUpload extends Component {
             <Container>
               {error
                 ? formattedError
-                : file && (
+                : fileExistsOnServer && (
                     <StyledA
                       href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
                       target="_blank"
@@ -108,14 +115,14 @@ export class AdditionalDocumentUpload extends Component {
                   )}
               <StyledFormLabel>
                 {input}
-                {!file &&
+                {!fileExistsOnServer &&
                   !error && (
                     <StyledFormHelperText>
                       {label} à envoyer
                     </StyledFormHelperText>
                   )}
                 <Button component="span" size="small">
-                  {file ? 'Remplacer' : 'Parcourir'}
+                  {fileExistsOnServer ? 'Remplacer' : 'Parcourir'}
                 </Button>
               </StyledFormLabel>
             </Container>

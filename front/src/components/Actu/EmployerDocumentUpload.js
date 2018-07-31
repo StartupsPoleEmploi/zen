@@ -63,7 +63,7 @@ export class EmployerDocumentUpload extends Component {
     id: PropTypes.number.isRequired,
     employerName: PropTypes.string.isRequired,
     error: PropTypes.string,
-    file: PropTypes.string,
+    fileExistsOnServer: PropTypes.bool,
     isLoading: PropTypes.bool,
     hasEndedThisMonth: PropTypes.bool.isRequired,
     submitFile: PropTypes.func.isRequired,
@@ -76,7 +76,7 @@ export class EmployerDocumentUpload extends Component {
     const {
       employerName,
       error,
-      file,
+      fileExistsOnServer,
       id,
       hasEndedThisMonth,
       isLoading,
@@ -113,7 +113,7 @@ export class EmployerDocumentUpload extends Component {
             <Container>
               {error
                 ? formattedError
-                : file && (
+                : fileExistsOnServer && (
                     <StyledA
                       href={`/api/employers/files?employerId=${id}`}
                       target="_blank"
@@ -125,14 +125,14 @@ export class EmployerDocumentUpload extends Component {
                   )}
               <StyledFormLabel>
                 {input}
-                {!file &&
+                {!fileExistsOnServer &&
                   !error && (
                     <StyledFormHelperText>
                       {capitalize(documentToGive)} à envoyer
                     </StyledFormHelperText>
                   )}
                 <Button component="span" size="small">
-                  {file ? 'Remplacer' : 'Parcourir'}
+                  {fileExistsOnServer ? 'Remplacer' : 'Parcourir'}
                 </Button>
               </StyledFormLabel>
             </Container>

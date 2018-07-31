@@ -245,11 +245,12 @@ export class Files extends Component {
 
   renderAdditionalDocument = (document) => (
     <AdditionalDocumentUpload
+      key={document.name}
       declarationId={this.state.declaration.id}
       label={document.label}
       name={document.name}
       error={this.state[`${document.name}Error`]}
-      file={this.state.declaration[document.name]}
+      fileExistsOnServer={!!this.state.declaration[document.name]}
       isLoading={this.state[`isLoading${document.name}`]}
       submitFile={({ file }) =>
         this.submitAdditionalFile({ file, name: document.name })
@@ -262,7 +263,7 @@ export class Files extends Component {
       key={employer.id}
       {...employer}
       submitFile={this.submitFile}
-      file={employer.document} // TODO refactor this
+      fileExistsOnServer={!!employer.document}
     />
   )
 

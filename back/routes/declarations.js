@@ -126,13 +126,8 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         }
 
         const documentPromise = declaration[userDocumentName]
-          ? declaration[userDocumentName]
-              .$query()
-              .debug()
-              .patch(documentFileObj)
-          : Document.query()
-              .debug()
-              .insert(documentFileObj)
+          ? declaration[userDocumentName].$query().patch(documentFileObj)
+          : Document.query().insert(documentFileObj)
 
         return documentPromise
           .returning('*')

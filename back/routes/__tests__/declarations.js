@@ -3,6 +3,7 @@ const declarationsRouter = require('../declarations')
 const supertest = require('supertest')
 const Declaration = require('../../models/Declaration')
 const DeclarationMonth = require('../../models/DeclarationMonth')
+const Document = require('../../models/Document')
 const User = require('../../models/User')
 
 let user
@@ -48,22 +49,30 @@ const addBasicDeclaration = (params = {}) =>
   )
 
 const addDeclarationWithEmployers = ({ withFile = false }) =>
-  getActiveMonth().then((activeMonth) =>
-    Declaration.query().upsertGraph({
-      ...declarationFormData,
-      userId: user.id,
-      employers: [
-        {
+  Document.query()
+    .insert({
+      file: 'file.pdf',
+      isTransmitted: false,
+    })
+    .returning('*')
+    .then((document) =>
+      getActiveMonth().then((activeMonth) =>
+        Declaration.query().insertGraph({
+          ...declarationFormData,
           userId: user.id,
-          employerName: 'Paul',
-          workHours: 20,
-          salary: 200,
-          file: withFile ? 'file.pdf' : null,
-        },
-      ],
-      monthId: activeMonth.id,
-    }),
-  )
+          employers: [
+            {
+              userId: user.id,
+              employerName: 'Paul',
+              workHours: 20,
+              salary: 200,
+              documentId: withFile ? document.id : undefined,
+            },
+          ],
+          monthId: activeMonth.id,
+        }),
+      ),
+    )
 
 const postSickLeaveDocument = () =>
   addBasicDeclaration({
@@ -172,7 +181,7 @@ describe('declarations routes', () => {
     test('HTTP 200 if the file was correctly processed', () =>
       postSickLeaveDocument() // HTTP 200 checked here
         .then((declaration) =>
-          expect(declaration.sickLeaveDocument).toMatch(/\.pdf$/),
+          expect(declaration.sickLeaveDocument.file).toMatch(/\.pdf$/),
         ))
   })
 

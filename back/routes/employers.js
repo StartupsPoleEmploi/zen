@@ -133,13 +133,8 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
         }
 
         const documentPromise = employer.document
-          ? employer.document
-              .$query()
-              .debug()
-              .patch(documentFileObj)
-          : Document.query()
-              .debug()
-              .insert(documentFileObj)
+          ? employer.document.$query().patch(documentFileObj)
+          : Document.query().insert(documentFileObj)
 
         return documentPromise
           .returning('*')

@@ -25,7 +25,7 @@ storiesOf('AdditionalDocumentUpload', module)
   .add('with file', () => (
     <AdditionalDocumentUpload
       {...defaultProps}
-      file="weHaveAFile"
+      fileExistsOnServer
       name="MyFileName"
     />
   ))

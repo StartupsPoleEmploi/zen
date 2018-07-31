@@ -102,12 +102,12 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.4.7",
-    "@storybook/addon-knobs": "^3.4.7",
-    "@storybook/addon-links": "^3.4.7",
-    "@storybook/addon-storyshots": "^3.4.7",
-    "@storybook/addons": "^3.4.7",
-    "@storybook/react": "^3.4.7",
+    "@storybook/addon-actions": "^3.4.8",
+    "@storybook/addon-knobs": "^3.4.8",
+    "@storybook/addon-links": "^3.4.8",
+    "@storybook/addon-storyshots": "^3.4.8",
+    "@storybook/addons": "^3.4.8",
+    "@storybook/react": "^3.4.8",
     "react-test-renderer": "^16.4.1",
     "source-map-explorer": "^1.5.0",
     "storybook-host": "^5.0.0"

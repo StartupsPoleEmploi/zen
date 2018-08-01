@@ -36,7 +36,7 @@ export default class DatePicker extends PureComponent {
     return (
       <MuiPickersUtilsProvider utils={MomentUtils} moment={moment} locale="fr">
         <StyledMuiDatePicker
-          autoOk
+          cancelLabel="Annuler"
           label={this.props.label}
           format="DD/MM/YYYY"
           onChange={this.handleDateChange}

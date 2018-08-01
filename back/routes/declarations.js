@@ -1,13 +1,27 @@
 const express = require('express')
 
 const router = express.Router()
-const { omit } = require('lodash')
+const { reduce, omit } = require('lodash')
 const { transaction } = require('objection')
+const { format } = require('date-fns')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
+
+const declarationDateFields = [
+  'trainingStartDate',
+  'trainingEndDate',
+  'internshipStartDate',
+  'internshipEndDate',
+  'sickLeaveStartDate',
+  'sickLeaveEndDate',
+  'maternityLeaveStartDate',
+  'retirementStartDate',
+  'invalidityStartDate',
+  'jobSearchEndDate',
+]
 
 router.get('/', (req, res, next) => {
   if (!('last' in req.query)) return res.status(400).json('Route not ready')
@@ -26,14 +40,27 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   // TODO change this so the client sends a month, not an id
-  const declarationData = omit(
-    {
-      ...req.body,
-      userId: req.session.user.id,
-      monthId: req.activeMonth.id,
-    },
-    'id',
-  ) // prevent malicious overriding of other user declaration
+  const declarationData = reduce(
+    omit(
+      {
+        // prevent malicious overriding of other user declaration
+        ...req.body,
+        userId: req.session.user.id,
+        monthId: req.activeMonth.id,
+      },
+      'id',
+    ),
+    // format dates with date-fns for db insertion so they'll be at the correct day
+    // (dates may be in ISOString format, and are not converted when sent to a
+    // DATE field in the db)
+    (prev, field, key) => ({
+      ...prev,
+      [key]: declarationDateFields.includes(key)
+        ? field && format(field, 'YYYY-MM-DD')
+        : field,
+    }),
+    {},
+  )
 
   const declarationFetchPromise = req.body.id
     ? Declaration.query().findOne({

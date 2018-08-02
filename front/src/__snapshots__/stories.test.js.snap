@@ -502,7 +502,6 @@ exports[`Storyshots DatePicker default 1`] = `
       <div
         data-css-1v8lkxq=""
       >
-         
         <div
           className="MuiFormControl-root-1542 sc-jKJlTe ejXEyT"
           onClick={[Function]}
@@ -533,7 +532,6 @@ exports[`Storyshots DatePicker default 1`] = `
           </div>
           
         </div>
-         
         <div
           data-css-1xjdp6g=""
         >
@@ -593,7 +591,6 @@ exports[`Storyshots DatePicker with selected date 1`] = `
       <div
         data-css-1v8lkxq=""
       >
-         
         <div
           className="MuiFormControl-root-1589 sc-jKJlTe ejXEyT"
           onClick={[Function]}
@@ -619,12 +616,11 @@ exports[`Storyshots DatePicker with selected date 1`] = `
               readOnly={true}
               required={false}
               type="text"
-              value="18/06/2018"
+              value="02/07/2018"
             />
           </div>
           
         </div>
-         
         <div
           data-css-1xjdp6g=""
         >

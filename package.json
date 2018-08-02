@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint ./**/*.js",
     "precommit": "precise-commits && lint-staged",
-    "test": "docker-compose -p test -f docker-compose.test.yml run --rm node npm test"
+    "test": "docker-compose -p test -f docker-compose.test.yml run --rm node npm test && docker-compose -p test -f docker-compose.test.yml run --rm front npm test"
   },
   "lint-staged": {
     "*.js": [

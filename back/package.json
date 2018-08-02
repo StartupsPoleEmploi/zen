@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "production": "pm2 start --no-daemon ecosystem.config.js",
-    "start": "pm2-dev start bin/www",
+    "start": "pm2-dev start ecosystem.config.js",
     "knex": "knex",
     "test": "jest --runInBand --forceExit"
   },

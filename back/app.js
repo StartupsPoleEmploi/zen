@@ -7,6 +7,7 @@ const { Model } = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
+const pgConnectSimple = require('connect-pg-simple')
 const { version } = require('./package.json')
 
 const activeMonthMiddleware = require('./lib/activeMonthMiddleware')
@@ -16,7 +17,6 @@ const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const declarationMonthsRouter = require('./routes/declarationMonths')
 const employersRouter = require('./routes/employers')
-const adminRouter = require('./routes/admin')
 
 const knex = Knex({
   client: 'pg',
@@ -52,12 +52,11 @@ app.use(
     saveUninitialized: false,
     secure: false, // TODO set to true when in production
     secret: config.cookieSecret,
-    store: new (require('connect-pg-simple')(session))(), // eslint-disable-line
+    store: new (pgConnectSimple(session))(),
   }),
 )
 
 app.use('/ping', (req, res) => res.send('pong'))
-app.use('/admin', adminRouter)
 
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)

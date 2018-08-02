@@ -204,6 +204,8 @@ async function sendDocuments(declaration) {
     }))
     .filter(({ document }) => !document.isTransmitted)
 
+  let hasException = false
+
   for (const documentFormData of documentsFormData) {
     console.log(
       `Going send document ${documentFormData.label} (id: ${
@@ -226,11 +228,18 @@ async function sendDocuments(declaration) {
         ),
       )
     } catch (e) {
+      hasException = true
       console.error(
         `Error sending some documents from declaration ${
           declaration.id
         } (docId: ${documentFormData.document.id})`,
         e,
+      )
+    }
+
+    if (hasException) {
+      throw new Error(
+        `Error sending some documents from declaration ${declaration.id}`,
       )
     }
   }

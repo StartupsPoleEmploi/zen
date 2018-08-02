@@ -1,20 +1,10 @@
-const NodeMailjet = require('node-mailjet')
+const mailjetRequest = require('./mailjetRequest')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-if (!process.env.EMAIL_KEY || !process.env.EMAIL_KEY_SECRET) {
-  throw new Error('Mailjet info is not configured')
-}
-
-const mailjet = NodeMailjet.connect(
-  process.env.EMAIL_KEY,
-  process.env.EMAIL_KEY_SECRET,
-  { version: 'v3.1' },
-)
-
 const sendSubscriptionConfirmation = (user) =>
-  mailjet.post('send', { version: 'v3.1' }).request({
-    SandboxMode: !isProduction,
+  mailjetRequest({
+    SandboxMode: !isProduction, // Mailjet *will* send e-mails out of prod if this line is removed
     Messages: [
       {
         From: {

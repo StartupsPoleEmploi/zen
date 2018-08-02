@@ -6,6 +6,7 @@ const { Model } = require('objection')
 const Knex = require('knex')
 const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
+const sendDeclarationEmail = require('./lib/mailings/sendDeclarationEmail')
 
 const knex = Knex({
   client: 'pg',
@@ -41,7 +42,7 @@ const getActiveMonth = () =>
 
 const transmitAllDeclarations = (activeMonth) =>
   Declaration.query()
-    .eager('[user, employers]')
+    .eager('[declarationMonth, user, employers]')
     .where({
       monthId: activeMonth.id,
       isTransmitted: false,
@@ -53,6 +54,7 @@ const transmitAllDeclarations = (activeMonth) =>
         try {
           console.log(`Gonna send declaration ${declaration.id}`)
           await sendDeclaration(declaration)
+          await sendDeclarationEmail(declaration)
         } catch (e) {
           console.error(`Error transmitting declaration ${declaration.id}`, e)
         }

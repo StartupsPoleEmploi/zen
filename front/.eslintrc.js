@@ -11,7 +11,14 @@ module.exports = {
     'consistent-return': 0, // Often bothering with early returns
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['**/__tests__/*.js', '**/__stories__/*.js'] },
+      {
+        devDependencies: [
+          '**/__tests__/*.js',
+          '**/__stories__/*.js',
+          '**/*.test.js',
+          '**/tests/*.{js,jsx,mjs}',
+        ],
+      },
     ],
     'import/no-named-as-default': 0,
     'import/prefer-default-export': 0,

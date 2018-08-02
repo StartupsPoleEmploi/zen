@@ -25,12 +25,12 @@ storiesOf('EmployerDocumentUpload', module)
   ))
   .add('loading', () => <EmployerDocumentUpload {...defaultProps} isLoading />)
   .add('with file', () => (
-    <EmployerDocumentUpload {...defaultProps} file="weHaveAFile" />
+    <EmployerDocumentUpload {...defaultProps} fileExistsOnServer />
   ))
   .add('with file, ended this month', () => (
     <EmployerDocumentUpload
       {...defaultProps}
-      file="weHaveAFile"
+      fileExistsOnServer
       hasEndedThisMonth
     />
   ))

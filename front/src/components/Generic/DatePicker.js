@@ -19,17 +19,17 @@ export default class DatePicker extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     onSelectDate: PropTypes.func.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(moment),
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     name: PropTypes.string.isRequired,
     maxDate: PropTypes.instanceOf(Date),
     minDate: PropTypes.instanceOf(Date),
   }
 
-  handleDateChange = (date) => {
-    this.props.onSelectDate({ controlName: this.props.name, date })
+  handleDateChange = (momentDate) => {
+    this.props.onSelectDate({
+      controlName: this.props.name,
+      date: momentDate.toDate(),
+    })
   }
 
   render() {

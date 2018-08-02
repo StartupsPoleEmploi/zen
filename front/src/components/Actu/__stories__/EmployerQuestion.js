@@ -25,6 +25,7 @@ const defaultProps = {
   index: 1,
   onChange: action('onChange'),
   onRemove: action('onRemove'),
+  activeMonth: new Date('2018-07-01T09:51:28.389Z'),
 }
 
 storiesOf('EmployerQuestion', module)

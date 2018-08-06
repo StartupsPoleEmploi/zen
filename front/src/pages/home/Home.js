@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import GreenRectangle from '../../components/Generic/GreenRectangle'
 import LinkButton from '../../components/Generic/LinkButton'
 import PEConnectLink from '../../components/PEConnect/PEConnectLink'
 import landingBackground from './images/landingBackground.svg'
@@ -180,11 +181,8 @@ export const Home = ({ location: { search } }) => (
         <AppTitle>
           zen<span style={{ color: GREEN }}>.</span>
         </AppTitle>
-        <div /* This is a colored rectangle */
+        <GreenRectangle
           style={{
-            backgroundColor: GREEN,
-            width: '2rem',
-            height: '0.5rem',
             marginTop: '2rem',
             marginBottom: '2rem',
           }}

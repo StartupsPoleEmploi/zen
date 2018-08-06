@@ -300,7 +300,7 @@ export class Employers extends Component {
             onClose={this.closeDialog}
             aria-labelledby="ActuDialogContentText"
           >
-            <DialogTitle>Valider votre déclaration ?</DialogTitle>
+            <DialogTitle>Envoi de l'actualisation</DialogTitle>
             <DialogContent>
               <DialogContentText id="ActuDialogContentText">
                 Votre déclaration et nombre d'heures travaillées seront transmis

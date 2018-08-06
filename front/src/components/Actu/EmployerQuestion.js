@@ -5,11 +5,15 @@ import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import Clear from '@material-ui/icons/Clear'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
+
+import GreenRectangle from '../Generic/GreenRectangle'
+import TooltipOnFocus from '../Generic/TooltipOnFocus'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -63,6 +67,30 @@ const StyledClear = styled(Clear)`
     cursor: pointer;
   }
 `
+
+const TooltipText = styled(Typography)`
+  && {
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+  }
+`
+
+const TooltipTitle = styled(Typography)`
+  && {
+    color: #fff;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+  }
+`
+
+const greenRectangleStyle = {
+  width: '1.4rem',
+  height: '0.3rem',
+  borderRadius: '0.2rem',
+  marginTop: '1rem',
+  marginBottom: '1rem',
+}
 
 export class EmployerQuestion extends Component {
   static propTypes = {
@@ -126,33 +154,73 @@ export class EmployerQuestion extends Component {
       <StyledContainer>
         <StyledMain>
           <FieldsContainer>
-            <StyledTextField
-              label="Nom de l'employeur"
-              name={`employerName[${index}]`}
-              value={employerName.value}
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              error={!!employerName.error}
-              helperText={employerName.error}
-            />
-            <StyledTextField
-              label="Nombre d'heures"
-              name={`workHours[${index}]`}
-              value={workHours.value}
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              error={!!workHours.error}
-              helperText={workHours.error}
-            />
-            <StyledTextField
-              label="Salaire brut €"
-              name={`salary[${index}]`}
-              value={salary.value}
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              error={!!salary.error}
-              helperText={salary.error}
-            />
+            <TooltipOnFocus
+              content={
+                <Fragment>
+                  <GreenRectangle style={greenRectangleStyle} />
+                  <TooltipTitle>Information</TooltipTitle>
+                  <TooltipText>
+                    Si vous avez plusieurs bulletins de salaire par famille car
+                    vous gardez plusieurs enfants, ajoutez une ligne par
+                    bulletin de salaire.
+                  </TooltipText>
+                </Fragment>
+              }
+            >
+              <StyledTextField
+                label="Nom de l'employeur"
+                name={`employerName[${index}]`}
+                value={employerName.value}
+                onChange={this.onChange}
+                onBlur={this.onBlur}
+                error={!!employerName.error}
+                helperText={employerName.error}
+              />
+            </TooltipOnFocus>
+            <TooltipOnFocus
+              content={
+                <Fragment>
+                  <GreenRectangle style={greenRectangleStyle} />
+                  <TooltipTitle>Information</TooltipTitle>
+                  <TooltipText>
+                    Indiquez le nombre d'heures qui figurera sur votre fiche de
+                    paie (ex: heures mensualisées + complémentaires)
+                  </TooltipText>
+                </Fragment>
+              }
+            >
+              <StyledTextField
+                label="Nombre d'heures"
+                name={`workHours[${index}]`}
+                value={workHours.value}
+                onChange={this.onChange}
+                onBlur={this.onBlur}
+                error={!!workHours.error}
+                helperText={workHours.error}
+              />
+            </TooltipOnFocus>
+            <TooltipOnFocus
+              content={
+                <Fragment>
+                  <GreenRectangle style={greenRectangleStyle} />
+                  <TooltipTitle>Information</TooltipTitle>
+                  <TooltipText>
+                    Si votre employeur vous a payé des congés, n’oubliez pas
+                    d’inclure cette somme dans le salaire déclaré
+                  </TooltipText>
+                </Fragment>
+              }
+            >
+              <StyledTextField
+                label="Salaire brut €"
+                name={`salary[${index}]`}
+                value={salary.value}
+                onChange={this.onChange}
+                onBlur={this.onBlur}
+                error={!!salary.error}
+                helperText={salary.error}
+              />
+            </TooltipOnFocus>
           </FieldsContainer>
           <StyledFormControl>
             <StyledFormLabel>

@@ -95,7 +95,7 @@ router.get('/', auth.connect(basic), (req, res) => {
               <td style="padding: 10px;">
                 ${
                   log.metadata.declarationId
-                    ? `<a href="/api/admin/${
+                    ? `<a href="/zen-admin/${
                         log.metadata.declarationId
                       }">Voir la déclaration</a>`
                     : log.metadata.file || ''
@@ -236,7 +236,7 @@ router.get('/:declarationId', (req, res) => {
               )}h, ${calculateTotal(declaration.employers, 'salary')}€
             </p>
             <p>
-              <a href="/api/admin/${declaration.id}/files">
+              <a href="/zen-admin/${declaration.id}/files">
                 Télécharger les fichiers
                 (${declaration.isFinished ? 'validées' : 'non validés'})
               </a>

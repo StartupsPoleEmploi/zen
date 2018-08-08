@@ -134,21 +134,22 @@ class App extends Component {
 
     return (
       <Layout user={user}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel>
-                {// Disable navigation back on last step
-                index >= activeStep || activeStep >= 2 ? (
-                  label
-                ) : (
-                  <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
-                )}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
+        {activeStep !== -1 && (
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label, index) => (
+              <Step key={label}>
+                <StepLabel>
+                  {// Disable navigation back on last step
+                  index >= activeStep || activeStep >= 2 ? (
+                    label
+                  ) : (
+                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
+                  )}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        )}
         <Switch>
           <PrivateRoute
             exact

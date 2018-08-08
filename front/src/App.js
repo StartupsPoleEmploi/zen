@@ -18,6 +18,7 @@ import { Thanks } from './pages/actu/Thanks'
 import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
+import Signup from './pages/other/Signup'
 
 const steps = ['Déclaration', 'Employeurs', 'Documents']
 
@@ -71,6 +72,9 @@ class App extends Component {
               (activeMonthString && new Date(activeMonthString)) || null,
             isLoading: false,
           })
+
+          if (!user.isAuthorizedForTests) return
+
           if (declaration) {
             if (declaration.isFinished) {
               return this.props.history.replace('/thanks')
@@ -100,7 +104,10 @@ class App extends Component {
       return <Redirect to="/" />
     }
 
-    if (pathname === '/') return <Redirect from="/" to="/actu" />
+    if (pathname === '/') {
+      if (!user.isAuthorizedForTests) return <Redirect to="/signup" />
+      return <Redirect to="/actu" />
+    }
 
     if (!activeMonth) {
       return (
@@ -108,25 +115,6 @@ class App extends Component {
           <Typography>
             Le service d'actualisation n'est pas encore actif, merci de
             réessayer ultérieurement
-          </Typography>
-        </Layout>
-      )
-    }
-
-    if (!user.isAuthorizedForTests) {
-      return (
-        <Layout user={user}>
-          <Typography>
-            Bonjour, merci de l'intérêt que vous portez au service Zen.
-          </Typography>
-          <Typography>
-            {' '}
-            Notre service n'est actuellement ouvert en beta qu'à quelques
-            testeurs, merci de réessayer un prochain mois.{' '}
-          </Typography>
-          <Typography>
-            Si vous souhaitez contacter l'équipe, vous pouvez envoyer un message
-            à <a href="mailto:zen@pole-emploi.fr">zen@pole-emploi.fr</a>
           </Typography>
         </Layout>
       )
@@ -188,6 +176,13 @@ class App extends Component {
             path="/thanks"
             render={(props) => <Thanks {...props} activeMonth={activeMonth} />}
           />
+          <PrivateRoute
+            exact
+            isLoggedIn={!!user}
+            path="/signup"
+            render={(props) => <Signup {...props} user={user} />}
+          />
+
           <Route exact path="/loggedOut" component={LoggedOut} />
           <Route render={() => <div>404</div>} />
         </Switch>

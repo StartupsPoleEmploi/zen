@@ -119,6 +119,7 @@ router.get('/callback', (req, res, next) => {
         ...pick(user, ['id', 'firstName', 'lastName', 'email']),
         isAuthorizedForTests:
           !!user.peCode && !!user.pePass && !!user.pePostalCode,
+        isWaitingForConfirmation: !!user.peCode && !user.pePass,
       }
       req.user = req.session.user // For sentry reporting
       res.redirect('/')

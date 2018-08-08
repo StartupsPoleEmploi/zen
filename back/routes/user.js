@@ -1,6 +1,7 @@
 const express = require('express')
 
 const User = require('../models/User')
+const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 
 const router = express.Router()
 
@@ -20,13 +21,14 @@ router.patch('/', (req, res, next) => {
       if (!user) throw new Error('No such user')
 
       // We do not allow overriding previously obtained info.
-      return user.$query().patch({
+      return user.$query().patchAndFetch({
         email: user.email || req.body.email,
         peCode: user.peCode || req.body.peCode,
         pePostalCode: user.pePostalCode || req.body.pePostalCode,
       })
     })
-    .then(() => res.end())
+    .then((user) => sendSubscriptionConfirmation(user))
+    .then((data) => res.json(data))
     .catch(next)
 })
 module.exports = router

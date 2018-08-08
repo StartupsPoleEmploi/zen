@@ -34,6 +34,8 @@ services:
       - AUTH_REDIRECT_URI=${AUTH_REDIRECT_URI}
       - SENTRY_ENV=${SENTRY_ENV}
       - SENTRY_URL=${SENTRY_URL}
+      - EMAIL_KEY=${EMAIL_KEY}
+      - EMAIL_KEY_SECRET=${EMAIL_KEY_SECRET}
       - TZ=Europe/Paris
 
   front:

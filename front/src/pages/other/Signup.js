@@ -67,10 +67,7 @@ export class Signup extends Component {
       this.setState({ peCodeError: `Merci d'entrer votre identifiant` })
       hasDetectedError = true
     }
-    if (
-      (!this.state.email && !this.props.user.email) ||
-      !EMAIL_REGEX.test(this.state.email)
-    ) {
+    if (!this.props.user.email && !EMAIL_REGEX.test(this.state.email)) {
       this.setState({ emailError: `Merci d'entrer une adresse e-mail valide` })
       hasDetectedError = true
     }

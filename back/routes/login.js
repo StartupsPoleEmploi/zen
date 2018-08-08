@@ -34,7 +34,7 @@ const oauth2 = require('simple-oauth2').create(credentials)
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm,
-  scope: `application_${clientId} api_peconnect-individuv1 openid profile email`,
+  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees`,
 }
 
 router.get('/', (req, res) => {
@@ -82,16 +82,22 @@ router.get('/callback', (req, res, next) => {
       return authToken
     })
     .then((authToken) =>
-      superagent
-        .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
-        .set('Authorization', `Bearer ${authToken.token.access_token}`),
+      Promise.all([
+        superagent
+          .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
+          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+        superagent
+          .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
+          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+      ]),
     )
-    .then(({ body }) => {
+    .then(([{ body: userinfo }, { body: coordinates }]) => {
       const user = {
-        peId: body.sub,
-        email: toLower(body.email),
-        firstName: startCase(toLower(body.given_name)),
-        lastName: startCase(toLower(body.family_name)),
+        peId: userinfo.sub,
+        email: toLower(userinfo.email),
+        firstName: startCase(toLower(userinfo.given_name)),
+        lastName: startCase(toLower(userinfo.family_name)),
+        pePostalCode: coordinates.codePostal,
       }
       return User.query()
         .findOne({ peId: user.peId })
@@ -110,10 +116,11 @@ router.get('/callback', (req, res, next) => {
     })
     .then((user) => {
       req.session.user = {
-        ...pick(user, ['id', 'firstName', 'lastName']),
-        isAuthorizedForTests: !!user.peCode,
+        ...pick(user, ['id', 'firstName', 'lastName', 'email']),
+        isAuthorizedForTests:
+          !!user.peCode && !!user.pePass && !!user.pePostalCode,
       }
-      req.user = user // For sentry reporting
+      req.user = req.session.user // For sentry reporting
       res.redirect('/')
     })
     .catch(next)

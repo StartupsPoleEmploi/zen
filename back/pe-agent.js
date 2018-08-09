@@ -7,6 +7,7 @@ const Knex = require('knex')
 const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
 const sendDeclarationEmail = require('./lib/mailings/sendDeclarationEmail')
+const sendDocumentsEmail = require('./lib/mailings/sendDocumentsEmail')
 
 const knex = Knex({
   client: 'pg',
@@ -145,6 +146,7 @@ const transmitAllDocuments = () => {
               `Gonna send documents from declaration ${declaration.id}`,
             )
             await sendDocuments(declaration)
+            await sendDocumentsEmail(declaration)
           } catch (e) {
             console.error(
               `Error sending some documents from declaration ${declaration.id}`,

@@ -23,10 +23,10 @@ export const Thanks = ({ activeMonth, location: { search } }) => (
     <LandingText variant="headline">Merci !</LandingText>
     <LandingText variant="title">
       {search.includes('later')
-        ? 'Vous pourrez reprendre votre actualisation ultérieurement'
-        : `Vous avez terminé votre declaration de ${moment(activeMonth).format(
-            'MMMM',
-          )}!`}
+        ? 'Vous pourrez reprendre ultérieurement'
+        : `Vous avez terminé votre declaration ${
+            activeMonth ? `de ${moment(activeMonth).format('MMMM')} !` : '' // eslint-disable-line no-irregular-whitespace
+          }`}
     </LandingText>
   </StyledThanks>
 )

@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import Warning from '@material-ui/icons/Warning'
+import { cloneDeep } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -119,7 +120,6 @@ const additionalDocuments = [
 
 export class Files extends Component {
   static propTypes = {
-    activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   }
 
@@ -138,12 +138,18 @@ export class Files extends Component {
   }
 
   componentDidMount() {
-    Promise.all([
-      superagent.get('/api/employers').then((res) => res.body),
-      superagent.get('/api/declarations?last').then((res) => res.body),
-    ]).then(([employers, declaration]) =>
-      this.setState({ employers, declaration, isLoading: false }),
-    )
+    superagent
+      .get('/api/declarations?last')
+      .then((res) => res.body)
+      .then((declaration) => {
+        // FIXME this cloneDeep is temporary, done until everything is here rewritten to use
+        // directly declaration.employers.
+        this.setState({
+          employers: cloneDeep(declaration.employers),
+          declaration,
+          isLoading: false,
+        })
+      })
   }
 
   submitFile = ({ file, employerId }) => {
@@ -234,7 +240,7 @@ export class Files extends Component {
 
   onSubmit = () => {
     superagent
-      .post('/api/declarations/finish')
+      .post('/api/declarations/finish', { id: this.state.declaration.id })
       .then((res) => res.body)
       .then(() => this.props.history.push('/thanks'))
       .catch((error) => {
@@ -306,13 +312,13 @@ export class Files extends Component {
       <StyledFiles>
         <StyledTitle variant="title">
           Envoi des documents du mois de{' '}
-          {moment(this.props.activeMonth).format('MMMM YYYY')}
+          {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
         </StyledTitle>
         <StyledSummary>
           <StyledSummaryTypography variant="body2">
             <b>
               Actualisation du mois de{' '}
-              {moment(this.props.activeMonth).format('MMMM')}
+              {moment(declaration.declarationMonth.month).format('MMMM')}
             </b>
           </StyledSummaryTypography>
           <StyledSummaryTypography

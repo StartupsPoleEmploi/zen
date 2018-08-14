@@ -6,6 +6,7 @@ const { transaction } = require('objection')
 const { format } = require('date-fns')
 
 const { upload, uploadDestination } = require('../lib/upload')
+const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
@@ -23,22 +24,47 @@ const declarationDateFields = [
   'jobSearchEndDate',
 ]
 
+const possibleDocumentTypes = [
+  'trainingDocument',
+  'internshipDocument',
+  'sickLeaveDocument',
+  'maternityLeaveDocument',
+  'retirementDocument',
+  'invalidityDocument',
+]
+
 router.get('/', (req, res, next) => {
-  if (!('last' in req.query)) return res.status(400).json('Route not ready')
+  if ('last' in req.query) {
+    return Declaration.query()
+      .eager(
+        `[${possibleDocumentTypes.join(
+          ', ',
+        )}, declarationMonth, employers.document]`,
+      )
+      .where({ userId: req.session.user.id })
+      .orderBy('createdAt', 'desc')
+      .first()
+      .then((declaration) => {
+        if (!declaration) return res.status(404).json('No such declaration')
+        res.json(declaration)
+      })
+      .catch(next)
+  }
 
   return Declaration.query()
     .eager(
-      '[trainingDocument, internshipDocument, sickLeaveDocument, maternityLeaveDocument, retirementDocument, invalidityDocument]',
+      `[${possibleDocumentTypes.join(
+        ', ',
+      )}, employers.document, declarationMonth]`,
     )
-    .findOne({ monthId: req.activeMonth.id, userId: req.session.user.id })
-    .then((declaration) => {
-      if (!declaration) return res.status(404).json('No such declaration')
-      res.json(declaration)
-    })
+    .where({ userId: req.session.user.id })
+    .orderBy('createdAt', 'desc')
+    .limit(24) // 2 years
+    .then((declarations) => res.json(declarations))
     .catch(next)
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', requireActiveMonth, (req, res, next) => {
   // TODO change this so the client sends a month, not an id
   const declarationData = reduce(
     omit(
@@ -100,9 +126,7 @@ router.get('/files', (req, res, next) => {
     return res.status(400).json('Missing parameters')
 
   return Declaration.query()
-    .eager(
-      '[trainingDocument, internshipDocument, sickLeaveDocument, maternityLeaveDocument, retirementDocument, invalidityDocument]',
-    )
+    .eager(`[${possibleDocumentTypes.join(', ')}]`)
     .findOne({ id: req.query.declarationId, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
@@ -123,15 +147,6 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     return res.status(400).json('Missing declarationId')
 
   const userDocumentName = req.body.name
-
-  const possibleDocumentTypes = [
-    'trainingDocument',
-    'internshipDocument',
-    'sickLeaveDocument',
-    'maternityLeaveDocument',
-    'retirementDocument',
-    'invalidityDocument',
-  ]
 
   if (!possibleDocumentTypes.includes(userDocumentName)) {
     return res.status(400).json('Missing document name')
@@ -173,11 +188,13 @@ router.post('/finish', (req, res, next) =>
   Declaration.query()
     .eager('employers')
     .findOne({
-      monthId: req.activeMonth.id,
+      id: req.body.id,
       userId: req.session.user.id,
     })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('Declaration not found')
+      if (declaration.isFinished)
+        return res.status(400).json('Declaration already finished')
 
       const hasMissingEmployersDocuments = declaration.employers.some(
         ({ documentId }) => !documentId,

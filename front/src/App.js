@@ -42,7 +42,13 @@ class App extends Component {
       .isRequired,
   }
 
-  state = { activeMonth: null, err: null, isLoading: true, user: null }
+  state = {
+    activeMonth: null,
+    err: null,
+    isLoading: true,
+    lastDeclaration: null,
+    user: null,
+  }
 
   componentDidMount() {
     getUser()
@@ -58,6 +64,10 @@ class App extends Component {
           superagent
             .get('/api/declarations?last')
             .then((res) => res.body)
+            .then((declaration) => {
+              this.setState({ lastDeclaration: declaration })
+              return declaration
+            })
             .catch((err) => {
               // 404 are the normal status when no declaration was made.
               if (err.status !== 404) throw err
@@ -94,7 +104,7 @@ class App extends Component {
     const {
       location: { pathname },
     } = this.props
-    const { activeMonth, err, isLoading, user } = this.state
+    const { activeMonth, err, isLoading, lastDeclaration, user } = this.state
     if (isLoading) return null
 
     if (!user) {
@@ -109,12 +119,20 @@ class App extends Component {
       return <Redirect to="/actu" />
     }
 
-    if (!activeMonth) {
+    // Deactivate the service if no active month
+    // Except if the user's last declaration has files that need sending
+    const shouldTakeUserToFilesScreen =
+      lastDeclaration &&
+      lastDeclaration.hasFinishedDeclaringEmployers &&
+      !lastDeclaration.isFinished
+
+    if (!activeMonth && !shouldTakeUserToFilesScreen) {
       return (
         <Layout user={user}>
           <Typography>
-            Le service d'actualisation n'est pas encore actif, merci de
-            réessayer ultérieurement
+            Le service Zen est désactivé jusqu'à la prochaine période
+            d'actualisation. Pour toute information ou démarche, rendez vous sur{' '}
+            <a href="https://www.pole-emploi.fr">https://www.pole-emploi.fr</a>
           </Typography>
         </Layout>
       )

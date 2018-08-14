@@ -4,15 +4,15 @@ const DeclarationMonth = require('../models/DeclarationMonth')
 let value = null
 let valueStoreDate = new Date(0)
 
-// Only request activeMonth once every 10 minutes.
+// Only request activeMonth once every 1 minute.
 // set it in req.activeMonth
-module.exports = (req, res, next) => {
-  if (valueStoreDate > subMinutes(new Date(), 10)) {
+const setActiveMonth = (req, res, next) => {
+  if (valueStoreDate > subMinutes(new Date(), 1)) {
     req.activeMonth = value
     return next()
   }
 
-  DeclarationMonth.query()
+  return DeclarationMonth.query()
     .where('endDate', '>', new Date())
     .andWhere('startDate', '<=', 'now')
     .first()
@@ -23,4 +23,16 @@ module.exports = (req, res, next) => {
       req.activeMonth = activeMonth
       next()
     })
+}
+
+const requireActiveMonth = (req, res, next) => {
+  if (!req.activeMonth) {
+    return res.status(503).json('Service unavailable (no active month)')
+  }
+  next()
+}
+
+module.exports = {
+  requireActiveMonth,
+  setActiveMonth,
 }

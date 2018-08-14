@@ -4,6 +4,7 @@ const router = express.Router()
 const { transaction } = require('objection')
 
 const { upload, uploadDestination } = require('../lib/upload')
+const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const Employer = require('../models/Employer')
@@ -23,7 +24,7 @@ const getSanitizedEmployer = ({ employer, declaration, user }) => {
   }
 }
 
-router.get('/', (req, res, next) => {
+router.get('/', requireActiveMonth, (req, res, next) => {
   Declaration.query()
     .eager('employers.document')
     .findOne({
@@ -40,7 +41,7 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', requireActiveMonth, (req, res, next) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(400).json('No data')
 

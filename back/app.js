@@ -10,7 +10,7 @@ const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
 const { version } = require('./package.json')
 
-const activeMonthMiddleware = require('./lib/activeMonthMiddleware')
+const { setActiveMonth } = require('./lib/activeMonthMiddleware')
 
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
@@ -68,7 +68,7 @@ app.use((req, res, next) => {
 app.use('/login', loginRouter)
 app.use('/user', userRouter)
 
-app.use(activeMonthMiddleware)
+app.use(setActiveMonth)
 
 app.use('/declarationMonths', declarationMonthsRouter)
 

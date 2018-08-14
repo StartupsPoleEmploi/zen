@@ -4,7 +4,7 @@ const router = express.Router()
 const { transaction } = require('objection')
 
 const { upload, uploadDestination } = require('../lib/upload')
-const requireActiveMonth = require('../lib/requireActiveMonthMiddleware')
+const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const Employer = require('../models/Employer')

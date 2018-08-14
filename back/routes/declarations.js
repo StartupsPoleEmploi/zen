@@ -6,7 +6,7 @@ const { transaction } = require('objection')
 const { format } = require('date-fns')
 
 const { upload, uploadDestination } = require('../lib/upload')
-const requireActiveMonth = require('../lib/requireActiveMonthMiddleware')
+const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')

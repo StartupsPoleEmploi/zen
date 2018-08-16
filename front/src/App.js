@@ -25,11 +25,11 @@ const steps = ['Déclaration', 'Employeurs', 'Documents']
 const stepsNumbers = ['/actu', '/employers', '/files']
 
 const StyledLink = styled(Link)`
-  color: #7cdd91;
+  color: #39679e;
   text-decoration: none;
 
   &:visited {
-    color: #7cdd91;
+    color: #39679e;
   }
 `
 

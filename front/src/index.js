@@ -38,11 +38,10 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#7cdd91',
-      contrastText: '#fff',
+      main: '#39679e',
     },
     secondary: {
-      main: '#7cdd91',
+      main: '#39679e',
     },
   },
   overrides: {

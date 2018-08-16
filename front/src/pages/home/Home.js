@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import GreenRectangle from '../../components/Generic/GreenRectangle'
 import LinkButton from '../../components/Generic/LinkButton'
+import Rectangle from '../../components/Generic/Rectangle'
 import PEConnectLink from '../../components/PEConnect/PEConnectLink'
 import landingBackground from './images/landingBackground.svg'
 import logoPE from './images/logoPE.jpg'
@@ -14,7 +14,7 @@ import step2ToStep3 from './images/step2-to-step3.svg'
 import step2 from './images/step2.svg'
 import step3 from './images/step3.svg'
 
-const GREEN = '#7cdd91'
+const BLUE = '#39679e'
 
 const StyledHome = styled.div`
   display: flex;
@@ -179,9 +179,9 @@ export const Home = ({ location: { search } }) => (
     <Header>
       <HeaderMain>
         <AppTitle>
-          zen<span style={{ color: GREEN }}>.</span>
+          zen<span style={{ color: BLUE }}>.</span>
         </AppTitle>
-        <GreenRectangle
+        <Rectangle
           style={{
             marginTop: '2rem',
             marginBottom: '2rem',

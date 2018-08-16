@@ -1,21 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const GREEN = '#7cdd91'
+const GREEN = '#39679e'
 
-const GreenRectangle = ({ style }) => (
+const Rectangle = ({ style }) => (
   <div
     style={{
       backgroundColor: GREEN,
       width: '2rem',
       height: '0.5rem',
+      borderRadius: '0.2rem',
       ...style,
     }}
   />
 )
 
-GreenRectangle.propTypes = {
+Rectangle.propTypes = {
   style: PropTypes.object,
 }
 
-export default GreenRectangle
+export default Rectangle

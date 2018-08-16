@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-import GreenRectangle from '../Generic/GreenRectangle'
+import Rectangle from '../Generic/Rectangle'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 
 const StyledContainer = styled.div`
@@ -84,7 +84,7 @@ const TooltipTitle = styled(Typography)`
   }
 `
 
-const greenRectangleStyle = {
+const RectangleStyle = {
   width: '1.4rem',
   height: '0.3rem',
   borderRadius: '0.2rem',
@@ -157,7 +157,7 @@ export class EmployerQuestion extends Component {
             <TooltipOnFocus
               content={
                 <Fragment>
-                  <GreenRectangle style={greenRectangleStyle} />
+                  <Rectangle style={RectangleStyle} />
                   <TooltipTitle>Information</TooltipTitle>
                   <TooltipText>
                     Si vous avez plusieurs bulletins de salaire par famille car
@@ -180,7 +180,7 @@ export class EmployerQuestion extends Component {
             <TooltipOnFocus
               content={
                 <Fragment>
-                  <GreenRectangle style={greenRectangleStyle} />
+                  <Rectangle style={RectangleStyle} />
                   <TooltipTitle>Information</TooltipTitle>
                   <TooltipText>
                     Indiquez le nombre d'heures qui figurera sur votre fiche de
@@ -202,7 +202,7 @@ export class EmployerQuestion extends Component {
             <TooltipOnFocus
               content={
                 <Fragment>
-                  <GreenRectangle style={greenRectangleStyle} />
+                  <Rectangle style={RectangleStyle} />
                   <TooltipTitle>Information</TooltipTitle>
                   <TooltipText>
                     Si votre employeur vous a payé des congés, n’oubliez pas

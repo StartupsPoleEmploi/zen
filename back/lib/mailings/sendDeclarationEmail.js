@@ -1,12 +1,10 @@
-const mailjetRequest = require('./mailjetRequest')
+const mailjet = require('./mailjet')
 const pdf = require('pdfjs')
 const fs = require('fs')
 const Helvetica = require('pdfjs/font/Helvetica')
 const HelveticaBold = require('pdfjs/font/Helvetica-Bold')
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
-
-const isProduction = process.env.NODE_ENV === 'production'
 
 const { cm } = pdf
 
@@ -136,8 +134,7 @@ const sendSubscriptionConfirmation = (declaration) =>
       locale: fr,
     })
 
-    return mailjetRequest({
-      SandboxMode: !isProduction, // Mailjet *will* send e-mails out of prod if this line is removed
+    return mailjet.sendMail({
       Messages: [
         {
           From: {
@@ -166,6 +163,10 @@ const sendSubscriptionConfirmation = (declaration) =>
               Base64Content: base64File,
             },
           ],
+          CustomCampaign: `Confirmation de transmission de déclaration - ${format(
+            declarationMonth,
+            'MM/YYYY',
+          )}`,
         },
       ],
     })

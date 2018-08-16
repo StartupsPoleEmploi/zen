@@ -1,8 +1,6 @@
-const mailjetRequest = require('./mailjetRequest')
+const mailjet = require('./mailjet')
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
-
-const isProduction = process.env.NODE_ENV === 'production'
 
 const sendDocumentsEmail = (declaration) => {
   const declarationMonth = new Date(declaration.declarationMonth.month)
@@ -10,8 +8,7 @@ const sendDocumentsEmail = (declaration) => {
     locale: fr,
   })
 
-  return mailjetRequest({
-    SandboxMode: !isProduction, // Mailjet *will* send e-mails out of prod if this line is removed
+  return mailjet.sendMail({
     Messages: [
       {
         From: {
@@ -31,6 +28,10 @@ const sendDocumentsEmail = (declaration) => {
           prenom: declaration.user.firstName,
           date: formattedDeclarationMonth,
         },
+        CustomCampaign: `Confirmation d'envoi de documents - ${format(
+          declarationMonth,
+          'MM/YYYY',
+        )}`,
       },
     ],
   })

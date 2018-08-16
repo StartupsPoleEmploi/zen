@@ -1,30 +1,39 @@
-const mailjetRequest = require('./mailjetRequest')
-
-const isProduction = process.env.NODE_ENV === 'production'
+const mailjet = require('./mailjet')
 
 const sendSubscriptionConfirmation = (user) =>
-  mailjetRequest({
-    SandboxMode: !isProduction, // Mailjet *will* send e-mails out of prod if this line is removed
-    Messages: [
-      {
-        From: {
-          Email: 'no-reply@zen.pole-emploi.fr',
-          Name: `L'équipe Zen`,
-        },
-        To: [
-          {
-            Email: user.email,
-            Name: `${user.firstName} ${user.lastName}`,
+  Promise.all([
+    mailjet.sendMail({
+      Messages: [
+        {
+          From: {
+            Email: 'no-reply@zen.pole-emploi.fr',
+            Name: `L'équipe Zen`,
           },
-        ],
-        TemplateID: 503392,
-        TemplateLanguage: true,
-        Subject: `Votre demande d'inscription à Zen a été enregistrée`,
-        Variables: {
-          prenom: user.firstName,
+          To: [
+            {
+              Email: user.email,
+              Name: `${user.firstName} ${user.lastName}`,
+            },
+          ],
+          TemplateID: 503392,
+          TemplateLanguage: true,
+          Subject: `Votre demande d'inscription à Zen a été enregistrée`,
+          Variables: {
+            prenom: user.firstName,
+          },
+          CustomCampaign: "Confirmation d'inscription",
         },
+      ],
+    }),
+    mailjet.createContact({
+      email: user.email,
+      name: `${user.firstName} ${user.lastName}`,
+      properties: {
+        nom: user.lastName,
+        prenom: user.firstName,
+        validation_necessaire: true,
       },
-    ],
-  })
+    }),
+  ])
 
 module.exports = sendSubscriptionConfirmation

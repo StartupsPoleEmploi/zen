@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import AppTitle from '../../components/Generic/AppTitle'
 import LinkButton from '../../components/Generic/LinkButton'
 import Rectangle from '../../components/Generic/Rectangle'
 import PEConnectLink from '../../components/PEConnect/PEConnectLink'
@@ -13,8 +14,6 @@ import step1 from './images/step1.svg'
 import step2ToStep3 from './images/step2-to-step3.svg'
 import step2 from './images/step2.svg'
 import step3 from './images/step3.svg'
-
-const BLUE = '#39679e'
 
 const StyledHome = styled.div`
   display: flex;
@@ -52,15 +51,6 @@ const Header = styled.header`
 
 const HeaderMain = styled.div`
   max-width: 50rem;
-`
-
-const AppTitle = styled(Typography).attrs({
-  variant: 'display1',
-})`
-  && {
-    color: #000;
-    font-weight: bold;
-  }
 `
 
 const Tagline = styled(Typography).attrs({
@@ -178,9 +168,7 @@ export const Home = ({ location: { search } }) => (
     )}
     <Header>
       <HeaderMain>
-        <AppTitle>
-          zen<span style={{ color: BLUE }}>.</span>
-        </AppTitle>
+        <AppTitle />
         <Rectangle
           style={{
             marginTop: '2rem',

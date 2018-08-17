@@ -1,9 +1,6 @@
 import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Clear from '@material-ui/icons/Clear'
@@ -14,6 +11,7 @@ import styled from 'styled-components'
 
 import Rectangle from '../Generic/Rectangle'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
+import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -57,7 +55,10 @@ const StyledFormControl = styled(FormControl)`
 
 const StyledFormLabel = styled(FormLabel)`
   flex-shrink: 1;
-  margin-right: 1.5rem;
+  margin-right: 3rem;
+  && {
+    color: #000;
+  }
 `
 
 const StyledClear = styled(Clear)`
@@ -124,7 +125,7 @@ export class EmployerQuestion extends Component {
     const name = fieldName.substr(0, fieldName.indexOf('['))
     this.props[string]({
       name,
-      value: name !== 'hasEndedThisMonth' ? value : value === 'yes',
+      value,
       index: this.props.index,
     })
   }
@@ -142,13 +143,6 @@ export class EmployerQuestion extends Component {
       salary,
       hasEndedThisMonth,
     } = this.props
-
-    const hasEndedThisMonthValue =
-      hasEndedThisMonth.value === null
-        ? ''
-        : hasEndedThisMonth.value
-          ? 'yes'
-          : 'no'
 
     return (
       <StyledContainer>
@@ -230,24 +224,11 @@ export class EmployerQuestion extends Component {
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
               )}
             </StyledFormLabel>
-            <RadioGroup
-              row
-              aria-label="oui ou non"
+            <YesNoRadioGroup
               name={`hasEndedThisMonth[${index}]`}
-              value={hasEndedThisMonthValue}
-              onChange={this.onChange}
-            >
-              <FormControlLabel
-                value="yes"
-                control={<Radio color="primary" />}
-                label="Oui"
-              />
-              <FormControlLabel
-                value="no"
-                control={<Radio color="primary" />}
-                label="Non"
-              />
-            </RadioGroup>
+              value={hasEndedThisMonth.value}
+              onAnswer={this.onChange}
+            />
           </StyledFormControl>
         </StyledMain>
         <StyledClear onClick={this.onRemove} role="button" />

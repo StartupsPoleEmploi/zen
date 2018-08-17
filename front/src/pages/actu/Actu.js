@@ -26,9 +26,9 @@ const StyledActu = styled.div`
 `
 
 const StyledPaper = styled(Paper)`
-  max-width: 80rem;
+  max-width: 70rem;
   width: 100%;
-  margin: 1rem auto 0;
+  margin: 4rem auto 0;
 `
 
 const Title = styled(Typography).attrs({ variant: 'title' })`
@@ -50,6 +50,15 @@ const FinalButtonsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   padding-top: 3rem;
+`
+
+const StyledList = styled(List)`
+  && {
+    padding: 0;
+  }
+  & > *:nth-child(2n) {
+    background: #e7ebf2;
+  }
 `
 
 export class Actu extends Component {
@@ -239,7 +248,7 @@ export class Actu extends Component {
 
         <form>
           <StyledPaper>
-            <List>
+            <StyledList>
               <DeclarationQuestion
                 label="Avez-vous travaillé ?"
                 name="hasWorked"
@@ -331,7 +340,7 @@ export class Actu extends Component {
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
-                label="Percevez-vous une nouvelle pension retraite ?"
+                label="Percevez-vous une nouvelle pension retraite ?"
                 name="hasRetirement"
                 value={this.state.hasRetirement}
                 onAnswer={this.onAnswer}
@@ -360,13 +369,13 @@ export class Actu extends Component {
                   value={this.state.invalidityStartDate}
                 />
               </DeclarationQuestion>
-            </List>
+            </StyledList>
           </StyledPaper>
 
           <StyledPaper>
             <List>
               <DeclarationQuestion
-                label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
+                label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
                 name="isLookingForJob"
                 value={this.state.isLookingForJob}
                 onAnswer={this.onAnswer}

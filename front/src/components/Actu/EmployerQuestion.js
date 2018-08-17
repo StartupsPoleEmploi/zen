@@ -27,18 +27,19 @@ const StyledMain = styled.div`
   padding: 1rem;
   margin-bottom: 0.75rem;
   margin-top: 0.75rem;
+  max-width: 95rem;
   flex-wrap: wrap;
 `
 
 const FieldsContainer = styled.div`
-  flex: 1 1 30rem;
+  flex: 1 1 20rem;
   border-right: 1px solid #9c9c9c;
 `
 
 const StyledTextField = styled(TextField)`
   && {
     margin-right: 1.5rem;
-    width: 20rem;
+    width: 15rem;
   }
 `
 
@@ -46,6 +47,7 @@ const StyledFormControl = styled(FormControl)`
   && {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     flex: 0 1 auto;
@@ -59,6 +61,7 @@ const StyledFormLabel = styled(FormLabel)`
   && {
     color: #000;
   }
+  max-width: 20rem;
 `
 
 const StyledClear = styled(Clear)`
@@ -162,7 +165,7 @@ export class EmployerQuestion extends Component {
               }
             >
               <StyledTextField
-                label="Nom de l'employeur"
+                label="Nom employeur"
                 name={`employerName[${index}]`}
                 value={employerName.value}
                 onChange={this.onChange}
@@ -218,7 +221,7 @@ export class EmployerQuestion extends Component {
           </FieldsContainer>
           <StyledFormControl>
             <StyledFormLabel>
-              Ce contrat se termine-t-il en{' '}
+              Ce contrat se<br />termine-t-il en{' '}
               {moment(this.props.activeMonth).format('MMMM')} ?
               {hasEndedThisMonth.error && (
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>

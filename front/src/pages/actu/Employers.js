@@ -14,7 +14,8 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import { EmployerQuestion } from '../../components/Actu/EmployerQuestion'
+import EmployerQuestion from '../../components/Actu/EmployerQuestion'
+import CustomColorButton from '../../components/Generic/CustomColorButton'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -45,11 +46,34 @@ const SummaryContainer = styled.div`
   width: 100%;
 `
 
+const AddEmployersButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+`
+
+const AddEmployersButton = styled(Button)`
+  && {
+    min-width: 15rem;
+    margin: 0 5rem;
+  }
+`
+
+const LineDiv = styled.div`
+  width: 100%;
+  max-width: 16.6rem;
+  height: 0.1rem;
+  background-color: #e4e4e4;
+`
+
 const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  flex-wrap: wrap;
 `
 
 const employerTemplate = {
@@ -271,10 +295,18 @@ export class Employers extends Component {
         <Form>
           {employers.map(this.renderEmployerQuestion)}
 
-          <Button variant="raised" onClick={this.addEmployer}>
-            + Ajouter un employeur
-          </Button>
-
+          <AddEmployersButtonContainer>
+            <LineDiv />
+            <AddEmployersButton
+              variant="outlined"
+              color="primary"
+              onClick={this.addEmployer}
+              size="small"
+            >
+              + Ajouter un employeur
+            </AddEmployersButton>
+            <LineDiv />
+          </AddEmployersButtonContainer>
           <SummaryContainer>
             <Typography variant="body2">
               Heures déclarées{' '}: {calculateTotal(employers, 'workHours')}h
@@ -287,9 +319,9 @@ export class Employers extends Component {
           {error && <Typography variant="body2">{error}</Typography>}
 
           <ButtonsContainer>
-            <Button variant="raised" onClick={this.onSave}>
+            <CustomColorButton onClick={this.onSave}>
               Enregistrer et finir plus tard
-            </Button>
+            </CustomColorButton>
             <Button variant="raised" onClick={this.openDialog} color="primary">
               Envoyer mon actualisation
             </Button>
@@ -308,10 +340,15 @@ export class Employers extends Component {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.closeDialog} color="primary">
+              <CustomColorButton onClick={this.closeDialog} color="primary">
                 Annuler
-              </Button>
-              <Button onClick={this.onSubmit} color="primary" autoFocus>
+              </CustomColorButton>
+              <Button
+                variant="raised"
+                onClick={this.onSubmit}
+                color="primary"
+                autoFocus
+              >
                 Valider
               </Button>
             </DialogActions>

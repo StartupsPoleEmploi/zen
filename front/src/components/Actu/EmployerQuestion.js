@@ -3,7 +3,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Clear from '@material-ui/icons/Clear'
+import Cancel from '@material-ui/icons/Cancel'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
@@ -64,11 +64,24 @@ const StyledFormLabel = styled(FormLabel)`
   max-width: 20rem;
 `
 
-const StyledClear = styled(Clear)`
+const RemoveButton = styled.button`
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  text-transform: uppercase;
+  padding-left: 1rem;
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+`
+
+const CancelIcon = styled(Cancel)`
   && {
-    width: 3rem;
-    height: 3rem;
-    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `
 
@@ -234,7 +247,12 @@ export class EmployerQuestion extends Component {
             />
           </StyledFormControl>
         </StyledMain>
-        <StyledClear onClick={this.onRemove} role="button" />
+        <RemoveButton onClick={this.onRemove} type="button">
+          <CancelIcon />
+          <Typography variant="caption" style={{ color: 'black' }}>
+            Supprimer
+          </Typography>
+        </RemoveButton>
       </StyledContainer>
     )
   }

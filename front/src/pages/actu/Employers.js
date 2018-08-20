@@ -16,11 +16,13 @@ import superagent from 'superagent'
 
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
+import WorkSummary from '../../components/Actu/WorkSummary'
 
 const StyledEmployers = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 4rem; /* space for position:fixed div */
 `
 
 const Title = styled(Typography)`
@@ -32,18 +34,6 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const SummaryContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #9c9c9c;
-  border-radius: 1rem;
-  padding: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
 `
 
 const AddEmployersButtonContainer = styled.div`
@@ -81,14 +71,6 @@ const employerTemplate = {
   workHours: { value: '', error: null },
   salary: { value: '', error: null },
   hasEndedThisMonth: { value: null, error: null },
-}
-
-const calculateTotal = (employers, field) => {
-  const total = employers.reduce(
-    (prev, employer) => parseInt(employer[field].value, 10) + prev,
-    0,
-  )
-  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
 const getEmployersMapFromFormData = (employers) =>
@@ -307,14 +289,6 @@ export class Employers extends Component {
             </AddEmployersButton>
             <LineDiv />
           </AddEmployersButtonContainer>
-          <SummaryContainer>
-            <Typography variant="body2">
-              Heures déclarées{' '}: {calculateTotal(employers, 'workHours')}h
-            </Typography>
-            <Typography variant="body2" style={{ textAlign: 'right' }}>
-              Salaire brut déclaré{' '}: {calculateTotal(employers, 'salary')} €
-            </Typography>
-          </SummaryContainer>
 
           {error && <Typography variant="body2">{error}</Typography>}
 
@@ -326,6 +300,8 @@ export class Employers extends Component {
               Envoyer mon actualisation
             </Button>
           </ButtonsContainer>
+
+          <WorkSummary employers={employers} />
 
           <Dialog
             open={this.state.isDialogOpened}

@@ -66,6 +66,22 @@ const ButtonsContainer = styled.div`
   flex-wrap: wrap;
 `
 
+const StyledDialogContent = styled(DialogContent)`
+  && {
+  }
+`
+
+const StyledDialogTitle = styled(DialogTitle)`
+  text-align: center;
+`
+
+const StyledDialogActions = styled(DialogActions)`
+  && {
+    justify-content: space-around;
+    padding-bottom: 2rem;
+  }
+`
+
 const employerTemplate = {
   employerName: { value: '', error: null },
   workHours: { value: '', error: null },
@@ -308,16 +324,17 @@ export class Employers extends Component {
             onClose={this.closeDialog}
             aria-labelledby="ActuDialogContentText"
           >
-            <DialogTitle>Envoi de l'actualisation</DialogTitle>
-            <DialogContent>
+            <StyledDialogTitle>Envoi de l'actualisation</StyledDialogTitle>
+            <StyledDialogContent>
               <DialogContentText id="ActuDialogContentText">
-                Votre déclaration et nombre d'heures travaillées seront transmis
-                à Pôle-Emploi. Vous ne pourrez plus modifier ces informations.
+                Votre actualisation va être envoyée à Pôle-Emploi.
+                <br />
+                Nous vous envoyons un e-mail pour vous le confirmer.
               </DialogContentText>
-            </DialogContent>
-            <DialogActions>
+            </StyledDialogContent>
+            <StyledDialogActions>
               <CustomColorButton onClick={this.closeDialog} color="primary">
-                Annuler
+                Je n'ai pas terminé
               </CustomColorButton>
               <Button
                 variant="raised"
@@ -325,9 +342,9 @@ export class Employers extends Component {
                 color="primary"
                 autoFocus
               >
-                Valider
+                Je m'actualise
               </Button>
-            </DialogActions>
+            </StyledDialogActions>
           </Dialog>
         </Form>
       </StyledEmployers>

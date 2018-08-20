@@ -22,18 +22,19 @@ const StyledMain = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  border: 1px solid #9c9c9c;
+  border: 1px solid #adafaf;
   border-radius: 1rem;
   padding: 1rem;
-  margin-bottom: 0.75rem;
-  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
   max-width: 95rem;
   flex-wrap: wrap;
+  box-shadow: 0 0 0.5rem 0.1rem #eeeeee;
 `
 
 const FieldsContainer = styled.div`
   flex: 1 1 20rem;
-  border-right: 1px solid #9c9c9c;
+  border-right: 1px solid #000;
 `
 
 const StyledTextField = styled(TextField)`

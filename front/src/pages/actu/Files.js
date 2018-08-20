@@ -14,6 +14,7 @@ import superagent from 'superagent'
 
 import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
+import WorkSummary from '../../components/Actu/WorkSummary'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -22,27 +23,13 @@ const StyledFiles = styled.div`
   max-width: 88rem;
   width: 100%;
   margin: auto;
+  padding-bottom: 4rem; /* space for position:fixed div */
 `
 
 const StyledTitle = styled(Typography)`
   && {
     margin-bottom: 1.5rem;
   }
-`
-
-const StyledSummary = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #d7d7d7;
-  border-radius: 1rem;
-  width: 100%;
-  padding: 1rem;
-  background-color: #fbfbfb;
-  margin-bottom: 1.5rem;
-`
-
-const StyledSummaryTypography = styled(Typography)`
-  flex: 1 1 33%;
 `
 
 const StyledInfo = styled.div`
@@ -76,14 +63,6 @@ const ErrorMessage = styled(Typography)`
     padding-top: 1.5rem;
   }
 `
-
-const calculateTotal = (employers, field) => {
-  const total = employers.reduce(
-    (prev, employer) => parseInt(employer[field], 10) + prev,
-    0,
-  )
-  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
-}
 
 const additionalDocuments = [
   {
@@ -314,26 +293,6 @@ export class Files extends Component {
           Envoi des documents du mois de{' '}
           {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
         </StyledTitle>
-        <StyledSummary>
-          <StyledSummaryTypography variant="body2">
-            <b>
-              Actualisation du mois de{' '}
-              {moment(declaration.declarationMonth.month).format('MMMM')}
-            </b>
-          </StyledSummaryTypography>
-          <StyledSummaryTypography
-            variant="body2"
-            style={{ textAlign: 'center' }}
-          >
-            Heures déclarées : {calculateTotal(employers, 'workHours')}h
-          </StyledSummaryTypography>
-          <StyledSummaryTypography
-            variant="body2"
-            style={{ textAlign: 'right' }}
-          >
-            Salaire brut : {calculateTotal(employers, 'salary')}€
-          </StyledSummaryTypography>
-        </StyledSummary>
 
         <StyledInfo>
           {remainingDocumentsNb > 0 && <Warning />}
@@ -374,6 +333,8 @@ export class Files extends Component {
             Envoyer à Pôle Emploi
           </Button>
         </ButtonsContainer>
+
+        <WorkSummary employers={employers} />
       </StyledFiles>
     )
   }

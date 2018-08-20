@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
+import { isObject } from 'lodash'
 
 const SummaryContainer = styled.div`
   position: fixed;
@@ -31,7 +32,11 @@ const SummaryNumber = styled.span`
 
 const calculateTotal = (employers, field) => {
   const total = employers.reduce(
-    (prev, employer) => parseInt(employer[field].value, 10) + prev,
+    (prev, employer) =>
+      parseInt(
+        isObject(employer[field]) ? employer[field].value : employer[field],
+        10,
+      ) + prev,
     0,
   )
   return Number.isNaN(total) || total === 0 ? '—' : total.toString()
@@ -57,8 +62,18 @@ const WorkSummary = ({ employers }) => (
 WorkSummary.propTypes = {
   employers: PropTypes.arrayOf(
     PropTypes.shape({
-      workHours: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      salary: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      workHours: PropTypes.oneOfType([
+        PropTypes.shape({
+          value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        }), // can be an object from Employers form
+        PropTypes.number,
+      ]),
+      salary: PropTypes.oneOfType([
+        PropTypes.shape({
+          value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        }), // can be an object from Employers form
+        PropTypes.number,
+      ]),
     }),
   ),
 }

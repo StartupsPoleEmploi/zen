@@ -6,16 +6,33 @@ import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
+import Autorenew from '@material-ui/icons/Autorenew'
+import Eye from '@material-ui/icons/RemoveRedEye'
+import Warning from '@material-ui/icons/Warning'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-// refactor styles with AdditionalDocumentUpload
+import CustomColorButton from '../Generic/CustomColorButton'
+
+// TODO merge with EmployerDocumentUpload
+
+const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`
 
 const StyledListItem = styled(ListItem)`
   && {
-    padding-top: 2.2rem;
+    flex: 1 1 30rem;
+    padding-top: 2rem;
     flex-wrap: wrap;
+    border: 1px solid ${(props) => (props.hasDocument ? '#3e689b' : '#df5555')};
+    border-left-width: 0.8rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
 `
 
@@ -29,16 +46,26 @@ const StyledFormLabel = styled(FormLabel)`
   }
 `
 
+const ReplaceDocFormLabel = StyledFormLabel.extend`
+  && {
+    width: 12rem;
+    background-color: #fff;
+  }
+`
+
 const StyledFormHelperText = styled(FormHelperText)`
   && {
-    margin-top: 0;
-    padding-right: 1rem;
+    margin: 0 2rem;
   }
 `
 
 const Container = styled.div`
   display: flex;
   align-items: center;
+`
+
+const EyeIcon = styled(Eye)`
+  margin-right: 2rem;
 `
 
 const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
@@ -48,14 +75,10 @@ const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   }
 `
 
-const StyledTypography = styled(Typography)`
-  && {
-    padding-right: 1rem;
+const ReplaceButton = styled(Button)`
+  & > * {
+    flex-direction: column;
   }
-`
-
-const StyledA = styled.a`
-  color: #7b7b7b;
 `
 
 export class AdditionalDocumentUpload extends Component {
@@ -84,7 +107,7 @@ export class AdditionalDocumentUpload extends Component {
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
 
-    const input = (
+    const hiddenInput = (
       <input
         accept=".png, .jpg, .jpeg, .pdf"
         style={{ display: 'none' }}
@@ -94,41 +117,60 @@ export class AdditionalDocumentUpload extends Component {
     )
 
     return (
-      <StyledListItem divider>
-        <ListItemText primary={<b>{label}</b>} />
-        <FormControl>
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <Container>
-              {error
-                ? formattedError
-                : fileExistsOnServer && (
-                    <StyledA
-                      href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
-                      target="_blank"
-                    >
-                      <StyledTypography variant="caption">
-                        Voir l'attestation
-                      </StyledTypography>
-                    </StyledA>
-                  )}
-              <StyledFormLabel>
-                {input}
-                {!fileExistsOnServer &&
-                  !error && (
-                    <StyledFormHelperText>
-                      {label} à envoyer
-                    </StyledFormHelperText>
-                  )}
-                <Button component="span" size="small">
-                  {fileExistsOnServer ? 'Remplacer' : 'Parcourir'}
-                </Button>
-              </StyledFormLabel>
-            </Container>
+      <StyledContainer>
+        <StyledListItem hasDocument={fileExistsOnServer}>
+          <ListItemText primary={<b>{label}</b>} />
+          <FormControl>
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Container>
+                {error
+                  ? formattedError
+                  : fileExistsOnServer && (
+                      <a
+                        href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button variant="outlined">
+                          <EyeIcon />
+                          Voir l'attestation
+                        </Button>
+                      </a>
+                    )}
+                {!fileExistsOnServer && (
+                  <StyledFormLabel>
+                    {hiddenInput}
+                    {!error && (
+                      <Fragment>
+                        <Warning />
+                        <StyledFormHelperText>
+                          {label} à envoyer
+                        </StyledFormHelperText>
+                      </Fragment>
+                    )}
+                    <CustomColorButton component="span" size="small">
+                      Parcourir
+                    </CustomColorButton>
+                  </StyledFormLabel>
+                )}
+              </Container>
+            )}
+          </FormControl>
+        </StyledListItem>
+        <ReplaceDocFormLabel>
+          {fileExistsOnServer && (
+            <Fragment>
+              {hiddenInput}
+              <ReplaceButton size="small">
+                <Autorenew />
+                Remplacer le document
+              </ReplaceButton>
+            </Fragment>
           )}
-        </FormControl>
-      </StyledListItem>
+        </ReplaceDocFormLabel>
+      </StyledContainer>
     )
   }
 }

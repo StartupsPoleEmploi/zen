@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
-import Warning from '@material-ui/icons/Warning'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -39,6 +38,9 @@ const StyledInfo = styled.div`
 
 const StyledInfoTypography = styled(Typography)`
   padding-left: 1rem;
+  && {
+    color: #df5555;
+  }
 `
 
 const StyledList = styled(List)`
@@ -295,7 +297,6 @@ export class Files extends Component {
         </StyledTitle>
 
         <StyledInfo>
-          {remainingDocumentsNb > 0 && <Warning />}
           <StyledInfoTypography variant="body2">
             {remainingDocumentsNb > 0
               ? `Reste ${remainingDocumentsNb} documents à fournir`

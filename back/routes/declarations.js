@@ -177,7 +177,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
             declaration
               .$query(trx)
               .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
-              .eager(`[${possibleDocumentTypes.join(', ')}]`),
+              .eager(`[${possibleDocumentTypes.join(', ')}, declarationMonth]`),
           )
           .then((savedDeclaration) => res.json(savedDeclaration))
       }).catch(next)

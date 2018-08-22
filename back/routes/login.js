@@ -94,10 +94,14 @@ router.get('/callback', (req, res, next) => {
     .then(([{ body: userinfo }, { body: coordinates }]) => {
       const user = {
         peId: userinfo.sub,
-        email: toLower(userinfo.email),
         firstName: startCase(toLower(userinfo.given_name)),
         lastName: startCase(toLower(userinfo.family_name)),
         pePostalCode: coordinates.codePostal,
+      }
+      if (userinfo.email) {
+        // Do not override the email the user may have given us if there is
+        // no email via PE Connect
+        user.email = userinfo.email
       }
       return User.query()
         .findOne({ peId: user.peId })

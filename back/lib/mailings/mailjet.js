@@ -1,6 +1,6 @@
 const NodeMailjet = require('node-mailjet')
 
-const TEST_LIST_ID = 18516
+const LIST_ID = process.env.NODE_ENV === 'production' ? 14703 : 19487
 
 if (!process.env.EMAIL_KEY || !process.env.EMAIL_KEY_SECRET) {
   throw new Error('Mailjet info is not configured')
@@ -22,7 +22,7 @@ module.exports = {
   createContact: ({ email, name, properties }) =>
     mailjet
       .post('contactslist', { version: 'v3' })
-      .id(TEST_LIST_ID)
+      .id(LIST_ID)
       .action('managecontact')
       .request({
         Email: email,

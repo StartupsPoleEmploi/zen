@@ -14,6 +14,7 @@ import superagent from 'superagent'
 import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
 import WorkSummary from '../../components/Actu/WorkSummary'
+import CustomColorButton from '../../components/Generic/CustomColorButton'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -32,15 +33,7 @@ const StyledTitle = styled(Typography)`
 `
 
 const StyledInfo = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const StyledInfoTypography = styled(Typography)`
-  padding-left: 1rem;
-  && {
-    color: #df5555;
-  }
+  text-align: center;
 `
 
 const StyledList = styled(List)`
@@ -55,7 +48,7 @@ const ButtonsContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  padding-top: 1.5rem;
+  padding-top: 2.5rem;
 `
 
 const ErrorMessage = styled(Typography)`
@@ -297,22 +290,28 @@ export class Files extends Component {
         </StyledTitle>
 
         <StyledInfo>
-          <StyledInfoTypography variant="body2">
+          <Typography
+            variant="body2"
+            style={{ color: remainingDocumentsNb > 0 ? '#df5555' : '#3e689b' }}
+          >
             {remainingDocumentsNb > 0
               ? `Reste ${remainingDocumentsNb} documents à fournir`
-              : 'Les documents sont prêts à être envoyés'}
-          </StyledInfoTypography>
+              : 'Tous vos documents sont prêts à être envoyés'}
+          </Typography>
         </StyledInfo>
+
         <StyledList>
           {employers.map(this.renderEmployerRow)}
           {neededAdditionalDocuments.map(this.renderAdditionalDocument)}
         </StyledList>
 
         <StyledInfo>
-          <StyledInfoTypography variant="caption">
-            L'envoi final à Pôle Emploi pour procéder à votre actualisation sera
-            possible une fois tous les documents ajoutés
-          </StyledInfoTypography>
+          <Typography variant="body2">
+            Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
+            seront tous là.
+            <br />
+            Cela permettra une meilleure gestion de votre dossier.
+          </Typography>
         </StyledInfo>
 
         {error && (
@@ -322,9 +321,9 @@ export class Files extends Component {
         )}
 
         <ButtonsContainer>
-          <Button variant="raised" component={Link} to="/thanks?later">
+          <CustomColorButton component={Link} to="/thanks?later">
             Enregistrer et finir plus tard
-          </Button>
+          </CustomColorButton>
           <Button
             color="primary"
             variant="raised"

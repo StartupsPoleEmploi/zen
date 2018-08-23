@@ -19,6 +19,8 @@ Model.knex(knex)
 const DeclarationMonth = require('./models/DeclarationMonth')
 const Declaration = require('./models/Declaration')
 
+console.log('Starting pe-agent')
+
 /*
 TODO de ce code
 

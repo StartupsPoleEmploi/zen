@@ -13,7 +13,9 @@ const sendDeclarationCampaign = require('./lib/mailings/sendDeclarationCampaign'
 const sendDeclarationReminderCampaign = require('./lib/mailings/sendDeclarationReminderCampaign')
 const sendDocsReminderCampaign = require('./lib/mailings/sendDocsReminderCampaign')
 
-job('0 15 1 28 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
+console.log('Starting mailing agent')
+
+job('0 0 7 28 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
 job(
   '0 0 7 7,11 * *',
   sendDeclarationReminderCampaign,

@@ -6,6 +6,7 @@ const {
   sendCampaign,
   setCampaignTemplate,
   createSegment,
+  formatDateForSegmentFilter,
 } = require('./mailjet')
 const fr = require('date-fns/locale/fr')
 
@@ -19,7 +20,7 @@ const DOCS_REMINDER_CAMPAIGN_ID = 510671
 const sendDocsReminderCampaign = () => {
   const lastMonth = subMonths(new Date(), 1)
   const formattedMonthInFrench = format(lastMonth, 'MMMM YYYY', { locale: fr })
-  const dateFormatForSegments = format(lastMonth, 'YYYYMM')
+  const dateFormatForSegments = formatDateForSegmentFilter(lastMonth)
 
   return createSegment({
     Description: `Contacts actualisés mais qui n'ont pas envoyé tous leurs documents en ${formattedMonthInFrench}`,

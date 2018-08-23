@@ -1,5 +1,5 @@
 const NodeMailjet = require('node-mailjet')
-const { addDays } = require('date-fns')
+const { addDays, format } = require('date-fns')
 
 const LIST_ID = process.env.NODE_ENV === 'production' ? 14703 : 19487
 
@@ -21,7 +21,7 @@ module.exports = {
       ...opts,
     }),
 
-  createContact: ({ email, name, properties }) =>
+  manageContact: ({ email, name, properties }) =>
     mailjet
       .post('contactslist', { version: 'v3' })
       .id(LIST_ID)
@@ -89,4 +89,6 @@ module.exports = {
       .id(id)
       .action('send')
       .request(),
+
+  formatDateForSegmentFilter: (date) => parseInt(format(date, 'YYYYMM'), 10),
 }

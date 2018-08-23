@@ -25,7 +25,7 @@ const sendSubscriptionConfirmation = (user) =>
         },
       ],
     }),
-    mailjet.createContact({
+    mailjet.manageContact({
       email: user.email,
       name: `${user.firstName} ${user.lastName}`,
       properties: {

@@ -11,6 +11,11 @@ const fr = require('date-fns/locale/fr')
 const VALIDATED_USERS_SEGMENT_ID = 337
 const DECLARATION_CAMPAIGN_TEMPLATE = 494021
 
+/*
+ * This script has one big requirement: That it will be run on the 28 (or 29, 30 or 31) of
+ * the concerned declaration month. (eg. 28/01 for January declarations)
+ * If this is not respected, the date labels will be wrong.
+ */
 const sendDeclarationCampaign = () =>
   createCampaignDraft({
     Subject: 'L’actualisation Zen commence aujourd’hui',

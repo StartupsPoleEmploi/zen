@@ -10,7 +10,15 @@ const knex = Knex({
 Model.knex(knex)
 
 const sendDeclarationCampaign = require('./lib/mailings/sendDeclarationCampaign')
-const sendReminderCampaign = require('./lib/mailings/sendReminderCampaign')
+const sendDeclarationReminderCampaign = require('./lib/mailings/sendDeclarationReminderCampaign')
+const sendDocsReminderCampaign = require('./lib/mailings/sendDocsReminderCampaign')
 
 job('0 15 1 28 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
-job('0 0 7 5,13 * *', sendReminderCampaign, null, true, 'Europe/Paris')
+job(
+  '0 0 7 7,11 * *',
+  sendDeclarationReminderCampaign,
+  null,
+  true,
+  'Europe/Paris',
+)
+job('0 0 7 7,11 * *', sendDocsReminderCampaign, null, true, 'Europe/Paris')

@@ -33,6 +33,9 @@ module.exports = {
         Action: 'addnoforce',
       }),
 
+  createSegment: (opts) =>
+    mailjet.post('contactfilter', { version: 'v3' }).request(opts),
+
   createCampaignDraft: (opts) =>
     mailjet.post('campaigndraft', { version: 'v3' }).request({
       Locale: 'fr_FR',

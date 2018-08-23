@@ -25,6 +25,7 @@
     "config": "^1.30.0",
     "connect-pg-simple": "^4.2.1",
     "cookie-parser": "~1.4.3",
+    "cron": "^1.4.0",
     "date-fns": "^1.29.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",

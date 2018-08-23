@@ -1,4 +1,5 @@
 const NodeMailjet = require('node-mailjet')
+const { addDays } = require('date-fns')
 
 const LIST_ID = process.env.NODE_ENV === 'production' ? 14703 : 19487
 
@@ -19,6 +20,7 @@ module.exports = {
       SandboxMode: process.env.NODE_ENV !== 'production',
       ...opts,
     }),
+
   createContact: ({ email, name, properties }) =>
     mailjet
       .post('contactslist', { version: 'v3' })
@@ -30,4 +32,58 @@ module.exports = {
         Properties: properties,
         Action: 'addnoforce',
       }),
+
+  createCampaignDraft: (opts) =>
+    mailjet.post('campaigndraft', { version: 'v3' }).request({
+      Locale: 'fr_FR',
+      Sender: "L'équipe Zen",
+      SenderName: "L'équipe Zen",
+      SenderEmail: 'no-reply@zen.pole-emploi.fr',
+      ContactsListID: LIST_ID,
+      ...opts,
+    }),
+
+  getCampaignTemplate: (id) =>
+    mailjet
+      .get('template', { version: 'v3' })
+      .id(id)
+      .action('detailcontent')
+      .request(),
+
+  setCampaignTemplate: (id, opts) =>
+    mailjet
+      .post('campaigndraft', { version: 'v3' })
+      .id(id)
+      .action('detailcontent')
+      .request(opts),
+
+  sendCampaignTest: (id) =>
+    mailjet
+      .post('campaigndraft', { version: 'v3' })
+      .id(id)
+      .action('test')
+      .request({
+        Recipients: [
+          {
+            Email: 'hugo@codeheroics.com',
+            Name: 'Hugo Agbonon (Test Dev)',
+          },
+        ],
+      }),
+
+  scheduleCampaign: (id) =>
+    mailjet
+      .post('campaigndraft', { version: 'v3' })
+      .id(id)
+      .action('schedule')
+      .request({
+        date: addDays(new Date(), 1),
+      }),
+
+  sendCampaign: (id) =>
+    mailjet
+      .post('campaigndraft', { version: 'v3' })
+      .id(id)
+      .action('send')
+      .request(),
 }

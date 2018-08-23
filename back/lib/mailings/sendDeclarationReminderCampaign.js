@@ -21,11 +21,12 @@ const sendDeclarationReminderCampaign = () => {
   const lastMonth = subMonths(new Date(), 1)
   const formattedMonthInFrench = format(lastMonth, 'MMMM YYYY', { locale: fr })
   const dateFormatForSegments = formatDateForSegmentFilter(lastMonth)
+  const formattedNow = format(new Date(), 'DD/MM/YYYY')
 
   return createSegment({
     Description: `Contacts qui ne se sont pas actualisés en ${formattedMonthInFrench}`,
-    Expression: `(validation_necessaire=false) and (declaration_effectuee_mois!=${dateFormatForSegments})`,
-    Name: `${formattedMonthInFrench} - Actualisation non faite`,
+    Expression: `(validation_necessaire=false) AND ((declaration_effectuee_mois!=${dateFormatForSegments}) OR (not IsProvided(declaration_effectuee_mois)))`,
+    Name: `${formattedMonthInFrench} - Actualisation non faite (envoi du ${formattedNow})`,
   })
     .then((segmentRes) => {
       const segmentId = get(segmentRes, 'body.Data.0.ID')
@@ -42,8 +43,8 @@ const sendDeclarationReminderCampaign = () => {
       const campaignId = get(campaignDraftRes, 'body.Data.0.ID')
       if (!campaignId) throw new Error('No Campaign ID')
 
-      return getCampaignTemplate(DECLARATION_REMINDER_CAMPAIGN_ID)
-        .then((result) => {
+      return getCampaignTemplate(DECLARATION_REMINDER_CAMPAIGN_ID).then(
+        (result) => {
           const { 'Html-part': html, 'Text-part': text } = get(
             result,
             'body.Data.0',
@@ -69,9 +70,10 @@ const sendDeclarationReminderCampaign = () => {
               // TODO: This should send a notification to Slack
               .then(() => sendCampaign(campaignId))
           )
-        })
-        .catch((err) => console.error(err))
+        },
+      )
     })
+    .catch((err) => console.error(err))
 }
 
 module.exports = sendDeclarationReminderCampaign

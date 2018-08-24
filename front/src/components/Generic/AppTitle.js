@@ -10,6 +10,8 @@ const StyledTitle = styled(Typography).attrs({
   && {
     color: #000;
     font-weight: bold;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 `
 

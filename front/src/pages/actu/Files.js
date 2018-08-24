@@ -47,6 +47,7 @@ const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap;
   width: 100%;
   padding-top: 2.5rem;
 `

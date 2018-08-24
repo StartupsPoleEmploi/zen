@@ -30,10 +30,9 @@ const StyledLayout = styled.div`
 
 const Header = styled.header`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex: 1;
-  padding: 0 5rem;
 `
 
 const PersonIcon = styled(Person)`
@@ -45,6 +44,7 @@ const PersonIcon = styled(Person)`
 
 const Title = styled(Typography).attrs({ variant: 'title', color: 'inherit' })`
   flex: 1;
+  text-align: center;
 `
 
 const TitleLink = styled(Link).attrs({ to: '/', href: '/' })`
@@ -60,7 +60,7 @@ const UserContainer = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 `
 
 export class Layout extends Component {

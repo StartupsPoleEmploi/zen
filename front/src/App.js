@@ -38,13 +38,25 @@ const StyledLink = styled(Link)`
 
 const UlStepper = styled.ul`
   display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
   list-style: none;
+  padding-left: 0;
 
   & > * {
-    width: 15rem;
+    flex: 0 1 15rem;
     border-top: 0.2rem solid black;
     text-align: center;
     padding-top: 1rem;
+    &.active {
+      font-weight: bold;
+    }
+
+    @media (max-width: 650px) {
+      &:not(.active) {
+        display: none !important;
+      }
+    }
   }
 
   & > a {
@@ -193,9 +205,7 @@ class App extends Component {
               index >= activeStep || activeStep >= 2 ? (
                 <LiStep
                   key={label}
-                  style={{
-                    fontWeight: index === activeStep ? 'bold' : 'normal',
-                  }}
+                  className={index === activeStep ? 'active' : ''}
                 >
                   {activeStep > index && <CheckCircleIcon />}
                   {label}

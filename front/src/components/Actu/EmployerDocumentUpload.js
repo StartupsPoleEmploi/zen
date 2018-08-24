@@ -79,6 +79,9 @@ const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
 const ReplaceButton = styled(Button)`
   & > * {
     flex-direction: column;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.1rem;
   }
 `
 
@@ -174,8 +177,8 @@ export class EmployerDocumentUpload extends Component {
           {fileExistsOnServer && (
             <Fragment>
               {hiddenInput}
-              <ReplaceButton size="small">
-                <Autorenew />
+              <ReplaceButton component="span" size="small">
+                <Autorenew style={{ transform: 'rotate(-90deg)' }} />
                 Remplacer le document
               </ReplaceButton>
             </Fragment>

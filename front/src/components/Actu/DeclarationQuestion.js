@@ -1,31 +1,31 @@
 import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
+import Typography from '@material-ui/core/Typography'
+import { isNull } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
-const MainListItem = styled(ListItem)`
+import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
+
+const Container = styled.li`
+  padding: 1rem 2.4rem 1rem;
+`
+
+const MainQuestionContainer = styled.div`
   && {
-    padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
     flex-wrap: wrap;
   }
 `
 
-const SubListItem = styled(ListItem)`
+const QuestionLabel = styled(Typography)`
   && {
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-top: 0;
-    flex-wrap: wrap;
+    flex: 0 0 66%;
   }
 `
-
-const getFormValue = (value) => (value === null ? value : value ? 'yes' : 'no')
 
 export class DeclarationQuestion extends Component {
   static propTypes = {
@@ -39,7 +39,7 @@ export class DeclarationQuestion extends Component {
 
   handleChange = ({ target: { value } }) => {
     this.props.onAnswer({
-      hasAnsweredYes: value === 'yes',
+      hasAnsweredYes: value,
       controlName: this.props.name,
     })
   }
@@ -47,33 +47,21 @@ export class DeclarationQuestion extends Component {
   render() {
     const { children, label, value, withChildrenOnNo } = this.props
     return (
-      <Fragment>
-        <MainListItem>
-          <ListItemText primary={label} />
+      <Container>
+        <MainQuestionContainer>
+          <QuestionLabel>{label}</QuestionLabel>
           <FormControl component="fieldset" required error>
-            <RadioGroup
-              row
-              aria-label="oui ou non"
+            <YesNoRadioGroup
               name="yesOrNo"
-              value={getFormValue(value)}
-              onChange={this.handleChange}
-            >
-              <FormControlLabel
-                value="yes"
-                control={<Radio color="primary" />}
-                label="Oui"
-              />
-              <FormControlLabel
-                value="no"
-                control={<Radio color="primary" />}
-                label="Non"
-              />
-            </RadioGroup>
+              value={value}
+              onAnswer={this.handleChange}
+            />
           </FormControl>
-        </MainListItem>
-        {getFormValue(value) === (withChildrenOnNo ? 'no' : 'yes') &&
-          children && <SubListItem>{children}</SubListItem>}
-      </Fragment>
+        </MainQuestionContainer>
+        {!isNull(value) &&
+          value === !withChildrenOnNo &&
+          children && <div>{children}</div>}
+      </Container>
     )
   }
 }

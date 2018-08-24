@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
-import Warning from '@material-ui/icons/Warning'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -14,6 +13,8 @@ import superagent from 'superagent'
 
 import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
+import WorkSummary from '../../components/Actu/WorkSummary'
+import CustomColorButton from '../../components/Generic/CustomColorButton'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const StyledFiles = styled.div`
   max-width: 88rem;
   width: 100%;
   margin: auto;
+  padding-bottom: 4rem; /* space for position:fixed div */
 `
 
 const StyledTitle = styled(Typography)`
@@ -30,28 +32,8 @@ const StyledTitle = styled(Typography)`
   }
 `
 
-const StyledSummary = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #d7d7d7;
-  border-radius: 1rem;
-  width: 100%;
-  padding: 1rem;
-  background-color: #fbfbfb;
-  margin-bottom: 1.5rem;
-`
-
-const StyledSummaryTypography = styled(Typography)`
-  flex: 1 1 33%;
-`
-
 const StyledInfo = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const StyledInfoTypography = styled(Typography)`
-  padding-left: 1rem;
+  text-align: center;
 `
 
 const StyledList = styled(List)`
@@ -65,8 +47,9 @@ const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap;
   width: 100%;
-  padding-top: 1.5rem;
+  padding-top: 2.5rem;
 `
 
 const ErrorMessage = styled(Typography)`
@@ -76,14 +59,6 @@ const ErrorMessage = styled(Typography)`
     padding-top: 1.5rem;
   }
 `
-
-const calculateTotal = (employers, field) => {
-  const total = employers.reduce(
-    (prev, employer) => parseInt(employer[field], 10) + prev,
-    0,
-  )
-  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
-}
 
 const additionalDocuments = [
   {
@@ -314,45 +289,30 @@ export class Files extends Component {
           Envoi des documents du mois de{' '}
           {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
         </StyledTitle>
-        <StyledSummary>
-          <StyledSummaryTypography variant="body2">
-            <b>
-              Actualisation du mois de{' '}
-              {moment(declaration.declarationMonth.month).format('MMMM')}
-            </b>
-          </StyledSummaryTypography>
-          <StyledSummaryTypography
-            variant="body2"
-            style={{ textAlign: 'center' }}
-          >
-            Heures déclarées : {calculateTotal(employers, 'workHours')}h
-          </StyledSummaryTypography>
-          <StyledSummaryTypography
-            variant="body2"
-            style={{ textAlign: 'right' }}
-          >
-            Salaire brut : {calculateTotal(employers, 'salary')}€
-          </StyledSummaryTypography>
-        </StyledSummary>
 
         <StyledInfo>
-          {remainingDocumentsNb > 0 && <Warning />}
-          <StyledInfoTypography variant="body2">
+          <Typography
+            variant="body2"
+            style={{ color: remainingDocumentsNb > 0 ? '#df5555' : '#3e689b' }}
+          >
             {remainingDocumentsNb > 0
               ? `Reste ${remainingDocumentsNb} documents à fournir`
-              : 'Les documents sont prêts à être envoyés'}
-          </StyledInfoTypography>
+              : 'Tous vos documents sont prêts à être envoyés'}
+          </Typography>
         </StyledInfo>
+
         <StyledList>
           {employers.map(this.renderEmployerRow)}
           {neededAdditionalDocuments.map(this.renderAdditionalDocument)}
         </StyledList>
 
         <StyledInfo>
-          <StyledInfoTypography variant="caption">
-            L'envoi final à Pôle Emploi pour procéder à votre actualisation sera
-            possible une fois tous les documents ajoutés
-          </StyledInfoTypography>
+          <Typography variant="body2">
+            Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
+            seront tous là.
+            <br />
+            Cela permettra une meilleure gestion de votre dossier.
+          </Typography>
         </StyledInfo>
 
         {error && (
@@ -362,9 +322,9 @@ export class Files extends Component {
         )}
 
         <ButtonsContainer>
-          <Button variant="raised" component={Link} to="/thanks?later">
+          <CustomColorButton component={Link} to="/thanks?later">
             Enregistrer et finir plus tard
-          </Button>
+          </CustomColorButton>
           <Button
             color="primary"
             variant="raised"
@@ -374,6 +334,8 @@ export class Files extends Component {
             Envoyer à Pôle Emploi
           </Button>
         </ButtonsContainer>
+
+        <WorkSummary employers={employers} />
       </StyledFiles>
     )
   }

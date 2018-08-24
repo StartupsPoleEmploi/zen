@@ -3,18 +3,17 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import GreenRectangle from '../../components/Generic/GreenRectangle'
+import AppTitle from '../../components/Generic/AppTitle'
 import LinkButton from '../../components/Generic/LinkButton'
+import Rectangle from '../../components/Generic/Rectangle'
 import PEConnectLink from '../../components/PEConnect/PEConnectLink'
-import landingBackground from './images/landingBackground.svg'
-import logoPE from './images/logoPE.jpg'
-import step1ToStep2 from './images/step1-to-step2.svg'
-import step1 from './images/step1.svg'
-import step2ToStep3 from './images/step2-to-step3.svg'
-import step2 from './images/step2.svg'
-import step3 from './images/step3.svg'
-
-const GREEN = '#7cdd91'
+import landingBackground from '../../images/landingBackground.svg'
+import logoPE from '../../images/logoPE.jpg'
+import step1ToStep2 from '../../images/step1-to-step2.svg'
+import step1 from '../../images/people.svg'
+import step2ToStep3 from '../../images/step2-to-step3.svg'
+import step2 from '../../images/paper-plane.svg'
+import step3 from '../../images/money-bank.svg'
 
 const StyledHome = styled.div`
   display: flex;
@@ -52,15 +51,6 @@ const Header = styled.header`
 
 const HeaderMain = styled.div`
   max-width: 50rem;
-`
-
-const AppTitle = styled(Typography).attrs({
-  variant: 'display1',
-})`
-  && {
-    color: #000;
-    font-weight: bold;
-  }
 `
 
 const Tagline = styled(Typography).attrs({
@@ -178,10 +168,8 @@ export const Home = ({ location: { search } }) => (
     )}
     <Header>
       <HeaderMain>
-        <AppTitle>
-          zen<span style={{ color: GREEN }}>.</span>
-        </AppTitle>
-        <GreenRectangle
+        <AppTitle />
+        <Rectangle
           style={{
             marginTop: '2rem',
             marginBottom: '2rem',

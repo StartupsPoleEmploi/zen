@@ -1,19 +1,17 @@
 import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Clear from '@material-ui/icons/Clear'
+import Cancel from '@material-ui/icons/Cancel'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-import GreenRectangle from '../Generic/GreenRectangle'
+import Rectangle from '../Generic/Rectangle'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
+import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -24,23 +22,25 @@ const StyledMain = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  border: 1px solid #9c9c9c;
+  border: 1px solid #adafaf;
   border-radius: 1rem;
   padding: 1rem;
-  margin-bottom: 0.75rem;
-  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  max-width: 95rem;
   flex-wrap: wrap;
+  box-shadow: 0 0 0.5rem 0.1rem #eeeeee;
 `
 
 const FieldsContainer = styled.div`
-  flex: 1 1 30rem;
-  border-right: 1px solid #9c9c9c;
+  flex: 1 1 20rem;
+  border-right: 1px solid #000;
 `
 
 const StyledTextField = styled(TextField)`
   && {
     margin-right: 1.5rem;
-    width: 20rem;
+    width: 15rem;
   }
 `
 
@@ -48,6 +48,7 @@ const StyledFormControl = styled(FormControl)`
   && {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     flex: 0 1 auto;
@@ -57,14 +58,31 @@ const StyledFormControl = styled(FormControl)`
 
 const StyledFormLabel = styled(FormLabel)`
   flex-shrink: 1;
-  margin-right: 1.5rem;
+  margin-right: 3rem;
+  && {
+    color: #000;
+  }
+  max-width: 20rem;
 `
 
-const StyledClear = styled(Clear)`
+const RemoveButton = styled.button`
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  text-transform: uppercase;
+  padding-left: 1rem;
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+`
+
+const CancelIcon = styled(Cancel)`
   && {
-    width: 3rem;
-    height: 3rem;
-    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `
 
@@ -84,7 +102,7 @@ const TooltipTitle = styled(Typography)`
   }
 `
 
-const greenRectangleStyle = {
+const RectangleStyle = {
   width: '1.4rem',
   height: '0.3rem',
   borderRadius: '0.2rem',
@@ -124,7 +142,7 @@ export class EmployerQuestion extends Component {
     const name = fieldName.substr(0, fieldName.indexOf('['))
     this.props[string]({
       name,
-      value: name !== 'hasEndedThisMonth' ? value : value === 'yes',
+      value,
       index: this.props.index,
     })
   }
@@ -143,13 +161,6 @@ export class EmployerQuestion extends Component {
       hasEndedThisMonth,
     } = this.props
 
-    const hasEndedThisMonthValue =
-      hasEndedThisMonth.value === null
-        ? ''
-        : hasEndedThisMonth.value
-          ? 'yes'
-          : 'no'
-
     return (
       <StyledContainer>
         <StyledMain>
@@ -157,7 +168,7 @@ export class EmployerQuestion extends Component {
             <TooltipOnFocus
               content={
                 <Fragment>
-                  <GreenRectangle style={greenRectangleStyle} />
+                  <Rectangle style={RectangleStyle} />
                   <TooltipTitle>Information</TooltipTitle>
                   <TooltipText>
                     Si vous avez plusieurs bulletins de salaire par famille car
@@ -168,7 +179,7 @@ export class EmployerQuestion extends Component {
               }
             >
               <StyledTextField
-                label="Nom de l'employeur"
+                label="Nom employeur"
                 name={`employerName[${index}]`}
                 value={employerName.value}
                 onChange={this.onChange}
@@ -180,7 +191,7 @@ export class EmployerQuestion extends Component {
             <TooltipOnFocus
               content={
                 <Fragment>
-                  <GreenRectangle style={greenRectangleStyle} />
+                  <Rectangle style={RectangleStyle} />
                   <TooltipTitle>Information</TooltipTitle>
                   <TooltipText>
                     Indiquez le nombre d'heures qui figurera sur votre fiche de
@@ -202,7 +213,7 @@ export class EmployerQuestion extends Component {
             <TooltipOnFocus
               content={
                 <Fragment>
-                  <GreenRectangle style={greenRectangleStyle} />
+                  <Rectangle style={RectangleStyle} />
                   <TooltipTitle>Information</TooltipTitle>
                   <TooltipText>
                     Si votre employeur vous a payé des congés, n’oubliez pas
@@ -224,33 +235,25 @@ export class EmployerQuestion extends Component {
           </FieldsContainer>
           <StyledFormControl>
             <StyledFormLabel>
-              Ce contrat se termine-t-il en{' '}
+              Ce contrat se<br />termine-t-il en{' '}
               {moment(this.props.activeMonth).format('MMMM')} ?
               {hasEndedThisMonth.error && (
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
               )}
             </StyledFormLabel>
-            <RadioGroup
-              row
-              aria-label="oui ou non"
+            <YesNoRadioGroup
               name={`hasEndedThisMonth[${index}]`}
-              value={hasEndedThisMonthValue}
-              onChange={this.onChange}
-            >
-              <FormControlLabel
-                value="yes"
-                control={<Radio color="primary" />}
-                label="Oui"
-              />
-              <FormControlLabel
-                value="no"
-                control={<Radio color="primary" />}
-                label="Non"
-              />
-            </RadioGroup>
+              value={hasEndedThisMonth.value}
+              onAnswer={this.onChange}
+            />
           </StyledFormControl>
         </StyledMain>
-        <StyledClear onClick={this.onRemove} role="button" />
+        <RemoveButton onClick={this.onRemove} type="button">
+          <CancelIcon />
+          <Typography variant="caption" style={{ color: 'black' }}>
+            Supprimer
+          </Typography>
+        </RemoveButton>
       </StyledContainer>
     )
   }

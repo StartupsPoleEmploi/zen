@@ -14,12 +14,15 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import { EmployerQuestion } from '../../components/Actu/EmployerQuestion'
+import EmployerQuestion from '../../components/Actu/EmployerQuestion'
+import CustomColorButton from '../../components/Generic/CustomColorButton'
+import WorkSummary from '../../components/Actu/WorkSummary'
 
 const StyledEmployers = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 4rem; /* space for position:fixed div */
 `
 
 const Title = styled(Typography)`
@@ -33,16 +36,26 @@ const Form = styled.form`
   align-items: center;
 `
 
-const SummaryContainer = styled.div`
+const AddEmployersButtonContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #9c9c9c;
-  border-radius: 1rem;
-  padding: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+`
+
+const AddEmployersButton = styled(Button)`
+  && {
+    min-width: 15rem;
+    margin: 0 5rem;
+  }
+`
+
+const LineDiv = styled.div`
+  width: 100%;
+  max-width: 16.6rem;
+  height: 0.1rem;
+  background-color: #e4e4e4;
 `
 
 const ButtonsContainer = styled.div`
@@ -50,6 +63,23 @@ const ButtonsContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  flex-wrap: wrap;
+`
+
+const StyledDialogContent = styled(DialogContent)`
+  && {
+  }
+`
+
+const StyledDialogTitle = styled(DialogTitle)`
+  text-align: center;
+`
+
+const StyledDialogActions = styled(DialogActions)`
+  && {
+    justify-content: space-around;
+    padding-bottom: 2rem;
+  }
 `
 
 const employerTemplate = {
@@ -57,14 +87,6 @@ const employerTemplate = {
   workHours: { value: '', error: null },
   salary: { value: '', error: null },
   hasEndedThisMonth: { value: null, error: null },
-}
-
-const calculateTotal = (employers, field) => {
-  const total = employers.reduce(
-    (prev, employer) => parseInt(employer[field].value, 10) + prev,
-    0,
-  )
-  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
 const getEmployersMapFromFormData = (employers) =>
@@ -271,50 +293,58 @@ export class Employers extends Component {
         <Form>
           {employers.map(this.renderEmployerQuestion)}
 
-          <Button variant="raised" onClick={this.addEmployer}>
-            + Ajouter un employeur
-          </Button>
-
-          <SummaryContainer>
-            <Typography variant="body2">
-              Heures déclarées{' '}: {calculateTotal(employers, 'workHours')}h
-            </Typography>
-            <Typography variant="body2" style={{ textAlign: 'right' }}>
-              Salaire brut déclaré{' '}: {calculateTotal(employers, 'salary')} €
-            </Typography>
-          </SummaryContainer>
+          <AddEmployersButtonContainer>
+            <LineDiv />
+            <AddEmployersButton
+              variant="outlined"
+              color="primary"
+              onClick={this.addEmployer}
+              size="small"
+            >
+              + Ajouter un employeur
+            </AddEmployersButton>
+            <LineDiv />
+          </AddEmployersButtonContainer>
 
           {error && <Typography variant="body2">{error}</Typography>}
 
           <ButtonsContainer>
-            <Button variant="raised" onClick={this.onSave}>
+            <CustomColorButton onClick={this.onSave}>
               Enregistrer et finir plus tard
-            </Button>
+            </CustomColorButton>
             <Button variant="raised" onClick={this.openDialog} color="primary">
               Envoyer mon actualisation
             </Button>
           </ButtonsContainer>
+
+          <WorkSummary employers={employers} />
 
           <Dialog
             open={this.state.isDialogOpened}
             onClose={this.closeDialog}
             aria-labelledby="ActuDialogContentText"
           >
-            <DialogTitle>Envoi de l'actualisation</DialogTitle>
-            <DialogContent>
+            <StyledDialogTitle>Envoi de l'actualisation</StyledDialogTitle>
+            <StyledDialogContent>
               <DialogContentText id="ActuDialogContentText">
-                Votre déclaration et nombre d'heures travaillées seront transmis
-                à Pôle-Emploi. Vous ne pourrez plus modifier ces informations.
+                Votre actualisation va être envoyée à Pôle-Emploi.
+                <br />
+                Nous vous envoyons un e-mail pour vous le confirmer.
               </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.closeDialog} color="primary">
-                Annuler
+            </StyledDialogContent>
+            <StyledDialogActions>
+              <CustomColorButton onClick={this.closeDialog} color="primary">
+                Je n'ai pas terminé
+              </CustomColorButton>
+              <Button
+                variant="raised"
+                onClick={this.onSubmit}
+                color="primary"
+                autoFocus
+              >
+                Je m'actualise
               </Button>
-              <Button onClick={this.onSubmit} color="primary" autoFocus>
-                Valider
-              </Button>
-            </DialogActions>
+            </StyledDialogActions>
           </Dialog>
         </Form>
       </StyledEmployers>

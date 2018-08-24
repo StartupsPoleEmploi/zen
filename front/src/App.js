@@ -1,7 +1,5 @@
-import Step from '@material-ui/core/Step'
-import StepLabel from '@material-ui/core/StepLabel'
-import Stepper from '@material-ui/core/Stepper'
 import Typography from '@material-ui/core/Typography'
+import CheckCircle from '@material-ui/icons/CheckCircle'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
@@ -20,16 +18,64 @@ import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 import Signup from './pages/other/Signup'
 
-const steps = ['Déclaration', 'Employeurs', 'Documents']
+const steps = ['1. Ma situation', '2. Mes employeurs', '3. Mes documents']
 
 const stepsNumbers = ['/actu', '/employers', '/files']
 
 const StyledLink = styled(Link)`
-  color: #7cdd91;
+  color: #39679e;
   text-decoration: none;
 
   &:visited {
-    color: #7cdd91;
+    color: #39679e;
+  }
+
+  & > * {
+    /* override Typography font color */
+    color: #39679e !important;
+  }
+`
+
+const UlStepper = styled.ul`
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  list-style: none;
+  padding-left: 0;
+
+  & > * {
+    flex: 0 1 15rem;
+    border-top: 0.2rem solid black;
+    text-align: center;
+    padding-top: 1rem;
+    &.active {
+      font-weight: bold;
+    }
+
+    @media (max-width: 650px) {
+      &:not(.active) {
+        display: none !important;
+      }
+    }
+  }
+
+  & > a {
+    border-top: 0.2rem solid #39679e;
+  }
+`
+
+const LiStep = styled(Typography).attrs({ component: 'li' })`
+  && {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
+const CheckCircleIcon = styled(CheckCircle)`
+  && {
+    font-size: 1.5rem;
+    margin-right: 1rem;
   }
 `
 
@@ -150,24 +196,33 @@ class App extends Component {
 
     const activeStep = stepsNumbers.indexOf(pathname)
 
+    const stepper =
+      activeStep !== -1 ? (
+        <UlStepper>
+          {steps.map(
+            (label, index) =>
+              // Disable navigation back on last step
+              index >= activeStep || activeStep >= 2 ? (
+                <LiStep
+                  key={label}
+                  className={index === activeStep ? 'active' : ''}
+                >
+                  {activeStep > index && <CheckCircleIcon />}
+                  {label}
+                </LiStep>
+              ) : (
+                <StyledLink key={label} to={stepsNumbers[index]}>
+                  <LiStep>
+                    {activeStep > index && <CheckCircleIcon />} {label}
+                  </LiStep>
+                </StyledLink>
+              ),
+          )}
+        </UlStepper>
+      ) : null
+
     return (
-      <Layout user={user}>
-        {activeStep !== -1 && (
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label, index) => (
-              <Step key={label}>
-                <StepLabel>
-                  {// Disable navigation back on last step
-                  index >= activeStep || activeStep >= 2 ? (
-                    label
-                  ) : (
-                    <StyledLink to={stepsNumbers[index]}>{label}</StyledLink>
-                  )}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        )}
+      <Layout user={user} stepper={stepper}>
         <Switch>
           <PrivateRoute
             exact

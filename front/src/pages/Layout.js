@@ -1,20 +1,50 @@
-import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
-import Toolbar from '@material-ui/core/Toolbar'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import { withStyles } from '@material-ui/core/styles'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import Person from '@material-ui/icons/PersonOutline'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
+
+import AppTitle from '../components/Generic/AppTitle'
+
+const styles = (theme) => ({
+  lightTooltip: {
+    background: theme.palette.common.white,
+    color: theme.palette.text.primary,
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+})
 
 const StyledLayout = styled.div`
   max-width: 128rem;
   margin: auto;
 `
 
+const Header = styled.header`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+`
+
+const PersonIcon = styled(Person)`
+  && {
+    margin-right: 1rem;
+    font-size: 2rem;
+  }
+`
+
 const Title = styled(Typography).attrs({ variant: 'title', color: 'inherit' })`
   flex: 1;
+  text-align: center;
 `
 
 const TitleLink = styled(Link).attrs({ to: '/', href: '/' })`
@@ -26,22 +56,26 @@ const Main = styled.main`
   padding: 5rem 1rem;
 `
 
-const StyledButton = styled(Button)`
-  && {
-    color: #fff;
-    margin-left: 1rem;
-  }
+const UserContainer = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `
 
 export class Layout extends Component {
   static propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     user: PropTypes.shape({
       firstName: PropTypes.string,
       lastName: PropTypes.string,
       email: PropTypes.string,
     }),
+    stepper: PropTypes.node,
   }
+
+  state = { isTooltipOpened: false }
 
   logout = () => {
     // TODO do not redirect with window.location anymore when we
@@ -53,32 +87,58 @@ export class Layout extends Component {
     })
   }
 
+  setTooltipClosed = () => this.setState({ isTooltipOpened: false })
+  toggleTooltip = () =>
+    this.setState((state) => ({ isTooltipOpened: !state.isTooltipOpened }))
+
   render() {
-    const { children, user } = this.props
+    const { children, classes, user, stepper } = this.props
 
     return (
       <StyledLayout>
-        <AppBar position="static">
-          <Toolbar>
-            <Title>
-              <TitleLink>zen.</TitleLink>
-            </Title>
-            {user && (
-              <Fragment>
-                <Typography color="inherit" variant="subheading">
-                  {user.firstName} {user.lastName}
-                </Typography>
-                <StyledButton onClick={this.logout} variant="outlined">
-                  Déconnexion
-                </StyledButton>
-              </Fragment>
-            )}
-          </Toolbar>
-        </AppBar>
+        <Header>
+          <Title>
+            <TitleLink>
+              <AppTitle />
+            </TitleLink>
+          </Title>
+
+          {stepper}
+
+          {user && (
+            <UserContainer>
+              <ClickAwayListener onClickAway={this.setTooltipClosed}>
+                <Tooltip
+                  classes={{ tooltip: classes.lightTooltip }}
+                  disableHoverListener
+                  disableFocusListener
+                  disableTouchListener
+                  open={this.state.isTooltipOpened}
+                  placement="bottom"
+                  title={
+                    <Button onClick={this.logout} disableRipple>
+                      Déconnexion
+                    </Button>
+                  }
+                >
+                  <Button onClick={this.toggleTooltip} disableRipple>
+                    <PersonIcon />
+                    <Typography color="inherit">{user.firstName}</Typography>
+                    {this.state.isTooltipOpened ? (
+                      <ExpandLess />
+                    ) : (
+                      <ExpandMore />
+                    )}
+                  </Button>
+                </Tooltip>
+              </ClickAwayListener>
+            </UserContainer>
+          )}
+        </Header>
         <Main>{children}</Main>
       </StyledLayout>
     )
   }
 }
 
-export default withRouter(Layout)
+export default withRouter(withStyles(styles)(Layout))

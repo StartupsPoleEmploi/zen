@@ -16,17 +16,18 @@ const StyledSignup = styled.div`
   max-width: 48rem;
 `
 
-const LandingText = styled(Typography).attrs({ variant: 'title' })`
-  padding: 8rem 0 2rem;
-`
-
-const TextContainer = styled.div`
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-`
+const LandingText = styled(Typography).attrs({
+  variant: 'title',
+  paragraph: true,
+})``
 
 const Form = styled.form`
+  display: flex;
+  flex-direction: column;
   padding-top: 1rem;
+
+  max-width: 35rem;
+  width: 100%;
 `
 
 const StyledButton = styled(Button).attrs({
@@ -35,6 +36,12 @@ const StyledButton = styled(Button).attrs({
 })`
   && {
     margin-top: 2rem;
+  }
+`
+
+const StyledTextField = styled(TextField)`
+  && {
+    margin-bottom: 1rem;
   }
 `
 
@@ -101,13 +108,10 @@ export class Signup extends Component {
             Votre inscription au prochain test est en cours de validation
           </LandingText>
 
-          <TextContainer>
-            <Typography gutterBottom>
-              Si vous souhaitez contacter l'équipe, vous pouvez envoyer un
-              message à{' '}
-              <a href="mailto:zen@pole-emploi.fr">zen@pole-emploi.fr</a>
-            </Typography>
-          </TextContainer>
+          <Typography paragraph>
+            Si vous souhaitez contacter l'équipe, vous pouvez envoyer un message
+            à <a href="mailto:zen@pole-emploi.fr">zen@pole-emploi.fr</a>
+          </Typography>
         </StyledSignup>
       )
     }
@@ -117,12 +121,10 @@ export class Signup extends Component {
         <StyledSignup>
           <LandingText>Erreur</LandingText>
 
-          <TextContainer>
-            <Typography gutterBottom>
-              Une erreur s'est produite lors de votre inscription. Merci de
-              réessayer ultérieurement.
-            </Typography>
-          </TextContainer>
+          <Typography gutterBottom>
+            Une erreur s'est produite lors de votre inscription. Merci de
+            réessayer ultérieurement.
+          </Typography>
         </StyledSignup>
       )
     }
@@ -132,17 +134,13 @@ export class Signup extends Component {
         <StyledSignup>
           <LandingText>Inscription terminée</LandingText>
 
-          <TextContainer>
-            <Typography gutterBottom>
-              Votre inscription est terminée.
-            </Typography>
-            <Typography gutterBottom>
-              Nous vous contacterons prochainement pour un prochain test.
-            </Typography>
-            <Typography gutterBottom>
-              Merci de l'intérêt que vous portez à Zen.
-            </Typography>
-          </TextContainer>
+          <Typography paragraph>Votre inscription est terminée.</Typography>
+          <Typography paragraph>
+            Nous vous contacterons prochainement pour un prochain test.
+          </Typography>
+          <Typography paragraph>
+            Merci de l'intérêt que vous portez à Zen.
+          </Typography>
         </StyledSignup>
       )
     }
@@ -151,39 +149,36 @@ export class Signup extends Component {
       <StyledSignup>
         <LandingText>Je souhaite m'inscrire au prochain test</LandingText>
 
-        <TextContainer>
-          <Typography gutterBottom>Bonjour,</Typography>
-          <Typography gutterBottom>
-            Vous n’êtes pas encore inscrit sur la liste des testeurs de Zen.
-          </Typography>
-          <Typography gutterBottom>
-            Merci de nous fournir les informations ci-dessous, et l’équipe de
-            Zen vous contactera dès qu’une place sera disponible pour vous
-            permettre de tester cette nouvelle façon de s’actualiser.
-          </Typography>
-        </TextContainer>
+        <Typography paragraph>Bonjour,</Typography>
+        <Typography paragraph>
+          Vous n’êtes pas encore inscrit sur la liste des testeurs de Zen.
+        </Typography>
+        <Typography paragraph>
+          Merci de nous fournir les informations ci-dessous, et l’équipe de Zen
+          vous contactera dès qu’une place sera disponible pour vous permettre
+          de tester cette nouvelle façon de s’actualiser.
+        </Typography>
 
         <Form onSubmit={this.onSubmit}>
-          <TextField
-            label="Quel est votre identifiant Pôle Emploi ?"
+          <StyledTextField
+            label="Identifiant Pôle Emploi"
             name="peCode"
             value={peCode}
             onChange={this.onChangePeCode}
             error={!!peCodeError}
             helperText={peCodeError}
-            fullWidth
+            placeholder="Exemple : 9653404D"
           />
 
           {!user.email && (
-            <TextField
-              label="Quelle est votre adresse e-mail ?"
+            <StyledTextField
+              label="Adresse e-mail"
               name="email"
               value={email}
               onChange={this.onChangeEmail}
               error={!!emailError}
               helperText={emailError}
               inputProps={{ type: 'email' }}
-              fullWidth
             />
           )}
 

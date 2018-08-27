@@ -1,7 +1,7 @@
 const express = require('express')
 
 const router = express.Router()
-const { reduce, omit } = require('lodash')
+const { get, reduce, omit } = require('lodash')
 const { transaction } = require('objection')
 const { format } = require('date-fns')
 
@@ -34,7 +34,7 @@ const possibleDocumentTypes = [
 ]
 
 router.get('/', (req, res, next) => {
-  if ('last' in req.query) {
+  if ('last' in req.query || 'active' in req.query) {
     return Declaration.query()
       .eager(
         `[${possibleDocumentTypes.join(
@@ -45,7 +45,16 @@ router.get('/', (req, res, next) => {
       .orderBy('createdAt', 'desc')
       .first()
       .then((declaration) => {
-        if (!declaration) return res.status(404).json('No such declaration')
+        // if we're looking for the active declaration, check last declaration against
+        // active month id
+
+        if (
+          !declaration ||
+          ('active' in req.query &&
+            declaration.monthId !== get(req.activeMonth, 'id'))
+        ) {
+          return res.status(404).json('No such declaration')
+        }
         res.json(declaration)
       })
       .catch(next)

@@ -119,23 +119,39 @@ class App extends Component {
               if (err.status !== 404) throw err
             }),
           superagent
+            .get('/api/declarations?active')
+            .then((res) => res.body)
+            .catch((err) => {
+              // 404 are the normal status when no declaration was made.
+              if (err.status !== 404) throw err
+            }),
+          superagent
             .get('/api/declarationMonths?active')
             .then((res) => res.body),
-        ]).then(([declaration, activeMonthString]) => {
+        ]).then(([lastDeclaration, activeDeclaration, activeMonthString]) => {
           // Redirect the user to the last page he hasn't completed
+          const activeMonth =
+            (activeMonthString && new Date(activeMonthString)) || null
           this.setState({
-            activeMonth:
-              (activeMonthString && new Date(activeMonthString)) || null,
+            activeMonth,
             isLoading: false,
           })
 
           if (!user.isAuthorizedForTests) return
 
-          if (declaration) {
-            if (declaration.isFinished) {
+          if (
+            !activeMonth &&
+            !lastDeclaration.isFinished &&
+            lastDeclaration.hasFinishedDeclaringEmployers
+          ) {
+            return this.props.history.replace('/files')
+          }
+
+          if (activeDeclaration) {
+            if (activeDeclaration.isFinished) {
               return this.props.history.replace('/thanks')
             }
-            if (declaration.hasFinishedDeclaringEmployers) {
+            if (activeDeclaration.hasFinishedDeclaringEmployers) {
               return this.props.history.replace('/files')
             }
             return this.props.history.replace('/employers')
@@ -167,14 +183,15 @@ class App extends Component {
 
     // Deactivate the service if no active month
     // Except if the user's last declaration has files that need sending
-    const shouldTakeUserToFilesScreen =
+    const shouldTakeUserToFilesScreenForOldDocuments =
+      !activeMonth &&
       lastDeclaration &&
       lastDeclaration.hasFinishedDeclaringEmployers &&
       !lastDeclaration.isFinished
 
     if (
       !activeMonth &&
-      !shouldTakeUserToFilesScreen &&
+      !shouldTakeUserToFilesScreenForOldDocuments &&
       pathname !== '/signup'
     ) {
       return (

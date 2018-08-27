@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Autorenew from '@material-ui/icons/Autorenew'
+import Check from '@material-ui/icons/Check'
 import Eye from '@material-ui/icons/RemoveRedEye'
 import Warning from '@material-ui/icons/Warning'
 import { capitalize } from 'lodash'
@@ -92,6 +93,7 @@ export class EmployerDocumentUpload extends Component {
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
     isLoading: PropTypes.bool,
+    isTransmitted: PropTypes.bool,
     hasEndedThisMonth: PropTypes.bool.isRequired,
     submitFile: PropTypes.func.isRequired,
   }
@@ -107,6 +109,7 @@ export class EmployerDocumentUpload extends Component {
       id,
       hasEndedThisMonth,
       isLoading,
+      isTransmitted,
     } = this.props
 
     const documentToGive = hasEndedThisMonth
@@ -174,15 +177,21 @@ export class EmployerDocumentUpload extends Component {
           </FormControl>
         </StyledListItem>
         <ReplaceDocFormLabel>
-          {fileExistsOnServer && (
-            <Fragment>
-              {hiddenInput}
-              <ReplaceButton component="span" size="small">
-                <Autorenew style={{ transform: 'rotate(-90deg)' }} />
-                Remplacer le document
+          {fileExistsOnServer &&
+            (isTransmitted ? (
+              <ReplaceButton disabled>
+                <Check />
+                Transmis à Pôle Emploi
               </ReplaceButton>
-            </Fragment>
-          )}
+            ) : (
+              <Fragment>
+                {hiddenInput}
+                <ReplaceButton component="span" size="small">
+                  <Autorenew style={{ transform: 'rotate(-90deg)' }} />
+                  Remplacer le document
+                </ReplaceButton>
+              </Fragment>
+            ))}
         </ReplaceDocFormLabel>
       </StyledContainer>
     )

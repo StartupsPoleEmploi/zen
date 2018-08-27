@@ -94,7 +94,7 @@ export class Actu extends Component {
 
   componentDidMount() {
     superagent
-      .get('/api/declarations?last')
+      .get('/api/declarations?active')
       .then((res) => res.body)
       .then((declaration) =>
         this.setState({ ...declaration, isLoading: false }),

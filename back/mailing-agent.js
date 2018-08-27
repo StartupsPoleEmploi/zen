@@ -1,4 +1,4 @@
-const job = require('cron')
+const { job } = require('cron')
 const { Model } = require('objection')
 const Knex = require('knex')
 

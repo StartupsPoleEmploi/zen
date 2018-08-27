@@ -152,7 +152,7 @@ export class Files extends Component {
       .catch((err) => {
         const errorLabel =
           err.status === 413
-            ? 'Erreur : Fichier trop lourd (limite : 10mo)'
+            ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
               ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf)'
               : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
@@ -198,7 +198,7 @@ export class Files extends Component {
       .catch((err) => {
         const errorLabel =
           err.status === 413
-            ? 'Erreur : Fichier trop lourd (limite : 10mo)'
+            ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
               ? 'Fichier invalide (accepté : .png, .jpg, .pdf)'
               : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`

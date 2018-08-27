@@ -60,17 +60,21 @@ router.get('/', (req, res, next) => {
       .catch(next)
   }
 
-  return Declaration.query()
-    .eager(
-      `[${possibleDocumentTypes.join(
-        ', ',
-      )}, employers.document, declarationMonth]`,
-    )
-    .where({ userId: req.session.user.id })
-    .orderBy('createdAt', 'desc')
-    .limit(24) // 2 years
-    .then((declarations) => res.json(declarations))
-    .catch(next)
+  if ('unfinished' in req.query) {
+    return Declaration.query()
+      .eager(
+        `[${possibleDocumentTypes.join(
+          ', ',
+        )}, employers.document, declarationMonth]`,
+      )
+      .where({ isFinished: false, userId: req.session.user.id })
+      .orderBy('createdAt', 'desc')
+      .limit(24) // 2 years
+      .then((declarations) => res.json(declarations))
+      .catch(next)
+  }
+
+  res.status(400).json('Bad request')
 })
 
 router.post('/', requireActiveMonth, (req, res, next) => {
@@ -186,7 +190,11 @@ router.post('/files', upload.single('document'), (req, res, next) => {
             declaration
               .$query(trx)
               .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
-              .eager(`[${possibleDocumentTypes.join(', ')}, declarationMonth]`),
+              .eager(
+                `[${possibleDocumentTypes.join(
+                  ', ',
+                )}, employers, declarationMonth]`,
+              ),
           )
           .then((savedDeclaration) => res.json(savedDeclaration))
       }).catch(next)
@@ -227,6 +235,7 @@ router.post('/finish', (req, res, next) =>
       return Promise.all([
         declaration
           .$query()
+
           .patch({ isFinished: true })
           .returning('*'),
         ActivityLog.query().insert({

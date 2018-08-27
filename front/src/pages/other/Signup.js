@@ -101,6 +101,19 @@ export class Signup extends Component {
       email,
     } = this.state
 
+    if (user.isAuthorizedForTests) {
+      return (
+        <StyledSignup>
+          <LandingText>Vous êtes inscrits pour le prochain test !</LandingText>
+
+          <Typography paragraph>
+            Merci de vous connecter lors de la prochaine période
+            d'actualisation.
+          </Typography>
+        </StyledSignup>
+      )
+    }
+
     if (user.isWaitingForConfirmation) {
       return (
         <StyledSignup>

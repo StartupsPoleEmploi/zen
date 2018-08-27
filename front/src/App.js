@@ -172,7 +172,11 @@ class App extends Component {
       lastDeclaration.hasFinishedDeclaringEmployers &&
       !lastDeclaration.isFinished
 
-    if (!activeMonth && !shouldTakeUserToFilesScreen) {
+    if (
+      !activeMonth &&
+      !shouldTakeUserToFilesScreen &&
+      pathname !== '/signup'
+    ) {
       return (
         <Layout user={user}>
           <Typography>

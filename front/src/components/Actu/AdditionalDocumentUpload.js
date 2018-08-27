@@ -5,9 +5,11 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Autorenew from '@material-ui/icons/Autorenew'
 import Check from '@material-ui/icons/Check'
+import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Eye from '@material-ui/icons/RemoveRedEye'
 import Warning from '@material-ui/icons/Warning'
 import PropTypes from 'prop-types'
@@ -47,10 +49,10 @@ const StyledFormLabel = styled(FormLabel)`
   }
 `
 
-const ReplaceDocFormLabel = StyledFormLabel.extend`
+const SideFormLabel = StyledFormLabel.extend`
   && {
     width: 12rem;
-    background-color: #fff;
+    background-color: transparent;
   }
 `
 
@@ -76,7 +78,7 @@ const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   }
 `
 
-const ReplaceButton = styled(Button)`
+const SideButton = styled(Button)`
   & > * {
     flex-direction: column;
     text-transform: uppercase;
@@ -95,6 +97,8 @@ export class AdditionalDocumentUpload extends Component {
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
+    allowSkipFile: PropTypes.bool,
+    skipFile: PropTypes.func.isRequired,
   }
 
   submitFile = ({ target: { files } }) =>
@@ -109,6 +113,8 @@ export class AdditionalDocumentUpload extends Component {
       isTransmitted,
       name,
       label,
+      allowSkipFile,
+      skipFile,
     } = this.props
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
@@ -165,23 +171,41 @@ export class AdditionalDocumentUpload extends Component {
             )}
           </FormControl>
         </StyledListItem>
-        <ReplaceDocFormLabel>
-          {fileExistsOnServer &&
-            (isTransmitted ? (
-              <ReplaceButton disabled>
+        <SideFormLabel>
+          {fileExistsOnServer ? (
+            isTransmitted ? (
+              <SideButton disabled>
                 <Check />
                 Transmis à Pôle Emploi
-              </ReplaceButton>
+              </SideButton>
             ) : (
               <Fragment>
                 {hiddenInput}
-                <ReplaceButton component="span" size="small">
+                <SideButton component="span" size="small">
                   <Autorenew style={{ transform: 'rotate(-90deg)' }} />
                   Remplacer le document
-                </ReplaceButton>
+                </SideButton>
               </Fragment>
-            ))}
-        </ReplaceDocFormLabel>
+            )
+          ) : (
+            allowSkipFile && (
+              <Tooltip
+                placement="top"
+                title={
+                  <Typography style={{ color: '#fff' }}>
+                    Cochez cette case si vous avez transmis ce document à Pôle
+                    Emploi par d'autres moyens que Zen.
+                  </Typography>
+                }
+              >
+                <SideButton onClick={skipFile}>
+                  <CheckBoxOutlineBlank />
+                  Transmis à Pôle Emploi {/* eslint-disable-line */}
+                </SideButton>
+              </Tooltip>
+            )
+          )}
+        </SideFormLabel>
       </StyledContainer>
     )
   }

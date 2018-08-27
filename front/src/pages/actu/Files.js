@@ -134,7 +134,7 @@ export class Files extends Component {
 
   displayMissingDocs = () => this.setState({ showMissingDocs: true })
 
-  submitEmployerFile = ({ declarationId, file, employerId }) => {
+  submitEmployerFile = ({ declarationId, file, employerId, skip }) => {
     const updateEmployer = ({
       declarationId: dId,
       employerId: eId,
@@ -156,10 +156,17 @@ export class Files extends Component {
 
     updateEmployer({ declarationId, employerId, isLoading: true })
 
-    superagent
+    let request = superagent
       .post('/api/employers/files')
       .field('employerId', employerId)
-      .attach('employerFile', file)
+
+    if (skip) {
+      request = request.field('skip', true)
+    } else {
+      request = request.attach('document', file)
+    }
+
+    return request
       .then((res) => res.body)
       .then((updatedEmployer) =>
         updateEmployer({
@@ -180,22 +187,16 @@ export class Files extends Component {
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
-        this.setState({
-          employers: this.state.employers.map(
-            (employer) =>
-              employer.id === employerId
-                ? {
-                    ...employer,
-                    isLoading: false,
-                    error: errorLabel,
-                  }
-                : employer,
-          ),
+        updateEmployer({
+          declarationId,
+          employerId,
+          isLoading: false,
+          error: errorLabel,
         })
       })
   }
 
-  submitAdditionalFile = ({ declarationId, file, name }) => {
+  submitAdditionalFile = ({ declarationId, file, name, skip }) => {
     const errorKey = getErrorKey({
       name,
       declarationId,
@@ -209,11 +210,18 @@ export class Files extends Component {
       [loadingKey]: true,
     })
 
-    superagent
+    let request = superagent
       .post('/api/declarations/files')
       .field('declarationId', declarationId)
       .field('name', name)
-      .attach('document', file)
+
+    if (skip) {
+      request = request.field('skip', true)
+    } else {
+      request = request.attach('document', file)
+    }
+
+    return request
       .then((res) => res.body)
       .then((declaration) => {
         const declarations = cloneDeep(this.state.declarations)
@@ -257,7 +265,12 @@ export class Files extends Component {
       })
   }
 
-  renderDocumentList = ({ declaration, omitTransmitted, showMonthHeaders }) => {
+  renderDocumentList = ({
+    declaration,
+    omitTransmitted,
+    showMonthHeaders,
+    allowSkipFile,
+  }) => {
     // if `omitTransmitted` is true, we won't display already transmitted documents.
     // otherwise, they'll be shown, but won't be replaceable
     const neededAdditionalDocuments = additionalDocuments
@@ -277,6 +290,7 @@ export class Files extends Component {
           employer,
           declaration,
           omitTransmitted,
+          allowSkipFile,
         }),
       )
       .concat(
@@ -286,6 +300,7 @@ export class Files extends Component {
             name: neededDocument.name,
             declaration,
             omitTransmitted,
+            allowSkipFile,
           }),
         ),
       )
@@ -310,6 +325,7 @@ export class Files extends Component {
       declaration,
       omitTransmitted: true,
       showMonthHeaders: true,
+      allowSkipFile: true,
     })
 
   renderCurrentDocumentsList = (declaration) =>
@@ -317,9 +333,10 @@ export class Files extends Component {
       declaration,
       omitTransmitted: false,
       showMonthHeaders: false,
+      allowSkipFile: false,
     })
 
-  renderAdditionalDocument = ({ label, name, declaration }) => (
+  renderAdditionalDocument = ({ label, name, declaration, allowSkipFile }) => (
     <AdditionalDocumentUpload
       key={name}
       declarationId={declaration.id}
@@ -341,7 +358,7 @@ export class Files extends Component {
             declarationId: declaration.id,
           })
         ]
-      } // FIXME declaration id will now be needed
+      }
       submitFile={({ file }) =>
         this.submitAdditionalFile({
           file,
@@ -349,17 +366,37 @@ export class Files extends Component {
           declarationId: declaration.id,
         })
       }
+      skipFile={() =>
+        this.submitAdditionalFile({
+          skip: true,
+          name,
+          declarationId: declaration.id,
+        })
+      }
+      allowSkipFile={allowSkipFile}
       isTransmitted={get(declaration[name], 'isTransmitted')}
     />
   )
 
-  renderEmployerRow = ({ employer, declaration }) => (
+  renderEmployerRow = ({ employer, declaration, allowSkipFile }) => (
     <EmployerDocumentUpload
       key={employer.id}
       {...employer}
-      submitFile={(opts) =>
-        this.submitEmployerFile({ declarationId: declaration.id, ...opts })
+      submitFile={({ file }) =>
+        this.submitEmployerFile({
+          declarationId: declaration.id,
+          employerId: employer.id,
+          file,
+        })
       }
+      skipFile={() =>
+        this.submitEmployerFile({
+          declarationId: declaration.id,
+          skip: true,
+          employerId: employer.id,
+        })
+      }
+      allowSkipFile={allowSkipFile}
       fileExistsOnServer={!!employer.document}
       isTransmitted={get(employer.document, 'isTransmitted')}
     />

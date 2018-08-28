@@ -1,10 +1,5 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import Typography from '@material-ui/core/Typography'
 import { cloneDeep, isBoolean, isNaN as _isNaN, pick } from 'lodash'
 import moment from 'moment'
@@ -17,6 +12,7 @@ import superagent from 'superagent'
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
 import WorkSummary from '../../components/Actu/WorkSummary'
+import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -64,22 +60,6 @@ const ButtonsContainer = styled.div`
   justify-content: space-around;
   width: 100%;
   flex-wrap: wrap;
-`
-
-const StyledDialogContent = styled(DialogContent)`
-  && {
-  }
-`
-
-const StyledDialogTitle = styled(DialogTitle)`
-  text-align: center;
-`
-
-const StyledDialogActions = styled(DialogActions)`
-  && {
-    justify-content: space-around;
-    padding-bottom: 2rem;
-  }
 `
 
 const employerTemplate = {
@@ -322,33 +302,11 @@ export class Employers extends Component {
 
           <WorkSummary employers={employers} />
 
-          <Dialog
-            open={this.state.isDialogOpened}
-            onClose={this.closeDialog}
-            aria-labelledby="ActuDialogContentText"
-          >
-            <StyledDialogTitle>Envoi de l'actualisation</StyledDialogTitle>
-            <StyledDialogContent>
-              <DialogContentText id="ActuDialogContentText">
-                Votre actualisation va être envoyée à Pôle-Emploi.
-                <br />
-                Nous vous envoyons un e-mail pour vous le confirmer.
-              </DialogContentText>
-            </StyledDialogContent>
-            <StyledDialogActions>
-              <CustomColorButton onClick={this.closeDialog} color="primary">
-                Je n'ai pas terminé
-              </CustomColorButton>
-              <Button
-                variant="raised"
-                onClick={this.onSubmit}
-                color="primary"
-                autoFocus
-              >
-                Je m'actualise
-              </Button>
-            </StyledDialogActions>
-          </Dialog>
+          <DeclarationDialog
+            isOpened={this.state.isDialogOpened}
+            onCancel={this.closeDialog}
+            onConfirm={this.onSubmit}
+          />
         </Form>
       </StyledEmployers>
     )

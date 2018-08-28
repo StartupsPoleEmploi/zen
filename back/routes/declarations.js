@@ -97,6 +97,10 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     {},
   )
 
+  if (!declarationData.hasWorked) {
+    declarationData.hasFinishedDeclaringEmployers = true
+  }
+
   const declarationFetchPromise = req.body.id
     ? Declaration.query().findOne({
         id: req.body.id,

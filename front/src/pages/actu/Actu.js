@@ -15,6 +15,7 @@ import store from 'store2'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
+import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
 import DatePicker from '../../components/Generic/DatePicker'
@@ -94,9 +95,9 @@ export class Actu extends Component {
     isMaternalAssistant: store.get('isMaternalAssistant'),
     errorMessage: null,
     isLoading: true,
+    isDialogOpened: false,
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
-
   componentDidMount() {
     superagent
       .get('/api/declarations?active')
@@ -110,6 +111,9 @@ export class Actu extends Component {
       )
       .catch(() => this.setState({ isLoading: false }))
   }
+
+  closeDialog = () => this.setState({ isDialogOpened: false })
+  openDialog = () => this.setState({ isDialogOpened: true })
 
   onAnswer = ({ controlName, hasAnsweredYes }) =>
     this.setState({ [controlName]: hasAnsweredYes, errorMessage: null })
@@ -216,7 +220,9 @@ export class Actu extends Component {
     superagent
       .post('/api/declarations', this.state)
       .set('CSRF-Token', this.props.token)
-      .then(() => this.props.history.push('/employers'))
+      .then(() =>
+        this.props.history.push(this.state.hasWorked ? '/employers' : '/files'),
+      )
       .catch((err) => window.Raven.captureException(err))
   }
 
@@ -432,11 +438,21 @@ export class Actu extends Component {
           )}
 
           <FinalButtonsContainer>
-            <Button onClick={this.onSubmit} variant="raised" color="primary">
+            <Button
+              onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
+              variant="raised"
+              color="primary"
+            >
               Suivant
             </Button>
           </FinalButtonsContainer>
         </form>
+
+        <DeclarationDialog
+          isOpened={this.state.isDialogOpened}
+          onCancel={this.closeDialog}
+          onConfirm={this.onSubmit}
+        />
       </StyledActu>
     )
   }

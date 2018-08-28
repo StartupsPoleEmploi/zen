@@ -111,8 +111,8 @@ router.get('/files', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/files', upload.single('employerFile'), (req, res, next) => {
-  if (!req.file) return res.status(400).json('Missing file')
+router.post('/files', upload.single('document'), (req, res, next) => {
+  if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
 
   return Employer.query()
@@ -129,9 +129,13 @@ router.post('/files', upload.single('employerFile'), (req, res, next) => {
       // (also, validation of id field in model should probably be removed)
 
       return transaction(Employer.knex(), (trx) => {
-        const documentFileObj = {
-          file: req.file.filename,
-        }
+        const documentFileObj = req.body.skip
+          ? {
+              // Used in case the user sent his file by another means.
+              file: null,
+              isTransmitted: true,
+            }
+          : { file: req.file.filename }
 
         const documentPromise = employer.document
           ? employer.document.$query().patch(documentFileObj)

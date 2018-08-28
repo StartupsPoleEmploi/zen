@@ -36,6 +36,7 @@ const StyledListItem = styled(ListItem)`
     border-radius: 0.5rem;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
+    box-shadow: 0 0 0.5rem 0.1rem #eee;
   }
 `
 

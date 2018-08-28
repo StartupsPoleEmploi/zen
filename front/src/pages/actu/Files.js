@@ -262,7 +262,7 @@ export class Files extends Component {
 
   onSubmit = () => {
     superagent
-      .post('/api/declarations/finish', { id: this.state.declaration.id })
+      .post('/api/declarations/finish', { id: this.state.declarations[0].id })
       .then((res) => res.body)
       .then(() => this.props.history.push('/thanks'))
       .catch((error) => {

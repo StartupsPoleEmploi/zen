@@ -111,7 +111,10 @@ const getErrorKey = ({ name, declarationId }) =>
 
 export class Files extends Component {
   static propTypes = {
-    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
   }
 
   state = {
@@ -124,12 +127,15 @@ export class Files extends Component {
     superagent
       .get('/api/declarations?unfinished')
       .then((res) => res.body)
-      .then((declarations) =>
-        this.setState({
+      .then((declarations) => {
+        if (declarations.length === 0) {
+          return this.props.history.replace('/files')
+        }
+        return this.setState({
           declarations,
           isLoading: false,
-        }),
-      )
+        })
+      })
   }
 
   displayMissingDocs = () => this.setState({ showMissingDocs: true })

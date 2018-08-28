@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 
 const { Model } = require('objection')
+const { getDate, subMonths, startOfDay, setDate } = require('date-fns')
 const Knex = require('knex')
 const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
@@ -19,29 +20,83 @@ Model.knex(knex)
 const DeclarationMonth = require('./models/DeclarationMonth')
 const Declaration = require('./models/Declaration')
 
+const declarationFileFields = [
+  'trainingDocument',
+  'internshipDocument',
+  'sickLeaveDocument',
+  'maternityLeaveDocument',
+  'retirementDocument',
+  'invalidityDocument',
+]
+
 console.log('Starting pe-agent')
-
-/*
-TODO de ce code
-
-Récupérer le mois actif
-Faire périodiquement (toutes les 15 minutes ?) des requêtes pour trouver les déclarations avec employeurs terminés.
-
-TODO ajouter un isTransmitted sur déclaration aussi
-
-Sur ces déclarations :
-* Si la déclaration n'est pas transmise, la transmettre
-* Récupérer tous les fichiers de la déclaration et des employeurs
-* Pour chaque fichier qui n'est pas transmis, le transmettre
-* Finir la boucle.
-
-*/
 
 const getActiveMonth = () =>
   DeclarationMonth.query()
     .where('endDate', '>', new Date())
     .andWhere('startDate', '<=', 'now')
     .first()
+
+/*
+   * Summary of this scary-as-hell query:
+   * Select all declarations and eagerly get all possible types of documents
+   * All the joins and where clauses have for only objective to query declarations
+   * for which there are documents left to send.
+   * The group by is used because we have multiple left joins which could match
+   * multiple times the same declaration.
+   */
+const getDeclarationBaseQuery = () =>
+  Declaration.query()
+    .eager(
+      `[${declarationFileFields.join(
+        ', ',
+      )}, declarationMonth, employers.document, user]`,
+    )
+    .join('Employers', 'Declarations.id', 'Employers.declarationId')
+    .join(
+      'documents as employersDocuments',
+      'Employers.documentId',
+      'employersDocuments.id',
+    )
+    .leftJoin(
+      'documents as trainingDocuments',
+      'Declarations.trainingDocumentId',
+      'trainingDocuments.id',
+    )
+    .leftJoin(
+      'documents as internshipDocuments',
+      'Declarations.internshipDocumentId',
+      'internshipDocuments.id',
+    )
+    .leftJoin(
+      'documents as sickLeaveDocuments',
+      'Declarations.sickLeaveDocumentId',
+      'sickLeaveDocuments.id',
+    )
+    .leftJoin(
+      'documents as maternityLeaveDocuments',
+      'Declarations.maternityLeaveDocumentId',
+      'maternityLeaveDocuments.id',
+    )
+    .leftJoin(
+      'documents as retirementDocuments',
+      'Declarations.retirementDocumentId',
+      'retirementDocuments.id',
+    )
+    .leftJoin(
+      'documents as invalidityDocuments',
+      'Declarations.invalidityDocumentId',
+      'invalidityDocuments.id',
+    )
+    .where(function() {
+      this.where('trainingDocuments.isTransmitted', false)
+        .orWhere('internshipDocuments.isTransmitted', false)
+        .orWhere('sickLeaveDocuments.isTransmitted', false)
+        .orWhere('maternityLeaveDocuments.isTransmitted', false)
+        .orWhere('retirementDocuments.isTransmitted', false)
+        .orWhere('invalidityDocuments.isTransmitted', false)
+        .orWhere('employersDocuments.isTransmitted', false)
+    })
 
 const transmitAllDeclarations = (activeMonth) =>
   Declaration.query()
@@ -64,80 +119,56 @@ const transmitAllDeclarations = (activeMonth) =>
       }
     })
 
-const transmitAllDocuments = () => {
-  const declarationFileFields = [
-    'trainingDocument',
-    'internshipDocument',
-    'sickLeaveDocument',
-    'maternityLeaveDocument',
-    'retirementDocument',
-    'invalidityDocument',
-  ]
+const transmitAllDocuments = () =>
+  getDeclarationBaseQuery()
+    .andWhere({
+      isFinished: true,
+    })
+    .groupBy('Declarations.id')
+    // Note: This sends back declarations for which there are documents left to send, but some
+    // documents could already have been transfered, so we make sure we filter in sendDocuments.
+    .then(async (declarations) => {
+      for (const declaration of declarations) {
+        try {
+          console.log(`Gonna send documents from declaration ${declaration.id}`)
+          await sendDocuments(declaration)
+          await sendDocumentsEmail(declaration)
+        } catch (e) {
+          console.error(
+            `Error sending some documents from declaration ${declaration.id}`,
+          )
+        }
+      }
+    })
 
-  /*
-   * Summary of this scary-as-hell query:
-   * Select all declarations and eagerly get all possible types of documents
-   * All the joins and where clauses have for only objective to query declarations
-   * for which there are documents left to send.
-   * The group by is used because we have multiple left joins which could match
-   * multiple times the same declaration.
-   */
+// This does the same thing that transmitAllDocuments does but for old documents, and without mail.
+const transmitOldDocuments = () => {
+  const now = new Date()
+  let dateForRequest = new Date()
+
+  /* We want to select all declarations before the last active one
+       * Ex: * On 22/10, we'd choose all declarations until august (included)
+       *     * On 29/10, we'd choose all declarations until september (included)
+       *
+       * We'll do that by selecting declarations by their creation date
+       * Ex: * All declarations until august included were created before the 15/09 23:59:59
+       *     * All declarations until september included were created before the 15/10 23:59:59
+       * and so on
+       */
+
+  const dayOfTheMonth = getDate(now)
+  if (dayOfTheMonth < 27) {
+    dateForRequest = subMonths(dateForRequest, 1)
+  }
+  dateForRequest = startOfDay(setDate(dateForRequest, 16))
 
   return (
-    Declaration.query()
-      .eager(
-        `[${declarationFileFields.join(
-          ', ',
-        )}, declarationMonth, employers.document, user]`,
-      )
-      .join('Employers', 'Declarations.id', 'Employers.declarationId')
-      .join(
-        'documents as employersDocuments',
-        'Employers.documentId',
-        'employersDocuments.id',
-      )
-      .leftJoin(
-        'documents as trainingDocuments',
-        'Declarations.trainingDocumentId',
-        'trainingDocuments.id',
-      )
-      .leftJoin(
-        'documents as internshipDocuments',
-        'Declarations.internshipDocumentId',
-        'internshipDocuments.id',
-      )
-      .leftJoin(
-        'documents as sickLeaveDocuments',
-        'Declarations.sickLeaveDocumentId',
-        'sickLeaveDocuments.id',
-      )
-      .leftJoin(
-        'documents as maternityLeaveDocuments',
-        'Declarations.maternityLeaveDocumentId',
-        'maternityLeaveDocuments.id',
-      )
-      .leftJoin(
-        'documents as retirementDocuments',
-        'Declarations.retirementDocumentId',
-        'retirementDocuments.id',
-      )
-      .leftJoin(
-        'documents as invalidityDocuments',
-        'Declarations.invalidityDocumentId',
-        'invalidityDocuments.id',
-      )
-      .where({
-        isFinished: true,
+    getDeclarationBaseQuery()
+      .andWhere({
+        hasFinishedDeclaringEmployers: true,
+        isFinished: false,
       })
-      .andWhere(function() {
-        this.where('trainingDocuments.isTransmitted', false)
-          .orWhere('internshipDocuments.isTransmitted', false)
-          .orWhere('sickLeaveDocuments.isTransmitted', false)
-          .orWhere('maternityLeaveDocuments.isTransmitted', false)
-          .orWhere('retirementDocuments.isTransmitted', false)
-          .orWhere('invalidityDocuments.isTransmitted', false)
-          .orWhere('employersDocuments.isTransmitted', false)
-      })
+      .andWhere('Declarations.createdAt', '<', dateForRequest.toISOString())
       .groupBy('Declarations.id')
       // Note: This sends back declarations for which there are documents left to send, but some
       // documents could already have been transfered, so we make sure we filter in sendDocuments.
@@ -145,13 +176,14 @@ const transmitAllDocuments = () => {
         for (const declaration of declarations) {
           try {
             console.log(
-              `Gonna send documents from declaration ${declaration.id}`,
+              `Gonna send late documents from declaration ${declaration.id}`,
             )
             await sendDocuments(declaration)
-            await sendDocumentsEmail(declaration)
           } catch (e) {
             console.error(
-              `Error sending some documents from declaration ${declaration.id}`,
+              `Error sending some late documents from declaration ${
+                declaration.id
+              }`,
             )
           }
         }
@@ -169,11 +201,11 @@ const initActions = () => {
   return getActiveMonth()
     .then((activeMonth) => {
       // Documents can be transmitted when there is no active months. Declarations can't.
-      if (!activeMonth) return transmitAllDocuments()
+      if (!activeMonth) return transmitAllDocuments().then(transmitOldDocuments)
 
-      return transmitAllDeclarations(activeMonth).then(() =>
-        transmitAllDocuments(),
-      )
+      return transmitAllDeclarations(activeMonth)
+        .then(transmitAllDocuments)
+        .then(transmitOldDocuments)
     })
     .then(() => {
       isWorking = false

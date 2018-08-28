@@ -60,21 +60,17 @@ router.get('/', (req, res, next) => {
       .catch(next)
   }
 
-  if ('unfinished' in req.query) {
-    return Declaration.query()
-      .eager(
-        `[${possibleDocumentTypes.join(
-          ', ',
-        )}, employers.document, declarationMonth]`,
-      )
-      .where({ isFinished: false, userId: req.session.user.id })
-      .orderBy('createdAt', 'desc')
-      .limit(24) // 2 years
-      .then((declarations) => res.json(declarations))
-      .catch(next)
-  }
-
-  res.status(400).json('Bad request')
+  return Declaration.query()
+    .eager(
+      `[${possibleDocumentTypes.join(
+        ', ',
+      )}, employers.document, declarationMonth]`,
+    )
+    .where({ userId: req.session.user.id })
+    .orderBy('createdAt', 'desc')
+    .limit(24) // 2 years
+    .then((declarations) => res.json(declarations))
+    .catch(next)
 })
 
 router.post('/', requireActiveMonth, (req, res, next) => {

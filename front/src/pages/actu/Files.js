@@ -7,7 +7,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -121,21 +121,19 @@ export class Files extends Component {
     isLoading: true,
     error: null,
     showMissingDocs: false,
+    declarations: [],
   }
 
   componentDidMount() {
     superagent
-      .get('/api/declarations?unfinished')
+      .get('/api/declarations')
       .then((res) => res.body)
-      .then((declarations) => {
-        if (declarations.length === 0) {
-          return this.props.history.replace('/files')
-        }
-        return this.setState({
+      .then((declarations) =>
+        this.setState({
           declarations,
           isLoading: false,
-        })
-      })
+        }),
+      )
   }
 
   displayMissingDocs = () => this.setState({ showMissingDocs: true })
@@ -409,7 +407,7 @@ export class Files extends Component {
   )
 
   render() {
-    const { declarations, error, isLoading } = this.state
+    const { error, isLoading } = this.state
 
     if (isLoading) {
       return (
@@ -418,6 +416,14 @@ export class Files extends Component {
         </StyledFiles>
       )
     }
+
+    // display filter : In the case of old declarations displayed,
+    // a declaration which had been abandonned by a user at step 2
+    // could theoretically be here if the user came back later.
+    // We remove that possibility.
+    const declarations = this.state.declarations.filter(
+      ({ hasFinishedDeclaringEmployers }) => hasFinishedDeclaringEmployers,
+    )
 
     const lastDeclaration = declarations[0]
 
@@ -443,64 +449,87 @@ export class Files extends Component {
       .slice(1)
       .reduce((prev, nb) => prev + nb, 0)
 
+    if (lastDeclaration.isFinished && otherDeclarationsRemainingDocsNb === 0) {
+      // Users have already validated the lastDeclaration and have
+      // finished uploading old documents
+      return <Redirect to="/thanks" />
+    }
+
     return (
       <StyledFiles>
-        <StyledTitle variant="title">
-          Envoi des documents du mois de{' '}
-          {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
-        </StyledTitle>
-        <StyledInfo>
-          <Typography
-            variant="body2"
-            style={{
-              color: lastDeclarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
-            }}
-          >
-            {lastDeclarationRemainingDocsNb > 0
-              ? `Reste ${lastDeclarationRemainingDocsNb} documents à fournir`
-              : 'Tous vos documents sont prêts à être envoyés'}
-          </Typography>
-        </StyledInfo>
-        {this.renderCurrentDocumentsList(lastDeclaration)}
-        <StyledInfo>
-          <Typography variant="body2">
-            Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
-            seront tous là.
-            <br />
-            Cela permettra une meilleure gestion de votre dossier.
-          </Typography>
-        </StyledInfo>
-        {error && (
-          <ErrorMessage variant="body2">
-            Une erreur s'est produite, merci de réessayer ultérieurement
-          </ErrorMessage>
+        {lastDeclaration.isFinished ? (
+          <StyledTitle variant="title">
+            Vous avez terminé l'envoi des documents du mois de{' '}
+            {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
+          </StyledTitle>
+        ) : (
+          <Fragment>
+            <StyledTitle variant="title">
+              Envoi des documents du mois de{' '}
+              {moment(lastDeclaration.declarationMonth.month).format(
+                'MMMM YYYY',
+              )}
+            </StyledTitle>
+            <StyledInfo>
+              <Typography
+                variant="body2"
+                style={{
+                  color:
+                    lastDeclarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
+                }}
+              >
+                {lastDeclarationRemainingDocsNb > 0
+                  ? `Reste ${lastDeclarationRemainingDocsNb} documents à fournir`
+                  : 'Tous vos documents sont prêts à être envoyés'}
+              </Typography>
+            </StyledInfo>
+            {this.renderCurrentDocumentsList(lastDeclaration)}
+            <StyledInfo>
+              <Typography variant="body2">
+                Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
+                seront tous là.
+                <br />
+                Cela permettra une meilleure gestion de votre dossier.
+              </Typography>
+            </StyledInfo>
+            {error && (
+              <ErrorMessage variant="body2">
+                Une erreur s'est produite, merci de réessayer ultérieurement
+              </ErrorMessage>
+            )}
+            <ButtonsContainer>
+              <CustomColorButton component={Link} to="/thanks?later">
+                Enregistrer et finir plus tard
+              </CustomColorButton>
+              <Button
+                color="primary"
+                variant="raised"
+                disabled={lastDeclarationRemainingDocsNb > 0}
+                onClick={this.onSubmit}
+              >
+                Envoyer à Pôle Emploi
+              </Button>
+            </ButtonsContainer>
+          </Fragment>
         )}
-        <ButtonsContainer>
-          <CustomColorButton component={Link} to="/thanks?later">
-            Enregistrer et finir plus tard
-          </CustomColorButton>
-          <Button
-            color="primary"
-            variant="raised"
-            disabled={lastDeclarationRemainingDocsNb > 0}
-            onClick={this.onSubmit}
-          >
-            Envoyer à Pôle Emploi
-          </Button>
-        </ButtonsContainer>
         {otherDeclarationsRemainingDocsNb > 0 && (
           <OtherDocumentsContainer>
-            <Typography>
+            <Typography paragraph>
               {otherDeclarationsRemainingDocsNb} documents de précédents mois
-              n'ont pas encore été envoyés
+              n'ont pas encore été envoyés.
             </Typography>
-            {!this.state.showMissingDocs && (
+            {!this.state.showMissingDocs ? (
               <Button color="primary" onClick={this.displayMissingDocs}>
                 Afficher les documents manquants
               </Button>
+            ) : (
+              <Fragment>
+                <Typography paragraph>
+                  Ces documents seront transmis dès réception.
+                </Typography>
+                {declarations.slice(1).map(this.renderOlderDocumentsList)}
+              </Fragment>
             )}
-            {this.state.showMissingDocs &&
-              declarations.slice(1).map(this.renderOlderDocumentsList)}
           </OtherDocumentsContainer>
         )}
         <WorkSummary employers={lastDeclaration.employers} />

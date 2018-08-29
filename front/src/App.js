@@ -148,9 +148,6 @@ class App extends Component {
           }
 
           if (activeDeclaration) {
-            if (activeDeclaration.isFinished) {
-              return this.props.history.replace('/thanks')
-            }
             if (activeDeclaration.hasFinishedDeclaringEmployers) {
               return this.props.history.replace('/files')
             }

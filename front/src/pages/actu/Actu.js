@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
-import { isNull } from 'lodash'
+import { isNull, pick } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -61,6 +61,28 @@ const StyledList = styled(List)`
   }
 `
 
+const formFields = [
+  'hasWorked',
+  'hasTrained',
+  'trainingStartDate',
+  'trainingEndDate',
+  'hasInternship',
+  'internshipStartDate',
+  'internshipEndDate',
+  'hasSickLeave',
+  'sickLeaveStartDate',
+  'sickLeaveEndDate',
+  'hasMaternityLeave',
+  'maternityLeaveStartDate',
+  'hasRetirement',
+  'retirementStartDate',
+  'hasInvalidity',
+  'invalidityStartDate',
+  'isLookingForJob',
+  'jobSearchEndDate',
+  'jobSearchStopMotive',
+]
+
 export class Actu extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
@@ -69,27 +91,9 @@ export class Actu extends Component {
 
   state = {
     isMaternalAssistant: store.get('isMaternalAssistant'),
-    hasWorked: null,
-    hasTrained: null,
-    trainingStartDate: null,
-    trainingEndDate: null,
-    hasInternship: null,
-    internshipStartDate: null,
-    internshipEndDate: null,
-    hasSickLeave: null,
-    sickLeaveStartDate: null,
-    sickLeaveEndDate: null,
-    hasMaternityLeave: null,
-    maternityLeaveStartDate: null,
-    hasRetirement: null,
-    retirementStartDate: null,
-    hasInvalidity: null,
-    invalidityStartDate: null,
-    isLookingForJob: null,
-    jobSearchEndDate: null,
-    jobSearchStopMotive: null,
     errorMessage: null,
     isLoading: true,
+    ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
 
   componentDidMount() {
@@ -97,7 +101,11 @@ export class Actu extends Component {
       .get('/api/declarations?active')
       .then((res) => res.body)
       .then((declaration) =>
-        this.setState({ ...declaration, isLoading: false }),
+        this.setState({
+          // Set active declaration data, prevent declaration data unrelated to this form.
+          ...pick(declaration, formFields.concat('id')),
+          isLoading: false,
+        }),
       )
       .catch(() => this.setState({ isLoading: false }))
   }

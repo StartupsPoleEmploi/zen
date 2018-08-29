@@ -151,9 +151,10 @@ router.get('/files', (req, res, next) => {
 })
 
 router.post('/files', upload.single('document'), (req, res, next) => {
-  if (!req.file) return res.status(400).json('Missing file')
-  if (!req.body.declarationId)
+  if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
+  if (!req.body.declarationId) {
     return res.status(400).json('Missing declarationId')
+  }
 
   const userDocumentName = req.body.name
 
@@ -172,9 +173,13 @@ router.post('/files', upload.single('document'), (req, res, next) => {
       // (also, validation of id field in model should probably be removed)
 
       return transaction(Declaration.knex(), (trx) => {
-        const documentFileObj = {
-          file: req.file.filename,
-        }
+        const documentFileObj = req.body.skip
+          ? {
+              // Used in case the user sent his file by another means.
+              file: null,
+              isTransmitted: true,
+            }
+          : { file: req.file.filename }
 
         const documentPromise = declaration[userDocumentName]
           ? declaration[userDocumentName].$query().patch(documentFileObj)
@@ -186,7 +191,11 @@ router.post('/files', upload.single('document'), (req, res, next) => {
             declaration
               .$query(trx)
               .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
-              .eager(`[${possibleDocumentTypes.join(', ')}, declarationMonth]`),
+              .eager(
+                `[${possibleDocumentTypes.join(
+                  ', ',
+                )}, employers.document, declarationMonth]`,
+              ),
           )
           .then((savedDeclaration) => res.json(savedDeclaration))
       }).catch(next)
@@ -227,6 +236,7 @@ router.post('/finish', (req, res, next) =>
       return Promise.all([
         declaration
           .$query()
+
           .patch({ isFinished: true })
           .returning('*'),
         ActivityLog.query().insert({

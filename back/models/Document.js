@@ -11,7 +11,7 @@ class Document extends BaseModel {
       required: ['file'],
 
       properties: {
-        file: { type: 'string' },
+        file: { type: ['string', 'null'] },
         isTransmitted: { type: 'boolean' },
       },
     }

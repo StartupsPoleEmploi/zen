@@ -8,7 +8,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import Person from '@material-ui/icons/PersonOutline'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -45,11 +45,6 @@ const PersonIcon = styled(Person)`
 const Title = styled(Typography).attrs({ variant: 'title', color: 'inherit' })`
   flex: 1;
   text-align: center;
-`
-
-const TitleLink = styled(Link).attrs({ to: '/', href: '/' })`
-  color: inherit;
-  text-decoration: none;
 `
 
 const Main = styled.main`
@@ -98,9 +93,7 @@ export class Layout extends Component {
       <StyledLayout>
         <Header>
           <Title>
-            <TitleLink>
-              <AppTitle />
-            </TitleLink>
+            <AppTitle />
           </Title>
 
           {stepper}

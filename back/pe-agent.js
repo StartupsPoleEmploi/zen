@@ -4,6 +4,7 @@
 
 const { Model } = require('objection')
 const { getDate, subMonths, startOfDay, setDate } = require('date-fns')
+const { get } = require('lodash')
 const Knex = require('knex')
 const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
@@ -36,6 +37,27 @@ const getActiveMonth = () =>
     .where('endDate', '>', new Date())
     .andWhere('startDate', '<=', 'now')
     .first()
+
+const hasDocumentsLeftToSend = (declaration) => {
+  const hasMissingEmployersDocuments = declaration.employers.some(
+    ({ documentId }) => !documentId,
+  )
+  const hasMissingDeclarationDocuments =
+    (declaration.hasTrained &&
+      !get(declaration, 'trainingDocument.isTransmitted')) ||
+    (declaration.hasInternship &&
+      !get(declaration, 'internshipDocument.isTransmitted')) ||
+    (declaration.hasSickLeave &&
+      !get(declaration, 'sickLeaveDocument.isTransmitted')) ||
+    (declaration.hasMaternityLeave &&
+      !get(declaration, 'maternityLeaveDocument.isTransmitted')) ||
+    (declaration.hasRetirement &&
+      !get(declaration, 'retirementDocument.isTransmitted')) ||
+    (declaration.hasInvalidity &&
+      !get(declaration, 'invalidityDocument.isTransmitted'))
+
+  return hasMissingEmployersDocuments || hasMissingDeclarationDocuments
+}
 
 /*
    * Summary of this scary-as-hell query:
@@ -179,6 +201,18 @@ const transmitOldDocuments = () => {
               `Gonna send late documents from declaration ${declaration.id}`,
             )
             await sendDocuments(declaration)
+
+            // set isFinished to true if nothing is left to send.
+            const updatedDeclaration = await Declaration.query()
+              .eager('employers.document')
+              .findById(declaration.id)
+
+            if (!hasDocumentsLeftToSend(updatedDeclaration)) {
+              console.log(
+                `Setting isFinished for declaration ${updatedDeclaration.id}`,
+              )
+              await updatedDeclaration.$query().patch({ isFinished: true })
+            }
           } catch (e) {
             console.error(
               `Error sending some late documents from declaration ${

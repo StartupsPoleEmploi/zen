@@ -1,3 +1,0 @@
-# for production only
-FROM staticfloat/nginx-certbot
-COPY nginx/default.conf /etc/nginx/conf.d/

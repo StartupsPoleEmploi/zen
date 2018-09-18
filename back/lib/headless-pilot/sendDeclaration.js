@@ -31,7 +31,7 @@ module.exports = async function sendDeclaration(declaration) {
     console.warn(
       `Warning : Declaration already done or unavailable. Exiting Declaration update.`,
     )
-    return
+    throw new Error('Warning: Declaration error', declaration.id)
   }
 
   await page.waitFor('#formationBloc')

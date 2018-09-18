@@ -8,6 +8,9 @@ services:
       - "443:443"
     volumes:
       - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./nginx/dhparam.pem:/etc/nginx/ssl/dhparam.pem"
+      - "./nginx/zen.crt:/etc/nginx/ssl/zen.crt"
+      - "./nginx/entrust-zen.pole-emploi.fr-key.pem:/etc/nginx/ssl/entrust-zen.pole-emploi.fr-key.pem"
       - "./front:/home/front"
     environment:
       - TZ=Europe/Paris

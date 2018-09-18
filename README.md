@@ -6,6 +6,8 @@
 
 **For front-end Sentry use, a `front/.env.local` needs creation and configuration too.**
 
+**For production HTTPS deployment, the entrust-zen.pole-emploi.fr-key.pem file must be put in the nginx folder**
+
 Install Docker and Docker-Compose, then
 
 ```

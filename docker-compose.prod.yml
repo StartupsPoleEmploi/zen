@@ -1,14 +1,5 @@
-version: '2'
+version: "2"
 services:
-  nginx:
-    build:
-      context: .
-      dockerfile: dockerfile_nginx
-    environment:
-      - CERTBOT_EMAIL=hugo+certbot-pe@codeheroics.com
-    volumes:
-      - "./front:/home/front"
-
   node:
     environment:
       - NODE_ENV=production

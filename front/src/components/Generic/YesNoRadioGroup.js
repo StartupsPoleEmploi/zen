@@ -58,13 +58,13 @@ export class YesNoRadioGroup extends Component {
       >
         <FirstFormControlLabel
           value="yes"
-          control={<StyledRadio checked={value} />}
+          control={<StyledRadio />}
           label="oui"
           checked={value}
         />
         <SecondFormControlLabel
           value="no"
-          control={<StyledRadio checked={value === false} />}
+          control={<StyledRadio />}
           label="non"
           checked={value === false}
         />

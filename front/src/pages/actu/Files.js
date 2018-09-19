@@ -115,6 +115,7 @@ export class Files extends Component {
       push: PropTypes.func.isRequired,
       replace: PropTypes.func.isRequired,
     }).isRequired,
+    token: PropTypes.string.isRequired,
   }
 
   state = {
@@ -162,6 +163,7 @@ export class Files extends Component {
 
     let request = superagent
       .post('/api/employers/files')
+      .set('CSRF-Token', this.props.token)
       .field('employerId', employerId)
 
     if (skip) {
@@ -216,6 +218,7 @@ export class Files extends Component {
 
     let request = superagent
       .post('/api/declarations/files')
+      .set('CSRF-Token', this.props.token)
       .field('declarationId', declarationId)
       .field('name', name)
 
@@ -261,6 +264,7 @@ export class Files extends Component {
   onSubmit = () => {
     superagent
       .post('/api/declarations/finish', { id: this.state.declarations[0].id })
+      .set('CSRF-Token', this.props.token)
       .then((res) => res.body)
       .then(() => this.props.history.push('/thanks'))
       .catch((error) => {

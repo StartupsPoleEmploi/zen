@@ -246,27 +246,49 @@ class App extends Component {
             exact
             isLoggedIn={!!user}
             path="/actu"
-            render={(props) => <Actu {...props} activeMonth={activeMonth} />}
+            render={(props) => (
+              <Actu
+                {...props}
+                activeMonth={activeMonth}
+                token={user.csrfToken}
+              />
+            )}
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/employers"
             render={(props) => (
-              <Employers {...props} activeMonth={activeMonth} />
+              <Employers
+                {...props}
+                activeMonth={activeMonth}
+                token={user.csrfToken}
+              />
             )}
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/files"
-            render={(props) => <Files {...props} activeMonth={activeMonth} />}
+            render={(props) => (
+              <Files
+                {...props}
+                activeMonth={activeMonth}
+                token={user.csrfToken}
+              />
+            )}
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/thanks"
-            render={(props) => <Thanks {...props} activeMonth={activeMonth} />}
+            render={(props) => (
+              <Thanks
+                {...props}
+                activeMonth={activeMonth}
+                token={user.csrfToken}
+              />
+            )}
           />
           <PrivateRoute
             exact

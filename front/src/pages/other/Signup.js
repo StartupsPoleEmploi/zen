@@ -53,6 +53,7 @@ export class Signup extends Component {
       firstName: PropTypes.string,
       lastName: PropTypes.string,
       email: PropTypes.string,
+      csrfToken: PropTypes.string,
     }),
   }
 
@@ -86,6 +87,7 @@ export class Signup extends Component {
         email: this.state.email,
         peCode: this.state.peCode,
       })
+      .set('CSRF-Token', this.props.user.csrfToken)
       .then(() => this.setState({ isFinished: true }))
       .catch(() => this.setState({ isError: true }))
   }

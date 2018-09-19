@@ -26,7 +26,7 @@ Production containers only open port 443 & 80
 
 ### Enabling e-mails and data transmission to pole-emploi.fr
 
-The following value need to be set to `true` in the production configuration file:
+The following value need to be set to `true` in the production server production.js configuration file:
 
 ```js
   {

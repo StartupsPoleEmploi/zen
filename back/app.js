@@ -8,6 +8,8 @@ const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
+const csurf = require('csurf')
+
 const { version } = require('./package.json')
 
 const { setActiveMonth } = require('./lib/activeMonthMiddleware')
@@ -55,6 +57,7 @@ app.use(
     store: new (pgConnectSimple(session))(),
   }),
 )
+app.use(csurf())
 
 app.use('/ping', (req, res) => res.send('pong'))
 

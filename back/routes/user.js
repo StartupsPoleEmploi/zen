@@ -6,7 +6,12 @@ const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionCo
 
 const router = express.Router()
 
-router.get('/', (req, res) => res.json(req.session.user))
+router.get('/', (req, res) =>
+  res.json({
+    ...req.session.user,
+    csrfToken: req.csrfToken(),
+  }),
+)
 
 router.delete('/', (req, res) => {
   req.session.user = null

@@ -10,6 +10,7 @@ const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
 const sendDeclarationEmail = require('./lib/mailings/sendDeclarationEmail')
 const sendDocumentsEmail = require('./lib/mailings/sendDocumentsEmail')
+const config = require('config')
 
 const knex = Knex({
   client: 'pg',
@@ -30,7 +31,16 @@ const declarationFileFields = [
   'invalidityDocument',
 ]
 
+const { shouldSendPEAgentEmails, shouldTransmitDataToPE } = config
+
+if (!shouldTransmitDataToPE) {
+  console.log('pe-agent is deactivated.')
+  process.exit()
+}
 console.log('Starting pe-agent')
+if (!shouldSendPEAgentEmails) {
+  console.log('pe-agent e-mails are deactivated')
+}
 
 const getActiveMonth = () =>
   DeclarationMonth.query()
@@ -134,7 +144,9 @@ const transmitAllDeclarations = (activeMonth) =>
         try {
           console.log(`Gonna send declaration ${declaration.id}`)
           await sendDeclaration(declaration)
-          await sendDeclarationEmail(declaration)
+          if (shouldSendPEAgentEmails) {
+            await sendDeclarationEmail(declaration)
+          }
         } catch (e) {
           console.error(`Error transmitting declaration ${declaration.id}`, e)
         }
@@ -154,7 +166,9 @@ const transmitAllDocuments = () =>
         try {
           console.log(`Gonna send documents from declaration ${declaration.id}`)
           await sendDocuments(declaration)
-          await sendDocumentsEmail(declaration)
+          if (shouldSendPEAgentEmails) {
+            await sendDocumentsEmail(declaration)
+          }
         } catch (e) {
           console.error(
             `Error sending some documents from declaration ${declaration.id}`,

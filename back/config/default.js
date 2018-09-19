@@ -12,4 +12,7 @@ module.exports = {
     process.env.NODE_ENV === 'production'
       ? '/home/back/uploads/'
       : '/tmp/uploads/',
+  shouldSendReminderEmails: false,
+  shouldSendPEAgentEmails: false,
+  shouldTransmitDataToPE: false,
 }

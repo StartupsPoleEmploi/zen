@@ -6,8 +6,6 @@
 
 **For front-end Sentry use, a `front/.env.local` needs creation and configuration too.**
 
-**For production HTTPS deployment, the entrust-zen.pole-emploi.fr-key.pem file must be put in the nginx folder**
-
 Install Docker and Docker-Compose, then
 
 ```
@@ -23,3 +21,21 @@ Dev containers start with :
 - nginx (last React production build) on port 80
 
 Production containers only open port 443 & 80
+
+## Production
+
+### Enabling e-mails and data transmission to pole-emploi.fr
+
+The following value need to be set to `true` in the production configuration file:
+
+```js
+  {
+    shouldSendReminderEmails: false, // reminder e-mails
+    shouldSendPEAgentEmails: false, // transactional e-mails
+    shouldTransmitDataToPE: false, // pe-agent activation
+  }
+```
+
+### HTTPS certificate
+
+The entrust-zen.pole-emploi.fr-key.pem file must be put in the nginx folder

@@ -125,6 +125,7 @@ export class Employers extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    token: PropTypes.string.isRequired,
   }
 
   state = {
@@ -202,6 +203,7 @@ export class Employers extends Component {
       .post('/api/employers', {
         employers: getEmployersMapFromFormData(this.state.employers),
       })
+      .set('CSRF-Token', this.props.token)
       .then(() => this.props.history.push('/thanks?later'))
   }
 
@@ -248,6 +250,7 @@ export class Employers extends Component {
         employers: getEmployersMapFromFormData(this.state.employers),
         isFinished: true,
       })
+      .set('CSRF-Token', this.props.token)
       .then(() => this.props.history.push('/files'))
       .catch((err) => {
         window.Raven.captureException(err)

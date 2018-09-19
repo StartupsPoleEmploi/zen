@@ -87,6 +87,7 @@ export class Actu extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    token: PropTypes.string.isRequired,
   }
 
   state = {
@@ -214,6 +215,7 @@ export class Actu extends Component {
 
     superagent
       .post('/api/declarations', this.state)
+      .set('CSRF-Token', this.props.token)
       .then(() => this.props.history.push('/employers'))
       .catch((err) => window.Raven.captureException(err))
   }

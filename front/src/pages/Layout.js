@@ -66,6 +66,7 @@ export class Layout extends Component {
       firstName: PropTypes.string,
       lastName: PropTypes.string,
       email: PropTypes.string,
+      csrfToken: PropTypes.string,
     }),
     stepper: PropTypes.node,
   }
@@ -76,10 +77,13 @@ export class Layout extends Component {
     // TODO do not redirect with window.location anymore when we
     // have a global store.
     // (This is done so everything is reloaded)
-    superagent.delete('/api/user').then(() => {
-      window.Raven.setUserContext()
-      window.location = '/loggedOut'
-    })
+    superagent
+      .delete('/api/user')
+      .set('CSRF-Token', this.props.user.csrfToken)
+      .then(() => {
+        window.Raven.setUserContext()
+        window.location = '/loggedOut'
+      })
   }
 
   setTooltipClosed = () => this.setState({ isTooltipOpened: false })

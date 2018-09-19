@@ -1,6 +1,12 @@
+const config = require('config')
 const { job } = require('cron')
 const { Model } = require('objection')
 const Knex = require('knex')
+
+if (!config.get('shouldSendReminderEmails')) {
+  console.log('Mailing Agent is deactivated.')
+  process.exit()
+}
 
 const knex = Knex({
   client: 'pg',

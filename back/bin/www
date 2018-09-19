@@ -7,7 +7,7 @@
 
 const isAdmin = process.argv.includes('--admin')
 
-const app = require(isAdmin ? '../app' : '../admin')
+const app = require(!isAdmin ? '../app' : '../admin')
 const debug = require('debug')('node:server')
 const http = require('http')
 
@@ -15,7 +15,7 @@ const http = require('http')
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || (isAdmin ? '8080' : '8081'))
+const port = normalizePort(process.env.PORT || (!isAdmin ? '8080' : '8081'))
 app.set('port', port)
 
 /**

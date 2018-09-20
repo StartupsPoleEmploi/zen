@@ -1,5 +1,6 @@
 const express = require('express')
 const Raven = require('raven')
+const config = require('config')
 
 const User = require('../models/User')
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
@@ -42,8 +43,12 @@ router.patch('/', (req, res, next) => {
       })
     })
     .then((user) => {
-      // Note: We do not wait for Mailjet to answer to send data back to the user
-      sendSubscriptionConfirmation(user).catch((e) => Raven.captureException(e))
+      if (config.get('shouldSendPEAgentEmails')) {
+        // Note: We do not wait for Mailjet to answer to send data back to the user
+        sendSubscriptionConfirmation(user).catch((e) =>
+          Raven.captureException(e),
+        )
+      }
       req.session.user.isWaitingForConfirmation = true
       res.json(req.session.user)
     })

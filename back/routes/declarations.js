@@ -106,26 +106,29 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 
   return declarationFetchPromise
     .then((declaration) => {
-      let declarationPromise
-      let activityLogPromise = Promise.resolve()
+      let promise
       if (declaration) {
-        declarationPromise = declaration
-          .$query()
-          .patch(declarationData)
-          .returning('*')
+        promise = Promise.all([
+          declaration
+            .$query()
+            .patch(declarationData)
+            .returning('*'),
+        ])
       } else {
-        declarationPromise = Declaration.query()
-          .insert(declarationData)
-          .returning('*')
-        activityLogPromise = ActivityLog.query().insert({
-          userId: req.session.user.id,
-          action: ActivityLog.actions.VALIDATE_DECLARATION,
-        })
+        promise = transaction(Declaration.knex(), (trx) =>
+          Promise.all([
+            Declaration.query(trx)
+              .insert(declarationData)
+              .returning('*'),
+            ActivityLog.query(trx).insert({
+              userId: req.session.user.id,
+              action: ActivityLog.actions.VALIDATE_DECLARATION,
+            }),
+          ]),
+        )
       }
 
-      return Promise.all([declarationPromise, activityLogPromise]).then(
-        ([dbDeclaration]) => res.json(dbDeclaration),
-      )
+      return promise.then(([dbDeclaration]) => res.json(dbDeclaration))
     })
     .catch(next)
 })
@@ -233,18 +236,19 @@ router.post('/finish', (req, res, next) =>
       )
         return res.status(400).json('Declaration not complete')
 
-      return Promise.all([
-        declaration
-          .$query()
-
-          .patch({ isFinished: true })
-          .returning('*'),
-        ActivityLog.query().insert({
-          userId: req.session.user.id,
-          action: ActivityLog.actions.VALIDATE_FILES,
-          metadata: JSON.stringify({ declarationId: declaration.id }),
-        }),
-      ]).then(([savedDeclaration]) => res.json(savedDeclaration))
+      return transaction(Declaration.knex(), (trx) =>
+        Promise.all([
+          declaration
+            .$query(trx)
+            .patch({ isFinished: true })
+            .returning('*'),
+          ActivityLog.query(trx).insert({
+            userId: req.session.user.id,
+            action: ActivityLog.actions.VALIDATE_FILES,
+            metadata: JSON.stringify({ declarationId: declaration.id }),
+          }),
+        ]),
+      ).then(([savedDeclaration]) => res.json(savedDeclaration))
     })
     .catch(next),
 )

@@ -42,7 +42,7 @@ const sendDocumentsEmail = (declaration) => {
     mailjet.manageContact({
       email: declaration.user.email,
       properties: {
-        declaration_effectuee_mois: mailjet.formatDateForSegmentFilter(
+        document_envoye_mois: mailjet.formatDateForSegmentFilter(
           declarationMonth,
         ),
       },

@@ -42,7 +42,7 @@ if (sentryUrl) {
 }
 
 app.use(helmet())
-app.use(morgan('dev'))
+app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())

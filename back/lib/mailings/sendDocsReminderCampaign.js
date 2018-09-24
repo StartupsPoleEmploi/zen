@@ -3,7 +3,7 @@ const { get } = require('lodash')
 const {
   createCampaignDraft,
   getCampaignTemplate,
-  sendCampaign,
+  scheduleCampaign,
   setCampaignTemplate,
   createSegment,
   formatDateForSegmentFilter,
@@ -54,14 +54,10 @@ const sendDocsReminderCampaign = () => {
             `No HTML or text part for template ${DOCS_REMINDER_CAMPAIGN_ID}`,
           )
 
-        return (
-          setCampaignTemplate(campaignId, {
-            'Html-part': html,
-            'Text-part': text,
-          })
-            // TODO: This should send a notification to Slack
-            .then(() => sendCampaign(campaignId))
-        )
+        return setCampaignTemplate(campaignId, {
+          'Html-part': html,
+          'Text-part': text,
+        }).then(() => scheduleCampaign(campaignId))
       })
     })
     .catch((err) => console.error(err))

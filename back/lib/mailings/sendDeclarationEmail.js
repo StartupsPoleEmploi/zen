@@ -134,52 +134,42 @@ const sendSubscriptionConfirmation = (declaration) =>
       locale: fr,
     })
 
-    return Promise.all([
-      mailjet.sendMail({
-        Messages: [
-          {
-            From: {
-              Email: 'no-reply@zen.pole-emploi.fr',
-              Name: `L'équipe Zen`,
-            },
-            To: [
-              {
-                Email: declaration.user.email,
-                Name: `${declaration.user.firstName} ${
-                  declaration.user.lastName
-                }`,
-              },
-            ],
-            TemplateID: 504060,
-            TemplateLanguage: true,
-            Subject: `Votre déclaration de situation de ${formattedDeclarationMonth} a été enregistrée`,
-            Variables: {
-              prenom: declaration.user.firstName,
-              date: formattedDeclarationMonth,
-            },
-            Attachments: [
-              {
-                ContentType: 'application/pdf',
-                Filename: `Actualisation ${formattedDeclarationMonth}.pdf`,
-                Base64Content: base64File,
-              },
-            ],
-            CustomCampaign: `Confirmation de transmission de déclaration - ${format(
-              declarationMonth,
-              'MM/YYYY',
-            )}`,
+    return mailjet.sendMail({
+      Messages: [
+        {
+          From: {
+            Email: 'no-reply@zen.pole-emploi.fr',
+            Name: `L'équipe Zen`,
           },
-        ],
-      }),
-      mailjet.manageContact({
-        email: declaration.user.email,
-        properties: {
-          declaration_effectuee_mois: mailjet.formatDateForSegmentFilter(
+          To: [
+            {
+              Email: declaration.user.email,
+              Name: `${declaration.user.firstName} ${
+                declaration.user.lastName
+              }`,
+            },
+          ],
+          TemplateID: 504060,
+          TemplateLanguage: true,
+          Subject: `Votre déclaration de situation de ${formattedDeclarationMonth} a été enregistrée`,
+          Variables: {
+            prenom: declaration.user.firstName,
+            date: formattedDeclarationMonth,
+          },
+          Attachments: [
+            {
+              ContentType: 'application/pdf',
+              Filename: `Actualisation ${formattedDeclarationMonth}.pdf`,
+              Base64Content: base64File,
+            },
+          ],
+          CustomCampaign: `Confirmation de transmission de déclaration - ${format(
             declarationMonth,
-          ),
+            'MM/YYYY',
+          )}`,
         },
-      }),
-    ])
+      ],
+    })
   })
 
 module.exports = sendSubscriptionConfirmation

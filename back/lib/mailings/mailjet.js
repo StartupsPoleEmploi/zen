@@ -96,7 +96,7 @@ module.exports = {
       .then((response) => {
         const campaignInfos = get(response, 'body.Data.0', {})
 
-        if (!process.env.SLACK_WEBHOOK) return
+        if (!process.env.SLACK_WEBHOOK_SU_ZEN) return
 
         const message = `L'envoi de la campagne e-mail *${
           campaignInfos.Title

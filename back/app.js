@@ -52,7 +52,7 @@ app.use(
     httpOnly: true,
     resave: false,
     saveUninitialized: false,
-    secure: false, // TODO set to true when in production
+    secure: process.env.NODE_ENV === 'production',
     secret: config.cookieSecret,
     store: new (pgConnectSimple(session))(),
   }),

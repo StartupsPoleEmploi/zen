@@ -42,7 +42,7 @@ if (sentryUrl) {
 }
 
 app.use(helmet())
-app.use(morgan('dev'))
+app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -52,7 +52,7 @@ app.use(
     httpOnly: true,
     resave: false,
     saveUninitialized: false,
-    secure: false, // TODO set to true when in production
+    secure: process.env.NODE_ENV === 'production',
     secret: config.cookieSecret,
     store: new (pgConnectSimple(session))(),
   }),

@@ -21,12 +21,12 @@ const sendDocsReminderCampaign = require('./lib/mailings/sendDocsReminderCampaig
 
 console.log('Starting mailing agent')
 
-job('0 0 7 28 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
+job('0 0 9 27 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
 job(
-  '0 0 7 7,11 * *',
+  '0 0 9 6,10 * *',
   sendDeclarationReminderCampaign,
   null,
   true,
   'Europe/Paris',
 )
-job('0 0 7 7,11 * *', sendDocsReminderCampaign, null, true, 'Europe/Paris')
+job('0 0 9 6,10 * *', sendDocsReminderCampaign, null, true, 'Europe/Paris')

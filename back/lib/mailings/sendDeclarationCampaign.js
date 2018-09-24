@@ -3,7 +3,7 @@ const { get } = require('lodash')
 const {
   createCampaignDraft,
   getCampaignTemplate,
-  sendCampaign,
+  scheduleCampaign,
   setCampaignTemplate,
 } = require('./mailjet')
 const fr = require('date-fns/locale/fr')
@@ -50,14 +50,10 @@ const sendDeclarationCampaign = () =>
         const interpolatedHtml = html.replace(regexp, formattedDate)
         const interpolatedText = text.replace(regexp, formattedDate)
 
-        return (
-          setCampaignTemplate(campaignId, {
-            'Html-part': interpolatedHtml,
-            'Text-part': interpolatedText,
-          })
-            // TODO: This should send a notification to Slack
-            .then(() => sendCampaign(campaignId))
-        )
+        return setCampaignTemplate(campaignId, {
+          'Html-part': interpolatedHtml,
+          'Text-part': interpolatedText,
+        }).then(() => scheduleCampaign(campaignId))
       })
       .catch((err) => console.error(err))
   })

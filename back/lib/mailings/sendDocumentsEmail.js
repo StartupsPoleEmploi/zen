@@ -8,46 +8,33 @@ const sendDocumentsEmail = (declaration) => {
     locale: fr,
   })
 
-  return Promise.all([
-    mailjet.sendMail({
-      Messages: [
-        {
-          From: {
-            Email: 'no-reply@zen.pole-emploi.fr',
-            Name: `L'équipe Zen`,
-          },
-          To: [
-            {
-              Email: declaration.user.email,
-              Name: `${declaration.user.firstName} ${
-                declaration.user.lastName
-              }`,
-            },
-          ],
-          TemplateID: 504201,
-          TemplateLanguage: true,
-          Subject: `Vos documents ont bien été transmis`,
-          Variables: {
-            prenom: declaration.user.firstName,
-            date: formattedDeclarationMonth,
-          },
-          CustomCampaign: `Confirmation d'envoi de documents - ${format(
-            declarationMonth,
-            'MM/YYYY',
-          )}`,
+  return mailjet.sendMail({
+    Messages: [
+      {
+        From: {
+          Email: 'no-reply@zen.pole-emploi.fr',
+          Name: `L'équipe Zen`,
         },
-      ],
-    }),
-
-    mailjet.manageContact({
-      email: declaration.user.email,
-      properties: {
-        document_envoye_mois: mailjet.formatDateForSegmentFilter(
+        To: [
+          {
+            Email: declaration.user.email,
+            Name: `${declaration.user.firstName} ${declaration.user.lastName}`,
+          },
+        ],
+        TemplateID: 504201,
+        TemplateLanguage: true,
+        Subject: `Vos documents ont bien été transmis`,
+        Variables: {
+          prenom: declaration.user.firstName,
+          date: formattedDeclarationMonth,
+        },
+        CustomCampaign: `Confirmation d'envoi de documents - ${format(
           declarationMonth,
-        ),
+          'MM/YYYY',
+        )}`,
       },
-    }),
-  ])
+    ],
+  })
 }
 
 module.exports = sendDocumentsEmail

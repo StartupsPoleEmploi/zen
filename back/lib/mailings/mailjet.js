@@ -1,5 +1,7 @@
 const NodeMailjet = require('node-mailjet')
 const { addDays, format } = require('date-fns')
+const superagent = require('superagent')
+const { get } = require('lodash')
 
 const LIST_ID = process.env.NODE_ENV === 'production' ? 14703 : 19487
 
@@ -74,21 +76,42 @@ module.exports = {
         ],
       }),
 
-  scheduleCampaign: (id) =>
-    mailjet
+  scheduleCampaign: (id, opts = {}) => {
+    const scheduledDate = opts.Date || addDays(new Date(), 1)
+
+    return mailjet
       .post('campaigndraft', { version: 'v3' })
       .id(id)
       .action('schedule')
       .request({
-        date: addDays(new Date(), 1),
-      }),
+        Date: scheduledDate,
+        ...opts,
+      })
+      .then(() =>
+        mailjet
+          .get('campaigndraft', { version: 'v3' })
+          .id(id)
+          .request(),
+      )
+      .then((response) => {
+        const campaignInfos = get(response, 'body.Data.0', {})
 
-  sendCampaign: (id) =>
-    mailjet
-      .post('campaigndraft', { version: 'v3' })
-      .id(id)
-      .action('send')
-      .request(),
+        if (!process.env.SLACK_WEBHOOK) return
+
+        const message = `L'envoi de la campagne e-mail *${
+          campaignInfos.Title
+        }* est programmé et sera effectuée le *${format(
+          scheduledDate,
+          'DD/MM/YYYY à HH:mm',
+        )}*. Merci de vérifier le segment utilisé à l'adresse https://app.mailjet.com/segmentation/edit/${
+          campaignInfos.SegmentationID
+        } en vérifiant le nombre d'utilisateurs concernés (sélectionner la liste « Utilisateurs » et appuyer sur « Calculer »)`
+
+        return superagent.post(process.env.SLACK_WEBHOOK_SU_ZEN, {
+          text: message,
+        })
+      })
+  },
 
   formatDateForSegmentFilter: (date) => parseInt(format(date, 'YYYYMM'), 10),
 }

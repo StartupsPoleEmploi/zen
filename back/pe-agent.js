@@ -5,12 +5,18 @@
 const { Model } = require('objection')
 const { getDate, subMonths, startOfDay, setDate } = require('date-fns')
 const { get } = require('lodash')
+const config = require('config')
 const Knex = require('knex')
 const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
 const sendDeclarationEmail = require('./lib/mailings/sendDeclarationEmail')
 const sendDocumentsEmail = require('./lib/mailings/sendDocumentsEmail')
-const config = require('config')
+const {
+  setDeclarationDoneProperty,
+  setDocumentsDoneProperty,
+} = require('./lib/mailings/manageContacts')
+
+const isProd = process.env.NODE_ENV === 'production'
 
 const knex = Knex({
   client: 'pg',
@@ -144,11 +150,22 @@ const transmitAllDeclarations = (activeMonth) =>
         try {
           console.log(`Gonna send declaration ${declaration.id}`)
           await sendDeclaration(declaration)
+        } catch (e) {
+          console.error(`Error transmitting declaration ${declaration.id}`, e)
+        }
+        try {
+          // First set mailjet property, so declaration reminder emails won't be sent
+          if (isProd) await setDeclarationDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
             await sendDeclarationEmail(declaration)
           }
         } catch (e) {
-          console.error(`Error transmitting declaration ${declaration.id}`, e)
+          console.error(
+            `Error sending e-mail or editing contact for declaration ${
+              declaration.id
+            }`,
+            e,
+          )
         }
       }
     })
@@ -166,12 +183,23 @@ const transmitAllDocuments = () =>
         try {
           console.log(`Gonna send documents from declaration ${declaration.id}`)
           await sendDocuments(declaration)
+        } catch (e) {
+          console.error(
+            `Error sending some documents from declaration ${declaration.id}`,
+          )
+        }
+        try {
+          // First set mailjet property, so documents reminder emails won't be sent
+          if (isProd) await setDocumentsDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
             await sendDocumentsEmail(declaration)
           }
         } catch (e) {
           console.error(
-            `Error sending some documents from declaration ${declaration.id}`,
+            `Error sending e-mail or editing contact for documents from ${
+              declaration.id
+            }`,
+            e,
           )
         }
       }

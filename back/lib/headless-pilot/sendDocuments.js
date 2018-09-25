@@ -186,7 +186,7 @@ async function sendDocuments(declaration) {
           if (!document || !document.file) return prev
           return prev.concat({
             filePath: `${uploadsDirectory}${document.file}`,
-            label: `Employeur - ${employerName}`,
+            label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
             selectOptionValue: DOC_SITUATION_SELECT_VALUES.ACTIVITY_WITH_SALARY,
             isFileCertificate: hasEndedThisMonth,
             document,

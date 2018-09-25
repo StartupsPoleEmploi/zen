@@ -157,6 +157,14 @@ const transmitAllDeclarations = (activeMonth) =>
           // First set mailjet property, so declaration reminder emails won't be sent
           if (isProd) await setDeclarationDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
+            if (declaration.isEmailSent) {
+              console.warn(
+                `Tried sending e-mail for declaration ${
+                  declaration.id
+                } but it was already sent!`,
+              )
+              continue // eslint-disable-line no-continue
+            }
             await sendDeclarationEmail(declaration)
           }
         } catch (e) {
@@ -192,6 +200,14 @@ const transmitAllDocuments = () =>
           // First set mailjet property, so documents reminder emails won't be sent
           if (isProd) await setDocumentsDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
+            if (declaration.isEmailSent) {
+              console.warn(
+                `Tried sending e-mail for declaration ${
+                  declaration.id
+                } documents but it was already sent!`,
+              )
+              continue // eslint-disable-line no-continue
+            }
             await sendDocumentsEmail(declaration)
           }
         } catch (e) {

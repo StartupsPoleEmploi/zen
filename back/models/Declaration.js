@@ -118,6 +118,14 @@ class Declaration extends BaseModel {
           default: false,
           type: 'boolean',
         },
+        isEmailSent: {
+          default: false,
+          type: 'boolean',
+        },
+        isDocEmailSent: {
+          default: false,
+          type: 'boolean',
+        },
       },
     }
   }

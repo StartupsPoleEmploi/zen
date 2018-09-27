@@ -7,6 +7,8 @@ const { getDate, subMonths, startOfDay, setDate } = require('date-fns')
 const { get } = require('lodash')
 const config = require('config')
 const Knex = require('knex')
+const winston = require('winston')
+const slackWinston = require('slack-winston').Slack
 const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
 const sendDeclarationEmail = require('./lib/mailings/sendDeclarationEmail')
@@ -24,6 +26,12 @@ const knex = Knex({
   connection: process.env.DATABASE_URL,
 })
 Model.knex(knex)
+
+winston.add(slackWinston, {
+  // Send this file's logs to Slack
+  webhook_url: process.env.SLACK_WEBHOOK_SU_ZEN_TECH,
+  message: `*{{level}}*: {{message}}\n\n{{meta}}`,
+})
 
 const DeclarationMonth = require('./models/DeclarationMonth')
 const Declaration = require('./models/Declaration')
@@ -43,9 +51,9 @@ if (!shouldTransmitDataToPE) {
   console.log('pe-agent is deactivated.')
   process.exit()
 }
-console.log('Starting pe-agent')
+winston.info('Starting pe-agent')
 if (!shouldSendPEAgentEmails) {
-  console.log('pe-agent e-mails are deactivated')
+  winston.info('pe-agent e-mails are deactivated')
 }
 
 const getActiveMonth = () =>
@@ -148,17 +156,17 @@ const transmitAllDeclarations = (activeMonth) =>
     .then(async (declarationsToTransmit) => {
       for (const declaration of declarationsToTransmit) {
         try {
-          console.log(`Gonna send declaration ${declaration.id}`)
+          winston.info(`Gonna send declaration ${declaration.id}`)
           await sendDeclaration(declaration)
         } catch (e) {
-          console.error(`Error transmitting declaration ${declaration.id}`, e)
+          winston.error(`Error transmitting declaration ${declaration.id}`, e)
         }
         try {
           // First set mailjet property, so declaration reminder emails won't be sent
           if (isProd) await setDeclarationDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
             if (declaration.isEmailSent) {
-              console.warn(
+              winston.warn(
                 `Tried sending e-mail for declaration ${
                   declaration.id
                 } but it was already sent!`,
@@ -168,7 +176,7 @@ const transmitAllDeclarations = (activeMonth) =>
             await sendDeclarationEmail(declaration)
           }
         } catch (e) {
-          console.error(
+          winston.error(
             `Error sending e-mail or editing contact for declaration ${
               declaration.id
             }`,
@@ -189,10 +197,12 @@ const transmitAllDocuments = () =>
     .then(async (declarations) => {
       for (const declaration of declarations) {
         try {
-          console.log(`Gonna send documents from declaration ${declaration.id}`)
+          winston.info(
+            `Gonna send documents from declaration ${declaration.id}`,
+          )
           await sendDocuments(declaration)
         } catch (e) {
-          console.error(
+          winston.error(
             `Error sending some documents from declaration ${declaration.id}`,
           )
         }
@@ -201,7 +211,7 @@ const transmitAllDocuments = () =>
           if (isProd) await setDocumentsDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
             if (declaration.isEmailSent) {
-              console.warn(
+              winston.warn(
                 `Tried sending e-mail for declaration ${
                   declaration.id
                 } documents but it was already sent!`,
@@ -211,7 +221,7 @@ const transmitAllDocuments = () =>
             await sendDocumentsEmail(declaration)
           }
         } catch (e) {
-          console.error(
+          winston.error(
             `Error sending e-mail or editing contact for documents from ${
               declaration.id
             }`,
@@ -255,7 +265,7 @@ const transmitOldDocuments = () => {
       .then(async (declarations) => {
         for (const declaration of declarations) {
           try {
-            console.log(
+            winston.info(
               `Gonna send late documents from declaration ${declaration.id}`,
             )
             await sendDocuments(declaration)
@@ -266,13 +276,13 @@ const transmitOldDocuments = () => {
               .findById(declaration.id)
 
             if (!hasDocumentsLeftToSend(updatedDeclaration)) {
-              console.log(
+              winston.info(
                 `Setting isFinished for declaration ${updatedDeclaration.id}`,
               )
               await updatedDeclaration.$query().patch({ isFinished: true })
             }
           } catch (e) {
-            console.error(
+            winston.error(
               `Error sending some late documents from declaration ${
                 declaration.id
               }`,
@@ -303,7 +313,7 @@ const initActions = () => {
       isWorking = false
     })
     .catch((e) => {
-      console.error('Error in transmission process', e)
+      winston.error('Error in transmission process', e)
       isWorking = false
     })
 }

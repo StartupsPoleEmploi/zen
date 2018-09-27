@@ -45,6 +45,7 @@ services:
       - EMAIL_KEY_SECRET=${EMAIL_KEY_SECRET}
       - TZ=Europe/Paris
       - SLACK_WEBHOOK_SU_ZEN=${SLACK_WEBHOOK_SU_ZEN}
+      - SLACK_WEBHOOK_SU_ZEN_TECH=${SLACK_WEBHOOK_SU_ZEN_TECH}
 
   front:
     restart: unless-stopped

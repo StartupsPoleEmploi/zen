@@ -158,30 +158,31 @@ const transmitAllDeclarations = (activeMonth) =>
         try {
           winston.info(`Gonna send declaration ${declaration.id}`)
           await sendDeclaration(declaration)
-        } catch (e) {
-          winston.error(`Error transmitting declaration ${declaration.id}`, e)
-        }
-        try {
-          // First set mailjet property, so declaration reminder emails won't be sent
-          if (isProd) await setDeclarationDoneProperty(declaration)
-          if (shouldSendPEAgentEmails) {
-            if (declaration.isEmailSent) {
-              winston.warn(
-                `Tried sending e-mail for declaration ${
-                  declaration.id
-                } but it was already sent!`,
-              )
-              continue // eslint-disable-line no-continue
+
+          try {
+            // First set mailjet property, so declaration reminder emails won't be sent
+            if (isProd) await setDeclarationDoneProperty(declaration)
+            if (shouldSendPEAgentEmails) {
+              if (declaration.isEmailSent) {
+                winston.warn(
+                  `Tried sending e-mail for declaration ${
+                    declaration.id
+                  } but it was already sent!`,
+                )
+                continue // eslint-disable-line no-continue
+              }
+              await sendDeclarationEmail(declaration)
             }
-            await sendDeclarationEmail(declaration)
+          } catch (e) {
+            winston.error(
+              `Error sending e-mail or editing contact for declaration ${
+                declaration.id
+              }`,
+              e,
+            )
           }
         } catch (e) {
-          winston.error(
-            `Error sending e-mail or editing contact for declaration ${
-              declaration.id
-            }`,
-            e,
-          )
+          winston.error(`Error transmitting declaration ${declaration.id}`, e)
         }
       }
     })
@@ -201,31 +202,32 @@ const transmitAllDocuments = () =>
             `Gonna send documents from declaration ${declaration.id}`,
           )
           await sendDocuments(declaration)
-        } catch (e) {
-          winston.error(
-            `Error sending some documents from declaration ${declaration.id}`,
-          )
-        }
-        try {
-          // First set mailjet property, so documents reminder emails won't be sent
-          if (isProd) await setDocumentsDoneProperty(declaration)
-          if (shouldSendPEAgentEmails) {
-            if (declaration.isDocEmailSent) {
-              winston.warn(
-                `Tried sending e-mail for declaration ${
-                  declaration.id
-                } documents but it was already sent!`,
-              )
-              continue // eslint-disable-line no-continue
+
+          try {
+            // First set mailjet property, so documents reminder emails won't be sent
+            if (isProd) await setDocumentsDoneProperty(declaration)
+            if (shouldSendPEAgentEmails) {
+              if (declaration.isDocEmailSent) {
+                winston.warn(
+                  `Tried sending e-mail for declaration ${
+                    declaration.id
+                  } documents but it was already sent!`,
+                )
+                continue // eslint-disable-line no-continue
+              }
+              await sendDocumentsEmail(declaration)
             }
-            await sendDocumentsEmail(declaration)
+          } catch (e) {
+            winston.error(
+              `Error sending e-mail or editing contact for documents from ${
+                declaration.id
+              }`,
+              e,
+            )
           }
         } catch (e) {
           winston.error(
-            `Error sending e-mail or editing contact for documents from ${
-              declaration.id
-            }`,
-            e,
+            `Error sending some documents from declaration ${declaration.id}`,
           )
         }
       }

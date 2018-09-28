@@ -210,7 +210,7 @@ const transmitAllDocuments = () =>
           // First set mailjet property, so documents reminder emails won't be sent
           if (isProd) await setDocumentsDoneProperty(declaration)
           if (shouldSendPEAgentEmails) {
-            if (declaration.isEmailSent) {
+            if (declaration.isDocEmailSent) {
               winston.warn(
                 `Tried sending e-mail for declaration ${
                   declaration.id

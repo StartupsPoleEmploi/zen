@@ -45,14 +45,14 @@ const declarationFileFields = [
   'invalidityDocument',
 ]
 
-const { shouldSendPEAgentEmails, shouldTransmitDataToPE } = config
+const { shouldSendTransactionalEmails, shouldTransmitDataToPE } = config
 
 if (!shouldTransmitDataToPE) {
   console.log('pe-agent is deactivated.')
   process.exit()
 }
 winston.info('Starting pe-agent')
-if (!shouldSendPEAgentEmails) {
+if (!shouldSendTransactionalEmails) {
   winston.info('pe-agent e-mails are deactivated')
 }
 
@@ -162,7 +162,7 @@ const transmitAllDeclarations = (activeMonth) =>
           try {
             // First set mailjet property, so declaration reminder emails won't be sent
             if (isProd) await setDeclarationDoneProperty(declaration)
-            if (shouldSendPEAgentEmails) {
+            if (shouldSendTransactionalEmails) {
               if (declaration.isEmailSent) {
                 winston.warn(
                   `Tried sending e-mail for declaration ${
@@ -206,7 +206,7 @@ const transmitAllDocuments = () =>
           try {
             // First set mailjet property, so documents reminder emails won't be sent
             if (isProd) await setDocumentsDoneProperty(declaration)
-            if (shouldSendPEAgentEmails) {
+            if (shouldSendTransactionalEmails) {
               if (declaration.isDocEmailSent) {
                 winston.warn(
                   `Tried sending e-mail for declaration ${

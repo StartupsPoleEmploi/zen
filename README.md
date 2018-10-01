@@ -24,18 +24,6 @@ Production containers only open port 443 & 80
 
 ## Production
 
-### Enabling e-mails and data transmission to pole-emploi.fr
-
-The following value need to be set to `true` in the production server production.js configuration file:
-
-```js
-  {
-    shouldSendReminderEmails: false, // reminder e-mails
-    shouldSendPEAgentEmails: false, // transactional e-mails
-    shouldTransmitDataToPE: false, // pe-agent activation
-  }
-```
-
 ### HTTPS certificate
 
 The entrust-zen.pole-emploi.fr-key.pem file must be put in the nginx folder

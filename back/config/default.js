@@ -12,7 +12,8 @@ module.exports = {
     process.env.NODE_ENV === 'production'
       ? '/home/back/uploads/'
       : '/tmp/uploads/',
-  shouldSendReminderEmails: false,
-  shouldSendPEAgentEmails: false,
-  shouldTransmitDataToPE: false,
+  shouldSendCampaignEmails: process.env.SEND_CAMPAIGN_EMAILS === 'true',
+  shouldSendTransactionalEmails:
+    process.env.SEND_TRANSACTIONAL_EMAILS === 'true',
+  shouldTransmitDataToPE: process.env.TRANSMIT_DATA_TO_PE === 'true',
 }

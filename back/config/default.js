@@ -9,7 +9,7 @@ module.exports = {
   // should be the same ASAP.
   // https://github.com/Unitech/pm2/issues/3158
   uploadsDirectory:
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV !== 'development'
       ? '/home/back/uploads/'
       : '/tmp/uploads/',
   shouldSendCampaignEmails: process.env.SEND_CAMPAIGN_EMAILS === 'true',

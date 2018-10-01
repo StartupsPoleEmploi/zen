@@ -16,4 +16,5 @@ module.exports = {
   shouldSendTransactionalEmails:
     process.env.SEND_TRANSACTIONAL_EMAILS === 'true',
   shouldTransmitDataToPE: process.env.TRANSMIT_DATA_TO_PE === 'true',
+  authorizeAllUsers: process.env.AUTHORIZE_ALL_USERS === 'true',
 }

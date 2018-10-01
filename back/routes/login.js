@@ -9,7 +9,14 @@ const { pick, startCase, toLower } = require('lodash')
 
 const User = require('../models/User')
 
-const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
+const {
+  clientId,
+  clientSecret,
+  redirectUri,
+  tokenHost,
+  apiHost,
+  authorizeAllUsers,
+} = config
 
 const realm = '/individu'
 
@@ -121,9 +128,12 @@ router.get('/callback', (req, res, next) => {
     .then((user) => {
       req.session.user = {
         ...pick(user, ['id', 'firstName', 'lastName', 'email']),
-        isAuthorizedForTests:
-          !!user.peCode && !!user.pePass && !!user.pePostalCode,
-        isWaitingForConfirmation: !!user.peCode && !user.pePass,
+        isAuthorizedForTests: authorizeAllUsers // For test environments
+          ? true
+          : !!user.peCode && !!user.pePass && !!user.pePostalCode,
+        isWaitingForConfirmation: authorizeAllUsers // For test environments
+          ? false
+          : !!user.peCode && !user.pePass,
       }
       req.user = req.session.user // For sentry reporting
       res.redirect('/')

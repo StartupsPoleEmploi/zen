@@ -159,6 +159,11 @@ class App extends Component {
       .catch((err) => this.setState({ isLoading: false, err }))
   }
 
+  componentDidCatch(err, errorInfo) {
+    this.setState({ err })
+    window.Raven.captureException(err, { extra: errorInfo })
+  }
+
   render() {
     const {
       location: { pathname },

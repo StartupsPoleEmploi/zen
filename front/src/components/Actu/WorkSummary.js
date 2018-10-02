@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
-import { isObject } from 'lodash'
+import { isNaN as _isNaN, isObject } from 'lodash'
 
 const SummaryContainer = styled.div`
   position: fixed;
   width: 100%;
   bottom: 0;
+  left: 0; /* IE */
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -39,7 +40,7 @@ const calculateTotal = (employers, field) => {
       ) + prev,
     0,
   )
-  return Number.isNaN(total) || total === 0 ? '—' : total.toString()
+  return _isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
 const WorkSummary = ({ employers }) => (

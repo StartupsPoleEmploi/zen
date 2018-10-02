@@ -1,4 +1,5 @@
 import 'moment/locale/fr'
+import 'babel-polyfill'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'

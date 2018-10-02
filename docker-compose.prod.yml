@@ -2,8 +2,8 @@ version: "2"
 services:
   node:
     environment:
-      - NODE_ENV=qa
+      - NODE_ENV=production
 
   front:
     environment:
-      - NODE_ENV=qa
+      - NODE_ENV=production

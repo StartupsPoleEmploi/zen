@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Typography from '@material-ui/core/Typography'
-import { cloneDeep, isBoolean, pick } from 'lodash'
+import { cloneDeep, isBoolean, isNaN as _isNaN, pick } from 'lodash'
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
@@ -109,7 +109,7 @@ const validateField = ({ name, value }) => {
   }
   if (name === 'workHours' || name === 'salary') {
     const intValue = parseInt(value, 10)
-    isValid = !!value && !Number.isNaN(intValue)
+    isValid = !!value && !_isNaN(intValue)
     sanitizedValue = isValid ? intValue.toString() : value.trim()
     error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {

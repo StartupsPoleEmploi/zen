@@ -43,7 +43,7 @@ router.patch('/', (req, res, next) => {
       })
     })
     .then((user) => {
-      if (config.get('shouldSendPEAgentEmails')) {
+      if (config.get('shouldSendTransactionalEmails')) {
         // Note: We do not wait for Mailjet to answer to send data back to the user
         sendSubscriptionConfirmation(user).catch((e) =>
           Raven.captureException(e),

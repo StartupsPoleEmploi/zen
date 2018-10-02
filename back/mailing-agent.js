@@ -3,7 +3,7 @@ const { job } = require('cron')
 const { Model } = require('objection')
 const Knex = require('knex')
 
-if (!config.get('shouldSendReminderEmails')) {
+if (!config.get('shouldSendCampaignEmails')) {
   console.log('Mailing Agent is deactivated.')
   process.exit()
 }

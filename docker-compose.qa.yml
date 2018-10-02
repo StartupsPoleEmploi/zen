@@ -1,5 +1,8 @@
 version: "2"
 services:
+  nginx:
+    volumes:
+      - "./nginx/qa.conf:/etc/nginx/conf.d/default.conf"
   node:
     environment:
       - NODE_ENV=qa

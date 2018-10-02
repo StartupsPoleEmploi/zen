@@ -8,6 +8,7 @@ const SummaryContainer = styled.div`
   position: fixed;
   width: 100%;
   bottom: 0;
+  left: 0; /* IE */
   display: flex;
   align-items: center;
   justify-content: space-around;

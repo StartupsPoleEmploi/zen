@@ -6,56 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#000000">
 
-  <style>
-    html {
-      font-size: 62.5%;
-      /* 62.5% of 16px = 10px */
-      overflow-x: hidden;
-    }
-  </style>
-
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
+  <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
   <link rel="stylesheet" href="https://use.typekit.net/xno2nrm.css">
 
   <title>Zen</title>
 
   <!-- Sentry -->
-  <script src=https://cdn.ravenjs.com/3.24.0/raven.min.js crossorigin=anonymous></script>
+  <script src="https://cdn.ravenjs.com/3.24.0/raven.min.js" crossorigin=anonymous></script>
   <!-- End Sentry -->
-
-  <!-- Google Tag Manager -->
-  <script>
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-58WMQPJ');
-  </script>
-  <!-- End Google Tag Manager -->
-
-  <!-- Start of Hotjar -->
-  <script>
-    (function (h, o, t, j, a, r) {
-      h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
-      h._hjSettings = { hjid: 929102, hjsv: 6 };
-      a = o.getElementsByTagName('head')[0];
-      r = o.createElement('script'); r.async = 1;
-      r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-      a.appendChild(r);
-    })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-  </script>
-  <!--End of Hotjar -->
 </head>
 
-<body style="background-color: #fff;">
+<body>
   <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-58WMQPJ" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    <iframe id="gtm-frame" src="https://www.googletagmanager.com/ns.html?id=GTM-58WMQPJ" height="0" width="0"></iframe>
   </noscript>
   <div id="root"></div>
 </body>

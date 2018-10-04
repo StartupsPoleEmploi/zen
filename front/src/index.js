@@ -1,5 +1,5 @@
-import 'moment/locale/fr'
 import 'babel-polyfill'
+import 'moment/locale/fr'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -7,6 +7,9 @@ import moment from 'moment'
 import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+
+import './lib/external/gtm'
+import './lib/external/hotjar'
 
 import { version } from '../package.json'
 import App from './App'

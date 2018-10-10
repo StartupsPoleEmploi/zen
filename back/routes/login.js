@@ -10,14 +10,7 @@ const Raven = require('raven')
 
 const User = require('../models/User')
 
-const {
-  clientId,
-  clientSecret,
-  redirectUri,
-  tokenHost,
-  apiHost,
-  authorizeAllUsers,
-} = config
+const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 
 const realm = '/individu'
 
@@ -42,7 +35,7 @@ const oauth2 = require('simple-oauth2').create(credentials)
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm,
-  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees`,
+  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
 }
 
 router.get('/', (req, res, next) => {
@@ -104,17 +97,23 @@ router.get('/callback', (req, res, next) => {
           .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
           .set('Authorization', `Bearer ${authToken.token.access_token}`),
         superagent
+          .get(`${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`)
+          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+        /*
+        superagent
           .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
           .set('Authorization', `Bearer ${authToken.token.access_token}`),
+          */
       ]),
     )
-    .then(([{ body: userinfo }, { body: coordinates }]) => {
+    .then(([{ body: userinfo }, ,]) => {
+      /* { body: declarationData } /* { body: coordinates } */
       const user = {
         peId: userinfo.sub,
         firstName: startCase(toLower(userinfo.given_name)),
         lastName: startCase(toLower(userinfo.family_name)),
+        /* pePostalCode: coordinates.codePostal, */
         gender: userinfo.gender,
-        pePostalCode: coordinates.codePostal,
       }
       if (userinfo.email) {
         // Do not override the email the user may have given us if there is
@@ -130,7 +129,6 @@ router.get('/callback', (req, res, next) => {
               .update(user)
               .returning('*')
           }
-
           return User.query()
             .insert(user)
             .returning('*')
@@ -139,10 +137,10 @@ router.get('/callback', (req, res, next) => {
     .then((user) => {
       req.session.user = {
         ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
-        isAuthorizedForTests: authorizeAllUsers // For test environments
+        isAuthorizedForTests: config.authorizeAllUsers // For test environments
           ? true
           : !!user.peCode && !!user.pePass && !!user.pePostalCode,
-        isWaitingForConfirmation: authorizeAllUsers // For test environments
+        isWaitingForConfirmation: config.authorizeAllUsers // For test environments
           ? false
           : !!user.peCode && !user.pePass,
       }

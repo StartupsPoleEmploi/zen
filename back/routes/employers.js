@@ -5,6 +5,8 @@ const { transaction } = require('objection')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
+const { sendDeclaration } = require('../lib/pe-api/declaration')
+
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const Employer = require('../models/Employer')
@@ -88,7 +90,12 @@ router.post('/', requireActiveMonth, (req, res, next) => {
               })
             : Promise.resolve(),
         ]),
-      ).then(() => res.json(declaration.employers))
+      ).then(() =>
+        sendDeclaration({
+          declaration,
+          accessToken: req.session.userSecret.accessToken,
+        }).then(() => res.json(declaration)),
+      )
     })
     .catch(next)
 })

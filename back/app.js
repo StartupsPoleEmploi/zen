@@ -65,6 +65,8 @@ app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)
     return res.status(401).json('Unauthorized')
 
+  req.user = req.session.user // For sentry reporting
+
   next()
 })
 

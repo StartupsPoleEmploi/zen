@@ -135,7 +135,6 @@ router.get('/callback', (req, res, next) => {
           ? false
           : !!user.peCode && !user.pePass,
       }
-      req.user = req.session.user // For sentry reporting
       res.redirect('/')
     })
     .catch(next)

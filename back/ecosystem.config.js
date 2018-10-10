@@ -3,11 +3,13 @@ const config = {
     {
       name: 'back',
       script: 'bin/www',
+      watch: process.env.NODE_ENV !== 'production',
     },
     {
       name: 'admin',
       script: 'bin/www',
       args: '--admin',
+      watch: process.env.NODE_ENV !== 'production',
     },
   ],
 }

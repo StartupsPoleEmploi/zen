@@ -99,6 +99,19 @@ router.get('/callback', (req, res, next) => {
         superagent
           .get(`${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`)
           .set('Authorization', `Bearer ${authToken.token.access_token}`),
+        superagent
+          .get(
+            `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,
+          )
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
+        superagent
+          .get(
+            `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes`,
+          )
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
+
         /*
         superagent
           .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
@@ -106,34 +119,43 @@ router.get('/callback', (req, res, next) => {
           */
       ]),
     )
-    .then(([{ body: userinfo }, ,]) => {
-      /* { body: declarationData } /* { body: coordinates } */
-      const user = {
-        peId: userinfo.sub,
-        firstName: startCase(toLower(userinfo.given_name)),
-        lastName: startCase(toLower(userinfo.family_name)),
-        /* pePostalCode: coordinates.codePostal, */
-        gender: userinfo.gender,
-      }
-      if (userinfo.email) {
-        // Do not override the email the user may have given us if there is
-        // no email via PE Connect
-        user.email = userinfo.email
-      }
-      return User.query()
-        .findOne({ peId: user.peId })
-        .then((dbUser) => {
-          if (dbUser) {
-            return dbUser
-              .$query()
-              .update(user)
+    .then(
+      ([
+        { body: userinfo },
+        { body: declarationData },
+        { body: accessibleContexts },
+        { body: allContexts },
+      ]) => {
+        /* { body: coordinates } */
+        console.log({ accessibleContexts })
+        console.log({ allContexts })
+        const user = {
+          peId: userinfo.sub,
+          firstName: startCase(toLower(userinfo.given_name)),
+          lastName: startCase(toLower(userinfo.family_name)),
+          /* pePostalCode: coordinates.codePostal, */
+          gender: userinfo.gender,
+        }
+        if (userinfo.email) {
+          // Do not override the email the user may have given us if there is
+          // no email via PE Connect
+          user.email = userinfo.email
+        }
+        return User.query()
+          .findOne({ peId: user.peId })
+          .then((dbUser) => {
+            if (dbUser) {
+              return dbUser
+                .$query()
+                .update(user)
+                .returning('*')
+            }
+            return User.query()
+              .insert(user)
               .returning('*')
-          }
-          return User.query()
-            .insert(user)
-            .returning('*')
-        })
-    })
+          })
+      },
+    )
     .then((user) => {
       req.session.user = {
         ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),

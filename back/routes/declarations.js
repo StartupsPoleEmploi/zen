@@ -7,6 +7,7 @@ const { format } = require('date-fns')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
+const { sendDocuments } = require('../lib/pe-api/documents')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
@@ -198,19 +199,29 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           ? declaration[userDocumentName].$query().patch(documentFileObj)
           : Document.query().insert(documentFileObj)
 
-        return documentPromise
-          .returning('*')
-          .then((savedDocument) =>
-            declaration
-              .$query(trx)
-              .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
-              .eager(
-                `[${possibleDocumentTypes.join(
-                  ', ',
-                )}, employers.document, declarationMonth]`,
-              ),
-          )
-          .then((savedDeclaration) => res.json(savedDeclaration))
+        return (
+          documentPromise
+            .returning('*')
+            .then((savedDocument) =>
+              declaration
+                .$query(trx)
+                .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
+                .eager(
+                  `[${possibleDocumentTypes.join(
+                    ', ',
+                  )}, employers.document, declarationMonth]`,
+                ),
+            )
+
+            /* DO NOT MERGE ME I AM A TEST FOR FILES API */
+            .then((savedDeclaration) =>
+              sendDocuments({
+                declaration: savedDeclaration,
+                accessToken: req.session.userSecret.accessToken,
+              }),
+            )
+            .then((savedDeclaration) => res.json(savedDeclaration))
+        )
       }).catch(next)
     })
 })

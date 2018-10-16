@@ -243,7 +243,7 @@ router.post('/finish', (req, res, next) =>
         (declaration.hasInvalidity && !declaration.invalidityDocumentId)
 
       if (
-        declaration.employers.length === 0 ||
+        !declaration.hasFinishedDeclaringEmployers ||
         hasMissingEmployersDocuments ||
         hasMissingDeclarationDocuments
       )

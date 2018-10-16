@@ -74,7 +74,6 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', requireActiveMonth, (req, res, next) => {
-  // TODO change this so the client sends a month, not an id
   const declarationData = reduce(
     omit(
       {
@@ -97,6 +96,22 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     {},
   )
 
+  if (!declarationData.hasWorked) {
+    declarationData.hasFinishedDeclaringEmployers = true
+    if (
+      ![
+        'hasTrained',
+        'hasInternship',
+        'hasSickLeave',
+        'hasMaternityLeave',
+        'hasRetirement',
+        'hasInvalidity',
+      ].some((hasSomething) => declarationData[hasSomething])
+    ) {
+      declarationData.isFinished = true
+    }
+  }
+
   const declarationFetchPromise = req.body.id
     ? Declaration.query().findOne({
         id: req.body.id,
@@ -105,31 +120,29 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     : Promise.resolve()
 
   return declarationFetchPromise
-    .then((declaration) => {
-      let promise
-      if (declaration) {
-        promise = Promise.all([
+    .then((declaration) =>
+      transaction(Declaration.knex(), (trx) =>
+        Promise.all([
           declaration
-            .$query()
-            .patch(declarationData)
-            .returning('*'),
-        ])
-      } else {
-        promise = transaction(Declaration.knex(), (trx) =>
-          Promise.all([
-            Declaration.query(trx)
-              .insert(declarationData)
-              .returning('*'),
+            ? declaration.$query(trx).patch(declarationData)
+            : Declaration.query(trx).insert(declarationData),
+          declaration &&
+            !declaration.hasFinishedDeclaringEmployers &&
+            declarationData.hasFinishedDeclaringEmployers &&
             ActivityLog.query(trx).insert({
               userId: req.session.user.id,
               action: ActivityLog.actions.VALIDATE_DECLARATION,
             }),
-          ]),
-        )
-      }
-
-      return promise.then(([dbDeclaration]) => res.json(dbDeclaration))
-    })
+          declaration &&
+            !declaration.isFinished &&
+            declarationData.isFinished &&
+            ActivityLog.query(trx).insert({
+              userId: req.session.user.id,
+              action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+            }),
+        ]).then(([dbDeclaration]) => res.json(dbDeclaration)),
+      ),
+    )
     .catch(next)
 })
 
@@ -230,7 +243,7 @@ router.post('/finish', (req, res, next) =>
         (declaration.hasInvalidity && !declaration.invalidityDocumentId)
 
       if (
-        declaration.employers.length === 0 ||
+        !declaration.hasFinishedDeclaringEmployers ||
         hasMissingEmployersDocuments ||
         hasMissingDeclarationDocuments
       )

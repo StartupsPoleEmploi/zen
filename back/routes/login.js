@@ -35,7 +35,7 @@ const oauth2 = require('simple-oauth2').create(credentials)
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm,
-  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
+  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees api_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
 }
 
 router.get('/', (req, res, next) => {
@@ -111,12 +111,10 @@ router.get('/callback', (req, res, next) => {
           )
           .set('Authorization', `Bearer ${authToken.token.access_token}`)
           .set('Accept-Encoding', 'gzip'),
-
-        /*
         superagent
           .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
-          .set('Authorization', `Bearer ${authToken.token.access_token}`),
-          */
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
       ]),
     )
     .then(
@@ -125,6 +123,7 @@ router.get('/callback', (req, res, next) => {
         { body: declarationData },
         { body: accessibleContexts },
         { body: allContexts },
+        { body: coordinates },
       ]) => {
         /* { body: coordinates } */
         console.log({ accessibleContexts })
@@ -133,8 +132,8 @@ router.get('/callback', (req, res, next) => {
           peId: userinfo.sub,
           firstName: startCase(toLower(userinfo.given_name)),
           lastName: startCase(toLower(userinfo.family_name)),
-          /* pePostalCode: coordinates.codePostal, */
           gender: userinfo.gender,
+          pePostalCode: coordinates.codePostal,
         }
         if (userinfo.email) {
           // Do not override the email the user may have given us if there is

@@ -12,6 +12,8 @@ const User = require('../models/User')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 
+const DECLARATION_CONTEXT_ID = '1'
+
 const realm = '/individu'
 
 const credentials = {
@@ -89,30 +91,34 @@ router.get('/callback', (req, res, next) => {
         idToken: authToken.token.id_token,
       }
 
+      console.log(
+        `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,
+
+        `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes`,
+      )
+
       return authToken
     })
     .then((authToken) =>
       Promise.all([
         superagent
           .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
+          .set('Accept', 'application/json')
           .set('Authorization', `Bearer ${authToken.token.access_token}`),
         superagent
           .get(`${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`)
+          .set('Accept', 'application/json')
           .set('Authorization', `Bearer ${authToken.token.access_token}`),
         superagent
           .get(
             `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,
           )
-          .set('Authorization', `Bearer ${authToken.token.access_token}`)
-          .set('Accept-Encoding', 'gzip'),
-        superagent
-          .get(
-            `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes`,
-          )
+          .set('Accept', 'application/json')
           .set('Authorization', `Bearer ${authToken.token.access_token}`)
           .set('Accept-Encoding', 'gzip'),
         superagent
           .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
+          .set('Accept', 'application/json')
           .set('Authorization', `Bearer ${authToken.token.access_token}`)
           .set('Accept-Encoding', 'gzip'),
       ]),
@@ -122,12 +128,16 @@ router.get('/callback', (req, res, next) => {
         { body: userinfo },
         { body: declarationData },
         { body: accessibleContexts },
-        { body: allContexts },
         { body: coordinates },
       ]) => {
-        /* { body: coordinates } */
-        console.log({ accessibleContexts })
-        console.log({ allContexts })
+        console.log({ declarationData })
+        const declarationContext = accessibleContexts.find(
+          (context) => context.code === DECLARATION_CONTEXT_ID,
+        )
+        if (!declarationContext) {
+          // We won't be able to send declaration documents!
+          // Send a sentry report, and show an error to the user
+        }
         const user = {
           peId: userinfo.sub,
           firstName: startCase(toLower(userinfo.given_name)),

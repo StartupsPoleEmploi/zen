@@ -4,54 +4,83 @@ const config = require('config')
 const superagent = require('superagent')
 const fs = require('fs')
 const path = require('path')
+require('superagent-retry-delay')(superagent)
+
+const CONTEXT_CODE = '1'
+
+const CODES = {
+  SALARY_SHEET: {
+    codeContexte: CONTEXT_CODE,
+    codeSituation: '1',
+    codeTypeDocument: 'BDS',
+  },
+  EMPLOYER_CERTIFICATE: {
+    codeContexte: CONTEXT_CODE,
+    codeSituation: '1',
+    codeTypeDocument: 'AEMP',
+  },
+  SICKNESS: {
+    codeContexte: CONTEXT_CODE,
+    codeSituation: '4',
+    codeTypeDocument: 'AAT',
+  },
+  RETIREMENT: {
+    codeContexte: CONTEXT_CODE,
+    codeSituation: '5',
+    codeTypeDocument: 'NRAV',
+  },
+  INVALIDITY: {
+    codeContexte: CONTEXT_CODE,
+    codeSituation: '6',
+    codeTypeDocument: 'NINV',
+  },
+  INTERNSHIP: {
+    codeContexte: CONTEXT_CODE,
+    codeSituation: '3',
+    codeTypeDocument: 'ASF',
+  },
+}
 
 const uploadUrl = `${
   config.apiHost
-}/partenaire/peconnect-envoidocument/v1/depose`
+}/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`
 
 const getConfirmationUrl = (conversionId) =>
   `${
     config.apiHost
-  }/partenaire/peconnect-envoidocument/v1/${conversionId}/confirmer`
-
-const accessibleContextsUrl = `${
-  config.apiHost
-}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`
-const contextsUrl = `${
-  config.apiHost
-}/partenaire/peconnect-envoidocument/v1/depose/contextes`
+  }/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`
 
 const sendDocuments = ({ declaration, accessToken }) => {
   const documentsToTransmit = [
     {
-      boolField: 'hasTrained',
-      docField: 'trainingDocument',
-      label: 'Formation',
-    },
-    {
       boolField: 'hasInternship',
       docField: 'internshipDocument',
       label: 'Stage',
+      confirmationData: CODES.INTERNSHIP,
     },
     {
       boolField: 'hasSickLeave',
       docField: 'sickLeaveDocument',
       label: 'Congé Maladie',
+      confirmationData: CODES.SICKNESS,
     },
     {
       boolField: 'hasMaternityLeave',
       docField: 'maternityLeaveDocument',
       label: 'Congé maternité',
+      confirmationData: CODES.SICKNESS,
     },
     {
       boolField: 'hasRetirement',
       docField: 'retirementDocument',
       label: 'Retraite',
+      confirmationData: CODES.RETIREMENT,
     },
     {
       boolField: 'hasInvalidity',
       docField: 'invalidityDocument',
       label: 'Invalidité',
+      confirmationData: CODES.INVALIDITY,
     },
   ]
     .reduce((prev, fields) => {
@@ -61,6 +90,7 @@ const sendDocuments = ({ declaration, accessToken }) => {
         filePath: `${uploadsDirectory}${declaration[fields.docField].file}`,
         label: fields.label,
         document: declaration[fields.docField],
+        confirmationData: fields.confirmationData,
       })
     }, [])
     .concat(
@@ -70,8 +100,10 @@ const sendDocuments = ({ declaration, accessToken }) => {
           return prev.concat({
             filePath: `${uploadsDirectory}${document.file}`,
             label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
-            isFileCertificate: hasEndedThisMonth,
             document,
+            confirmationData: hasEndedThisMonth
+              ? CODES.EMPLOYER_CERTIFICATE
+              : CODES.SALARY_SHEET,
           })
         },
         [],
@@ -87,37 +119,31 @@ const sendDocuments = ({ declaration, accessToken }) => {
     .filter(({ document }) => !document.isTransmitted)
 
   return Promise.all(
-    documentsToTransmit.map(
-      (document) =>
-        new Promise((resolve, reject) =>
-          fs.readFile(document.filePath, (err, file) => {
-            if (err) return reject(err)
-
-            document.file = file
-            resolve()
-          }),
-        ),
-    ),
-  ).then(
-    () =>
+    documentsToTransmit.map((document) =>
       superagent
-        .post(
-          `${
-            config.apiHost
-          }/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`,
-        )
+        .post(uploadUrl)
+        .retry(3, 2000)
         .attach(
           'fichier',
-          fs.createReadStream(documentsToTransmit[0].filePath),
-          `1${path.extname(documentsToTransmit[0].filePath)}`,
+          fs.createReadStream(document.filePath),
+          `1${path.extname(document.filePath)}`,
         )
         .field('lancerConversion', true) // Will become false in case of multiple files to send in one go
         .set('Authorization', `Bearer ${accessToken}`)
-        .set('Accept-Encoding', 'gzip'),
-    /* .catch((err, ...rest) => {
-          console.log(err, rest)
-          throw new Error('bleh')
-        }) */
+        .set('Accept-Encoding', 'gzip')
+        .set('Accept', 'application/json')
+        .then(({ body: { conversionId } }) =>
+          superagent
+            .post(getConfirmationUrl(conversionId), {
+              ...document.confirmationData,
+              nomDocument: document.label,
+            })
+            .retry(3, 2000)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .set('Accept-Encoding', 'gzip')
+            .set('Accept', 'application/json'),
+        ),
+    ),
   )
 }
 

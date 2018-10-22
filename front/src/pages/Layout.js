@@ -33,6 +33,7 @@ const Header = styled.header`
   justify-content: space-around;
   align-items: center;
   flex: 1;
+  padding-left: 1.5rem;
 `
 
 const PersonIcon = styled(Person)`

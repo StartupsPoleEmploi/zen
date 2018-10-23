@@ -163,20 +163,21 @@ router.get('/callback', (req, res, next) => {
               .insert(user)
               .returning('*')
           })
+          .then((user) => {
+            req.session.user = {
+              ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
+              isAuthorizedForTests: config.authorizeAllUsers // For test environments
+                ? true
+                : !!user.peCode && !!user.pePass && !!user.pePostalCode,
+              isWaitingForConfirmation: config.authorizeAllUsers // For test environments
+                ? false
+                : !!user.peCode && !user.pePass,
+              canSendDocuments: !!declarationContext,
+            }
+            res.redirect('/')
+          })
       },
     )
-    .then((user) => {
-      req.session.user = {
-        ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
-        isAuthorizedForTests: config.authorizeAllUsers // For test environments
-          ? true
-          : !!user.peCode && !!user.pePass && !!user.pePostalCode,
-        isWaitingForConfirmation: config.authorizeAllUsers // For test environments
-          ? false
-          : !!user.peCode && !user.pePass,
-      }
-      res.redirect('/')
-    })
     .catch(next)
 })
 

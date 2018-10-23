@@ -199,29 +199,19 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           ? declaration[userDocumentName].$query().patch(documentFileObj)
           : Document.query().insert(documentFileObj)
 
-        return (
-          documentPromise
-            .returning('*')
-            .then((savedDocument) =>
-              declaration
-                .$query(trx)
-                .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
-                .eager(
-                  `[${possibleDocumentTypes.join(
-                    ', ',
-                  )}, employers.document, declarationMonth]`,
-                ),
-            )
-
-            /* DO NOT MERGE ME I AM A TEST FOR FILES API */
-            .then((savedDeclaration) =>
-              sendDocuments({
-                declaration: savedDeclaration,
-                accessToken: req.session.userSecret.accessToken,
-              }),
-            )
-            .then((savedDeclaration) => res.json(savedDeclaration))
-        )
+        return documentPromise
+          .returning('*')
+          .then((savedDocument) =>
+            declaration
+              .$query(trx)
+              .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
+              .eager(
+                `[${possibleDocumentTypes.join(
+                  ', ',
+                )}, employers.document, declarationMonth]`,
+              ),
+          )
+          .then((savedDeclaration) => res.json(savedDeclaration))
       }).catch(next)
     })
 })
@@ -256,19 +246,24 @@ router.post('/finish', (req, res, next) =>
       )
         return res.status(400).json('Declaration not complete')
 
-      return transaction(Declaration.knex(), (trx) =>
-        Promise.all([
-          declaration
-            .$query(trx)
-            .patch({ isFinished: true })
-            .returning('*'),
-          ActivityLog.query(trx).insert({
-            userId: req.session.user.id,
-            action: ActivityLog.actions.VALIDATE_FILES,
-            metadata: JSON.stringify({ declarationId: declaration.id }),
-          }),
-        ]),
-      ).then(([savedDeclaration]) => res.json(savedDeclaration))
+      return sendDocuments({
+        declaration,
+        accessToken: req.session.userSecret.accessToken,
+      }).then(() =>
+        transaction(Declaration.knex(), (trx) =>
+          Promise.all([
+            declaration
+              .$query(trx)
+              .patch({ isFinished: true })
+              .returning('*'),
+            ActivityLog.query(trx).insert({
+              userId: req.session.user.id,
+              action: ActivityLog.actions.VALIDATE_FILES,
+              metadata: JSON.stringify({ declarationId: declaration.id }),
+            }),
+          ]),
+        ).then(([savedDeclaration]) => res.json(savedDeclaration)),
+      )
     })
     .catch(next),
 )

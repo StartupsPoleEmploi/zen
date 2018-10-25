@@ -218,7 +218,11 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
 router.post('/finish', (req, res, next) =>
   Declaration.query()
-    .eager('employers')
+    .eager(
+      `[${possibleDocumentTypes.join(
+        ', ',
+      )}, employers.document, declarationMonth]`,
+    )
     .findOne({
       id: req.body.id,
       userId: req.session.user.id,
@@ -249,21 +253,23 @@ router.post('/finish', (req, res, next) =>
       return sendDocuments({
         declaration,
         accessToken: req.session.userSecret.accessToken,
-      }).then(() =>
-        transaction(Declaration.knex(), (trx) =>
-          Promise.all([
-            declaration
-              .$query(trx)
-              .patch({ isFinished: true })
-              .returning('*'),
-            ActivityLog.query(trx).insert({
-              userId: req.session.user.id,
-              action: ActivityLog.actions.VALIDATE_FILES,
-              metadata: JSON.stringify({ declarationId: declaration.id }),
-            }),
-          ]),
-        ).then(([savedDeclaration]) => res.json(savedDeclaration)),
-      )
+      })
+        .then(() =>
+          transaction(Declaration.knex(), (trx) =>
+            Promise.all([
+              declaration
+                .$query(trx)
+                .patch({ isFinished: true })
+                .returning('*'),
+              ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_FILES,
+                metadata: JSON.stringify({ declarationId: declaration.id }),
+              }),
+            ]),
+          ),
+        )
+        .then(([savedDeclaration]) => res.json(savedDeclaration))
     })
     .catch(next),
 )

@@ -113,6 +113,9 @@ export class Employers extends Component {
     isLoading: true,
     error: null,
     isDialogOpened: false,
+    consistencyErrors: [],
+    validationErrors: [],
+    isValidating: false,
   }
 
   componentDidMount() {
@@ -187,9 +190,7 @@ export class Employers extends Component {
       .then(() => this.props.history.push('/thanks?later'))
   }
 
-  onSubmit = () => {
-    this.setState({ isDialogOpened: false })
-
+  onSubmit = ({ ignoreErrors = false } = {}) => {
     if (this.state.employers.length === 0) {
       return this.setState({
         error: `Merci d'entrer les informations sur vos employeurs`,
@@ -225,23 +226,50 @@ export class Employers extends Component {
       })
     }
 
-    superagent
+    this.setState({ isValidating: true })
+
+    return superagent
       .post('/api/employers', {
         employers: getEmployersMapFromFormData(this.state.employers),
         isFinished: true,
+        ignoreErrors,
       })
       .set('CSRF-Token', this.props.token)
       .then(() => this.props.history.push('/files'))
       .catch((err) => {
+        if (
+          err.status === 400 &&
+          (err.response.body.consistencyErrors.length ||
+            err.response.body.validationErrors.length)
+        ) {
+          // We handle the error inside the modal
+          return this.setState({
+            consistencyErrors: err.response.body.consistencyErrors,
+            validationErrors: err.response.body.validationErrors,
+            isValidating: false,
+          })
+        }
+
+        // Unhandled error
         window.Raven.captureException(err)
         this.setState({
-          error: `Une erreur s'est produite, merci de réessayer ultérieurement`,
+          error: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
+          Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
+          en attendant votre actualisation sur Pole-emploi.fr.`,
         })
+        this.closeDialog()
       })
   }
 
   openDialog = () => this.setState({ isDialogOpened: true })
-  closeDialog = () => this.setState({ isDialogOpened: false })
+  closeDialog = () => {
+    this.setState({
+      consistencyErrors: [],
+      validationErrors: [],
+      isDialogOpened: false,
+      isValidating: false,
+    })
+  }
 
   renderEmployerQuestion = (data, index) => (
     <EmployerQuestion
@@ -303,9 +331,12 @@ export class Employers extends Component {
           <WorkSummary employers={employers} />
 
           <DeclarationDialog
+            isLoading={this.state.isValidating}
             isOpened={this.state.isDialogOpened}
             onCancel={this.closeDialog}
             onConfirm={this.onSubmit}
+            consistencyErrors={this.state.consistencyErrors}
+            validationErrors={this.state.validationErrors}
           />
         </Form>
       </StyledEmployers>

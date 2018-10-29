@@ -11,8 +11,11 @@ const Raven = require('raven')
 const User = require('../models/User')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
-
-const DECLARATION_CONTEXT_ID = '1'
+const {
+  DECLARATION_STATUSES,
+  DECLARATION_ALT_STATUSES,
+  DECLARATION_CONTEXT_ID,
+} = require('../constants')
 
 const realm = '/individu'
 
@@ -128,10 +131,13 @@ router.get('/callback', (req, res, next) => {
         const declarationContext = accessibleContexts.find(
           (context) => context.code === DECLARATION_CONTEXT_ID,
         )
-        if (!declarationContext) {
-          // We won't be able to send declaration documents!
-          // Send a sentry report, and show an error to the user
-        }
+        const canAccessPEDeclarationService =
+          declarationData.statut ===
+            DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY ||
+          (declarationData.statut === DECLARATION_STATUSES.SAVED &&
+            declarationData.statutActu ===
+              DECLARATION_ALT_STATUSES.MODIFICATION_POSSIBLE)
+
         const user = {
           peId: userinfo.sub,
           firstName: startCase(toLower(userinfo.given_name)),
@@ -167,6 +173,7 @@ router.get('/callback', (req, res, next) => {
                 ? false
                 : !!user.peCode && !user.pePass,
               canSendDocuments: !!declarationContext,
+              canAccessPEDeclarationService,
             }
             res.redirect('/')
           })

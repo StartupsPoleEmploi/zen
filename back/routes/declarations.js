@@ -5,9 +5,11 @@ const { get, reduce, omit } = require('lodash')
 const { transaction } = require('objection')
 const { format } = require('date-fns')
 
+const { DECLARATION_STATUSES } = require('../constants')
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { sendDocuments } = require('../lib/pe-api/documents')
+const { sendDeclaration } = require('../lib/pe-api/declaration')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
@@ -118,29 +120,74 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     : Promise.resolve()
 
   return declarationFetchPromise
-    .then((declaration) =>
-      transaction(Declaration.knex(), (trx) =>
-        Promise.all([
-          declaration
-            ? declaration.$query(trx).patch(declarationData)
-            : Declaration.query(trx).insert(declarationData),
-          declaration &&
-            !declaration.hasFinishedDeclaringEmployers &&
-            declarationData.hasFinishedDeclaringEmployers &&
+    .then((declaration) => {
+      const saveDeclaration = (trx) =>
+        declaration
+          ? declaration.$query(trx).patchAndFetch(declarationData)
+          : Declaration.query(trx).insertAndFetch(declarationData)
+
+      const saveAndLogDeclaration = () =>
+        transaction(Declaration.knex(), (trx) =>
+          Promise.all([
+            saveDeclaration(trx),
             ActivityLog.query(trx).insert({
               userId: req.session.user.id,
               action: ActivityLog.actions.VALIDATE_DECLARATION,
+              isModification: !!declaration,
             }),
-          declaration &&
-            !declaration.isFinished &&
-            declarationData.isFinished &&
-            ActivityLog.query(trx).insert({
-              userId: req.session.user.id,
-              action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-            }),
-        ]).then(([dbDeclaration]) => res.json(dbDeclaration)),
-      ),
-    )
+            declaration &&
+              !declaration.hasWorked &&
+              declarationData.hasWorked &&
+              ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+              }),
+          ]),
+        )
+
+      if (declaration && declaration.isFinished) {
+        throw new Error('Declaration already done')
+      }
+
+      if (!declarationData.hasWorked) {
+        // Declaration with no employers We need to send the declaration to PE.fr
+
+        return sendDeclaration({
+          declaration: declarationData,
+          accessToken: req.session.userSecret.accessToken,
+          ignoreErrors: req.body.ignoreErrors,
+        }).then(({ body }) => {
+          if (body.statut !== DECLARATION_STATUSES.SAVED) {
+            // the service will answer with HTTP 200 for a bunch of errors
+            // So they need to be handled here
+
+            // in case there was no docs to transmit, don't save the declaration as finished
+            // so the user can send it again
+            declarationData.hasFinishedDeclaringEmployers = false
+            declarationData.isFinished = false
+            return saveDeclaration().then(() =>
+              // This is a custom error, we want to show a different feedback to users
+              res
+                .status(
+                  body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
+                )
+                .json({
+                  consistencyErrors: body.erreursIncoherence || [],
+                  validationErrors: Object.values(body.erreursValidation || {}),
+                }),
+            )
+          }
+
+          return saveAndLogDeclaration().then(([dbDeclaration]) =>
+            res.json(dbDeclaration),
+          )
+        })
+      }
+
+      return saveAndLogDeclaration().then(([dbDeclaration]) =>
+        res.json(dbDeclaration),
+      )
+    })
     .catch(next)
 })
 

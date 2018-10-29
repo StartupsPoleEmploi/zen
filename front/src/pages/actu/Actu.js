@@ -99,6 +99,9 @@ export class Actu extends Component {
     errorMessage: null,
     isLoading: true,
     isDialogOpened: false,
+    isValidating: false,
+    consistencyErrors: [],
+    validationErrors: [],
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
 
@@ -124,7 +127,13 @@ export class Actu extends Component {
       )
   }
 
-  closeDialog = () => this.setState({ isDialogOpened: false })
+  closeDialog = () =>
+    this.setState({
+      consistencyErrors: [],
+      validationErrors: [],
+      isDialogOpened: false,
+      isValidating: false,
+    })
   openDialog = () => this.setState({ isDialogOpened: true })
 
   onAnswer = ({ controlName, hasAnsweredYes }) => {
@@ -141,7 +150,7 @@ export class Actu extends Component {
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
     this.setState({ jobSearchStopMotive, errorMessage: null })
 
-  onSubmit = () => {
+  onSubmit = ({ ignoreErrors = false } = {}) => {
     const {
       hasWorked,
       hasTrained,
@@ -226,13 +235,37 @@ export class Actu extends Component {
       }
     }
 
-    superagent
-      .post('/api/declarations', this.state)
+    this.setState({ isValidating: true })
+
+    return superagent
+      .post('/api/declarations', { ...this.state, ignoreErrors })
       .set('CSRF-Token', this.props.user.csrfToken)
       .then(() =>
         this.props.history.push(this.state.hasWorked ? '/employers' : '/files'),
       )
-      .catch((err) => window.Raven.captureException(err))
+      .catch((err) => {
+        if (
+          err.status === 400 &&
+          (err.response.body.consistencyErrors.length ||
+            err.response.body.validationErrors.length)
+        ) {
+          // We handle the error inside the modal
+          return this.setState({
+            consistencyErrors: err.response.body.consistencyErrors,
+            validationErrors: err.response.body.validationErrors,
+            isValidating: false,
+          })
+        }
+
+        // Unhandled error
+        window.Raven.captureException(err)
+        this.setState({
+          errorMessage: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
+            Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
+            en attendant votre actualisation sur Pole-emploi.fr.`,
+        })
+        this.closeDialog()
+      })
   }
 
   setIsMaternalAssistant = () => {
@@ -445,9 +478,12 @@ export class Actu extends Component {
         </form>
 
         <DeclarationDialog
+          isLoading={this.state.isValidating}
           isOpened={this.state.isDialogOpened}
           onCancel={this.closeDialog}
           onConfirm={this.onSubmit}
+          consistencyErrors={this.state.consistencyErrors}
+          validationErrors={this.state.validationErrors}
         />
       </StyledActu>
     )

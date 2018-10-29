@@ -151,7 +151,9 @@ class App extends Component {
             if (activeDeclaration.hasFinishedDeclaringEmployers) {
               return this.props.history.replace('/files')
             }
-            return this.props.history.replace('/employers')
+            if (activeDeclaration.hasWorked) {
+              return this.props.history.replace('/employers')
+            }
           }
           return this.props.history.replace('/')
         })

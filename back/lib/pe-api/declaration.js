@@ -64,11 +64,14 @@ const convertDeclarationToAPIFormat = (declaration) => {
   return apiDeclaration
 }
 
-const sendDeclaration = ({ declaration, accessToken }) =>
+const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) =>
   superagent
     .post(
       `${config.apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
-      convertDeclarationToAPIFormat(declaration),
+      {
+        ...convertDeclarationToAPIFormat(declaration),
+        forceIncoherence: ignoreErrors ? 1 : 0,
+      },
     )
     .set('Authorization', `Bearer ${accessToken}`)
     .set('Accept-Encoding', 'gzip')

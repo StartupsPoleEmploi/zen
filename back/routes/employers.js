@@ -12,6 +12,8 @@ const Document = require('../models/Document')
 const Employer = require('../models/Employer')
 const ActivityLog = require('../models/ActivityLog')
 
+const { DECLARATION_STATUSES } = require('../constants')
+
 const getSanitizedEmployer = ({ employer, declaration, user }) => {
   const intWorkHours = parseInt(employer.workHours, 10)
   const intSalary = parseInt(employer.salary, 10)
@@ -75,29 +77,77 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 
       const shouldLog =
         req.body.isFinished && !declaration.hasFinishedDeclaringEmployers
-      if (req.body.isFinished) {
-        declaration.hasFinishedDeclaringEmployers = true
+
+      if (!req.body.isFinished) {
+        // Temp saving for the user to come back later
+        return declaration
+          .$query()
+          .upsertGraph()
+          .then(() => res.json(declaration))
       }
 
-      return transaction(Declaration.knex(), (trx) =>
-        Promise.all([
-          declaration.$query(trx).upsertGraph(),
-          shouldLog
-            ? ActivityLog.query(trx).insert({
-                userId: req.session.user.id,
-                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-                metadata: JSON.stringify({ declarationId: declaration.id }),
-              })
-            : Promise.resolve(),
-        ]),
-      ).then(() =>
-        sendDeclaration({
-          declaration,
-          accessToken: req.session.userSecret.accessToken,
-        }).then(() => res.json(declaration)),
-      )
+      declaration.hasFinishedDeclaringEmployers = true
+
+      // Sending declaration to pe.fr
+      return sendDeclaration({
+        declaration,
+        accessToken: req.session.userSecret.accessToken,
+        ignoreErrors: req.body.ignoreErrors,
+      })
+        .then(({ body }) => {
+          if (body.statut !== DECLARATION_STATUSES.SAVED) {
+            // the service will answer with HTTP 200 for a bunch of errors, handling this right away
+
+            declaration.hasFinishedDeclaringEmployers = false
+
+            return declaration
+              .$query()
+              .upsertGraph()
+              .then(() =>
+                // This is a custom error, we want to show a different feedback to users
+                res
+                  .status(
+                    body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
+                  )
+                  .json({
+                    consistencyErrors: body.erreursIncoherence || [],
+                    validationErrors: Object.values(
+                      body.erreursValidation || {},
+                    ),
+                  }),
+              )
+          }
+
+          return transaction(Declaration.knex(), (trx) =>
+            Promise.all([
+              declaration.$query(trx).upsertGraph(),
+              shouldLog
+                ? ActivityLog.query(trx).insert({
+                    userId: req.session.user.id,
+                    action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                    metadata: JSON.stringify({
+                      declarationId: declaration.id,
+                    }),
+                  })
+                : Promise.resolve(),
+            ]),
+          ).then(() => res.json(declaration))
+        })
+        .catch((err) => {
+          // If we could not save the declaration on pe.fr
+          // We still save the data the user sent us
+          // but we put it as unfinished.
+          declaration.hasFinishedDeclaringEmployers = false
+
+          return declaration
+            .$query()
+            .upsertGraph()
+            .then(() => {
+              throw err
+            })
+        })
+        .catch(next)
     })
-    .catch(next)
 })
 
 router.get('/files', (req, res, next) => {

@@ -91,12 +91,6 @@ router.get('/callback', (req, res, next) => {
         idToken: authToken.token.id_token,
       }
 
-      console.log(
-        `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,
-
-        `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes`,
-      )
-
       return authToken
     })
     .then((authToken) =>

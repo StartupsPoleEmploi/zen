@@ -4,6 +4,12 @@ const config = require('config')
 
 const convertDate = (date) => format(date, 'DDMMYYYY')
 
+const JOB_SEARCH_STOP_MOTIVES = {
+  WORK: 0,
+  RETIREMENT: 1,
+  OTHER: 2,
+}
+
 const getDeclarationWorkHours = (declaration) => {
   // We cannot declare more than 450 hours to PE.fr
   // or the form will refuse our input
@@ -24,10 +30,6 @@ const convertDeclarationToAPIFormat = (declaration) => {
       0,
     )
   }
-  /*
-  if (declaration.hasTrained) {
-  }
-  */
   if (declaration.hasInternship) {
     apiDeclaration.dateDebutStage = convertDate(declaration.internshipStartDate)
     apiDeclaration.dateFinStage = convertDate(declaration.internshipEndDate)
@@ -53,10 +55,10 @@ const convertDeclarationToAPIFormat = (declaration) => {
     apiDeclaration.dateFinRech = convertDate(declaration.jobSearchEndDate)
     apiDeclaration.motifFinRech =
       declaration.jobSearchStopMotive === 'work'
-        ? 0
+        ? JOB_SEARCH_STOP_MOTIVES.WORK
         : declaration.jobSearchStopMotive === 'retirement'
-          ? 1
-          : 2
+          ? JOB_SEARCH_STOP_MOTIVES.RETIREMENT
+          : JOB_SEARCH_STOP_MOTIVES.OTHER
   }
 
   return apiDeclaration

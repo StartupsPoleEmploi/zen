@@ -99,6 +99,7 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
       return res
     })
     .catch((err) => {
+      if (previousTries > 4) throw err
       if (err.status === 429) {
         return checkHeadersAndWait(err.response.headers).then(() =>
           doUpload({
@@ -208,14 +209,14 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       )}`,
       ...rest,
     }))
-  //  .filter(({ document }) => !document.isTransmitted) // UNCOMMENT ME DO NOT MERGE ME
+    .filter(({ document }) => !document.isTransmitted)
 
   for (const key in documentsToTransmit) {
-    if (key !== 0) await wait(1000)
+    if (key !== 0) await wait(DEFAULT_WAIT_TIME)
     const {
       body: { conversionId },
     } = await doUpload({ document: documentsToTransmit[key], accessToken })
-    await wait(1000)
+    await wait(DEFAULT_WAIT_TIME)
     await doConfirm({
       document: documentsToTransmit[key],
       accessToken,

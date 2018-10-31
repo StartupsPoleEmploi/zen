@@ -6,6 +6,7 @@ const superagent = require('superagent')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const { pick, startCase, toLower } = require('lodash')
+const Raven = require('raven')
 
 const User = require('../models/User')
 
@@ -86,6 +87,11 @@ router.get('/callback', (req, res, next) => {
       // TODO check access_token against at_hash here - possible code:
       // base64url(crypto.createHash('sha256').update(authToken.token.access_token).digest('hex'))
 
+      req.session.userSecret = {
+        accessToken: authToken.token.access_token,
+        idToken: authToken.token.id_token,
+      }
+
       return authToken
     })
     .then((authToken) =>
@@ -138,6 +144,17 @@ router.get('/callback', (req, res, next) => {
       res.redirect('/')
     })
     .catch(next)
+})
+
+router.get('/logout', (req, res) => {
+  // This is a path required by the user's browser, hence the redirection
+  const { idToken } = req.session.userSecret
+  req.session.destroy((err) => Raven.captureException(err))
+  res.redirect(
+    `${
+      config.tokenHost
+    }/compte/deconnexion/compte/deconnexion?id_token_hint=${idToken}&redirect_uri=https://zen.pole-emploi.fr`,
+  )
 })
 
 module.exports = router

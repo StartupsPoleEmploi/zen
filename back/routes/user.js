@@ -14,11 +14,6 @@ router.get('/', (req, res) =>
   }),
 )
 
-router.delete('/', (req, res) => {
-  req.session.user = null
-  res.json('logged out')
-})
-
 router.patch('/', (req, res, next) => {
   // This is only intended to let user subscribe to tests
   if (

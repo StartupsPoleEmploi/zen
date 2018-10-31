@@ -26,10 +26,11 @@ const StyledActu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  max-width: 70rem;
+  margin: 0 auto;
 `
 
 const StyledPaper = styled(Paper)`
-  max-width: 70rem;
   width: 100%;
   margin: 4rem auto 0;
 `
@@ -38,7 +39,10 @@ const Title = styled(Typography).attrs({ variant: 'title' })`
   text-align: center;
 `
 
-const ErrorMessage = styled(Typography)`
+const ErrorMessage = styled(Typography).attrs({
+  paragraph: true,
+  variant: 'body2',
+})`
   && {
     color: red;
     text-align: center;
@@ -52,7 +56,7 @@ const FinalButtonsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  padding-top: 3rem;
+  padding-top: 1.5rem;
 `
 
 const StyledList = styled(List)`
@@ -462,9 +466,7 @@ export class Actu extends Component {
             </StyledPaper>
           )}
 
-          {errorMessage && (
-            <ErrorMessage variant="body2">{errorMessage}</ErrorMessage>
-          )}
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
           <FinalButtonsContainer>
             <Button

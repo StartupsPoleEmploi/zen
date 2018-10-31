@@ -62,6 +62,18 @@ const ButtonsContainer = styled.div`
   flex-wrap: wrap;
 `
 
+const ErrorMessage = styled(Typography).attrs({
+  paragraph: true,
+  variant: 'body2',
+})`
+  && {
+    color: red;
+    text-align: center;
+    margin: inherit auto;
+    max-width: 70rem;
+  }
+`
+
 const employerTemplate = {
   employerName: { value: '', error: null },
   workHours: { value: '', error: null },
@@ -317,7 +329,7 @@ export class Employers extends Component {
             <LineDiv />
           </AddEmployersButtonContainer>
 
-          {error && <Typography variant="body2">{error}</Typography>}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonsContainer>
             <CustomColorButton onClick={this.onSave}>

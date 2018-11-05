@@ -203,41 +203,6 @@ export class Employers extends Component {
   }
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
-    if (this.state.employers.length === 0) {
-      return this.setState({
-        error: `Merci d'entrer les informations sur vos employeurs`,
-      })
-    }
-
-    let isFormValid = true
-    const employersFormData = cloneDeep(this.state.employers)
-
-    this.state.employers.forEach((employer, index) =>
-      Object.keys(employer).forEach((fieldName) => {
-        const { error } = validateField({
-          index,
-          name: fieldName,
-          value: employer[fieldName].value,
-        })
-
-        if (error) isFormValid = false
-
-        employersFormData[index][fieldName] = {
-          value: employer[fieldName].value,
-          error,
-        }
-      }),
-    )
-
-    if (!isFormValid) {
-      return this.setState({
-        employers: employersFormData,
-        error: isFormValid
-          ? null
-          : `Merci de corriger les erreurs du formulaire`,
-      })
-    }
-
     this.setState({ isValidating: true })
 
     return superagent
@@ -273,7 +238,45 @@ export class Employers extends Component {
       })
   }
 
-  openDialog = () => this.setState({ isDialogOpened: true })
+  openDialog = () => {
+    if (this.state.employers.length === 0) {
+      return this.setState({
+        error: `Merci d'entrer les informations sur vos employeurs`,
+      })
+    }
+
+    let isFormValid = true
+    const employersFormData = cloneDeep(this.state.employers)
+
+    this.state.employers.forEach((employer, index) =>
+      Object.keys(employer).forEach((fieldName) => {
+        const { error } = validateField({
+          index,
+          name: fieldName,
+          value: employer[fieldName].value,
+        })
+
+        if (error) isFormValid = false
+
+        employersFormData[index][fieldName] = {
+          value: employer[fieldName].value,
+          error,
+        }
+      }),
+    )
+
+    if (!isFormValid) {
+      return this.setState({
+        employers: employersFormData,
+        error: isFormValid
+          ? null
+          : `Merci de corriger les erreurs du formulaire`,
+      })
+    }
+
+    this.setState({ isDialogOpened: true })
+  }
+
   closeDialog = () => {
     this.setState({
       consistencyErrors: [],

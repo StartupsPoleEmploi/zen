@@ -15,6 +15,7 @@ import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUp
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
+import FilesDialog from '../../components/Actu/FilesDialog'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -118,9 +119,15 @@ export class Files extends Component {
     error: null,
     showMissingDocs: false,
     declarations: [],
+    isSendingFiles: false,
   }
 
   componentDidMount() {
+    this.fetchDeclarations()
+  }
+
+  fetchDeclarations = () => {
+    this.setState({ isLoading: true })
     superagent
       .get('/api/declarations')
       .then((res) => res.body)
@@ -257,14 +264,17 @@ export class Files extends Component {
   }
 
   onSubmit = () => {
-    superagent
+    this.setState({ isSendingFiles: true })
+
+    return superagent
       .post('/api/declarations/finish', { id: this.state.declarations[0].id })
       .set('CSRF-Token', this.props.token)
       .then((res) => res.body)
       .then(() => this.props.history.push('/thanks'))
       .catch((error) => {
         window.Raven.captureException(error)
-        this.setState({ error })
+        this.setState({ error, isSendingFiles: false })
+        this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
   }
 
@@ -493,7 +503,11 @@ export class Files extends Component {
             </StyledInfo>
             {error && (
               <ErrorMessage variant="body2">
-                Une erreur s'est produite, merci de réessayer ultérieurement
+                Nous sommes désolés, une erreur s'est produite lors de l'envoi
+                des documents. Merci de bien vouloir réessayer.
+                <br />
+                Si le problème se reproduit, merci de bien vouloir contacter
+                l'équipe Zen.
               </ErrorMessage>
             )}
             <ButtonsContainer>
@@ -532,6 +546,7 @@ export class Files extends Component {
           </OtherDocumentsContainer>
         )}
         <WorkSummary employers={lastDeclaration.employers} />
+        <FilesDialog isOpened={this.state.isSendingFiles} />
       </StyledFiles>
     )
   }

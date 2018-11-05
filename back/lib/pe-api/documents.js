@@ -22,6 +22,7 @@ const path = require('path')
 const { toNumber } = require('lodash')
 
 const DEFAULT_WAIT_TIME = 1000
+const MAX_RETRIES = 3
 
 const CONTEXT_CODE = '1'
 
@@ -99,7 +100,7 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
       return res
     })
     .catch((err) => {
-      if (previousTries > 4) throw err
+      if (previousTries > MAX_RETRIES) throw err
       if (err.status === 429) {
         return checkHeadersAndWait(err.response.headers).then(() =>
           doUpload({
@@ -127,8 +128,9 @@ const doConfirm = ({
     .set('Accept-Encoding', 'gzip')
     .set('Accept', 'application/json')
     .set('media', 'I')
+    .then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
     .catch((err) => {
-      if (previousTries > 4) throw err
+      if (previousTries > MAX_RETRIES) throw err
       if (err.status === 429) {
         // HTTP 429 Too many requests
         return checkHeadersAndWait(err.response.headers).then(() =>
@@ -182,7 +184,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       return prev.concat({
         filePath: `${uploadsDirectory}${declaration[fields.docField].file}`,
         label: fields.label,
-        document: declaration[fields.docField],
+        dbDocument: declaration[fields.docField],
         confirmationData: fields.confirmationData,
       })
     }, [])
@@ -193,7 +195,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
           return prev.concat({
             filePath: `${uploadsDirectory}${document.file}`,
             label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
-            document,
+            dbDocument: document,
             confirmationData: hasEndedThisMonth
               ? CODES.EMPLOYER_CERTIFICATE
               : CODES.SALARY_SHEET,
@@ -209,7 +211,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       )}`,
       ...rest,
     }))
-    .filter(({ document }) => !document.isTransmitted)
+    .filter(({ dbDocument }) => !dbDocument.isTransmitted)
 
   for (const key in documentsToTransmit) {
     if (key !== 0) await wait(DEFAULT_WAIT_TIME)

@@ -138,7 +138,14 @@ export class Actu extends Component {
       isDialogOpened: false,
       isValidating: false,
     })
-  openDialog = () => this.setState({ isDialogOpened: true })
+
+  openDialog = () => {
+    const error = this.getFormError()
+    if (error) {
+      return this.setState({ errorMessage: error })
+    }
+    this.setState({ isDialogOpened: true })
+  }
 
   onAnswer = ({ controlName, hasAnsweredYes }) => {
     this.setState({ [controlName]: hasAnsweredYes, errorMessage: null })
@@ -154,7 +161,7 @@ export class Actu extends Component {
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
     this.setState({ jobSearchStopMotive, errorMessage: null })
 
-  onSubmit = ({ ignoreErrors = false } = {}) => {
+  getFormError = () => {
     const {
       hasWorked,
       hasTrained,
@@ -185,58 +192,44 @@ export class Actu extends Component {
         isLookingForJob,
       ].some(isNull)
     ) {
-      return this.setState({
-        errorMessage: 'Merci de répondre à toutes les questions',
-      })
+      return 'Merci de répondre à toutes les questions'
     }
 
     if (hasInternship && (!internshipStartDate || !internshipEndDate)) {
-      return this.setState({
-        errorMessage: "Merci d'indiquer vos dates de stage",
-      })
+      return `Merci d'indiquer vos dates de stage`
     }
 
     if (hasSickLeave && (!sickLeaveStartDate || !sickLeaveEndDate)) {
-      return this.setState({
-        errorMessage: "Merci d'indiquer vos dates d'arrêt maladie",
-      })
+      return `Merci d'indiquer vos dates d'arrêt maladie`
     }
 
     if (hasMaternityLeave && !maternityLeaveStartDate) {
-      return this.setState({
-        errorMessage:
-          "Merci d'indiquer votre date de départ en congé maternité",
-      })
+      return `Merci d'indiquer votre date de départ en congé maternité`
     }
 
     if (hasRetirement && !retirementStartDate) {
-      return this.setState({
-        errorMessage:
-          "Merci d'indiquer depuis quand vous touchez une pension retraite",
-      })
+      return `Merci d'indiquer depuis quand vous touchez une pension retraite`
     }
 
     if (hasInvalidity && !invalidityStartDate) {
-      return this.setState({
-        errorMessage:
-          "Merci d'indiquer depuis quand vous touchez une pension d'invalidité",
-      })
+      return `Merci d'indiquer depuis quand vous touchez une pension d'invalidité`
     }
 
     if (!isLookingForJob) {
       if (!jobSearchEndDate) {
-        return this.setState({
-          errorMessage:
-            "Merci d'indiquer depuis quand vous ne cherchez plus d'emploi",
-        })
+        return `Merci d'indiquer depuis quand vous ne cherchez plus d'emploi`
       }
 
       if (!jobSearchStopMotive) {
-        return this.setState({
-          errorMessage:
-            "Merci d'indiquer pourquoi vous ne recherchez plus d'emploi",
-        })
+        return `Merci d'indiquer pourquoi vous ne recherchez plus d'emploi`
       }
+    }
+  }
+
+  onSubmit = ({ ignoreErrors = false } = {}) => {
+    const error = this.getFormError()
+    if (error) {
+      return this.setState({ errorMessage: error })
     }
 
     this.setState({ isValidating: true })

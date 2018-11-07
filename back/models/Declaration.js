@@ -4,13 +4,23 @@ const {
   HasOneRelation,
   ValidationError,
 } = require('objection')
-const { isValid } = require('date-fns')
+const { format, isValid } = require('date-fns')
 
 const BaseModel = require('./BaseModel')
 
 class Declaration extends BaseModel {
   static get tableName() {
     return 'Declarations'
+  }
+
+  $beforeUpdate() {
+    super.$beforeUpdate()
+    this.convertUTCDatesToPGDates()
+  }
+
+  $beforeInsert() {
+    super.$beforeInsert()
+    this.convertUTCDatesToPGDates()
   }
 
   $beforeValidate(jsonSchema, json, opt) {
@@ -61,6 +71,34 @@ class Declaration extends BaseModel {
     }
   }
 
+  /*
+    This resolves an issue with the way JS / PostgreSQL interact with dates:
+    A date ISOString is written 2018-11-07T22:00:00.000Z to represent 2018-11-08, Paris time.
+    So for example, the trainingStartDate field, when requested from the database,
+    has for value 2018-11-07T22:00:00.000Z.
+    However, when saving again that value (example: upsertGraph, which will save everything,
+      not just modified values), the value 2018-11-07T22:00:00.000Z, when given to
+    PostgresSQL, will be *truncated*, which will result in the date being off by one day.
+    This resolves it by relying on the node server to correctly format dates to YYYY-MM-DD.
+  */
+  convertUTCDatesToPGDates() {
+    const dateFields = [
+      'trainingStartDate',
+      'trainingEndDate',
+      'internshipStartDate',
+      'internshipEndDate',
+      'sickLeaveStartDate',
+      'sickLeaveEndDate',
+      'maternityLeaveStartDate',
+      'retirementStartDate',
+      'invalidityStartDate',
+    ]
+
+    dateFields.forEach((field) => {
+      if (this[field]) this[field] = format(this[field], 'YYYY-MM-DD')
+    })
+  }
+
   static get jsonSchema() {
     return {
       type: 'object',
@@ -77,6 +115,8 @@ class Declaration extends BaseModel {
         'hasFinishedDeclaringEmployers',
       ],
 
+      // Adding any date (not timestamp) field to this model requires adding it to the
+      // convertUTCDatesToPGDates method.
       properties: {
         id: { type: 'integer' },
         userId: { type: 'integer' },

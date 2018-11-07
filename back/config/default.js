@@ -5,6 +5,7 @@ module.exports = {
   redirectUri: process.env.AUTH_REDIRECT_URI,
   tokenHost: process.env.TOKEN_HOST,
   apiHost: process.env.API_HOST,
+  appHost: process.env.APP_HOST,
   // pm2-dev has a bug which prevents the env to be the same in dev.
   // should be the same ASAP.
   // https://github.com/Unitech/pm2/issues/3158

@@ -153,7 +153,9 @@ router.get('/logout', (req, res) => {
   res.redirect(
     `${
       config.tokenHost
-    }/compte/deconnexion/compte/deconnexion?id_token_hint=${idToken}&redirect_uri=https://zen.pole-emploi.fr`,
+    }/compte/deconnexion/compte/deconnexion?id_token_hint=${idToken}&redirect_uri=${
+      config.appHost
+    }`,
   )
 })
 

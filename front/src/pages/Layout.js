@@ -10,7 +10,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import superagent from 'superagent'
 
 import AppTitle from '../components/Generic/AppTitle'
 
@@ -74,19 +73,6 @@ export class Layout extends Component {
 
   state = { isTooltipOpened: false }
 
-  logout = () => {
-    // TODO do not redirect with window.location anymore when we
-    // have a global store.
-    // (This is done so everything is reloaded)
-    superagent
-      .delete('/api/user')
-      .set('CSRF-Token', this.props.user.csrfToken)
-      .then(() => {
-        window.Raven.setUserContext()
-        window.location = '/loggedOut'
-      })
-  }
-
   setTooltipClosed = () => this.setState({ isTooltipOpened: false })
   toggleTooltip = () =>
     this.setState((state) => ({ isTooltipOpened: !state.isTooltipOpened }))
@@ -114,7 +100,12 @@ export class Layout extends Component {
                   open={this.state.isTooltipOpened}
                   placement="bottom"
                   title={
-                    <Button onClick={this.logout} disableRipple>
+                    <Button
+                      href="/api/login/logout"
+                      target="_self"
+                      disableRipple
+                      variant="text"
+                    >
                       Déconnexion
                     </Button>
                   }

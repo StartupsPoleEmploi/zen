@@ -11,11 +11,7 @@ const Raven = require('raven')
 const User = require('../models/User')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
-const {
-  DECLARATION_STATUSES,
-  DECLARATION_ALT_STATUSES,
-  DECLARATION_CONTEXT_ID,
-} = require('../constants')
+const { DECLARATION_STATUSES, DECLARATION_CONTEXT_ID } = require('../constants')
 
 const realm = '/individu'
 
@@ -127,16 +123,17 @@ router.get('/callback', (req, res, next) => {
         { body: accessibleContexts },
         { body: coordinates },
       ]) => {
-        console.log({ declarationData })
         const declarationContext = accessibleContexts.find(
           (context) => context.code === DECLARATION_CONTEXT_ID,
         )
-        const canAccessPEDeclarationService =
+        // We only allow declarations when we have this status code
+        // (yes, it doesn't seem to make sense, but that's what the API
+        // gives us when the declaration hasn't been done yet)
+        const canSendDeclaration =
           declarationData.statut ===
-            DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY ||
-          (declarationData.statut === DECLARATION_STATUSES.SAVED &&
-            declarationData.statutActu ===
-              DECLARATION_ALT_STATUSES.MODIFICATION_POSSIBLE)
+          DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY
+        const hasAlreadySentDeclaration =
+          declarationData.statut === DECLARATION_STATUSES.SAVED
 
         const user = {
           peId: userinfo.sub,
@@ -173,7 +170,8 @@ router.get('/callback', (req, res, next) => {
                 ? false
                 : !!user.peCode && !user.pePass,
               canSendDocuments: !!declarationContext,
-              canAccessPEDeclarationService,
+              canSendDeclaration,
+              hasAlreadySentDeclaration,
             }
             res.redirect('/')
           })

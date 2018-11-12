@@ -458,6 +458,17 @@ export class Files extends Component {
       .slice(1)
       .reduce((prev, nb) => prev + nb, 0)
 
+    if (!lastDeclaration) {
+      // Users have come to this page without any old documents to validate
+      return (
+        <StyledFiles>
+          <StyledTitle variant="title">
+            Vous n'avez pas de fichier à envoyer.
+          </StyledTitle>
+        </StyledFiles>
+      )
+    }
+
     if (lastDeclaration.isFinished && otherDeclarationsRemainingDocsNb === 0) {
       // Users have already validated the lastDeclaration and have
       // finished uploading old documents

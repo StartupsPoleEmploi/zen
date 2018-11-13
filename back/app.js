@@ -48,7 +48,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(
   session({
-    cookie: { maxAge: 20 * 60 * 1000 }, // 20 short minutes for now T_T
+    // our sessions are long but PE token is only valid ~20 minutes
+    // so we reconnect any user here over 20 minutes.
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     httpOnly: true,
     resave: false,
     saveUninitialized: false,

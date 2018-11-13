@@ -16,6 +16,7 @@ import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload
 import WorkSummary from '../../components/Actu/WorkSummary'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
 import FilesDialog from '../../components/Actu/FilesDialog'
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -272,7 +273,13 @@ export class Files extends Component {
       .then((res) => res.body)
       .then(() => this.props.history.push('/thanks'))
       .catch((error) => {
+        // Reporting here to get a metric of how much this happens
         window.Raven.captureException(error)
+
+        if (error.status === 401 || error.status === 403) {
+          return this.setState({ isLoggedOut: true })
+        }
+
         this.setState({ error, isSendingFiles: false })
         this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
@@ -558,6 +565,7 @@ export class Files extends Component {
         )}
         <WorkSummary employers={lastDeclaration.employers} />
         <FilesDialog isOpened={this.state.isSendingFiles} />
+        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledFiles>
     )
   }

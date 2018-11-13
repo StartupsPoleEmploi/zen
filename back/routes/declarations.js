@@ -10,6 +10,7 @@ const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
+const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
@@ -150,8 +151,16 @@ router.post('/', requireActiveMonth, (req, res, next) => {
       }
 
       if (!declarationData.hasWorked) {
-        // Declaration with no employers We need to send the declaration to PE.fr
+        // If the user token is invalid, save the declaration data then exit.
+        if (!isUserTokenValid(req.user.tokenExpirationDate)) {
+          declarationData.hasFinishedDeclaringEmployers = false
+          declarationData.isFinished = false
+          return saveDeclaration().then(() =>
+            res.status(401).json('Expired token'),
+          )
+        }
 
+        // Declaration with no employers We need to send the declaration to PE.fr
         return sendDeclaration({
           declaration: declarationData,
           accessToken: req.session.userSecret.accessToken,
@@ -263,8 +272,12 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     })
 })
 
-router.post('/finish', (req, res, next) =>
-  Declaration.query()
+router.post('/finish', (req, res, next) => {
+  if (!isUserTokenValid(req.user.tokenExpirationDate)) {
+    return res.status(401).json('Expired token')
+  }
+
+  return Declaration.query()
     .eager(
       `[${possibleDocumentTypes.join(
         ', ',
@@ -318,7 +331,7 @@ router.post('/finish', (req, res, next) =>
         )
         .then(([savedDeclaration]) => res.json(savedDeclaration))
     })
-    .catch(next),
-)
+    .catch(next)
+})
 
 module.exports = router

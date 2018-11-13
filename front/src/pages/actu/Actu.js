@@ -19,6 +19,7 @@ import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
 import DatePicker from '../../components/Generic/DatePicker'
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
 const USER_GENDER_MALE = 'male'
 
@@ -106,6 +107,7 @@ export class Actu extends Component {
     isValidating: false,
     consistencyErrors: [],
     validationErrors: [],
+    isLoggedOut: false,
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
 
@@ -254,8 +256,14 @@ export class Actu extends Component {
           })
         }
 
-        // Unhandled error
+        // Reporting here to get a metric of how much next error happens
         window.Raven.captureException(err)
+
+        if (err.status === 401 || err.status === 403) {
+          return this.setState({ isLoggedOut: true })
+        }
+
+        // Unhandled error
         this.setState({
           errorMessage: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
             Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
@@ -480,6 +488,8 @@ export class Actu extends Component {
           consistencyErrors={this.state.consistencyErrors}
           validationErrors={this.state.validationErrors}
         />
+
+        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledActu>
     )
   }

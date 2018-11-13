@@ -114,6 +114,7 @@ router.get('/callback', (req, res, next) => {
           .set('Accept', 'application/json')
           .set('Authorization', `Bearer ${authToken.token.access_token}`)
           .set('Accept-Encoding', 'gzip'),
+        new Date(authToken.token.expires_at),
       ]),
     )
     .then(
@@ -122,6 +123,7 @@ router.get('/callback', (req, res, next) => {
         { body: declarationData },
         { body: accessibleContexts },
         { body: coordinates },
+        tokenExpirationDate,
       ]) => {
         const declarationContext = accessibleContexts.find(
           (context) => context.code === DECLARATION_CONTEXT_ID,
@@ -172,6 +174,7 @@ router.get('/callback', (req, res, next) => {
               canSendDocuments: !!declarationContext,
               canSendDeclaration,
               hasAlreadySentDeclaration,
+              tokenExpirationDate,
             }
             res.redirect('/')
           })

@@ -13,6 +13,7 @@ import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -128,6 +129,7 @@ export class Employers extends Component {
     consistencyErrors: [],
     validationErrors: [],
     isValidating: false,
+    isLoggedOut: false,
   }
 
   componentDidMount() {
@@ -227,8 +229,14 @@ export class Employers extends Component {
           })
         }
 
-        // Unhandled error
+        // Reporting here to get a metric of how much next error happens
         window.Raven.captureException(err)
+
+        if (err.status === 401 || err.status === 403) {
+          return this.setState({ isLoggedOut: true })
+        }
+
+        // Unhandled error
         this.setState({
           error: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
           Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
@@ -344,16 +352,16 @@ export class Employers extends Component {
           </ButtonsContainer>
 
           <WorkSummary employers={employers} />
-
-          <DeclarationDialog
-            isLoading={this.state.isValidating}
-            isOpened={this.state.isDialogOpened}
-            onCancel={this.closeDialog}
-            onConfirm={this.onSubmit}
-            consistencyErrors={this.state.consistencyErrors}
-            validationErrors={this.state.validationErrors}
-          />
         </Form>
+        <DeclarationDialog
+          isLoading={this.state.isValidating}
+          isOpened={this.state.isDialogOpened}
+          onCancel={this.closeDialog}
+          onConfirm={this.onSubmit}
+          consistencyErrors={this.state.consistencyErrors}
+          validationErrors={this.state.validationErrors}
+        />
+        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledEmployers>
     )
   }

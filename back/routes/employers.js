@@ -6,6 +6,7 @@ const { transaction } = require('objection')
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
+const isUserTokenValid = require('../lib/isUserTokenValid')
 
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
@@ -84,6 +85,13 @@ router.post('/', requireActiveMonth, (req, res, next) => {
           .$query()
           .upsertGraph()
           .then(() => res.json(declaration))
+      }
+
+      if (!isUserTokenValid(req.user.tokenExpirationDate)) {
+        return declaration
+          .$query()
+          .upsertGraph()
+          .then(() => res.status(401).json('Expired token'))
       }
 
       declaration.hasFinishedDeclaringEmployers = true

@@ -111,6 +111,11 @@ class App extends Component {
 
         if (!user) return this.setState({ isLoading: false })
 
+        if (!user.isTokenValid) {
+          window.location = '/api/login'
+          return
+        }
+
         return Promise.all([
           superagent
             .get('/api/declarations?last')

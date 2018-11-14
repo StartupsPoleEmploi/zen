@@ -97,11 +97,13 @@ router.get('/callback', (req, res, next) => {
         superagent
           .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
           .set('Accept', 'application/json')
-          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
         superagent
           .get(`${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`)
           .set('Accept', 'application/json')
-          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
         superagent
           .get(
             `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,

@@ -1,32 +1,11 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import styled from 'styled-components'
 
 import CustomColorButton from '../Generic/CustomColorButton'
-
-const StyledDialogContent = styled(DialogContent)`
-  && {
-    text-align: center;
-  }
-`
-
-const StyledDialogTitle = styled(DialogTitle)`
-  text-align: center;
-`
-
-const StyledDialogActions = styled(DialogActions)`
-  && {
-    justify-content: space-around;
-    padding-bottom: 2rem;
-  }
-`
+import CustomDialog from '../Generic/CustomDialog'
 
 class DeclarationDialog extends Component {
   static propTypes = {
@@ -51,38 +30,52 @@ class DeclarationDialog extends Component {
       onCancel,
     } = this.props
 
-    return (
-      <Dialog
-        open={isOpened}
-        onClose={onCancel}
-        /* if loading, prevent from leaving modal */
-        disableEscapeKeyDown={isLoading}
-        disableBackdropClick={isLoading}
-        aria-labelledby="ActuDialogContentText"
-      >
-        <StyledDialogTitle>Envoi de l'actualisation</StyledDialogTitle>
-        {isLoading ? (
-          <StyledDialogContent>
-            <CircularProgress />
-            <DialogContentText id="ActuDialogContentText">
-              Envoi en cours…
-            </DialogContentText>
-          </StyledDialogContent>
-        ) : validationErrors.length > 0 ? (
-          <Fragment>
-            <StyledDialogContent>
-              <DialogContentText id="ActuDialogContentText">
-                Notre système a détecté des erreurs dans votre déclaration
-                <ul>
-                  <Fragment>
-                    {validationErrors.map((error) => <li>{error}</li>)}
-                  </Fragment>
-                </ul>
+    const defaultProps = {
+      title: "Envoi de l'actualisation",
+      titleId: 'ActuDialogContentText',
+      isOpened,
+      onCancel,
+    }
+
+    if (isLoading) {
+      return (
+        <CustomDialog
+          content={
+            <Fragment>
+              <CircularProgress />
+              <DialogContentText>Envoi en cours…</DialogContentText>
+            </Fragment>
+          }
+          disableEscapeKeyDown
+          disableBackdropClick
+          {...defaultProps}
+        />
+      )
+    }
+
+    if (validationErrors.length > 0) {
+      return (
+        <CustomDialog
+          content={
+            <Fragment>
+              <DialogContentText>
+                Notre système a détecté des erreurs dans votre déclaration :
+              </DialogContentText>
+              <ul style={{ padding: 0 }}>
+                {validationErrors.map((error) => (
+                  <DialogContentText component="li" key={error}>
+                    {error}
+                  </DialogContentText>
+                ))}
+              </ul>
+              <DialogContentText>
                 Zen n'est pas en mesure de prendre en charge votre déclaration.
                 Veuillez la modifier, ou l'effectuer sur Pole-Emploi.fr
               </DialogContentText>
-            </StyledDialogContent>
-            <StyledDialogActions>
+            </Fragment>
+          }
+          actions={
+            <Fragment>
               <CustomColorButton color="primary" onClick={onCancel}>
                 Je modifie ma déclaration
               </CustomColorButton>
@@ -94,23 +87,38 @@ class DeclarationDialog extends Component {
               >
                 J'accède à Pole-Emploi.fr
               </Button>
-            </StyledDialogActions>
-          </Fragment>
-        ) : consistencyErrors.length > 0 ? (
-          <Fragment>
-            <StyledDialogContent>
-              <DialogContentText id="ActuDialogContentText">
-                Notre système a détecté de possibles incohérences : Vous avez
-                déclaré
-                <ul>
-                  <Fragment>
-                    {consistencyErrors.map((error) => <li>{error}</li>)}
-                  </Fragment>
-                </ul>
+            </Fragment>
+          }
+          {...defaultProps}
+        />
+      )
+    }
+
+    if (consistencyErrors.length > 0) {
+      return (
+        <CustomDialog
+          content={
+            <Fragment>
+              <DialogContentText>
+                Notre système a détecté de possibles incohérences dans votre
+                actualisation{' '}:
+              </DialogContentText>
+              <ul style={{ padding: 0 }}>
+                <Fragment>
+                  {consistencyErrors.map((error) => (
+                    <DialogContentText component="li" key={error}>
+                      {error}
+                    </DialogContentText>
+                  ))}
+                </Fragment>
+              </ul>
+              <DialogContentText>
                 Confirmez-vous ces informations ?
               </DialogContentText>
-            </StyledDialogContent>
-            <StyledDialogActions>
+            </Fragment>
+          }
+          actions={
+            <Fragment>
               <CustomColorButton onClick={onCancel}>
                 Je modifie ma déclaration
               </CustomColorButton>
@@ -122,33 +130,39 @@ class DeclarationDialog extends Component {
               >
                 Je valide cette déclaration
               </Button>
-            </StyledDialogActions>
-          </Fragment>
-        ) : (
+            </Fragment>
+          }
+          {...defaultProps}
+        />
+      )
+    }
+
+    return (
+      <CustomDialog
+        content={
+          <DialogContentText id="ActuDialogContentText">
+            Votre actualisation va être envoyée à Pôle-Emploi.
+            <br />
+            Nous vous envoyons un e-mail pour vous le confirmer.
+          </DialogContentText>
+        }
+        actions={
           <Fragment>
-            <StyledDialogContent>
-              <DialogContentText id="ActuDialogContentText">
-                Votre actualisation va être envoyée à Pôle-Emploi.
-                <br />
-                Nous vous envoyons un e-mail pour vous le confirmer.
-              </DialogContentText>
-            </StyledDialogContent>
-            <StyledDialogActions>
-              <CustomColorButton onClick={onCancel}>
-                Je n'ai pas terminé
-              </CustomColorButton>
-              <Button
-                variant="raised"
-                onClick={this.confirm}
-                color="primary"
-                autoFocus
-              >
-                Je m'actualise
-              </Button>
-            </StyledDialogActions>
+            <CustomColorButton onClick={onCancel}>
+              Je n'ai pas terminé
+            </CustomColorButton>
+            <Button
+              variant="raised"
+              onClick={this.confirm}
+              color="primary"
+              autoFocus
+            >
+              Je m'actualise
+            </Button>
           </Fragment>
-        )}
-      </Dialog>
+        }
+        {...defaultProps}
+      />
     )
   }
 }

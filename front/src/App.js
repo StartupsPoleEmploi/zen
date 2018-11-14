@@ -349,7 +349,6 @@ class App extends Component {
         <UnableToDeclareDialog
           /* This is not a modal we want to be closable */
           isOpened={this.state.showUnableToSendDeclarationModal}
-          onCancel={this.onCloseModal}
         />
       </Layout>
     )

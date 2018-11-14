@@ -260,7 +260,9 @@ export class Actu extends Component {
         window.Raven.captureException(err)
 
         if (err.status === 401 || err.status === 403) {
-          return this.setState({ isLoggedOut: true })
+          this.closeDialog()
+          this.setState({ isLoggedOut: true })
+          return
         }
 
         // Unhandled error

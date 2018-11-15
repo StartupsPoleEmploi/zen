@@ -67,8 +67,6 @@ const StyledList = styled(List)`
 const formFields = [
   'hasWorked',
   'hasTrained',
-  'trainingStartDate',
-  'trainingEndDate',
   'hasInternship',
   'internshipStartDate',
   'internshipEndDate',
@@ -129,8 +127,13 @@ export class Actu extends Component {
   closeDialog = () => this.setState({ isDialogOpened: false })
   openDialog = () => this.setState({ isDialogOpened: true })
 
-  onAnswer = ({ controlName, hasAnsweredYes }) =>
+  onAnswer = ({ controlName, hasAnsweredYes }) => {
     this.setState({ [controlName]: hasAnsweredYes, errorMessage: null })
+
+    if (controlName === 'hasTrained' && hasAnsweredYes) {
+      this.setState({ isLookingForJob: true })
+    }
+  }
 
   onSetDate = ({ controlName, date }) =>
     this.setState({ [controlName]: date, errorMessage: null })
@@ -142,8 +145,6 @@ export class Actu extends Component {
     const {
       hasWorked,
       hasTrained,
-      trainingStartDate,
-      trainingEndDate,
       hasInternship,
       internshipStartDate,
       internshipEndDate,
@@ -173,12 +174,6 @@ export class Actu extends Component {
     ) {
       return this.setState({
         errorMessage: 'Merci de répondre à toutes les questions',
-      })
-    }
-
-    if (hasTrained && (!trainingStartDate || !trainingEndDate)) {
-      return this.setState({
-        errorMessage: "Merci d'indiquer vos dates de formation",
       })
     }
 
@@ -290,24 +285,7 @@ export class Actu extends Component {
                 name="hasTrained"
                 value={this.state.hasTrained}
                 onAnswer={this.onAnswer}
-              >
-                <DatePicker
-                  label="Date de début"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="trainingStartDate"
-                  value={this.state.trainingStartDate}
-                />
-                <DatePicker
-                  label="Date de fin"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="trainingEndDate"
-                  value={this.state.trainingEndDate}
-                />
-              </DeclarationQuestion>
+              />
               <DeclarationQuestion
                 label="Avez-vous été en stage ?"
                 name="hasInternship"
@@ -404,50 +382,52 @@ export class Actu extends Component {
             </StyledList>
           </StyledPaper>
 
-          <StyledPaper>
-            <List>
-              <DeclarationQuestion
-                label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
-                name="isLookingForJob"
-                value={this.state.isLookingForJob}
-                onAnswer={this.onAnswer}
-                withChildrenOnNo
-              >
-                <DatePicker
-                  label="Date de fin de recherche"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="jobSearchEndDate"
-                  value={this.state.jobSearchEndDate}
-                />
-
-                <RadioGroup
-                  row
-                  aria-label="motif d'arrêt de recherche d'emploi"
-                  name="search"
-                  value={this.state.jobSearchStopMotive}
-                  onChange={this.onJobSearchStopMotive}
+          {!this.state.hasTrained && (
+            <StyledPaper>
+              <List>
+                <DeclarationQuestion
+                  label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
+                  name="isLookingForJob"
+                  value={this.state.isLookingForJob}
+                  onAnswer={this.onAnswer}
+                  withChildrenOnNo
                 >
-                  <FormControlLabel
-                    value="work"
-                    control={<Radio color="primary" />}
-                    label="Reprise du travail"
+                  <DatePicker
+                    label="Date de fin de recherche"
+                    onSelectDate={this.onSetDate}
+                    minDate={datePickerMinDate}
+                    maxDate={datePickerMaxDate}
+                    name="jobSearchEndDate"
+                    value={this.state.jobSearchEndDate}
                   />
-                  <FormControlLabel
-                    value="retirement"
-                    control={<Radio color="primary" />}
-                    label="Retraite"
-                  />
-                  <FormControlLabel
-                    value="other"
-                    control={<Radio color="primary" />}
-                    label="Autre"
-                  />
-                </RadioGroup>
-              </DeclarationQuestion>
-            </List>
-          </StyledPaper>
+
+                  <RadioGroup
+                    row
+                    aria-label="motif d'arrêt de recherche d'emploi"
+                    name="search"
+                    value={this.state.jobSearchStopMotive}
+                    onChange={this.onJobSearchStopMotive}
+                  >
+                    <FormControlLabel
+                      value="work"
+                      control={<Radio color="primary" />}
+                      label="Reprise du travail"
+                    />
+                    <FormControlLabel
+                      value="retirement"
+                      control={<Radio color="primary" />}
+                      label="Retraite"
+                    />
+                    <FormControlLabel
+                      value="other"
+                      control={<Radio color="primary" />}
+                      label="Autre"
+                    />
+                  </RadioGroup>
+                </DeclarationQuestion>
+              </List>
+            </StyledPaper>
+          )}
 
           {errorMessage && (
             <ErrorMessage variant="body2">{errorMessage}</ErrorMessage>

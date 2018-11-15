@@ -37,7 +37,6 @@ const DeclarationMonth = require('./models/DeclarationMonth')
 const Declaration = require('./models/Declaration')
 
 const declarationFileFields = [
-  'trainingDocument',
   'internshipDocument',
   'sickLeaveDocument',
   'maternityLeaveDocument',
@@ -67,8 +66,6 @@ const hasDocumentsLeftToSend = (declaration) => {
     ({ documentId }) => !documentId,
   )
   const hasMissingDeclarationDocuments =
-    (declaration.hasTrained &&
-      !get(declaration, 'trainingDocument.isTransmitted')) ||
     (declaration.hasInternship &&
       !get(declaration, 'internshipDocument.isTransmitted')) ||
     (declaration.hasSickLeave &&
@@ -105,11 +102,6 @@ const getDeclarationBaseQuery = () =>
       'employersDocuments.id',
     )
     .leftJoin(
-      'documents as trainingDocuments',
-      'Declarations.trainingDocumentId',
-      'trainingDocuments.id',
-    )
-    .leftJoin(
       'documents as internshipDocuments',
       'Declarations.internshipDocumentId',
       'internshipDocuments.id',
@@ -135,8 +127,7 @@ const getDeclarationBaseQuery = () =>
       'invalidityDocuments.id',
     )
     .where(function() {
-      this.where('trainingDocuments.isTransmitted', false)
-        .orWhere('internshipDocuments.isTransmitted', false)
+      this.where('internshipDocuments.isTransmitted', false)
         .orWhere('sickLeaveDocuments.isTransmitted', false)
         .orWhere('maternityLeaveDocuments.isTransmitted', false)
         .orWhere('retirementDocuments.isTransmitted', false)

@@ -16,6 +16,7 @@ class User extends BaseModel {
         peId: { type: 'string', minLength: 1, maxLength: 100 },
         firstName: { type: 'string', minLength: 1, maxLength: 30 },
         lastName: { type: 'string', minLength: 1, maxLength: 85 },
+        gender: { type: ['string', 'null'] },
         email: { type: ['string', 'null'] },
         peCode: { type: ['string', 'null'] },
         pePass: { type: ['string', 'null'] },

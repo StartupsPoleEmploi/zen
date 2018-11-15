@@ -73,11 +73,6 @@ const OtherDocumentsContainer = styled.div`
 
 const additionalDocuments = [
   {
-    name: 'trainingDocument',
-    fieldToCheck: 'hasTrained',
-    label: 'Attestation de formation',
-  },
-  {
     name: 'sickLeaveDocument',
     fieldToCheck: 'hasSickLeave',
     label: 'Feuille maladie',

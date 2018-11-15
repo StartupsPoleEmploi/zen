@@ -9,21 +9,27 @@ const UnableToDeclareDialog = ({ isOpened }) => (
   <CustomDialog
     content={
       <DialogContentText>
-        Vous ne pouvez accéder à Zen, car nous ne pouvons récupérer
-        d'informations au sujet de votre statut de demandeur d'emploi.
+        Vous ne pouvez accéder à Zen, car un problème nous empêche de récupérer
+        les informations de votre statut de demandeur d'emploi.
         <br />
-        Merci d'effectuer vos opérations sur{' '}
-        <a href="https://www.pole-emploi.fr">Pole-Emploi.fr</a>.
+        Vous pouvez réessayer ultérieurement ou effectuer vos opérations sur{' '}
+        <a
+          href="https://www.pole-emploi.fr"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Pole-Emploi.fr
+        </a>.
       </DialogContentText>
     }
     actions={
       <Button
         variant="raised"
-        href="https://www.pole-emploi.fr"
+        href="/api/login/logout"
         target="_self"
         color="primary"
       >
-        J'accède à Pole-Emploi.fr
+        Je me déconnecte
       </Button>
     }
     title="Nous sommes désolés"
@@ -31,7 +37,6 @@ const UnableToDeclareDialog = ({ isOpened }) => (
     isOpened={isOpened}
     disableEscapeKeyDown
     disableBackdropClick
-    fullScreen
   />
 )
 

@@ -20,6 +20,8 @@ import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
 import DatePicker from '../../components/Generic/DatePicker'
 
+const USER_GENDER_MALE = 'male'
+
 const StyledActu = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,7 +90,10 @@ export class Actu extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
     history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
-    token: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      gender: PropTypes.string,
+      csrfToken: PropTypes.string.isRequired,
+    }),
   }
 
   state = {
@@ -98,18 +103,27 @@ export class Actu extends Component {
     isDialogOpened: false,
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
+
   componentDidMount() {
     superagent
       .get('/api/declarations?active')
       .then((res) => res.body)
       .then((declaration) =>
         this.setState({
+          hasMaternityLeave:
+            this.props.user.gender === USER_GENDER_MALE ? false : undefined,
           // Set active declaration data, prevent declaration data unrelated to this form.
           ...pick(declaration, formFields.concat('id')),
           isLoading: false,
         }),
       )
-      .catch(() => this.setState({ isLoading: false }))
+      .catch(() =>
+        this.setState({
+          isLoading: false,
+          hasMaternityLeave:
+            this.props.user.gender === USER_GENDER_MALE ? false : undefined,
+        }),
+      )
   }
 
   closeDialog = () => this.setState({ isDialogOpened: false })
@@ -219,7 +233,7 @@ export class Actu extends Component {
 
     superagent
       .post('/api/declarations', this.state)
-      .set('CSRF-Token', this.props.token)
+      .set('CSRF-Token', this.props.user.csrfToken)
       .then(() =>
         this.props.history.push(this.state.hasWorked ? '/employers' : '/files'),
       )
@@ -340,21 +354,23 @@ export class Actu extends Component {
                   value={this.state.sickLeaveEndDate}
                 />
               </DeclarationQuestion>
-              <DeclarationQuestion
-                label="Avez-vous été en congé maternité ?"
-                name="hasMaternityLeave"
-                value={this.state.hasMaternityLeave}
-                onAnswer={this.onAnswer}
-              >
-                <DatePicker
-                  label="Date de début"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="maternityLeaveStartDate"
-                  value={this.state.maternityLeaveStartDate}
-                />
-              </DeclarationQuestion>
+              {this.props.user.gender !== USER_GENDER_MALE && (
+                <DeclarationQuestion
+                  label="Avez-vous été en congé maternité ?"
+                  name="hasMaternityLeave"
+                  value={this.state.hasMaternityLeave}
+                  onAnswer={this.onAnswer}
+                >
+                  <DatePicker
+                    label="Date de début"
+                    onSelectDate={this.onSetDate}
+                    minDate={datePickerMinDate}
+                    maxDate={datePickerMaxDate}
+                    name="maternityLeaveStartDate"
+                    value={this.state.maternityLeaveStartDate}
+                  />
+                </DeclarationQuestion>
+              )}
               <DeclarationQuestion
                 label="Percevez-vous une nouvelle pension retraite ?"
                 name="hasRetirement"

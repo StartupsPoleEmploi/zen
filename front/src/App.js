@@ -252,11 +252,7 @@ class App extends Component {
             isLoggedIn={!!user}
             path="/actu"
             render={(props) => (
-              <Actu
-                {...props}
-                activeMonth={activeMonth}
-                token={user.csrfToken}
-              />
+              <Actu {...props} activeMonth={activeMonth} user={user} />
             )}
           />
           <PrivateRoute

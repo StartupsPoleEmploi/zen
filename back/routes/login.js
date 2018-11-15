@@ -109,6 +109,7 @@ router.get('/callback', (req, res, next) => {
         peId: userinfo.sub,
         firstName: startCase(toLower(userinfo.given_name)),
         lastName: startCase(toLower(userinfo.family_name)),
+        gender: userinfo.gender,
         pePostalCode: coordinates.codePostal,
       }
       if (userinfo.email) {
@@ -133,7 +134,7 @@ router.get('/callback', (req, res, next) => {
     })
     .then((user) => {
       req.session.user = {
-        ...pick(user, ['id', 'firstName', 'lastName', 'email']),
+        ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
         isAuthorizedForTests: authorizeAllUsers // For test environments
           ? true
           : !!user.peCode && !!user.pePass && !!user.pePostalCode,

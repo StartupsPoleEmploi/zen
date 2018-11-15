@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import { cloneDeep, isBoolean, isNaN as _isNaN, pick } from 'lodash'
+import { cloneDeep, get, isBoolean, isNaN as _isNaN, pick } from 'lodash'
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
@@ -218,8 +218,8 @@ export class Employers extends Component {
       .catch((err) => {
         if (
           err.status === 400 &&
-          (err.response.body.consistencyErrors.length ||
-            err.response.body.validationErrors.length)
+          (get(err, 'response.body.consistencyErrors.length', 0) ||
+            get(err, 'response.body.validationErrors.length', 0))
         ) {
           // We handle the error inside the modal
           return this.setState({

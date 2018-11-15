@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
-import { isNull, pick } from 'lodash'
+import { get, isNull, pick } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -245,8 +245,8 @@ export class Actu extends Component {
       .catch((err) => {
         if (
           err.status === 400 &&
-          (err.response.body.consistencyErrors.length ||
-            err.response.body.validationErrors.length)
+          (get(err, 'response.body.consistencyErrors.length', 0) ||
+            get(err, 'response.body.validationErrors.length', 0))
         ) {
           // We handle the error inside the modal
           return this.setState({

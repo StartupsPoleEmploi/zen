@@ -22,7 +22,7 @@ const actionsLabels = {
 const statuses = {
   hasTrained: {
     label: 'a été en formation',
-    dateFields: ['trainingStartDate', 'trainingEndDate'],
+    dateFields: [],
   },
   hasInternship: {
     label: 'a été en stage',
@@ -249,7 +249,6 @@ router.get('/:declarationId', (req, res) => {
 
 router.get('/:declarationId/files', (req, res) => {
   const documentKeys = [
-    'trainingDocument',
     'internshipDocument',
     'sickLeaveDocument',
     'maternityLeaveDocument',

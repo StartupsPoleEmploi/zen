@@ -12,8 +12,6 @@ const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
 
 const declarationDateFields = [
-  'trainingStartDate',
-  'trainingEndDate',
   'internshipStartDate',
   'internshipEndDate',
   'sickLeaveStartDate',
@@ -25,7 +23,6 @@ const declarationDateFields = [
 ]
 
 const possibleDocumentTypes = [
-  'trainingDocument',
   'internshipDocument',
   'sickLeaveDocument',
   'maternityLeaveDocument',
@@ -234,7 +231,6 @@ router.post('/finish', (req, res, next) =>
         ({ documentId }) => !documentId,
       )
       const hasMissingDeclarationDocuments =
-        (declaration.hasTrained && !declaration.trainingDocumentId) ||
         (declaration.hasInternship && !declaration.internshipDocumentId) ||
         (declaration.hasSickLeave && !declaration.sickLeaveDocumentId) ||
         (declaration.hasMaternityLeave &&

@@ -62,11 +62,6 @@ describe('Declaration Model', () => {
 
     const fieldsToTest = [
       {
-        baseField: 'training',
-        boolField: 'hasTrained',
-        dateFields: ['trainingStartDate', 'trainingEndDate'],
-      },
-      {
         baseField: 'internship',
         boolField: 'hasInternship',
         dateFields: ['internshipStartDate', 'internshipEndDate'],

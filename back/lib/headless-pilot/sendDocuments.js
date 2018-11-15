@@ -133,12 +133,6 @@ async function sendDocuments(declaration) {
 
   const documentsFormData = [
     {
-      boolField: 'hasTrained',
-      docField: 'trainingDocument',
-      label: 'Formation',
-      selectOptionValue: DOC_SITUATION_SELECT_VALUES.INTERNSHIP_OR_TRAINING,
-    },
-    {
       boolField: 'hasInternship',
       docField: 'internshipDocument',
       label: 'Stage',

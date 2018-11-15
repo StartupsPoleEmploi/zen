@@ -26,8 +26,6 @@ class Declaration extends BaseModel {
   $beforeValidate(jsonSchema, json, opt) {
     const objectToValidate = { ...opt.old, ...json }
     const {
-      trainingStartDate,
-      trainingEndDate,
       internshipStartDate,
       internshipEndDate,
       sickLeaveStartDate,
@@ -54,7 +52,6 @@ class Declaration extends BaseModel {
       })
     }
 
-    validateDates('hasTrained', [trainingStartDate, trainingEndDate])
     validateDates('hasInternship', [internshipStartDate, internshipEndDate])
     validateDates('hasSickLeave', [sickLeaveStartDate, sickLeaveEndDate])
     validateDates('hasMaternityLeave', [maternityLeaveStartDate])
@@ -74,7 +71,7 @@ class Declaration extends BaseModel {
   /*
     This resolves an issue with the way JS / PostgreSQL interact with dates:
     A date ISOString is written 2018-11-07T22:00:00.000Z to represent 2018-11-08, Paris time.
-    So for example, the trainingStartDate field, when requested from the database,
+    So for example, the internshipStartDate field, when requested from the database,
     has for value 2018-11-07T22:00:00.000Z.
     However, when saving again that value (example: upsertGraph, which will save everything,
       not just modified values), the value 2018-11-07T22:00:00.000Z, when given to
@@ -83,8 +80,6 @@ class Declaration extends BaseModel {
   */
   convertUTCDatesToPGDates() {
     const dateFields = [
-      'trainingStartDate',
-      'trainingEndDate',
       'internshipStartDate',
       'internshipEndDate',
       'sickLeaveStartDate',
@@ -123,9 +118,6 @@ class Declaration extends BaseModel {
         monthId: { type: ['integer'] },
         hasWorked: { type: 'boolean' },
         hasTrained: { type: 'boolean' },
-        trainingStartDate: { type: ['string', 'object', 'null'] },
-        trainingEndDate: { type: ['string', 'object', 'null'] },
-        trainingDocumentId: { type: ['integer', 'null'] },
         hasInternship: { type: 'boolean' },
         internshipStartDate: { type: ['string', 'object', 'null'] },
         internshipEndDate: { type: ['string', 'object', 'null'] },
@@ -195,15 +187,6 @@ class Declaration extends BaseModel {
         join: {
           from: 'Declarations.monthId',
           to: 'declaration_months.id',
-        },
-      },
-
-      trainingDocument: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
-        join: {
-          from: 'Declarations.trainingDocumentId',
-          to: 'documents.id',
         },
       },
       internshipDocument: {

@@ -2,10 +2,11 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
+import CheckCircle from '@material-ui/icons/CheckCircle'
 import { cloneDeep, get, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
@@ -13,10 +14,10 @@ import superagent from 'superagent'
 
 import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
-import WorkSummary from '../../components/Actu/WorkSummary'
-import CustomColorButton from '../../components/Generic/CustomColorButton'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+import WorkSummary from '../../components/Actu/WorkSummary'
+import CustomColorButton from '../../components/Generic/CustomColorButton'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -25,12 +26,13 @@ const StyledFiles = styled.div`
   max-width: 88rem;
   width: 100%;
   margin: auto;
-  padding-bottom: 4rem; /* space for position:fixed div */
+  padding-bottom: 2rem; /* space for position:fixed div */
 `
 
 const StyledTitle = styled(Typography)`
   && {
     margin-bottom: 1.5rem;
+    text-align: center;
   }
 `
 
@@ -67,11 +69,23 @@ const OtherDocumentsContainer = styled.div`
   text-align: center;
 
   /* Overflowing background*/
-  padding: 1rem 9999px;
-  margin: 0 -9999px;
-
-  margin-top: 2rem;
+  padding: 1rem;
+  width: 100vw;
 `
+
+const FilesSection = styled.section`
+  max-width: 88rem;
+  width: 100%;
+  margin: auto;
+  padding-bottom: 4rem;
+`
+
+const FilesDoneSection = styled(FilesSection)`
+  display: flex;
+  justify-content: center;
+`
+
+const DECLARATION_SUBMIT_ERROR_NAME = 'DECLARATION'
 
 const additionalDocuments = [
   {
@@ -105,6 +119,20 @@ const getLoadingKey = ({ name, declarationId }) =>
   `$isLoading-${declarationId}-${name}`
 const getErrorKey = ({ name, declarationId }) =>
   `${declarationId}-${name}-Error`
+
+// Get the number of missing files in a declaration
+const getDeclarationMissingFilesNb = (declaration) => {
+  const missingAdditionalDocuments = additionalDocuments
+    .filter((doc) => !!declaration[doc.fieldToCheck])
+    .filter((doc) => !declaration[doc.name])
+
+  return (
+    declaration.employers.reduce(
+      (prev, employer) => prev + (employer.document ? 0 : 1),
+      0,
+    ) + missingAdditionalDocuments.length
+  )
+}
 
 export class Files extends Component {
   static propTypes = {
@@ -264,14 +292,20 @@ export class Files extends Component {
       })
   }
 
-  onSubmit = () => {
+  onSubmit = ({ declaration }) => {
+    const isSendingLastDeclaration =
+      declaration.id === this.state.declarations[0].id
+
     this.setState({ isSendingFiles: true })
 
     return superagent
-      .post('/api/declarations/finish', { id: this.state.declarations[0].id })
+      .post('/api/declarations/finish', { id: declaration.id })
       .set('CSRF-Token', this.props.token)
-      .then((res) => res.body)
-      .then(() => this.props.history.push('/thanks'))
+      .then(() => {
+        this.setState({ isSendingFiles: false })
+        if (isSendingLastDeclaration) return this.props.history.push('/thanks')
+        this.fetchDeclarations()
+      })
       .catch((error) => {
         // Reporting here to get a metric of how much this happens
         window.Raven.captureException(error)
@@ -280,37 +314,28 @@ export class Files extends Component {
           return this.setState({ isLoggedOut: true })
         }
 
-        this.setState({ error, isSendingFiles: false })
+        this.setState({
+          [getErrorKey({
+            declarationId: declaration.id,
+            name: DECLARATION_SUBMIT_ERROR_NAME,
+          })]: error,
+          isSendingFiles: false,
+        })
         this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
   }
 
-  renderDocumentList = ({
-    declaration,
-    omitTransmitted,
-    showMonthHeaders,
-    allowSkipFile,
-  }) => {
-    // if `omitTransmitted` is true, we won't display already transmitted documents.
-    // otherwise, they'll be shown, but won't be replaceable
-    const neededAdditionalDocuments = additionalDocuments
-      .filter((doc) => !!declaration[doc.fieldToCheck])
-      .filter(
-        (doc) =>
-          omitTransmitted ? !get(declaration[doc.name], 'isTransmitted') : true,
-      )
+  renderDocumentList = ({ declaration, isOldMonth }) => {
+    const neededAdditionalDocuments = additionalDocuments.filter(
+      (doc) => !!declaration[doc.fieldToCheck],
+    )
 
     const documentNodes = sortBy(declaration.employers, 'id')
-      .filter(
-        (employer) =>
-          omitTransmitted ? !get(employer.document, 'isTransmitted') : true,
-      )
       .map((employer) =>
         this.renderEmployerRow({
           employer,
           declaration,
-          omitTransmitted,
-          allowSkipFile,
+          allowSkipFile: isOldMonth,
         }),
       )
       .concat(
@@ -319,8 +344,7 @@ export class Files extends Component {
             label: neededDocument.label,
             name: neededDocument.name,
             declaration,
-            omitTransmitted,
-            allowSkipFile,
+            allowSkipFile: isOldMonth,
           }),
         ),
       )
@@ -328,31 +352,20 @@ export class Files extends Component {
     // do not display a section if there are no documents to display.
     if (documentNodes.length === 0) return null
 
-    return (
-      <Fragment>
-        {showMonthHeaders && (
-          <Typography variant="title">
-            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
-          </Typography>
-        )}
-        <StyledList>{documentNodes}</StyledList>
-      </Fragment>
-    )
+    return <StyledList>{documentNodes}</StyledList>
   }
 
   renderOlderDocumentsList = (declaration) =>
     this.renderDocumentList({
       declaration,
-      omitTransmitted: true,
-      showMonthHeaders: true,
+      isOldMonth: true,
       allowSkipFile: true,
     })
 
   renderCurrentDocumentsList = (declaration) =>
     this.renderDocumentList({
       declaration,
-      omitTransmitted: false,
-      showMonthHeaders: false,
+      isOldMonth: false,
       allowSkipFile: false,
     })
 
@@ -422,8 +435,95 @@ export class Files extends Component {
     />
   )
 
+  renderOldSection = (declaration) => this.renderSection(declaration, true)
+
+  renderSection = (declaration, isOldMonth) => {
+    const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
+
+    const error = this.state[
+      getErrorKey({
+        declarationId: declaration.id,
+        name: DECLARATION_SUBMIT_ERROR_NAME,
+      })
+    ]
+
+    const formattedMonth = moment(declaration.declarationMonth.month).format(
+      'MMMM YYYY',
+    )
+
+    if (declaration.isFinished) {
+      return (
+        <FilesDoneSection key={declaration.id}>
+          <Typography variant="body2">
+            Fichiers de {formattedMonth} transmis
+          </Typography>
+          {' '}
+          <CheckCircle />
+        </FilesDoneSection>
+      )
+    }
+
+    return (
+      <FilesSection key={declaration.id}>
+        <StyledTitle variant="title">
+          Envoi des documents du mois de {formattedMonth}
+        </StyledTitle>
+        <StyledInfo>
+          <Typography
+            variant="body2"
+            style={{
+              color: declarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
+            }}
+          >
+            {declarationRemainingDocsNb > 0
+              ? `Reste ${declarationRemainingDocsNb} documents à fournir`
+              : 'Tous vos documents sont prêts à être envoyés'}
+          </Typography>
+        </StyledInfo>
+        {isOldMonth
+          ? this.renderOlderDocumentsList(declaration)
+          : this.renderCurrentDocumentsList(declaration)}
+        <StyledInfo>
+          <Typography variant="body2">
+            Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
+            seront tous là.
+            <br />
+            Cela permettra une meilleure gestion de votre dossier.
+          </Typography>
+        </StyledInfo>
+        {error && (
+          <ErrorMessage variant="body2">
+            Nous sommes désolés, une erreur s'est produite lors de l'envoi des
+            documents. Merci de bien vouloir réessayer.
+            <br />
+            Si le problème se reproduit, merci de bien vouloir contacter
+            l'équipe Zen.
+          </ErrorMessage>
+        )}
+        <ButtonsContainer>
+          {!isOldMonth && (
+            <CustomColorButton component={Link} to="/thanks?later">
+              Enregistrer et finir plus tard
+            </CustomColorButton>
+          )}
+          <Button
+            color="primary"
+            variant="raised"
+            disabled={declarationRemainingDocsNb > 0}
+            onClick={() => this.onSubmit({ declaration })}
+          >
+            Envoyer{' '}
+            {isOldMonth
+              ? `les documents de ${formattedMonth}`
+              : 'à Pôle Emploi'}
+          </Button>
+        </ButtonsContainer>
+      </FilesSection>
+    )
+  }
+
   render() {
-    const { error, isLoading } = this.state
+    const { isLoading } = this.state
 
     if (isLoading) {
       return (
@@ -443,27 +543,9 @@ export class Files extends Component {
 
     const lastDeclaration = declarations[0]
 
-    const remainingDocumentsPerDeclaration = declarations.map((declaration) => {
-      const neededAdditionalDocuments = additionalDocuments.filter(
-        (doc) => !!declaration[doc.fieldToCheck],
-      )
-      const missingAdditionalDocuments = neededAdditionalDocuments.filter(
-        (doc) => !declaration[doc.name],
-      )
-
-      return (
-        declaration.employers.reduce(
-          // TODO does this work if there is an upload during the same session?
-          (prev, employer) => prev + (employer.document ? 0 : 1),
-          0,
-        ) + missingAdditionalDocuments.length
-      )
-    })
-
-    const lastDeclarationRemainingDocsNb = remainingDocumentsPerDeclaration[0]
-    const otherDeclarationsRemainingDocsNb = remainingDocumentsPerDeclaration
+    const areUnfinishedDeclarations = declarations
       .slice(1)
-      .reduce((prev, nb) => prev + nb, 0)
+      .some(({ isFinished }) => !isFinished)
 
     if (!lastDeclaration) {
       // Users have come to this page without any old documents to validate
@@ -476,8 +558,8 @@ export class Files extends Component {
       )
     }
 
-    if (lastDeclaration.isFinished && otherDeclarationsRemainingDocsNb === 0) {
-      // Users have already validated the lastDeclaration and have
+    if (lastDeclaration.isFinished && !areUnfinishedDeclarations) {
+      // Users have already validated the last declaration and have
       // finished uploading old documents
       return <Redirect to="/thanks" />
     }
@@ -490,76 +572,19 @@ export class Files extends Component {
             {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
           </StyledTitle>
         ) : (
-          <Fragment>
-            <StyledTitle variant="title">
-              Envoi des documents du mois de{' '}
-              {moment(lastDeclaration.declarationMonth.month).format(
-                'MMMM YYYY',
-              )}
-            </StyledTitle>
-            <StyledInfo>
-              <Typography
-                variant="body2"
-                style={{
-                  color:
-                    lastDeclarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
-                }}
-              >
-                {lastDeclarationRemainingDocsNb > 0
-                  ? `Reste ${lastDeclarationRemainingDocsNb} documents à fournir`
-                  : 'Tous vos documents sont prêts à être envoyés'}
-              </Typography>
-            </StyledInfo>
-            {this.renderCurrentDocumentsList(lastDeclaration)}
-            <StyledInfo>
-              <Typography variant="body2">
-                Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
-                seront tous là.
-                <br />
-                Cela permettra une meilleure gestion de votre dossier.
-              </Typography>
-            </StyledInfo>
-            {error && (
-              <ErrorMessage variant="body2">
-                Nous sommes désolés, une erreur s'est produite lors de l'envoi
-                des documents. Merci de bien vouloir réessayer.
-                <br />
-                Si le problème se reproduit, merci de bien vouloir contacter
-                l'équipe Zen.
-              </ErrorMessage>
-            )}
-            <ButtonsContainer>
-              <CustomColorButton component={Link} to="/thanks?later">
-                Enregistrer et finir plus tard
-              </CustomColorButton>
-              <Button
-                color="primary"
-                variant="raised"
-                disabled={lastDeclarationRemainingDocsNb > 0}
-                onClick={this.onSubmit}
-              >
-                Envoyer à Pôle Emploi
-              </Button>
-            </ButtonsContainer>
-          </Fragment>
+          this.renderSection(lastDeclaration)
         )}
-        {otherDeclarationsRemainingDocsNb > 0 && (
+        {areUnfinishedDeclarations > 0 && (
           <OtherDocumentsContainer>
             <Typography paragraph>
-              {otherDeclarationsRemainingDocsNb} documents de précédents mois
-              n'ont pas encore été envoyés.
+              Des documents de précédents mois n'ont pas encore été transmis
             </Typography>
             {!this.state.showMissingDocs ? (
               <Button color="primary" onClick={this.displayMissingDocs}>
                 Afficher les documents manquants
               </Button>
             ) : (
-              <Fragment>
-                <Typography paragraph>
-                  Ces documents seront transmis dès réception.
-                </Typography>
-                {declarations.slice(1).map(this.renderOlderDocumentsList)}
-              </Fragment>
+              declarations.slice(1).map(this.renderOldSection)
             )}
           </OtherDocumentsContainer>
         )}

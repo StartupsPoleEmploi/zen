@@ -47,10 +47,7 @@ const tokenConfig = {
 
 router.get('/', (req, res, next) => {
   req.session.regenerate((err) => {
-    if (err) {
-      Raven.captureException(err)
-      return next(err)
-    }
+    if (err) return next(err)
 
     const state = crypto.randomBytes(64).toString('hex')
     const nonce = crypto.randomBytes(64).toString('hex')

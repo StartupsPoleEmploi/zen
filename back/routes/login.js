@@ -45,20 +45,27 @@ const tokenConfig = {
   scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees`,
 }
 
-router.get('/', (req, res) => {
-  const state = crypto.randomBytes(64).toString('hex')
-  const nonce = crypto.randomBytes(64).toString('hex')
+router.get('/', (req, res, next) => {
+  req.session.regenerate((err) => {
+    if (err) {
+      Raven.captureException(err)
+      return next(err)
+    }
 
-  req.session.state = state
-  req.session.nonce = nonce
+    const state = crypto.randomBytes(64).toString('hex')
+    const nonce = crypto.randomBytes(64).toString('hex')
 
-  const authorizationUri = oauth2.authorizationCode.authorizeURL({
-    ...tokenConfig,
-    nonce,
-    state,
+    req.session.state = state
+    req.session.nonce = nonce
+
+    const authorizationUri = oauth2.authorizationCode.authorizeURL({
+      ...tokenConfig,
+      nonce,
+      state,
+    })
+
+    res.redirect(authorizationUri)
   })
-
-  res.redirect(authorizationUri)
 })
 
 router.get('/callback', (req, res, next) => {

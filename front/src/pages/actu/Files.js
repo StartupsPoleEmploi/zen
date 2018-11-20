@@ -26,7 +26,7 @@ const StyledFiles = styled.div`
   max-width: 88rem;
   width: 100%;
   margin: auto;
-  padding-bottom: 2rem; /* space for position:fixed div */
+  padding-bottom: 2rem;
 `
 
 const StyledTitle = styled(Typography)`
@@ -483,6 +483,7 @@ export class Files extends Component {
         {isOldMonth
           ? this.renderOlderDocumentsList(declaration)
           : this.renderCurrentDocumentsList(declaration)}
+        <WorkSummary employers={declaration.employers} />
         <StyledInfo>
           <Typography variant="body2">
             Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
@@ -588,7 +589,6 @@ export class Files extends Component {
             )}
           </OtherDocumentsContainer>
         )}
-        <WorkSummary employers={lastDeclaration.employers} />
         <FilesDialog isOpened={this.state.isSendingFiles} />
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledFiles>

@@ -342,6 +342,8 @@ export class Employers extends Component {
             <LineDiv />
           </AddEmployersButtonContainer>
 
+          <WorkSummary employers={employers} />
+
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonsContainer>
@@ -352,8 +354,6 @@ export class Employers extends Component {
               Envoyer mon actualisation
             </Button>
           </ButtonsContainer>
-
-          <WorkSummary employers={employers} />
         </Form>
         <DeclarationDialog
           isLoading={this.state.isValidating}

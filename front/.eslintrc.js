@@ -28,5 +28,13 @@ module.exports = {
     'react/require-default-props': 0,
     'react/forbid-prop-types': 0, // Instead of activating this rule, flow or TS
     'react/sort-comp': 0,
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['to'],
+        aspects: ['noHref', 'invalidHref', 'preferButton'],
+      },
+    ],
   },
 }

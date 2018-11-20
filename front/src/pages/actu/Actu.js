@@ -109,7 +109,7 @@ export class Actu extends Component {
       .then((declaration) =>
         this.setState({
           hasMaternityLeave:
-            this.props.user.gender === USER_GENDER_MALE ? false : undefined,
+            this.props.user.gender === USER_GENDER_MALE ? false : null,
           // Set active declaration data, prevent declaration data unrelated to this form.
           ...pick(declaration, formFields.concat('id')),
           isLoading: false,
@@ -119,7 +119,7 @@ export class Actu extends Component {
         this.setState({
           isLoading: false,
           hasMaternityLeave:
-            this.props.user.gender === USER_GENDER_MALE ? false : undefined,
+            this.props.user.gender === USER_GENDER_MALE ? false : null,
         }),
       )
   }

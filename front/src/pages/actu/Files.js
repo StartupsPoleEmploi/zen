@@ -3,7 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import CheckCircle from '@material-ui/icons/CheckCircle'
-import { cloneDeep, get, sortBy } from 'lodash'
+import { cloneDeep, get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -18,6 +18,7 @@ import FilesDialog from '../../components/Actu/FilesDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
+import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -149,6 +150,8 @@ export class Files extends Component {
     showMissingDocs: false,
     declarations: [],
     isSendingFiles: false,
+    showSkipConfirmation: false,
+    skipFileCallback: noop,
   }
 
   componentDidMount() {
@@ -171,6 +174,8 @@ export class Files extends Component {
   displayMissingDocs = () => this.setState({ showMissingDocs: true })
 
   submitEmployerFile = ({ declarationId, file, employerId, skip }) => {
+    this.closeSkipModal()
+
     const updateEmployer = ({
       declarationId: dId,
       employerId: eId,
@@ -234,6 +239,8 @@ export class Files extends Component {
   }
 
   submitAdditionalFile = ({ declarationId, file, name, skip }) => {
+    this.closeSkipModal()
+
     const errorKey = getErrorKey({
       name,
       declarationId,
@@ -291,6 +298,19 @@ export class Files extends Component {
         })
       })
   }
+
+  askToSkipFile = (onConfirm) => {
+    this.setState({
+      showSkipConfirmation: true,
+      skipFileCallback: onConfirm,
+    })
+  }
+
+  closeSkipModal = () =>
+    this.setState({
+      showSkipConfirmation: false,
+      skipFileCallback: noop,
+    })
 
   onSubmit = ({ declaration }) => {
     const isSendingLastDeclaration =
@@ -400,11 +420,13 @@ export class Files extends Component {
         })
       }
       skipFile={() =>
-        this.submitAdditionalFile({
-          skip: true,
-          name,
-          declarationId: declaration.id,
-        })
+        this.askToSkipFile(() =>
+          this.submitAdditionalFile({
+            skip: true,
+            name,
+            declarationId: declaration.id,
+          }),
+        )
       }
       allowSkipFile={allowSkipFile}
       isTransmitted={get(declaration[name], 'isTransmitted')}
@@ -423,11 +445,13 @@ export class Files extends Component {
         })
       }
       skipFile={() =>
-        this.submitEmployerFile({
-          declarationId: declaration.id,
-          skip: true,
-          employerId: employer.id,
-        })
+        this.askToSkipFile(() =>
+          this.submitEmployerFile({
+            declarationId: declaration.id,
+            skip: true,
+            employerId: employer.id,
+          }),
+        )
       }
       allowSkipFile={allowSkipFile}
       fileExistsOnServer={!!employer.document}
@@ -591,6 +615,11 @@ export class Files extends Component {
         )}
         <FilesDialog isOpened={this.state.isSendingFiles} />
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
+        <FileTransmittedToPE
+          isOpened={this.state.showSkipConfirmation}
+          onCancel={this.closeSkipModal}
+          onConfirm={this.state.skipFileCallback}
+        />
       </StyledFiles>
     )
   }

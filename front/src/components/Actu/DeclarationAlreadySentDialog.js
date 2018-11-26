@@ -1,42 +1,14 @@
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogActions from '@material-ui/core/DialogActions'
 import PropTypes from 'prop-types'
-import React from 'react'
-import styled from 'styled-components'
+import React, { Fragment } from 'react'
 
 import CustomColorButton from '../Generic/CustomColorButton'
-
-const StyledDialogContent = styled(DialogContent)`
-  && {
-    text-align: center;
-  }
-`
-
-const StyledDialogTitle = styled(DialogTitle)`
-  text-align: center;
-`
-
-const StyledDialogActions = styled(DialogActions)`
-  && {
-    justify-content: space-around;
-    padding-bottom: 2rem;
-  }
-`
+import CustomDialog from '../Generic/CustomDialog'
 
 const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
-  <Dialog
-    open={isOpened}
-    onClose={onCancel}
-    aria-labelledby="DeclarationAlreadySentDialogContentText"
-  >
-    <StyledDialogTitle>
-      Vous avez déjà envoyé votre actualisation
-    </StyledDialogTitle>
-    <StyledDialogContent>
+  <CustomDialog
+    content={
       <DialogContentText id="DeclarationAlreadySentDialogContentText">
         Vous avez déjà envoyé votre actualisation ce mois-ci en passant
         directement par{' '}
@@ -49,19 +21,25 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
         Vous pouvez cependant accéder à l'interface d'envoi de documents s'il
         vous en reste d'anciens à envoyer.
       </DialogContentText>
-    </StyledDialogContent>
-    <StyledDialogActions>
-      <CustomColorButton onClick={onCancel}>Fermer</CustomColorButton>
-      <Button
-        variant="raised"
-        href="https://www.pole-emploi.fr"
-        target="_self"
-        color="primary"
-      >
-        J'accède à Pole-Emploi.fr
-      </Button>
-    </StyledDialogActions>
-  </Dialog>
+    }
+    title="Vous avez déjà envoyé votre actualisation"
+    titleId="DeclarationAlreadySentDialogContentText"
+    isOpened={isOpened}
+    onCancel={onCancel}
+    actions={
+      <Fragment>
+        <CustomColorButton onClick={onCancel}>Fermer</CustomColorButton>
+        <Button
+          variant="raised"
+          href="https://www.pole-emploi.fr"
+          target="_self"
+          color="primary"
+        >
+          J'accède à Pole-Emploi.fr
+        </Button>
+      </Fragment>
+    }
+  />
 )
 
 DeclarationAlreadySentDialog.propTypes = {

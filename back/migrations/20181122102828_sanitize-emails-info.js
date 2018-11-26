@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  knex
+  return knex
     .raw(
       'UPDATE "Declarations" SET "isEmailSent"=true WHERE "hasFinishedDeclaringEmployers"=true',
     )

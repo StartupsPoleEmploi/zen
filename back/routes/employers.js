@@ -2,6 +2,8 @@ const express = require('express')
 
 const router = express.Router()
 const { transaction } = require('objection')
+const winston = require('winston')
+const { pick } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
@@ -104,7 +106,18 @@ router.post('/', requireActiveMonth, (req, res, next) => {
       })
         .then(({ body }) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            // the service will answer with HTTP 200 for a bunch of errors, handling this right away
+            // the service will answer with HTTP 200 for a bunch of errors
+            // So they need to be handled here
+            winston.warn(
+              `Declaration transmission error for user ${req.session.user.id}`,
+              pick(body, [
+                'statut',
+                'statutActu',
+                'message',
+                'erreursIncoherence',
+                'erreursValidation',
+              ]),
+            )
 
             declaration.hasFinishedDeclaringEmployers = false
 
@@ -125,6 +138,8 @@ router.post('/', requireActiveMonth, (req, res, next) => {
                   }),
               )
           }
+
+          winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
 
           return transaction(Declaration.knex(), (trx) =>
             Promise.all([

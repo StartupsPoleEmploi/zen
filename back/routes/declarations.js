@@ -1,9 +1,10 @@
 const express = require('express')
 
 const router = express.Router()
-const { get, reduce, omit } = require('lodash')
+const { get, pick, reduce, omit } = require('lodash')
 const { transaction } = require('objection')
 const { format } = require('date-fns')
+const winston = require('winston')
 
 const { DECLARATION_STATUSES } = require('../constants')
 const { upload, uploadDestination } = require('../lib/upload')
@@ -169,6 +170,16 @@ router.post('/', requireActiveMonth, (req, res, next) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
             // the service will answer with HTTP 200 for a bunch of errors
             // So they need to be handled here
+            winston.warn(
+              `Declaration transmission error for user ${req.session.user.id}`,
+              pick(body, [
+                'statut',
+                'statutActu',
+                'message',
+                'erreursIncoherence',
+                'erreursValidation',
+              ]),
+            )
 
             // in case there was no docs to transmit, don't save the declaration as finished
             // so the user can send it again
@@ -186,6 +197,8 @@ router.post('/', requireActiveMonth, (req, res, next) => {
                 }),
             )
           }
+
+          winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
 
           return saveAndLogDeclaration().then(([dbDeclaration]) =>
             res.json(dbDeclaration),
@@ -314,8 +327,10 @@ router.post('/finish', (req, res, next) => {
         declaration,
         accessToken: req.session.userSecret.accessToken,
       })
-        .then(() =>
-          transaction(Declaration.knex(), (trx) =>
+        .then(() => {
+          winston.info(`Files sent for declaration ${declaration.id}`)
+
+          return transaction(Declaration.knex(), (trx) =>
             Promise.all([
               declaration
                 .$query(trx)
@@ -327,8 +342,8 @@ router.post('/finish', (req, res, next) => {
                 metadata: JSON.stringify({ declarationId: declaration.id }),
               }),
             ]),
-          ),
-        )
+          )
+        })
         .then(([savedDeclaration]) => res.json(savedDeclaration))
     })
     .catch(next)

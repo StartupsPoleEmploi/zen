@@ -97,7 +97,6 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     declarationData.hasFinishedDeclaringEmployers = true
     if (
       ![
-        'hasTrained',
         'hasInternship',
         'hasSickLeave',
         'hasMaternityLeave',

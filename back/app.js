@@ -9,6 +9,8 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
 const csurf = require('csurf')
+const winston = require('winston')
+const slackWinston = require('slack-winston').Slack
 
 const { version } = require('./package.json')
 
@@ -26,6 +28,15 @@ const knex = Knex({
   connection: process.env.DATABASE_URL,
 })
 Model.knex(knex)
+
+winston.add(slackWinston, {
+  // Send this file's logs to Slack
+  webhook_url: process.env.SLACK_WEBHOOK_SU_ZEN_TECH,
+  message: `*{{level}}*: {{message}}\n\n{{meta}}`,
+  level: 'info',
+})
+
+winston.info('Starting node app')
 
 const app = express()
 
@@ -84,11 +95,12 @@ app.use('/employers', employersRouter)
 
 if (sentryUrl) {
   app.use(Raven.errorHandler())
-  app.use((err, req, res) =>
+  app.use((err, req, res) => {
+    winston.error(err)
     res.status(500).json({
       sentry: res.sentry,
-    }),
-  )
+    })
+  })
 }
 
 module.exports = app

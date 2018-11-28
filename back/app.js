@@ -72,6 +72,11 @@ app.use(
 )
 app.use(csurf())
 
+app.use((req, res, next) => {
+  res.header('Cache-Control', 'no-cache,no-store')
+  next()
+})
+
 app.use('/ping', (req, res) => res.send('pong'))
 
 app.use((req, res, next) => {

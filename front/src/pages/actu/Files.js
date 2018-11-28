@@ -224,7 +224,7 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-              ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc)'
+              ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
               : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
@@ -286,7 +286,7 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-              ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc)'
+              ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
               : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)

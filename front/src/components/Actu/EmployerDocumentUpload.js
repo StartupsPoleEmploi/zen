@@ -127,7 +127,7 @@ export class EmployerDocumentUpload extends Component {
 
     const hiddenInput = (
       <input
-        accept=".png, .jpg, .jpeg, .pdf, .doc"
+        accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
         style={{ display: 'none' }}
         type="file"
         onChange={this.submitFile}

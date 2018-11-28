@@ -19,7 +19,7 @@ const upload = multer({
   }),
   fileFilter(req, file, callback) {
     const extensions = /jpeg|jpg|png|pdf|doc/i
-    const mimetypes = /jpeg|jpg|png|pdf|application\/msword/i
+    const mimetypes = /jpeg|jpg|png|pdf|application\/msword|application\/vnd.openxmlformats-officedocument.wordprocessingml.document/i
     const mimetype = mimetypes.test(file.mimetype)
     const extname = extensions.test(path.extname(file.originalname))
 

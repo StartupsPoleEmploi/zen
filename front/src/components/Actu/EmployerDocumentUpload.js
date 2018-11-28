@@ -152,16 +152,15 @@ export class EmployerDocumentUpload extends Component {
                 {error
                   ? formattedError
                   : fileExistsOnServer && (
-                      <a
+                      <Button
+                        variant="outlined"
                         href={`/api/employers/files?employerId=${id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Button variant="outlined">
-                          <EyeIcon />
-                          Voir {documentToGive}
-                        </Button>
-                      </a>
+                        <EyeIcon />
+                        Voir {documentToGive}
+                      </Button>
                     )}
                 {!fileExistsOnServer && (
                   <StyledFormLabel>

@@ -229,9 +229,10 @@ router.get('/files', (req, res, next) => {
         return res.status(404).json('No such file')
       }
 
-      res.sendFile(declaration[req.query.name].file, {
-        root: uploadDestination,
-      })
+      return res.download(
+        uploadDestination + declaration[req.query.name].file,
+        declaration[req.query.name].file,
+      )
     })
     .catch(next)
 })

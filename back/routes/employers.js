@@ -189,11 +189,7 @@ router.get('/files', (req, res, next) => {
       if (!employer) return res.status(404).json('No such employer')
       if (!employer.document || !employer.document.id)
         return res.status(404).json('No such file')
-
-      return res.download(
-        uploadDestination + employer.document.file,
-        employer.document.file,
-      )
+      res.sendFile(employer.document.file, { root: uploadDestination })
     })
     .catch(next)
 })

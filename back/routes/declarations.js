@@ -138,9 +138,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
               action: ActivityLog.actions.VALIDATE_DECLARATION,
               isModification: !!declaration,
             }),
-            declaration &&
-              !declaration.hasWorked &&
-              declarationData.hasWorked &&
+            !declarationData.hasWorked &&
               ActivityLog.query(trx).insert({
                 userId: req.session.user.id,
                 action: ActivityLog.actions.VALIDATE_EMPLOYERS,

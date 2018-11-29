@@ -52,7 +52,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(400).json('No data')
 
-  Declaration.query()
+  return Declaration.query()
     .eager('employers')
     .findOne({
       userId: req.session.user.id,

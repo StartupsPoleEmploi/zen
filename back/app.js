@@ -100,7 +100,9 @@ app.use('/employers', employersRouter)
 
 if (sentryUrl) {
   app.use(Raven.errorHandler())
-  app.use((err, req, res) => {
+  // an error middleware needs 4 arguments
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, next) => {
     winston.error(err)
     res.status(500).json({
       sentry: res.sentry,

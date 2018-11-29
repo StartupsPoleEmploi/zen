@@ -102,7 +102,7 @@ const validateField = ({ name, value }) => {
   }
   if (name === 'workHours' || name === 'salary') {
     const intValue = parseInt(value, 10)
-    isValid = !!value && !_isNaN(intValue)
+    isValid = (value === 0 || !!value) && !_isNaN(intValue)
     sanitizedValue = isValid ? intValue.toString() : value.trim()
     error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {

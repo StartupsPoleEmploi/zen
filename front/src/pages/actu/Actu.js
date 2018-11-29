@@ -152,8 +152,8 @@ export class Actu extends Component {
   onAnswer = ({ controlName, hasAnsweredYes }) => {
     this.setState({ [controlName]: hasAnsweredYes, errorMessage: null })
 
-    if (controlName === 'hasTrained' && hasAnsweredYes) {
-      this.setState({ isLookingForJob: true })
+    if (controlName === 'hasTrained') {
+      this.setState({ isLookingForJob: hasAnsweredYes ? true : null })
     }
   }
 

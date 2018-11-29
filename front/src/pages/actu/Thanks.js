@@ -9,10 +9,6 @@ import moneyBank from '../../images/money-bank.svg'
 
 const StyledThanks = styled.div`
   margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   text-align: center;
   max-width: 48rem;
 `

@@ -152,6 +152,7 @@ export class Files extends Component {
     isSendingFiles: false,
     showSkipConfirmation: false,
     skipFileCallback: noop,
+    isLoggedOut: false,
   }
 
   componentDidMount() {

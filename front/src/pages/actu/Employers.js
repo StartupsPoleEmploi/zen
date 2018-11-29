@@ -102,7 +102,7 @@ const validateField = ({ name, value }) => {
   }
   if (name === 'workHours' || name === 'salary') {
     const intValue = parseInt(value, 10)
-    isValid = !!value && !_isNaN(intValue)
+    isValid = (value === 0 || !!value) && !_isNaN(intValue)
     sanitizedValue = isValid ? intValue.toString() : value.trim()
     error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {
@@ -196,12 +196,15 @@ export class Employers extends Component {
     }))
 
   onSave = () => {
-    superagent
-      .post('/api/employers', {
-        employers: getEmployersMapFromFormData(this.state.employers),
-      })
-      .set('CSRF-Token', this.props.token)
-      .then(() => this.props.history.push('/thanks?later'))
+    const isValid = this.checkFormValidity()
+    if (isValid) {
+      superagent
+        .post('/api/employers', {
+          employers: getEmployersMapFromFormData(this.state.employers),
+        })
+        .set('CSRF-Token', this.props.token)
+        .then(() => this.props.history.push('/thanks?later'))
+    }
   }
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
@@ -248,11 +251,12 @@ export class Employers extends Component {
       })
   }
 
-  openDialog = () => {
+  checkFormValidity = () => {
     if (this.state.employers.length === 0) {
-      return this.setState({
+      this.setState({
         error: `Merci d'entrer les informations sur vos employeurs`,
       })
+      return false
     }
 
     let isFormValid = true
@@ -276,7 +280,7 @@ export class Employers extends Component {
     )
 
     if (!isFormValid) {
-      return this.setState({
+      this.setState({
         employers: employersFormData,
         error: isFormValid
           ? null
@@ -284,7 +288,14 @@ export class Employers extends Component {
       })
     }
 
-    this.setState({ isDialogOpened: true })
+    return isFormValid
+  }
+
+  openDialog = () => {
+    const isValid = this.checkFormValidity()
+    if (isValid) {
+      this.setState({ isDialogOpened: true })
+    }
   }
 
   closeDialog = () => {

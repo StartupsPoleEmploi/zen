@@ -115,14 +115,17 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     }
   }
 
-  const declarationFetchPromise = req.body.id
-    ? Declaration.query().findOne({
-        id: req.body.id,
-        userId: req.session.user.id,
-      })
-    : Promise.resolve()
-
-  return declarationFetchPromise
+  return Declaration.query()
+    .findOne({
+      // if req.body.id is defined, this finds the specified declaration
+      // otherwise, it still looks for an active declaration for this user this month.
+      // (used in case id is not sent, to avoid creating duplicate declarations
+      // for example when validating inconsistencies for users who haven't worked)
+      id: req.body.id,
+      userId: req.session.user.id,
+      monthId: req.activeMonth.id,
+    })
+    .skipUndefined()
     .then((declaration) => {
       const saveDeclaration = (trx) =>
         declaration

@@ -1,7 +1,14 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import { cloneDeep, get, isBoolean, isNaN as _isNaN, pick } from 'lodash'
+import {
+  cloneDeep,
+  get,
+  isBoolean,
+  isObject,
+  isNaN as _isNaN,
+  pick,
+} from 'lodash'
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
@@ -21,7 +28,7 @@ const SALARY = 'salary'
 const MIN_SALARY = 1
 const MIN_WORK_HOURS = 1
 const MAX_SALARY = 99999
-const MAX_WORK_HOURS = 1000
+const MAX_WORK_HOURS = 999
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -135,6 +142,18 @@ const validateField = ({ name, value }) => {
   }
 
   return { error, sanitizedValue }
+}
+
+// TODO refactor this, repeated almost exactly in WorkSummary
+const calculateTotal = (employers, field) => {
+  const total = employers.reduce((prev, employer) => {
+    const number = parseInt(
+      isObject(employer[field]) ? employer[field].value : employer[field],
+      10,
+    )
+    return number + prev
+  }, 0)
+  return total
 }
 
 // TODO the whole logic of this component needs to be sanitized
@@ -303,12 +322,26 @@ export class Employers extends Component {
       }),
     )
 
+    let error = `Merci de corriger les erreurs du formulaire. `
+
+    if (isFormValid) {
+      const workHoursTotal = calculateTotal(employersFormData, WORK_HOURS)
+      const salaryTotal = calculateTotal(employersFormData, SALARY)
+
+      if (workHoursTotal > MAX_WORK_HOURS) {
+        error += `Vous ne pouvez pas déclarer plus de ${MAX_WORK_HOURS}h totales de travail. `
+        isFormValid = false
+      }
+      if (salaryTotal > MAX_SALARY) {
+        error += `Vous ne pouvez pas déclarer plus de ${MAX_SALARY}€ total de salaire. `
+        isFormValid = false
+      }
+    }
+
     if (!isFormValid) {
       this.setState({
         employers: employersFormData,
-        error: isFormValid
-          ? null
-          : `Merci de corriger les erreurs du formulaire`,
+        error: isFormValid ? null : error,
       })
     }
 

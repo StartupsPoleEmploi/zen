@@ -197,12 +197,22 @@ export class Actu extends Component {
       return 'Merci de répondre à toutes les questions'
     }
 
-    if (hasInternship && (!internshipStartDate || !internshipEndDate)) {
-      return `Merci d'indiquer vos dates de stage`
+    if (hasInternship) {
+      if (!internshipStartDate || !internshipEndDate) {
+        return `Merci d'indiquer vos dates de stage`
+      }
+      if (moment(internshipEndDate).isBefore(moment(internshipStartDate))) {
+        return 'Merci de corriger vos dates de stage (le début du stage ne peut être après sa fin)'
+      }
     }
 
-    if (hasSickLeave && (!sickLeaveStartDate || !sickLeaveEndDate)) {
-      return `Merci d'indiquer vos dates d'arrêt maladie`
+    if (hasSickLeave) {
+      if (!sickLeaveStartDate || !sickLeaveEndDate) {
+        return `Merci d'indiquer vos dates d'arrêt maladie`
+      }
+      if (moment(sickLeaveEndDate).isBefore(moment(sickLeaveStartDate))) {
+        return `Merci de corriger d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
+      }
     }
 
     if (hasMaternityLeave && !maternityLeaveStartDate) {

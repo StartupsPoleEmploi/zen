@@ -15,6 +15,14 @@ import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
+// Note : these values are duplicated in WorkSummary
+const WORK_HOURS = 'workHours'
+const SALARY = 'salary'
+const MIN_SALARY = 1
+const MIN_WORK_HOURS = 1
+const MAX_SALARY = 99999
+const MAX_WORK_HOURS = 1000
+
 const StyledEmployers = styled.div`
   display: flex;
   flex-direction: column;
@@ -100,11 +108,27 @@ const validateField = ({ name, value }) => {
   if (name === 'employerName') {
     sanitizedValue = value.trim()
   }
-  if (name === 'workHours' || name === 'salary') {
+  if (name === WORK_HOURS || name === SALARY) {
     const intValue = parseInt(value, 10)
-    isValid = (value === 0 || !!value) && !_isNaN(intValue)
+    if (!_isNaN(intValue)) {
+      if (
+        name === WORK_HOURS &&
+        (intValue < MIN_WORK_HOURS || intValue > MAX_WORK_HOURS)
+      ) {
+        isValid = false
+        error = `Merci de corriger le nombre d'heures travaillées`
+      } else if (
+        name === SALARY &&
+        (intValue < MIN_SALARY || intValue > MAX_SALARY)
+      ) {
+        isValid = false
+        error = `Merci de corriger votre salaire`
+      }
+    } else {
+      isValid = false
+      error = `Merci d'entrer un nombre sans virgule`
+    }
     sanitizedValue = isValid ? intValue.toString() : value.trim()
-    error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {
     isValid = isBoolean(value)
     error = isValid ? null : 'Merci de répondre à la question'

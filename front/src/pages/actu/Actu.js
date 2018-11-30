@@ -22,6 +22,7 @@ import DatePicker from '../../components/Generic/DatePicker'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
 const USER_GENDER_MALE = 'male'
+const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
 
 const StyledActu = styled.div`
   display: flex;
@@ -354,7 +355,7 @@ export class Actu extends Component {
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
+                  maxDate={MAX_DATE}
                   name="internshipEndDate"
                   value={this.state.internshipEndDate}
                 />
@@ -377,7 +378,7 @@ export class Actu extends Component {
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
+                  maxDate={MAX_DATE}
                   name="sickLeaveEndDate"
                   value={this.state.sickLeaveEndDate}
                 />

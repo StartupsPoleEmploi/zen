@@ -126,7 +126,7 @@ const validateField = ({ name, value }) => {
       }
     } else {
       isValid = false
-      error = `Merci d'entrer un nombre sans virgule`
+      error = `Merci de ne saisir que des chiffres`
     }
     sanitizedValue = isValid ? intValue.toString() : value.trim()
   } else if (name === 'hasEndedThisMonth') {

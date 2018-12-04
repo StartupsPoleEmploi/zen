@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader'
 import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
+import { get } from 'lodash'
 
 import PrivateRoute from './components/Generic/PrivateRoute'
 import { getUser } from './lib/user'
@@ -17,6 +18,8 @@ import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 import Signup from './pages/other/Signup'
+import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
+import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
 
 const steps = ['1. Ma situation', '2. Mes employeurs', '3. Mes documents']
 
@@ -94,6 +97,8 @@ class App extends Component {
     isLoading: true,
     lastDeclaration: null,
     user: null,
+    showDeclarationSentOnPEModal: false,
+    showUnableToSendDeclarationModal: false,
   }
 
   componentDidMount() {
@@ -105,6 +110,11 @@ class App extends Component {
         })
 
         if (!user) return this.setState({ isLoading: false })
+
+        if (!user.isTokenValid) {
+          window.location = '/api/login'
+          return
+        }
 
         return Promise.all([
           superagent
@@ -139,6 +149,28 @@ class App extends Component {
 
           if (!user.isAuthorizedForTests) return
 
+          if (activeMonth) {
+            if (!get(activeDeclaration, 'hasFinishedDeclaringEmployers')) {
+              // User has no declaration, or it isn't already sent
+              if (user.hasAlreadySentDeclaration) {
+                // show modal once, and redirect to /files
+                this.props.history.replace('/files')
+                this.setState({ showDeclarationSentOnPEModal: true })
+                window.Raven.captureException(
+                  new Error('User has already sent declaration on pe.fr'),
+                )
+                return
+              }
+              if (!user.canSendDeclaration) {
+                // something is broken, or user has no access to declarations. Show sorry modal.
+                window.Raven.captureException(
+                  new Error('Cannot get declaration data'),
+                )
+                return this.setState({ showUnableToSendDeclarationModal: true })
+              }
+            }
+          }
+
           if (
             !activeMonth &&
             !lastDeclaration.isFinished &&
@@ -151,7 +183,9 @@ class App extends Component {
             if (activeDeclaration.hasFinishedDeclaringEmployers) {
               return this.props.history.replace('/files')
             }
-            return this.props.history.replace('/employers')
+            if (activeDeclaration.hasWorked) {
+              return this.props.history.replace('/employers')
+            }
           }
           return this.props.history.replace('/')
         })
@@ -162,6 +196,12 @@ class App extends Component {
   componentDidCatch(err, errorInfo) {
     this.setState({ err })
     window.Raven.captureException(err, { extra: errorInfo })
+  }
+
+  onCloseModal = () => {
+    this.setState({
+      showDeclarationSentOnPEModal: false,
+    })
   }
 
   render() {
@@ -301,6 +341,15 @@ class App extends Component {
           <Route exact path="/loggedOut" component={LoggedOut} />
           <Route render={() => <div>404</div>} />
         </Switch>
+
+        <DeclarationAlreadySentDialog
+          isOpened={this.state.showDeclarationSentOnPEModal}
+          onCancel={this.onCloseModal}
+        />
+        <UnableToDeclareDialog
+          /* This is not a modal we want to be closable */
+          isOpened={this.state.showUnableToSendDeclarationModal}
+        />
       </Layout>
     )
   }

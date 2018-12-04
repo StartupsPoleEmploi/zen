@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
-import { isNull, pick } from 'lodash'
+import { get, isNull, pick } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -19,17 +19,20 @@ import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
 import DatePicker from '../../components/Generic/DatePicker'
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
 const USER_GENDER_MALE = 'male'
+const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
 
 const StyledActu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  max-width: 70rem;
+  margin: 0 auto;
 `
 
 const StyledPaper = styled(Paper)`
-  max-width: 70rem;
   width: 100%;
   margin: 4rem auto 0;
 `
@@ -38,7 +41,10 @@ const Title = styled(Typography).attrs({ variant: 'title' })`
   text-align: center;
 `
 
-const ErrorMessage = styled(Typography)`
+const ErrorMessage = styled(Typography).attrs({
+  paragraph: true,
+  variant: 'body2',
+})`
   && {
     color: red;
     text-align: center;
@@ -52,7 +58,7 @@ const FinalButtonsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  padding-top: 3rem;
+  padding-top: 1.5rem;
 `
 
 const StyledList = styled(List)`
@@ -99,6 +105,10 @@ export class Actu extends Component {
     errorMessage: null,
     isLoading: true,
     isDialogOpened: false,
+    isValidating: false,
+    consistencyErrors: [],
+    validationErrors: [],
+    isLoggedOut: false,
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
 
@@ -124,14 +134,27 @@ export class Actu extends Component {
       )
   }
 
-  closeDialog = () => this.setState({ isDialogOpened: false })
-  openDialog = () => this.setState({ isDialogOpened: true })
+  closeDialog = () =>
+    this.setState({
+      consistencyErrors: [],
+      validationErrors: [],
+      isDialogOpened: false,
+      isValidating: false,
+    })
+
+  openDialog = () => {
+    const error = this.getFormError()
+    if (error) {
+      return this.setState({ errorMessage: error })
+    }
+    this.setState({ isDialogOpened: true })
+  }
 
   onAnswer = ({ controlName, hasAnsweredYes }) => {
     this.setState({ [controlName]: hasAnsweredYes, errorMessage: null })
 
-    if (controlName === 'hasTrained' && hasAnsweredYes) {
-      this.setState({ isLookingForJob: true })
+    if (controlName === 'hasTrained') {
+      this.setState({ isLookingForJob: hasAnsweredYes ? true : null })
     }
   }
 
@@ -141,7 +164,7 @@ export class Actu extends Component {
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
     this.setState({ jobSearchStopMotive, errorMessage: null })
 
-  onSubmit = () => {
+  getFormError = () => {
     const {
       hasWorked,
       hasTrained,
@@ -172,67 +195,95 @@ export class Actu extends Component {
         isLookingForJob,
       ].some(isNull)
     ) {
-      return this.setState({
-        errorMessage: 'Merci de répondre à toutes les questions',
-      })
+      return 'Merci de répondre à toutes les questions'
     }
 
-    if (hasInternship && (!internshipStartDate || !internshipEndDate)) {
-      return this.setState({
-        errorMessage: "Merci d'indiquer vos dates de stage",
-      })
+    if (hasInternship) {
+      if (!internshipStartDate || !internshipEndDate) {
+        return `Merci d'indiquer vos dates de stage`
+      }
+      if (moment(internshipEndDate).isBefore(moment(internshipStartDate))) {
+        return 'Merci de corriger vos dates de stage (le début du stage ne peut être après sa fin)'
+      }
     }
 
-    if (hasSickLeave && (!sickLeaveStartDate || !sickLeaveEndDate)) {
-      return this.setState({
-        errorMessage: "Merci d'indiquer vos dates d'arrêt maladie",
-      })
+    if (hasSickLeave) {
+      if (!sickLeaveStartDate || !sickLeaveEndDate) {
+        return `Merci d'indiquer vos dates d'arrêt maladie`
+      }
+      if (moment(sickLeaveEndDate).isBefore(moment(sickLeaveStartDate))) {
+        return `Merci de corriger d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
+      }
     }
 
     if (hasMaternityLeave && !maternityLeaveStartDate) {
-      return this.setState({
-        errorMessage:
-          "Merci d'indiquer votre date de départ en congé maternité",
-      })
+      return `Merci d'indiquer votre date de départ en congé maternité`
     }
 
     if (hasRetirement && !retirementStartDate) {
-      return this.setState({
-        errorMessage:
-          "Merci d'indiquer depuis quand vous touchez une pension retraite",
-      })
+      return `Merci d'indiquer depuis quand vous touchez une pension retraite`
     }
 
     if (hasInvalidity && !invalidityStartDate) {
-      return this.setState({
-        errorMessage:
-          "Merci d'indiquer depuis quand vous touchez une pension d'invalidité",
-      })
+      return `Merci d'indiquer depuis quand vous touchez une pension d'invalidité`
     }
 
     if (!isLookingForJob) {
       if (!jobSearchEndDate) {
-        return this.setState({
-          errorMessage:
-            "Merci d'indiquer depuis quand vous ne cherchez plus d'emploi",
-        })
+        return `Merci d'indiquer depuis quand vous ne cherchez plus d'emploi`
       }
 
       if (!jobSearchStopMotive) {
-        return this.setState({
-          errorMessage:
-            "Merci d'indiquer pourquoi vous ne recherchez plus d'emploi",
-        })
+        return `Merci d'indiquer pourquoi vous ne recherchez plus d'emploi`
       }
     }
+  }
 
-    superagent
-      .post('/api/declarations', this.state)
+  onSubmit = ({ ignoreErrors = false } = {}) => {
+    const error = this.getFormError()
+    if (error) {
+      return this.setState({ errorMessage: error })
+    }
+
+    this.setState({ isValidating: true })
+
+    return superagent
+      .post('/api/declarations', { ...this.state, ignoreErrors })
       .set('CSRF-Token', this.props.user.csrfToken)
       .then(() =>
         this.props.history.push(this.state.hasWorked ? '/employers' : '/files'),
       )
-      .catch((err) => window.Raven.captureException(err))
+      .catch((err) => {
+        if (
+          err.status === 400 &&
+          (get(err, 'response.body.consistencyErrors.length', 0) ||
+            get(err, 'response.body.validationErrors.length', 0))
+        ) {
+          // We handle the error inside the modal
+          return this.setState({
+            consistencyErrors: err.response.body.consistencyErrors,
+            validationErrors: err.response.body.validationErrors,
+            isValidating: false,
+          })
+        }
+
+        // Reporting here to get a metric of how much next error happens
+        window.Raven.captureException(err)
+
+        if (err.status === 401 || err.status === 403) {
+          this.closeDialog()
+          this.setState({ isLoggedOut: true })
+          return
+        }
+
+        // Unhandled error
+        this.setState({
+          errorMessage: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
+            Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
+            en attendant votre actualisation sur Pole-emploi.fr.`,
+        })
+        this.closeDialog()
+      })
   }
 
   setIsMaternalAssistant = () => {
@@ -304,7 +355,7 @@ export class Actu extends Component {
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
+                  maxDate={MAX_DATE}
                   name="internshipEndDate"
                   value={this.state.internshipEndDate}
                 />
@@ -327,7 +378,7 @@ export class Actu extends Component {
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
+                  maxDate={MAX_DATE}
                   name="sickLeaveEndDate"
                   value={this.state.sickLeaveEndDate}
                 />
@@ -429,9 +480,7 @@ export class Actu extends Component {
             </StyledPaper>
           )}
 
-          {errorMessage && (
-            <ErrorMessage variant="body2">{errorMessage}</ErrorMessage>
-          )}
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
           <FinalButtonsContainer>
             <Button
@@ -445,10 +494,15 @@ export class Actu extends Component {
         </form>
 
         <DeclarationDialog
+          isLoading={this.state.isValidating}
           isOpened={this.state.isDialogOpened}
           onCancel={this.closeDialog}
           onConfirm={this.onSubmit}
+          consistencyErrors={this.state.consistencyErrors}
+          validationErrors={this.state.validationErrors}
         />
+
+        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledActu>
     )
   }

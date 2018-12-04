@@ -9,6 +9,8 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
 const csurf = require('csurf')
+const winston = require('winston')
+const slackWinston = require('slack-winston').Slack
 
 const { version } = require('./package.json')
 
@@ -26,6 +28,15 @@ const knex = Knex({
   connection: process.env.DATABASE_URL,
 })
 Model.knex(knex)
+
+winston.add(slackWinston, {
+  // Send this file's logs to Slack
+  webhook_url: process.env.SLACK_WEBHOOK_SU_ZEN_TECH,
+  message: `*{{level}}*: {{message}}\n\n{{meta}}`,
+  level: 'info',
+})
+
+winston.info('Starting node app')
 
 const app = express()
 
@@ -48,6 +59,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(
   session({
+    // our sessions are long but PE token is only valid ~20 minutes
+    // so we reconnect any user here over 20 minutes.
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     httpOnly: true,
     resave: false,
@@ -58,6 +71,11 @@ app.use(
   }),
 )
 app.use(csurf())
+
+app.use((req, res, next) => {
+  res.header('Cache-Control', 'no-cache,no-store')
+  next()
+})
 
 app.use('/ping', (req, res) => res.send('pong'))
 
@@ -82,11 +100,14 @@ app.use('/employers', employersRouter)
 
 if (sentryUrl) {
   app.use(Raven.errorHandler())
-  app.use((err, req, res) =>
+  // an error middleware needs 4 arguments
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, next) => {
+    winston.error(err)
     res.status(500).json({
       sentry: res.sentry,
-    }),
-  )
+    })
+  })
 }
 
 module.exports = app

@@ -4,59 +4,55 @@ import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import { isNaN as _isNaN, isObject } from 'lodash'
 
+// Note : these values are duplicated in Employers
+const WORK_HOURS = 'workHours'
+const SALARY = 'salary'
+const MIN_SALARY = 1
+const MIN_WORK_HOURS = 1
+const MAX_SALARY = 99999
+const MAX_WORK_HOURS = 1000
+
 const SummaryContainer = styled.div`
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  left: 0; /* IE */
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  padding: 1rem;
-  background-color: #253159;
-  z-index: 1;
+  padding-bottom: 1rem;
   text-align: center;
 `
 
-const SummaryTypography = styled(Typography)`
-  && {
-    color: #fff;
-  }
-`
 const SummaryNumber = styled.span`
   background: #f0f0f0;
-  color: #000;
   border-radius: 0.3rem;
   padding: 0 2rem;
 `
 
-const calculateTotal = (employers, field) => {
-  const total = employers.reduce(
-    (prev, employer) =>
-      parseInt(
-        isObject(employer[field]) ? employer[field].value : employer[field],
-        10,
-      ) + prev,
-    0,
-  )
+const calculateTotal = (employers, field, lowLimit, highLimit) => {
+  const total = employers.reduce((prev, employer) => {
+    const number = parseInt(
+      isObject(employer[field]) ? employer[field].value : employer[field],
+      10,
+    )
+    if (number < lowLimit || number > highLimit) return NaN
+    return number + prev
+  }, 0)
   return _isNaN(total) || total === 0 ? '—' : total.toString()
 }
 
 const WorkSummary = ({ employers }) => (
   <SummaryContainer>
-    <SummaryTypography variant="body2">
+    <Typography variant="body2">
       Heures déclarées :{' '}
-      <SummaryNumber>{calculateTotal(employers, 'workHours')}</SummaryNumber>
+      <SummaryNumber>
+        {calculateTotal(employers, WORK_HOURS, MIN_WORK_HOURS, MAX_WORK_HOURS)}
+      </SummaryNumber>
       {' '}
       h
-    </SummaryTypography>
-    <SummaryTypography variant="body2">
+    </Typography>
+    <Typography variant="body2">
       Salaire brut déclaré :{' '}
-      <SummaryNumber>{calculateTotal(employers, 'salary')}</SummaryNumber>
+      <SummaryNumber>
+        {calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY)}
+      </SummaryNumber>
       {' '}
       €
-    </SummaryTypography>
+    </Typography>
   </SummaryContainer>
 )
 

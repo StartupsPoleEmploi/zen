@@ -2,16 +2,13 @@ import Typography from '@material-ui/core/Typography'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import moneyBank from '../../images/money-bank.svg'
 
 const StyledThanks = styled.div`
   margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   text-align: center;
   max-width: 48rem;
 `
@@ -50,8 +47,11 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
           </Typography>
           <br />
           <Typography paragraph>
-            Si vous souhaitez envoyer d'autres documents à Pôle Emploi, merci de
-            le faire depuis votre espace personnel.
+            Si vous souhaitez transmettre d'autres documents pour de précédentes
+            actualisations effectuées via Zen,{' '}
+            <Link to="/files">
+              cliquez ici pour revenir à la page d'envoi de documents.
+            </Link>
           </Typography>
         </Fragment>
       ) : (

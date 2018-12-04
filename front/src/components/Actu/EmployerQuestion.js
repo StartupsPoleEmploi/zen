@@ -208,6 +208,9 @@ export class EmployerQuestion extends Component {
                 onBlur={this.onBlur}
                 error={!!workHours.error}
                 helperText={workHours.error}
+                inputProps={{
+                  maxLength: 3,
+                }}
               />
             </TooltipOnFocus>
             <TooltipOnFocus
@@ -230,6 +233,9 @@ export class EmployerQuestion extends Component {
                 onBlur={this.onBlur}
                 error={!!salary.error}
                 helperText={salary.error}
+                inputProps={{
+                  maxLength: 5,
+                }}
               />
             </TooltipOnFocus>
           </FieldsContainer>

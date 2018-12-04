@@ -10,14 +10,8 @@ const Raven = require('raven')
 
 const User = require('../models/User')
 
-const {
-  clientId,
-  clientSecret,
-  redirectUri,
-  tokenHost,
-  apiHost,
-  authorizeAllUsers,
-} = config
+const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
+const { DECLARATION_STATUSES, DECLARATION_CONTEXT_ID } = require('../constants')
 
 const realm = '/individu'
 
@@ -42,7 +36,7 @@ const oauth2 = require('simple-oauth2').create(credentials)
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm,
-  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees`,
+  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees api_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
 }
 
 router.get('/', (req, res, next) => {
@@ -102,52 +96,92 @@ router.get('/callback', (req, res, next) => {
       Promise.all([
         superagent
           .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
-          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
+        superagent
+          .get(`${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`)
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
+        superagent
+          .get(
+            `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,
+          )
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
         superagent
           .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
-          .set('Authorization', `Bearer ${authToken.token.access_token}`),
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${authToken.token.access_token}`)
+          .set('Accept-Encoding', 'gzip'),
+        new Date(authToken.token.expires_at),
       ]),
     )
-    .then(([{ body: userinfo }, { body: coordinates }]) => {
-      const user = {
-        peId: userinfo.sub,
-        firstName: startCase(toLower(userinfo.given_name)),
-        lastName: startCase(toLower(userinfo.family_name)),
-        gender: userinfo.gender,
-        pePostalCode: coordinates.codePostal,
-      }
-      if (userinfo.email) {
-        // Do not override the email the user may have given us if there is
-        // no email via PE Connect
-        user.email = userinfo.email
-      }
-      return User.query()
-        .findOne({ peId: user.peId })
-        .then((dbUser) => {
-          if (dbUser) {
-            return dbUser
-              .$query()
-              .update(user)
-              .returning('*')
-          }
+    .then(
+      ([
+        { body: userinfo },
+        { body: declarationData },
+        { body: accessibleContexts },
+        { body: coordinates },
+        tokenExpirationDate,
+      ]) => {
+        const declarationContext = accessibleContexts.find(
+          (context) => context.code === DECLARATION_CONTEXT_ID,
+        )
+        // We only allow declarations when we have this status code
+        // (yes, it doesn't seem to make sense, but that's what the API
+        // gives us when the declaration hasn't been done yet)
+        const canSendDeclaration =
+          declarationData.statut ===
+          DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY
+        const hasAlreadySentDeclaration =
+          declarationData.statut === DECLARATION_STATUSES.SAVED
 
-          return User.query()
-            .insert(user)
-            .returning('*')
-        })
-    })
-    .then((user) => {
-      req.session.user = {
-        ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
-        isAuthorizedForTests: authorizeAllUsers // For test environments
-          ? true
-          : !!user.peCode && !!user.pePass && !!user.pePostalCode,
-        isWaitingForConfirmation: authorizeAllUsers // For test environments
-          ? false
-          : !!user.peCode && !user.pePass,
-      }
-      res.redirect('/')
-    })
+        const user = {
+          peId: userinfo.sub,
+          firstName: startCase(toLower(userinfo.given_name)),
+          lastName: startCase(toLower(userinfo.family_name)),
+          gender: userinfo.gender,
+          pePostalCode: coordinates.codePostal,
+        }
+        if (userinfo.email) {
+          // Do not override the email the user may have given us if there is
+          // no email via PE Connect
+          user.email = userinfo.email
+        }
+        return User.query()
+          .findOne({ peId: user.peId })
+          .then((dbUser) => {
+            if (dbUser) {
+              return dbUser
+                .$query()
+                .update(user)
+                .returning('*')
+            }
+            return User.query()
+              .insert(user)
+              .returning('*')
+          })
+          .then((user) => {
+            req.session.user = {
+              ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
+              isAuthorizedForTests: config.authorizeAllUsers // For test environments
+                ? true
+                : !!user.peCode && !!user.pePass && !!user.pePostalCode,
+              isWaitingForConfirmation: config.authorizeAllUsers // For test environments
+                ? false
+                : !!user.peCode && !user.pePass,
+              canSendDocuments: !!declarationContext,
+              canSendDeclaration,
+              hasAlreadySentDeclaration,
+              tokenExpirationDate,
+            }
+            res.redirect('/')
+          })
+      },
+    )
     .catch(next)
 })
 

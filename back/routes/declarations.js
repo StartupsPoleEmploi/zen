@@ -1,12 +1,17 @@
 const express = require('express')
 
 const router = express.Router()
-const { get, reduce, omit } = require('lodash')
+const { get, pick, reduce, omit } = require('lodash')
 const { transaction } = require('objection')
 const { format } = require('date-fns')
+const winston = require('winston')
 
+const { DECLARATION_STATUSES } = require('../constants')
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
+const { sendDocuments } = require('../lib/pe-api/documents')
+const { sendDeclaration } = require('../lib/pe-api/declaration')
+const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')
 const ActivityLog = require('../models/ActivityLog')
@@ -95,6 +100,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 
   if (!declarationData.hasWorked) {
     declarationData.hasFinishedDeclaringEmployers = true
+    declarationData.isTransmitted = true // remove every isTransmitted when PE actu APIs in prod
     if (
       ![
         'hasInternship',
@@ -108,37 +114,105 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     }
   }
 
-  const declarationFetchPromise = req.body.id
-    ? Declaration.query().findOne({
-        id: req.body.id,
-        userId: req.session.user.id,
-      })
-    : Promise.resolve()
+  return Declaration.query()
+    .findOne({
+      // if req.body.id is defined, this finds the specified declaration
+      // otherwise, it still looks for an active declaration for this user this month.
+      // (used in case id is not sent, to avoid creating duplicate declarations
+      // for example when validating inconsistencies for users who haven't worked)
+      id: req.body.id,
+      userId: req.session.user.id,
+      monthId: req.activeMonth.id,
+    })
+    .skipUndefined()
+    .then((declaration) => {
+      const saveDeclaration = (trx) =>
+        declaration
+          ? declaration.$query(trx).patchAndFetch(declarationData)
+          : Declaration.query(trx).insertAndFetch(declarationData)
 
-  return declarationFetchPromise
-    .then((declaration) =>
-      transaction(Declaration.knex(), (trx) =>
-        Promise.all([
-          declaration
-            ? declaration.$query(trx).patch(declarationData)
-            : Declaration.query(trx).insert(declarationData),
-          declaration &&
-            !declaration.hasFinishedDeclaringEmployers &&
-            declarationData.hasFinishedDeclaringEmployers &&
+      const saveAndLogDeclaration = () =>
+        transaction(Declaration.knex(), (trx) =>
+          Promise.all([
+            saveDeclaration(trx),
             ActivityLog.query(trx).insert({
               userId: req.session.user.id,
               action: ActivityLog.actions.VALIDATE_DECLARATION,
+              isModification: !!declaration,
             }),
-          declaration &&
-            !declaration.isFinished &&
-            declarationData.isFinished &&
-            ActivityLog.query(trx).insert({
-              userId: req.session.user.id,
-              action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-            }),
-        ]).then(([dbDeclaration]) => res.json(dbDeclaration)),
-      ),
-    )
+            !declarationData.hasWorked &&
+              ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+              }),
+          ]),
+        )
+
+      if (declaration && declaration.isFinished) {
+        throw new Error('Declaration already done')
+      }
+
+      if (!declarationData.hasWorked) {
+        // If the user token is invalid, save the declaration data then exit.
+        if (!isUserTokenValid(req.user.tokenExpirationDate)) {
+          declarationData.hasFinishedDeclaringEmployers = false
+          declarationData.isFinished = false
+          declarationData.isTransmitted = false // remove every isTransmitted when PE actu APIs in prod
+          return saveDeclaration().then(() =>
+            res.status(401).json('Expired token'),
+          )
+        }
+
+        // Declaration with no employers We need to send the declaration to PE.fr
+        return sendDeclaration({
+          declaration: declarationData,
+          accessToken: req.session.userSecret.accessToken,
+          ignoreErrors: req.body.ignoreErrors,
+        }).then(({ body }) => {
+          if (body.statut !== DECLARATION_STATUSES.SAVED) {
+            // the service will answer with HTTP 200 for a bunch of errors
+            // So they need to be handled here
+            winston.warn(
+              `Declaration transmission error for user ${req.session.user.id}`,
+              pick(body, [
+                'statut',
+                'statutActu',
+                'message',
+                'erreursIncoherence',
+                'erreursValidation',
+              ]),
+            )
+
+            // in case there was no docs to transmit, don't save the declaration as finished
+            // so the user can send it again
+            declarationData.hasFinishedDeclaringEmployers = false
+            declarationData.isFinished = false
+            declarationData.isTransmitted = false // remove every isTransmitted when PE actu APIs in prod
+            return saveDeclaration().then(() =>
+              // This is a custom error, we want to show a different feedback to users
+              res
+                .status(
+                  body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
+                )
+                .json({
+                  consistencyErrors: body.erreursIncoherence || [],
+                  validationErrors: Object.values(body.erreursValidation || {}),
+                }),
+            )
+          }
+
+          winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
+
+          return saveAndLogDeclaration().then(([dbDeclaration]) =>
+            res.json(dbDeclaration),
+          )
+        })
+      }
+
+      return saveAndLogDeclaration().then(([dbDeclaration]) =>
+        res.json(dbDeclaration),
+      )
+    })
     .catch(next)
 })
 
@@ -189,7 +263,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           ? {
               // Used in case the user sent his file by another means.
               file: null,
-              isTransmitted: true,
+              isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
             }
           : { file: req.file.filename }
 
@@ -214,9 +288,17 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     })
 })
 
-router.post('/finish', (req, res, next) =>
-  Declaration.query()
-    .eager('employers')
+router.post('/finish', (req, res, next) => {
+  if (!isUserTokenValid(req.user.tokenExpirationDate)) {
+    return res.status(401).json('Expired token')
+  }
+
+  return Declaration.query()
+    .eager(
+      `[${possibleDocumentTypes.join(
+        ', ',
+      )}, employers.document, declarationMonth]`,
+    )
     .findOne({
       id: req.body.id,
       userId: req.session.user.id,
@@ -244,21 +326,30 @@ router.post('/finish', (req, res, next) =>
       )
         return res.status(400).json('Declaration not complete')
 
-      return transaction(Declaration.knex(), (trx) =>
-        Promise.all([
-          declaration
-            .$query(trx)
-            .patch({ isFinished: true })
-            .returning('*'),
-          ActivityLog.query(trx).insert({
-            userId: req.session.user.id,
-            action: ActivityLog.actions.VALIDATE_FILES,
-            metadata: JSON.stringify({ declarationId: declaration.id }),
-          }),
-        ]),
-      ).then(([savedDeclaration]) => res.json(savedDeclaration))
+      return sendDocuments({
+        declaration,
+        accessToken: req.session.userSecret.accessToken,
+      })
+        .then(() => {
+          winston.info(`Files sent for declaration ${declaration.id}`)
+
+          return transaction(Declaration.knex(), (trx) =>
+            Promise.all([
+              declaration
+                .$query(trx)
+                .patch({ isFinished: true })
+                .returning('*'),
+              ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_FILES,
+                metadata: JSON.stringify({ declarationId: declaration.id }),
+              }),
+            ]),
+          )
+        })
+        .then(([savedDeclaration]) => res.json(savedDeclaration))
     })
-    .catch(next),
-)
+    .catch(next)
+})
 
 module.exports = router

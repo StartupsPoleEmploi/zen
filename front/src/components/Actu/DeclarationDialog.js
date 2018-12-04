@@ -1,60 +1,170 @@
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import PropTypes from 'prop-types'
-import React from 'react'
-import styled from 'styled-components'
+import React, { Component, Fragment } from 'react'
 
-import CustomColorButton from '../../components/Generic/CustomColorButton'
+import CustomColorButton from '../Generic/CustomColorButton'
+import CustomDialog from '../Generic/CustomDialog'
 
-const StyledDialogContent = styled(DialogContent)`
-  && {
+class DeclarationDialog extends Component {
+  static propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+    isOpened: PropTypes.bool.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    consistencyErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    validationErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
   }
-`
 
-const StyledDialogTitle = styled(DialogTitle)`
-  text-align: center;
-`
+  confirm = () => this.props.onConfirm()
 
-const StyledDialogActions = styled(DialogActions)`
-  && {
-    justify-content: space-around;
-    padding-bottom: 2rem;
+  confirmAndIgnoreErrors = () => this.props.onConfirm({ ignoreErrors: true })
+
+  render() {
+    const {
+      isLoading,
+      isOpened,
+      consistencyErrors,
+      validationErrors,
+      onCancel,
+    } = this.props
+
+    const defaultProps = {
+      title: "Envoi de l'actualisation",
+      titleId: 'ActuDialogContentText',
+      isOpened,
+      onCancel,
+    }
+
+    if (isLoading) {
+      return (
+        <CustomDialog
+          content={
+            <Fragment>
+              <CircularProgress />
+              <DialogContentText>Envoi en cours…</DialogContentText>
+            </Fragment>
+          }
+          disableEscapeKeyDown
+          disableBackdropClick
+          {...defaultProps}
+        />
+      )
+    }
+
+    if (validationErrors.length > 0) {
+      return (
+        <CustomDialog
+          content={
+            <Fragment>
+              <DialogContentText>
+                Notre système a détecté des erreurs dans votre déclaration :
+              </DialogContentText>
+              <ul style={{ padding: 0 }}>
+                {validationErrors.map((error) => (
+                  <DialogContentText component="li" key={error}>
+                    {error}
+                  </DialogContentText>
+                ))}
+              </ul>
+              <DialogContentText>
+                Zen n'est pas en mesure de prendre en charge votre déclaration.
+                Veuillez la modifier, ou l'effectuer sur Pole-Emploi.fr
+              </DialogContentText>
+            </Fragment>
+          }
+          actions={
+            <Fragment>
+              <CustomColorButton color="primary" onClick={onCancel}>
+                Je modifie ma déclaration
+              </CustomColorButton>
+              <Button
+                variant="raised"
+                href="https://www.pole-emploi.fr"
+                target="_self"
+                color="primary"
+              >
+                J'accède à Pole-Emploi.fr
+              </Button>
+            </Fragment>
+          }
+          {...defaultProps}
+        />
+      )
+    }
+
+    if (consistencyErrors.length > 0) {
+      return (
+        <CustomDialog
+          content={
+            <Fragment>
+              <DialogContentText>
+                Notre système a détecté de possibles incohérences dans votre
+                actualisation{' '}:
+              </DialogContentText>
+              <ul style={{ padding: 0 }}>
+                <Fragment>
+                  {consistencyErrors.map((error) => (
+                    <DialogContentText component="li" key={error}>
+                      {error}
+                    </DialogContentText>
+                  ))}
+                </Fragment>
+              </ul>
+              <DialogContentText>
+                Confirmez-vous ces informations ?
+              </DialogContentText>
+            </Fragment>
+          }
+          actions={
+            <Fragment>
+              <CustomColorButton onClick={onCancel}>
+                Je modifie ma déclaration
+              </CustomColorButton>
+              <Button
+                variant="raised"
+                onClick={this.confirmAndIgnoreErrors}
+                color="primary"
+                autoFocus
+              >
+                Je valide cette déclaration
+              </Button>
+            </Fragment>
+          }
+          {...defaultProps}
+        />
+      )
+    }
+
+    return (
+      <CustomDialog
+        content={
+          <DialogContentText id="ActuDialogContentText">
+            Votre actualisation va être envoyée à Pôle-Emploi.
+            <br />
+            Nous vous envoyons un e-mail pour vous le confirmer.
+          </DialogContentText>
+        }
+        actions={
+          <Fragment>
+            <CustomColorButton onClick={onCancel}>
+              Je n'ai pas terminé
+            </CustomColorButton>
+            <Button
+              variant="raised"
+              onClick={this.confirm}
+              color="primary"
+              autoFocus
+            >
+              Je m'actualise
+            </Button>
+          </Fragment>
+        }
+        {...defaultProps}
+      />
+    )
   }
-`
-
-const DeclarationDialog = ({ isOpened, onCancel, onConfirm }) => (
-  <Dialog
-    open={isOpened}
-    onClose={onCancel}
-    aria-labelledby="ActuDialogContentText"
-  >
-    <StyledDialogTitle>Envoi de l'actualisation</StyledDialogTitle>
-    <StyledDialogContent>
-      <DialogContentText id="ActuDialogContentText">
-        Votre actualisation va être envoyée à Pôle-Emploi.
-        <br />
-        Nous vous envoyons un e-mail pour vous le confirmer.
-      </DialogContentText>
-    </StyledDialogContent>
-    <StyledDialogActions>
-      <CustomColorButton onClick={onCancel} color="primary">
-        Je n'ai pas terminé
-      </CustomColorButton>
-      <Button variant="raised" onClick={onConfirm} color="primary" autoFocus>
-        Je m'actualise
-      </Button>
-    </StyledDialogActions>
-  </Dialog>
-)
-
-DeclarationDialog.propTypes = {
-  isOpened: PropTypes.bool.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
 }
 
 export default DeclarationDialog

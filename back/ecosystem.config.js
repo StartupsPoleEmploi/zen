@@ -16,13 +16,6 @@ const config = {
 
 if (process.env.NODE_ENV === 'production') {
   config.apps.push({
-    name: 'pe-agent',
-    script: 'pe-agent.js',
-  })
-}
-
-if (process.env.NODE_ENV === 'production') {
-  config.apps.push({
     name: 'mailing-agent',
     script: 'mailing-agent.js',
   })

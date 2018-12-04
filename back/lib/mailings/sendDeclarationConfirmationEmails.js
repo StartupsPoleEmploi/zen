@@ -1,4 +1,4 @@
-const mailjet = require('./mailjet')
+const winston = require('winston')
 const pdf = require('pdfjs')
 const fs = require('fs')
 const Helvetica = require('pdfjs/font/Helvetica')
@@ -6,7 +6,14 @@ const HelveticaBold = require('pdfjs/font/Helvetica-Bold')
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
 
+const mailjet = require('./mailjet')
+const Declaration = require('../../models/Declaration')
+
+const { setDeclarationDoneProperty } = require('./manageContacts')
+
 const { cm } = pdf
+
+const isProd = process.env.NODE_ENV === 'production'
 
 const logo = new pdf.Image(fs.readFileSync(`${__dirname}/logo.jpg`))
 const documentFooter = new pdf.Image(
@@ -125,7 +132,7 @@ const generateDocument = (declaration) => {
   return doc.asBuffer()
 }
 
-const sendSubscriptionConfirmation = (declaration) =>
+const sendDeclarationConfirmation = (declaration) =>
   generateDocument(declaration).then((fileBuffer) => {
     const base64File = fileBuffer.toString('base64')
 
@@ -174,4 +181,47 @@ const sendSubscriptionConfirmation = (declaration) =>
       .then(() => declaration.$query().patch({ isEmailSent: true }))
   })
 
-module.exports = sendSubscriptionConfirmation
+let isSendingEmails = false
+
+const sendDeclarationConfirmations = () => {
+  if (isSendingEmails) return
+  isSendingEmails = true
+
+  return Declaration.query()
+    .eager('[declarationMonth, user, employers]')
+    .where({ hasFinishedDeclaringEmployers: true, isEmailSent: false })
+    .then((declarations) =>
+      Promise.all(
+        declarations.map((declaration) => {
+          if (!declaration.user.email) {
+            // no user email, getting rid of this
+            return declaration.$query().patch({ isEmailSent: true })
+          }
+
+          let promise = Promise.resolve()
+          if (isProd) {
+            promise = setDeclarationDoneProperty(declaration)
+          }
+
+          return promise
+            .then(() => sendDeclarationConfirmation(declaration))
+            .then(() => declaration.$query().patch({ isEmailSent: true }))
+            .catch((err) =>
+              winston.error(
+                `There was an error while sending confirmation email for declaration ${
+                  declaration.id
+                }: ${err}`,
+              ),
+            )
+        }),
+      ),
+    )
+    .then(() => {
+      isSendingEmails = false
+    })
+    .catch(() => {
+      isSendingEmails = false
+    })
+}
+
+module.exports = sendDeclarationConfirmations

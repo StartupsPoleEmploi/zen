@@ -1,7 +1,14 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import { cloneDeep, isBoolean, isNaN as _isNaN, pick } from 'lodash'
+import {
+  cloneDeep,
+  get,
+  isBoolean,
+  isObject,
+  isNaN as _isNaN,
+  pick,
+} from 'lodash'
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
@@ -13,6 +20,15 @@ import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import CustomColorButton from '../../components/Generic/CustomColorButton'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+
+// Note : these values are duplicated in WorkSummary
+const WORK_HOURS = 'workHours'
+const SALARY = 'salary'
+const MIN_SALARY = 1
+const MIN_WORK_HOURS = 1
+const MAX_SALARY = 99999
+const MAX_WORK_HOURS = 999
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -62,6 +78,18 @@ const ButtonsContainer = styled.div`
   flex-wrap: wrap;
 `
 
+const ErrorMessage = styled(Typography).attrs({
+  paragraph: true,
+  variant: 'body2',
+})`
+  && {
+    color: red;
+    text-align: center;
+    margin: inherit auto;
+    max-width: 70rem;
+  }
+`
+
 const employerTemplate = {
   employerName: { value: '', error: null },
   workHours: { value: '', error: null },
@@ -87,17 +115,45 @@ const validateField = ({ name, value }) => {
   if (name === 'employerName') {
     sanitizedValue = value.trim()
   }
-  if (name === 'workHours' || name === 'salary') {
+  if (name === WORK_HOURS || name === SALARY) {
     const intValue = parseInt(value, 10)
-    isValid = !!value && !_isNaN(intValue)
+    if (!_isNaN(intValue)) {
+      if (
+        name === WORK_HOURS &&
+        (intValue < MIN_WORK_HOURS || intValue > MAX_WORK_HOURS)
+      ) {
+        isValid = false
+        error = `Merci de corriger le nombre d'heures travaillées`
+      } else if (
+        name === SALARY &&
+        (intValue < MIN_SALARY || intValue > MAX_SALARY)
+      ) {
+        isValid = false
+        error = `Merci de corriger votre salaire`
+      }
+    } else {
+      isValid = false
+      error = `Merci de ne saisir que des chiffres`
+    }
     sanitizedValue = isValid ? intValue.toString() : value.trim()
-    error = isValid ? null : `Merci d'entrer un nombre sans virgule`
   } else if (name === 'hasEndedThisMonth') {
     isValid = isBoolean(value)
     error = isValid ? null : 'Merci de répondre à la question'
   }
 
   return { error, sanitizedValue }
+}
+
+// TODO refactor this, repeated almost exactly in WorkSummary
+const calculateTotal = (employers, field) => {
+  const total = employers.reduce((prev, employer) => {
+    const number = parseInt(
+      isObject(employer[field]) ? employer[field].value : employer[field],
+      10,
+    )
+    return number + prev
+  }, 0)
+  return total
 }
 
 // TODO the whole logic of this component needs to be sanitized
@@ -113,6 +169,10 @@ export class Employers extends Component {
     isLoading: true,
     error: null,
     isDialogOpened: false,
+    consistencyErrors: [],
+    validationErrors: [],
+    isValidating: false,
+    isLoggedOut: false,
   }
 
   componentDidMount() {
@@ -179,21 +239,67 @@ export class Employers extends Component {
     }))
 
   onSave = () => {
-    superagent
-      .post('/api/employers', {
-        employers: getEmployersMapFromFormData(this.state.employers),
-      })
-      .set('CSRF-Token', this.props.token)
-      .then(() => this.props.history.push('/thanks?later'))
+    const isValid = this.checkFormValidity()
+    if (isValid) {
+      superagent
+        .post('/api/employers', {
+          employers: getEmployersMapFromFormData(this.state.employers),
+        })
+        .set('CSRF-Token', this.props.token)
+        .then(() => this.props.history.push('/thanks?later'))
+    }
   }
 
-  onSubmit = () => {
-    this.setState({ isDialogOpened: false })
+  onSubmit = ({ ignoreErrors = false } = {}) => {
+    this.setState({ isValidating: true })
 
+    return superagent
+      .post('/api/employers', {
+        employers: getEmployersMapFromFormData(this.state.employers),
+        isFinished: true,
+        ignoreErrors,
+      })
+      .set('CSRF-Token', this.props.token)
+      .then(() => this.props.history.push('/files'))
+      .catch((err) => {
+        if (
+          err.status === 400 &&
+          (get(err, 'response.body.consistencyErrors.length', 0) ||
+            get(err, 'response.body.validationErrors.length', 0))
+        ) {
+          // We handle the error inside the modal
+          return this.setState({
+            consistencyErrors: err.response.body.consistencyErrors,
+            validationErrors: err.response.body.validationErrors,
+            isValidating: false,
+          })
+        }
+
+        // Reporting here to get a metric of how much next error happens
+        window.Raven.captureException(err)
+
+        if (err.status === 401 || err.status === 403) {
+          this.closeDialog()
+          this.setState({ isLoggedOut: true })
+          return
+        }
+
+        // Unhandled error
+        this.setState({
+          error: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
+          Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
+          en attendant votre actualisation sur Pole-emploi.fr.`,
+        })
+        this.closeDialog()
+      })
+  }
+
+  checkFormValidity = () => {
     if (this.state.employers.length === 0) {
-      return this.setState({
+      this.setState({
         error: `Merci d'entrer les informations sur vos employeurs`,
       })
+      return false
     }
 
     let isFormValid = true
@@ -216,32 +322,47 @@ export class Employers extends Component {
       }),
     )
 
+    let error = `Merci de corriger les erreurs du formulaire. `
+
+    if (isFormValid) {
+      const workHoursTotal = calculateTotal(employersFormData, WORK_HOURS)
+      const salaryTotal = calculateTotal(employersFormData, SALARY)
+
+      if (workHoursTotal > MAX_WORK_HOURS) {
+        error += `Vous ne pouvez pas déclarer plus de ${MAX_WORK_HOURS}h totales de travail. `
+        isFormValid = false
+      }
+      if (salaryTotal > MAX_SALARY) {
+        error += `Vous ne pouvez pas déclarer plus de ${MAX_SALARY}€ total de salaire. `
+        isFormValid = false
+      }
+    }
+
     if (!isFormValid) {
-      return this.setState({
+      this.setState({
         employers: employersFormData,
-        error: isFormValid
-          ? null
-          : `Merci de corriger les erreurs du formulaire`,
+        error: isFormValid ? null : error,
       })
     }
 
-    superagent
-      .post('/api/employers', {
-        employers: getEmployersMapFromFormData(this.state.employers),
-        isFinished: true,
-      })
-      .set('CSRF-Token', this.props.token)
-      .then(() => this.props.history.push('/files'))
-      .catch((err) => {
-        window.Raven.captureException(err)
-        this.setState({
-          error: `Une erreur s'est produite, merci de réessayer ultérieurement`,
-        })
-      })
+    return isFormValid
   }
 
-  openDialog = () => this.setState({ isDialogOpened: true })
-  closeDialog = () => this.setState({ isDialogOpened: false })
+  openDialog = () => {
+    const isValid = this.checkFormValidity()
+    if (isValid) {
+      this.setState({ isDialogOpened: true })
+    }
+  }
+
+  closeDialog = () => {
+    this.setState({
+      consistencyErrors: [],
+      validationErrors: [],
+      isDialogOpened: false,
+      isValidating: false,
+    })
+  }
 
   renderEmployerQuestion = (data, index) => (
     <EmployerQuestion
@@ -289,7 +410,9 @@ export class Employers extends Component {
             <LineDiv />
           </AddEmployersButtonContainer>
 
-          {error && <Typography variant="body2">{error}</Typography>}
+          <WorkSummary employers={employers} />
+
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonsContainer>
             <CustomColorButton onClick={this.onSave}>
@@ -299,15 +422,16 @@ export class Employers extends Component {
               Envoyer mon actualisation
             </Button>
           </ButtonsContainer>
-
-          <WorkSummary employers={employers} />
-
-          <DeclarationDialog
-            isOpened={this.state.isDialogOpened}
-            onCancel={this.closeDialog}
-            onConfirm={this.onSubmit}
-          />
         </Form>
+        <DeclarationDialog
+          isLoading={this.state.isValidating}
+          isOpened={this.state.isDialogOpened}
+          onCancel={this.closeDialog}
+          onConfirm={this.onSubmit}
+          consistencyErrors={this.state.consistencyErrors}
+          validationErrors={this.state.validationErrors}
+        />
+        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledEmployers>
     )
   }

@@ -103,7 +103,6 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     declarationData.isTransmitted = true // remove every isTransmitted when PE actu APIs in prod
     if (
       ![
-        'hasTrained',
         'hasInternship',
         'hasSickLeave',
         'hasMaternityLeave',

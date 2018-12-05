@@ -127,7 +127,7 @@ router.get('/callback', (req, res, next) => {
         { body: coordinates },
         tokenExpirationDate,
       ]) => {
-        const declarationContext = accessibleContexts.find(
+        const declarationContext = (accessibleContexts || []).find(
           (context) => context.code === DECLARATION_CONTEXT_ID,
         )
         // We only allow declarations when we have this status code
@@ -139,7 +139,7 @@ router.get('/callback', (req, res, next) => {
         const hasAlreadySentDeclaration =
           declarationData.statut === DECLARATION_STATUSES.SAVED
 
-        const user = {
+        const userToSave = {
           peId: userinfo.sub,
           firstName: startCase(toLower(userinfo.given_name)),
           lastName: startCase(toLower(userinfo.family_name)),
@@ -149,19 +149,19 @@ router.get('/callback', (req, res, next) => {
         if (userinfo.email) {
           // Do not override the email the user may have given us if there is
           // no email via PE Connect
-          user.email = userinfo.email
+          userToSave.email = userinfo.email
         }
         return User.query()
-          .findOne({ peId: user.peId })
+          .findOne({ peId: userToSave.peId })
           .then((dbUser) => {
             if (dbUser) {
               return dbUser
                 .$query()
-                .update(user)
+                .update(userToSave)
                 .returning('*')
             }
             return User.query()
-              .insert(user)
+              .insert(userToSave)
               .returning('*')
           })
           .then((user) => {

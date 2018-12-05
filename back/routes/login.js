@@ -59,7 +59,7 @@ router.get('/', (req, res, next) => {
   })
 })
 
-router.get('/callback', (req, res, next) => {
+router.get('/callback', (req, res) => {
   if (req.session.state !== req.query.state || !req.query.code) {
     return res.redirect('/?loginFailed')
   }
@@ -182,7 +182,10 @@ router.get('/callback', (req, res, next) => {
           })
       },
     )
-    .catch(next)
+    .catch((err) => {
+      res.redirect('/?loginFailed')
+      return Raven.captureException(err)
+    })
 })
 
 router.get('/logout', (req, res) => {

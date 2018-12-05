@@ -188,7 +188,9 @@ router.get('/callback', (req, res, next) => {
 router.get('/logout', (req, res) => {
   // This is a path required by the user's browser, hence the redirection
   const { idToken } = req.session.userSecret || {}
-  req.session.destroy((err) => Raven.captureException(err))
+  req.session.destroy((err) => {
+    if (err) Raven.captureException(err)
+  })
   res.redirect(
     `${
       config.tokenHost

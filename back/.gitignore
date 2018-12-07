@@ -62,5 +62,6 @@ typings/
 
 # custom
 uploads
+extracts
 scripts/potential-users.js
 config/*production*.js

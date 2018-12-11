@@ -17,7 +17,7 @@ class Employer extends BaseModel {
         declarationId: { type: 'integer' },
         employerName: { type: 'string' },
         workHours: { type: ['integer', 'null'] },
-        salary: { type: ['integer', 'null'] },
+        salary: { type: ['number', 'null'] },
         hasEndedThisMonth: { type: 'boolean' },
         documentId: { type: ['integer'] },
       },

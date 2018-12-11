@@ -108,48 +108,37 @@ const getEmployersMapFromFormData = (employers) =>
     ),
   )
 
-const validateField = ({ name, value }) => {
-  let isValid = !!value
-  let error = isValid ? null : 'Champ obligatoire'
-  let sanitizedValue = value
-  if (name === 'employerName') {
-    sanitizedValue = value.trim()
-  }
-  if (name === WORK_HOURS || name === SALARY) {
-    const intValue = parseInt(value, 10)
-    if (!_isNaN(intValue)) {
-      if (
-        name === WORK_HOURS &&
-        (intValue < MIN_WORK_HOURS || intValue > MAX_WORK_HOURS)
-      ) {
-        isValid = false
-        error = `Merci de corriger le nombre d'heures travaillées`
-      } else if (
-        name === SALARY &&
-        (intValue < MIN_SALARY || intValue > MAX_SALARY)
-      ) {
-        isValid = false
-        error = `Merci de corriger votre salaire`
-      }
-    } else {
-      isValid = false
-      error = `Merci de ne saisir que des chiffres`
-    }
-    sanitizedValue = isValid ? intValue.toString() : value.trim()
-  } else if (name === 'hasEndedThisMonth') {
-    isValid = isBoolean(value)
-    error = isValid ? null : 'Merci de répondre à la question'
-  }
+const getFieldError = ({ name, value }) => {
+  const isValid = !!value
+  if (!isValid) return 'Champ obligatoire'
 
-  return { error, sanitizedValue }
+  if (name === WORK_HOURS) {
+    const intValue = parseInt(value, 10)
+    if (_isNaN(intValue) || intValue.toString() !== value) {
+      return `Merci de ne saisir que des chiffres`
+    }
+    if (intValue < MIN_WORK_HOURS || intValue > MAX_WORK_HOURS) {
+      return `Merci de corriger le nombre d'heures travaillées`
+    }
+  }
+  if (name === SALARY) {
+    if (_isNaN(value)) {
+      return `Merci de ne saisir que des chiffres`
+    }
+    if (value < MIN_SALARY || value > MAX_SALARY) {
+      return `Merci de corriger votre salaire`
+    }
+  }
+  if (name === 'hasEndedThisMonth' && !isBoolean(value)) {
+    return 'Merci de répondre à la question'
+  }
 }
 
 // TODO refactor this, repeated almost exactly in WorkSummary
 const calculateTotal = (employers, field) => {
   const total = employers.reduce((prev, employer) => {
-    const number = parseInt(
+    const number = parseFloat(
       isObject(employer[field]) ? employer[field].value : employer[field],
-      10,
     )
     return number + prev
   }, 0)
@@ -212,16 +201,9 @@ export class Employers extends Component {
 
   // onChange - let the user type whatever he wants, show errors
   onChange = ({ index, name, value }) => {
-    const { error } = validateField({ index, name, value })
+    const error = getFieldError({ name, value })
 
     this.updateValue({ index, name, value, error })
-  }
-
-  // onBlur - sanitize user inputs, show errors
-  onBlur = ({ index, name, value }) => {
-    const { error, sanitizedValue } = validateField({ index, name, value })
-
-    this.updateValue({ index, name, value: sanitizedValue, error })
   }
 
   updateValue = ({ index, name, value, error }) =>
@@ -307,8 +289,7 @@ export class Employers extends Component {
 
     this.state.employers.forEach((employer, index) =>
       Object.keys(employer).forEach((fieldName) => {
-        const { error } = validateField({
-          index,
+        const error = getFieldError({
           name: fieldName,
           value: employer[fieldName].value,
         })
@@ -370,7 +351,6 @@ export class Employers extends Component {
       key={index}
       index={index}
       onChange={this.onChange}
-      onBlur={this.onBlur}
       onRemove={this.onRemove}
       activeMonth={this.props.activeMonth}
     />

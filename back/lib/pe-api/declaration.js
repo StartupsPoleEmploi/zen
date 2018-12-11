@@ -25,9 +25,8 @@ const convertDeclarationToAPIFormat = (declaration) => {
 
   if (declaration.hasWorked) {
     apiDeclaration.nbHeuresTrav = getDeclarationWorkHours(declaration)
-    apiDeclaration.montSalaire = declaration.employers.reduce(
-      (prev, { salary }) => prev + salary,
-      0,
+    apiDeclaration.montSalaire = Math.round(
+      declaration.employers.reduce((prev, { salary }) => prev + salary, 0),
     )
   }
   if (declaration.hasInternship) {

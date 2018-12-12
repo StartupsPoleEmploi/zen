@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+import '@babel/polyfill'
 import 'moment/locale/fr'
 
 import CssBaseline from '@material-ui/core/CssBaseline'

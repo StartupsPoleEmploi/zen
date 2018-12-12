@@ -14,8 +14,8 @@ const StyledTitle = styled(Typography).attrs({
   }
 `
 
-export const AppTitle = () => (
-  <StyledTitle>
+export const AppTitle = ({ ...props }) => (
+  <StyledTitle {...props}>
     zen<span style={{ color: BLUE }}>.</span>
   </StyledTitle>
 )

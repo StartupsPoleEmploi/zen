@@ -42,11 +42,6 @@ const PersonIcon = styled(Person)`
   }
 `
 
-const Title = styled(Typography).attrs({ variant: 'title', color: 'inherit' })`
-  flex: 1;
-  text-align: center;
-`
-
 const Main = styled.main`
   padding: 5rem 1rem;
 `
@@ -83,9 +78,7 @@ export class Layout extends Component {
     return (
       <StyledLayout>
         <Header>
-          <Title>
-            <AppTitle />
-          </Title>
+          <AppTitle style={{ flex: 1, textAlign: 'center' }} />
 
           {stepper}
 

@@ -4,6 +4,8 @@ const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
 const { Model } = require('objection')
+const pg = require('pg')
+
 const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
@@ -21,6 +23,15 @@ const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const declarationMonthsRouter = require('./routes/declarationMonths')
 const employersRouter = require('./routes/employers')
+
+/* https://github.com/tgriesser/knex/issues/927
+ * This tells node-pg to use float type for decimal
+ * which it does not do because JS loses precision on
+ * big decimal number.
+ * For our usage, this is not an issue.
+ */
+const PG_DECIMAL_OID = 1700
+pg.types.setTypeParser(PG_DECIMAL_OID, parseFloat)
 
 const knex = Knex({
   client: 'pg',

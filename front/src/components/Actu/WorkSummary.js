@@ -1,8 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import { isNaN as _isNaN, isObject } from 'lodash'
+import PropTypes from 'prop-types'
+import React from 'react'
+import NumberFormat from 'react-number-format'
+import styled from 'styled-components'
 
 // Note : these values are duplicated in Employers
 const WORK_HOURS = 'workHours'
@@ -25,36 +26,61 @@ const SummaryNumber = styled.span`
 
 const calculateTotal = (employers, field, lowLimit, highLimit) => {
   const total = employers.reduce((prev, employer) => {
-    const number = parseInt(
+    const number = parseFloat(
       isObject(employer[field]) ? employer[field].value : employer[field],
-      10,
     )
     if (number < lowLimit || number > highLimit) return NaN
     return number + prev
   }, 0)
-  return _isNaN(total) || total === 0 ? '—' : total.toString()
+
+  if (total < lowLimit || total > highLimit) return NaN
+
+  return Math.round(total, 10)
 }
 
-const WorkSummary = ({ employers }) => (
-  <SummaryContainer>
-    <Typography variant="body2">
-      Heures déclarées :{' '}
-      <SummaryNumber>
-        {calculateTotal(employers, WORK_HOURS, MIN_WORK_HOURS, MAX_WORK_HOURS)}
-      </SummaryNumber>
-      {' '}
-      h
-    </Typography>
-    <Typography variant="body2">
-      Salaire brut déclaré :{' '}
-      <SummaryNumber>
-        {calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY)}
-      </SummaryNumber>
-      {' '}
-      €
-    </Typography>
-  </SummaryContainer>
-)
+const WorkSummary = ({ employers }) => {
+  const totalWorkHours = calculateTotal(
+    employers,
+    WORK_HOURS,
+    MIN_WORK_HOURS,
+    MAX_WORK_HOURS,
+  )
+  const totalSalary = calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY)
+
+  return (
+    <SummaryContainer>
+      <Typography variant="body2">
+        Heures déclarées :{' '}
+        <SummaryNumber>
+          {_isNaN(totalWorkHours) || totalWorkHours === 0
+            ? '-'
+            : totalWorkHours}
+        </SummaryNumber>
+        {' '}
+        h
+      </Typography>
+      <Typography variant="body2">
+        Salaire brut déclaré :{' '}
+        <SummaryNumber>
+          {_isNaN(totalSalary) || totalSalary === 0 ? (
+            '-'
+          ) : (
+            <NumberFormat
+              thousandSeparator=" "
+              decimalSeparator=","
+              decimalScale={0}
+              fixedDecimalScale
+              displayType="text"
+              value={totalSalary}
+            />
+          )}
+        </SummaryNumber>
+        {' '}
+        €
+      </Typography>
+    </SummaryContainer>
+  )
+}
 
 WorkSummary.propTypes = {
   employers: PropTypes.arrayOf(

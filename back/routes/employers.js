@@ -18,16 +18,16 @@ const ActivityLog = require('../models/ActivityLog')
 const { DECLARATION_STATUSES } = require('../constants')
 
 const getSanitizedEmployer = ({ employer, declaration, user }) => {
-  const intWorkHours = parseInt(employer.workHours, 10)
-  const intSalary = parseInt(employer.salary, 10)
+  const workHours = parseFloat(employer.workHours)
+  const salary = parseFloat(employer.salary)
 
   return {
     ...employer,
     userId: user.id,
     declarationId: declaration.id,
     // Save temp data as much as possible
-    workHours: !Number.isNaN(intWorkHours) ? intWorkHours : null,
-    salary: !Number.isNaN(intSalary) ? intSalary : null,
+    workHours: !Number.isNaN(workHours) ? workHours : null,
+    salary: !Number.isNaN(salary) ? salary : null,
   }
 }
 

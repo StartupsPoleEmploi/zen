@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
+import EuroInput from '../Generic/EuroInput'
 import Rectangle from '../Generic/Rectangle'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
@@ -134,21 +135,25 @@ export class EmployerQuestion extends Component {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
   }
 
-  inputHandler = (string) => ({ target: { name: fieldName, value } }) => {
+  onChange = ({ target: { name: fieldName, value: _value }, type }) => {
+    let value = _value
+    if (
+      (type === 'blur' && fieldName.startsWith('employerName')) ||
+      fieldName.startsWith('workHours')
+    ) {
+      value = (_value || '').trim()
+    }
     // The input 'name' attribute needs an array format
     // to avoid confusions (for example, browser autocompletions)
     // but the parent component here juste needs 'employerName'
     // for example.
     const name = fieldName.substr(0, fieldName.indexOf('['))
-    this.props[string]({
+    this.props.onChange({
       name,
       value,
       index: this.props.index,
     })
   }
-
-  onChange = this.inputHandler('onChange')
-  onBlur = this.inputHandler('onBlur')
 
   onRemove = () => this.props.onRemove(this.props.index)
 
@@ -183,7 +188,7 @@ export class EmployerQuestion extends Component {
                 name={`employerName[${index}]`}
                 value={employerName.value}
                 onChange={this.onChange}
-                onBlur={this.onBlur}
+                onBlur={this.onChange}
                 error={!!employerName.error}
                 helperText={employerName.error}
               />
@@ -205,7 +210,6 @@ export class EmployerQuestion extends Component {
                 name={`workHours[${index}]`}
                 value={workHours.value}
                 onChange={this.onChange}
-                onBlur={this.onBlur}
                 error={!!workHours.error}
                 helperText={workHours.error}
                 inputProps={{
@@ -230,11 +234,14 @@ export class EmployerQuestion extends Component {
                 name={`salary[${index}]`}
                 value={salary.value}
                 onChange={this.onChange}
-                onBlur={this.onBlur}
                 error={!!salary.error}
                 helperText={salary.error}
+                InputProps={{
+                  inputComponent: EuroInput,
+                }}
+                // eslint-disable-next-line
                 inputProps={{
-                  maxLength: 5,
+                  maxLength: 10,
                 }}
               />
             </TooltipOnFocus>

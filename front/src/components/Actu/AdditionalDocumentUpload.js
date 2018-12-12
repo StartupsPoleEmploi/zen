@@ -141,16 +141,15 @@ export class AdditionalDocumentUpload extends Component {
                 {error
                   ? formattedError
                   : fileExistsOnServer && (
-                      <a
+                      <Button
+                        variant="outlined"
                         href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Button variant="outlined">
-                          <EyeIcon />
-                          Voir l'attestation
-                        </Button>
-                      </a>
+                        <EyeIcon />
+                        Voir l'attestation
+                      </Button>
                     )}
                 {!fileExistsOnServer && (
                   <StyledFormLabel>

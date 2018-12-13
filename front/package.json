@@ -10,6 +10,7 @@
     "autoprefixer": "^9.0.2",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chalk": "^2.4.1",
+    "core-js": "^2.6.0",
     "css-loader": "^1.0.0",
     "dotenv": "^6.0.0",
     "dotenv-expand": "4.2.0",
@@ -94,7 +95,13 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-react"
+      "@babel/preset-react",
+      [
+        "@babel/preset-env",
+        {
+          "useBuiltIns": "entry"
+        }
+      ]
     ],
     "plugins": [
       "@babel/plugin-proposal-class-properties",
@@ -109,6 +116,9 @@
       }
     }
   },
+  "browserslist": [
+    "> 0.2% in fr"
+  ],
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -117,6 +127,7 @@
     "@babel/plugin-proposal-class-properties": "^7.2.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@storybook/addon-actions": "^3.4.8",
     "@storybook/addon-knobs": "^3.4.8",

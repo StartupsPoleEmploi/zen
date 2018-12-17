@@ -33,7 +33,6 @@ export const CustomDialog = ({
   ...rest
 }) => (
   <Dialog
-    {...this.props}
     open={isOpened}
     onClose={onCancel}
     aria-labelledby={titleId}

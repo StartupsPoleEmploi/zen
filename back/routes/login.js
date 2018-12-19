@@ -9,6 +9,7 @@ const { pick, startCase, toLower } = require('lodash')
 const Raven = require('raven')
 
 const User = require('../models/User')
+const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 const { DECLARATION_STATUSES, DECLARATION_CONTEXT_ID } = require('../constants')
@@ -160,6 +161,18 @@ router.get('/callback', (req, res) => {
                 .update(userToSave)
                 .returning('*')
             }
+
+            // This is a new user. Sending them an email.
+            if (
+              config.get('shouldSendTransactionalEmails') &&
+              userToSave.email
+            ) {
+              // Note: We do not wait for Mailjet to answer to send data back to the user
+              sendSubscriptionConfirmation(userToSave).catch((e) =>
+                Raven.captureException(e),
+              )
+            }
+
             return User.query()
               .insert(userToSave)
               .returning('*')

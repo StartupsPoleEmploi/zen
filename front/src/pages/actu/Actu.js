@@ -24,6 +24,10 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
 
+const UNHANDLED_ERROR = `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
+Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
+en attendant votre actualisation sur Pole-emploi.fr.`
+
 const StyledActu = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,8 +106,9 @@ export class Actu extends Component {
 
   state = {
     isMaternalAssistant: store.get('isMaternalAssistant'),
-    errorMessage: null,
+    formError: null,
     isLoading: true,
+    loadingError: null,
     isDialogOpened: false,
     isValidating: false,
     consistencyErrors: [],
@@ -125,13 +130,20 @@ export class Actu extends Component {
           isLoading: false,
         }),
       )
-      .catch(() =>
-        this.setState({
+      .catch((err) => {
+        if (err.status >= 500) {
+          return this.setState({
+            isLoading: false,
+            loadingError: err,
+          })
+        }
+
+        return this.setState({
           isLoading: false,
           hasMaternityLeave:
             this.props.user.gender === USER_GENDER_MALE ? false : null,
-        }),
-      )
+        })
+      })
   }
 
   closeDialog = () =>
@@ -145,13 +157,13 @@ export class Actu extends Component {
   openDialog = () => {
     const error = this.getFormError()
     if (error) {
-      return this.setState({ errorMessage: error })
+      return this.setState({ formError: error })
     }
     this.setState({ isDialogOpened: true })
   }
 
   onAnswer = ({ controlName, hasAnsweredYes }) => {
-    this.setState({ [controlName]: hasAnsweredYes, errorMessage: null })
+    this.setState({ [controlName]: hasAnsweredYes, formError: null })
 
     if (controlName === 'hasTrained') {
       this.setState({ isLookingForJob: hasAnsweredYes ? true : null })
@@ -159,10 +171,10 @@ export class Actu extends Component {
   }
 
   onSetDate = ({ controlName, date }) =>
-    this.setState({ [controlName]: date, errorMessage: null })
+    this.setState({ [controlName]: date, formError: null })
 
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
-    this.setState({ jobSearchStopMotive, errorMessage: null })
+    this.setState({ jobSearchStopMotive, formError: null })
 
   getFormError = () => {
     const {
@@ -242,7 +254,7 @@ export class Actu extends Component {
   onSubmit = ({ ignoreErrors = false } = {}) => {
     const error = this.getFormError()
     if (error) {
-      return this.setState({ errorMessage: error })
+      return this.setState({ formError: error })
     }
 
     this.setState({ isValidating: true })
@@ -278,9 +290,7 @@ export class Actu extends Component {
 
         // Unhandled error
         this.setState({
-          errorMessage: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
-            Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
-            en attendant votre actualisation sur Pole-emploi.fr.`,
+          formError: UNHANDLED_ERROR,
         })
         this.closeDialog()
       })
@@ -292,14 +302,28 @@ export class Actu extends Component {
   }
 
   render() {
-    const { errorMessage, isMaternalAssistant, isLoading } = this.state
+    const {
+      formError,
+      isMaternalAssistant,
+      isLoading,
+      loadingError,
+    } = this.state
 
-    if (isLoading)
+    if (isLoading) {
       return (
         <StyledActu>
-          <CircularProgress />
+          <CircularProgress style={{ margin: 'auto' }} />
         </StyledActu>
       )
+    }
+
+    if (loadingError) {
+      return (
+        <StyledActu>
+          <Typography>{UNHANDLED_ERROR}</Typography>
+        </StyledActu>
+      )
+    }
 
     if (!isMaternalAssistant) {
       return <MaternalAssistantCheck onValidate={this.setIsMaternalAssistant} />
@@ -480,7 +504,7 @@ export class Actu extends Component {
             </StyledPaper>
           )}
 
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          {formError && <ErrorMessage>{formError}</ErrorMessage>}
 
           <FinalButtonsContainer>
             <Button

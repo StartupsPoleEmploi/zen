@@ -101,15 +101,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
   if (!declarationData.hasWorked) {
     declarationData.hasFinishedDeclaringEmployers = true
     declarationData.isTransmitted = true // remove every isTransmitted when PE actu APIs in prod
-    if (
-      ![
-        'hasInternship',
-        'hasSickLeave',
-        'hasMaternityLeave',
-        'hasRetirement',
-        'hasInvalidity',
-      ].some((hasSomething) => declarationData[hasSomething])
-    ) {
+    if (!Declaration.needsDocuments(declarationData)) {
       declarationData.isFinished = true
     }
   }

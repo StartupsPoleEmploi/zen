@@ -231,6 +231,18 @@ class Declaration extends BaseModel {
       },
     }
   }
+
+  // helper function to determine if a declaration needs documents
+  static needsDocuments(declaration) {
+    return [
+      'hasWorked',
+      'hasInternship',
+      'hasSickLeave',
+      'hasMaternityLeave',
+      'hasRetirement',
+      'hasInvalidity',
+    ].some((hasSomething) => declaration[hasSomething])
+  }
 }
 
 module.exports = Declaration

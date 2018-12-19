@@ -1,3 +1,4 @@
 /.env
 node_modules
 nginx/entrust-zen.pole-emploi.fr-key.pem
+nginx/.htpasswd

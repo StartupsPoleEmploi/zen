@@ -48,7 +48,7 @@ async function findUser(potentialUser) {
         dbUser.$query().patch({
           peCode: userData.peCode,
           pePass: userData.pePass,
-          pePostalCode: userData.pePostalCode,
+          postalCode: userData.postalCode,
         }),
       )
   }

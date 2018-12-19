@@ -144,7 +144,7 @@ router.get('/callback', (req, res) => {
           firstName: startCase(toLower(userinfo.given_name)),
           lastName: startCase(toLower(userinfo.family_name)),
           gender: userinfo.gender,
-          pePostalCode: coordinates.codePostal,
+          postalCode: coordinates.codePostal,
         }
         if (userinfo.email) {
           // Do not override the email the user may have given us if there is
@@ -167,12 +167,9 @@ router.get('/callback', (req, res) => {
           .then((user) => {
             req.session.user = {
               ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
-              isAuthorizedForTests: config.authorizeAllUsers // For test environments
+              isAuthorized: config.authorizeAllUsers // For test environments
                 ? true
-                : !!user.peCode && !!user.pePass && !!user.pePostalCode,
-              isWaitingForConfirmation: config.authorizeAllUsers // For test environments
-                ? false
-                : !!user.peCode && !user.pePass,
+                : user.isAuthorized,
               canSendDocuments: !!declarationContext,
               canSendDeclaration,
               hasAlreadySentDeclaration,

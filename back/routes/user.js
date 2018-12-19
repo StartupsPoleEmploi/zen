@@ -24,7 +24,7 @@ router.patch('/', (req, res, next) => {
   if (
     !req.session.user ||
     !req.session.user.id ||
-    req.session.user.isAuthorizedForTests ||
+    req.session.user.isAuthorized ||
     req.session.user.isWaitingForConfirmation
   ) {
     return res.status(401).json('Unauthorized')
@@ -39,7 +39,7 @@ router.patch('/', (req, res, next) => {
       return user.$query().patchAndFetch({
         email: user.email || req.body.email,
         peCode: user.peCode || req.body.peCode,
-        pePostalCode: user.pePostalCode || req.body.pePostalCode,
+        postalCode: user.postalCode || req.body.postalCode,
       })
     })
     .then((user) => {

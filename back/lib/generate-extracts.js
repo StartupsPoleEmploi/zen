@@ -31,7 +31,7 @@ const yesterdayAt1730 = subDays(todayAt1730, 1)
 const pickDataForDoneDeclaration = (declaration) => ({
   prenom: declaration.user.firstName,
   nom: declaration.user.lastName,
-  'code postal': declaration.user.pePostalCode,
+  'code postal': declaration.user.postalCode,
   'a travaillé': declaration.hasWorked ? 'oui' : 'non',
   'a stage': declaration.hasInternship ? 'oui' : 'non',
   'début de stage': declaration.internshipStartDate,
@@ -53,7 +53,7 @@ const pickDataForDoneDeclaration = (declaration) => ({
 const pickDataForDeclarationWithFilesSent = (declaration) => ({
   prenom: declaration.user.firstName,
   nom: declaration.user.lastName,
-  'code postal': declaration.user.pePostalCode,
+  'code postal': declaration.user.postalCode,
   'attestation stage': declaration.internshipDocumentId ? 1 : 0,
   'attestation maladie': declaration.sickLeaveDocumentId ? 1 : 0,
   'attestation maternité': declaration.maternityLeaveDocumentId ? 1 : 0,

@@ -3,7 +3,7 @@ FROM node:8.11.1
 WORKDIR /home/front
 
 CMD if [ "$NODE_ENV" = "production" ] || [ "$NODE_ENV" = "qa" ]; then \
-        npm install --only=production && \
+        npm install && \
         npm run build && \
         cp -RT build dist && \
         tail -f /dev/null; \

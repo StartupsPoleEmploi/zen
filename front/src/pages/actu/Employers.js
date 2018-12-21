@@ -6,7 +6,10 @@ import {
   get,
   isBoolean,
   isObject,
+  isEmpty,
   isNaN as _isNaN,
+  isNull,
+  isUndefined,
   pick,
 } from 'lodash'
 import moment from 'moment'
@@ -109,7 +112,7 @@ const getEmployersMapFromFormData = (employers) =>
   )
 
 const getFieldError = ({ name, value }) => {
-  const isValid = !!value
+  const isValid = !isNull(value) || !isUndefined(value) || !isEmpty(value)
   if (!isValid) return 'Champ obligatoire'
 
   if (name === WORK_HOURS) {

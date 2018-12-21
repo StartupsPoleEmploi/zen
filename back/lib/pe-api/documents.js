@@ -86,7 +86,7 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
     .set('Authorization', `Bearer ${accessToken}`)
     .set('Accept-Encoding', 'gzip')
     .set('Accept', 'application/json')
-    .set('media', 'I')
+    .set('media', 'M') // "Mobile". "I" (Internet) crashed the documents transmission
     .then((res) => {
       if (!res.body.conversionId) {
         return checkHeadersAndWait(res.headers).then(() =>
@@ -127,7 +127,7 @@ const doConfirm = ({
     .set('Authorization', `Bearer ${accessToken}`)
     .set('Accept-Encoding', 'gzip')
     .set('Accept', 'application/json')
-    .set('media', 'I')
+    .set('media', 'M') // "Mobile". "I" (Internet) crashed the documents transmission
     .then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
     .catch((err) => {
       if (previousTries > MAX_RETRIES) throw err

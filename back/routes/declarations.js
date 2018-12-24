@@ -326,10 +326,12 @@ router.post('/finish', (req, res, next) => {
       )
         return res.status(400).json('Declaration not complete')
 
-      return sendDocuments({
+      return Promise.resolve() /*
+      // Disable sendDocuments while we can't user documents API
+      sendDocuments({
         declaration,
         accessToken: req.session.userSecret.accessToken,
-      })
+      }) */
         .then(() => {
           winston.info(`Files sent for declaration ${declaration.id}`)
 

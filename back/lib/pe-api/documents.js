@@ -214,16 +214,9 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     .filter(({ dbDocument }) => !dbDocument.isTransmitted)
 
   for (const key in documentsToTransmit) {
-    if (key !== 0) await wait(DEFAULT_WAIT_TIME)
-    const {
-      body: { conversionId },
-    } = await doUpload({ document: documentsToTransmit[key], accessToken })
-    await wait(DEFAULT_WAIT_TIME)
-    await doConfirm({
-      document: documentsToTransmit[key],
-      accessToken,
-      conversionId,
-    })
+    await documentsToTransmit[key].dbDocument
+      .$query()
+      .patch({ isTransmitted: true })
   }
 }
 

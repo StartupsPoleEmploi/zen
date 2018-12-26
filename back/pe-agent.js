@@ -3,22 +3,11 @@
 /* eslint-disable no-console */
 
 const { Model } = require('objection')
-const { getDate, subMonths, startOfDay, setDate } = require('date-fns')
-const { get } = require('lodash')
 const config = require('config')
 const Knex = require('knex')
 const winston = require('winston')
 const slackWinston = require('slack-winston').Slack
-const sendDeclaration = require('./lib/headless-pilot/sendDeclaration')
 const sendDocuments = require('./lib/headless-pilot/sendDocuments')
-const sendDeclarationEmail = require('./lib/mailings/sendDeclarationEmail')
-const sendDocumentsEmail = require('./lib/mailings/sendDocumentsEmail')
-const {
-  setDeclarationDoneProperty,
-  setDocumentsDoneProperty,
-} = require('./lib/mailings/manageContacts')
-
-const isProd = process.env.NODE_ENV === 'production'
 
 const knex = Knex({
   client: 'pg',
@@ -33,7 +22,6 @@ winston.add(slackWinston, {
   message: `*{{level}}*: {{message}}\n\n{{meta}}`,
 })
 
-const DeclarationMonth = require('./models/DeclarationMonth')
 const Declaration = require('./models/Declaration')
 
 const declarationFileFields = [
@@ -44,41 +32,13 @@ const declarationFileFields = [
   'invalidityDocument',
 ]
 
-const { shouldSendTransactionalEmails, shouldTransmitDataToPE } = config
+const { shouldTransmitDataToPE } = config
 
 if (!shouldTransmitDataToPE) {
   console.log('pe-agent is deactivated.')
   process.exit()
 }
 winston.info('Starting pe-agent')
-if (!shouldSendTransactionalEmails) {
-  winston.info('pe-agent e-mails are deactivated')
-}
-
-const getActiveMonth = () =>
-  DeclarationMonth.query()
-    .where('endDate', '>', new Date())
-    .andWhere('startDate', '<=', 'now')
-    .first()
-
-const hasDocumentsLeftToSend = (declaration) => {
-  const hasMissingEmployersDocuments = declaration.employers.some(
-    ({ documentId }) => !documentId,
-  )
-  const hasMissingDeclarationDocuments =
-    (declaration.hasInternship &&
-      !get(declaration, 'internshipDocument.isTransmitted')) ||
-    (declaration.hasSickLeave &&
-      !get(declaration, 'sickLeaveDocument.isTransmitted')) ||
-    (declaration.hasMaternityLeave &&
-      !get(declaration, 'maternityLeaveDocument.isTransmitted')) ||
-    (declaration.hasRetirement &&
-      !get(declaration, 'retirementDocument.isTransmitted')) ||
-    (declaration.hasInvalidity &&
-      !get(declaration, 'invalidityDocument.isTransmitted'))
-
-  return hasMissingEmployersDocuments || hasMissingDeclarationDocuments
-}
 
 /*
    * Summary of this scary-as-hell query:
@@ -135,49 +95,6 @@ const getDeclarationBaseQuery = () =>
         .orWhere('employersDocuments.isTransmitted', false)
     })
 
-const transmitAllDeclarations = (activeMonth) =>
-  Declaration.query()
-    .eager('[declarationMonth, user, employers]')
-    .where({
-      monthId: activeMonth.id,
-      isTransmitted: false,
-      // PE declaration is both declaration an work hours / salary
-      hasFinishedDeclaringEmployers: true,
-    })
-    .then(async (declarationsToTransmit) => {
-      for (const declaration of declarationsToTransmit) {
-        try {
-          winston.info(`Gonna send declaration ${declaration.id}`)
-          await sendDeclaration(declaration)
-
-          try {
-            // First set mailjet property, so declaration reminder emails won't be sent
-            if (isProd) await setDeclarationDoneProperty(declaration)
-            if (shouldSendTransactionalEmails) {
-              if (declaration.isEmailSent) {
-                winston.warn(
-                  `Tried sending e-mail for declaration ${
-                    declaration.id
-                  } but it was already sent!`,
-                )
-                continue // eslint-disable-line no-continue
-              }
-              await sendDeclarationEmail(declaration)
-            }
-          } catch (e) {
-            winston.error(
-              `Error sending e-mail or editing contact for declaration ${
-                declaration.id
-              }`,
-              e,
-            )
-          }
-        } catch (e) {
-          winston.error(`Error transmitting declaration ${declaration.id}`, e)
-        }
-      }
-    })
-
 const transmitAllDocuments = () =>
   getDeclarationBaseQuery()
     .andWhere({
@@ -193,29 +110,6 @@ const transmitAllDocuments = () =>
             `Gonna send documents from declaration ${declaration.id}`,
           )
           await sendDocuments(declaration)
-
-          try {
-            // First set mailjet property, so documents reminder emails won't be sent
-            if (isProd) await setDocumentsDoneProperty(declaration)
-            if (shouldSendTransactionalEmails) {
-              if (declaration.isDocEmailSent) {
-                winston.warn(
-                  `Tried sending e-mail for declaration ${
-                    declaration.id
-                  } documents but it was already sent!`,
-                )
-                continue // eslint-disable-line no-continue
-              }
-              await sendDocumentsEmail(declaration)
-            }
-          } catch (e) {
-            winston.error(
-              `Error sending e-mail or editing contact for documents from ${
-                declaration.id
-              }`,
-              e,
-            )
-          }
         } catch (e) {
           winston.error(
             `Error sending some documents from declaration ${declaration.id}`,
@@ -224,68 +118,6 @@ const transmitAllDocuments = () =>
       }
     })
 
-// This does the same thing that transmitAllDocuments does but for old documents, and without mail.
-const transmitOldDocuments = () => {
-  const now = new Date()
-  let dateForRequest = new Date()
-
-  /* We want to select all declarations before the last active one
-       * Ex: * On 22/10, we'd choose all declarations until august (included)
-       *     * On 29/10, we'd choose all declarations until september (included)
-       *
-       * We'll do that by selecting declarations by their creation date
-       * Ex: * All declarations until august included were created before the 15/09 23:59:59
-       *     * All declarations until september included were created before the 15/10 23:59:59
-       * and so on
-       */
-
-  const dayOfTheMonth = getDate(now)
-  if (dayOfTheMonth < 27) {
-    dateForRequest = subMonths(dateForRequest, 1)
-  }
-  dateForRequest = startOfDay(setDate(dateForRequest, 16))
-
-  return (
-    getDeclarationBaseQuery()
-      .andWhere({
-        hasFinishedDeclaringEmployers: true,
-        isFinished: false,
-      })
-      .andWhere('Declarations.createdAt', '<', dateForRequest.toISOString())
-      .groupBy('Declarations.id')
-      // Note: This sends back declarations for which there are documents left to send, but some
-      // documents could already have been transfered, so we make sure we filter in sendDocuments.
-      .then(async (declarations) => {
-        for (const declaration of declarations) {
-          try {
-            winston.info(
-              `Gonna send late documents from declaration ${declaration.id}`,
-            )
-            await sendDocuments(declaration)
-
-            // set isFinished to true if nothing is left to send.
-            const updatedDeclaration = await Declaration.query()
-              .eager('employers.document')
-              .findById(declaration.id)
-
-            if (!hasDocumentsLeftToSend(updatedDeclaration)) {
-              winston.info(
-                `Setting isFinished for declaration ${updatedDeclaration.id}`,
-              )
-              await updatedDeclaration.$query().patch({ isFinished: true })
-            }
-          } catch (e) {
-            winston.error(
-              `Error sending some late documents from declaration ${
-                declaration.id
-              }`,
-            )
-          }
-        }
-      })
-  )
-}
-
 let isWorking = false
 
 // Always transmit declarations before documents.
@@ -293,15 +125,7 @@ let isWorking = false
 const initActions = () => {
   if (isWorking) return
   isWorking = true
-  return getActiveMonth()
-    .then((activeMonth) => {
-      // Documents can be transmitted when there is no active months. Declarations can't.
-      if (!activeMonth) return transmitAllDocuments().then(transmitOldDocuments)
-
-      return transmitAllDeclarations(activeMonth)
-        .then(transmitAllDocuments)
-        .then(transmitOldDocuments)
-    })
+  return transmitAllDocuments()
     .then(() => {
       isWorking = false
     })

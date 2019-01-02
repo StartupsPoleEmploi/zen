@@ -2,6 +2,7 @@ FROM node:8.11.1
 
 WORKDIR /home/front
 
+# Note: we npm install in prod because build tools are dev dependencies
 CMD if [ "$NODE_ENV" = "production" ] || [ "$NODE_ENV" = "qa" ]; then \
         npm install && \
         npm run build && \

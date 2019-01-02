@@ -85,6 +85,18 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Europe/Paris
 
+  browserless:
+    image: browserless/chrome
+    restart: unless-stopped
+    expose:
+      - "3000"
+    shm_size: "1gb"
+    volumes:
+      - "./back:/home/back"
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.200
+
 networks:
   actualisation_network:
     driver: bridge

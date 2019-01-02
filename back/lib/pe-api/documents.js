@@ -146,6 +146,9 @@ const doConfirm = ({
     })
 
 const sendDocuments = async ({ declaration, accessToken }) => {
+  // Disabled in production until we are allowed to use the documents API again
+  if (process.env.NODE_ENV === 'production') return Promise.resolve()
+
   const documentsToTransmit = [
     {
       boolField: 'hasInternship',

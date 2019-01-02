@@ -9,7 +9,7 @@ const winston = require('winston')
 const { DECLARATION_STATUSES } = require('../constants')
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
-const { sendDocuments } = require('../lib/pe-api/documents') // eslint-disable-line no-unused-vars
+const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
@@ -326,12 +326,10 @@ router.post('/finish', (req, res, next) => {
       )
         return res.status(400).json('Declaration not complete')
 
-      return Promise.resolve() /*
-      // Disable sendDocuments while we can't user documents API
-      sendDocuments({
+      return sendDocuments({
         declaration,
         accessToken: req.session.userSecret.accessToken,
-      }) */
+      })
         .then(() => {
           winston.info(`Files sent for declaration ${declaration.id}`)
 

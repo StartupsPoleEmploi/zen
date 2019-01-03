@@ -77,7 +77,7 @@ const postEmployerDocument = () =>
     supertest(app)
       .post(`/files`)
       .field('employerId', declaration.employers[0].id)
-      .attach('employerFile', 'tests/mockDocument.pdf')
+      .attach('document', 'tests/mockDocument.pdf')
       .expect(200)
       .then((res) => res.body),
   )
@@ -98,7 +98,7 @@ describe('employers routes', () => {
 
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'))
   afterEach(() =>
-    Declaration.knex().raw('TRUNCATE "Declarations", "Employers"'))
+    Declaration.knex().raw('TRUNCATE "Declarations", "Employers", "documents"'))
 
   describe('GET /', () => {
     test('HTTP throws if no declaration is found', () =>
@@ -130,7 +130,9 @@ describe('employers routes', () => {
           .post('/')
           .send({ employers: [employer1] })
           .expect(200)
-          .then(({ body }) => expect(body).toMatchObject([employer1])),
+          .then(({ body }) =>
+            expect(body.employers).toMatchObject([employer1]),
+          ),
       ))
 
     test('HTTP 200 if employers were correctly updated', () =>
@@ -139,7 +141,9 @@ describe('employers routes', () => {
           .post('/')
           .send({ employers: [employer2] })
           .expect(200)
-          .then(({ body }) => expect(body).toMatchObject([employer2])),
+          .then(({ body }) =>
+            expect(body.employers).toMatchObject([employer2]),
+          ),
       ))
   })
 
@@ -178,20 +182,19 @@ describe('employers routes', () => {
     test('HTTP 400 if no employerId is sent', () =>
       supertest(app)
         .post(`/files`)
-        .attach('employerFile', 'tests/mockDocument.pdf'))
+        .attach('document', 'tests/mockDocument.pdf'))
 
     test('HTTP 404 if no employer is found', () =>
       supertest(app)
         .post(`/files`)
         .field('employerId', 666)
-        .attach('employerFile', 'tests/mockDocument.pdf')
+        .attach('document', 'tests/mockDocument.pdf')
         .expect(404))
 
-    test('HTTP 200 if the file is processed', () => {
+    test('HTTP 200 if the file is processed', () =>
       // HTTP 200 is checked in postEmployerDocument
       postEmployerDocument().then((employer) =>
-        expect(employer.file).toMatch(/pdf$/),
-      )
-    })
+        expect(employer.documentId).toBeDefined(),
+      ))
   })
 })

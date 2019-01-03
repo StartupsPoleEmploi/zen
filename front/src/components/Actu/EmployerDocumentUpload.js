@@ -51,7 +51,7 @@ const StyledFormLabel = styled(FormLabel)`
   }
 `
 
-const SideFormLabel = StyledFormLabel.extend`
+const SideFormLabel = styled(StyledFormLabel)`
   && {
     width: 12rem;
     background-color: transparent;

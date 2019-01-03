@@ -14,10 +14,10 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   padding-right: 1rem;
 `
 
-const FirstFormControlLabel = StyledFormControlLabel.extend`
+const FirstFormControlLabel = styled(StyledFormControlLabel)`
   border-radius: 0.5rem 0 0 0.5rem;
 `
-const SecondFormControlLabel = StyledFormControlLabel.extend`
+const SecondFormControlLabel = styled(StyledFormControlLabel)`
   border-radius: 0 0.5rem 0.5rem 0;
   && {
     margin-right: 0;

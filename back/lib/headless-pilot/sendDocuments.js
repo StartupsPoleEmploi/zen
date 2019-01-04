@@ -32,6 +32,7 @@ const DOC_TYPE_SELECT_VALUES = {
   SALARY_SHEET: 'BDS',
   EMPLOYER_CERTIFICATE: 'AEMP',
   WORK_CONTRACT: 'CDT',
+  SICK_LEAVE_CERTIFICATE: 'AAT',
 }
 
 async function sendOneDocument(
@@ -73,6 +74,19 @@ async function sendOneDocument(
       isFileCertificate
         ? DOC_TYPE_SELECT_VALUES.EMPLOYER_CERTIFICATE
         : DOC_TYPE_SELECT_VALUES.SALARY_SHEET,
+    )
+    // We catch when the promise fail as sometimes the selects throw, but have correctly worked
+    // If they didn't work, the next instructions will fail anyway.
+    await Promise.all([
+      page.click(
+        '#listeDeroulanteTypeDocument + noscript input[type="submit"]',
+      ),
+      page.waitForNavigation(),
+    ])
+  } else if (selectOptionValue === DOC_SITUATION_SELECT_VALUES.SICK_LEAVE) {
+    await page.select(
+      '#listeDeroulanteTypeDocument',
+      DOC_TYPE_SELECT_VALUES.SICK_LEAVE_CERTIFICATE,
     )
     // We catch when the promise fail as sometimes the selects throw, but have correctly worked
     // If they didn't work, the next instructions will fail anyway.

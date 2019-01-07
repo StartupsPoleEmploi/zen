@@ -19,7 +19,7 @@ const config = require('config')
 const superagent = require('superagent')
 const fs = require('fs')
 const path = require('path')
-const { toNumber } = require('lodash')
+const { deburr, toNumber } = require('lodash')
 
 const DEFAULT_WAIT_TIME = 1000
 const MAX_RETRIES = 3
@@ -208,10 +208,9 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       ),
     )
     .map(({ label, ...rest }) => ({
-      label: `${label} - ${format(
-        declaration.declarationMonth.month,
-        'MM-YYYY',
-      )}`,
+      label: deburr(
+        `${label} - ${format(declaration.declarationMonth.month, 'MM-YYYY')}`,
+      ),
       ...rest,
     }))
     .filter(({ dbDocument }) => !dbDocument.isTransmitted)

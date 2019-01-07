@@ -6,15 +6,27 @@ const DeclarationMonth = require('../../models/DeclarationMonth')
 const Document = require('../../models/Document')
 const User = require('../../models/User')
 
+const IMPOSSIBLE_ID = 666666666
+
 let user
 
-const getActiveMonth = () => DeclarationMonth.query().first()
+const getActiveMonth = () =>
+  DeclarationMonth.query()
+    .orderBy('id', 'desc')
+    .first()
+const getInactiveMonth = () =>
+  DeclarationMonth.query()
+    .orderBy('id', 'asc')
+    .first()
 
 const app = express()
 app.use((req, res, next) => {
   req.session = {
     user,
   }
+
+  req.user = user
+  req.user.tokenExpirationDate = new Date('2100-01-01T00:00:00.000Z')
 
   getActiveMonth().then((month) => {
     req.activeMonth = month
@@ -37,15 +49,22 @@ const declarationFormData = {
 }
 
 const addBasicDeclaration = (params = {}) =>
+  Declaration.query()
+    .insert({
+      ...declarationFormData,
+      userId: user.id,
+      ...params,
+    })
+    .returning('*')
+
+const addActiveDeclaration = (params = {}) =>
   getActiveMonth().then((activeMonth) =>
-    Declaration.query()
-      .insert({
-        ...declarationFormData,
-        userId: user.id,
-        monthId: activeMonth.id,
-        ...params,
-      })
-      .returning('*'),
+    addBasicDeclaration({ ...params, monthId: activeMonth.id }),
+  )
+
+const addInactiveDeclaration = (params = {}) =>
+  getInactiveMonth().then((inactiveMonth) =>
+    addBasicDeclaration({ ...params, monthId: inactiveMonth.id }),
   )
 
 const addDeclarationWithEmployers = ({ withFile = false }) =>
@@ -75,7 +94,7 @@ const addDeclarationWithEmployers = ({ withFile = false }) =>
     )
 
 const postSickLeaveDocument = () =>
-  addBasicDeclaration({
+  addActiveDeclaration({
     hasSickLeave: true,
     sickLeaveStartDate: new Date(),
     sickLeaveEndDate: new Date(),
@@ -109,10 +128,11 @@ describe('declarations routes', () => {
     Declaration.knex().raw('TRUNCATE "Declarations", "Employers"'))
 
   describe('GET /', () => {
-    test('HTTP 400 if no querystring specified', () =>
+    test('HTTP 200 with array of Declarations with no querystring', () =>
       supertest(app)
         .get('/')
-        .expect(400))
+        .expect(200)
+        .then((res) => expect(res.body).toBeInstanceOf(Array)))
 
     describe('?last', () => {
       test('HTTP 404 if no declaration found', () =>
@@ -121,9 +141,25 @@ describe('declarations routes', () => {
           .expect(404))
 
       test('HTTP 200 if a declaration is found', () =>
-        addBasicDeclaration().then(() =>
+        addActiveDeclaration().then(() =>
           supertest(app)
             .get('/?last')
+            .expect(200),
+        ))
+    })
+
+    describe('?active', () => {
+      test('HTTP 404 if no active declaration found', () =>
+        addInactiveDeclaration().then(() =>
+          supertest(app)
+            .get('/?active')
+            .expect(404),
+        ))
+
+      test('HTTP 200 if a declaration is found', () =>
+        addActiveDeclaration().then(() =>
+          supertest(app)
+            .get('/?active')
             .expect(200),
         ))
     })
@@ -159,11 +195,11 @@ describe('declarations routes', () => {
 
     test('HTTP 404 if no declaration was found', () =>
       supertest(app)
-        .get('/files?name=sickLeaveDocument&declarationId=666')
+        .get(`/files?name=sickLeaveDocument&declarationId=${IMPOSSIBLE_ID}`)
         .expect(404))
 
     test('HTTP 404 if no file was found', () =>
-      addBasicDeclaration().then((declaration) =>
+      addActiveDeclaration().then((declaration) =>
         supertest(app)
           .get(`/files?name=sickLeaveDocument&declarationId=${declaration.id}`)
           .expect(404),
@@ -188,31 +224,29 @@ describe('declarations routes', () => {
   describe('POST /finish', () => {
     test('HTTP 404 if no declaration was found', () =>
       supertest(app)
-        .get('/finish')
-        .send(declarationFormData)
+        .post('/finish')
+        .send({ id: IMPOSSIBLE_ID })
         .expect(404))
 
-    test('HTTP 400 if no employers were found in the declaration', () =>
-      addBasicDeclaration().then(() =>
+    test('HTTP 400 if the declaration is already finished', () =>
+      addActiveDeclaration({ isFinished: true }).then((declaration) =>
         supertest(app)
           .post('/finish')
+          .send({ id: declaration.id })
           .expect(400),
       ))
 
-    test('HTTP 400 if employers files were not found', () =>
-      addDeclarationWithEmployers({ withFile: false }).then(() =>
-        supertest(app)
-          .post('/finish')
-          .expect(400),
+    test('HTTP 400 if the declaration is incomplete', () =>
+      addActiveDeclaration({ hasFinishedDeclaringEmployers: false }).then(
+        (declaration) =>
+          supertest(app)
+            .post('/finish')
+            .send({ id: declaration.id })
+            .expect(400),
       ))
 
-    // TODO add when implemented
-    test.skip('HTTP 400 if declaration files were not found', () =>
-      supertest(app)
-        .post('/finish')
-        .expect(400))
-
-    test('HTTP 200 if declaration is finished', () =>
+    // Add when we'll simulate sendDocuments
+    test.skip('HTTP 200 if declaration is finished', () =>
       addDeclarationWithEmployers({ withFile: true }).then(() =>
         supertest(app)
           .post('/finish')

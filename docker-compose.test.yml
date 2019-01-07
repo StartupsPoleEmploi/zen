@@ -1,24 +1,28 @@
-version: '2'
+version: "2"
 services:
   node:
     build:
       context: .
       dockerfile: dockerfile_back
     volumes:
-     - "./back:/home/back"
+      - "./back:/home/back"
     depends_on:
       - "db"
     environment:
       - DATABASE_URL=postgres://test-user:test-pass@db:5432/test-db
       - COOKIE_SECRET=IAmSoSecret
       - SENTRY_ENV=test
+      - TOKEN_HOST=http://localhost
+      - EMAIL_KEY=key
+      - EMAIL_KEY_SECRET=big_secret
+      - SLACK_WEBHOOK_SU_ZEN_TECH=http://localhost
 
   front:
     build:
       context: .
       dockerfile: dockerfile_front
     volumes:
-     - "./front:/home/front"
+      - "./front:/home/front"
 
   db:
     image: postgres

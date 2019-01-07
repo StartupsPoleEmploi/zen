@@ -98,6 +98,12 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     {},
   )
 
+  try {
+    Declaration.fromJson(declarationData).$validate()
+  } catch (e) {
+    return res.status(400).json('Invalid declaration')
+  }
+
   if (!declarationData.hasWorked) {
     declarationData.hasFinishedDeclaringEmployers = true
     declarationData.isTransmitted = true // remove every isTransmitted when PE actu APIs in prod

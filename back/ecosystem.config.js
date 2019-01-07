@@ -19,11 +19,6 @@ if (process.env.NODE_ENV === 'production') {
     name: 'mailing-agent',
     script: 'mailing-agent.js',
   })
-
-  config.apps.push({
-    name: 'pe-agent',
-    script: 'pe-agent.js',
-  })
 }
 
 module.exports = config

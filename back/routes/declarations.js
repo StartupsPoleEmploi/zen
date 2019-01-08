@@ -1,7 +1,7 @@
 const express = require('express')
 
 const router = express.Router()
-const { get, pick, reduce, omit } = require('lodash')
+const { get, pick, reduce, remove, omit } = require('lodash')
 const { transaction } = require('objection')
 const { format } = require('date-fns')
 const winston = require('winston')
@@ -286,6 +286,11 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     })
 })
 
+/* This busyDeclarations is used to avoid files being sent multiple times
+ * It'll be removed when we send documents as they are received.
+*/
+const busyDeclarations = []
+
 router.post('/finish', (req, res, next) => {
   if (!isUserTokenValid(req.user.tokenExpirationDate)) {
     return res.status(401).json('Expired token')
@@ -324,12 +329,19 @@ router.post('/finish', (req, res, next) => {
       )
         return res.status(400).json('Declaration not complete')
 
+      if (busyDeclarations.includes(declaration.id)) {
+        return res.status(400).json('Already busy sending files')
+      }
+      busyDeclarations.push(declaration.id)
+
       return sendDocuments({
         declaration,
         accessToken: req.session.userSecret.accessToken,
       })
         .then(() => {
           winston.info(`Files sent for declaration ${declaration.id}`)
+
+          remove(busyDeclarations, (id) => id === declaration.id)
 
           return transaction(Declaration.knex(), (trx) =>
             Promise.all([
@@ -346,6 +358,10 @@ router.post('/finish', (req, res, next) => {
           )
         })
         .then(([savedDeclaration]) => res.json(savedDeclaration))
+        .catch((err) => {
+          remove(busyDeclarations, (id) => id === declaration.id)
+          throw err
+        })
     })
     .catch(next)
 })

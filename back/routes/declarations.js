@@ -130,20 +130,24 @@ router.post('/', requireActiveMonth, (req, res, next) => {
           : Declaration.query(trx).insertAndFetch(declarationData)
 
       const saveAndLogDeclaration = () =>
-        transaction(Declaration.knex(), (trx) =>
-          Promise.all([
-            saveDeclaration(trx),
-            ActivityLog.query(trx).insert({
-              userId: req.session.user.id,
-              action: ActivityLog.actions.VALIDATE_DECLARATION,
-              isModification: !!declaration,
-            }),
-            !declarationData.hasWorked &&
+        saveDeclaration().then(({ id: savedDeclarationId }) =>
+          transaction(Declaration.knex(), (trx) =>
+            Promise.all([
               ActivityLog.query(trx).insert({
                 userId: req.session.user.id,
-                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                action: ActivityLog.actions.VALIDATE_DECLARATION,
+                isModification: !!declaration,
               }),
-          ]),
+              !declarationData.hasWorked &&
+                ActivityLog.query(trx).insert({
+                  userId: req.session.user.id,
+                  action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                  metadata: JSON.stringify({
+                    declarationId: savedDeclarationId,
+                  }),
+                }),
+            ]),
+          ),
         )
 
       if (declaration && declaration.isFinished) {

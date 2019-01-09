@@ -1,6 +1,4 @@
-const bcrypt = require('bcrypt')
 const express = require('express')
-const auth = require('http-auth')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
@@ -8,7 +6,6 @@ const { get, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
 const ActivityLog = require('../models/ActivityLog')
-const Administrator = require('../models/Administrators')
 const Declaration = require('../models/Declaration')
 
 const actionsLabels = {
@@ -46,29 +43,11 @@ const statuses = {
 const calculateTotal = (employers, field) =>
   employers.reduce((prev, employer) => parseInt(employer[field], 10) + prev, 0)
 
-const basic = auth.basic(
-  {
-    realm: 'Admin interface',
-  },
-  (username, password, callback) => {
-    Administrator.query()
-      .findOne({ name: username })
-      .then((administrator) => {
-        if (!administrator) return callback(false)
-        bcrypt
-          .compare(password, administrator.password)
-          .then((res) => callback(res === true))
-      })
-      .catch((err) => callback(err))
-  },
-)
-
 const router = express.Router()
 router.use(zip())
 
 // No login form for now, users must be inserted in db manually.
-router.get('/', auth.connect(basic), (req, res) => {
-  req.session.isAdmin = true
+router.get('/', (req, res) => {
   Promise.all([
     ActivityLog.query()
       .eager('user')
@@ -155,12 +134,6 @@ router.get('/', auth.connect(basic), (req, res) => {
         </html>
       `)
   })
-})
-
-router.use((req, res, next) => {
-  // Set when visiting the first route (and validating the auth)
-  if (!req.session.isAdmin) return res.status(401).json('Access denied')
-  next()
 })
 
 router.get('/:declarationId', (req, res) => {

@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 1`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 57,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 2`] = `
+Object {
+  "forceIncoherence": 0,
+  "montSalaire": 34,
+  "nbHeuresTrav": 23,
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 3`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 22,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 4`] = `
+Object {
+  "forceIncoherence": 0,
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 5`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 298,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 6`] = `
+Object {
+  "dateDebutMaladie": "18122018",
+  "dateDebutMaternite": "24122018",
+  "dateDebutStage": "12122018",
+  "dateFinMaladie": "19012019",
+  "dateFinRech": "26122018",
+  "dateFinStage": "11012019",
+  "dateInvalidite": "25122018",
+  "dateRetraite": "19122018",
+  "forceIncoherence": 0,
+  "montSalaire": 75,
+  "motifFinRech": 0,
+  "nbHeuresTrav": 255,
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 7`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 298,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 8`] = `
+Object {
+  "dateDebutMaladie": "18122018",
+  "dateDebutMaternite": "24122018",
+  "dateDebutStage": "12122018",
+  "dateFinMaladie": "19012019",
+  "dateFinRech": "26122018",
+  "dateFinStage": "11012019",
+  "dateInvalidite": "25122018",
+  "dateRetraite": "19122018",
+  "forceIncoherence": 0,
+  "montSalaire": 75,
+  "motifFinRech": 1,
+  "nbHeuresTrav": 255,
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 9`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 298,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 10`] = `
+Object {
+  "dateDebutMaladie": "18122018",
+  "dateDebutMaternite": "24122018",
+  "dateDebutStage": "12122018",
+  "dateFinMaladie": "19012019",
+  "dateFinRech": "26122018",
+  "dateFinStage": "11012019",
+  "dateInvalidite": "25122018",
+  "dateRetraite": "19122018",
+  "forceIncoherence": 1,
+  "montSalaire": 75,
+  "motifFinRech": 2,
+  "nbHeuresTrav": 255,
+}
+`;

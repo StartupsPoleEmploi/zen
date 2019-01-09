@@ -3,7 +3,7 @@ const config = {
     {
       name: 'back',
       script: 'bin/www',
-      watch: process.env.NODE_ENV !== 'production',
+      watch: process.env.NODE_ENV === 'development',
     },
     {
       name: 'admin',

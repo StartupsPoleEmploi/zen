@@ -5,6 +5,7 @@ const { get, pick, reduce, remove, omit } = require('lodash')
 const { transaction } = require('objection')
 const { format } = require('date-fns')
 const winston = require('winston')
+const Raven = require('raven')
 
 const { DECLARATION_STATUSES } = require('../constants')
 const { upload, uploadDestination } = require('../lib/upload')
@@ -101,6 +102,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
   try {
     Declaration.fromJson(declarationData).$validate()
   } catch (e) {
+    Raven.captureException(e)
     return res.status(400).json('Invalid declaration')
   }
 

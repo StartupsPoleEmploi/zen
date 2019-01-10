@@ -71,6 +71,21 @@ services:
       actualisation_network:
         ipv4_address: 172.0.0.110
 
+  front-admin:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: dockerfile_front
+    volumes:
+      - "./front-admin:/home/front"
+    expose:
+      - "3000"
+    environment:
+      - TZ=Europe/Paris
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.111
+
   db:
     image: postgres
     restart: always
@@ -94,4 +109,4 @@ networks:
           gateway: 172.0.0.1
 
 volumes:
- postgres-data:
+  postgres-data:

@@ -146,7 +146,6 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "eslint-config-react-app": "^3.0.5",
-    "react-scripts": "^2.1.1",
     "react-test-renderer": "^16.6.3",
     "source-map-explorer": "^1.5.0",
     "storybook-host": "^5.0.0",

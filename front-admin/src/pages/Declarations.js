@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import superagent from 'superagent'
 import { format } from 'date-fns'
+import DeclarationsTable from '../components/DeclarationsTable'
 
-export const Declarations = (props) => {
+export const Declarations = () => {
   const [availableMonths, setAvailableMonths] = useState([])
   const [selectedMonthId, setSelectedMonthId] = useState(null)
   const [declarations, setDeclarations] = useState([])
-  console.log(availableMonths, selectedMonthId)
 
   useEffect(() => {
-    superagent
-      .get(`/zen-admin-api/declarationsMonths`)
-      .then(({ body }) => setAvailableMonths(body))
+    superagent.get(`/zen-admin-api/declarationsMonths`).then(({ body }) => {
+      setAvailableMonths(body)
+      setSelectedMonthId(body[0].id)
+    })
   }, [])
 
   useEffect(
@@ -26,16 +27,16 @@ export const Declarations = (props) => {
   )
 
   return (
-    <div>
-      <ul>
+    <div style={{ textAlign: 'center' }}>
+      <h1>Actualisations</h1>
+      <select onChange={(event) => setSelectedMonthId(event.target.value)}>
         {availableMonths.map((month) => (
-          <li onClick={() => setSelectedMonthId(month.id)}>
-            {format(month.month, 'MM/YY')}
-          </li>
+          <option key={month.id} value={month.id}>
+            {format(month.month, 'MMMM YYYY')}
+          </option>
         ))}
-      </ul>
-      <h1>Declarations</h1>
-      <div>Pim pam poum</div>
+      </select>
+      <DeclarationsTable declarations={declarations} />
     </div>
   )
 }

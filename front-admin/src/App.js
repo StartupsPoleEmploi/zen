@@ -1,11 +1,6 @@
-import React, { Component } from 'react'
-import './App.css'
+import React from 'react'
 import Declarations from './pages/Declarations'
 
-class App extends Component {
-  render() {
-    return <Declarations />
-  }
-}
+export const App = () => <Declarations />
 
 export default App

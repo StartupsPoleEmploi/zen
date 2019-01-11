@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.6",
+    "@devexpress/dx-react-core": "^1.10.0",
+    "@devexpress/dx-react-grid": "^1.10.0",
+    "@devexpress/dx-react-grid-material-ui": "^1.10.0",
+    "@material-ui/core": "^3.8.3",
+    "@material-ui/icons": "^3.0.2",
     "@svgr/webpack": "2.4.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",

@@ -7,6 +7,7 @@ const { uploadsDirectory: uploadDestination } = require('config')
 
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
+const DeclarationMonth = require('../models/DeclarationMonth')
 
 const actionsLabels = {
   VALIDATE_DECLARATION: `Étape 1 (déclaration initiale) terminée`,
@@ -16,38 +17,27 @@ const actionsLabels = {
   TRANSMIT_DECLARATION: `Déclaration transmise sur pole-emploi.fr`,
 }
 
-const statuses = {
-  hasTrained: {
-    label: 'a été en formation',
-    dateFields: [],
-  },
-  hasInternship: {
-    label: 'a été en stage',
-    dateFields: ['internshipStartDate', 'internshipEndDate'],
-  },
-  hasSickLeave: {
-    label: 'a été en congé maladie',
-    dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
-  },
-  hasMaternityLeave: {
-    label: 'a été en congé maternité',
-    dateFields: ['maternityLeaveStartDate'],
-  },
-  hasRetirement: {
-    label: 'est en retraite',
-    dateFields: ['retirementStartDate'],
-  },
-  hasInvalidity: { label: 'est invalide', dateFields: ['invalidityStartDate'] },
-}
-
-const calculateTotal = (employers, field) =>
-  employers.reduce((prev, employer) => parseInt(employer[field], 10) + prev, 0)
-
 const router = express.Router()
 router.use(zip())
 
+router.get('/declarationsMonths', (req, res, next) => {
+  DeclarationMonth.query()
+    .where('startDate', '<', new Date())
+    .orderBy('startDate', 'desc')
+    .then((declarationMonths) => res.json(declarationMonths))
+    .catch(next)
+})
+
+router.get('/declarations/:declarationMonthId', (req, res, next) => {
+  Declaration.query()
+    .eager('[user, employers]')
+    .where({ monthId: req.params.declarationMonthId })
+    .then((declarations) => res.json(declarations))
+    .catch(next)
+})
+
 // No login form for now, users must be inserted in db manually.
-router.get('/', (req, res) => {
+router.get('/activityLog', (req, res) => {
   Promise.all([
     ActivityLog.query()
       .eager('user')
@@ -74,9 +64,7 @@ router.get('/', (req, res) => {
               <td style="padding: 10px;">
                 ${
                   log.metadata.declarationId
-                    ? `<a href="/zen-admin/${
-                        log.metadata.declarationId
-                      }">Voir la déclaration</a>`
+                    ? `Déclaration ${log.metadata.declarationId}`
                     : log.metadata.file || ''
                 }
               </td>
@@ -136,91 +124,7 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/:declarationId', (req, res) => {
-  Declaration.query()
-    .eager('[employers, user, declarationMonth]')
-    .findById(req.params.declarationId)
-    .then((declaration) => {
-      if (!declaration) return res.status(404).json('No such declaration')
-
-      return res.send(`
-        <html>
-          <head>
-            <title>Zen Admin</title>
-            <style>
-              table {
-                margin: auto;
-              }
-              tr:nth-child(2n) {
-                background: lightgray;
-              }
-            </style>
-          </head>
-          <body>
-          <h3>
-            ${declaration.user.firstName} ${declaration.user.lastName}
-          </h3>
-          <h4>
-            Declaration
-            ${format(declaration.declarationMonth.month, 'MM/YYYY')}
-          </h4>
-          <p>
-            Déclaration des employeurs ${
-              declaration.hasFinishedDeclaringEmployers
-                ? 'terminée'
-                : 'non terminée'
-            }
-            </p>
-            <p>Envoi des fichiers  ${
-              declaration.isFinished ? 'validé' : 'non validé'
-            }</p>
-            <p>
-              Infos complémentaires : ${Object.keys(statuses)
-                .filter((key) => declaration[key])
-                .map(
-                  (key) =>
-                    `${statuses[key].label} (${statuses[key].dateFields
-                      .map((field) => format(declaration[field], 'DD/MM'))
-                      .join(' - ')})`,
-                )
-                .join(', ')}
-            </p>
-            <p>
-            Souhaite rester inscrit à Pôle Emploi: ${
-              declaration.isLookingForJob ? 'Oui' : 'Non'
-            }</p>
-            <p>
-              Employeurs:<br />
-                ${declaration.employers
-                  .map(
-                    (employer) =>
-                      `${employer.employerName} ${employer.workHours}h ${
-                        employer.salary
-                      }€ - Contrat ${
-                        employer.hasEndedThisMonth ? 'terminé' : ' non terminé'
-                      }`,
-                  )
-                  .join('<br />')}
-            </p>
-            <p>
-              Total: ${calculateTotal(
-                declaration.employers,
-                'workHours',
-              )}h, ${calculateTotal(declaration.employers, 'salary')}€
-            </p>
-            <p>
-              <a href="/zen-admin/${declaration.id}/files">
-                Télécharger les fichiers
-                (${declaration.isFinished ? 'validées' : 'non validés'})
-              </a>
-            </p>
-          </body>
-        </html>
-      `)
-    })
-})
-
-router.get('/:declarationId/files', (req, res) => {
+router.get('/declarations/:declarationId/files', (req, res) => {
   const documentKeys = [
     'internshipDocument',
     'sickLeaveDocument',

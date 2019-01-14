@@ -28,11 +28,39 @@ router.get('/declarationsMonths', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/declarations/:declarationMonthId', (req, res, next) => {
+router.get('/declarations', (req, res, next) => {
+  if (!req.query.monthId) {
+    return res.status(501).json('Must add monthId as query param')
+  }
+
   Declaration.query()
     .eager('[user, employers]')
-    .where({ monthId: req.params.declarationMonthId })
+    .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
+    .catch(next)
+})
+
+router.post('/declarations/metadata', (req, res, next) => {
+  if (!req.body.id || (!req.body.notes && !req.body.isVerified)) {
+    return res.status(400).json('Incomplete request')
+  }
+  Declaration.query()
+    .findById(req.body.id)
+    .then((declaration) => {
+      if (!declaration) return res.status(404).json('Not found')
+
+      if ('isVerified' in req.body) {
+        declaration.metadata.isVerified = req.body.isVerified
+      }
+      if ('notes' in req.body) {
+        declaration.metadata.notes = req.body.notes
+      }
+
+      return declaration
+        .$query()
+        .patch()
+        .then(() => res.json('ok'))
+    })
     .catch(next)
 })
 

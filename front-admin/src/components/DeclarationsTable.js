@@ -31,6 +31,8 @@ export const DeclarationsTable = ({ declarations }) => {
         ? 'Actu et documents envoyés'
         : 'Actu envoyée'
       : 'Actu non terminée',
+    verified: declaration.metadata.isVerified ? 'oui' : 'non',
+    notes: declaration.metadata.notes || '',
   }))
   return (
     <Paper>
@@ -40,11 +42,15 @@ export const DeclarationsTable = ({ declarations }) => {
           { name: 'name', title: 'Nom' },
           { name: 'email', title: 'E-mail' },
           { name: 'status', title: 'Statut' },
+          { name: 'verified', title: 'Vérifié' },
+          { name: 'notes', title: 'Notes' },
         ]}
         getRowId={(row) => row.id}
       >
         <FilteringState />
-        <SortingState />
+        <SortingState
+          defaultSorting={[{ columnName: 'name', direction: 'asc' }]}
+        />
         <RowDetailState />
         <PagingState defaultPageSize={100} />
 

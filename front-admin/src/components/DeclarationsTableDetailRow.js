@@ -1,6 +1,9 @@
-import React from 'react'
+/* eslint-disable jsx-a11y/label-has-for, no-alert */
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { format } from 'date-fns'
+import superagent from 'superagent'
+import { useDebounce } from 'use-debounce'
 
 const calculateTotal = (employers, field) =>
   Math.round(
@@ -31,12 +34,90 @@ const statuses = {
   hasInvalidity: { label: 'est invalide', dateFields: ['invalidityStartDate'] },
 }
 
-function DeclarationsTableDetailRow({ row: declaration }) {
+/*
+ * Note : This component makes too much requests and should not be used as a model
+ * (the declaration sent as props is never updated, which is a bad design,
+ * but quick and ok for this admin's temporary interface)
+ */
+
+const DeclarationsTableDetailRow = ({ row: declaration }) => {
+  const [isVerified, setIsVerified] = useState(
+    declaration.metadata.isVerified || false,
+  )
+  const [notes, setNotes] = useState(declaration.metadata.notes || '')
+  const [isComponentModified, setIsComponentModified] = useState(false)
+  const debouncedIsVerified = useDebounce(isVerified, 1500)
+  const debouncedNotes = useDebounce(notes, 1500)
+
+  useEffect(
+    () => {
+      if (!isComponentModified) return
+
+      superagent
+        .post(`/zen-admin-api/declarations/metadata`, {
+          isVerified: debouncedIsVerified,
+          id: declaration.id,
+        })
+        .then(() => {})
+        .catch(() =>
+          alert(
+            `Une erreur s'est produite en mettant à jour les données, merci d'actualiser (si ceci se reproduit, contacter le développeur)`,
+          ),
+        )
+    },
+    [debouncedIsVerified],
+  )
+
+  useEffect(
+    () => {
+      if (!isComponentModified) return
+
+      superagent
+        .post(`/zen-admin-api/declarations/metadata`, {
+          notes: debouncedNotes,
+          id: declaration.id,
+        })
+        .then(() => {})
+        .catch(() =>
+          alert(
+            `Une erreur s'est produite en mettant à jour les données, merci d'actualiser (si ceci se reproduit, contacter le développeur)`,
+          ),
+        )
+    },
+    [debouncedNotes],
+  )
+
   return (
     <div>
       <h3>
         {declaration.user.firstName} {declaration.user.lastName}
       </h3>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={isVerified}
+            onChange={() => {
+              setIsComponentModified(true)
+              setIsVerified(!isVerified)
+            }}
+          />{' '}
+          Vérifié
+        </label>
+        <br />
+        <label>
+          <input
+            type="text"
+            placeholder="Notes"
+            value={notes}
+            onChange={(e) => {
+              setIsComponentModified(true)
+              setNotes(e.target.value)
+            }}
+          />{' '}
+          Notes
+        </label>
+      </div>
       <p>
         {Object.keys(statuses)
           .filter((key) => declaration[key])
@@ -56,7 +137,7 @@ function DeclarationsTableDetailRow({ row: declaration }) {
       <ul>
         <React.Fragment>
           {declaration.employers.map((employer) => (
-            <li>
+            <li key={employer.id}>
               {employer.employerName} {employer.workHours}h {employer.salary}€ -
               Contrat {employer.hasEndedThisMonth ? 'terminé' : ' non terminé'}
             </li>

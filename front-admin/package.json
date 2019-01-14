@@ -56,6 +56,7 @@
     "superagent": "^4.1.0",
     "terser-webpack-plugin": "1.1.0",
     "url-loader": "1.1.1",
+    "use-debounce": "0.0.7",
     "webpack": "4.19.1",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",

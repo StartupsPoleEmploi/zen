@@ -20,7 +20,7 @@ export const Declarations = () => {
       if (!selectedMonthId) return
 
       superagent
-        .get(`/zen-admin-api/declarations/${selectedMonthId}`)
+        .get(`/zen-admin-api/declarations?monthId=${selectedMonthId}`)
         .then(({ body }) => setDeclarations(body))
     },
     [selectedMonthId],

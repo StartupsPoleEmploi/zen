@@ -27,7 +27,8 @@ const SecondFormControlLabel = styled(StyledFormControlLabel)`
 const StyledRadio = styled(Radio)`
   && {
     && {
-      color: ${({ checked }) => (checked ? '#7dde8f' : 'inherit')};
+      color: ${({ value, checked }) =>
+        checked ? (value === 'yes' ? '#7ADF8F' : '#F5A623') : 'inherit'};
       svg {
         font-size: 1.5rem;
       }

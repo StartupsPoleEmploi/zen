@@ -158,6 +158,7 @@ class Declaration extends BaseModel {
           default: false,
           type: 'boolean',
         },
+        metadata: { type: 'json' },
       },
     }
   }

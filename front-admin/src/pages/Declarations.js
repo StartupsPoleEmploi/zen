@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import superagent from 'superagent'
 import { format } from 'date-fns'
 import DeclarationsTable from '../components/DeclarationsTable'
@@ -7,6 +7,7 @@ export const Declarations = () => {
   const [availableMonths, setAvailableMonths] = useState([])
   const [selectedMonthId, setSelectedMonthId] = useState(null)
   const [declarations, setDeclarations] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     superagent.get(`/zen-admin-api/declarationsMonths`).then(({ body }) => {
@@ -18,10 +19,14 @@ export const Declarations = () => {
   useEffect(
     () => {
       if (!selectedMonthId) return
+      setIsLoading(true)
 
       superagent
         .get(`/zen-admin-api/declarations?monthId=${selectedMonthId}`)
-        .then(({ body }) => setDeclarations(body))
+        .then(({ body }) => {
+          setDeclarations(body)
+          setIsLoading(false)
+        })
     },
     [selectedMonthId],
   )
@@ -36,7 +41,28 @@ export const Declarations = () => {
           </option>
         ))}
       </select>
-      <DeclarationsTable declarations={declarations} />
+      {isLoading ? (
+        <p>Loading…</p>
+      ) : (
+        <Fragment>
+          <p>
+            Actualisation débutée : {declarations.length}
+            <br />
+            Actualisation terminée:{' '}
+            {
+              declarations.filter(
+                ({ hasFinishedDeclaringEmployers }) =>
+                  hasFinishedDeclaringEmployers,
+              ).length
+            }
+            <br />
+            Documents validés :{' '}
+            {declarations.filter(({ isFinished }) => isFinished).length}
+            <br />
+          </p>
+          <DeclarationsTable declarations={declarations} />
+        </Fragment>
+      )}
     </div>
   )
 }

@@ -47,7 +47,9 @@ winston.add(slackWinston, {
   level: 'info',
 })
 
-winston.info('Starting node app')
+if (process.env.NODE_ENV !== 'development') {
+  winston.info('Starting back')
+}
 
 const app = express()
 

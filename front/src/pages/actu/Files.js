@@ -41,13 +41,6 @@ const StyledInfo = styled.div`
   text-align: center;
 `
 
-const StyledList = styled(List)`
-  && {
-    margin-bottom: 1.5rem;
-    width: 100%;
-  }
-`
-
 const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -86,6 +79,12 @@ const FilesDoneSection = styled(FilesSection)`
   justify-content: center;
 `
 
+const StyledList = styled(List)`
+  && {
+    padding-bottom: 2rem;
+  }
+`
+
 const DECLARATION_SUBMIT_ERROR_NAME = 'DECLARATION'
 
 const additionalDocuments = [
@@ -93,26 +92,36 @@ const additionalDocuments = [
     name: 'sickLeaveDocument',
     fieldToCheck: 'hasSickLeave',
     label: 'Feuille maladie',
+    sectionLabel: 'Congé maladie',
+    dateFields: ['internshipStartDate', 'internshipEndDate'],
   },
   {
     name: 'internshipDocument',
     fieldToCheck: 'hasInternship',
     label: 'Attestation de stage',
+    sectionLabel: 'Stage',
+    dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
   },
   {
     name: 'maternityLeaveDocument',
     fieldToCheck: 'hasMaternityLeave',
     label: 'Attestation de congé maternité',
+    sectionLabel: 'Congé maternité',
+    dateFields: ['maternityLeaveStartDate'],
   },
   {
     name: 'retirementDocument',
     fieldToCheck: 'hasRetirement',
     label: 'Attestation retraite',
+    sectionLabel: 'Retraite',
+    dateFields: ['retirementStartDate'],
   },
   {
     name: 'invalidityDocument',
     fieldToCheck: 'hasInvalidity',
     label: 'Attestation invalidité',
+    sectionLabel: 'Invalidité',
+    dateFields: ['invalidityStartDate'],
   },
 ]
 
@@ -351,7 +360,10 @@ export class Files extends Component {
       (doc) => !!declaration[doc.fieldToCheck],
     )
 
-    const documentNodes = sortBy(declaration.employers, 'id')
+    const sortedEmployers = sortBy(declaration.employers, 'name')
+
+    const salaryNodes = sortedEmployers
+      .filter((employer) => !employer.hasEndedThisMonth)
       .map((employer) =>
         this.renderEmployerRow({
           employer,
@@ -359,21 +371,98 @@ export class Files extends Component {
           allowSkipFile: isOldMonth,
         }),
       )
-      .concat(
-        neededAdditionalDocuments.map((neededDocument) =>
-          this.renderAdditionalDocument({
-            label: neededDocument.label,
-            name: neededDocument.name,
-            declaration,
-            allowSkipFile: isOldMonth,
-          }),
-        ),
+
+    const certificateNodes = sortedEmployers
+      .filter((employer) => employer.hasEndedThisMonth)
+      .map((employer) =>
+        this.renderEmployerRow({
+          employer,
+          declaration,
+          allowSkipFile: isOldMonth,
+        }),
       )
 
-    // do not display a section if there are no documents to display.
-    if (documentNodes.length === 0) return null
+    const additionalDocumentsNodes = neededAdditionalDocuments.map(
+      (neededDocument) => {
+        const formattedDates = neededDocument.dateFields.map((dateField) =>
+          moment(declaration[dateField]).format('DD MMMM YYYY'),
+        )
+        return (
+          <React.Fragment>
+            <Typography
+              variant="subheading"
+              style={{ textTransform: 'uppercase' }}
+            >
+              <b>{neededDocument.sectionLabel}</b>
+            </Typography>
+            <Typography variant="caption">
+              {formattedDates.length === 1 &&
+                `À partir du ${formattedDates[0]}`}
+              {formattedDates.length === 2 &&
+                `Du ${formattedDates.join(' au ')}`}
+            </Typography>
+            <StyledList>
+              {this.renderAdditionalDocument({
+                label: neededDocument.label,
+                name: neededDocument.name,
+                declaration,
+                allowSkipFile: isOldMonth,
+              })}
+            </StyledList>
+          </React.Fragment>
+        )
+      },
+    )
 
-    return <StyledList>{documentNodes}</StyledList>
+    // do not display a section if there are no documents to display.
+    if (
+      salaryNodes.length +
+        certificateNodes.length +
+        additionalDocumentsNodes.length ===
+      0
+    )
+      return null
+
+    return (
+      <div>
+        <div>
+          <Typography
+            variant="subheading"
+            style={{ textTransform: 'uppercase' }}
+          >
+            <b>
+              {salaryNodes.length} bulletin{salaryNodes.length > 1 && 's'} de
+              salaire
+            </b>
+          </Typography>
+          <Typography variant="caption">
+            Salaire pour{' '}
+            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
+          </Typography>
+          <StyledList>{salaryNodes}</StyledList>
+        </div>
+
+        <div>
+          <Typography
+            variant="subheading"
+            style={{ textTransform: 'uppercase' }}
+          >
+            <b>
+              {certificateNodes.length} contrat{certificateNodes.length > 1 &&
+                's'}{' '}
+              terminé{certificateNodes.length > 1 && 's'}
+            </b>
+          </Typography>
+          <Typography variant="caption">
+            Fin de contrat{certificateNodes.length > 1 && 's'} en{' '}
+            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
+          </Typography>
+          <StyledList>{certificateNodes}</StyledList>
+        </div>
+
+        <div>{additionalDocumentsNodes}</div>
+      </div>
+    )
   }
 
   renderOlderDocumentsList = (declaration) =>
@@ -498,6 +587,7 @@ export class Files extends Component {
             variant="body2"
             style={{
               color: declarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
+              paddingBottom: '2rem',
             }}
           >
             {declarationRemainingDocsNb > 0

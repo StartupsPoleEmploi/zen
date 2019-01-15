@@ -11,7 +11,7 @@ import Autorenew from '@material-ui/icons/Autorenew'
 import Check from '@material-ui/icons/Check'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Eye from '@material-ui/icons/RemoveRedEye'
-import Warning from '@material-ui/icons/Warning'
+import Warning from '@material-ui/icons/WarningRounded'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
@@ -29,7 +29,8 @@ const StyledContainer = styled.div`
 const StyledListItem = styled(ListItem)`
   && {
     flex: 1 1 30rem;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
     flex-wrap: wrap;
     border: 1px solid ${(props) => (props.hasDocument ? '#3e689b' : '#df5555')};
     border-left-width: 0.8rem;
@@ -40,17 +41,22 @@ const StyledListItem = styled(ListItem)`
   }
 `
 
-const StyledFormLabel = styled(FormLabel)`
+const BaseStyledFormLabel = styled(FormLabel)`
   && {
     display: flex;
     background-color: #f5f5f5;
     border-radius: 1rem;
-    padding: 0 1rem;
+    padding-left: 1rem;
     align-items: center;
   }
 `
 
-const SideFormLabel = styled(StyledFormLabel)`
+const StyledFormLabel = styled(BaseStyledFormLabel)`
+  justify-content: flex-end;
+  width: 26.3rem;
+`
+
+const SideFormLabel = styled(BaseStyledFormLabel)`
   && {
     width: 12rem;
     background-color: transparent;
@@ -59,7 +65,7 @@ const SideFormLabel = styled(StyledFormLabel)`
 
 const StyledFormHelperText = styled(FormHelperText)`
   && {
-    margin: 0 2rem;
+    margin: 0 1.5rem;
   }
 `
 
@@ -146,6 +152,12 @@ export class AdditionalDocumentUpload extends Component {
                         href={`/api/declarations/files?declarationId=${declarationId}&name=${name}`}
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{
+                          height: 32,
+                          minHeight: 32,
+                          width: 263, // Note: width mirrors value in StyledFormLabel
+                        }}
+                        component="small"
                       >
                         <EyeIcon />
                         Voir l'attestation
@@ -158,7 +170,7 @@ export class AdditionalDocumentUpload extends Component {
                       <Fragment>
                         <Warning />
                         <StyledFormHelperText>
-                          {label} à envoyer
+                          Document à envoyer
                         </StyledFormHelperText>
                       </Fragment>
                     )}

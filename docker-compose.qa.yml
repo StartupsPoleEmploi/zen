@@ -10,3 +10,7 @@ services:
   front:
     environment:
       - NODE_ENV=qa
+
+  front-admin:
+    environment:
+      - NODE_ENV=qa

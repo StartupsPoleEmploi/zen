@@ -7,3 +7,7 @@ services:
   front:
     environment:
       - NODE_ENV=production
+
+  front-admin:
+    environment:
+      - NODE_ENV=production

@@ -22,7 +22,6 @@
     "verbose": true
   },
   "dependencies": {
-    "bcrypt": "^3.0.0",
     "config": "^2.0.1",
     "connect-pg-simple": "^5.0.0",
     "cookie-parser": "~1.4.3",
@@ -34,7 +33,6 @@
     "express-easy-zip": "^1.1.4",
     "express-session": "^1.15.6",
     "helmet": "^3.13.0",
-    "http-auth": "^3.2.3",
     "jsonwebtoken": "^8.3.0",
     "knex": "^0.15.2",
     "lodash": "^4.17.11",

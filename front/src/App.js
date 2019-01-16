@@ -20,6 +20,7 @@ import Layout from './pages/Layout'
 import Signup from './pages/other/Signup'
 import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
+import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 
 const steps = ['1. Ma situation', '2. Mes employeurs', '3. Mes documents']
 
@@ -99,18 +100,26 @@ class App extends Component {
     user: null,
     showDeclarationSentOnPEModal: false,
     showUnableToSendDeclarationModal: false,
+    isServiceDown: false,
   }
 
   componentDidMount() {
-    getUser()
-      .then((user) => {
-        this.setState({ user })
-        window.Raven.setUserContext({
-          id: user.id,
-        })
+    Promise.all([
+      superagent.get('/api/status').then((res) => res.body),
+      getUser(),
+    ])
+      .then(([status, user]) => {
+        if (!status.up) {
+          return this.setState({ isServiceDown: true, isLoading: false })
+        }
 
         if (!user) return this.setState({ isLoading: false })
 
+        this.setState({ user })
+
+        window.Raven.setUserContext({
+          id: user.id,
+        })
         if (!user.isTokenValid) {
           window.location = '/api/login'
           return
@@ -166,7 +175,9 @@ class App extends Component {
                 window.Raven.captureException(
                   new Error('Cannot get declaration data'),
                 )
-                return this.setState({ showUnableToSendDeclarationModal: true })
+                return this.setState({
+                  showUnableToSendDeclarationModal: true,
+                })
               }
             }
           }
@@ -213,7 +224,12 @@ class App extends Component {
 
     if (!user) {
       if (pathname === '/') {
-        return <Route exact path="/" component={Home} />
+        return (
+          <React.Fragment>
+            <Route exact path="/" component={Home} />
+            <StatusErrorDialog isOpened={this.state.isServiceDown} />
+          </React.Fragment>
+        )
       }
       return <Redirect to="/" />
     }

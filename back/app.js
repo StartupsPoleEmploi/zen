@@ -18,6 +18,7 @@ const { version } = require('./package.json')
 
 const { setActiveMonth } = require('./lib/activeMonthMiddleware')
 
+const Status = require('./models/Status')
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
@@ -91,6 +92,12 @@ app.use((req, res, next) => {
 })
 
 app.use('/ping', (req, res) => res.send('pong'))
+app.use('/status', (req, res, next) =>
+  Status.query()
+    .first()
+    .then((status) => res.json({ up: status.up }))
+    .catch(next),
+)
 
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)

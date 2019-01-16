@@ -17,8 +17,11 @@ const slackWinston = require('slack-winston').Slack
 const { version } = require('./package.json')
 
 const { setActiveMonth } = require('./lib/activeMonthMiddleware')
+const {
+  requireServiceUp,
+  setIsServiceUp,
+} = require('./lib/serviceUpMiddleware')
 
-const Status = require('./models/Status')
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
@@ -92,12 +95,10 @@ app.use((req, res, next) => {
 })
 
 app.use('/ping', (req, res) => res.send('pong'))
-app.use('/status', (req, res, next) =>
-  Status.query()
-    .first()
-    .then((status) => res.json({ up: status.up }))
-    .catch(next),
-)
+
+app.use(setIsServiceUp)
+
+app.use('/status', (req, res) => res.json({ up: req.isServiceUp }))
 
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)
@@ -112,6 +113,7 @@ app.use('/login', loginRouter)
 app.use('/user', userRouter)
 
 app.use(setActiveMonth)
+app.use(requireServiceUp)
 
 app.use('/declarationMonths', declarationMonthsRouter)
 

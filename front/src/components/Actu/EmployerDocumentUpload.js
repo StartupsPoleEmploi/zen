@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Autorenew from '@material-ui/icons/Autorenew'
+import Info from '@material-ui/icons/InfoOutlined'
 import Check from '@material-ui/icons/Check'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Eye from '@material-ui/icons/RemoveRedEye'
@@ -73,6 +74,10 @@ const StyledFormHelperText = styled(FormHelperText)`
 const Container = styled.div`
   display: flex;
   align-items: center;
+`
+
+const InfoIcon = styled(Info)`
+  margin-left: 0.5rem;
 `
 
 const EyeIcon = styled(Eye)`
@@ -145,9 +150,28 @@ export class EmployerDocumentUpload extends Component {
         <StyledListItem hasDocument={fileExistsOnServer}>
           <ListItemText
             primary={
-              <b>
-                {capitalize(documentToGive)} : {employerName}
-              </b>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <b>
+                  {capitalize(documentToGive)} : {employerName}
+                </b>
+                {hasEndedThisMonth && (
+                  <Tooltip
+                    title={
+                      <Typography style={{ color: '#fff' }}>
+                        Le document contenant votre attestation employeur doit
+                        être composé d'exactement deux pages
+                      </Typography>
+                    }
+                    placement="top"
+                    enterDelay={0}
+                    leaveDelay={1500}
+                    enterTouchDelay={0}
+                    leaveTouchDelay={3000}
+                  >
+                    <InfoIcon />
+                  </Tooltip>
+                )}
+              </div>
             }
           />
           <FormControl>

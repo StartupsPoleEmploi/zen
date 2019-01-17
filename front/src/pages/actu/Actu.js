@@ -309,6 +309,8 @@ export class Actu extends Component {
       loadingError,
     } = this.state
 
+    const { user } = this.props
+
     if (isLoading) {
       return (
         <StyledActu>
@@ -385,7 +387,11 @@ export class Actu extends Component {
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
-                label="Avez-vous été en arrêt maladie ?"
+                label={`Avez-vous été en arrêt maladie ${
+                  user.gender === USER_GENDER_MALE
+                    ? 'ou en congé paternité'
+                    : ''
+                } ?`}
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
@@ -407,7 +413,7 @@ export class Actu extends Component {
                   value={this.state.sickLeaveEndDate}
                 />
               </DeclarationQuestion>
-              {this.props.user.gender !== USER_GENDER_MALE && (
+              {user.gender !== USER_GENDER_MALE && (
                 <DeclarationQuestion
                   label="Avez-vous été en congé maternité ?"
                   name="hasMaternityLeave"

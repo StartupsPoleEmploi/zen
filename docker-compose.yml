@@ -12,8 +12,9 @@ services:
       - "./nginx/dhparam.pem:/etc/nginx/ssl/dhparam.pem"
       - "./nginx/zen.crt:/etc/nginx/ssl/zen.crt"
       - "./nginx/entrust-zen.pole-emploi.fr-key.pem:/etc/nginx/ssl/entrust-zen.pole-emploi.fr-key.pem"
-      - "./front:/home/front"
       - "./back/extracts:/home/extracts"
+      - "./front:/home/front"
+      - "./front-admin:/home/front-admin"
     environment:
       - TZ=Europe/Paris
     networks:

@@ -20,7 +20,6 @@ import styled from 'styled-components'
 import superagent from 'superagent'
 
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
-import CustomColorButton from '../../components/Generic/CustomColorButton'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
@@ -72,13 +71,38 @@ const LineDiv = styled.div`
   height: 0.1rem;
   background-color: #e4e4e4;
 `
-
 const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 100%;
   flex-wrap: wrap;
+  width: 100%;
+  padding-top: 2.5rem;
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto;
+`
+
+const SaveForLaterButton = styled(Button).attrs({
+  color: 'primary',
+  variant: 'outlined',
+})`
+  && {
+    padding: 1rem 3rem;
+    width: 17.5rem;
+    color: #000;
+  }
+`
+
+const SubmitButton = styled(Button).attrs({
+  color: 'primary',
+  variant: 'raised',
+})`
+  && {
+      padding: 1rem 3rem;
+      width: 17.5rem;
+    }
+  }
 `
 
 const ErrorMessage = styled(Typography).attrs({
@@ -403,12 +427,12 @@ export class Employers extends Component {
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonsContainer>
-            <CustomColorButton onClick={this.onSave}>
-              Enregistrer et finir plus tard
-            </CustomColorButton>
-            <Button variant="raised" onClick={this.openDialog} color="primary">
-              Envoyer mon actualisation
-            </Button>
+            <SaveForLaterButton onClick={this.onSave}>
+              Enregistrer<br />et finir plus tard
+            </SaveForLaterButton>
+            <SubmitButton onClick={this.openDialog}>
+              Envoyer mon<br />actualisation
+            </SubmitButton>
           </ButtonsContainer>
         </Form>
         <DeclarationDialog

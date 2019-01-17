@@ -17,6 +17,10 @@ const slackWinston = require('slack-winston').Slack
 const { version } = require('./package.json')
 
 const { setActiveMonth } = require('./lib/activeMonthMiddleware')
+const {
+  requireServiceUp,
+  setIsServiceUp,
+} = require('./lib/serviceUpMiddleware')
 
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
@@ -92,6 +96,10 @@ app.use((req, res, next) => {
 
 app.use('/ping', (req, res) => res.send('pong'))
 
+app.use(setIsServiceUp)
+
+app.use('/status', (req, res) => res.json({ up: req.isServiceUp }))
+
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user)
     return res.status(401).json('Unauthorized')
@@ -105,6 +113,7 @@ app.use('/login', loginRouter)
 app.use('/user', userRouter)
 
 app.use(setActiveMonth)
+app.use(requireServiceUp)
 
 app.use('/declarationMonths', declarationMonthsRouter)
 

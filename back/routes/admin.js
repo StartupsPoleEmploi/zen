@@ -4,10 +4,12 @@ const zip = require('express-easy-zip')
 const path = require('path')
 const { get, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
+const winston = require('winston')
 
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
 const DeclarationMonth = require('../models/DeclarationMonth')
+const Status = require('../models/Status')
 
 const router = express.Router()
 router.use(zip())
@@ -126,5 +128,20 @@ router.get('/declarations/:declarationId/files', (req, res) => {
       })
     })
 })
+
+router.post('/status', (req, res, next) =>
+  Status.query()
+    .update({ up: req.body.up })
+    .returning('*')
+    .then((result) => {
+      winston.info(
+        `Following action in administration interface, Zen is now *${
+          req.body.up ? '' : 'de'
+        }activated*`,
+      )
+      res.json(result[0])
+    })
+    .catch(next),
+)
 
 module.exports = router

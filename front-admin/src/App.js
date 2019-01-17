@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 
 import ActivityLog from './pages/ActivityLog'
 import Declarations from './pages/Declarations'
+import System from './pages/System'
 
 const PAGES = {
   ACTIVITY: 'activity',
   DECLARATIONS: 'declarations',
+  SYSTEM: 'system',
 }
 
 export const App = () => {
@@ -36,9 +38,17 @@ export const App = () => {
         >
           Activité
         </Button>
+        <Button
+          variant="outlined"
+          color={page === PAGES.SYSTEM ? 'primary' : 'default'}
+          onClick={() => setShowActivity(PAGES.SYSTEM)}
+        >
+          Système
+        </Button>
       </div>
       {page === PAGES.DECLARATIONS && <Declarations />}
       {page === PAGES.ACTIVITY && <ActivityLog />}
+      {page === PAGES.SYSTEM && <System />}
     </React.Fragment>
   )
 }

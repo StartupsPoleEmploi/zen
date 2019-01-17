@@ -22,7 +22,7 @@ import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySe
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
 import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 
-const steps = ['1. Ma situation', '2. Mes employeurs', '3. Mes documents']
+const steps = ['Ma situation', 'Mes employeurs', 'Mes documents']
 
 const stepsNumbers = ['/actu', '/employers', '/files']
 

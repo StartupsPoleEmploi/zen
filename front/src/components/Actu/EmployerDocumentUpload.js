@@ -164,6 +164,8 @@ export class EmployerDocumentUpload extends Component {
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
+                          justifyContent: 'space-between',
+                          whiteSpace: 'nowrap',
                           height: 32,
                           minHeight: 32,
                           width: 263, // Note: width mirrors value in StyledFormLabel

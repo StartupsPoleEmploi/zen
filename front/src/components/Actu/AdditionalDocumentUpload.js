@@ -153,6 +153,8 @@ export class AdditionalDocumentUpload extends Component {
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
+                          justifyContent: 'space-between',
+                          whiteSpace: 'nowrap',
                           height: 32,
                           minHeight: 32,
                           width: 263, // Note: width mirrors value in StyledFormLabel
@@ -160,7 +162,7 @@ export class AdditionalDocumentUpload extends Component {
                         component="small"
                       >
                         <EyeIcon />
-                        Voir l'attestation
+                        Voir le document fourni
                       </Button>
                     )}
                 {!fileExistsOnServer && (

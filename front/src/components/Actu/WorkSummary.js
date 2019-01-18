@@ -49,7 +49,7 @@ const WorkSummary = ({ employers }) => {
 
   return (
     <SummaryContainer>
-      <Typography variant="body2">
+      <Typography variant="body1">
         Heures déclarées :{' '}
         <SummaryNumber>
           {_isNaN(totalWorkHours) || totalWorkHours === 0
@@ -59,7 +59,7 @@ const WorkSummary = ({ employers }) => {
         {' '}
         h
       </Typography>
-      <Typography variant="body2">
+      <Typography variant="body1">
         Salaire brut déclaré :{' '}
         <SummaryNumber>
           {_isNaN(totalSalary) || totalSalary === 0 ? (

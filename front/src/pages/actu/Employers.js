@@ -107,7 +107,7 @@ const SubmitButton = styled(Button).attrs({
 
 const ErrorMessage = styled(Typography).attrs({
   paragraph: true,
-  variant: 'body2',
+  variant: 'body1',
 })`
   && {
     color: red;
@@ -400,7 +400,7 @@ export class Employers extends Component {
     }
     return (
       <StyledEmployers>
-        <Title variant="title">
+        <Title variant="h6">
           Pour quels employeurs avez-vous travaillé en{' '}
           {moment(this.props.activeMonth).format('MMMM YYYY')}
           {' '}

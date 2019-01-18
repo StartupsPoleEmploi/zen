@@ -54,7 +54,7 @@ const HeaderMain = styled.div`
 `
 
 const Tagline = styled(Typography).attrs({
-  variant: 'title',
+  variant: 'h6',
 })`
   && {
     font-size: 3.6rem;
@@ -122,7 +122,7 @@ const StepTextContainer = styled.div`
 `
 
 const StepTitle = styled(Typography).attrs({
-  variant: 'subheading',
+  variant: 'subtitle1',
   gutterBottom: true,
 })`
   && {

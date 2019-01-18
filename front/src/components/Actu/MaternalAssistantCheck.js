@@ -32,9 +32,7 @@ export class MaternalAssistantCheck extends Component {
   render() {
     return (
       <StyledMaternalAssistantCheck>
-        <Typography variant="title">
-          Êtes-vous assistante maternelle ?
-        </Typography>
+        <Typography variant="h6">Êtes-vous assistante maternelle ?</Typography>
         <ButtonsContainer>
           <Button variant="contained" onClick={this.props.onValidate}>
             Oui
@@ -44,7 +42,7 @@ export class MaternalAssistantCheck extends Component {
           </Button>
         </ButtonsContainer>
         {this.state.showUnavailableMessage && (
-          <Typography variant="body2">
+          <Typography variant="body1">
             Ce service n'est pas encore disponible pour vous
           </Typography>
         )}

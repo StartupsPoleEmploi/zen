@@ -30,7 +30,7 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
       <Fragment>
         <CustomColorButton onClick={onCancel}>Fermer</CustomColorButton>
         <Button
-          variant="raised"
+          variant="contained"
           href="https://www.pole-emploi.fr"
           target="_self"
           color="primary"

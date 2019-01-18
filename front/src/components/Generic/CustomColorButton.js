@@ -15,7 +15,7 @@ const styles = (theme) => ({
 })
 
 const CustomColorButton = ({ classes, children, ...props }) => (
-  <Button variant="raised" classes={{ root: classes.greyButton }} {...props}>
+  <Button variant="contained" classes={{ root: classes.greyButton }} {...props}>
     {children}
   </Button>
 )

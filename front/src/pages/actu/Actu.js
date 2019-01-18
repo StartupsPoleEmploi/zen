@@ -515,7 +515,7 @@ export class Actu extends Component {
           <FinalButtonsContainer>
             <Button
               onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-              variant="raised"
+              variant="contained"
               color="primary"
             >
               Suivant

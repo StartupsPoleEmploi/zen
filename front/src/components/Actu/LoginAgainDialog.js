@@ -16,7 +16,7 @@ const LoginAgainDialog = ({ isOpened }) => (
       </DialogContentText>
     }
     actions={
-      <Button variant="raised" href="/api/login" color="primary" autoFocus>
+      <Button variant="contained" href="/api/login" color="primary" autoFocus>
         Je me reconnecte
       </Button>
     }

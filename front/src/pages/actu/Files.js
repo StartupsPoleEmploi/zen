@@ -65,7 +65,7 @@ const SaveForLaterButton = styled(Button).attrs({
 
 const SubmitButton = styled(Button).attrs({
   color: 'primary',
-  variant: 'raised',
+  variant: 'contained',
 })`
   && {
     padding: 1rem 3rem;

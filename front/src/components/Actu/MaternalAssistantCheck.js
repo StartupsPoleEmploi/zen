@@ -36,10 +36,10 @@ export class MaternalAssistantCheck extends Component {
           Êtes-vous assistante maternelle ?
         </Typography>
         <ButtonsContainer>
-          <Button variant="raised" onClick={this.props.onValidate}>
+          <Button variant="contained" onClick={this.props.onValidate}>
             Oui
           </Button>
-          <Button variant="raised" onClick={this.onInvalid}>
+          <Button variant="contained" onClick={this.onInvalid}>
             Non
           </Button>
         </ButtonsContainer>

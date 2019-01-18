@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const LinkButton = ({ children, to, ...props }) => (
   <Button
     component={(childProps) => <Link to={to} {...childProps} />}
-    variant="raised"
+    variant="contained"
     {...props}
   >
     {children}

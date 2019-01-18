@@ -54,7 +54,7 @@ const theme = createMuiTheme({
       root: {
         textTransform: 'none',
       },
-      raised: {
+      contained: {
         boxShadow: 'unset',
       },
     },

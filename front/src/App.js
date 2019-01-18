@@ -156,7 +156,7 @@ class App extends Component {
             isLoading: false,
           })
 
-          if (!user.isAuthorizedForTests) return
+          if (!user.isAuthorized) return
 
           if (activeMonth) {
             if (!get(activeDeclaration, 'hasFinishedDeclaringEmployers')) {
@@ -235,7 +235,7 @@ class App extends Component {
     }
 
     if (pathname === '/') {
-      if (!user.isAuthorizedForTests) return <Redirect to="/signup" />
+      if (!user.isAuthorized) return <Redirect to="/signup" />
       return <Redirect to="/actu" />
     }
 

@@ -9,6 +9,7 @@ const { pick, startCase, toLower } = require('lodash')
 const Raven = require('raven')
 
 const User = require('../models/User')
+const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 const { DECLARATION_STATUSES, DECLARATION_CONTEXT_ID } = require('../constants')
@@ -144,7 +145,7 @@ router.get('/callback', (req, res) => {
           firstName: startCase(toLower(userinfo.given_name)),
           lastName: startCase(toLower(userinfo.family_name)),
           gender: userinfo.gender,
-          pePostalCode: coordinates.codePostal,
+          postalCode: coordinates.codePostal,
         }
         if (userinfo.email) {
           // Do not override the email the user may have given us if there is
@@ -160,6 +161,18 @@ router.get('/callback', (req, res) => {
                 .update(userToSave)
                 .returning('*')
             }
+
+            // This is a new user. Sending them an email.
+            if (
+              config.get('shouldSendTransactionalEmails') &&
+              userToSave.email
+            ) {
+              // Note: We do not wait for Mailjet to answer to send data back to the user
+              sendSubscriptionConfirmation(userToSave).catch((e) =>
+                Raven.captureException(e),
+              )
+            }
+
             return User.query()
               .insert(userToSave)
               .returning('*')
@@ -167,12 +180,9 @@ router.get('/callback', (req, res) => {
           .then((user) => {
             req.session.user = {
               ...pick(user, ['id', 'firstName', 'lastName', 'email', 'gender']),
-              isAuthorizedForTests: config.authorizeAllUsers // For test environments
+              isAuthorized: config.authorizeAllUsers // For test environments
                 ? true
-                : !!user.peCode && !!user.pePass && !!user.pePostalCode,
-              isWaitingForConfirmation: config.authorizeAllUsers // For test environments
-                ? false
-                : !!user.peCode && !user.pePass,
+                : user.isAuthorized,
               canSendDocuments: !!declarationContext,
               canSendDeclaration,
               hasAlreadySentDeclaration,

@@ -18,9 +18,8 @@ class User extends BaseModel {
         lastName: { type: 'string', minLength: 1, maxLength: 85 },
         gender: { type: ['string', 'null'] },
         email: { type: ['string', 'null'] },
-        peCode: { type: ['string', 'null'] },
-        pePass: { type: ['string', 'null'] },
-        pePostalCode: { type: ['string', 'null'] },
+        postalCode: { type: ['string', 'null'] },
+        isAuthorized: { type: 'boolean' },
       },
     }
   }

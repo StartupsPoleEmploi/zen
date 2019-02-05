@@ -159,7 +159,6 @@ export class AdditionalDocumentUpload extends Component {
                           minHeight: 32,
                           width: 263, // Note: width mirrors value in StyledFormLabel
                         }}
-                        component="small"
                       >
                         <EyeIcon />
                         Voir le document fourni

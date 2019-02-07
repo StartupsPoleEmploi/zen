@@ -36,6 +36,8 @@ const possibleDocumentTypes = [
   'invalidityDocument',
 ]
 
+const MAX_MONTHS_TO_FETCH = 24 // 2 years
+
 router.get('/', (req, res, next) => {
   if ('last' in req.query || 'active' in req.query) {
     return Declaration.query()
@@ -63,6 +65,13 @@ router.get('/', (req, res, next) => {
       .catch(next)
   }
 
+  const queryLimit = Math.abs(req.query.limit)
+  const limit = Number.isNaN(queryLimit)
+    ? MAX_MONTHS_TO_FETCH
+    : queryLimit < MAX_MONTHS_TO_FETCH
+      ? queryLimit
+      : MAX_MONTHS_TO_FETCH
+
   return Declaration.query()
     .eager(
       `[${possibleDocumentTypes.join(
@@ -71,7 +80,7 @@ router.get('/', (req, res, next) => {
     )
     .where({ userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
-    .limit(24) // 2 years
+    .limit(limit)
     .then((declarations) => res.json(declarations))
     .catch(next)
 })

@@ -140,16 +140,10 @@ const getFieldError = ({ name, value }) => {
   if (!isValid) return 'Champ obligatoire'
 
   if (name === WORK_HOURS) {
-    const intValue = parseInt(value, 10)
-    // if the value was previously saved and restored, it is an integer
-    // otherwise, validate a string
-    if (
-      !Number.isInteger(value) &&
-      (_isNaN(intValue) || intValue.toString() !== value)
-    ) {
+    if (_isNaN(value)) {
       return `Merci de ne saisir que des chiffres`
     }
-    if (intValue < MIN_WORK_HOURS || intValue > MAX_WORK_HOURS) {
+    if (value < MIN_WORK_HOURS || value > MAX_WORK_HOURS) {
       return `Merci de corriger le nombre d'heures travaillées`
     }
   }

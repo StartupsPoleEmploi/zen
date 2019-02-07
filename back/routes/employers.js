@@ -2,13 +2,13 @@ const express = require('express')
 
 const router = express.Router()
 const { transaction } = require('objection')
-const winston = require('winston')
 const { pick } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const isUserTokenValid = require('../lib/isUserTokenValid')
+const winston = require('../lib/log')
 
 const Declaration = require('../models/Declaration')
 const Document = require('../models/Document')

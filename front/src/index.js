@@ -31,6 +31,7 @@ moment.locale('fr')
 
 const theme = createMuiTheme({
   typography: {
+    useNextVariants: true, // Preparation for Material-UI v4 new variants. Can be removed after migration.
     // Tell Material-UI what's the font-size on the html element is.
     htmlFontSize: 10,
     fontFamily: [
@@ -54,7 +55,7 @@ const theme = createMuiTheme({
       root: {
         textTransform: 'none',
       },
-      raised: {
+      contained: {
         boxShadow: 'unset',
       },
     },

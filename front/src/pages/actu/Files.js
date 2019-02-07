@@ -65,7 +65,7 @@ const SaveForLaterButton = styled(Button).attrs({
 
 const SubmitButton = styled(Button).attrs({
   color: 'primary',
-  variant: 'raised',
+  variant: 'contained',
 })`
   && {
     padding: 1rem 3rem;
@@ -422,7 +422,7 @@ export class Files extends Component {
         return (
           <React.Fragment>
             <Typography
-              variant="subheading"
+              variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
             >
               <b>{neededDocument.sectionLabel}</b>
@@ -459,7 +459,7 @@ export class Files extends Component {
       <div>
         <div>
           <Typography
-            variant="subheading"
+            variant="subtitle1"
             style={{ textTransform: 'uppercase' }}
           >
             <b>
@@ -476,7 +476,7 @@ export class Files extends Component {
 
         <div>
           <Typography
-            variant="subheading"
+            variant="subtitle1"
             style={{ textTransform: 'uppercase' }}
           >
             <b>
@@ -600,7 +600,7 @@ export class Files extends Component {
     if (declaration.isFinished) {
       return (
         <FilesDoneSection key={declaration.id}>
-          <Typography variant="body2">
+          <Typography variant="body1">
             Fichiers de {formattedMonth} transmis
           </Typography>
           {' '}
@@ -611,12 +611,12 @@ export class Files extends Component {
 
     return (
       <FilesSection key={declaration.id}>
-        <StyledTitle variant="title">
+        <StyledTitle variant="h6">
           Envoi des documents du mois de {formattedMonth}
         </StyledTitle>
         <StyledInfo>
           <Typography
-            variant="body2"
+            variant="body1"
             style={{
               color: declarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
               paddingBottom: '2rem',
@@ -632,7 +632,7 @@ export class Files extends Component {
           : this.renderCurrentDocumentsList(declaration)}
         <WorkSummary employers={declaration.employers} />
         <StyledInfo>
-          <Typography variant="body2">
+          <Typography variant="body1">
             Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
             seront tous là.
             <br />
@@ -640,7 +640,7 @@ export class Files extends Component {
           </Typography>
         </StyledInfo>
         {error && (
-          <ErrorMessage variant="body2">
+          <ErrorMessage variant="body1">
             Nous sommes désolés, une erreur s'est produite lors de l'envoi des
             documents. Merci de bien vouloir réessayer.
             <br />
@@ -700,7 +700,7 @@ export class Files extends Component {
       // Users have come to this page without any old documents to validate
       return (
         <StyledFiles>
-          <StyledTitle variant="title">
+          <StyledTitle variant="h6">
             Vous n'avez pas de fichier à envoyer.
           </StyledTitle>
         </StyledFiles>
@@ -716,7 +716,7 @@ export class Files extends Component {
     return (
       <StyledFiles>
         {lastDeclaration.isFinished ? (
-          <StyledTitle variant="title">
+          <StyledTitle variant="h6">
             Vous avez terminé l'envoi des documents du mois de{' '}
             {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
           </StyledTitle>

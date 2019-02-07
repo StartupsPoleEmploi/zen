@@ -24,7 +24,7 @@ const UnableToDeclareDialog = ({ isOpened }) => (
     }
     actions={
       <Button
-        variant="raised"
+        variant="contained"
         href="/api/login/logout"
         target="_self"
         color="primary"

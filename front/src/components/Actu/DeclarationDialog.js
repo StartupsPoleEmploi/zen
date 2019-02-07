@@ -80,7 +80,7 @@ class DeclarationDialog extends Component {
                 Je modifie ma déclaration
               </CustomColorButton>
               <Button
-                variant="raised"
+                variant="contained"
                 href="https://www.pole-emploi.fr"
                 target="_self"
                 color="primary"
@@ -123,7 +123,7 @@ class DeclarationDialog extends Component {
                 Je modifie ma déclaration
               </CustomColorButton>
               <Button
-                variant="raised"
+                variant="contained"
                 onClick={this.confirmAndIgnoreErrors}
                 color="primary"
                 autoFocus
@@ -152,7 +152,7 @@ class DeclarationDialog extends Component {
               Je n'ai pas terminé
             </CustomColorButton>
             <Button
-              variant="raised"
+              variant="contained"
               onClick={this.confirm}
               color="primary"
               autoFocus

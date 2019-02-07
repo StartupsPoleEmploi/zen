@@ -41,13 +41,13 @@ const StyledPaper = styled(Paper)`
   margin: 4rem auto 0;
 `
 
-const Title = styled(Typography).attrs({ variant: 'title' })`
+const Title = styled(Typography).attrs({ variant: 'h6' })`
   text-align: center;
 `
 
 const ErrorMessage = styled(Typography).attrs({
   paragraph: true,
-  variant: 'body2',
+  variant: 'body1',
 })`
   && {
     color: red;
@@ -515,7 +515,7 @@ export class Actu extends Component {
           <FinalButtonsContainer>
             <Button
               onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-              variant="raised"
+              variant="contained"
               color="primary"
             >
               Suivant

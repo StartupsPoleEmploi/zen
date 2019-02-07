@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const BLUE = '#39679e'
 
 const StyledTitle = styled(Typography).attrs({
-  variant: 'display1',
+  variant: 'h4',
 })`
   && {
     color: #000;

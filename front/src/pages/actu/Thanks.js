@@ -30,7 +30,7 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
       <StyledImg src={moneyBank} alt="" />
       {isDeclarationFinished ? (
         <Fragment>
-          <Title variant="title">
+          <Title variant="h6">
             Merci, votre actualisation et l'envoi de vos documents sont terminés
             {activeMonth
               ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
@@ -56,7 +56,7 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
         </Fragment>
       ) : (
         <Fragment>
-          <Title variant="title">
+          <Title variant="h6">
             Merci, vos données ont bien été enregistrées.
           </Title>
           <Typography paragraph>

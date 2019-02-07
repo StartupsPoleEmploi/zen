@@ -6,7 +6,6 @@ import {
   get,
   isBoolean,
   isObject,
-  isEmpty,
   isNaN as _isNaN,
   isNull,
   isUndefined,
@@ -136,7 +135,7 @@ const getEmployersMapFromFormData = (employers) =>
   )
 
 const getFieldError = ({ name, value }) => {
-  const isValid = !isNull(value) || !isUndefined(value) || !isEmpty(value)
+  const isValid = !isNull(value) && !isUndefined(value) && value !== ''
   if (!isValid) return 'Champ obligatoire'
 
   if (name === WORK_HOURS) {

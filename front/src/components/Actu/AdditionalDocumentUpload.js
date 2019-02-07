@@ -32,7 +32,8 @@ const StyledListItem = styled(ListItem)`
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     flex-wrap: wrap;
-    border: 1px solid ${(props) => (props.hasDocument ? '#3e689b' : '#df5555')};
+    border-width: 1px;
+    border-style: solid;
     border-left-width: 0.8rem;
     border-radius: 0.5rem;
     margin-top: 1rem;
@@ -137,7 +138,9 @@ export class AdditionalDocumentUpload extends Component {
 
     return (
       <StyledContainer>
-        <StyledListItem hasDocument={fileExistsOnServer}>
+        <StyledListItem
+          style={{ borderColor: fileExistsOnServer ? '#3e689b' : '#df5555' }}
+        >
           <ListItemText primary={<b>{label}</b>} />
           <FormControl>
             {isLoading ? (

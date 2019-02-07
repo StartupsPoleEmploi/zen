@@ -420,7 +420,7 @@ export class Files extends Component {
           moment(declaration[dateField]).format('DD MMMM YYYY'),
         )
         return (
-          <React.Fragment>
+          <div key={neededDocument.name}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
@@ -441,7 +441,7 @@ export class Files extends Component {
                 allowSkipFile: isOldMonth,
               })}
             </StyledList>
-          </React.Fragment>
+          </div>
         )
       },
     )
@@ -513,7 +513,6 @@ export class Files extends Component {
 
   renderAdditionalDocument = ({ label, name, declaration, allowSkipFile }) => (
     <AdditionalDocumentUpload
-      key={name}
       declarationId={declaration.id}
       label={label}
       name={name}

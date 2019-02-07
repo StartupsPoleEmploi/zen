@@ -16,7 +16,7 @@ router.use(zip())
 
 router.get('/declarationsMonths', (req, res, next) => {
   DeclarationMonth.query()
-    .where('startDate', '<', new Date())
+    .where('startDate', '<=', new Date())
     .orderBy('startDate', 'desc')
     .then((declarationMonths) => res.json(declarationMonths))
     .catch(next)

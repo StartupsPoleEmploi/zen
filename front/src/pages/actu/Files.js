@@ -474,23 +474,25 @@ export class Files extends Component {
           <StyledList>{salaryNodes}</StyledList>
         </div>
 
-        <div>
-          <Typography
-            variant="subtitle1"
-            style={{ textTransform: 'uppercase' }}
-          >
-            <b>
-              {certificateNodes.length} contrat{certificateNodes.length > 1 &&
-                's'}{' '}
-              terminé{certificateNodes.length > 1 && 's'}
-            </b>
-          </Typography>
-          <Typography variant="caption">
-            Fin de contrat{certificateNodes.length > 1 && 's'} en{' '}
-            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
-          </Typography>
-          <StyledList>{certificateNodes}</StyledList>
-        </div>
+        {certificateNodes.length > 0 && (
+          <div>
+            <Typography
+              variant="subtitle1"
+              style={{ textTransform: 'uppercase' }}
+            >
+              <b>
+                {certificateNodes.length} contrat{certificateNodes.length > 1 &&
+                  's'}{' '}
+                terminé{certificateNodes.length > 1 && 's'}
+              </b>
+            </Typography>
+            <Typography variant="caption">
+              Fin de contrat{certificateNodes.length > 1 && 's'} en{' '}
+              {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
+            </Typography>
+            <StyledList>{certificateNodes}</StyledList>
+          </div>
+        )}
 
         <div>{additionalDocumentsNodes}</div>
       </div>

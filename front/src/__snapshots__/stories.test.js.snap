@@ -3664,10 +3664,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-1798 sc-VigVT sc-fjdhpX gDzGmq"
+                  className="MuiFormControlLabel-root-1798 sc-VigVT sc-fjdhpX fCYRII"
                 >
                   <span
-                    className="MuiButtonBase-root-1819 MuiIconButton-root-1813 MuiPrivateSwitchBase-root-1809 MuiRadio-root-1804 MuiRadio-colorSecondary-1808 MuiPrivateSwitchBase-checked-1810 MuiRadio-checked-1805 sc-jzJRlG cWbQoI"
+                    className="MuiButtonBase-root-1819 MuiIconButton-root-1813 MuiPrivateSwitchBase-root-1809 MuiRadio-root-1804 MuiRadio-colorSecondary-1808 sc-jzJRlG ihOVmE"
                     onBlur={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
@@ -3691,11 +3691,11 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         viewBox="0 0 24 24"
                       >
                         <path
-                          d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
                         />
                       </svg>
                       <input
-                        checked={true}
+                        checked={false}
                         className="MuiPrivateSwitchBase-input-1812"
                         disabled={false}
                         name="hasEndedThisMonth[1]"

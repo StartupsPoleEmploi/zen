@@ -100,18 +100,6 @@ describe('employers routes', () => {
   afterEach(() =>
     Declaration.knex().raw('TRUNCATE "Declarations", "Employers", "documents"'))
 
-  describe('GET /', () => {
-    test('HTTP throws if no declaration is found', () =>
-      supertest(app).get('/'))
-
-    test('HTTP 200 if a declaration is found', () =>
-      addBasicDeclaration().then(() =>
-        supertest(app)
-          .get('/')
-          .expect(200),
-      ))
-  })
-
   describe('POST /', () => {
     test('HTTP 400 if no data sent', () =>
       supertest(app)

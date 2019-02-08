@@ -31,23 +31,6 @@ const getSanitizedEmployer = ({ employer, declaration, user }) => {
   }
 }
 
-router.get('/', requireActiveMonth, (req, res, next) => {
-  Declaration.query()
-    .eager('employers.document')
-    .findOne({
-      userId: req.session.user.id,
-      monthId: req.activeMonth.id,
-    })
-    .then((declaration) => {
-      if (!declaration) {
-        return res.status(404).json('No declaration found')
-      }
-
-      res.json(declaration.employers)
-    })
-    .catch(next)
-})
-
 router.post('/', requireActiveMonth, (req, res, next) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(400).json('No data')

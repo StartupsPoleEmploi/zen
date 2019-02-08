@@ -22,6 +22,7 @@ import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
 
 // Note : these values are duplicated in WorkSummary
 const WORK_HOURS = 'workHours'
@@ -183,6 +184,7 @@ export class Employers extends Component {
     isLoading: true,
     error: null,
     isDialogOpened: false,
+    showPreviousEmployersModal: false,
     consistencyErrors: [],
     validationErrors: [],
     isValidating: false,
@@ -191,14 +193,33 @@ export class Employers extends Component {
 
   componentDidMount() {
     superagent
-      .get('/api/employers')
+      .get('/api/declarations?limit=2')
       .then((res) => res.body)
-      .then((employers) => {
-        if (employers.length === 0) return this.setState({ isLoading: false })
+      .then((declarations) => {
+        const currentDeclaration = declarations[0]
+        const previousDeclaration = declarations[1]
+
+        if (currentDeclaration.employers.length === 0) {
+          this.setState({ isLoading: false })
+
+          const relevantPreviousEmployers = previousDeclaration.employers.filter(
+            (employer) => !employer.hasEndedThisMonth,
+          )
+          if (relevantPreviousEmployers.length === 0) return
+
+          return this.setState({
+            employers: relevantPreviousEmployers.map((employer) => ({
+              ...employerTemplate,
+              employerName: { value: employer.employerName, error: null },
+            })),
+            previousEmployers: relevantPreviousEmployers,
+            showPreviousEmployersModal: true,
+          })
+        }
 
         this.setState({
           isLoading: false,
-          employers: employers.map((employer) =>
+          employers: currentDeclaration.employers.map((employer) =>
             Object.keys(
               pick(employer, [
                 'employerName',
@@ -367,6 +388,9 @@ export class Employers extends Component {
     })
   }
 
+  closePreviousEmployersModal = () =>
+    this.setState({ showPreviousEmployersModal: false })
+
   renderEmployerQuestion = (data, index) => (
     <EmployerQuestion
       {...data}
@@ -434,6 +458,11 @@ export class Employers extends Component {
           validationErrors={this.state.validationErrors}
         />
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
+        <PreviousEmployersDialog
+          isOpened={this.state.showPreviousEmployersModal}
+          onCancel={this.closePreviousEmployersModal}
+          employers={this.state.previousEmployers}
+        />
       </StyledEmployers>
     )
   }

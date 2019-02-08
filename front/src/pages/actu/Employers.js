@@ -246,15 +246,12 @@ export class Employers extends Component {
     }))
 
   onSave = () => {
-    const isValid = this.checkFormValidity()
-    if (isValid) {
-      superagent
-        .post('/api/employers', {
-          employers: getEmployersMapFromFormData(this.state.employers),
-        })
-        .set('CSRF-Token', this.props.token)
-        .then(() => this.props.history.push('/thanks?later'))
-    }
+    superagent
+      .post('/api/employers', {
+        employers: getEmployersMapFromFormData(this.state.employers),
+      })
+      .set('CSRF-Token', this.props.token)
+      .then(() => this.props.history.push('/thanks?later'))
   }
 
   onSubmit = ({ ignoreErrors = false } = {}) => {

@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 const { transaction } = require('objection')
-const { pick } = require('lodash')
+const { isBoolean, isInteger, isNumber, isString, pick } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
@@ -87,6 +87,20 @@ router.post('/', requireActiveMonth, (req, res, next) => {
           .$query()
           .upsertGraph()
           .then(() => res.json(declaration))
+      }
+
+      // Additional check: Employers declaration is finished and all should be filled
+      if (
+        declaration.employers.some(
+          (employer) =>
+            !isString(employer.employerName) ||
+            employer.employerName.length === 0 ||
+            !isInteger(employer.workHours) ||
+            !isNumber(employer.salary) ||
+            !isBoolean(employer.hasEndedThisMonth),
+        )
+      ) {
+        return res.status(400).json('Invalid employers declaration')
       }
 
       if (!isUserTokenValid(req.user.tokenExpirationDate)) {

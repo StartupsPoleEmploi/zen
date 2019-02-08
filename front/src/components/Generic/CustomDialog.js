@@ -49,7 +49,7 @@ CustomDialog.propTypes = {
   content: PropTypes.node.isRequired,
   onCancel: PropTypes.func,
   isOpened: PropTypes.bool.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   titleId: PropTypes.string,
 }
 

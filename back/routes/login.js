@@ -13,7 +13,7 @@ const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionCo
 const winston = require('../lib/log')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
-const { DECLARATION_STATUSES, DECLARATION_CONTEXT_ID } = require('../constants')
+const { DECLARATION_STATUSES } = require('../constants')
 
 const realm = '/individu'
 
@@ -107,13 +107,6 @@ router.get('/callback', (req, res) => {
           .set('Authorization', `Bearer ${authToken.token.access_token}`)
           .set('Accept-Encoding', 'gzip'),
         superagent
-          .get(
-            `${apiHost}/partenaire/peconnect-envoidocument/v1/depose/contextes-accessibles`,
-          )
-          .set('Accept', 'application/json')
-          .set('Authorization', `Bearer ${authToken.token.access_token}`)
-          .set('Accept-Encoding', 'gzip'),
-        superagent
           .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
           .set('Accept', 'application/json')
           .set('Authorization', `Bearer ${authToken.token.access_token}`)
@@ -125,13 +118,9 @@ router.get('/callback', (req, res) => {
       ([
         { body: userinfo },
         { body: declarationData },
-        { body: accessibleContexts },
         { body: coordinates },
         tokenExpirationDate,
       ]) => {
-        const declarationContext = (accessibleContexts || []).find(
-          (context) => context.code === DECLARATION_CONTEXT_ID,
-        )
         // We only allow declarations when we have this status code
         // (yes, it doesn't seem to make sense, but that's what the API
         // gives us when the declaration hasn't been done yet)
@@ -184,7 +173,6 @@ router.get('/callback', (req, res) => {
               isAuthorized: config.authorizeAllUsers // For test environments
                 ? true
                 : user.isAuthorized,
-              canSendDocuments: !!declarationContext,
               canSendDeclaration,
               hasAlreadySentDeclaration,
               tokenExpirationDate,

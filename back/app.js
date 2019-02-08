@@ -11,8 +11,6 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
 const csurf = require('csurf')
-const winston = require('winston')
-const slackWinston = require('slack-winston').Slack
 
 const { version } = require('./package.json')
 
@@ -21,6 +19,7 @@ const {
   requireServiceUp,
   setIsServiceUp,
 } = require('./lib/serviceUpMiddleware')
+const winston = require('./lib/log')
 
 const loginRouter = require('./routes/login')
 const userRouter = require('./routes/user')
@@ -43,13 +42,6 @@ const knex = Knex({
   connection: process.env.DATABASE_URL,
 })
 Model.knex(knex)
-
-winston.add(slackWinston, {
-  // Send this file's logs to Slack
-  webhook_url: process.env.SLACK_WEBHOOK_SU_ZEN_TECH,
-  message: `*{{level}}*: {{message}}\n\n{{meta}}`,
-  level: 'info',
-})
 
 if (process.env.NODE_ENV !== 'development') {
   winston.info('Starting back')
@@ -125,7 +117,7 @@ if (sentryUrl) {
   // an error middleware needs 4 arguments
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
-    winston.error(err)
+    winston.error('Error caught in final middleware:', err)
     res.status(500).json({
       sentry: res.sentry,
     })

@@ -1,6 +1,6 @@
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
-const winston = require('winston')
+const winston = require('../log')
 const mailjet = require('./mailjet')
 
 const Declaration = require('../../models/Declaration')

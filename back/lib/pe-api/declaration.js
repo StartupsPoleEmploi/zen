@@ -2,6 +2,8 @@ const { format } = require('date-fns')
 const superagent = require('superagent')
 const config = require('config')
 
+const winston = require('../log')
+
 const convertDate = (date) => format(date, 'DDMMYYYY')
 
 const JOB_SEARCH_STOP_MOTIVES = {
@@ -76,6 +78,10 @@ const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) =>
     .set('Accept-Encoding', 'gzip')
     .set('Accept', 'application/json')
     .set('media', 'I')
+    .catch((err) => {
+      winston.error('Error while sending declaration', declaration.id, err)
+      throw err
+    })
 
 module.exports = {
   sendDeclaration,

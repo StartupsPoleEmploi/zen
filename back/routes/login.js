@@ -10,6 +10,7 @@ const Raven = require('raven')
 
 const User = require('../models/User')
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
+const winston = require('../lib/log')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 const { DECLARATION_STATUSES, DECLARATION_CONTEXT_ID } = require('../constants')
@@ -194,6 +195,7 @@ router.get('/callback', (req, res) => {
     )
     .catch((err) => {
       res.redirect('/?loginFailed')
+      winston.error('Error at login while requesting pe api', err)
       return Raven.captureException(err)
     })
 })

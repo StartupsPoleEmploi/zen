@@ -21,6 +21,8 @@ const fs = require('fs')
 const path = require('path')
 const { deburr, toNumber } = require('lodash')
 
+const winston = require('../log')
+
 const DEFAULT_WAIT_TIME = 1000
 const MAX_RETRIES = 3
 
@@ -100,7 +102,10 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
       return res
     })
     .catch((err) => {
-      if (previousTries > MAX_RETRIES) throw err
+      if (previousTries > MAX_RETRIES) {
+        winston.error('Error while uploading document', document.id, err)
+        throw err
+      }
       if (err.status === 429) {
         return checkHeadersAndWait(err.response.headers).then(() =>
           doUpload({
@@ -110,6 +115,7 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
           }),
         )
       }
+      winston.error('Error while uploading document', document.id, err)
       throw err
     })
 
@@ -130,7 +136,10 @@ const doConfirm = ({
     .set('media', 'M') // "Mobile". "I" (Internet) crashed the documents transmission
     .then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
     .catch((err) => {
-      if (previousTries > MAX_RETRIES) throw err
+      if (previousTries > MAX_RETRIES) {
+        winston.error('Error while confirming document', document.id, err)
+        throw err
+      }
       if (err.status === 429) {
         // HTTP 429 Too many requests
         return checkHeadersAndWait(err.response.headers).then(() =>
@@ -142,6 +151,7 @@ const doConfirm = ({
           }),
         )
       }
+      winston.error('Error while confirming document', document.id, err)
       throw err
     })
 

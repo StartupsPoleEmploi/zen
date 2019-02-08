@@ -1,4 +1,3 @@
-const winston = require('winston')
 const pdf = require('pdfjs')
 const fs = require('fs')
 const Helvetica = require('pdfjs/font/Helvetica')
@@ -7,6 +6,7 @@ const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
 
 const mailjet = require('./mailjet')
+const winston = require('../log')
 const Declaration = require('../../models/Declaration')
 
 const { setDeclarationDoneProperty } = require('./manageContacts')

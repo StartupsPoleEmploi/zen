@@ -240,6 +240,10 @@ export class Employers extends Component {
       })
   }
 
+  componentWillUnmount() {
+    this.onSave()
+  }
+
   addEmployer = () =>
     this.setState(({ employers }) => ({
       employers: employers.concat({ ...employerTemplate }),
@@ -266,14 +270,16 @@ export class Employers extends Component {
       employers: employers.filter((e, key) => key !== index),
     }))
 
-  onSave = () => {
+  onSave = () =>
     superagent
       .post('/api/employers', {
         employers: getEmployersMapFromFormData(this.state.employers),
       })
       .set('CSRF-Token', this.props.token)
-      .then(() => this.props.history.push('/thanks?later'))
-  }
+      .then((res) => res) // Not triggered without a then
+
+  saveAndRedirect = () =>
+    this.onSave().then(() => this.props.history.push('/thanks?later'))
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
@@ -441,7 +447,7 @@ export class Employers extends Component {
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonsContainer>
-            <SaveForLaterButton onClick={this.onSave}>
+            <SaveForLaterButton onClick={this.saveAndRedirect}>
               Enregistrer<br />et finir plus tard
             </SaveForLaterButton>
             <SubmitButton onClick={this.openDialog}>

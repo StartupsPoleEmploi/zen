@@ -54,7 +54,7 @@ storiesOf('EmployerQuestion', module)
       workHours={{ value: 'Bim', error: 'Entrez un nombre entier' }}
       salary={{ value: 'Boum', error: 'Entrez un nombre entier' }}
       hasEndedThisMonth={{
-        hasEndedThisMonth: null,
+        value: null,
         error: 'Champ obligatoire',
       }}
     />

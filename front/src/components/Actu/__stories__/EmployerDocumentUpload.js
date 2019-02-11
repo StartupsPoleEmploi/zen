@@ -10,6 +10,7 @@ const defaultProps = {
   employerName: 'Jean Dupond',
   hasEndedThisMonth: false,
   submitFile: action('submitFile'),
+  skipFile: () => {},
 }
 
 storiesOf('EmployerDocumentUpload', module)

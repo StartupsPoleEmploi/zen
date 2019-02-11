@@ -21,6 +21,10 @@ const setIsServiceUp = (req, res, next) => {
       req.isServiceUp = status.up
       next()
     })
+    .catch(() => {
+      req.isServiceUp = false
+      next()
+    })
 }
 
 const requireServiceUp = (req, res, next) => {

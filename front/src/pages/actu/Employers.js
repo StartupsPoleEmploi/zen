@@ -6,7 +6,6 @@ import {
   get,
   isBoolean,
   isObject,
-  isEmpty,
   isNaN as _isNaN,
   isNull,
   isUndefined,
@@ -23,6 +22,7 @@ import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
 
 // Note : these values are duplicated in WorkSummary
 const WORK_HOURS = 'workHours'
@@ -136,20 +136,14 @@ const getEmployersMapFromFormData = (employers) =>
   )
 
 const getFieldError = ({ name, value }) => {
-  const isValid = !isNull(value) || !isUndefined(value) || !isEmpty(value)
+  const isValid = !isNull(value) && !isUndefined(value) && value !== ''
   if (!isValid) return 'Champ obligatoire'
 
   if (name === WORK_HOURS) {
-    const intValue = parseInt(value, 10)
-    // if the value was previously saved and restored, it is an integer
-    // otherwise, validate a string
-    if (
-      !Number.isInteger(value) &&
-      (_isNaN(intValue) || intValue.toString() !== value)
-    ) {
+    if (_isNaN(value)) {
       return `Merci de ne saisir que des chiffres`
     }
-    if (intValue < MIN_WORK_HOURS || intValue > MAX_WORK_HOURS) {
+    if (value < MIN_WORK_HOURS || value > MAX_WORK_HOURS) {
       return `Merci de corriger le nombre d'heures travaillées`
     }
   }
@@ -190,6 +184,7 @@ export class Employers extends Component {
     isLoading: true,
     error: null,
     isDialogOpened: false,
+    showPreviousEmployersModal: false,
     consistencyErrors: [],
     validationErrors: [],
     isValidating: false,
@@ -198,14 +193,33 @@ export class Employers extends Component {
 
   componentDidMount() {
     superagent
-      .get('/api/employers')
+      .get('/api/declarations?limit=2')
       .then((res) => res.body)
-      .then((employers) => {
-        if (employers.length === 0) return this.setState({ isLoading: false })
+      .then((declarations) => {
+        const currentDeclaration = declarations[0]
+        const previousDeclaration = declarations[1]
+
+        if (currentDeclaration.employers.length === 0) {
+          this.setState({ isLoading: false })
+
+          const relevantPreviousEmployers = previousDeclaration.employers.filter(
+            (employer) => !employer.hasEndedThisMonth,
+          )
+          if (relevantPreviousEmployers.length === 0) return
+
+          return this.setState({
+            employers: relevantPreviousEmployers.map((employer) => ({
+              ...employerTemplate,
+              employerName: { value: employer.employerName, error: null },
+            })),
+            previousEmployers: relevantPreviousEmployers,
+            showPreviousEmployersModal: true,
+          })
+        }
 
         this.setState({
           isLoading: false,
-          employers: employers.map((employer) =>
+          employers: currentDeclaration.employers.map((employer) =>
             Object.keys(
               pick(employer, [
                 'employerName',
@@ -224,6 +238,10 @@ export class Employers extends Component {
           ),
         })
       })
+  }
+
+  componentWillUnmount() {
+    this.onSave()
   }
 
   addEmployer = () =>
@@ -252,17 +270,16 @@ export class Employers extends Component {
       employers: employers.filter((e, key) => key !== index),
     }))
 
-  onSave = () => {
-    const isValid = this.checkFormValidity()
-    if (isValid) {
-      superagent
-        .post('/api/employers', {
-          employers: getEmployersMapFromFormData(this.state.employers),
-        })
-        .set('CSRF-Token', this.props.token)
-        .then(() => this.props.history.push('/thanks?later'))
-    }
-  }
+  onSave = () =>
+    superagent
+      .post('/api/employers', {
+        employers: getEmployersMapFromFormData(this.state.employers),
+      })
+      .set('CSRF-Token', this.props.token)
+      .then((res) => res) // Not triggered without a then
+
+  saveAndRedirect = () =>
+    this.onSave().then(() => this.props.history.push('/thanks?later'))
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
@@ -377,6 +394,9 @@ export class Employers extends Component {
     })
   }
 
+  closePreviousEmployersModal = () =>
+    this.setState({ showPreviousEmployersModal: false })
+
   renderEmployerQuestion = (data, index) => (
     <EmployerQuestion
       {...data}
@@ -427,7 +447,7 @@ export class Employers extends Component {
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonsContainer>
-            <SaveForLaterButton onClick={this.onSave}>
+            <SaveForLaterButton onClick={this.saveAndRedirect}>
               Enregistrer<br />et finir plus tard
             </SaveForLaterButton>
             <SubmitButton onClick={this.openDialog}>
@@ -444,6 +464,11 @@ export class Employers extends Component {
           validationErrors={this.state.validationErrors}
         />
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
+        <PreviousEmployersDialog
+          isOpened={this.state.showPreviousEmployersModal}
+          onCancel={this.closePreviousEmployersModal}
+          employers={this.state.previousEmployers}
+        />
       </StyledEmployers>
     )
   }

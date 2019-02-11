@@ -10,6 +10,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import EuroInput from '../Generic/EuroInput'
+import HourInput from '../Generic/HourInput'
 import Rectangle from '../Generic/Rectangle'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
@@ -137,10 +138,7 @@ export class EmployerQuestion extends Component {
 
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
     let value = _value
-    if (
-      (type === 'blur' && fieldName.startsWith('employerName')) ||
-      fieldName.startsWith('workHours')
-    ) {
+    if (type === 'blur' && fieldName.startsWith('employerName')) {
       value = (_value || '').trim()
     }
     // The input 'name' attribute needs an array format
@@ -212,8 +210,12 @@ export class EmployerQuestion extends Component {
                 onChange={this.onChange}
                 error={!!workHours.error}
                 helperText={workHours.error}
+                InputProps={{
+                  inputComponent: HourInput,
+                }}
+                // eslint-disable-next-line
                 inputProps={{
-                  maxLength: 3,
+                  maxLength: 4,
                 }}
               />
             </TooltipOnFocus>

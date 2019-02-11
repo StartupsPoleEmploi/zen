@@ -71,6 +71,8 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
         J'ai compris →
       </Button>
     }
+    disableEscapeKeyDown
+    disableBackdropClick
   />
 )
 

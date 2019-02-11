@@ -7,6 +7,8 @@ import EuroInput from '../EuroInput'
 
 const defaultProps = {
   onChange: action('onChange'),
+  name: 'euro',
+  inputRef: () => {},
 }
 
 storiesOf('EuroInput', module)

@@ -3811,6 +3811,7 @@ exports[`Storyshots EuroInput default 1`] = `
         data-css-1v8lkxq=""
       >
         <input
+          name="euro"
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -3881,6 +3882,7 @@ exports[`Storyshots EuroInput with big float value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
+          name="euro"
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -3951,6 +3953,7 @@ exports[`Storyshots EuroInput with big integer value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
+          name="euro"
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -4021,6 +4024,7 @@ exports[`Storyshots EuroInput with float value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
+          name="euro"
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -4091,6 +4095,7 @@ exports[`Storyshots EuroInput with integer value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
+          name="euro"
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -4098,6 +4103,148 @@ exports[`Storyshots EuroInput with integer value 1`] = `
           onMouseUp={[Function]}
           type="text"
           value="1,00€"
+        />
+        <div>
+          <div
+            data-css-1xjdp6g=""
+          >
+            <div
+              data-css-1u3clyi=""
+            />
+            <div
+              data-css-1vfpuyw=""
+            />
+          </div>
+          <div
+            data-css-1l117w4=""
+          >
+            <div
+              data-css-6x2xk9=""
+            />
+            <div
+              data-css-dh4rml=""
+            />
+          </div>
+          <div
+            data-css-3dqrhs=""
+          >
+            <div
+              data-css-jidh41=""
+            />
+            <div
+              data-css-zkhvkf=""
+            />
+          </div>
+          <div
+            data-css-14agfjn=""
+          >
+            <div
+              data-css-1dkszzo=""
+            />
+            <div
+              data-css-mqumhe=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots HourInput default 1`] = `
+<div
+  data-css-18sl43g=""
+>
+  <div
+    data-css-1uksfg7=""
+  >
+    <div
+      data-css-t3tkv6=""
+    >
+      <div
+        data-css-1v8lkxq=""
+      >
+        <input
+          name="hour"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onMouseUp={[Function]}
+          type="text"
+          value=""
+        />
+        <div>
+          <div
+            data-css-1xjdp6g=""
+          >
+            <div
+              data-css-1u3clyi=""
+            />
+            <div
+              data-css-1vfpuyw=""
+            />
+          </div>
+          <div
+            data-css-1l117w4=""
+          >
+            <div
+              data-css-6x2xk9=""
+            />
+            <div
+              data-css-dh4rml=""
+            />
+          </div>
+          <div
+            data-css-3dqrhs=""
+          >
+            <div
+              data-css-jidh41=""
+            />
+            <div
+              data-css-zkhvkf=""
+            />
+          </div>
+          <div
+            data-css-14agfjn=""
+          >
+            <div
+              data-css-1dkszzo=""
+            />
+            <div
+              data-css-mqumhe=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots HourInput with integer value 1`] = `
+<div
+  data-css-18sl43g=""
+>
+  <div
+    data-css-1uksfg7=""
+  >
+    <div
+      data-css-t3tkv6=""
+    >
+      <div
+        data-css-1v8lkxq=""
+      >
+        <input
+          name="hour"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onMouseUp={[Function]}
+          type="text"
+          value="102h"
         />
         <div>
           <div

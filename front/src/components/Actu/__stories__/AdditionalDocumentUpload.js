@@ -9,6 +9,7 @@ const defaultProps = {
   declarationId: 1,
   label: 'Feuille maladie',
   submitFile: action('Submit file'),
+  skipFile: () => {},
 }
 
 storiesOf('AdditionalDocumentUpload', module)

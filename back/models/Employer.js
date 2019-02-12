@@ -1,9 +1,9 @@
-const { BelongsToOneRelation, HasOneRelation } = require('objection')
+const { BelongsToOneRelation, HasManyRelation } = require('objection')
 const BaseModel = require('./BaseModel')
 
 class Employer extends BaseModel {
   static get tableName() {
-    return 'Employers'
+    return 'employers'
   }
 
   static get jsonSchema() {
@@ -31,7 +31,7 @@ class Employer extends BaseModel {
         relation: BelongsToOneRelation,
         modelClass: `${__dirname}/User`,
         join: {
-          from: 'Employers.userId',
+          from: 'employers.userId',
           to: 'Users.id',
         },
       },
@@ -39,16 +39,16 @@ class Employer extends BaseModel {
         relation: BelongsToOneRelation,
         modelClass: `${__dirname}/Declaration`,
         join: {
-          from: 'Employers.declarationId',
-          to: 'Declarations.id',
+          from: 'employers.declarationId',
+          to: 'declarations.id',
         },
       },
-      document: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
+      documents: {
+        relation: HasManyRelation,
+        modelClass: `${__dirname}/EmployerDocument`,
         join: {
-          from: 'Employers.documentId',
-          to: 'documents.id',
+          from: 'employers.id',
+          to: 'employer_documents.employerId',
         },
       },
     }

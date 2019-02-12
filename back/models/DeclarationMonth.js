@@ -28,7 +28,7 @@ class DeclarationMonth extends BaseModel {
         modelClass: `${__dirname}/Declaration`,
         join: {
           from: 'declaration_months.id',
-          to: 'Declarations.monthId',
+          to: 'declarations.monthId',
         },
       },
     }

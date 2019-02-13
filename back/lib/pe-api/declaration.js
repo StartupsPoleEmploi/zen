@@ -32,28 +32,40 @@ const convertDeclarationToAPIFormat = (declaration) => {
     )
   }
   if (declaration.hasInternship) {
-    apiDeclaration.dateDebutStage = convertDate(declaration.internshipStartDate)
-    apiDeclaration.dateFinStage = convertDate(declaration.internshipEndDate)
+    apiDeclaration.dateDebutStage = convertDate(
+      declaration.dates.internship[0].startDate,
+    )
+    apiDeclaration.dateFinStage = convertDate(
+      declaration.dates.internship[0].endDate,
+    )
   }
   if (declaration.hasSickLeave) {
     apiDeclaration.dateDebutMaladie = convertDate(
-      declaration.sickLeaveStartDate,
+      declaration.dates.sickLeave[0].startDate,
     )
-    apiDeclaration.dateFinMaladie = convertDate(declaration.sickLeaveEndDate)
+    apiDeclaration.dateFinMaladie = convertDate(
+      declaration.dates.sickLeave[0].endDate,
+    )
   }
   if (declaration.hasMaternityLeave) {
     apiDeclaration.dateDebutMaternite = convertDate(
-      declaration.maternityLeaveStartDate,
+      declaration.dates.maternityLeave[0].startDate,
     )
   }
   if (declaration.hasRetirement) {
-    apiDeclaration.dateRetraite = convertDate(declaration.retirementStartDate)
+    apiDeclaration.dateRetraite = convertDate(
+      declaration.dates.retirement[0].startDate,
+    )
   }
   if (declaration.hasInvalidity) {
-    apiDeclaration.dateInvalidite = convertDate(declaration.invalidityStartDate)
+    apiDeclaration.dateInvalidite = convertDate(
+      declaration.dates.invalidity[0].startDate,
+    )
   }
   if (!declaration.isLookingForJob) {
-    apiDeclaration.dateFinRech = convertDate(declaration.jobSearchEndDate)
+    apiDeclaration.dateFinRech = convertDate(
+      declaration.dates.jobSearch[0].endDate,
+    )
     apiDeclaration.motifFinRech =
       declaration.jobSearchStopMotive === 'work'
         ? JOB_SEARCH_STOP_MOTIVES.WORK

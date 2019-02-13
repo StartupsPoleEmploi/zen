@@ -159,53 +159,56 @@ const sendDocuments = async ({ declaration, accessToken }) => {
   const documentsToTransmit = [
     {
       boolField: 'hasInternship',
-      docField: 'internshipDocument',
+      type: 'internship',
       label: 'Stage',
       confirmationData: CODES.INTERNSHIP,
     },
     {
       boolField: 'hasSickLeave',
-      docField: 'sickLeaveDocument',
+      type: 'sickLeave',
       label: 'Congé Maladie',
       confirmationData: CODES.SICKNESS,
     },
     {
       boolField: 'hasMaternityLeave',
-      docField: 'maternityLeaveDocument',
+      type: 'maternityLeave',
       label: 'Congé maternité',
       confirmationData: CODES.SICKNESS,
     },
     {
       boolField: 'hasRetirement',
-      docField: 'retirementDocument',
+      type: 'retirement',
       label: 'Retraite',
       confirmationData: CODES.RETIREMENT,
     },
     {
       boolField: 'hasInvalidity',
-      docField: 'invalidityDocument',
+      type: 'invalidity',
       label: 'Invalidité',
       confirmationData: CODES.INVALIDITY,
     },
   ]
     .reduce((prev, fields) => {
-      if (!declaration[fields.boolField] || !declaration[fields.docField])
-        return prev
+      const dbDocument = declaration.documents.find(
+        (doc) => doc.type === fields.type,
+      )
+      if (!declaration[fields.boolField] || !dbDocument) return prev
       return prev.concat({
-        filePath: `${uploadsDirectory}${declaration[fields.docField].file}`,
+        filePath: `${uploadsDirectory}${dbDocument.file}`,
         label: fields.label,
-        dbDocument: declaration[fields.docField],
+        dbDocument,
         confirmationData: fields.confirmationData,
       })
     }, [])
     .concat(
       declaration.employers.reduce(
-        (prev, { employerName, document, hasEndedThisMonth }) => {
-          if (!document || !document.file) return prev
+        (prev, { employerName, documents, hasEndedThisMonth }) => {
+          // TODO this will need to be updated to handle multiple files / employer
+          if (!documents[0] || !documents[0].file) return prev
           return prev.concat({
-            filePath: `${uploadsDirectory}${document.file}`,
+            filePath: `${uploadsDirectory}${documents[0].file}`,
             label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
-            dbDocument: document,
+            dbDocument: documents[0],
             confirmationData: hasEndedThisMonth
               ? CODES.EMPLOYER_CERTIFICATE
               : CODES.SALARY_SHEET,

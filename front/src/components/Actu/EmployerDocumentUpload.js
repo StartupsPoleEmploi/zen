@@ -103,6 +103,7 @@ const SideButton = styled(Button)`
 
 export class EmployerDocumentUpload extends Component {
   static propTypes = {
+    documentId: PropTypes.number,
     id: PropTypes.number.isRequired,
     employerName: PropTypes.string.isRequired,
     error: PropTypes.string,
@@ -120,10 +121,10 @@ export class EmployerDocumentUpload extends Component {
 
   render() {
     const {
+      documentId,
       employerName,
       error,
       fileExistsOnServer,
-      id,
       hasEndedThisMonth,
       isLoading,
       isTransmitted,
@@ -187,7 +188,7 @@ export class EmployerDocumentUpload extends Component {
                   : fileExistsOnServer && (
                       <Button
                         variant="outlined"
-                        href={`/api/employers/files?employerId=${id}`}
+                        href={`/api/employers/files?documentId=${documentId}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{

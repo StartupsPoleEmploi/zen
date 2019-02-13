@@ -119,41 +119,41 @@ const StyledList = styled(List)`
 
 const DECLARATION_SUBMIT_ERROR_NAME = 'DECLARATION'
 
-const additionalDocuments = [
+const additionalDocumentsSpecs = [
   {
-    name: 'sickLeaveDocument',
+    name: 'sickLeave',
     fieldToCheck: 'hasSickLeave',
     label: 'Feuille maladie',
     sectionLabel: 'Congé maladie',
-    dateFields: ['internshipStartDate', 'internshipEndDate'],
+    dateFields: ['startDate', 'endDate'],
   },
   {
-    name: 'internshipDocument',
+    name: 'internship',
     fieldToCheck: 'hasInternship',
     label: 'Attestation de stage',
     sectionLabel: 'Stage',
-    dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
+    dateFields: ['startDate', 'endDate'],
   },
   {
-    name: 'maternityLeaveDocument',
+    name: 'maternityLeave',
     fieldToCheck: 'hasMaternityLeave',
     label: 'Attestation de congé maternité',
     sectionLabel: 'Congé maternité',
-    dateFields: ['maternityLeaveStartDate'],
+    dateFields: ['startDate'],
   },
   {
-    name: 'retirementDocument',
+    name: 'retirement',
     fieldToCheck: 'hasRetirement',
     label: 'Attestation retraite',
     sectionLabel: 'Retraite',
-    dateFields: ['retirementStartDate'],
+    dateFields: ['startDate'],
   },
   {
-    name: 'invalidityDocument',
+    name: 'invalidity',
     fieldToCheck: 'hasInvalidity',
     label: 'Attestation invalidité',
     sectionLabel: 'Invalidité',
-    dateFields: ['invalidityStartDate'],
+    dateFields: ['startDate'],
   },
 ]
 
@@ -163,14 +163,20 @@ const getErrorKey = ({ name, declarationId }) =>
   `${declarationId}-${name}-Error`
 
 // Get the number of missing files in a declaration
+// FIXME this doesn't handle empty arrays, and only counts arrays as one doc
 const getDeclarationMissingFilesNb = (declaration) => {
-  const missingAdditionalDocuments = additionalDocuments
-    .filter((doc) => !!declaration[doc.fieldToCheck])
-    .filter((doc) => !declaration[doc.name])
+  const missingAdditionalDocuments = additionalDocumentsSpecs
+    .filter((spec) => declaration[spec.fieldToCheck])
+    .filter(
+      (spec) =>
+        !declaration.documents.some(
+          (declarationDoc) => declarationDoc.type === spec.name,
+        ),
+    )
 
   return (
     declaration.employers.reduce(
-      (prev, employer) => prev + (employer.document ? 0 : 1),
+      (prev, employer) => prev + (employer.documents[0] ? 0 : 1),
       0,
     ) + missingAdditionalDocuments.length
   )
@@ -388,8 +394,9 @@ export class Files extends Component {
   }
 
   renderDocumentList = ({ declaration, isOldMonth }) => {
-    const neededAdditionalDocuments = additionalDocuments.filter(
-      (doc) => !!declaration[doc.fieldToCheck],
+    // FIXME only counts 1 doc / hasSickLeave & hasInternship
+    const neededAdditionalDocuments = additionalDocumentsSpecs.filter(
+      (spec) => !!declaration[spec.fieldToCheck],
     )
 
     const sortedEmployers = sortBy(declaration.employers, 'name')
@@ -417,7 +424,7 @@ export class Files extends Component {
     const additionalDocumentsNodes = neededAdditionalDocuments.map(
       (neededDocument) => {
         const formattedDates = neededDocument.dateFields.map((dateField) =>
-          moment(declaration[dateField]).format('DD MMMM YYYY'),
+          moment(declaration.dates[dateField]).format('DD MMMM YYYY'),
         )
         return (
           <div key={neededDocument.name}>
@@ -513,48 +520,51 @@ export class Files extends Component {
       allowSkipFile: false,
     })
 
-  renderAdditionalDocument = ({ label, name, declaration, allowSkipFile }) => (
-    <AdditionalDocumentUpload
-      declarationId={declaration.id}
-      label={label}
-      name={name}
-      error={
-        this.state[
-          getErrorKey({
-            name,
-            declarationId: declaration.id,
-          })
-        ]
-      }
-      fileExistsOnServer={!!declaration[name]}
-      isLoading={
-        this.state[
-          getLoadingKey({
-            name,
-            declarationId: declaration.id,
-          })
-        ]
-      }
-      submitFile={({ file }) =>
-        this.submitAdditionalFile({
-          file,
-          name,
-          declarationId: declaration.id,
-        })
-      }
-      skipFile={() =>
-        this.askToSkipFile(() =>
+  renderAdditionalDocument = ({ label, name, declaration, allowSkipFile }) => {
+    const additionalDoc = declaration.documents.find((doc) => doc.type === name)
+
+    return (
+      <AdditionalDocumentUpload
+        label={label}
+        error={
+          this.state[
+            getErrorKey({
+              name,
+              declarationId: declaration.id,
+            })
+          ]
+        }
+        fileExistsOnServer={!!additionalDoc}
+        isLoading={
+          this.state[
+            getLoadingKey({
+              name,
+              declarationId: declaration.id,
+            })
+          ]
+        }
+        submitFile={({ file }) =>
           this.submitAdditionalFile({
-            skip: true,
+            file,
             name,
             declarationId: declaration.id,
-          }),
-        )
-      }
-      allowSkipFile={allowSkipFile}
-      isTransmitted={get(declaration[name], 'isTransmitted')}
-    />
-  )
+          })
+        }
+        skipFile={() =>
+          this.askToSkipFile(() =>
+            this.submitAdditionalFile({
+              skip: true,
+              name,
+              declarationId: declaration.id,
+            }),
+          )
+        }
+        allowSkipFile={allowSkipFile}
+        isTransmitted={get(additionalDoc, `isTransmitted`)}
+        documentId={get(additionalDoc, `id`)}
+      />
+    )
+  }
 
   renderEmployerRow = ({ employer, declaration, allowSkipFile }) => (
     <EmployerDocumentUpload
@@ -577,8 +587,9 @@ export class Files extends Component {
         )
       }
       allowSkipFile={allowSkipFile}
-      fileExistsOnServer={!!employer.document}
-      isTransmitted={get(employer.document, 'isTransmitted')}
+      fileExistsOnServer={!!employer.documents[0]}
+      isTransmitted={get(employer.documents[0], 'isTransmitted')}
+      documentId={get(employer, 'documents[0].id')}
     />
   )
 

@@ -1,9 +1,8 @@
 const express = require('express')
 
 const router = express.Router()
-const { get, pick, reduce, remove, omit } = require('lodash')
+const { get, pick, remove, omit } = require('lodash')
 const { transaction } = require('objection')
-const { format } = require('date-fns')
 const Raven = require('raven')
 
 const { DECLARATION_STATUSES } = require('../constants')
@@ -86,26 +85,14 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', requireActiveMonth, (req, res, next) => {
-  const declarationData = reduce(
-    omit(
-      {
-        // prevent malicious overriding of other user declaration
-        ...req.body,
-        userId: req.session.user.id,
-        monthId: req.activeMonth.id,
-      },
-      'id',
-    ),
-    // format dates with date-fns for db insertion so they'll be at the correct day
-    // (dates may be in ISOString format, and are not converted when sent to a
-    // DATE field in the db)
-    (prev, field, key) => ({
-      ...prev,
-      [key]: declarationDateFields.includes(key)
-        ? field && format(field, 'YYYY-MM-DD')
-        : field,
-    }),
-    {},
+  const declarationData = omit(
+    {
+      // prevent malicious overriding of other user declaration
+      ...req.body,
+      userId: req.session.user.id,
+      monthId: req.activeMonth.id,
+    },
+    'id',
   )
 
   try {

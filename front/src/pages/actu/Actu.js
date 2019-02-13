@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
-import { get, isNull, pick } from 'lodash'
+import { cloneDeep, get, isNull, pick, set } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -78,19 +78,11 @@ const formFields = [
   'hasWorked',
   'hasTrained',
   'hasInternship',
-  'internshipStartDate',
-  'internshipEndDate',
   'hasSickLeave',
-  'sickLeaveStartDate',
-  'sickLeaveEndDate',
   'hasMaternityLeave',
-  'maternityLeaveStartDate',
   'hasRetirement',
-  'retirementStartDate',
   'hasInvalidity',
-  'invalidityStartDate',
   'isLookingForJob',
-  'jobSearchEndDate',
   'jobSearchStopMotive',
 ]
 
@@ -126,7 +118,7 @@ export class Actu extends Component {
           hasMaternityLeave:
             this.props.user.gender === USER_GENDER_MALE ? false : null,
           // Set active declaration data, prevent declaration data unrelated to this form.
-          ...pick(declaration, formFields.concat('id')),
+          ...pick(declaration, formFields.concat('id', 'dates')),
           isLoading: false,
         }),
       )
@@ -170,8 +162,11 @@ export class Actu extends Component {
     }
   }
 
-  onSetDate = ({ controlName, date }) =>
-    this.setState({ [controlName]: date, formError: null })
+  onSetDate = ({ controlName, date }) => {
+    const newState = cloneDeep(this.state)
+    set(newState, controlName, date)
+    this.setState({ ...newState, formError: null })
+  }
 
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
     this.setState({ jobSearchStopMotive, formError: null })
@@ -181,19 +176,12 @@ export class Actu extends Component {
       hasWorked,
       hasTrained,
       hasInternship,
-      internshipStartDate,
-      internshipEndDate,
+      dates,
       hasSickLeave,
-      sickLeaveStartDate,
-      sickLeaveEndDate,
       hasMaternityLeave,
-      maternityLeaveStartDate,
       hasRetirement,
-      retirementStartDate,
       hasInvalidity,
-      invalidityStartDate,
       isLookingForJob,
-      jobSearchEndDate,
       jobSearchStopMotive,
     } = this.state
     if (
@@ -211,37 +199,51 @@ export class Actu extends Component {
     }
 
     if (hasInternship) {
-      if (!internshipStartDate || !internshipEndDate) {
+      const hasMissingInternshipDates = dates.internship.some(
+        ({ startDate, endDate }) => !startDate || !endDate,
+      )
+      const hasWrongInternshipDates = dates.internship.some(
+        ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
+      )
+
+      if (hasMissingInternshipDates) {
         return `Merci d'indiquer vos dates de stage`
       }
-      if (moment(internshipEndDate).isBefore(moment(internshipStartDate))) {
+      if (hasWrongInternshipDates) {
         return 'Merci de corriger vos dates de stage (le début du stage ne peut être après sa fin)'
       }
     }
 
     if (hasSickLeave) {
-      if (!sickLeaveStartDate || !sickLeaveEndDate) {
+      const hasMissingSickLeaveDates = dates.sickLeave.some(
+        ({ startDate, endDate }) => !startDate || !endDate,
+      )
+      const hasWrongSickLeaveDates = dates.sickLeave.some(
+        ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
+      )
+
+      if (hasMissingSickLeaveDates) {
         return `Merci d'indiquer vos dates d'arrêt maladie`
       }
-      if (moment(sickLeaveEndDate).isBefore(moment(sickLeaveStartDate))) {
+      if (hasWrongSickLeaveDates) {
         return `Merci de corriger d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
       }
     }
 
-    if (hasMaternityLeave && !maternityLeaveStartDate) {
+    if (hasMaternityLeave && !get(dates, 'maternityLeave[0].startDate')) {
       return `Merci d'indiquer votre date de départ en congé maternité`
     }
 
-    if (hasRetirement && !retirementStartDate) {
+    if (hasRetirement && !get(dates, 'retirement[0].startDate')) {
       return `Merci d'indiquer depuis quand vous touchez une pension retraite`
     }
 
-    if (hasInvalidity && !invalidityStartDate) {
+    if (hasInvalidity && !get(dates, 'invalidity[0].startDate')) {
       return `Merci d'indiquer depuis quand vous touchez une pension d'invalidité`
     }
 
     if (!isLookingForJob) {
-      if (!jobSearchEndDate) {
+      if (!get(dates, 'jobSearch[0].endDate')) {
         return `Merci d'indiquer depuis quand vous ne cherchez plus d'emploi`
       }
 
@@ -307,6 +309,7 @@ export class Actu extends Component {
       isMaternalAssistant,
       isLoading,
       loadingError,
+      dates = {},
     } = this.state
 
     const { user } = this.props
@@ -374,16 +377,16 @@ export class Actu extends Component {
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
-                  name="internshipStartDate"
-                  value={this.state.internshipStartDate}
+                  name="dates.internship[0].startDate"
+                  value={get(dates, 'internship[0].startDate')}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={MAX_DATE}
-                  name="internshipEndDate"
-                  value={this.state.internshipEndDate}
+                  name="dates.internship[0].endDate"
+                  value={get(dates, 'internship[0].endDate')}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
@@ -401,16 +404,16 @@ export class Actu extends Component {
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
-                  name="sickLeaveStartDate"
-                  value={this.state.sickLeaveStartDate}
+                  name="dates.sickLeave[0].startDate"
+                  value={get(dates, 'sickLeave[0].startDate')}
                 />
                 <DatePicker
                   label="Date de fin"
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={MAX_DATE}
-                  name="sickLeaveEndDate"
-                  value={this.state.sickLeaveEndDate}
+                  name="dates.sickLeave[0].endDate"
+                  value={get(dates, 'sickLeave[0].endDate')}
                 />
               </DeclarationQuestion>
               {user.gender !== USER_GENDER_MALE && (
@@ -425,8 +428,8 @@ export class Actu extends Component {
                     onSelectDate={this.onSetDate}
                     minDate={datePickerMinDate}
                     maxDate={datePickerMaxDate}
-                    name="maternityLeaveStartDate"
-                    value={this.state.maternityLeaveStartDate}
+                    name="dates.maternityLeave[0].startDate"
+                    value={get(dates, 'maternityLeave[0].startDate')}
                   />
                 </DeclarationQuestion>
               )}
@@ -441,8 +444,8 @@ export class Actu extends Component {
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
-                  name="retirementStartDate"
-                  value={this.state.retirementStartDate}
+                  name="dates.retirement[0].startDate"
+                  value={get(dates, 'retirement[0].startDate')}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
@@ -456,8 +459,8 @@ export class Actu extends Component {
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
-                  name="invalidityStartDate"
-                  value={this.state.invalidityStartDate}
+                  name="dates.invalidity[0].startDate"
+                  value={get(dates, 'invalidity[0].startDate')}
                 />
               </DeclarationQuestion>
             </StyledList>
@@ -478,8 +481,8 @@ export class Actu extends Component {
                     onSelectDate={this.onSetDate}
                     minDate={datePickerMinDate}
                     maxDate={datePickerMaxDate}
-                    name="jobSearchEndDate"
-                    value={this.state.jobSearchEndDate}
+                    name="dates.jobSearch[0].endDate"
+                    value={get(dates, 'jobSearch[0].endDate')}
                   />
 
                   <RadioGroup

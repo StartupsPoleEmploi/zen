@@ -7,6 +7,8 @@ const User = require('../../models/User')
 
 let user
 
+const IMPOSSIBLE_ID = 666666666
+
 const getActiveMonth = () => DeclarationMonth.query().first()
 
 const app = express()
@@ -98,7 +100,9 @@ describe('employers routes', () => {
 
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'))
   afterEach(() =>
-    Declaration.knex().raw('TRUNCATE "Declarations", "Employers", "documents"'))
+    Declaration.knex().raw(
+      'TRUNCATE "declarations", "employers", "declaration_documents", "employer_documents" CASCADE',
+    ))
 
   describe('POST /', () => {
     test('HTTP 400 if no data sent', () =>
@@ -141,22 +145,15 @@ describe('employers routes', () => {
         .get('/files')
         .expect(400))
 
-    test('HTTP 404 if no employer is found', () =>
-      supertest(app)
-        .get('/files?employerId=666')
-        .expect(404))
-
     test('HTTP 404 if no file is found', () =>
-      addDeclarationWithEmployers().then(() =>
-        supertest(app)
-          .get('/files?employerId=666')
-          .expect(404),
-      ))
+      supertest(app)
+        .get(`/files?documentId=${IMPOSSIBLE_ID}`)
+        .expect(404))
 
     test('HTTP 200 if a file is found', () =>
       postEmployerDocument().then((employer) =>
         supertest(app)
-          .get(`/files?employerId=${employer.id}`)
+          .get(`/files?documentId=${employer.documents[0].id}`)
           .expect(200),
       ))
   })
@@ -182,7 +179,7 @@ describe('employers routes', () => {
     test('HTTP 200 if the file is processed', () =>
       // HTTP 200 is checked in postEmployerDocument
       postEmployerDocument().then((employer) =>
-        expect(employer.documentId).toBeDefined(),
+        expect(employer.documents[0].id).toBeDefined(),
       ))
   })
 })

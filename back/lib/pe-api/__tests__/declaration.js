@@ -11,25 +11,13 @@ const declarationWithEmployers = {
   hasWorked: true,
   hasTrained: false,
   hasInternship: false,
-  internshipStartDate: null,
-  internshipEndDate: null,
-  internshipDocumentId: null,
   hasSickLeave: false,
-  sickLeaveStartDate: null,
-  sickLeaveEndDate: null,
-  sickLeaveDocumentId: null,
   hasMaternityLeave: false,
-  maternityLeaveStartDate: null,
-  maternityLeaveDocumentId: null,
   hasRetirement: false,
-  retirementStartDate: null,
-  retirementDocumentId: null,
   hasInvalidity: false,
-  invalidityStartDate: null,
-  invalidityDocumentId: null,
   isLookingForJob: true,
-  jobSearchEndDate: null,
   jobSearchStopMotive: null,
+  dates: {},
   hasFinishedDeclaringEmployers: true,
   isFinished: false,
   createdAt: '2019-01-02T15:55:29.957Z',
@@ -55,20 +43,13 @@ const declarationWithoutEmployers = {
   hasWorked: false,
   hasTrained: false,
   hasInternship: false,
-  internshipStartDate: '2018-12-12',
-  internshipEndDate: '2019-01-11',
   hasSickLeave: false,
-  sickLeaveStartDate: null,
-  sickLeaveEndDate: null,
   hasMaternityLeave: false,
-  maternityLeaveStartDate: null,
   hasRetirement: false,
-  retirementStartDate: null,
   hasInvalidity: false,
-  invalidityStartDate: '2018-12-25',
   isLookingForJob: true,
-  jobSearchEndDate: null,
   jobSearchStopMotive: null,
+  dates: {},
   ignoreErrors: false,
   userId: 165,
   monthId: 8,
@@ -83,24 +64,48 @@ const declarationWithAllDatesFilled = {
   hasWorked: true,
   hasTrained: false,
   hasInternship: true,
-  internshipStartDate: '2018-12-11T23:00:00.000Z',
-  internshipEndDate: '2019-01-10T23:00:00.000Z',
-  internshipDocumentId: null,
+  dates: {
+    internship: [
+      {
+        startDate: '2018-12-11T23:00:00.000Z',
+        endDate: '2019-01-10T23:00:00.000Z',
+      },
+    ],
+    sickLeave: [
+      {
+        startDate: '2018-12-17T23:00:00.000Z',
+        endDate: '2019-01-18T23:00:00.000Z',
+      },
+    ],
+
+    maternityLeave: [
+      {
+        startDate: '2018-12-23T23:00:00.000Z',
+      },
+    ],
+    retirement: [
+      {
+        startDate: '2018-12-18T23:00:00.000Z',
+      },
+    ],
+
+    invalidity: [
+      {
+        startDate: '2018-12-24T23:00:00.000Z',
+      },
+    ],
+
+    jobSearch: [
+      {
+        endDate: '2018-12-25T23:00:00.000Z',
+      },
+    ],
+  },
   hasSickLeave: true,
-  sickLeaveStartDate: '2018-12-17T23:00:00.000Z',
-  sickLeaveEndDate: '2019-01-18T23:00:00.000Z',
-  sickLeaveDocumentId: null,
   hasMaternityLeave: true,
-  maternityLeaveStartDate: '2018-12-23T23:00:00.000Z',
-  maternityLeaveDocumentId: null,
   hasRetirement: true,
-  retirementStartDate: '2018-12-18T23:00:00.000Z',
-  retirementDocumentId: null,
   hasInvalidity: true,
-  invalidityStartDate: '2018-12-24T23:00:00.000Z',
-  invalidityDocumentId: null,
   isLookingForJob: false,
-  jobSearchEndDate: '2018-12-25T23:00:00.000Z',
   jobSearchStopMotive: 'work',
   hasFinishedDeclaringEmployers: true,
   isFinished: false,
@@ -197,8 +202,7 @@ describe('PE API: sendDeclaration', () => {
         .post('/partenaire/peconnect-actualisation/v1/actualisation')
         .reply(500, {
           statut: 'Everything has exploded',
-        }),
-    )
+        }))
     it('should fail if there was a server error', () => {
       sendDeclaration({
         declaration: declarationWithEmployers,

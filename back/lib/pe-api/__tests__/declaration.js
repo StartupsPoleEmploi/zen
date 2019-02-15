@@ -65,41 +65,33 @@ const declarationWithAllDatesFilled = {
   hasTrained: false,
   hasInternship: true,
   dates: {
-    internship: [
+    internships: [
       {
         startDate: '2018-12-11T23:00:00.000Z',
         endDate: '2019-01-10T23:00:00.000Z',
       },
     ],
-    sickLeave: [
+    sickLeaves: [
       {
         startDate: '2018-12-17T23:00:00.000Z',
         endDate: '2019-01-18T23:00:00.000Z',
       },
     ],
 
-    maternityLeave: [
-      {
-        startDate: '2018-12-23T23:00:00.000Z',
-      },
-    ],
-    retirement: [
-      {
-        startDate: '2018-12-18T23:00:00.000Z',
-      },
-    ],
+    maternityLeave: {
+      startDate: '2018-12-23T23:00:00.000Z',
+    },
+    retirement: {
+      startDate: '2018-12-18T23:00:00.000Z',
+    },
 
-    invalidity: [
-      {
-        startDate: '2018-12-24T23:00:00.000Z',
-      },
-    ],
+    invalidity: {
+      startDate: '2018-12-24T23:00:00.000Z',
+    },
 
-    jobSearch: [
-      {
-        endDate: '2018-12-25T23:00:00.000Z',
-      },
-    ],
+    jobSearch: {
+      endDate: '2018-12-25T23:00:00.000Z',
+    },
   },
   hasSickLeave: true,
   hasMaternityLeave: true,

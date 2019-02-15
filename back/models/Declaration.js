@@ -32,26 +32,24 @@ class Declaration extends BaseModel {
     }
 
     if (objectToValidate.hasInternship) {
-      if (!dates || !dates.internship) throwValidationError('internship')
-      dates.internship.forEach(({ startDate, endDate }) =>
+      if (!dates || !dates.internships) throwValidationError('internships')
+      dates.internships.forEach(({ startDate, endDate }) =>
         validateDates('hasInternship', [startDate, endDate]),
       )
     }
     if (objectToValidate.hasSickLeave) {
-      if (!dates || !dates.sickLeave) throwValidationError('sickLeave')
-      dates.sickLeave.forEach(({ startDate, endDate }) =>
+      if (!dates || !dates.sickLeaves) throwValidationError('sickLeaves')
+      dates.sickLeaves.forEach(({ startDate, endDate }) =>
         validateDates('hasSickLeave', [startDate, endDate]),
       )
     }
 
-    validateDates('hasMaternityLeave', [
-      get(dates, 'maternityLeave[0].startDate'),
-    ])
-    validateDates('hasRetirement', [get(dates, 'retirement[0].startDate')])
-    validateDates('hasInvalidity', [get(dates, 'invalidity[0].startDate')])
+    validateDates('hasMaternityLeave', [get(dates, 'maternityLeave.startDate')])
+    validateDates('hasRetirement', [get(dates, 'retirement.startDate')])
+    validateDates('hasInvalidity', [get(dates, 'invalidity.startDate')])
 
     if (!isLookingForJob) {
-      if (!isValid(new Date(get(dates, 'jobSearch[0].endDate')))) {
+      if (!isValid(new Date(get(dates, 'jobSearch.endDate')))) {
         throwValidationError('isLookingForJob - jobSearchDate')
       }
       if (!jobSearchStopMotive) {
@@ -109,8 +107,56 @@ class Declaration extends BaseModel {
           default: false,
           type: 'boolean',
         },
-        metadata: { type: 'json' },
-        dates: { type: 'json' },
+        metadata: { type: 'object' },
+        dates: {
+          type: 'object',
+          properties: {
+            internships: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  startDate: { type: 'date' },
+                  endDate: { type: 'date' },
+                },
+              },
+            },
+            sickLeaves: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  startDate: { type: 'date' },
+                  endDate: { type: 'date' },
+                },
+              },
+            },
+            maternityLeave: {
+              type: 'object',
+              properties: {
+                startDate: { type: 'date' },
+              },
+            },
+            retirement: {
+              type: 'object',
+              properties: {
+                startDate: { type: 'date' },
+              },
+            },
+            invalidity: {
+              type: 'object',
+              properties: {
+                startDate: { type: 'date' },
+              },
+            },
+            jobSearch: {
+              type: 'object',
+              properties: {
+                endDate: { type: 'date' },
+              },
+            },
+          },
+        },
       },
     }
   }

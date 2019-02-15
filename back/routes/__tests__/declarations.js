@@ -96,7 +96,7 @@ const addDeclarationWithEmployers = ({ withFile = false }) =>
 const postSickLeaveDocument = () =>
   addActiveDeclaration({
     hasSickLeave: true,
-    dates: { sickLeave: [{ startDate: new Date(), endDate: new Date() }] },
+    dates: { sickLeaves: [{ startDate: new Date(), endDate: new Date() }] },
   }).then((declaration) =>
     supertest(app)
       .post(`/files`)

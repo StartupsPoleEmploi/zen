@@ -18,7 +18,7 @@ exports.up = function(knex) {
             for (const i in declarations) {
               const dates = {}
               if (declarations[i].hasSickLeave) {
-                dates.sickLeave = [
+                dates.sickLeaves = [
                   {
                     startDate: declarations[i].sickLeaveStartDate,
                     endDate: declarations[i].sickLeaveEndDate,
@@ -27,7 +27,7 @@ exports.up = function(knex) {
               }
 
               if (declarations[i].hasInternship) {
-                dates.internship = [
+                dates.internships = [
                   {
                     startDate: declarations[i].internshipStartDate,
                     endDate: declarations[i].internshipEndDate,
@@ -36,35 +36,27 @@ exports.up = function(knex) {
               }
 
               if (declarations[i].hasMaternityLeave) {
-                dates.maternityLeave = [
-                  {
-                    startDate: declarations[i].maternityLeaveStartDate,
-                  },
-                ]
+                dates.maternityLeave = {
+                  startDate: declarations[i].maternityLeaveStartDate,
+                }
               }
 
               if (declarations[i].hasRetirement) {
-                dates.retirement = [
-                  {
-                    startDate: declarations[i].retirementStartDate,
-                  },
-                ]
+                dates.retirement = {
+                  startDate: declarations[i].retirementStartDate,
+                }
               }
 
               if (declarations[i].hasInvalidity) {
-                dates.invalidity = [
-                  {
-                    startDate: declarations[i].invalidityStartDate,
-                  },
-                ]
+                dates.invalidity = {
+                  startDate: declarations[i].invalidityStartDate,
+                }
               }
 
               if (!declarations[i].isLookingForJob) {
-                dates.jobSearch = [
-                  {
-                    endDate: declarations[i].jobSearchEndDate,
-                  },
-                ]
+                dates.jobSearch = {
+                  endDate: declarations[i].jobSearchEndDate,
+                }
               }
 
               await knex.raw(
@@ -109,42 +101,42 @@ exports.down = function(knex) {
           for (const i in declarations) {
             let internshipStartDate = get(
               declarations[i],
-              'dates.internship[0].startDate',
+              'dates.internships[0].startDate',
               null,
             )
             let internshipEndDate = get(
               declarations[i],
-              'dates.internship[0].endDate',
+              'dates.internships[0].endDate',
               null,
             )
             let sickLeaveStartDate = get(
               declarations[i],
-              'dates.sickLeave[0].startDate',
+              'dates.sickLeaves[0].startDate',
               null,
             )
             let sickLeaveEndDate = get(
               declarations[i],
-              'dates.sickLeave[0].endDate',
+              'dates.sickLeaves[0].endDate',
               null,
             )
             let maternityLeaveStartDate = get(
               declarations[i],
-              'dates.maternityLeave[0].startDate',
+              'dates.maternityLeave.startDate',
               null,
             )
             let retirementStartDate = get(
               declarations[i],
-              'dates.retirement[0].startDate',
+              'dates.retirement.startDate',
               null,
             )
             let invalidityStartDate = get(
               declarations[i],
-              'dates.invalidity[0].startDate',
+              'dates.invalidity.startDate',
               null,
             )
             let jobSearchEndDate = get(
               declarations[i],
-              'dates.jobSearch[0].endDate',
+              'dates.jobSearch.endDate',
               null,
             )
 

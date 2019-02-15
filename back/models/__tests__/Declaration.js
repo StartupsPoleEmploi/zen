@@ -20,6 +20,9 @@ const validDeclaration = {
   isLookingForJob: true,
 }
 
+const encapsulate = (data, baseField) =>
+  baseField === 'internships' || baseField === 'sickLeaves' ? [data] : data
+
 describe('Declaration Model', () => {
   beforeAll(() =>
     Promise.all([
@@ -61,12 +64,12 @@ describe('Declaration Model', () => {
 
     const fieldsToTest = [
       {
-        baseField: 'internship',
+        baseField: 'internships',
         boolField: 'hasInternship',
         dateFields: ['startDate', 'endDate'],
       },
       {
-        baseField: 'sickLeave',
+        baseField: 'sickLeaves',
         boolField: 'hasSickLeave',
         dateFields: ['startDate', 'endDate'],
       },
@@ -111,14 +114,24 @@ describe('Declaration Model', () => {
           test(`rejects ${baseField} without starting date`, () =>
             checkInvalidDeclaration({
               ...baseDeclaration,
-              dates: { [baseField]: [{ [endDateLabel]: futureDate }] },
+              dates: {
+                [baseField]: encapsulate(
+                  { [endDateLabel]: futureDate },
+                  baseField,
+                ),
+              },
             }))
 
           if (!endDateLabel) {
             test.skip(`rejects ${baseField} with start date out of declared month`, () =>
               checkInvalidDeclaration({
                 ...baseDeclaration,
-                dates: { [baseField]: [{ [startDateLabel]: previousMonth }] },
+                dates: {
+                  [baseField]: encapsulate(
+                    { [startDateLabel]: previousMonth },
+                    baseField,
+                  ),
+                },
               }))
           }
 
@@ -126,19 +139,25 @@ describe('Declaration Model', () => {
             test(`rejects ${baseField} without ending date`, () =>
               checkInvalidDeclaration({
                 ...baseDeclaration,
-                dates: { [baseField]: [{ [startDateLabel]: pastDate }] },
+                dates: {
+                  [baseField]: encapsulate(
+                    { [startDateLabel]: pastDate },
+                    baseField,
+                  ),
+                },
               }))
 
             test(`accepts ${baseField} with both dates`, () =>
               checkValidDeclaration({
                 ...baseDeclaration,
                 dates: {
-                  [baseField]: [
+                  [baseField]: encapsulate(
                     {
                       [startDateLabel]: pastDate,
                       [endDateLabel]: futureDate,
                     },
-                  ],
+                    baseField,
+                  ),
                 },
               }))
 
@@ -147,12 +166,13 @@ describe('Declaration Model', () => {
               checkInvalidDeclaration({
                 ...baseDeclaration,
                 dates: {
-                  [baseField]: [
+                  [baseField]: encapsulate(
                     {
                       [startDateLabel]: futureDate,
                       [endDateLabel]: pastDate,
                     },
-                  ],
+                    baseField,
+                  ),
                 },
               }))
           }
@@ -184,14 +204,14 @@ describe('Declaration Model', () => {
       test('rejects with only an end date', () =>
         checkInvalidDeclaration({
           ...lookingForJobDeclaration,
-          dates: { jobSearch: [{ endDate: now }] },
+          dates: { jobSearch: { endDate: now } },
         }))
 
       test('accepts with required fields', () =>
         checkInvalidDeclaration({
           ...lookingForJobDeclaration,
           motive: 'work',
-          dates: { jobSearch: [{ endDate: now }] },
+          dates: { jobSearch: { endDate: now } },
         }))
     })
   })

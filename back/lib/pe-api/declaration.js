@@ -33,38 +33,38 @@ const convertDeclarationToAPIFormat = (declaration) => {
   }
   if (declaration.hasInternship) {
     apiDeclaration.dateDebutStage = convertDate(
-      declaration.dates.internship[0].startDate,
+      declaration.dates.internships[0].startDate,
     )
     apiDeclaration.dateFinStage = convertDate(
-      declaration.dates.internship[0].endDate,
+      declaration.dates.internships[0].endDate,
     )
   }
   if (declaration.hasSickLeave) {
     apiDeclaration.dateDebutMaladie = convertDate(
-      declaration.dates.sickLeave[0].startDate,
+      declaration.dates.sickLeaves[0].startDate,
     )
     apiDeclaration.dateFinMaladie = convertDate(
-      declaration.dates.sickLeave[0].endDate,
+      declaration.dates.sickLeaves[0].endDate,
     )
   }
   if (declaration.hasMaternityLeave) {
     apiDeclaration.dateDebutMaternite = convertDate(
-      declaration.dates.maternityLeave[0].startDate,
+      declaration.dates.maternityLeave.startDate,
     )
   }
   if (declaration.hasRetirement) {
     apiDeclaration.dateRetraite = convertDate(
-      declaration.dates.retirement[0].startDate,
+      declaration.dates.retirement.startDate,
     )
   }
   if (declaration.hasInvalidity) {
     apiDeclaration.dateInvalidite = convertDate(
-      declaration.dates.invalidity[0].startDate,
+      declaration.dates.invalidity.startDate,
     )
   }
   if (!declaration.isLookingForJob) {
     apiDeclaration.dateFinRech = convertDate(
-      declaration.dates.jobSearch[0].endDate,
+      declaration.dates.jobSearch.endDate,
     )
     apiDeclaration.motifFinRech =
       declaration.jobSearchStopMotive === 'work'

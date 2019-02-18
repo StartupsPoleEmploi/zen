@@ -378,7 +378,7 @@ export class Actu extends Component {
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
                   name="dates.internships[0].startDate"
-                  value={get(dates, 'internships[0].startDate')}
+                  value={get(dates, 'internships[0].startDate', null)}
                 />
                 <DatePicker
                   label="Date de fin"
@@ -386,7 +386,7 @@ export class Actu extends Component {
                   minDate={datePickerMinDate}
                   maxDate={MAX_DATE}
                   name="dates.internships[0].endDate"
-                  value={get(dates, 'internships[0].endDate')}
+                  value={get(dates, 'internships[0].endDate', null)}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
@@ -405,7 +405,7 @@ export class Actu extends Component {
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
                   name="dates.sickLeaves[0].startDate"
-                  value={get(dates, 'sickLeaves[0].startDate')}
+                  value={get(dates, 'sickLeaves[0].startDate', null)}
                 />
                 <DatePicker
                   label="Date de fin"
@@ -413,7 +413,7 @@ export class Actu extends Component {
                   minDate={datePickerMinDate}
                   maxDate={MAX_DATE}
                   name="dates.sickLeaves[0].endDate"
-                  value={get(dates, 'sickLeaves[0].endDate')}
+                  value={get(dates, 'sickLeaves[0].endDate', null)}
                 />
               </DeclarationQuestion>
               {user.gender !== USER_GENDER_MALE && (
@@ -429,7 +429,7 @@ export class Actu extends Component {
                     minDate={datePickerMinDate}
                     maxDate={datePickerMaxDate}
                     name="dates.maternityLeave.startDate"
-                    value={get(dates, 'maternityLeave.startDate')}
+                    value={get(dates, 'maternityLeave.startDate', null)}
                   />
                 </DeclarationQuestion>
               )}
@@ -445,7 +445,7 @@ export class Actu extends Component {
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
                   name="dates.retirement.startDate"
-                  value={get(dates, 'retirement.startDate')}
+                  value={get(dates, 'retirement.startDate', null)}
                 />
               </DeclarationQuestion>
               <DeclarationQuestion
@@ -460,7 +460,7 @@ export class Actu extends Component {
                   minDate={datePickerMinDate}
                   maxDate={datePickerMaxDate}
                   name="dates.invalidity.startDate"
-                  value={get(dates, 'invalidity.startDate')}
+                  value={get(dates, 'invalidity.startDate', null)}
                 />
               </DeclarationQuestion>
             </StyledList>
@@ -482,7 +482,7 @@ export class Actu extends Component {
                     minDate={datePickerMinDate}
                     maxDate={datePickerMaxDate}
                     name="dates.jobSearch.endDate"
-                    value={get(dates, 'jobSearch.endDate')}
+                    value={get(dates, 'jobSearch.endDate', null)}
                   />
 
                   <RadioGroup

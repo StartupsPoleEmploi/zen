@@ -3,7 +3,7 @@ const {
   HasManyRelation,
   ValidationError,
 } = require('objection')
-const { isValid } = require('date-fns')
+const { isAfter, isValid } = require('date-fns')
 const { get } = require('lodash')
 
 const BaseModel = require('./BaseModel')
@@ -29,6 +29,12 @@ class Declaration extends BaseModel {
       datesToValidate.forEach((date) => {
         if (!isValid(new Date(date))) throwValidationError(key)
       })
+      if (
+        datesToValidate.length === 2 &&
+        isAfter(datesToValidate[0], datesToValidate[1])
+      ) {
+        throwValidationError(key)
+      }
     }
 
     if (objectToValidate.hasInternship) {

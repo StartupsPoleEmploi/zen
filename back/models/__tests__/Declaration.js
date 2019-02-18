@@ -162,7 +162,7 @@ describe('Declaration Model', () => {
               }))
 
             // TODO activate when implemented
-            test.skip(`rejects ${baseField} with out of order dates`, () =>
+            test(`rejects ${baseField} with out of order dates`, () =>
               checkInvalidDeclaration({
                 ...baseDeclaration,
                 dates: {

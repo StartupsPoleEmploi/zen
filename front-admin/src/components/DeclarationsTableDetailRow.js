@@ -10,29 +10,38 @@ const calculateTotal = (employers, field) =>
     employers.reduce((prev, employer) => parseFloat(employer[field]) + prev, 0),
   )
 
-const statuses = {
-  hasTrained: {
-    label: 'a été en formation',
-    dateFields: [],
-  },
-  hasInternship: {
+const statuses = [
+  {
+    field: 'internships',
+    boolField: 'hasInternship',
     label: 'a été en stage',
-    dateFields: ['internshipStartDate', 'internshipEndDate'],
+    multiple: true,
   },
-  hasSickLeave: {
+  {
+    field: 'sickLeaves',
+    boolField: 'hasSickLeave',
     label: 'a été en congé maladie',
-    dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
+    multiple: true,
   },
-  hasMaternityLeave: {
+  {
+    field: 'maternityLeave',
+    boolField: 'hasMaternityLeave',
     label: 'a été en congé maternité',
-    dateFields: ['maternityLeaveStartDate'],
+    multiple: false,
   },
-  hasRetirement: {
+  {
+    field: 'retirement',
+    boolField: 'hasRetirement',
     label: 'est en retraite',
-    dateFields: ['retirementStartDate'],
+    multiple: false,
   },
-  hasInvalidity: { label: 'est invalide', dateFields: ['invalidityStartDate'] },
-}
+  {
+    field: 'invalidity',
+    boolField: 'hasInvalidity',
+    label: 'est invalide',
+    multiple: false,
+  },
+]
 
 /*
  * Note : This component makes too much requests and should not be used as a model
@@ -119,14 +128,29 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
         </label>
       </div>
       <p>
-        {Object.keys(statuses)
-          .filter((key) => declaration[key])
-          .map(
-            (key) =>
-              `${statuses[key].label} (${statuses[key].dateFields
-                .map((field) => format(declaration[field], 'DD/MM'))
-                .join(' - ')})`,
-          )
+        {statuses
+          .map((status) => {
+            if (!declaration[status.boolField]) return null
+
+            const formatDates = ({ startDate, endDate }) =>
+              endDate
+                ? `du ${format(startDate, 'DD/MM')} au ${format(
+                    endDate,
+                    'DD/MM',
+                  )}`
+                : `à partir du ${format(startDate, 'DD/MM')}`
+
+            if (status.multiple) {
+              return `${status.label} `.concat(
+                declaration.dates[status.field].map(formatDates).join(' et '),
+              )
+            }
+
+            return `${status.label} ${formatDates(
+              declaration.dates[status.field],
+            )}`
+          })
+          .filter((a) => a)
           .join(', ')}
       </p>
       <p>

@@ -35,6 +35,7 @@ export class DeclarationQuestion extends Component {
     onAnswer: PropTypes.func.isRequired,
     value: PropTypes.bool,
     withChildrenOnNo: PropTypes.bool,
+    style: PropTypes.object, // eslint-disable-line
   }
 
   handleChange = ({ target: { value } }) => {
@@ -45,9 +46,9 @@ export class DeclarationQuestion extends Component {
   }
 
   render() {
-    const { children, label, value, withChildrenOnNo } = this.props
+    const { children, label, value, style = {}, withChildrenOnNo } = this.props
     return (
-      <Container>
+      <Container style={style}>
         <MainQuestionContainer>
           <QuestionLabel>{label}</QuestionLabel>
           <FormControl component="fieldset" required error>
@@ -58,9 +59,7 @@ export class DeclarationQuestion extends Component {
             />
           </FormControl>
         </MainQuestionContainer>
-        {!isNull(value) &&
-          value === !withChildrenOnNo &&
-          children && <div>{children}</div>}
+        {!isNull(value) && value === !withChildrenOnNo && children}
       </Container>
     )
   }

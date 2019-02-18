@@ -23,11 +23,11 @@ storiesOf('DeclarationQuestion', module)
   .add('no', () => <DeclarationQuestion {...defaultProps} value={false} />)
   .add('with children on yes', () => (
     <DeclarationQuestion {...defaultProps} value>
-      Sub question
+      <div>Sub question</div>
     </DeclarationQuestion>
   ))
   .add('with children on no', () => (
     <DeclarationQuestion {...defaultProps} value={false} withChildrenOnNo>
-      Sub question
+      <div>Sub question</div>
     </DeclarationQuestion>
   ))

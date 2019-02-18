@@ -385,6 +385,9 @@ export class Actu extends Component {
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={MAX_DATE}
+                  // even with a far-away max-date, we want the default
+                  // focused date to be in the active month
+                  initialFocusedDate={datePickerMaxDate}
                   name="dates.internships[0].endDate"
                   value={get(dates, 'internships[0].endDate', null)}
                 />
@@ -412,6 +415,9 @@ export class Actu extends Component {
                   onSelectDate={this.onSetDate}
                   minDate={datePickerMinDate}
                   maxDate={MAX_DATE}
+                  // even with a far-away max-date, we want the default
+                  // focused date to be in the active month
+                  initialFocusedDate={datePickerMaxDate}
                   name="dates.sickLeaves[0].endDate"
                   value={get(dates, 'sickLeaves[0].endDate', null)}
                 />

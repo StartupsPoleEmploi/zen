@@ -1,42 +1,21 @@
 const {
   BelongsToOneRelation,
   HasManyRelation,
-  HasOneRelation,
   ValidationError,
 } = require('objection')
-const { format, isValid } = require('date-fns')
+const { isAfter, isValid } = require('date-fns')
+const { get } = require('lodash')
 
 const BaseModel = require('./BaseModel')
 
 class Declaration extends BaseModel {
   static get tableName() {
-    return 'Declarations'
-  }
-
-  $beforeUpdate() {
-    super.$beforeUpdate()
-    this.convertUTCDatesToPGDates()
-  }
-
-  $beforeInsert() {
-    super.$beforeInsert()
-    this.convertUTCDatesToPGDates()
+    return 'declarations'
   }
 
   $beforeValidate(jsonSchema, json, opt) {
     const objectToValidate = { ...opt.old, ...json }
-    const {
-      internshipStartDate,
-      internshipEndDate,
-      sickLeaveStartDate,
-      sickLeaveEndDate,
-      maternityLeaveStartDate,
-      retirementStartDate,
-      invalidityStartDate,
-      isLookingForJob,
-      jobSearchEndDate,
-      jobSearchStopMotive,
-    } = objectToValidate
+    const { dates, isLookingForJob, jobSearchStopMotive } = objectToValidate
 
     const throwValidationError = (label) => {
       throw new ValidationError({
@@ -50,48 +29,39 @@ class Declaration extends BaseModel {
       datesToValidate.forEach((date) => {
         if (!isValid(new Date(date))) throwValidationError(key)
       })
+      if (
+        datesToValidate.length === 2 &&
+        isAfter(datesToValidate[0], datesToValidate[1])
+      ) {
+        throwValidationError(key)
+      }
     }
 
-    validateDates('hasInternship', [internshipStartDate, internshipEndDate])
-    validateDates('hasSickLeave', [sickLeaveStartDate, sickLeaveEndDate])
-    validateDates('hasMaternityLeave', [maternityLeaveStartDate])
-    validateDates('hasRetirement', [retirementStartDate])
-    validateDates('hasInvalidity', [invalidityStartDate])
+    if (objectToValidate.hasInternship) {
+      if (!dates || !dates.internships) throwValidationError('internships')
+      dates.internships.forEach(({ startDate, endDate }) =>
+        validateDates('hasInternship', [startDate, endDate]),
+      )
+    }
+    if (objectToValidate.hasSickLeave) {
+      if (!dates || !dates.sickLeaves) throwValidationError('sickLeaves')
+      dates.sickLeaves.forEach(({ startDate, endDate }) =>
+        validateDates('hasSickLeave', [startDate, endDate]),
+      )
+    }
+
+    validateDates('hasMaternityLeave', [get(dates, 'maternityLeave.startDate')])
+    validateDates('hasRetirement', [get(dates, 'retirement.startDate')])
+    validateDates('hasInvalidity', [get(dates, 'invalidity.startDate')])
 
     if (!isLookingForJob) {
-      if (!isValid(new Date(jobSearchEndDate))) {
+      if (!isValid(new Date(get(dates, 'jobSearch.endDate')))) {
         throwValidationError('isLookingForJob - jobSearchDate')
       }
       if (!jobSearchStopMotive) {
         throwValidationError('isLookingForJob - stopJobSearchMotive')
       }
     }
-  }
-
-  /*
-    This resolves an issue with the way JS / PostgreSQL interact with dates:
-    A date ISOString is written 2018-11-07T22:00:00.000Z to represent 2018-11-08, Paris time.
-    So for example, the internshipStartDate field, when requested from the database,
-    has for value 2018-11-07T22:00:00.000Z.
-    However, when saving again that value (example: upsertGraph, which will save everything,
-      not just modified values), the value 2018-11-07T22:00:00.000Z, when given to
-    PostgresSQL, will be *truncated*, which will result in the date being off by one day.
-    This resolves it by relying on the node server to correctly format dates to YYYY-MM-DD.
-  */
-  convertUTCDatesToPGDates() {
-    const dateFields = [
-      'internshipStartDate',
-      'internshipEndDate',
-      'sickLeaveStartDate',
-      'sickLeaveEndDate',
-      'maternityLeaveStartDate',
-      'retirementStartDate',
-      'invalidityStartDate',
-    ]
-
-    dateFields.forEach((field) => {
-      if (this[field]) this[field] = format(this[field], 'YYYY-MM-DD')
-    })
   }
 
   static get jsonSchema() {
@@ -110,8 +80,6 @@ class Declaration extends BaseModel {
         'hasFinishedDeclaringEmployers',
       ],
 
-      // Adding any date (not timestamp) field to this model requires adding it to the
-      // convertUTCDatesToPGDates method.
       properties: {
         id: { type: 'integer' },
         userId: { type: 'integer' },
@@ -119,24 +87,11 @@ class Declaration extends BaseModel {
         hasWorked: { type: 'boolean' },
         hasTrained: { type: 'boolean' },
         hasInternship: { type: 'boolean' },
-        internshipStartDate: { type: ['string', 'object', 'null'] },
-        internshipEndDate: { type: ['string', 'object', 'null'] },
-        internshipDocumentId: { type: ['integer', 'null'] },
         hasSickLeave: { type: 'boolean' },
-        sickLeaveStartDate: { type: ['string', 'object', 'null'] },
-        sickLeaveEndDate: { type: ['string', 'object', 'null'] },
-        sickLeaveDocumentId: { type: ['integer', 'null'] },
         hasMaternityLeave: { type: 'boolean' },
-        maternityLeaveStartDate: { type: ['string', 'object', 'null'] },
-        maternityLeaveDocumentId: { type: ['integer', 'null'] },
         hasRetirement: { type: 'boolean' },
-        retirementStartDate: { type: ['string', 'object', 'null'] },
-        retirementDocumentId: { type: ['integer', 'null'] },
         hasInvalidity: { type: 'boolean' },
-        invalidityStartDate: { type: ['string', 'object', 'null'] },
-        invalidityDocumentId: { type: ['integer', 'null'] },
         isLookingForJob: { type: 'boolean' },
-        jobSearchEndDate: { type: ['string', 'object', 'null'] },
         jobSearchStopMotive: { type: ['string', 'null'] },
         hasFinishedDeclaringEmployers: {
           default: false,
@@ -158,7 +113,56 @@ class Declaration extends BaseModel {
           default: false,
           type: 'boolean',
         },
-        metadata: { type: 'json' },
+        metadata: { type: 'object' },
+        dates: {
+          type: 'object',
+          properties: {
+            internships: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  startDate: { type: 'date' },
+                  endDate: { type: 'date' },
+                },
+              },
+            },
+            sickLeaves: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  startDate: { type: 'date' },
+                  endDate: { type: 'date' },
+                },
+              },
+            },
+            maternityLeave: {
+              type: 'object',
+              properties: {
+                startDate: { type: 'date' },
+              },
+            },
+            retirement: {
+              type: 'object',
+              properties: {
+                startDate: { type: 'date' },
+              },
+            },
+            invalidity: {
+              type: 'object',
+              properties: {
+                startDate: { type: 'date' },
+              },
+            },
+            jobSearch: {
+              type: 'object',
+              properties: {
+                endDate: { type: 'date' },
+              },
+            },
+          },
+        },
       },
     }
   }
@@ -170,7 +174,7 @@ class Declaration extends BaseModel {
         relation: BelongsToOneRelation,
         modelClass: `${__dirname}/User`,
         join: {
-          from: 'Declarations.userId',
+          from: 'declarations.userId',
           to: 'Users.id',
         },
       },
@@ -178,56 +182,24 @@ class Declaration extends BaseModel {
         relation: HasManyRelation,
         modelClass: `${__dirname}/Employer`,
         join: {
-          from: 'Declarations.id',
-          to: 'Employers.declarationId',
+          from: 'declarations.id',
+          to: 'employers.declarationId',
         },
       },
       declarationMonth: {
         relation: BelongsToOneRelation,
         modelClass: `${__dirname}/DeclarationMonth`,
         join: {
-          from: 'Declarations.monthId',
+          from: 'declarations.monthId',
           to: 'declaration_months.id',
         },
       },
-      internshipDocument: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
+      documents: {
+        relation: HasManyRelation,
+        modelClass: `${__dirname}/DeclarationDocument`,
         join: {
-          from: 'Declarations.internshipDocumentId',
-          to: 'documents.id',
-        },
-      },
-      sickLeaveDocument: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
-        join: {
-          from: 'Declarations.sickLeaveDocumentId',
-          to: 'documents.id',
-        },
-      },
-      maternityLeaveDocument: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
-        join: {
-          from: 'Declarations.maternityLeaveDocumentId',
-          to: 'documents.id',
-        },
-      },
-      retirementDocument: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
-        join: {
-          from: 'Declarations.retirementDocumentId',
-          to: 'documents.id',
-        },
-      },
-      invalidityDocument: {
-        relation: HasOneRelation,
-        modelClass: `${__dirname}/Document`,
-        join: {
-          from: 'Declarations.invalidityDocumentId',
-          to: 'documents.id',
+          from: 'declarations.id',
+          to: 'declaration_documents.declarationId',
         },
       },
     }

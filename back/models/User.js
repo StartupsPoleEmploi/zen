@@ -32,7 +32,7 @@ class User extends BaseModel {
         modelClass: `${__dirname}/Employer`,
         join: {
           from: 'Users.id',
-          to: 'Employers.userId',
+          to: 'employers.userId',
         },
       },
       declarations: {
@@ -40,7 +40,7 @@ class User extends BaseModel {
         modelClass: `${__dirname}/Declaration`,
         join: {
           from: 'Users.id',
-          to: 'Declarations.userId',
+          to: 'declarations.userId',
         },
       },
     }

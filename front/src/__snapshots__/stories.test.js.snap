@@ -453,7 +453,7 @@ exports[`Storyshots AdditionalDocumentUpload with file 1`] = `
               >
                 <a
                   className="MuiButtonBase-root-276 MuiButton-root-250 MuiButton-outlined-258"
-                  href="/api/declarations/files?declarationId=1&name=MyFileName"
+                  href="/api/declarations/files?documentId=1"
                   onBlur={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
@@ -2419,7 +2419,7 @@ exports[`Storyshots EmployerDocumentUpload with file 1`] = `
               >
                 <a
                   className="MuiButtonBase-root-1208 MuiButton-root-1182 MuiButton-outlined-1190"
-                  href="/api/employers/files?employerId=1"
+                  href="/api/employers/files?documentId=1"
                   onBlur={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
@@ -2660,7 +2660,7 @@ exports[`Storyshots EmployerDocumentUpload with file, ended this month 1`] = `
               >
                 <a
                   className="MuiButtonBase-root-1333 MuiButton-root-1307 MuiButton-outlined-1315"
-                  href="/api/employers/files?employerId=1"
+                  href="/api/employers/files?documentId=1"
                   onBlur={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}

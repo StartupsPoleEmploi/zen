@@ -68,19 +68,8 @@ router.get('/activityLog', (req, res) => {
 })
 
 router.get('/declarations/:declarationId/files', (req, res) => {
-  const documentKeys = [
-    'internshipDocument',
-    'sickLeaveDocument',
-    'maternityLeaveDocument',
-    'retirementDocument',
-    'invalidityDocument',
-  ]
   Declaration.query()
-    .eager(
-      `[${documentKeys.join(
-        ', ',
-      )}, employers.document, user, declarationMonth]`,
-    )
+    .eager(`[documents, employers.documents, user, declarationMonth]`)
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
@@ -90,15 +79,15 @@ router.get('/declarations/:declarationId/files', (req, res) => {
         'MM-YYYY',
       )
 
-      const files = documentKeys
-        .map((label) => ({
-          label,
-          value: get(declaration, `${label}.file`),
+      const files = declaration.documents
+        .map((document) => ({
+          label: document.type,
+          value: document.file,
         }))
         .concat(
           declaration.employers.map((employer) => ({
             label: `employer-${employer.employerName}`,
-            value: get(employer, 'document.file'),
+            value: get(employer, 'documents[0].file'),
           })),
         )
         .filter(({ value }) => value) // remove null values

@@ -1,9 +1,8 @@
 const express = require('express')
 
 const router = express.Router()
-const { get, pick, reduce, remove, omit } = require('lodash')
+const { get, pick, remove, omit } = require('lodash')
 const { transaction } = require('objection')
-const { format } = require('date-fns')
 const Raven = require('raven')
 
 const { DECLARATION_STATUSES } = require('../constants')
@@ -14,38 +13,17 @@ const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
-const Document = require('../models/Document')
+const DeclarationDocument = require('../models/DeclarationDocument')
 const ActivityLog = require('../models/ActivityLog')
 
-const declarationDateFields = [
-  'internshipStartDate',
-  'internshipEndDate',
-  'sickLeaveStartDate',
-  'sickLeaveEndDate',
-  'maternityLeaveStartDate',
-  'retirementStartDate',
-  'invalidityStartDate',
-  'jobSearchEndDate',
-]
-
-const possibleDocumentTypes = [
-  'internshipDocument',
-  'sickLeaveDocument',
-  'maternityLeaveDocument',
-  'retirementDocument',
-  'invalidityDocument',
-]
-
 const MAX_MONTHS_TO_FETCH = 24 // 2 years
+
+const eagerDeclarationString = `[declarationMonth, documents, employers.documents]`
 
 router.get('/', (req, res, next) => {
   if ('last' in req.query || 'active' in req.query) {
     return Declaration.query()
-      .eager(
-        `[${possibleDocumentTypes.join(
-          ', ',
-        )}, declarationMonth, employers.document]`,
-      )
+      .eager(eagerDeclarationString)
       .where({ userId: req.session.user.id })
       .orderBy('createdAt', 'desc')
       .first()
@@ -73,11 +51,7 @@ router.get('/', (req, res, next) => {
       : MAX_MONTHS_TO_FETCH
 
   return Declaration.query()
-    .eager(
-      `[${possibleDocumentTypes.join(
-        ', ',
-      )}, employers.document, declarationMonth]`,
-    )
+    .eager(eagerDeclarationString)
     .where({ userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .limit(limit)
@@ -86,26 +60,14 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', requireActiveMonth, (req, res, next) => {
-  const declarationData = reduce(
-    omit(
-      {
-        // prevent malicious overriding of other user declaration
-        ...req.body,
-        userId: req.session.user.id,
-        monthId: req.activeMonth.id,
-      },
-      'id',
-    ),
-    // format dates with date-fns for db insertion so they'll be at the correct day
-    // (dates may be in ISOString format, and are not converted when sent to a
-    // DATE field in the db)
-    (prev, field, key) => ({
-      ...prev,
-      [key]: declarationDateFields.includes(key)
-        ? field && format(field, 'YYYY-MM-DD')
-        : field,
-    }),
-    {},
+  const declarationData = omit(
+    {
+      // prevent malicious overriding of other user declaration
+      ...req.body,
+      userId: req.session.user.id,
+      monthId: req.activeMonth.id,
+    },
+    'id',
   )
 
   try {
@@ -231,21 +193,17 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 })
 
 router.get('/files', (req, res, next) => {
-  if (!req.query.declarationId || !req.query.name)
-    return res.status(400).json('Missing parameters')
+  if (!req.query.documentId) return res.status(400).json('Missing employerId')
 
-  return Declaration.query()
-    .eager(`[${possibleDocumentTypes.join(', ')}]`)
-    .findOne({ id: req.query.declarationId, userId: req.session.user.id })
-    .then((declaration) => {
-      if (!declaration) return res.status(404).json('No such declaration')
-      if (!declaration[req.query.name] || !declaration[req.query.name].file) {
+  return DeclarationDocument.query()
+    .eager('declaration.user')
+    .findOne({
+      id: req.query.documentId,
+    })
+    .then((document) => {
+      if (get(document, 'declaration.user.id') !== req.session.user.id)
         return res.status(404).json('No such file')
-      }
-
-      res.sendFile(declaration[req.query.name].file, {
-        root: uploadDestination,
-      })
+      res.sendFile(document.file, { root: uploadDestination })
     })
     .catch(next)
 })
@@ -258,12 +216,12 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
   const userDocumentName = req.body.name
 
-  if (!possibleDocumentTypes.includes(userDocumentName)) {
+  if (!Object.keys(DeclarationDocument.types).includes(userDocumentName)) {
     return res.status(400).json('Missing document name')
   }
 
   return Declaration.query()
-    .eager(`[${possibleDocumentTypes.join(', ')}]`)
+    .eager(eagerDeclarationString)
     .findOne({ id: req.body.declarationId, userId: req.session.user.id })
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
@@ -278,26 +236,23 @@ router.post('/files', upload.single('document'), (req, res, next) => {
               // Used in case the user sent his file by another means.
               file: null,
               isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
+              type: userDocumentName,
             }
-          : { file: req.file.filename }
+          : { file: req.file.filename, type: userDocumentName }
 
-        const documentPromise = declaration[userDocumentName]
-          ? declaration[userDocumentName].$query().patch(documentFileObj)
-          : Document.query().insert(documentFileObj)
+        const documentIndex = declaration.documents.findIndex(
+          (document) => document.type === userDocumentName,
+        )
+        if (documentIndex !== -1) {
+          declaration.documents[documentIndex] = documentFileObj
+        } else {
+          declaration.documents.push(documentFileObj)
+        }
 
-        return documentPromise
-          .returning('*')
-          .then((savedDocument) =>
-            declaration
-              .$query(trx)
-              .patchAndFetch({ [`${userDocumentName}Id`]: savedDocument.id })
-              .eager(
-                `[${possibleDocumentTypes.join(
-                  ', ',
-                )}, employers.document, declarationMonth]`,
-              ),
-          )
-          .then((savedDeclaration) => res.json(savedDeclaration))
+        return declaration
+          .$query(trx)
+          .upsertGraph()
+          .then(() => res.json(declaration))
       }).catch(next)
     })
 })
@@ -313,11 +268,7 @@ router.post('/finish', (req, res, next) => {
   }
 
   return Declaration.query()
-    .eager(
-      `[${possibleDocumentTypes.join(
-        ', ',
-      )}, employers.document, declarationMonth]`,
-    )
+    .eager(`[documents, employers.documents, declarationMonth]`)
     .findOne({
       id: req.body.id,
       userId: req.session.user.id,
@@ -327,16 +278,25 @@ router.post('/finish', (req, res, next) => {
       if (declaration.isFinished)
         return res.status(400).json('Declaration already finished')
 
+      // TODO this check will need reviewing when we'll be able to send 2 documents / employer
       const hasMissingEmployersDocuments = declaration.employers.some(
-        ({ documentId }) => !documentId,
+        (employer) => employer.documents.length === 0,
       )
+
+      // TODO this check will need reviewing when we'll be able to send multiple internships / sickLeaves
       const hasMissingDeclarationDocuments =
-        (declaration.hasInternship && !declaration.internshipDocumentId) ||
-        (declaration.hasSickLeave && !declaration.sickLeaveDocumentId) ||
+        (declaration.hasInternship &&
+          !declaration.documents.some((doc) => doc.type === 'internship')) ||
+        (declaration.hasSickLeave &&
+          !declaration.documents.some((doc) => doc.type === 'sickLeave')) ||
         (declaration.hasMaternityLeave &&
-          !declaration.maternityLeaveDocumentId) ||
-        (declaration.hasRetirement && !declaration.retirementDocumentId) ||
-        (declaration.hasInvalidity && !declaration.invalidityDocumentId)
+          !declaration.documents.some(
+            (doc) => doc.type === 'maternityLeave',
+          )) ||
+        (declaration.hasRetirement &&
+          !declaration.documents.some((doc) => doc.type === 'retirement')) ||
+        (declaration.hasInvalidity &&
+          !declaration.documents.some((doc) => doc.type === 'invalidity'))
 
       if (
         !declaration.hasFinishedDeclaringEmployers ||

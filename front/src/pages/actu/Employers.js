@@ -219,6 +219,7 @@ export class Employers extends Component {
 
         this.setState({
           isLoading: false,
+          currentDeclaration,
           employers: currentDeclaration.employers.map((employer) =>
             Object.keys(
               pick(employer, [
@@ -241,7 +242,15 @@ export class Employers extends Component {
   }
 
   componentWillUnmount() {
-    this.onSave()
+    // Save at exit, but avoid saving in case where the user is redirected somewhere else
+    // So we make sure data was loaded, and curent declaration hasn't been validated for employers yet
+    if (
+      !this.state.isLoading &&
+      get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
+        false
+    ) {
+      this.onSave()
+    }
   }
 
   addEmployer = () =>

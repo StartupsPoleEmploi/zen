@@ -6,6 +6,7 @@ import { host } from 'storybook-host'
 import EmployerDocumentUpload from '../EmployerDocumentUpload'
 
 const defaultProps = {
+  documentId: 1,
   id: 1,
   employerName: 'Jean Dupond',
   hasEndedThisMonth: false,

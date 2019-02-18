@@ -2,7 +2,14 @@ const express = require('express')
 
 const router = express.Router()
 const { transaction } = require('objection')
-const { isBoolean, isInteger, isNumber, isString, pick } = require('lodash')
+const {
+  get,
+  isBoolean,
+  isInteger,
+  isNumber,
+  isString,
+  pick,
+} = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
@@ -11,8 +18,8 @@ const isUserTokenValid = require('../lib/isUserTokenValid')
 const winston = require('../lib/log')
 
 const Declaration = require('../models/Declaration')
-const Document = require('../models/Document')
 const Employer = require('../models/Employer')
+const EmployerDocument = require('../models/EmployerDocument')
 const ActivityLog = require('../models/ActivityLog')
 
 const { DECLARATION_STATUSES } = require('../constants')
@@ -169,24 +176,22 @@ router.post('/', requireActiveMonth, (req, res, next) => {
               throw err
             })
         })
-        .catch(next)
     })
+    .catch(next)
 })
 
 router.get('/files', (req, res, next) => {
-  if (!req.query.employerId) return res.status(400).json('Missing employerId')
+  if (!req.query.documentId) return res.status(400).json('Missing employerId')
 
-  return Employer.query()
-    .eager('document')
+  return EmployerDocument.query()
+    .eager('employer.user')
     .findOne({
-      id: req.query.employerId,
-      userId: req.session.user.id,
+      id: req.query.documentId,
     })
-    .then((employer) => {
-      if (!employer) return res.status(404).json('No such employer')
-      if (!employer.document || !employer.document.id)
+    .then((document) => {
+      if (get(document, 'employer.user.id') !== req.session.user.id)
         return res.status(404).json('No such file')
-      res.sendFile(employer.document.file, { root: uploadDestination })
+      res.sendFile(document.file, { root: uploadDestination })
     })
     .catch(next)
 })
@@ -196,7 +201,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
 
   return Employer.query()
-    .eager('document')
+    .eager('documents')
     .findOne({
       id: req.body.employerId,
       userId: req.session.user.id,
@@ -204,34 +209,34 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     .then((employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
-      // FIXME all the following should be replaced using an upsertGraph
-      // which failed because of null value in column "id" violates not-null constraint
-      // (also, validation of id field in model should probably be removed)
+      const type = employer.hasEndedThisMonth
+        ? 'employerCertificate'
+        : 'salarySheet'
 
-      return transaction(Employer.knex(), (trx) => {
-        const documentFileObj = req.body.skip
-          ? {
-              // Used in case the user sent his file by another means.
-              file: null,
-              isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
-            }
-          : { file: req.file.filename }
+      const documentFileObj = req.body.skip
+        ? {
+            // Used in case the user sent his file by another means.
+            file: null,
+            isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
+            type,
+          }
+        : { file: req.file.filename, type }
 
-        const documentPromise = employer.document
-          ? employer.document.$query().patch(documentFileObj)
-          : Document.query().insert(documentFileObj)
+      const documentIndex = employer.documents.findIndex(
+        (document) => document.type === type,
+      )
+      if (documentIndex !== -1) {
+        employer.documents[documentIndex] = documentFileObj
+      } else {
+        employer.documents.push(documentFileObj)
+      }
 
-        return documentPromise
-          .returning('*')
-          .then((savedDocument) =>
-            employer
-              .$query(trx)
-              .patchAndFetch({ documentId: savedDocument.id })
-              .eager('document'),
-          )
-          .then((savedEmployer) => res.json(savedEmployer))
-      }).catch(next)
+      return employer
+        .$query()
+        .upsertGraphAndFetch()
+        .then((savedEmployer) => res.json(savedEmployer))
     })
+    .catch(next)
 })
 
 module.exports = router

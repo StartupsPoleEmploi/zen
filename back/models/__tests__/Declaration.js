@@ -1,5 +1,5 @@
 const DeclarationMonth = require('../DeclarationMonth')
-const { startOfMonth, endOfMonth, subMonths, addMonths } = require('date-fns')
+const { startOfMonth, endOfMonth, subMonths } = require('date-fns')
 const Declaration = require('../Declaration')
 const User = require('../User')
 
@@ -8,7 +8,6 @@ const now = new Date()
 const pastDate = startOfMonth(now)
 const futureDate = endOfMonth(now)
 const previousMonth = subMonths(now, 1)
-const nextMonth = addMonths(now, 1)
 
 const validDeclaration = {
   hasWorked: true,
@@ -20,6 +19,9 @@ const validDeclaration = {
   hasInvalidity: false,
   isLookingForJob: true,
 }
+
+const encapsulate = (data, baseField) =>
+  baseField === 'internships' || baseField === 'sickLeaves' ? [data] : data
 
 describe('Declaration Model', () => {
   beforeAll(() =>
@@ -37,7 +39,7 @@ describe('Declaration Model', () => {
     }))
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE'))
 
-  afterEach(() => Declaration.knex().raw('TRUNCATE "Declarations" CASCADE'))
+  afterEach(() => Declaration.knex().raw('TRUNCATE "declarations" CASCADE'))
 
   describe('Validation', () => {
     // Checks if declaration is valid by saving it.
@@ -62,29 +64,29 @@ describe('Declaration Model', () => {
 
     const fieldsToTest = [
       {
-        baseField: 'internship',
+        baseField: 'internships',
         boolField: 'hasInternship',
-        dateFields: ['internshipStartDate', 'internshipEndDate'],
+        dateFields: ['startDate', 'endDate'],
       },
       {
-        baseField: 'sickLeave',
+        baseField: 'sickLeaves',
         boolField: 'hasSickLeave',
-        dateFields: ['sickLeaveStartDate', 'sickLeaveEndDate'],
+        dateFields: ['startDate', 'endDate'],
       },
       {
         baseField: 'maternityLeave',
         boolField: 'hasMaternityLeave',
-        dateFields: ['maternityLeaveStartDate'],
+        dateFields: ['startDate'],
       },
       {
         baseField: 'retirement',
         boolField: 'hasRetirement',
-        dateFields: ['retirementStartDate'],
+        dateFields: ['startDate'],
       },
       {
         baseField: 'invalidity',
         boolField: 'hasInvalidity',
-        dateFields: ['invalidityStartDate'],
+        dateFields: ['startDate'],
       },
     ]
 
@@ -112,14 +114,24 @@ describe('Declaration Model', () => {
           test(`rejects ${baseField} without starting date`, () =>
             checkInvalidDeclaration({
               ...baseDeclaration,
-              [endDateLabel]: futureDate,
+              dates: {
+                [baseField]: encapsulate(
+                  { [endDateLabel]: futureDate },
+                  baseField,
+                ),
+              },
             }))
 
           if (!endDateLabel) {
             test.skip(`rejects ${baseField} with start date out of declared month`, () =>
               checkInvalidDeclaration({
                 ...baseDeclaration,
-                [startDateLabel]: previousMonth,
+                dates: {
+                  [baseField]: encapsulate(
+                    { [startDateLabel]: previousMonth },
+                    baseField,
+                  ),
+                },
               }))
           }
 
@@ -127,38 +139,41 @@ describe('Declaration Model', () => {
             test(`rejects ${baseField} without ending date`, () =>
               checkInvalidDeclaration({
                 ...baseDeclaration,
-                [startDateLabel]: pastDate,
+                dates: {
+                  [baseField]: encapsulate(
+                    { [startDateLabel]: pastDate },
+                    baseField,
+                  ),
+                },
               }))
 
             test(`accepts ${baseField} with both dates`, () =>
               checkValidDeclaration({
                 ...baseDeclaration,
-                [startDateLabel]: pastDate,
-                [endDateLabel]: futureDate,
+                dates: {
+                  [baseField]: encapsulate(
+                    {
+                      [startDateLabel]: pastDate,
+                      [endDateLabel]: futureDate,
+                    },
+                    baseField,
+                  ),
+                },
               }))
 
             // TODO activate when implemented
-            test.skip(`rejects ${baseField} with out of order dates`, () =>
+            test(`rejects ${baseField} with out of order dates`, () =>
               checkInvalidDeclaration({
                 ...baseDeclaration,
-                [startDateLabel]: futureDate,
-                [endDateLabel]: pastDate,
-              }))
-
-            // TODO activate when implemented
-            test.skip(`rejects ${baseField} with start date out of declared month`, () =>
-              checkInvalidDeclaration({
-                ...baseDeclaration,
-                [startDateLabel]: previousMonth,
-                [endDateLabel]: pastDate,
-              }))
-
-            // TODO activate when implemented
-            test.skip(`rejects ${baseField} with end date out of declared month`, () =>
-              checkInvalidDeclaration({
-                ...baseDeclaration,
-                [startDateLabel]: futureDate,
-                [endDateLabel]: nextMonth,
+                dates: {
+                  [baseField]: encapsulate(
+                    {
+                      [startDateLabel]: futureDate,
+                      [endDateLabel]: pastDate,
+                    },
+                    baseField,
+                  ),
+                },
               }))
           }
         })
@@ -189,14 +204,14 @@ describe('Declaration Model', () => {
       test('rejects with only an end date', () =>
         checkInvalidDeclaration({
           ...lookingForJobDeclaration,
-          jobSearchEndDate: now,
+          dates: { jobSearch: { endDate: now } },
         }))
 
       test('accepts with required fields', () =>
         checkInvalidDeclaration({
           ...lookingForJobDeclaration,
           motive: 'work',
-          jobSearchEndDate: now,
+          dates: { jobSearch: { endDate: now } },
         }))
     })
   })

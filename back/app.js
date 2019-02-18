@@ -31,7 +31,7 @@ const employersRouter = require('./routes/employers')
  * This tells node-pg to use float type for decimal
  * which it does not do because JS loses precision on
  * big decimal number.
- * For our usage, this is not an issue.
+ * For our usage (salary), this is not an issue.
  */
 const PG_DECIMAL_OID = 1700
 pg.types.setTypeParser(PG_DECIMAL_OID, parseFloat)

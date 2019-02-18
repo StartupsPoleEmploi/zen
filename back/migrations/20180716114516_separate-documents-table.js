@@ -1,14 +1,15 @@
 /* eslint-disable */
 
 exports.up = function(knex) {
-  console.warn(
+  /*
+    WARNING
     `This migration was first done stupidly and also migrated data using models.
     It has been updated to use knex.raw, but the data migration hasn't been verified
     as there is no more reason to have data migrated (at the time of writing, this migration is already
     6 months old, so the only reason to run it again is to recreate the project from scratch,
     supposedly with no data).
     TL;DR: If this fails, empty your development db.`,
-  )
+  */
 
   return knex.schema
     .createTable('documents', (table) => {

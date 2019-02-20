@@ -109,7 +109,9 @@ export class AdditionalDocumentUpload extends Component {
   }
 
   submitFile = ({ target: { files } }) =>
-    this.props.submitFile({ file: files[0] })
+    this.props.submitFile({ file: files[0], documentId: this.props.documentId })
+
+  skipFile = () => this.props.skipFile({ documentId: this.props.documentId })
 
   render() {
     const {
@@ -120,7 +122,6 @@ export class AdditionalDocumentUpload extends Component {
       isTransmitted,
       label,
       allowSkipFile,
-      skipFile,
     } = this.props
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
@@ -212,7 +213,7 @@ export class AdditionalDocumentUpload extends Component {
                   </Typography>
                 }
               >
-                <SideButton onClick={skipFile}>
+                <SideButton onClick={this.skipFile}>
                   <CheckBoxOutlineBlank />
                   Transmis à Pôle Emploi {/* eslint-disable-line */}
                 </SideButton>

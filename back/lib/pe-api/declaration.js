@@ -1,6 +1,7 @@
 const { format } = require('date-fns')
 const superagent = require('superagent')
 const config = require('config')
+const { isAfter, isBefore } = require('date-fns')
 
 const winston = require('../log')
 
@@ -31,20 +32,40 @@ const convertDeclarationToAPIFormat = (declaration) => {
       declaration.employers.reduce((prev, { salary }) => prev + salary, 0),
     )
   }
+
+  /*
+   * multiple sickLeaves or internships need to be sent ot PE as one single date span
+   * so for example, two sicknessLeaves like this :
+   * [{ startDate: 2019-01-02, endDate: 2019-01-04 }, { startDate: 2019-01-09, endDate: 2019-01-16 }]
+   * will be declared as one single sicknessLeave from 2019-01-02 to 2019-01-16.
+   * PE-side, this will be handled by looking at the user's documents.
+   */
   if (declaration.hasInternship) {
     apiDeclaration.dateDebutStage = convertDate(
-      declaration.dates.internships[0].startDate,
+      declaration.dates.internships.reduce(
+        (prev, { startDate }) => (isBefore(prev, startDate) ? prev : startDate),
+        declaration.dates.internships[0].startDate,
+      ),
     )
     apiDeclaration.dateFinStage = convertDate(
-      declaration.dates.internships[0].endDate,
+      declaration.dates.internships.reduce(
+        (prev, { endDate }) => (isAfter(prev, endDate) ? prev : endDate),
+        declaration.dates.internships[0].endDate,
+      ),
     )
   }
   if (declaration.hasSickLeave) {
     apiDeclaration.dateDebutMaladie = convertDate(
-      declaration.dates.sickLeaves[0].startDate,
+      declaration.dates.sickLeaves.reduce(
+        (prev, { startDate }) => (isBefore(prev, startDate) ? prev : startDate),
+        declaration.dates.sickLeaves[0].startDate,
+      ),
     )
     apiDeclaration.dateFinMaladie = convertDate(
-      declaration.dates.sickLeaves[0].endDate,
+      declaration.dates.sickLeaves.reduce(
+        (prev, { endDate }) => (isAfter(prev, endDate) ? prev : endDate),
+        declaration.dates.sickLeaves[0].endDate,
+      ),
     )
   }
   if (declaration.hasMaternityLeave) {

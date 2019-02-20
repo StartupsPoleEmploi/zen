@@ -137,6 +137,34 @@ const declarationWithJobSearchMotiveOther = {
   jobSearchStopMotive: 'other',
 }
 
+const declarationWithMultipleSicknessAndInternshipDates = {
+  ...declarationWithoutEmployers,
+  hasSickLeave: true,
+  hasInternship: true,
+  dates: {
+    internships: [
+      {
+        startDate: '2018-12-01T23:00:00.000Z',
+        endDate: '2018-12-08T23:00:00.000Z',
+      },
+      {
+        startDate: '2018-12-11T23:00:00.000Z',
+        endDate: '2019-01-10T23:00:00.000Z',
+      },
+    ],
+    sickLeaves: [
+      {
+        startDate: '2018-12-02T23:00:00.000Z',
+        endDate: '2018-12-08T23:00:00.000Z',
+      },
+      {
+        startDate: '2018-12-17T23:00:00.000Z',
+        endDate: '2019-01-18T23:00:00.000Z',
+      },
+    ],
+  },
+}
+
 const accessToken = 'AZERTYUIOP'
 
 describe('PE API: sendDeclaration', () => {
@@ -170,6 +198,7 @@ describe('PE API: sendDeclaration', () => {
         declarationWithAllDatesFilled,
         declarationWithJobSearchMotiveRetirement,
         declarationWithJobSearchMotiveOther,
+        declarationWithMultipleSicknessAndInternshipDates,
       ]
 
       for (const declaration of declarations) {

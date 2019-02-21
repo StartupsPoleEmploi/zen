@@ -61,6 +61,39 @@ const CODES = {
   },
 }
 
+const documentsToTransmitTypes = [
+  {
+    boolField: 'hasInternship',
+    type: 'internship',
+    label: 'Stage',
+    confirmationData: CODES.INTERNSHIP,
+  },
+  {
+    boolField: 'hasSickLeave',
+    type: 'sickLeave',
+    label: 'Congé Maladie',
+    confirmationData: CODES.SICKNESS,
+  },
+  {
+    boolField: 'hasMaternityLeave',
+    type: 'maternityLeave',
+    label: 'Congé maternité',
+    confirmationData: CODES.SICKNESS,
+  },
+  {
+    boolField: 'hasRetirement',
+    type: 'retirement',
+    label: 'Retraite',
+    confirmationData: CODES.RETIREMENT,
+  },
+  {
+    boolField: 'hasInvalidity',
+    type: 'invalidity',
+    label: 'Invalidité',
+    confirmationData: CODES.INVALIDITY,
+  },
+]
+
 const uploadUrl = `${
   config.apiHost
 }/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`
@@ -156,63 +189,34 @@ const doConfirm = ({
     })
 
 const sendDocuments = async ({ declaration, accessToken }) => {
-  const documentsToTransmit = [
-    {
-      boolField: 'hasInternship',
-      type: 'internship',
-      label: 'Stage',
-      confirmationData: CODES.INTERNSHIP,
-    },
-    {
-      boolField: 'hasSickLeave',
-      type: 'sickLeave',
-      label: 'Congé Maladie',
-      confirmationData: CODES.SICKNESS,
-    },
-    {
-      boolField: 'hasMaternityLeave',
-      type: 'maternityLeave',
-      label: 'Congé maternité',
-      confirmationData: CODES.SICKNESS,
-    },
-    {
-      boolField: 'hasRetirement',
-      type: 'retirement',
-      label: 'Retraite',
-      confirmationData: CODES.RETIREMENT,
-    },
-    {
-      boolField: 'hasInvalidity',
-      type: 'invalidity',
-      label: 'Invalidité',
-      confirmationData: CODES.INVALIDITY,
-    },
-  ]
-    .reduce((prev, fields) => {
-      const dbDocument = declaration.documents.find(
-        (doc) => doc.type === fields.type,
+  const documentsToTransmit = declaration.documents
+    .map((dbDocument) => {
+      const typeInfos = documentsToTransmitTypes.find(
+        ({ type }) => type === dbDocument.type,
       )
-      if (!declaration[fields.boolField] || !dbDocument) return prev
-      return prev.concat({
+
+      return {
         filePath: `${uploadsDirectory}${dbDocument.file}`,
-        label: fields.label,
+        label: typeInfos.label,
         dbDocument,
-        confirmationData: fields.confirmationData,
-      })
-    }, [])
+        confirmationData: typeInfos.confirmationData,
+      }
+    })
     .concat(
       declaration.employers.reduce(
         (prev, { employerName, documents, hasEndedThisMonth }) => {
-          // TODO this will need to be updated to handle multiple files / employer
           if (!documents[0] || !documents[0].file) return prev
-          return prev.concat({
-            filePath: `${uploadsDirectory}${documents[0].file}`,
-            label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
-            dbDocument: documents[0],
-            confirmationData: hasEndedThisMonth
-              ? CODES.EMPLOYER_CERTIFICATE
-              : CODES.SALARY_SHEET,
-          })
+
+          return prev.concat(
+            documents.map((document) => ({
+              filePath: `${uploadsDirectory}${document.file}`,
+              label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
+              dbDocument: document,
+              confirmationData: hasEndedThisMonth
+                ? CODES.EMPLOYER_CERTIFICATE
+                : CODES.SALARY_SHEET,
+            })),
+          )
         },
         [],
       ),

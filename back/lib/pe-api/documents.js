@@ -23,7 +23,7 @@ const { deburr, toNumber } = require('lodash')
 
 const winston = require('../log')
 
-const DEFAULT_WAIT_TIME = 1000
+const DEFAULT_WAIT_TIME = process.env.NODE_ENV !== 'test' ? 1000 : 0
 const MAX_RETRIES = 3
 
 const CONTEXT_CODE = '1'

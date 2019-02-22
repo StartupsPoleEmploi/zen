@@ -125,20 +125,25 @@ const additionalDocumentsSpecs = [
     fieldToCheck: 'hasSickLeave',
     label: 'Feuille maladie',
     sectionLabel: 'Congé maladie',
+    declarationDateType: 'sickLeaves',
     dateFields: ['startDate', 'endDate'],
+    multiple: true,
   },
   {
     name: 'internship',
     fieldToCheck: 'hasInternship',
     label: 'Attestation de stage',
     sectionLabel: 'Stage',
+    declarationDateType: 'internships',
     dateFields: ['startDate', 'endDate'],
+    multiple: true,
   },
   {
     name: 'maternityLeave',
     fieldToCheck: 'hasMaternityLeave',
     label: 'Attestation de congé maternité',
     sectionLabel: 'Congé maternité',
+    declarationDateType: 'maternityLeave',
     dateFields: ['startDate'],
   },
   {
@@ -146,6 +151,7 @@ const additionalDocumentsSpecs = [
     fieldToCheck: 'hasRetirement',
     label: 'Attestation retraite',
     sectionLabel: 'Retraite',
+    declarationDateType: 'retirement',
     dateFields: ['startDate'],
   },
   {
@@ -153,34 +159,36 @@ const additionalDocumentsSpecs = [
     fieldToCheck: 'hasInvalidity',
     label: 'Attestation invalidité',
     sectionLabel: 'Invalidité',
+    declarationDateType: 'invalidity',
     dateFields: ['startDate'],
   },
 ]
 
-const getLoadingKey = ({ name, declarationId }) =>
-  `$isLoading-${declarationId}-${name}`
-const getErrorKey = ({ name, declarationId }) =>
-  `${declarationId}-${name}-Error`
+const getLoadingKey = ({ name, declarationId, index = 0 }) =>
+  `$isLoading-${declarationId}-${name}-${index}`
+const getErrorKey = ({ name, declarationId, index = 0 }) =>
+  `${declarationId}-${name}-${index}-Error`
 
 // Get the number of missing files in a declaration
 // FIXME this doesn't handle empty arrays, and only counts arrays as one doc
 const getDeclarationMissingFilesNb = (declaration) => {
-  const missingAdditionalDocuments = additionalDocumentsSpecs
-    .filter((spec) => declaration[spec.fieldToCheck])
-    .filter(
-      (spec) =>
-        !declaration.documents.some(
-          (declarationDoc) => declarationDoc.type === spec.name,
-        ),
-    )
+  const additionalDocumentsRequiredNb =
+    get(declaration, 'dates.sickLeaves.length', 0) +
+    get(declaration, 'dates.internships.length', 0) +
+    (declaration.hasMaternityLeave ? 1 : 0) +
+    (declaration.hasRetirement ? 1 : 0) +
+    (declaration.hasInvalidity ? 1 : 0) -
+    declaration.documents.length
 
   return (
     declaration.employers.reduce(
       (prev, employer) => prev + (employer.documents[0] ? 0 : 1),
       0,
-    ) + missingAdditionalDocuments.length
+    ) + additionalDocumentsRequiredNb
   )
 }
+
+const formatDate = (date) => moment(date).format('DD MMMM YYYY')
 
 export class Files extends Component {
   static propTypes = {
@@ -286,16 +294,25 @@ export class Files extends Component {
       })
   }
 
-  submitAdditionalFile = ({ declarationId, file, name, skip }) => {
+  submitAdditionalFile = ({
+    declarationId,
+    documentId,
+    file,
+    index,
+    name,
+    skip,
+  }) => {
     this.closeSkipModal()
 
     const errorKey = getErrorKey({
       name,
       declarationId,
+      index,
     })
     const loadingKey = getLoadingKey({
       name,
       declarationId,
+      index,
     })
 
     this.setState({
@@ -308,6 +325,9 @@ export class Files extends Component {
       .field('declarationId', declarationId)
       .field('name', name)
 
+    if (documentId) {
+      request = request.field('documentId', documentId)
+    }
     if (skip) {
       request = request.field('skip', true)
     } else {
@@ -395,7 +415,7 @@ export class Files extends Component {
 
   renderDocumentList = ({ declaration, isOldMonth }) => {
     // FIXME only counts 1 doc / hasSickLeave & hasInternship
-    const neededAdditionalDocuments = additionalDocumentsSpecs.filter(
+    const neededAdditionalDocumentsSpecs = additionalDocumentsSpecs.filter(
       (spec) => !!declaration[spec.fieldToCheck],
     )
 
@@ -421,29 +441,42 @@ export class Files extends Component {
         }),
       )
 
-    const additionalDocumentsNodes = neededAdditionalDocuments.map(
-      (neededDocument) => {
-        const formattedDates = neededDocument.dateFields.map((dateField) =>
-          moment(declaration.dates[dateField]).format('DD MMMM YYYY'),
-        )
+    const additionalDocumentsNodes = neededAdditionalDocumentsSpecs.map(
+      (neededDocumentSpecs) => {
+        const dates = declaration.dates[neededDocumentSpecs.declarationDateType]
+
         return (
-          <div key={neededDocument.name}>
+          <div key={neededDocumentSpecs.name}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
             >
-              <b>{neededDocument.sectionLabel}</b>
+              <b>{neededDocumentSpecs.sectionLabel}</b>
             </Typography>
             <Typography variant="caption">
-              {formattedDates.length === 1 &&
-                `À partir du ${formattedDates[0]}`}
-              {formattedDates.length === 2 &&
-                `Du ${formattedDates.join(' au ')}`}
+              {neededDocumentSpecs.multiple && (
+                <ul style={{ paddingLeft: 0 }}>
+                  {dates.map(({ startDate, endDate }, key) => (
+                    /* eslint-disable-next-line react/no-array-index-key */
+                    <li key={key} style={{ display: 'block' }}>
+                      Du {formatDate(startDate)} au {formatDate(endDate)}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {!neededDocumentSpecs.multiple &&
+                (dates.length === 1
+                  ? `À partir du ${formatDate(dates.startDate)}`
+                  : `Du ${formatDate(dates.startDate)} au ${formatDate(
+                      dates.endDate,
+                    )}`)}
             </Typography>
             <StyledList>
-              {this.renderAdditionalDocument({
-                label: neededDocument.label,
-                name: neededDocument.name,
+              {this.renderDocumentsOfType({
+                label: neededDocumentSpecs.label,
+                name: neededDocumentSpecs.name,
+                declarationDateType: neededDocumentSpecs.declarationDateType,
+                multiple: neededDocumentSpecs.multiple,
                 declaration,
                 allowSkipFile: isOldMonth,
               })}
@@ -520,50 +553,75 @@ export class Files extends Component {
       allowSkipFile: false,
     })
 
-  renderAdditionalDocument = ({ label, name, declaration, allowSkipFile }) => {
-    const additionalDoc = declaration.documents.find((doc) => doc.type === name)
-
-    return (
-      <AdditionalDocumentUpload
-        label={label}
-        error={
-          this.state[
-            getErrorKey({
-              name,
-              declarationId: declaration.id,
-            })
-          ]
-        }
-        fileExistsOnServer={!!additionalDoc}
-        isLoading={
-          this.state[
-            getLoadingKey({
-              name,
-              declarationId: declaration.id,
-            })
-          ]
-        }
-        submitFile={({ file }) =>
-          this.submitAdditionalFile({
-            file,
-            name,
-            declarationId: declaration.id,
-          })
-        }
-        skipFile={() =>
-          this.askToSkipFile(() =>
-            this.submitAdditionalFile({
-              skip: true,
-              name,
-              declarationId: declaration.id,
-            }),
-          )
-        }
-        allowSkipFile={allowSkipFile}
-        isTransmitted={get(additionalDoc, `isTransmitted`)}
-        documentId={get(additionalDoc, `id`)}
-      />
+  renderDocumentsOfType = ({
+    label,
+    name,
+    declaration,
+    declarationDateType,
+    allowSkipFile,
+    multiple,
+  }) => {
+    const totalAdditionalDocumentsOfThisTypeNeeded = multiple
+      ? declaration.dates[declarationDateType].length
+      : 1
+    const availableAdditionalDocsOfThisType = declaration.documents.filter(
+      (doc) => doc.type === name,
     )
+
+    const nodes = []
+    for (let i = 0; i < totalAdditionalDocumentsOfThisTypeNeeded; i++) {
+      const additionalDoc = availableAdditionalDocsOfThisType[i]
+      nodes.push(
+        <AdditionalDocumentUpload
+          key={`${name}-${i}`} // eslint-disable-line react/no-array-index-key
+          label={label}
+          error={
+            this.state[
+              getErrorKey({
+                name,
+                declarationId: declaration.id,
+                index: i,
+              })
+            ]
+          }
+          fileExistsOnServer={!!additionalDoc}
+          isLoading={
+            this.state[
+              getLoadingKey({
+                name,
+                declarationId: declaration.id,
+                index: i,
+              })
+            ]
+          }
+          submitFile={({ file, documentId }) =>
+            this.submitAdditionalFile({
+              file,
+              name,
+              declarationId: declaration.id,
+              documentId,
+              index: i,
+            })
+          }
+          skipFile={({ documentId }) =>
+            this.askToSkipFile(() =>
+              this.submitAdditionalFile({
+                skip: true,
+                name,
+                declarationId: declaration.id,
+                documentId,
+                index: i,
+              }),
+            )
+          }
+          allowSkipFile={allowSkipFile}
+          isTransmitted={get(additionalDoc, `isTransmitted`)}
+          documentId={get(additionalDoc, `id`)}
+        />,
+      )
+    }
+
+    return nodes
   }
 
   renderEmployerRow = ({ employer, declaration, allowSkipFile }) => (

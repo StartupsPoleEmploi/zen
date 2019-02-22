@@ -813,6 +813,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
       >
         <li
           className="sc-cSHVUG dBeAnx"
+          style={Object {}}
         >
           <div
             className="sc-kAzzGY bsugaH"
@@ -999,6 +1000,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
       >
         <li
           className="sc-cSHVUG dBeAnx"
+          style={Object {}}
         >
           <div
             className="sc-kAzzGY bsugaH"
@@ -1185,6 +1187,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
       >
         <li
           className="sc-cSHVUG dBeAnx"
+          style={Object {}}
         >
           <div
             className="sc-kAzzGY bsugaH"
@@ -1374,6 +1377,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
       >
         <li
           className="sc-cSHVUG dBeAnx"
+          style={Object {}}
         >
           <div
             className="sc-kAzzGY bsugaH"
@@ -1563,6 +1567,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
       >
         <li
           className="sc-cSHVUG dBeAnx"
+          style={Object {}}
         >
           <div
             className="sc-kAzzGY bsugaH"

@@ -129,3 +129,26 @@ Object {
   "nbHeuresTrav": 255,
 }
 `;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 11`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 134,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 12`] = `
+Object {
+  "dateDebutMaladie": "03122018",
+  "dateDebutStage": "02122018",
+  "dateFinMaladie": "19012019",
+  "dateFinStage": "11012019",
+  "forceIncoherence": 0,
+}
+`;

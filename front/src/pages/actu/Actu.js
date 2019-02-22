@@ -6,10 +6,11 @@ import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
+import Delete from '@material-ui/icons/DeleteOutlined'
 import { cloneDeep, get, isNull, pick, set } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router'
 import store from 'store2'
 import styled from 'styled-components'
@@ -71,6 +72,21 @@ const StyledList = styled(List)`
   }
   & > *:nth-child(2n) {
     background: #e7ebf2;
+  }
+`
+
+const AddElementButtonContainer = styled.div`
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: -3rem;
+`
+
+const AddElementButton = styled(Button).attrs({
+  variant: 'outlined',
+  color: 'primary',
+})`
+  && {
+    background: #fff;
   }
 `
 
@@ -160,6 +176,28 @@ export class Actu extends Component {
     if (controlName === 'hasTrained') {
       this.setState({ isLookingForJob: hasAnsweredYes ? true : null })
     }
+
+    if (controlName === 'hasSickLeave') {
+      this.setState({
+        dates: {
+          ...this.state.dates,
+          sickLeaves: hasAnsweredYes
+            ? [{ startDate: null, endDate: null }]
+            : [],
+        },
+      })
+    }
+
+    if (controlName === 'hasInternship' && hasAnsweredYes) {
+      this.setState({
+        dates: {
+          ...this.state.dates,
+          internships: hasAnsweredYes
+            ? [{ startDate: null, endDate: null }]
+            : [],
+        },
+      })
+    }
   }
 
   onSetDate = ({ controlName, date }) => {
@@ -199,15 +237,16 @@ export class Actu extends Component {
     }
 
     if (hasInternship) {
-      const hasMissingInternshipDates = dates.internships.some(
-        ({ startDate, endDate }) => !startDate || !endDate,
-      )
+      const hasMissingInternshipDates =
+        dates.internships.some(
+          ({ startDate, endDate }) => !startDate || !endDate,
+        ) || !dates.internships.length
       const hasWrongInternshipDates = dates.internships.some(
         ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
       )
 
       if (hasMissingInternshipDates) {
-        return `Merci d'indiquer vos dates de stage`
+        return `Merci d'indiquer toutes vos dates de stage`
       }
       if (hasWrongInternshipDates) {
         return 'Merci de corriger vos dates de stage (le début du stage ne peut être après sa fin)'
@@ -215,15 +254,16 @@ export class Actu extends Component {
     }
 
     if (hasSickLeave) {
-      const hasMissingSickLeaveDates = dates.sickLeaves.some(
-        ({ startDate, endDate }) => !startDate || !endDate,
-      )
+      const hasMissingSickLeaveDates =
+        dates.sickLeaves.some(
+          ({ startDate, endDate }) => !startDate || !endDate,
+        ) || !dates.sickLeaves.length
       const hasWrongSickLeaveDates = dates.sickLeaves.some(
         ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
       )
 
       if (hasMissingSickLeaveDates) {
-        return `Merci d'indiquer vos dates d'arrêt maladie`
+        return `Merci d'indiquer tous vos dates d'arrêt maladie`
       }
       if (hasWrongSickLeaveDates) {
         return `Merci de corriger d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
@@ -303,6 +343,104 @@ export class Actu extends Component {
     this.setState({ isMaternalAssistant: true })
   }
 
+  addSickLeave = () =>
+    this.setState({
+      dates: {
+        ...this.state.dates,
+        sickLeaves: (this.state.dates.sickLeaves || []).concat({
+          startDate: null,
+          endDate: null,
+        }),
+      },
+    })
+
+  addInternship = () =>
+    this.setState({
+      dates: {
+        ...this.state.dates,
+        internships: (this.state.dates.internships || []).concat({
+          startDate: null,
+          endDate: null,
+        }),
+      },
+    })
+
+  removeSickLeave = (key) =>
+    this.setState({
+      ...this.state,
+      dates: {
+        ...this.state.dates,
+        sickLeaves: this.state.dates.sickLeaves.filter(
+          (val, index) => key !== index,
+        ),
+      },
+    })
+
+  removeInternship = (key) =>
+    this.setState({
+      ...this.state,
+      dates: {
+        ...this.state.dates,
+        internships: this.state.dates.internships.filter(
+          (val, index) => key !== index,
+        ),
+      },
+    })
+
+  renderDatePickerGroup = (
+    { startDate, endDate },
+    key,
+    type,
+    removeCallback,
+  ) => {
+    const activeMonthMoment = moment(this.props.activeMonth)
+
+    const datePickerMinDate = activeMonthMoment
+      .clone()
+      .startOf('month')
+      .toDate()
+    const datePickerMaxDate = activeMonthMoment
+      .clone()
+      .endOf('month')
+      .toDate()
+
+    return (
+      <div
+        key={`${type}-${key}`}
+        style={{ display: 'flex', alignItems: 'flex-end' }}
+      >
+        <DatePicker
+          label="Date de début"
+          onSelectDate={this.onSetDate}
+          minDate={datePickerMinDate}
+          maxDate={datePickerMaxDate}
+          name={`dates.${type}[${key}].startDate`}
+          value={startDate}
+        />
+        <DatePicker
+          label="Date de fin"
+          onSelectDate={this.onSetDate}
+          minDate={datePickerMinDate}
+          maxDate={MAX_DATE}
+          // even with a far-away max-date, we want the default
+          // focused date to be in the active month
+          initialFocusedDate={datePickerMaxDate}
+          name={`dates.${type}[${key}].endDate`}
+          value={endDate}
+        />
+        <Button onClick={() => removeCallback(key)}>
+          <Delete />
+          Supprimer
+        </Button>
+      </div>
+    )
+  }
+
+  renderSickLeavesDatePickerGroup = (value, key) =>
+    this.renderDatePickerGroup(value, key, 'sickLeaves', this.removeSickLeave)
+  renderInternshipsDatePickerGroup = (value, key) =>
+    this.renderDatePickerGroup(value, key, 'internships', this.removeInternship)
+
   render() {
     const {
       formError,
@@ -310,6 +448,9 @@ export class Actu extends Component {
       isLoading,
       loadingError,
       dates = {},
+      hasSickLeave,
+      hasInternship,
+      hasMaternityLeave,
     } = this.state
 
     const { user } = this.props
@@ -372,25 +513,19 @@ export class Actu extends Component {
                 value={this.state.hasInternship}
                 onAnswer={this.onAnswer}
               >
-                <DatePicker
-                  label="Date de début"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="dates.internships[0].startDate"
-                  value={get(dates, 'internships[0].startDate', null)}
-                />
-                <DatePicker
-                  label="Date de fin"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={MAX_DATE}
-                  // even with a far-away max-date, we want the default
-                  // focused date to be in the active month
-                  initialFocusedDate={datePickerMaxDate}
-                  name="dates.internships[0].endDate"
-                  value={get(dates, 'internships[0].endDate', null)}
-                />
+                {hasInternship && (
+                  <Fragment>
+                    {(dates.internships || []).map(
+                      this.renderInternshipsDatePickerGroup,
+                    )}
+
+                    <AddElementButtonContainer>
+                      <AddElementButton onClick={this.addInternship}>
+                        + Ajouter un stage
+                      </AddElementButton>
+                    </AddElementButtonContainer>
+                  </Fragment>
+                )}
               </DeclarationQuestion>
               <DeclarationQuestion
                 label={`Avez-vous été en arrêt maladie ${
@@ -401,33 +536,28 @@ export class Actu extends Component {
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
+                style={{ paddingTop: hasInternship ? '3rem' : 'initial' }}
               >
-                <DatePicker
-                  label="Date de début"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="dates.sickLeaves[0].startDate"
-                  value={get(dates, 'sickLeaves[0].startDate', null)}
-                />
-                <DatePicker
-                  label="Date de fin"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={MAX_DATE}
-                  // even with a far-away max-date, we want the default
-                  // focused date to be in the active month
-                  initialFocusedDate={datePickerMaxDate}
-                  name="dates.sickLeaves[0].endDate"
-                  value={get(dates, 'sickLeaves[0].endDate', null)}
-                />
+                {hasSickLeave && (
+                  <Fragment>
+                    {(dates.sickLeaves || []).map(
+                      this.renderSickLeavesDatePickerGroup,
+                    )}
+                    <AddElementButtonContainer>
+                      <AddElementButton onClick={this.addSickLeave}>
+                        + Ajouter un arrêt maladie
+                      </AddElementButton>
+                    </AddElementButtonContainer>
+                  </Fragment>
+                )}
               </DeclarationQuestion>
               {user.gender !== USER_GENDER_MALE && (
                 <DeclarationQuestion
                   label="Avez-vous été en congé maternité ?"
                   name="hasMaternityLeave"
-                  value={this.state.hasMaternityLeave}
+                  value={hasMaternityLeave}
                   onAnswer={this.onAnswer}
+                  style={{ paddingTop: hasSickLeave ? '3rem' : 'initial' }}
                 >
                   <DatePicker
                     label="Date de début"
@@ -444,6 +574,10 @@ export class Actu extends Component {
                 name="hasRetirement"
                 value={this.state.hasRetirement}
                 onAnswer={this.onAnswer}
+                style={{
+                  paddingTop:
+                    hasSickLeave && !hasMaternityLeave ? '3rem' : 'initial',
+                }}
               >
                 <DatePicker
                   label="Depuis le"

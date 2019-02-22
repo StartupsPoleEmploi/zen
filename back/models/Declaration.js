@@ -38,13 +38,17 @@ class Declaration extends BaseModel {
     }
 
     if (objectToValidate.hasInternship) {
-      if (!dates || !dates.internships) throwValidationError('internships')
+      if (!dates || !dates.internships || !dates.internships.length) {
+        throwValidationError('internships')
+      }
       dates.internships.forEach(({ startDate, endDate }) =>
         validateDates('hasInternship', [startDate, endDate]),
       )
     }
     if (objectToValidate.hasSickLeave) {
-      if (!dates || !dates.sickLeaves) throwValidationError('sickLeaves')
+      if (!dates || !dates.sickLeaves || !dates.sickLeaves.length) {
+        throwValidationError('sickLeaves')
+      }
       dates.sickLeaves.forEach(({ startDate, endDate }) =>
         validateDates('hasSickLeave', [startDate, endDate]),
       )

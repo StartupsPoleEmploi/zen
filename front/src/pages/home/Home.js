@@ -189,7 +189,7 @@ export const Home = ({ location: { search } }) => (
           </b>
         </BodyTypography>
         <BigLinkButton to="/api/login" target="_self">
-          J'actualise ma situation
+          Je m'inscris
         </BigLinkButton>
         <Caption>
           Propulsé par Pôle Emploi{' '}

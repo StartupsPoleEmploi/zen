@@ -181,6 +181,7 @@ export class Employers extends Component {
 
   state = {
     employers: [{ ...employerTemplate }],
+    previousEmployers: [],
     isLoading: true,
     error: null,
     isDialogOpened: false,
@@ -199,9 +200,9 @@ export class Employers extends Component {
         const currentDeclaration = declarations[0]
         const previousDeclaration = declarations[1]
 
-        if (currentDeclaration.employers.length === 0) {
-          this.setState({ isLoading: false })
+        this.setState({ currentDeclaration, isLoading: false })
 
+        if (currentDeclaration.employers.length === 0) {
           const relevantPreviousEmployers = previousDeclaration.employers.filter(
             (employer) => !employer.hasEndedThisMonth,
           )
@@ -218,8 +219,6 @@ export class Employers extends Component {
         }
 
         this.setState({
-          isLoading: false,
-          currentDeclaration,
           employers: currentDeclaration.employers.map((employer) =>
             Object.keys(
               pick(employer, [
@@ -246,6 +245,7 @@ export class Employers extends Component {
     // So we make sure data was loaded, and curent declaration hasn't been validated for employers yet
     if (
       !this.state.isLoading &&
+      !this.hasSubmittedAndFinished &&
       get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
         false
     ) {
@@ -300,7 +300,10 @@ export class Employers extends Component {
         ignoreErrors,
       })
       .set('CSRF-Token', this.props.token)
-      .then(() => this.props.history.push('/files'))
+      .then(() => {
+        this.hasSubmittedAndFinished = true // used to cancel cWU actions
+        this.props.history.push('/files')
+      })
       .catch((err) => {
         if (
           err.status === 400 &&

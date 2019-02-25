@@ -235,9 +235,9 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         })
       }
       return EmployerDocument.query()
-        .insert(documentFileObj)
-        .then(fetchEmployer())
-        .then((declaration) => res.json(declaration))
+        .insert({ employerId: employer.id, ...documentFileObj })
+        .then(fetchEmployer)
+        .then((savedEmployer) => res.json(savedEmployer))
     })
     .catch(next)
 })

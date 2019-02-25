@@ -249,8 +249,8 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         })
       }
       return DeclarationDocument.query()
-        .insert(documentFileObj)
-        .then(fetchDeclaration())
+        .insert({ declarationId: declaration.id, ...documentFileObj })
+        .then(fetchDeclaration)
         .then((updatedDeclaration) => res.json(updatedDeclaration))
     })
     .catch(next)

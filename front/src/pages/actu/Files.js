@@ -564,9 +564,9 @@ export class Files extends Component {
     const totalAdditionalDocumentsOfThisTypeNeeded = multiple
       ? declaration.dates[declarationDateType].length
       : 1
-    const availableAdditionalDocsOfThisType = declaration.documents.filter(
-      (doc) => doc.type === name,
-    )
+    const availableAdditionalDocsOfThisType = declaration.documents
+      .filter((doc) => doc.type === name)
+      .sort((a, b) => (a.id > b.id ? 1 : -1))
 
     const nodes = []
     for (let i = 0; i < totalAdditionalDocumentsOfThisTypeNeeded; i++) {

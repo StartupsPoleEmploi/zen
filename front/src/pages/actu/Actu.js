@@ -536,7 +536,7 @@ export class Actu extends Component {
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
-                style={{ paddingTop: hasInternship ? '3rem' : 'initial' }}
+                style={{ paddingTop: hasInternship ? '3rem' : '1rem' }}
               >
                 {hasSickLeave && (
                   <Fragment>
@@ -557,7 +557,7 @@ export class Actu extends Component {
                   name="hasMaternityLeave"
                   value={hasMaternityLeave}
                   onAnswer={this.onAnswer}
-                  style={{ paddingTop: hasSickLeave ? '3rem' : 'initial' }}
+                  style={{ paddingTop: hasSickLeave ? '3rem' : '1rem' }}
                 >
                   <DatePicker
                     label="Date de début"
@@ -575,8 +575,12 @@ export class Actu extends Component {
                 value={this.state.hasRetirement}
                 onAnswer={this.onAnswer}
                 style={{
+                  // accounts for the fact that the section maternityLeave will be absent
+                  // for males, and add padding if there was a "add sick leave" button
                   paddingTop:
-                    hasSickLeave && !hasMaternityLeave ? '3rem' : 'initial',
+                    hasSickLeave && user.gender === USER_GENDER_MALE
+                      ? '3rem'
+                      : '1rem',
                 }}
               >
                 <DatePicker

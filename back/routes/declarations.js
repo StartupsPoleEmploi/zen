@@ -242,14 +242,19 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         (document) => document.id === parseInt(req.body.documentId, 10),
       )
 
+      let savePromise
       if (documentIndex !== -1) {
-        return declaration.documents[documentIndex].$query().patch({
+        savePromise = declaration.documents[documentIndex].$query().patch({
           id: declaration.documents[documentIndex].id,
           ...documentFileObj,
         })
+      } else {
+        savePromise = DeclarationDocument.query().insert({
+          declarationId: declaration.id,
+          ...documentFileObj,
+        })
       }
-      return DeclarationDocument.query()
-        .insert({ declarationId: declaration.id, ...documentFileObj })
+      return savePromise
         .then(fetchDeclaration)
         .then((updatedDeclaration) => res.json(updatedDeclaration))
     })

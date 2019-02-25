@@ -228,14 +228,20 @@ router.post('/files', upload.single('document'), (req, res, next) => {
       const documentIndex = employer.documents.findIndex(
         (document) => document.type === type,
       )
+
+      let savePromise
       if (documentIndex !== -1) {
-        return employer.documents[documentIndex].$query().patch({
+        savePromise = employer.documents[documentIndex].$query().patch({
           id: employer.documents[documentIndex].id,
           ...documentFileObj,
         })
+      } else {
+        savePromise = EmployerDocument.query().insert({
+          employerId: employer.id,
+          ...documentFileObj,
+        })
       }
-      return EmployerDocument.query()
-        .insert({ employerId: employer.id, ...documentFileObj })
+      return savePromise
         .then(fetchEmployer)
         .then((savedEmployer) => res.json(savedEmployer))
     })

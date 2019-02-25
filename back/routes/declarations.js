@@ -226,35 +226,32 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
 
-      // FIXME all the following should be replaced using an upsertGraph
-      // which failed because of null value in column "id" violates not-null constraint
-      // (also, validation of id field in model should probably be removed)
+      const documentFileObj = req.body.skip
+        ? {
+            // Used in case the user sent his file by another means.
+            file: null,
+            isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
+            type: userDocumentName,
+          }
+        : { file: req.file.filename, type: userDocumentName }
 
-      return transaction(Declaration.knex(), (trx) => {
-        const documentFileObj = req.body.skip
-          ? {
-              // Used in case the user sent his file by another means.
-              file: null,
-              isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
-              type: userDocumentName,
-            }
-          : { file: req.file.filename, type: userDocumentName }
+      const documentIndex = declaration.documents.findIndex(
+        (document) => document.id === parseInt(req.body.documentId, 10),
+      )
+      if (documentIndex !== -1) {
+        declaration.documents[documentIndex] = documentFileObj
+      } else {
+        declaration.documents.push(documentFileObj)
+      }
 
-        const documentIndex = declaration.documents.findIndex(
-          (document) => document.type === userDocumentName,
-        )
-        if (documentIndex !== -1) {
-          declaration.documents[documentIndex] = documentFileObj
-        } else {
-          declaration.documents.push(documentFileObj)
-        }
-
-        return declaration
+      return transaction(Declaration.knex(), (trx) =>
+        declaration
           .$query(trx)
           .upsertGraph()
-          .then(() => res.json(declaration))
-      }).catch(next)
+          .then(() => res.json(declaration)),
+      )
     })
+    .catch(next)
 })
 
 /* This busyDeclarations is used to avoid files being sent multiple times

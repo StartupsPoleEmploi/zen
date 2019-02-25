@@ -32,7 +32,14 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
   <StyledCustomDialog
     content={
       <Fragment>
-        <ul style={{ padding: '1.5rem', paddingBottom: '2rem', marginTop: 0 }}>
+        <ul
+          style={{
+            padding: '1.5rem',
+            paddingBottom: '2rem',
+            marginTop: 0,
+            listStylePosition: 'inside',
+          }}
+        >
           {employers.map((employer) => (
             <DialogContentText
               component="li"

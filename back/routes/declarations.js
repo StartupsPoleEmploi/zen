@@ -220,9 +220,12 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     return res.status(400).json('Missing document name')
   }
 
-  return Declaration.query()
-    .eager(eagerDeclarationString)
-    .findOne({ id: req.body.declarationId, userId: req.session.user.id })
+  const fetchDeclaration = () =>
+    Declaration.query()
+      .eager(eagerDeclarationString)
+      .findOne({ id: req.body.declarationId, userId: req.session.user.id })
+
+  return fetchDeclaration()
     .then((declaration) => {
       if (!declaration) return res.status(400).json('No such declaration')
 
@@ -238,18 +241,17 @@ router.post('/files', upload.single('document'), (req, res, next) => {
       const documentIndex = declaration.documents.findIndex(
         (document) => document.id === parseInt(req.body.documentId, 10),
       )
-      if (documentIndex !== -1) {
-        declaration.documents[documentIndex] = documentFileObj
-      } else {
-        declaration.documents.push(documentFileObj)
-      }
 
-      return transaction(Declaration.knex(), (trx) =>
-        declaration
-          .$query(trx)
-          .upsertGraph()
-          .then(() => res.json(declaration)),
-      )
+      if (documentIndex !== -1) {
+        return declaration.documents[documentIndex].$query().patch({
+          id: declaration.documents[documentIndex].id,
+          ...documentFileObj,
+        })
+      }
+      return DeclarationDocument.query()
+        .insert(documentFileObj)
+        .then(fetchDeclaration())
+        .then((updatedDeclaration) => res.json(updatedDeclaration))
     })
     .catch(next)
 })

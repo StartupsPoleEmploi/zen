@@ -465,7 +465,7 @@ export class Files extends Component {
                 </ul>
               )}
               {!neededDocumentSpecs.multiple &&
-                (dates.length === 1
+                (!dates.endDate
                   ? `À partir du ${formatDate(dates.startDate)}`
                   : `Du ${formatDate(dates.startDate)} au ${formatDate(
                       dates.endDate,

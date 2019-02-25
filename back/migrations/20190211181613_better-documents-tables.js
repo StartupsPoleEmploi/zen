@@ -46,7 +46,7 @@ exports.up = function(knex) {
           .notNull()
           .references('id')
           .inTable('declarations')
-        table.string('file').notNullable()
+        table.string('file')
         table.boolean('isTransmitted').defaultTo(false)
         table.timestamp('createdAt').defaultTo(knex.fn.now())
         table.timestamp('updatedAt').defaultTo(knex.fn.now())

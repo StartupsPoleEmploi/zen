@@ -200,12 +200,15 @@ router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
 
-  return Employer.query()
-    .eager('documents')
-    .findOne({
-      id: req.body.employerId,
-      userId: req.session.user.id,
-    })
+  const fetchEmployer = () =>
+    Employer.query()
+      .eager('documents')
+      .findOne({
+        id: req.body.employerId,
+        userId: req.session.user.id,
+      })
+
+  return fetchEmployer()
     .then((employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
@@ -226,15 +229,15 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         (document) => document.type === type,
       )
       if (documentIndex !== -1) {
-        employer.documents[documentIndex] = documentFileObj
-      } else {
-        employer.documents.push(documentFileObj)
+        return employer.documents[documentIndex].$query().patch({
+          id: employer.documents[documentIndex].id,
+          ...documentFileObj,
+        })
       }
-
-      return employer
-        .$query()
-        .upsertGraphAndFetch()
-        .then((savedEmployer) => res.json(savedEmployer))
+      return EmployerDocument.query()
+        .insert(documentFileObj)
+        .then(fetchEmployer())
+        .then((declaration) => res.json(declaration))
     })
     .catch(next)
 })

@@ -203,6 +203,8 @@ export class Employers extends Component {
         this.setState({ currentDeclaration, isLoading: false })
 
         if (currentDeclaration.employers.length === 0) {
+          if (!previousDeclaration) return
+
           const relevantPreviousEmployers = previousDeclaration.employers.filter(
             (employer) => !employer.hasEndedThisMonth,
           )

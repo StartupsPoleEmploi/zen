@@ -26,7 +26,7 @@ Object {
   "accept": "application/json",
   "accept-encoding": "gzip",
   "authorization": "Bearer AZERTYUIOP",
-  "content-length": 22,
+  "content-length": 58,
   "content-type": "application/json",
   "host": "api-r.es-qvr.fr",
   "media": "I",
@@ -37,6 +37,8 @@ Object {
 exports[`PE API: sendDeclaration API call success should send formatted data for declarations 4`] = `
 Object {
   "forceIncoherence": 0,
+  "montSalaire": 34,
+  "nbHeuresTrav": 420,
 }
 `;
 
@@ -45,7 +47,7 @@ Object {
   "accept": "application/json",
   "accept-encoding": "gzip",
   "authorization": "Bearer AZERTYUIOP",
-  "content-length": 298,
+  "content-length": 22,
   "content-type": "application/json",
   "host": "api-r.es-qvr.fr",
   "media": "I",
@@ -55,18 +57,7 @@ Object {
 
 exports[`PE API: sendDeclaration API call success should send formatted data for declarations 6`] = `
 Object {
-  "dateDebutMaladie": "18122018",
-  "dateDebutMaternite": "24122018",
-  "dateDebutStage": "12122018",
-  "dateFinMaladie": "19012019",
-  "dateFinRech": "26122018",
-  "dateFinStage": "11012019",
-  "dateInvalidite": "25122018",
-  "dateRetraite": "19122018",
   "forceIncoherence": 0,
-  "montSalaire": 75,
-  "motifFinRech": 0,
-  "nbHeuresTrav": 255,
 }
 `;
 
@@ -95,7 +86,7 @@ Object {
   "dateRetraite": "19122018",
   "forceIncoherence": 0,
   "montSalaire": 75,
-  "motifFinRech": 1,
+  "motifFinRech": 0,
   "nbHeuresTrav": 255,
 }
 `;
@@ -123,6 +114,36 @@ Object {
   "dateFinStage": "11012019",
   "dateInvalidite": "25122018",
   "dateRetraite": "19122018",
+  "forceIncoherence": 0,
+  "montSalaire": 75,
+  "motifFinRech": 1,
+  "nbHeuresTrav": 255,
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 11`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer AZERTYUIOP",
+  "content-length": 298,
+  "content-type": "application/json",
+  "host": "api-r.es-qvr.fr",
+  "media": "I",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 12`] = `
+Object {
+  "dateDebutMaladie": "18122018",
+  "dateDebutMaternite": "24122018",
+  "dateDebutStage": "12122018",
+  "dateFinMaladie": "19012019",
+  "dateFinRech": "26122018",
+  "dateFinStage": "11012019",
+  "dateInvalidite": "25122018",
+  "dateRetraite": "19122018",
   "forceIncoherence": 1,
   "montSalaire": 75,
   "motifFinRech": 2,
@@ -130,7 +151,7 @@ Object {
 }
 `;
 
-exports[`PE API: sendDeclaration API call success should send formatted data for declarations 11`] = `
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 13`] = `
 Object {
   "accept": "application/json",
   "accept-encoding": "gzip",
@@ -143,7 +164,7 @@ Object {
 }
 `;
 
-exports[`PE API: sendDeclaration API call success should send formatted data for declarations 12`] = `
+exports[`PE API: sendDeclaration API call success should send formatted data for declarations 14`] = `
 Object {
   "dateDebutMaladie": "03122018",
   "dateDebutStage": "02122018",

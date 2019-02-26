@@ -188,7 +188,7 @@ export class Actu extends Component {
       })
     }
 
-    if (controlName === 'hasInternship' && hasAnsweredYes) {
+    if (controlName === 'hasInternship') {
       this.setState({
         dates: {
           ...this.state.dates,

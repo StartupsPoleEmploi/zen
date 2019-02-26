@@ -13,14 +13,18 @@ const JOB_SEARCH_STOP_MOTIVES = {
   OTHER: 2,
 }
 
+const MAX_DECLARABLE_HOURS = 420
+
 const getDeclarationWorkHours = (declaration) => {
-  // We cannot declare more than 450 hours to PE.fr
+  // We cannot declare more than 420 hours to PE.fr
   // or the form will refuse our input
   const actualWorkHours = declaration.employers.reduce(
     (prev, { workHours }) => prev + workHours,
     0,
   )
-  return actualWorkHours > 450 ? 450 : actualWorkHours
+  return actualWorkHours > MAX_DECLARABLE_HOURS
+    ? MAX_DECLARABLE_HOURS
+    : actualWorkHours
 }
 
 const convertDeclarationToAPIFormat = (declaration) => {

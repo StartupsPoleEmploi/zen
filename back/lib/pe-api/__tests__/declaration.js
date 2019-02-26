@@ -39,6 +39,21 @@ const declarationWithEmployers = {
   ],
 }
 
+const declarationWithEmployersAndHighWorkHours = {
+  ...declarationWithEmployers,
+  employers: [
+    {
+      employerName: 'Test',
+      workHours: 500, // should be sent as MAX_DECLARABLE_HOURS
+      salary: 34,
+      hasEndedThisMonth: false,
+      id: 1735,
+      userId: 165,
+      declarationId: 543,
+    },
+  ],
+}
+
 const declarationWithoutEmployers = {
   hasWorked: false,
   hasTrained: false,
@@ -194,6 +209,7 @@ describe('PE API: sendDeclaration', () => {
     it('should send formatted data for declarations', async () => {
       const declarations = [
         declarationWithEmployers,
+        declarationWithEmployersAndHighWorkHours,
         declarationWithoutEmployers,
         declarationWithAllDatesFilled,
         declarationWithJobSearchMotiveRetirement,

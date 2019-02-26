@@ -188,7 +188,7 @@ export class Actu extends Component {
       })
     }
 
-    if (controlName === 'hasInternship' && hasAnsweredYes) {
+    if (controlName === 'hasInternship') {
       this.setState({
         dates: {
           ...this.state.dates,
@@ -266,7 +266,7 @@ export class Actu extends Component {
         return `Merci d'indiquer tous vos dates d'arrêt maladie`
       }
       if (hasWrongSickLeaveDates) {
-        return `Merci de corriger d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
+        return `Merci de corriger vos dates d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
       }
     }
 

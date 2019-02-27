@@ -168,7 +168,14 @@ export const Home = ({ location: { search } }) => (
     )}
     <Header>
       <HeaderMain>
-        <AppTitle />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <AppTitle />
+          <img
+            src="/logo-pole-emploi.png"
+            alt="logo pole emploi"
+            style={{ height: '3.5rem', width: 'auto', display: 'block' }}
+          />
+        </div>
         <Rectangle
           style={{
             marginTop: '2rem',

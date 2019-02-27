@@ -8,7 +8,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -766,7 +766,10 @@ export class Files extends Component {
       .slice(1)
       .some(({ isFinished }) => !isFinished)
 
-    if (!lastDeclaration) {
+    if (
+      !lastDeclaration ||
+      (lastDeclaration.isFinished && !areUnfinishedDeclarations)
+    ) {
       // Users have come to this page without any old documents to validate
       return (
         <StyledFiles>
@@ -775,12 +778,6 @@ export class Files extends Component {
           </StyledTitle>
         </StyledFiles>
       )
-    }
-
-    if (lastDeclaration.isFinished && !areUnfinishedDeclarations) {
-      // Users have already validated the last declaration and have
-      // finished uploading old documents
-      return <Redirect to="/thanks" />
     }
 
     return (

@@ -15,6 +15,18 @@ const mailjet = NodeMailjet.connect(
   { version: 'v3.1' },
 )
 
+const manageContact = ({ email, name, properties }) =>
+  mailjet
+    .post('contactslist', { version: 'v3' })
+    .id(LIST_ID)
+    .action('managecontact')
+    .request({
+      Email: email,
+      name,
+      Properties: properties,
+      Action: 'addnoforce',
+    })
+
 module.exports = {
   sendMail: (opts) =>
     mailjet.post('send', { version: 'v3.1' }).request({
@@ -23,16 +35,21 @@ module.exports = {
       ...opts,
     }),
 
-  manageContact: ({ email, name, properties }) =>
+  manageContact,
+
+  changeContactEmail: ({ oldEmail, newEmail }) =>
     mailjet
       .post('contactslist', { version: 'v3' })
       .id(LIST_ID)
       .action('managecontact')
       .request({
-        Email: email,
-        name,
-        Properties: properties,
-        Action: 'addnoforce',
+        Email: oldEmail,
+        Action: 'remove',
+      })
+      .then((res) => {
+        if (!res.body.Count === 1) throw new Error('No contact to remove')
+        const { Name: name, Properties: properties } = res.body.Data[0]
+        return manageContact({ email: newEmail, name, properties })
       }),
 
   createSegment: (opts) =>

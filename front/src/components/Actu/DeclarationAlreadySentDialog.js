@@ -28,7 +28,9 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
     onCancel={onCancel}
     actions={
       <Fragment>
-        <CustomColorButton onClick={onCancel}>Fermer</CustomColorButton>
+        <CustomColorButton onClick={onCancel}>
+          Voir les documents
+        </CustomColorButton>
         <Button
           variant="contained"
           href="https://www.pole-emploi.fr"

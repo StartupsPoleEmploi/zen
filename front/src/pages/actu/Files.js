@@ -681,7 +681,7 @@ export class Files extends Component {
 
     return (
       <FilesSection key={declaration.id}>
-        <StyledTitle variant="h6">
+        <StyledTitle variant="h6" component="h1">
           Envoi des documents du mois de {formattedMonth}
         </StyledTitle>
         <StyledInfo>
@@ -773,7 +773,7 @@ export class Files extends Component {
       // Users have come to this page without any old documents to validate
       return (
         <StyledFiles>
-          <StyledTitle variant="h6">
+          <StyledTitle variant="h6" component="h1">
             Vous n'avez pas de fichier à envoyer.
           </StyledTitle>
         </StyledFiles>
@@ -783,7 +783,7 @@ export class Files extends Component {
     return (
       <StyledFiles>
         {lastDeclaration.isFinished ? (
-          <StyledTitle variant="h6">
+          <StyledTitle variant="h6" component="h1">
             Vous avez terminé l'envoi des documents du mois de{' '}
             {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
           </StyledTitle>

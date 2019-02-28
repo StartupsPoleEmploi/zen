@@ -31,8 +31,9 @@ export const DeclarationsTable = ({ declarations }) => {
         ? 'Actu et documents envoyés'
         : 'Actu envoyée'
       : 'Actu non terminée',
-    verified: declaration.metadata.isVerified ? 'oui' : 'non',
-    notes: declaration.metadata.notes || '',
+    verified:
+      declaration.review && declaration.review.isVerified ? 'oui' : 'non',
+    notes: (declaration.review && declaration.review.notes) || '',
   }))
   return (
     <Paper>

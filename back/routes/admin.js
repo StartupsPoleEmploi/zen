@@ -2,13 +2,14 @@ const express = require('express')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
-const { get, kebabCase } = require('lodash')
+const { get, isUndefined, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
 const winston = require('../lib/log')
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
 const DeclarationMonth = require('../models/DeclarationMonth')
+const DeclarationReview = require('../models/DeclarationReview')
 const Status = require('../models/Status')
 
 const router = express.Router()
@@ -28,31 +29,45 @@ router.get('/declarations', (req, res, next) => {
   }
 
   Declaration.query()
-    .eager('[user, employers]')
+    .eager('[user, employers, review]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
     .catch(next)
 })
 
-router.post('/declarations/metadata', (req, res, next) => {
-  if (!req.body.id || (!req.body.notes && !req.body.isVerified)) {
+router.post('/declarations/review', (req, res, next) => {
+  if (
+    !req.body.declarationId ||
+    (!req.body.notes && isUndefined(req.body.isVerified))
+  ) {
     return res.status(400).json('Incomplete request')
   }
+
   Declaration.query()
-    .findById(req.body.id)
+    .eager('review')
+    .findById(req.body.declarationId)
     .then((declaration) => {
-      if (!declaration) return res.status(404).json('Not found')
+      const declarationNoteObj = {}
 
       if ('isVerified' in req.body) {
-        declaration.metadata.isVerified = req.body.isVerified
+        declarationNoteObj.isVerified = req.body.isVerified
       }
       if ('notes' in req.body) {
-        declaration.metadata.notes = req.body.notes
+        declarationNoteObj.notes = req.body.notes
       }
 
-      return declaration
-        .$query()
-        .patch()
+      if (declaration.review) {
+        return declaration.review
+          .$query()
+          .patch(declarationNoteObj)
+          .then(() => res.json('ok'))
+      }
+
+      return DeclarationReview.query()
+        .insert({
+          declarationId: req.body.declarationId,
+          ...declarationNoteObj,
+        })
         .then(() => res.json('ok'))
     })
     .catch(next)

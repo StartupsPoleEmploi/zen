@@ -51,9 +51,11 @@ const statuses = [
 
 const DeclarationsTableDetailRow = ({ row: declaration }) => {
   const [isVerified, setIsVerified] = useState(
-    declaration.metadata.isVerified || false,
+    (declaration.review && declaration.review.isVerified) || false,
   )
-  const [notes, setNotes] = useState(declaration.metadata.notes || '')
+  const [notes, setNotes] = useState(
+    (declaration.review && declaration.review.notes) || '',
+  )
   const [isComponentModified, setIsComponentModified] = useState(false)
   const debouncedIsVerified = useDebounce(isVerified, 1500)
   const debouncedNotes = useDebounce(notes, 1500)
@@ -63,9 +65,9 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
       if (!isComponentModified) return
 
       superagent
-        .post(`/zen-admin-api/declarations/metadata`, {
+        .post(`/zen-admin-api/declarations/review`, {
           isVerified: debouncedIsVerified,
-          id: declaration.id,
+          declarationId: declaration.id,
         })
         .then(() => {})
         .catch(() =>
@@ -82,9 +84,9 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
       if (!isComponentModified) return
 
       superagent
-        .post(`/zen-admin-api/declarations/metadata`, {
+        .post(`/zen-admin-api/declarations/review`, {
           notes: debouncedNotes,
-          id: declaration.id,
+          declarationId: declaration.id,
         })
         .then(() => {})
         .catch(() =>

@@ -57,8 +57,8 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
     (declaration.review && declaration.review.notes) || '',
   )
   const [isComponentModified, setIsComponentModified] = useState(false)
-  const debouncedIsVerified = useDebounce(isVerified, 1500)
-  const debouncedNotes = useDebounce(notes, 1500)
+  const debouncedIsVerified = useDebounce(isVerified, 500)
+  const debouncedNotes = useDebounce(notes, 500)
 
   useEffect(
     () => {

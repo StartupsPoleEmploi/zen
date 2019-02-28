@@ -105,10 +105,6 @@ class Declaration extends BaseModel {
           default: false,
           type: 'boolean',
         },
-        isTransmitted: {
-          default: false,
-          type: 'boolean',
-        },
         isEmailSent: {
           default: false,
           type: 'boolean',
@@ -165,6 +161,7 @@ class Declaration extends BaseModel {
                 endDate: { type: 'date' },
               },
             },
+            transmittedAt: { type: ['date', 'null'] },
           },
         },
       },

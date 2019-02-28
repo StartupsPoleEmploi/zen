@@ -9,6 +9,7 @@ const { pick, startCase, toLower } = require('lodash')
 const Raven = require('raven')
 
 const User = require('../models/User')
+const { changeContactEmail } = require('../lib/mailings/mailjet')
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 const winston = require('../lib/log')
 
@@ -137,15 +138,24 @@ router.get('/callback', (req, res) => {
           gender: userinfo.gender,
           postalCode: coordinates.codePostal,
         }
+        // If no email is communicated by PE, do not override email
         if (userinfo.email) {
-          // Do not override the email the user may have given us if there is
-          // no email via PE Connect
           userToSave.email = userinfo.email
         }
         return User.query()
           .findOne({ peId: userToSave.peId })
           .then((dbUser) => {
             if (dbUser) {
+              if (!!dbUser.email && dbUser.email !== userToSave.email) {
+                winston.info(`E-mail changed for user ${dbUser.id}`)
+                // User email has changed. Changing email in mailjet
+                // Note: We do not wait for Mailjet to answer to send data back to the user
+                changeContactEmail({
+                  oldEmail: dbUser.email,
+                  newEmail: userToSave.email,
+                }).catch((e) => Raven.captureException(e))
+              }
+
               return dbUser
                 .$query()
                 .update(userToSave)

@@ -434,7 +434,7 @@ export class Employers extends Component {
     }
     return (
       <StyledEmployers>
-        <Title variant="h6">
+        <Title variant="h6" component="h1">
           Pour quels employeurs avez-vous travaillé en{' '}
           {moment(this.props.activeMonth).format('MMMM YYYY')}
           {' '}

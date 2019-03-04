@@ -55,11 +55,13 @@ const HeaderMain = styled.div`
 `
 
 const Tagline = styled(Typography).attrs({
-  variant: 'h6',
+  variant: 'h1',
 })`
   && {
     font-size: 3.6rem;
     margin-bottom: 3rem;
+    font-weight: bold;
+    line-height: 1.25em;
   }
 `
 
@@ -123,7 +125,7 @@ const StepTextContainer = styled.div`
 `
 
 const StepTitle = styled(Typography).attrs({
-  variant: 'subtitle1',
+  variant: 'h3',
   gutterBottom: true,
 })`
   && {
@@ -184,16 +186,16 @@ export const Home = ({ location: { search } }) => (
           }}
         />
         <Tagline>
-          Actualisez-vous<br />en toute simplicité
+          L'actualisation Pôle emploi<br />en toute simplicité
         </Tagline>
         <BodyTypography>
           Vous avez plusieurs employeurs ?<br />
           L’actualisation n’est pas claire ou compliquée{' '}?
         </BodyTypography>
-        <BodyTypography style={{ marginTop: '3rem', marginBottom: '6rem' }}>
+        <BodyTypography style={{ marginTop: '3rem', marginBottom: '4.5rem' }}>
           <b>
-            Avec Zen la mise à jour de votre situation et l’envoi de vos
-            documents sont plus clairs et simplifiés.
+            Zen vous propose une actualisation et un envoi de documents
+            simplifiés.
           </b>
         </BodyTypography>
         <BigLinkButton to="/api/login" target="_self">
@@ -212,7 +214,7 @@ export const Home = ({ location: { search } }) => (
     </Header>
 
     <StepsContainer>
-      <Tagline>Seulement 3 étapes !</Tagline>
+      <Tagline component="h2">Seulement 3 étapes !</Tagline>
       <Step>
         <StepImg src={step1} alt="Étape 1" />
         <StepTextContainer>

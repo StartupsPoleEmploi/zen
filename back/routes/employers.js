@@ -101,7 +101,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
       }
 
       declaration.hasFinishedDeclaringEmployers = true
-      declaration.isTransmitted = true // remove every isTransmitted when PE actu APIs in prod
+      declaration.transmittedAt = new Date()
 
       // Sending declaration to pe.fr
       return sendDeclaration({
@@ -125,7 +125,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
             )
 
             declaration.hasFinishedDeclaringEmployers = false
-            declaration.isTransmitted = false // remove every isTransmitted when PE actu APIs in prod
+            declaration.transmittedAt = null
 
             return declaration
               .$query()
@@ -167,7 +167,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
           // We still save the data the user sent us
           // but we put it as unfinished.
           declaration.hasFinishedDeclaringEmployers = false
-          declaration.isTransmitted = false // remove every isTransmitted when PE actu APIs in prod
+          declaration.transmittedAt = null
 
           return declaration
             .$query()
@@ -220,7 +220,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         ? {
             // Used in case the user sent his file by another means.
             file: null,
-            isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
+            isTransmitted: true,
             type,
           }
         : { file: req.file.filename, type }

@@ -86,14 +86,6 @@ exports.up = function(knex) {
         table.dropColumn('invalidityDocumentId')
       }),
     )
-    .then(() =>
-      knex
-        .raw('SELECT * FROM "documents" WHERE type IS NULL')
-        .then((results) => {
-          console.log('Here are the documents that need to be checked manually')
-          console.log(results.rows)
-        }),
-    )
     .then(() => knex.raw('DELETE FROM "documents" WHERE "type" IS NULL'))
     .then(() => knex.schema.renameTable('documents', 'employer_documents'))
     .then(() =>

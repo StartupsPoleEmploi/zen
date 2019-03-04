@@ -79,7 +79,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 
   if (!declarationData.hasWorked) {
     declarationData.hasFinishedDeclaringEmployers = true
-    declarationData.isTransmitted = true // remove every isTransmitted when PE actu APIs in prod
+    declarationData.transmittedAt = new Date()
     if (!Declaration.needsDocuments(declarationData)) {
       declarationData.isFinished = true
     }
@@ -133,7 +133,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
         if (!isUserTokenValid(req.user.tokenExpirationDate)) {
           declarationData.hasFinishedDeclaringEmployers = false
           declarationData.isFinished = false
-          declarationData.isTransmitted = false // remove every isTransmitted when PE actu APIs in prod
+          declarationData.transmittedAt = null
           return saveDeclaration().then(() =>
             res.status(401).json('Expired token'),
           )
@@ -163,7 +163,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
             // so the user can send it again
             declarationData.hasFinishedDeclaringEmployers = false
             declarationData.isFinished = false
-            declarationData.isTransmitted = false // remove every isTransmitted when PE actu APIs in prod
+            declarationData.transmittedAt = null
             return saveDeclaration().then(() =>
               // This is a custom error, we want to show a different feedback to users
               res
@@ -233,7 +233,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         ? {
             // Used in case the user sent his file by another means.
             file: null,
-            isTransmitted: true, // DO NOT REMOVE WHEN CLEANING UP declaration.isTransmitted CALLS
+            isTransmitted: true,
             type: userDocumentName,
           }
         : { file: req.file.filename, type: userDocumentName }

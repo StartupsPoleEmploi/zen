@@ -9,6 +9,7 @@ import Rectangle from '../../components/Generic/Rectangle'
 import PEConnectLink from '../../components/PEConnect/PEConnectLink'
 import landingBackground from '../../images/landingBackground.svg'
 import logoPE from '../../images/logoPE.jpg'
+import logoPEMono from '../../images/logoPE-mono.png'
 import step1ToStep2 from '../../images/step1-to-step2.svg'
 import step1 from '../../images/people.svg'
 import step2ToStep3 from '../../images/step2-to-step3.svg'
@@ -168,10 +169,10 @@ export const Home = ({ location: { search } }) => (
     )}
     <Header>
       <HeaderMain>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
           <AppTitle />
           <img
-            src="/logo-pole-emploi.png"
+            src={logoPEMono}
             alt="logo pole emploi"
             style={{ height: '3.5rem', width: 'auto', display: 'block' }}
           />

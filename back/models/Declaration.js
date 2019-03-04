@@ -1,6 +1,7 @@
 const {
   BelongsToOneRelation,
   HasManyRelation,
+  HasOneRelation,
   ValidationError,
 } = require('objection')
 const { isAfter, isValid } = require('date-fns')
@@ -204,6 +205,14 @@ class Declaration extends BaseModel {
         join: {
           from: 'declarations.id',
           to: 'declaration_documents.declarationId',
+        },
+      },
+      review: {
+        relation: HasOneRelation,
+        modelClass: `${__dirname}/DeclarationReview`,
+        join: {
+          from: 'declarations.id',
+          to: 'declaration_reviews.declarationId',
         },
       },
     }

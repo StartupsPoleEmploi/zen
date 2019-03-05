@@ -18,6 +18,7 @@ import {
 import Paper from '@material-ui/core/Paper'
 import React from 'react'
 import PropTypes from 'prop-types'
+import { format } from 'date-fns'
 
 import DeclarationsTableDetailRow from './DeclarationsTableDetailRow'
 
@@ -31,6 +32,9 @@ export const DeclarationsTable = ({ declarations }) => {
         ? 'Actu et documents envoyés'
         : 'Actu envoyée'
       : 'Actu non terminée',
+    transmittedAt:
+      declaration.transmittedAt &&
+      format(declaration.transmittedAt, 'DD/MM/YYYY'),
     verified:
       declaration.review && declaration.review.isVerified ? 'oui' : 'non',
     notes: (declaration.review && declaration.review.notes) || '',
@@ -44,6 +48,7 @@ export const DeclarationsTable = ({ declarations }) => {
           { name: 'email', title: 'E-mail' },
           { name: 'status', title: 'Statut' },
           { name: 'verified', title: 'Vérifié' },
+          { name: 'transmittedAt', title: 'Transmis le' },
           { name: 'notes', title: 'Notes' },
         ]}
         getRowId={(row) => row.id}

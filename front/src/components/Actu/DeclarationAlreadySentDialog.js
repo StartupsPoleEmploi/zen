@@ -9,18 +9,22 @@ import CustomDialog from '../Generic/CustomDialog'
 const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
   <CustomDialog
     content={
-      <DialogContentText id="DeclarationAlreadySentDialogContentText">
-        Vous avez déjà envoyé votre actualisation ce mois-ci en passant
-        directement par{' '}
-        <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
-          Pole-Emploi.fr
-        </a>.
-        <br />
-        Vous ne pouvez donc utiliser Zen pour votre actualisation ce mois-ci.
-        <br />
-        Vous pouvez cependant accéder à l'interface d'envoi de documents s'il
-        vous en reste d'anciens à envoyer.
-      </DialogContentText>
+      <Fragment>
+        <DialogContentText gutterBottom>
+          Vous avez déjà envoyé votre actualisation ce mois-ci en passant
+          directement par{' '}
+          <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
+            Pole-Emploi.fr
+          </a>.
+        </DialogContentText>
+        <DialogContentText gutterBottom>
+          Vous ne pouvez donc utiliser Zen pour votre actualisation ce mois-ci.
+        </DialogContentText>
+        <DialogContentText>
+          Vous pouvez cependant accéder à l'interface d'envoi de documents s'il
+          vous en reste d'anciens à envoyer.
+        </DialogContentText>
+      </Fragment>
     }
     title="Vous avez déjà envoyé votre actualisation"
     titleId="DeclarationAlreadySentDialogContentText"

@@ -200,6 +200,7 @@ class App extends Component {
   onCloseModal = () => {
     this.setState({
       showDeclarationSentOnPEModal: false,
+      showUnableToSendDeclarationModal: false,
     })
   }
 
@@ -208,6 +209,7 @@ class App extends Component {
       location: { pathname },
     } = this.props
     const { activeMonth, err, isLoading, user } = this.state
+
     if (isLoading) return null
 
     if (!user) {
@@ -335,8 +337,8 @@ class App extends Component {
           onCancel={this.onCloseModal}
         />
         <UnableToDeclareDialog
-          /* This is not a modal we want to be closable */
           isOpened={this.state.showUnableToSendDeclarationModal}
+          onCancel={this.onCloseModal}
         />
       </Layout>
     )

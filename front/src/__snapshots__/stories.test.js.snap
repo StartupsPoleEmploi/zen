@@ -626,23 +626,23 @@ exports[`Storyshots DatePicker default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-1944 sc-bRBYWo ksxwed"
+          className="MuiFormControl-root-1975 sc-jhAzac VgTDW"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
           <label
-            className="MuiFormLabel-root-1959 MuiInputLabel-root-1948 MuiInputLabel-formControl-1953 MuiInputLabel-animated-1956"
+            className="MuiFormLabel-root-1990 MuiInputLabel-root-1979 MuiInputLabel-formControl-1984 MuiInputLabel-animated-1987"
             data-shrink={false}
           >
             Entrez une date
           </label>
           <div
-            className="MuiInputBase-root-1979 MuiInput-root-1966 MuiInput-underline-1970 MuiInputBase-formControl-1980 MuiInput-formControl-1967"
+            className="MuiInputBase-root-2010 MuiInput-root-1997 MuiInput-underline-2001 MuiInputBase-formControl-2011 MuiInput-formControl-1998"
             onClick={[Function]}
           >
             <input
               aria-invalid={false}
-              className="MuiInputBase-input-1989 MuiInput-input-1974"
+              className="MuiInputBase-input-2020 MuiInput-input-2005"
               disabled={false}
               mask={null}
               onBlur={[Function]}
@@ -719,23 +719,23 @@ exports[`Storyshots DatePicker with selected date 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-2018 sc-bRBYWo ksxwed"
+          className="MuiFormControl-root-2049 sc-jhAzac VgTDW"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
           <label
-            className="MuiFormLabel-root-2033 MuiFormLabel-filled-2037 MuiInputLabel-root-2022 MuiInputLabel-formControl-2027 MuiInputLabel-animated-2030 MuiInputLabel-shrink-2029"
+            className="MuiFormLabel-root-2064 MuiFormLabel-filled-2068 MuiInputLabel-root-2053 MuiInputLabel-formControl-2058 MuiInputLabel-animated-2061 MuiInputLabel-shrink-2060"
             data-shrink={true}
           >
             Entrez une date
           </label>
           <div
-            className="MuiInputBase-root-2053 MuiInput-root-2040 MuiInput-underline-2044 MuiInputBase-formControl-2054 MuiInput-formControl-2041"
+            className="MuiInputBase-root-2084 MuiInput-root-2071 MuiInput-underline-2075 MuiInputBase-formControl-2085 MuiInput-formControl-2072"
             onClick={[Function]}
           >
             <input
               aria-invalid={false}
-              className="MuiInputBase-input-2063 MuiInput-input-2048"
+              className="MuiInputBase-input-2094 MuiInput-input-2079"
               disabled={false}
               mask={null}
               onBlur={[Function]}
@@ -4299,132 +4299,6 @@ exports[`Storyshots HourInput with integer value 1`] = `
 </div>
 `;
 
-exports[`Storyshots MaternalAssistantCheck default 1`] = `
-<div
-  data-css-18sl43g=""
->
-  <div
-    data-css-1uksfg7=""
-  >
-    <div
-      data-css-t3tkv6=""
-    >
-      <div
-        data-css-1v8lkxq=""
-      >
-        <div
-          className="sc-jlyJG gjQKNb"
-        >
-          <h6
-            className="MuiTypography-root-1873 MuiTypography-h6-1890"
-          >
-            Êtes-vous assistante maternelle ?
-          </h6>
-          <div
-            className="sc-gipzik fnLumO"
-          >
-            <button
-              className="MuiButtonBase-root-1934 MuiButton-root-1908 MuiButton-contained-1919 MuiButton-raised-1922"
-              disabled={false}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              tabIndex="0"
-              type="button"
-            >
-              <span
-                className="MuiButton-label-1909"
-              >
-                Oui
-              </span>
-              <span
-                className="MuiTouchRipple-root-1937"
-              />
-            </button>
-            <button
-              className="MuiButtonBase-root-1934 MuiButton-root-1908 MuiButton-contained-1919 MuiButton-raised-1922"
-              disabled={false}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              tabIndex="0"
-              type="button"
-            >
-              <span
-                className="MuiButton-label-1909"
-              >
-                Non
-              </span>
-              <span
-                className="MuiTouchRipple-root-1937"
-              />
-            </button>
-          </div>
-        </div>
-        <div>
-          <div
-            data-css-1xjdp6g=""
-          >
-            <div
-              data-css-1u3clyi=""
-            />
-            <div
-              data-css-1vfpuyw=""
-            />
-          </div>
-          <div
-            data-css-1l117w4=""
-          >
-            <div
-              data-css-6x2xk9=""
-            />
-            <div
-              data-css-dh4rml=""
-            />
-          </div>
-          <div
-            data-css-3dqrhs=""
-          >
-            <div
-              data-css-jidh41=""
-            />
-            <div
-              data-css-zkhvkf=""
-            />
-          </div>
-          <div
-            data-css-14agfjn=""
-          >
-            <div
-              data-css-1dkszzo=""
-            />
-            <div
-              data-css-mqumhe=""
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`Storyshots PEConnectLink dark 1`] = `
 <div
   data-css-18sl43g=""
@@ -4439,18 +4313,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-hzDkRC lfmVBb"
+          className="sc-fBuWsC kCTyxu"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-jhAzac gGJWII"
+            className="sc-fMiknA kRhoQq"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-fBuWsC eURcRw"
+            className="sc-dVhcbM cCMGqG"
           >
             Se connecter avec pôle emploi
           </span>
@@ -4517,22 +4391,211 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-hzDkRC hEmvjH"
+          className="sc-fBuWsC fMZVJX"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-jhAzac gGJWII"
+            className="sc-fMiknA kRhoQq"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-fBuWsC eURcRw"
+            className="sc-dVhcbM cCMGqG"
           >
             Se connecter avec pôle emploi
           </span>
         </a>
+        <div>
+          <div
+            data-css-1xjdp6g=""
+          >
+            <div
+              data-css-1u3clyi=""
+            />
+            <div
+              data-css-1vfpuyw=""
+            />
+          </div>
+          <div
+            data-css-1l117w4=""
+          >
+            <div
+              data-css-6x2xk9=""
+            />
+            <div
+              data-css-dh4rml=""
+            />
+          </div>
+          <div
+            data-css-3dqrhs=""
+          >
+            <div
+              data-css-jidh41=""
+            />
+            <div
+              data-css-zkhvkf=""
+            />
+          </div>
+          <div
+            data-css-14agfjn=""
+          >
+            <div
+              data-css-1dkszzo=""
+            />
+            <div
+              data-css-mqumhe=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots UserJobCheck default 1`] = `
+<div
+  data-css-18sl43g=""
+>
+  <div
+    data-css-1uksfg7=""
+  >
+    <div
+      data-css-t3tkv6=""
+    >
+      <div
+        data-css-1v8lkxq=""
+      >
+        <div
+          className="sc-csuQGl hstdTp"
+        >
+          <p
+            className="MuiTypography-root-1873 MuiTypography-subtitle1-1891 sc-hzDkRC jJOVok"
+          >
+            <b>
+              Avant de commencer votre actualisation,
+              <br />
+              veuillez répondre à cette question.
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1873 MuiTypography-subtitle1-1891 sc-hzDkRC jJOVok"
+          >
+            Êtes-vous créateur / créatrice d'entreprise ?
+          </p>
+          <div
+            className="sc-Rmtcm dIJOXK"
+          >
+            <button
+              className="MuiButtonBase-root-1934 MuiButton-root-1908 MuiButton-outlined-1916 MuiButton-outlinedPrimary-1917 MuiButton-sizeLarge-1932 sc-bRBYWo cbrZD"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex="0"
+              type="button"
+            >
+              <span
+                className="MuiButton-label-1909"
+              >
+                Oui
+              </span>
+              <span
+                className="MuiTouchRipple-root-1968"
+              />
+            </button>
+            <button
+              className="MuiButtonBase-root-1934 MuiButton-root-1908 MuiButton-outlined-1916 MuiButton-outlinedPrimary-1917 MuiButton-sizeLarge-1932 sc-bRBYWo cbrZD"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex="0"
+              type="button"
+            >
+              <span
+                className="MuiButton-label-1909"
+              >
+                Non
+              </span>
+              <span
+                className="MuiTouchRipple-root-1968"
+              />
+            </button>
+          </div>
+          <label
+            className="MuiFormControlLabel-root-1937"
+            style={
+              Object {
+                "marginTop": "5rem",
+              }
+            }
+          >
+            <span
+              className="MuiButtonBase-root-1934 MuiIconButton-root-1953 MuiPrivateSwitchBase-root-1949 MuiCheckbox-root-1943 MuiCheckbox-colorPrimary-1947"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={null}
+            >
+              <span
+                className="MuiIconButton-label-1958"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="MuiSvgIcon-root-1959"
+                  focusable="false"
+                  role="presentation"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                  />
+                </svg>
+                <input
+                  checked={false}
+                  className="MuiPrivateSwitchBase-input-1952"
+                  data-indeterminate={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+              </span>
+              <span
+                className="MuiTouchRipple-root-1968"
+              />
+            </span>
+            <span
+              className="MuiTypography-root-1873 MuiTypography-body1-1882 MuiFormControlLabel-label-1942"
+            >
+              Ne plus afficher cette question
+            </span>
+          </label>
+        </div>
         <div>
           <div
             data-css-1xjdp6g=""

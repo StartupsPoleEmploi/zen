@@ -3,15 +3,13 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { host } from 'storybook-host'
 
-import MaternalAssistantCheck from '../MaternalAssistantCheck'
+import UserJobCheck from '../UserJobCheck'
 
-storiesOf('MaternalAssistantCheck', module)
+storiesOf('UserJobCheck', module)
   .addDecorator(
     host({
       align: 'center',
       width: 600,
     }),
   )
-  .add('default', () => (
-    <MaternalAssistantCheck onValidate={action('onValidate')} />
-  ))
+  .add('default', () => <UserJobCheck onValidate={action('onValidate')} />)

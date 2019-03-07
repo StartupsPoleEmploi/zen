@@ -18,7 +18,7 @@ import superagent from 'superagent'
 
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
-import MaternalAssistantCheck from '../../components/Actu/MaternalAssistantCheck'
+import UserJobCheck from '../../components/Actu/UserJobCheck'
 import DatePicker from '../../components/Generic/DatePicker'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 
@@ -102,6 +102,17 @@ const formFields = [
   'jobSearchStopMotive',
 ]
 
+const JOB_CHECK_KEY = 'canUseService'
+
+const getJobCheckFromStore = () => {
+  const data = store.get(JOB_CHECK_KEY) || {}
+  return {
+    shouldAskAgain: data.shouldAskAgain,
+    validatedForMonth:
+      data.validatedForMonth && new Date(data.validatedForMonth),
+  }
+}
+
 export class Actu extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
@@ -113,7 +124,7 @@ export class Actu extends Component {
   }
 
   state = {
-    isMaternalAssistant: store.get('isMaternalAssistant'),
+    [JOB_CHECK_KEY]: getJobCheckFromStore(),
     formError: null,
     isLoading: true,
     loadingError: null,
@@ -338,10 +349,24 @@ export class Actu extends Component {
       })
   }
 
-  setIsMaternalAssistant = () => {
-    store.set('isMaternalAssistant', true)
-    this.setState({ isMaternalAssistant: true })
+  setJobCheck = ({ shouldAskAgain } = {}) => {
+    const jobCheckObject = {
+      [JOB_CHECK_KEY]: {
+        validatedForMonth: this.props.activeMonth,
+        shouldAskAgain,
+      },
+    }
+
+    store.setAll(jobCheckObject)
+    this.setState(jobCheckObject)
   }
+
+  // display job check if not validated for current month and should ask again (default)
+  shouldDisplayJobCheck = () =>
+    !moment(get(this.state[JOB_CHECK_KEY], 'validatedForMonth')).isSame(
+      this.props.activeMonth,
+      'month',
+    ) && get(this.state[JOB_CHECK_KEY], 'shouldAskAgain', true)
 
   addSickLeave = () =>
     this.setState({
@@ -444,7 +469,6 @@ export class Actu extends Component {
   render() {
     const {
       formError,
-      isMaternalAssistant,
       isLoading,
       loadingError,
       dates = {},
@@ -471,8 +495,8 @@ export class Actu extends Component {
       )
     }
 
-    if (!isMaternalAssistant) {
-      return <MaternalAssistantCheck onValidate={this.setIsMaternalAssistant} />
+    if (this.shouldDisplayJobCheck()) {
+      return <UserJobCheck onValidate={this.setJobCheck} />
     }
 
     const activeMonthMoment = moment(this.props.activeMonth)

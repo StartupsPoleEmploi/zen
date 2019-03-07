@@ -1,4 +1,6 @@
 import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -47,13 +49,18 @@ const StyledTypography = styled(Typography).attrs({
 export class UserJobCheck extends Component {
   static propTypes = { onValidate: PropTypes.func.isRequired }
 
-  constructor(props) {
-    super(props)
-
-    this.state = { showUnavailableMessage: false }
+  state = {
+    showUnavailableMessage: false,
+    shouldAskAgain: true,
   }
 
   onInvalid = () => this.setState({ showUnavailableMessage: true })
+
+  onValidate = () =>
+    this.props.onValidate({ shouldAskAgain: this.state.shouldAskAgain })
+
+  toggleCheckbox = () =>
+    this.setState({ shouldAskAgain: !this.state.shouldAskAgain })
 
   render() {
     return (
@@ -69,7 +76,7 @@ export class UserJobCheck extends Component {
           Êtes-vous créateur / créatrice d'entreprise ?
         </StyledTypography>
         <ButtonsContainer>
-          <StyledButton onClick={this.props.onValidate}>Oui</StyledButton>
+          <StyledButton onClick={this.onValidate}>Oui</StyledButton>
           <StyledButton onClick={this.onInvalid}>Non</StyledButton>
         </ButtonsContainer>
         {this.state.showUnavailableMessage && (
@@ -82,6 +89,17 @@ export class UserJobCheck extends Component {
             </a>
           </Typography>
         )}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={!this.state.shouldAskAgain}
+              onChange={this.toggleCheckbox}
+              color="primary"
+            />
+          }
+          label="Ne plus afficher cette question"
+          style={{ marginTop: '5rem' }}
+        />
       </StyledUserJobCheck>
     )
   }

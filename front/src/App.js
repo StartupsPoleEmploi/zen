@@ -1,5 +1,6 @@
+/* eslint-disable react/no-did-update-set-state */
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import CheckCircle from '@material-ui/icons/CheckCircle'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { hot } from 'react-hot-loader'
@@ -22,9 +23,8 @@ import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySe
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
 import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 
-const steps = ['Ma situation', 'Mes employeurs', 'Mes documents']
-
-const stepsNumbers = ['/actu', '/employers', '/files']
+const stepperRoutes = ['/actu', '/employers', '/files']
+const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
 
 const StyledLink = styled(Link)`
   color: #39679e;
@@ -76,13 +76,6 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
   }
 `
 
-const CheckCircleIcon = styled(CheckCircle)`
-  && {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-  }
-`
-
 class App extends Component {
   static propTypes = {
     history: PropTypes.shape({
@@ -93,9 +86,11 @@ class App extends Component {
   }
 
   state = {
+    activeDeclaration: null,
     activeMonth: null,
     err: null,
-    isLoading: true,
+    isLoadingInitialData: true,
+    isLoadingActiveDeclaration: true,
     user: null,
     showDeclarationSentOnPEModal: false,
     showUnableToSendDeclarationModal: false,
@@ -126,13 +121,6 @@ class App extends Component {
 
         return Promise.all([
           superagent
-            .get('/api/declarations?last')
-            .then((res) => res.body)
-            .catch((err) => {
-              // 404 are the normal status when no declaration was made.
-              if (err.status !== 404) throw err
-            }),
-          superagent
             .get('/api/declarations?active')
             .then((res) => res.body)
             .catch((err) => {
@@ -148,6 +136,7 @@ class App extends Component {
             (activeMonthString && new Date(activeMonthString)) || null
           this.setState({
             activeMonth,
+            activeDeclaration,
           })
 
           if (!user.isAuthorized) return
@@ -188,8 +177,55 @@ class App extends Component {
           }
         })
       })
-      .then(() => this.setState({ isLoading: false }))
-      .catch((err) => this.setState({ isLoading: false, err }))
+      .then(() =>
+        this.setState({
+          isLoadingInitialData: false,
+          isLoadingActiveDeclaration: false,
+        }),
+      )
+      .catch((err) =>
+        this.setState({
+          isLoadingInitialData: false,
+          isLoadingActiveDeclaration: false,
+          err,
+        }),
+      )
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (
+      get(state.user, 'isAuthorized') &&
+      props.location.pathname !== state.pathname
+    ) {
+      return {
+        isLoadingActiveDeclaration: true,
+        pathname: props.location.pathname,
+      }
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      get(this.state.user, 'isAuthorized') &&
+      this.props.location.pathname !== prevProps.location.pathname
+    ) {
+      return superagent
+        .get('/api/declarations?active')
+        .then((res) => res.body)
+        .then((activeDeclaration) =>
+          this.setState({
+            activeDeclaration,
+            isLoadingActiveDeclaration: false,
+          }),
+        )
+        .catch((err) =>
+          this.setState({
+            isLoadingActiveDeclaration: false,
+            err: err.status === 404 ? null : err,
+          }),
+        )
+    }
   }
 
   componentDidCatch(err, errorInfo) {
@@ -204,13 +240,32 @@ class App extends Component {
     })
   }
 
+  getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {
+    if (shouldActivateLink) {
+      return (
+        <StyledLink to={link}>
+          <LiStep>{label}</LiStep>
+        </StyledLink>
+      )
+    }
+
+    return <LiStep className={isActive ? 'active' : ''}>{label}</LiStep>
+  }
+
   render() {
     const {
       location: { pathname },
     } = this.props
-    const { activeMonth, err, isLoading, user } = this.state
+    const {
+      activeDeclaration,
+      activeMonth,
+      err,
+      isLoadingInitialData,
+      isLoadingActiveDeclaration,
+      user,
+    } = this.state
 
-    if (isLoading) return null
+    if (isLoadingInitialData) return null
 
     if (!user) {
       // User isn't logged
@@ -237,32 +292,47 @@ class App extends Component {
       )
     }
 
-    const activeStep = stepsNumbers.indexOf(pathname)
+    const userCanDeclare =
+      !get(user, 'hasAlreadySentDeclaration') && get(user, 'canSendDeclaration')
 
-    const stepper =
-      activeStep !== -1 ? (
-        <UlStepper>
-          {steps.map(
-            (label, index) =>
-              // Disable navigation back on last step
-              index >= activeStep || activeStep >= 2 ? (
-                <LiStep
-                  key={label}
-                  className={index === activeStep ? 'active' : ''}
-                >
-                  {activeStep > index && <CheckCircleIcon />}
-                  {label}
-                </LiStep>
-              ) : (
-                <StyledLink key={label} to={stepsNumbers[index]}>
-                  <LiStep>
-                    {activeStep > index && <CheckCircleIcon />} {label}
-                  </LiStep>
-                </StyledLink>
-              ),
-          )}
-        </UlStepper>
-      ) : null
+    const shouldActivateDeclarationLink =
+      !!activeMonth &&
+      (!activeDeclaration ||
+        !activeDeclaration.hasFinishedDeclaringEmployers) &&
+      pathname !== declarationRoute &&
+      userCanDeclare
+
+    const shouldActivateEmployersLink =
+      !!activeMonth &&
+      !!activeDeclaration &&
+      !activeDeclaration.hasFinishedDeclaringEmployers &&
+      pathname !== employersRoute &&
+      userCanDeclare
+
+    const shouldActivateFilesLink = pathname !== filesRoute
+
+    const stepper = stepperRoutes.includes(pathname) ? (
+      <UlStepper>
+        {this.getStepperItem({
+          label: 'Ma situation',
+          link: declarationRoute,
+          shouldActivateLink: shouldActivateDeclarationLink,
+          isActive: pathname === declarationRoute,
+        })}
+        {this.getStepperItem({
+          label: 'Mes employeurs',
+          link: employersRoute,
+          shouldActivateLink: shouldActivateEmployersLink,
+          isActive: pathname === employersRoute,
+        })}
+        {this.getStepperItem({
+          label: 'Mes documents',
+          link: filesRoute,
+          shouldActivateLink: shouldActivateFilesLink,
+          isActive: pathname === filesRoute,
+        })}
+      </UlStepper>
+    ) : null
 
     if (pathname === '/') {
       return (
@@ -270,6 +340,16 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <StatusErrorDialog isOpened={this.state.isServiceDown} />
         </Fragment>
+      )
+    }
+
+    if (isLoadingActiveDeclaration) {
+      return (
+        <Layout user={user} stepper={stepper}>
+          <div style={{ margin: '5rem', textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
+        </Layout>
       )
     }
 
@@ -281,7 +361,12 @@ class App extends Component {
             isLoggedIn={!!user}
             path="/actu"
             render={(props) => (
-              <Actu {...props} activeMonth={activeMonth} user={user} />
+              <Actu
+                {...props}
+                activeMonth={activeMonth}
+                declaration={activeDeclaration}
+                user={user}
+              />
             )}
           />
           <PrivateRoute

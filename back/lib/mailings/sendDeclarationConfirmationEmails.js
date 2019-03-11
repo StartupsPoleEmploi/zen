@@ -85,7 +85,7 @@ const generateDocument = (declaration) => {
   )
   cell.text(
     `-        ${
-      declaration.hasSickLeave ? 'Avoir' : 'Ne pas avoir'
+      declaration.hasMaternityLeave ? 'Avoir' : 'Ne pas avoir'
     } été en congé maternité`,
   )
   cell.text(

@@ -49,22 +49,23 @@ const UlStepper = styled.ul`
 
   & > * {
     flex: 0 1 15rem;
-    border-top: 0.2rem solid black;
     text-align: center;
     padding-top: 1rem;
-    &.active {
+
+    &.Stepper__Active {
       font-weight: bold;
+      text-decoration: underline;
     }
 
     @media (max-width: 650px) {
-      &:not(.active) {
+      &:not(.Stepper__Active) {
         display: none !important;
       }
     }
-  }
 
-  & > a {
-    border-top: 0.2rem solid #39679e;
+    &:not(:last-child) {
+      border-right: 0.1rem solid #f0f0f0;
+    }
   }
 `
 
@@ -249,7 +250,9 @@ class App extends Component {
       )
     }
 
-    return <LiStep className={isActive ? 'active' : ''}>{label}</LiStep>
+    return (
+      <LiStep className={isActive ? 'Stepper__Active' : ''}>{label}</LiStep>
+    )
   }
 
   render() {

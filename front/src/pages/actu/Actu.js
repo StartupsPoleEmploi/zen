@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import List from '@material-ui/core/List'
 import Paper from '@material-ui/core/Paper'
@@ -121,13 +120,13 @@ export class Actu extends Component {
       gender: PropTypes.string,
       csrfToken: PropTypes.string.isRequired,
     }),
+    declaration: PropTypes.object, // eslint-disable-line
   }
 
   state = {
     [JOB_CHECK_KEY]: getJobCheckFromStore(),
     formError: null,
     isLoading: true,
-    loadingError: null,
     isDialogOpened: false,
     isValidating: false,
     consistencyErrors: [],
@@ -137,32 +136,14 @@ export class Actu extends Component {
   }
 
   componentDidMount() {
-    superagent
-      .get('/api/declarations?active')
-      .then((res) => res.body)
-      .then((declaration) =>
-        this.setState({
-          hasMaternityLeave:
-            this.props.user.gender === USER_GENDER_MALE ? false : null,
-          // Set active declaration data, prevent declaration data unrelated to this form.
-          ...pick(declaration, formFields.concat('id', 'dates')),
-          isLoading: false,
-        }),
-      )
-      .catch((err) => {
-        if (err.status >= 500) {
-          return this.setState({
-            isLoading: false,
-            loadingError: err,
-          })
-        }
-
-        return this.setState({
-          isLoading: false,
-          hasMaternityLeave:
-            this.props.user.gender === USER_GENDER_MALE ? false : null,
-        })
-      })
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({
+      hasMaternityLeave:
+        this.props.user.gender === USER_GENDER_MALE ? false : null,
+      // Set active declaration data, prevent declaration data unrelated to this form.
+      ...pick(this.props.declaration, formFields.concat('id', 'dates')),
+      isLoading: false,
+    })
   }
 
   closeDialog = () =>
@@ -470,7 +451,6 @@ export class Actu extends Component {
     const {
       formError,
       isLoading,
-      loadingError,
       dates = {},
       hasSickLeave,
       hasInternship,
@@ -480,19 +460,7 @@ export class Actu extends Component {
     const { user } = this.props
 
     if (isLoading) {
-      return (
-        <StyledActu>
-          <CircularProgress style={{ margin: 'auto' }} />
-        </StyledActu>
-      )
-    }
-
-    if (loadingError) {
-      return (
-        <StyledActu>
-          <Typography>{UNHANDLED_ERROR}</Typography>
-        </StyledActu>
-      )
+      return null
     }
 
     if (this.shouldDisplayJobCheck()) {

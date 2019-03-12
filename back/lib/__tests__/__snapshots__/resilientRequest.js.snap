@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lib: resilientRequest should handle OK requests 1`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer 1234567890",
+  "host": "localhost",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`lib: resilientRequest should handle OK requests 2`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer 1234567890",
+  "content-length": 11379,
+  "host": "localhost",
+  "media": "M",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;
+
+exports[`lib: resilientRequest should handle OK requests 3`] = `
+Object {
+  "foo": "bar",
+}
+`;
+
+exports[`lib: resilientRequest should handle OK requests 4`] = `
+Object {
+  "accept": "application/json",
+  "accept-encoding": "gzip",
+  "authorization": "Bearer 1234567890",
+  "content-length": 13,
+  "host": "localhost",
+  "user-agent": "node-superagent/3.8.3",
+}
+`;

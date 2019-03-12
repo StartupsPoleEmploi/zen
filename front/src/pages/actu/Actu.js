@@ -21,6 +21,7 @@ import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import UserJobCheck from '../../components/Actu/UserJobCheck'
 import DatePicker from '../../components/Generic/DatePicker'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
 
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
@@ -39,7 +40,7 @@ const StyledActu = styled.div`
 
 const StyledPaper = styled(Paper)`
   width: 100%;
-  margin: 4rem auto 0;
+  margin: 4rem auto 2rem;
 `
 
 const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`
@@ -63,7 +64,6 @@ const FinalButtonsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  padding-top: 1.5rem;
 `
 
 const StyledList = styled(List)`
@@ -681,17 +681,18 @@ export class Actu extends Component {
             </StyledPaper>
           )}
 
-          {formError && <ErrorMessage>{formError}</ErrorMessage>}
-
-          <FinalButtonsContainer>
-            <Button
-              onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-              variant="contained"
-              color="primary"
-            >
-              Suivant
-            </Button>
-          </FinalButtonsContainer>
+          <AlwaysVisibleContainer>
+            {formError && <ErrorMessage>{formError}</ErrorMessage>}
+            <FinalButtonsContainer>
+              <Button
+                onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
+                variant="contained"
+                color="primary"
+              >
+                Suivant
+              </Button>
+            </FinalButtonsContainer>
+          </AlwaysVisibleContainer>
         </form>
 
         <DeclarationDialog

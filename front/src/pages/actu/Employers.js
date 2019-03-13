@@ -23,6 +23,7 @@ import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
+import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
 
 // Note : these values are duplicated in WorkSummary
 const WORK_HOURS = 'workHours'
@@ -77,7 +78,6 @@ const ButtonsContainer = styled.div`
   justify-content: space-around;
   flex-wrap: wrap;
   width: 100%;
-  padding-top: 2.5rem;
   text-align: center;
   max-width: 40rem;
   margin: 0 auto;
@@ -112,7 +112,8 @@ const ErrorMessage = styled(Typography).attrs({
   && {
     color: red;
     text-align: center;
-    margin: inherit auto;
+    margin: auto;
+    margin-bottom: 2rem;
     max-width: 70rem;
   }
 `
@@ -458,16 +459,20 @@ export class Employers extends Component {
 
           <WorkSummary employers={employers} />
 
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <AlwaysVisibleContainer
+            style={{ marginTop: '2rem', alignSelf: 'stretch' }}
+          >
+            {error && <ErrorMessage>{error}</ErrorMessage>}
 
-          <ButtonsContainer>
-            <SaveForLaterButton onClick={this.saveAndRedirect}>
-              Enregistrer<br />et finir plus tard
-            </SaveForLaterButton>
-            <SubmitButton onClick={this.openDialog}>
-              Envoyer mon<br />actualisation
-            </SubmitButton>
-          </ButtonsContainer>
+            <ButtonsContainer>
+              <SaveForLaterButton onClick={this.saveAndRedirect}>
+                Enregistrer<br />et finir plus tard
+              </SaveForLaterButton>
+              <SubmitButton onClick={this.openDialog}>
+                Envoyer mon<br />actualisation
+              </SubmitButton>
+            </ButtonsContainer>
+          </AlwaysVisibleContainer>
         </Form>
         <DeclarationDialog
           isLoading={this.state.isValidating}

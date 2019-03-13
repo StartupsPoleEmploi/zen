@@ -46,6 +46,9 @@ const StyledTypography = styled(Typography).attrs({
   }
 `
 
+// activate this if we decide we want to display the checkbox again
+const ACTIVATE_CHECKBOX_DISPLAY = false
+
 export class UserJobCheck extends Component {
   static propTypes = { onValidate: PropTypes.func.isRequired }
 
@@ -89,17 +92,19 @@ export class UserJobCheck extends Component {
             </a>
           </Typography>
         )}
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={!this.state.shouldAskAgain}
-              onChange={this.toggleCheckbox}
-              color="primary"
-            />
-          }
-          label="Ne plus afficher cette question"
-          style={{ marginTop: '5rem' }}
-        />
+        {ACTIVATE_CHECKBOX_DISPLAY && (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={!this.state.shouldAskAgain}
+                onChange={this.toggleCheckbox}
+                color="primary"
+              />
+            }
+            label="Ne plus afficher cette question"
+            style={{ marginTop: '5rem' }}
+          />
+        )}
       </StyledUserJobCheck>
     )
   }

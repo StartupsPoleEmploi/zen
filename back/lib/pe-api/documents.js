@@ -16,15 +16,15 @@
 const { uploadsDirectory } = require('config')
 const { format } = require('date-fns')
 const config = require('config')
-const superagent = require('superagent')
 const fs = require('fs')
 const path = require('path')
-const { deburr, toNumber } = require('lodash')
+const { deburr } = require('lodash')
+
+const { request, checkHeadersAndWait } = require('../resilientRequest')
 
 const winston = require('../log')
 
 const DEFAULT_WAIT_TIME = process.env.NODE_ENV !== 'test' ? 1000 : 0
-const MAX_RETRIES = 3
 
 const CONTEXT_CODE = '1'
 
@@ -104,89 +104,45 @@ const getConfirmationUrl = (conversionId) =>
   }/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
-const checkHeadersAndWait = (headers) => {
-  const waitTime = toNumber(headers['retry-after']) * 1000
-  return wait(Number.isNaN(waitTime) ? DEFAULT_WAIT_TIME : waitTime)
-}
 
 const doUpload = ({ document, accessToken, previousTries = 0 }) =>
-  superagent
-    .post(uploadUrl)
-    .attach(
-      'fichier',
-      fs.createReadStream(document.filePath),
-      `1${path.extname(document.filePath)}`,
-    )
-    .field('lancerConversion', true) // Will become false in case of multiple files to send in one go
-    .set('Authorization', `Bearer ${accessToken}`)
-    .set('Accept-Encoding', 'gzip')
-    .set('Accept', 'application/json')
-    .set('media', 'M') // "Mobile". "I" (Internet) crashed the documents transmission
-    .then((res) => {
-      if (!res.body.conversionId) {
-        return checkHeadersAndWait(res.headers).then(() =>
-          doUpload({
-            document,
-            accessToken,
-            previousTries: previousTries + 1,
-          }),
-        )
-      }
-      return res
-    })
-    .catch((err) => {
-      if (previousTries > MAX_RETRIES) {
-        winston.error('Error while uploading document', document.id, err)
-        throw err
-      }
-      if (err.status === 429) {
-        return checkHeadersAndWait(err.response.headers).then(() =>
-          doUpload({
-            document,
-            accessToken,
-            previousTries: previousTries + 1,
-          }),
-        )
-      }
-      winston.error('Error while uploading document', document.id, err)
-      throw err
-    })
+  request({
+    accessToken,
+    headers: [{ key: 'media', value: 'M' }], // "Mobile". "I" (Internet) crashed the documents transmission
+    url: uploadUrl,
+    fields: [{ key: 'lancerConversion', value: true }], // Will become false in case of multiple files to send in one go
+    attachments: [
+      {
+        name: 'fichier',
+        file: fs.createReadStream(document.filePath),
+        uploadname: `1${path.extname(document.filePath)}`,
+      },
+    ],
+    method: 'post',
+  }).then((res) => {
+    if (!res.body.conversionId) {
+      return checkHeadersAndWait(res.headers).then(() =>
+        doUpload({
+          document,
+          accessToken,
+          previousTries: previousTries + 1,
+        }),
+      )
+    }
+    return res
+  })
 
-const doConfirm = ({
-  conversionId,
-  document,
-  accessToken,
-  previousTries = 0,
-}) =>
-  superagent
-    .post(getConfirmationUrl(conversionId), {
+const doConfirm = ({ conversionId, document, accessToken }) =>
+  request({
+    accessToken,
+    headers: [{ key: 'media', value: 'M' }], // "Mobile". "I" (Internet) crashed the documents transmission
+    url: getConfirmationUrl(conversionId),
+    method: 'post',
+    data: {
       ...document.confirmationData,
       nomDocument: document.label,
-    })
-    .set('Authorization', `Bearer ${accessToken}`)
-    .set('Accept-Encoding', 'gzip')
-    .set('Accept', 'application/json')
-    .set('media', 'M') // "Mobile". "I" (Internet) crashed the documents transmission
-    .then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
-    .catch((err) => {
-      if (previousTries > MAX_RETRIES) {
-        winston.error('Error while confirming document', document.id, err)
-        throw err
-      }
-      if (err.status === 429) {
-        // HTTP 429 Too many requests
-        return checkHeadersAndWait(err.response.headers).then(() =>
-          doConfirm({
-            conversionId,
-            document,
-            accessToken,
-            previousTries: previousTries + 1,
-          }),
-        )
-      }
-      winston.error('Error while confirming document', document.id, err)
-      throw err
-    })
+    },
+  }).then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
 
 const sendDocuments = async ({ declaration, accessToken }) => {
   const documentsToTransmit = declaration.documents
@@ -233,12 +189,31 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     if (key !== 0) await wait(DEFAULT_WAIT_TIME)
     const {
       body: { conversionId },
-    } = await doUpload({ document: documentsToTransmit[key], accessToken })
+    } = await doUpload({
+      document: documentsToTransmit[key],
+      accessToken,
+    }).catch((err) => {
+      winston.error(
+        'Error while uploading document',
+        documentsToTransmit[key].id,
+        err,
+      )
+      throw err
+    })
+
     await wait(DEFAULT_WAIT_TIME)
+
     await doConfirm({
       document: documentsToTransmit[key],
       accessToken,
       conversionId,
+    }).catch((err) => {
+      winston.error(
+        'Error while confirming document',
+        documentsToTransmit[key].id,
+        err,
+      )
+      throw err
     })
   }
 }

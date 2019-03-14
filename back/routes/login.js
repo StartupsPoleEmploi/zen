@@ -2,7 +2,6 @@ const express = require('express')
 
 const router = express.Router()
 const crypto = require('crypto')
-const superagent = require('superagent')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const { pick, startCase, toLower } = require('lodash')
@@ -12,6 +11,7 @@ const User = require('../models/User')
 const { changeContactEmail } = require('../lib/mailings/mailjet')
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 const winston = require('../lib/log')
+const { request } = require('../lib/resilientRequest')
 
 const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
 const { DECLARATION_STATUSES } = require('../constants')
@@ -97,21 +97,18 @@ router.get('/callback', (req, res) => {
     })
     .then((authToken) =>
       Promise.all([
-        superagent
-          .get(`${apiHost}/partenaire/peconnect-individu/v1/userinfo`)
-          .set('Accept', 'application/json')
-          .set('Authorization', `Bearer ${authToken.token.access_token}`)
-          .set('Accept-Encoding', 'gzip'),
-        superagent
-          .get(`${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`)
-          .set('Accept', 'application/json')
-          .set('Authorization', `Bearer ${authToken.token.access_token}`)
-          .set('Accept-Encoding', 'gzip'),
-        superagent
-          .get(`${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`)
-          .set('Accept', 'application/json')
-          .set('Authorization', `Bearer ${authToken.token.access_token}`)
-          .set('Accept-Encoding', 'gzip'),
+        request({
+          method: 'get',
+          url: `${apiHost}/partenaire/peconnect-individu/v1/userinfo`,
+        }),
+        request({
+          method: 'get',
+          url: `${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
+        }),
+        request({
+          method: 'get',
+          url: `${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`,
+        }),
         new Date(authToken.token.expires_at),
       ]),
     )

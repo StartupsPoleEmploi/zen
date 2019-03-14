@@ -414,7 +414,6 @@ export class Files extends Component {
   }
 
   renderDocumentList = ({ declaration, isOldMonth }) => {
-    // FIXME only counts 1 doc / hasSickLeave & hasInternship
     const neededAdditionalDocumentsSpecs = additionalDocumentsSpecs.filter(
       (spec) => !!declaration[spec.fieldToCheck],
     )

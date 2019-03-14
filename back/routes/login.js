@@ -193,7 +193,7 @@ router.get('/callback', (req, res) => {
     )
     .catch((err) => {
       res.redirect('/?loginFailed')
-      winston.error('Error at login while requesting pe api', err)
+      winston.error('Error at login while requesting pe api', err.message)
       return Raven.captureException(err)
     })
 })

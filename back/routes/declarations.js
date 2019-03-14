@@ -107,7 +107,7 @@ router.post('/', requireActiveMonth, (req, res, next) => {
           saveDeclaration(trx).then((savedDeclaration) =>
             Promise.all([
               savedDeclaration,
-              declaration &&
+              !declaration &&
                 ActivityLog.query(trx).insert({
                   userId: req.session.user.id,
                   action: ActivityLog.actions.VALIDATE_DECLARATION,

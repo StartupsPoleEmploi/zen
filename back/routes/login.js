@@ -100,14 +100,17 @@ router.get('/callback', (req, res) => {
         request({
           method: 'get',
           url: `${apiHost}/partenaire/peconnect-individu/v1/userinfo`,
+          accessToken: authToken.token.access_token,
         }),
         request({
           method: 'get',
           url: `${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
+          accessToken: authToken.token.access_token,
         }),
         request({
           method: 'get',
           url: `${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`,
+          accessToken: authToken.token.access_token,
         }),
         new Date(authToken.token.expires_at),
       ]),

@@ -6,10 +6,12 @@ const { get, isUndefined, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
 const winston = require('../lib/log')
+const mailjet = require('../lib/mailings/mailjet')
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
 const DeclarationMonth = require('../models/DeclarationMonth')
 const DeclarationReview = require('../models/DeclarationReview')
+const User = require('../models/User')
 const Status = require('../models/Status')
 
 const router = express.Router()
@@ -32,6 +34,36 @@ router.get('/declarations', (req, res, next) => {
     .eager('[user, employers, review]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
+    .catch(next)
+})
+
+router.get('/users', (req, res, next) => {
+  User.query()
+    .where({ isAuthorized: req.query.authorized === 'true' })
+    .then((users) => res.json(users))
+    .catch(next)
+})
+
+router.post('/users/authorize', (req, res, next) => {
+  if (!Array.isArray(req.body.ids)) return res.status(400).json('Bad request')
+
+  // first get users to avoid sending "welcome" message to already subscribed users
+  return User.query()
+    .whereIn('id', req.body.ids)
+    .whereNotNull('email')
+    .andWhere('isAuthorized', false)
+    .then((users) => {
+      if (users.length === 0)
+        return res.status(404).json('No unauthorized users')
+
+      return Promise.all([
+        User.query()
+          .patch({ isAuthorized: true })
+          .whereIn('id', users.map((user) => user.id)),
+        mailjet.authorizeContacts(users),
+      ])
+    })
+    .then(() => res.json('ok'))
     .catch(next)
 })
 

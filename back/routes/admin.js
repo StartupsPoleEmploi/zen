@@ -60,7 +60,7 @@ router.post('/users/authorize', (req, res, next) => {
         User.query()
           .patch({ isAuthorized: true })
           .whereIn('id', users.map((user) => user.id)),
-        mailjet.authorizeContacts(users),
+        mailjet.authorizeContactsAndSendConfirmationEmails(users),
       ])
     })
     .then(() => res.json('ok'))

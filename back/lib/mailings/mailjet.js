@@ -15,6 +15,13 @@ const mailjet = NodeMailjet.connect(
   { version: 'v3.1' },
 )
 
+const sendMail = (opts) =>
+  mailjet.post('send', { version: 'v3.1' }).request({
+    // Mailjet *will* send e-mails out of prod if this line is removed
+    SandboxMode: process.env.NODE_ENV !== 'production',
+    ...opts,
+  })
+
 const manageContact = ({ email, name, properties }) =>
   mailjet
     .post('contactslist', { version: 'v3' })
@@ -28,12 +35,7 @@ const manageContact = ({ email, name, properties }) =>
     })
 
 module.exports = {
-  sendMail: (opts) =>
-    mailjet.post('send', { version: 'v3.1' }).request({
-      // Mailjet *will* send e-mails out of prod if this line is removed
-      SandboxMode: process.env.NODE_ENV !== 'production',
-      ...opts,
-    }),
+  sendMail,
 
   manageContact,
 
@@ -130,7 +132,7 @@ module.exports = {
       })
   },
 
-  authorizeContacts: (users) =>
+  authorizeContactsAndSendConfirmationEmails: (users) =>
     mailjet
       .post('contactslist', { version: 'v3' })
       .id(LIST_ID)
@@ -143,7 +145,28 @@ module.exports = {
             validation_necessaire: false,
           },
         })),
-      }),
+      })
+      .then(() =>
+        sendMail({
+          Messages: [
+            {
+              From: {
+                Email: 'no-reply@zen.pole-emploi.fr',
+                Name: `L'équipe Zen`,
+              },
+              To: users.map((user) => ({
+                Email: user.email,
+                Name: `${user.firstName} ${user.lastName}`,
+              })),
+              TemplateID: 725394,
+              TemplateLanguage: true,
+              Subject: `Bienvenue sur Zen !`,
+
+              CustomCampaign: 'Confirmation de validation',
+            },
+          ],
+        }),
+      ),
 
   formatDateForSegmentFilter: (date) => parseInt(format(date, 'YYYYMM'), 10),
 }

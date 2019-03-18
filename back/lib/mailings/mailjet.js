@@ -130,5 +130,20 @@ module.exports = {
       })
   },
 
+  authorizeContacts: (users) =>
+    mailjet
+      .post('contactslist', { version: 'v3' })
+      .id(LIST_ID)
+      .action('managemanycontacts')
+      .request({
+        Action: 'addnoforce',
+        Contacts: users.map((user) => ({
+          Email: user.email,
+          Properties: {
+            validation_necessaire: false,
+          },
+        })),
+      }),
+
   formatDateForSegmentFilter: (date) => parseInt(format(date, 'YYYYMM'), 10),
 }

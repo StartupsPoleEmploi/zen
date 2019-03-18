@@ -162,20 +162,23 @@ router.get('/callback', (req, res) => {
                 .returning('*')
             }
 
-            // This is a new user. Sending them an email.
-            if (
-              config.get('shouldSendTransactionalEmails') &&
-              userToSave.email
-            ) {
-              // Note: We do not wait for Mailjet to answer to send data back to the user
-              sendSubscriptionConfirmation(userToSave).catch((e) =>
-                Raven.captureException(e),
-              )
-            }
-
             return User.query()
               .insert(userToSave)
               .returning('*')
+              .then((savedUser) => {
+                // This is a new user. Sending them an email.
+                if (
+                  config.get('shouldSendTransactionalEmails') &&
+                  userToSave.email
+                ) {
+                  // Note: We do not wait for Mailjet to answer to send data back to the user
+                  sendSubscriptionConfirmation(userToSave).catch((e) =>
+                    Raven.captureException(e),
+                  )
+                }
+
+                return savedUser
+              })
           })
           .then((user) => {
             req.session.user = {

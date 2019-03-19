@@ -23,7 +23,7 @@ export const App = () => {
           display: 'flex',
           justifyContent: 'space-around',
           width: '40rem',
-          margin: '1rem auto 0',
+          margin: '1rem auto',
         }}
       >
         <Button

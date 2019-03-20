@@ -40,7 +40,7 @@ const StyledActu = styled.div`
 
 const StyledPaper = styled(Paper)`
   width: 100%;
-  margin: 4rem auto 2rem;
+  margin: 4rem auto;
 `
 
 const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`

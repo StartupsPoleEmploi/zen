@@ -2,14 +2,16 @@ const express = require('express')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
-const { get, isUndefined, kebabCase } = require('lodash')
+const { get, isUndefined, kebabCase, toLower, toUpper } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
 const winston = require('../lib/log')
+const mailjet = require('../lib/mailings/mailjet')
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
 const DeclarationMonth = require('../models/DeclarationMonth')
 const DeclarationReview = require('../models/DeclarationReview')
+const User = require('../models/User')
 const Status = require('../models/Status')
 
 const router = express.Router()
@@ -32,6 +34,53 @@ router.get('/declarations', (req, res, next) => {
     .eager('[user, employers, review]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
+    .catch(next)
+})
+
+router.get('/users', (req, res, next) => {
+  User.query()
+    .where({ isAuthorized: req.query.authorized === 'true' })
+    .then((users) => res.json(users))
+    .catch(next)
+})
+
+router.post('/users/authorize', (req, res, next) => {
+  const useIds = Array.isArray(req.body.ids)
+  const useEmails = Array.isArray(req.body.emails)
+  if (!useIds && !useEmails) {
+    return res.status(400).json('Bad request')
+  }
+
+  let query = User.query()
+
+  if (useEmails) {
+    // emails are stored all uppercase or all lowercase.
+    // to avoid problems, we look for emails twice, uppercase and lowercase.
+    const upperCaseEmails = req.body.emails.map((email) => toUpper(email))
+    const lowerCaseEmails = req.body.emails.map((email) => toLower(email))
+
+    query = query.whereIn('email', upperCaseEmails.concat(lowerCaseEmails))
+  } else {
+    query = query.whereIn('id', req.body.ids).whereNotNull('email')
+  }
+
+  // first get users to avoid sending "welcome" message to already subscribed users
+  return query
+    .andWhere('isAuthorized', false)
+    .then((users) =>
+      Promise.all([
+        User.query()
+          .patch({ isAuthorized: true })
+          .whereIn('id', users.map((user) => user.id)),
+        users.length > 0 &&
+          mailjet.authorizeContactsAndSendConfirmationEmails(users),
+      ]),
+    )
+    .then(([updatedRowsNb]) =>
+      res.json({
+        updatedRowsNb,
+      }),
+    )
     .catch(next)
 })
 

@@ -4,11 +4,13 @@ import React, { useState } from 'react'
 import ActivityLog from './pages/ActivityLog'
 import Declarations from './pages/Declarations'
 import System from './pages/System'
+import Users from './pages/Users'
 
 const PAGES = {
   ACTIVITY: 'activity',
   DECLARATIONS: 'declarations',
   SYSTEM: 'system',
+  USERS: 'users',
 }
 
 export const App = () => {
@@ -21,7 +23,7 @@ export const App = () => {
           display: 'flex',
           justifyContent: 'space-around',
           width: '40rem',
-          margin: '1rem auto 0',
+          margin: '1rem auto',
         }}
       >
         <Button
@@ -40,6 +42,13 @@ export const App = () => {
         </Button>
         <Button
           variant="outlined"
+          color={page === PAGES.USERS ? 'primary' : 'default'}
+          onClick={() => setShowActivity(PAGES.USERS)}
+        >
+          Utilisateurs
+        </Button>
+        <Button
+          variant="outlined"
           color={page === PAGES.SYSTEM ? 'primary' : 'default'}
           onClick={() => setShowActivity(PAGES.SYSTEM)}
         >
@@ -48,6 +57,7 @@ export const App = () => {
       </div>
       {page === PAGES.DECLARATIONS && <Declarations />}
       {page === PAGES.ACTIVITY && <ActivityLog />}
+      {page === PAGES.USERS && <Users />}
       {page === PAGES.SYSTEM && <System />}
     </React.Fragment>
   )

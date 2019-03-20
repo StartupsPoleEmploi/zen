@@ -3,7 +3,8 @@ const { addDays, format } = require('date-fns')
 const superagent = require('superagent')
 const { get } = require('lodash')
 
-const LIST_ID = process.env.NODE_ENV === 'production' ? 14703 : 19487
+const isProd = process.env.NODE_ENV === 'production'
+const LIST_ID = isProd === 'production' ? 14703 : 19487
 
 if (!process.env.EMAIL_KEY || !process.env.EMAIL_KEY_SECRET) {
   throw new Error('Mailjet info is not configured')
@@ -14,6 +15,13 @@ const mailjet = NodeMailjet.connect(
   process.env.EMAIL_KEY_SECRET,
   { version: 'v3.1' },
 )
+
+const sendMail = (opts) =>
+  mailjet.post('send', { version: 'v3.1' }).request({
+    // Mailjet *will* send e-mails out of prod if this line is removed
+    SandboxMode: process.env.NODE_ENV !== 'production',
+    ...opts,
+  })
 
 const manageContact = ({ email, name, properties }) =>
   mailjet
@@ -28,12 +36,7 @@ const manageContact = ({ email, name, properties }) =>
     })
 
 module.exports = {
-  sendMail: (opts) =>
-    mailjet.post('send', { version: 'v3.1' }).request({
-      // Mailjet *will* send e-mails out of prod if this line is removed
-      SandboxMode: process.env.NODE_ENV !== 'production',
-      ...opts,
-    }),
+  sendMail,
 
   manageContact,
 
@@ -129,6 +132,44 @@ module.exports = {
         })
       })
   },
+
+  authorizeContactsAndSendConfirmationEmails: (users) =>
+    (isProd
+      ? mailjet
+          .post('contactslist', { version: 'v3' })
+          .id(LIST_ID)
+          .action('managemanycontacts')
+          .request({
+            Action: 'addnoforce',
+            Contacts: users.map((user) => ({
+              Email: user.email,
+              Properties: {
+                validation_necessaire: false,
+              },
+            })),
+          })
+      : Promise.resolve()
+    ).then(() =>
+      sendMail({
+        Messages: [
+          {
+            From: {
+              Email: 'no-reply@zen.pole-emploi.fr',
+              Name: `L'équipe Zen`,
+            },
+            To: users.map((user) => ({
+              Email: user.email,
+              Name: `${user.firstName} ${user.lastName}`,
+            })),
+            TemplateID: 725394,
+            TemplateLanguage: true,
+            Subject: `Bienvenue sur Zen !`,
+
+            CustomCampaign: 'Confirmation de validation',
+          },
+        ],
+      }),
+    ),
 
   formatDateForSegmentFilter: (date) => parseInt(format(date, 'YYYYMM'), 10),
 }

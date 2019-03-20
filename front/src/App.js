@@ -51,10 +51,15 @@ const UlStepper = styled.ul`
     flex: 0 1 15rem;
     text-align: center;
     padding-top: 1rem;
+    opacity: 0.5;
 
+    &.Stepper__ContainsLink {
+      opacity: 1;
+    }
     &.Stepper__Active {
       font-weight: bold;
       text-decoration: underline;
+      opacity: 1;
     }
 
     @media (max-width: 650px) {
@@ -244,9 +249,9 @@ class App extends Component {
   getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {
     if (shouldActivateLink) {
       return (
-        <StyledLink to={link}>
-          <LiStep>{label}</LiStep>
-        </StyledLink>
+        <LiStep className="Stepper__ContainsLink">
+          <StyledLink to={link}>{label}</StyledLink>
+        </LiStep>
       )
     }
 

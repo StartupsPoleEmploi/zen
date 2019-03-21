@@ -2,7 +2,7 @@ const express = require('express')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
-const { get, isUndefined, kebabCase, toLower, toUpper } = require('lodash')
+const { get, isUndefined, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
 const winston = require('../lib/log')
@@ -54,12 +54,12 @@ router.post('/users/authorize', (req, res, next) => {
   let query = User.query()
 
   if (useEmails) {
-    // emails are stored all uppercase or all lowercase.
-    // to avoid problems, we look for emails twice, uppercase and lowercase.
-    const upperCaseEmails = req.body.emails.map((email) => toUpper(email))
-    const lowerCaseEmails = req.body.emails.map((email) => toLower(email))
-
-    query = query.whereIn('email', upperCaseEmails.concat(lowerCaseEmails))
+    query.where(function() {
+      query = this.where('email', 'ilike', req.body.emails[0])
+      req.body.emails.slice(1).forEach((email) => {
+        query = this.orWhere('email', 'ilike', email)
+      })
+    })
   } else {
     query = query.whereIn('id', req.body.ids).whereNotNull('email')
   }

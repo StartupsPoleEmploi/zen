@@ -15,9 +15,10 @@ import superagent from 'superagent'
 import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
+import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
-import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
+import MainActionButton from '../../components/Generic/MainActionButton'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -50,36 +51,6 @@ const ButtonsContainer = styled.div`
   text-align: center;
   max-width: 40rem;
   margin: 0 auto;
-`
-
-const SaveForLaterButton = styled(Button).attrs({
-  color: 'primary',
-  variant: 'outlined',
-})`
-  && {
-    margin: 0 0.5rem;
-    padding: 1rem 3rem;
-    color: #000;
-  }
-`
-
-const SubmitButton = styled(Button).attrs({
-  color: 'primary',
-  variant: 'contained',
-})`
-  && {
-    padding: 1rem 3rem;
-    margin: 0 0.5rem;
-    &:disabled {
-      color: #fff;
-      background-color: rgba(
-        57,
-        103,
-        158,
-        0.5
-      ); /* rgb(57,103,158) is our primary color, #39679E */
-    }
-  }
 `
 
 const ErrorMessage = styled(Typography)`
@@ -719,14 +690,19 @@ export class Files extends Component {
         )}
         <ButtonsContainer>
           {!isOldMonth && (
-            <SaveForLaterButton component={Link} to="/thanks?later">
+            <MainActionButton
+              primary={false}
+              component={Link}
+              to="/thanks?later"
+            >
               Enregistrer
               <br />
               et finir plus tard
-            </SaveForLaterButton>
+            </MainActionButton>
           )}
-          <SubmitButton
+          <MainActionButton
             disabled={declarationRemainingDocsNb > 0}
+            primary
             onClick={() => this.onSubmit({ declaration })}
           >
             Envoyer
@@ -734,7 +710,7 @@ export class Files extends Component {
             {isOldMonth
               ? `les documents de ${formattedMonth}`
               : 'à Pôle Emploi'}
-          </SubmitButton>
+          </MainActionButton>
         </ButtonsContainer>
       </FilesSection>
     )

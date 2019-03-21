@@ -21,6 +21,7 @@ import UserJobCheck from '../../components/Actu/UserJobCheck'
 import DatePicker from '../../components/Generic/DatePicker'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
+import MainActionButton from '../../components/Generic/MainActionButton'
 
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
@@ -39,7 +40,7 @@ const StyledActu = styled.div`
 
 const StyledPaper = styled(Paper)`
   width: 100%;
-  margin: 4rem auto 2rem;
+  margin: 4rem auto;
 `
 
 const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`
@@ -652,13 +653,12 @@ export class Actu extends Component {
           <AlwaysVisibleContainer>
             {formError && <ErrorMessage>{formError}</ErrorMessage>}
             <FinalButtonsContainer>
-              <Button
+              <MainActionButton
+                primary
                 onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-                variant="contained"
-                color="primary"
               >
                 Suivant
-              </Button>
+              </MainActionButton>
             </FinalButtonsContainer>
           </AlwaysVisibleContainer>
         </form>

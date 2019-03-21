@@ -2,12 +2,12 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import {
+  isNaN as _isNaN,
   cloneDeep,
   get,
   isBoolean,
-  isObject,
-  isNaN as _isNaN,
   isNull,
+  isObject,
   isUndefined,
   pick,
 } from 'lodash'
@@ -18,12 +18,13 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import EmployerQuestion from '../../components/Actu/EmployerQuestion'
-import WorkSummary from '../../components/Actu/WorkSummary'
 import DeclarationDialog from '../../components/Actu/DeclarationDialog'
+import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
+import WorkSummary from '../../components/Actu/WorkSummary'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
+import MainActionButton from '../../components/Generic/MainActionButton'
 
 // Note : these values are duplicated in WorkSummary
 const WORK_HOURS = 'workHours'
@@ -81,28 +82,6 @@ const ButtonsContainer = styled.div`
   text-align: center;
   max-width: 40rem;
   margin: 0 auto;
-`
-
-const SaveForLaterButton = styled(Button).attrs({
-  color: 'primary',
-  variant: 'outlined',
-})`
-  && {
-    padding: 1rem 3rem;
-    width: 17.5rem;
-    color: #000;
-  }
-`
-
-const SubmitButton = styled(Button).attrs({
-  color: 'primary',
-  variant: 'contained',
-})`
-  && {
-      padding: 1rem 3rem;
-      width: 17.5rem;
-    }
-  }
 `
 
 const ErrorMessage = styled(Typography).attrs({
@@ -465,12 +444,12 @@ export class Employers extends Component {
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <ButtonsContainer>
-              <SaveForLaterButton onClick={this.saveAndRedirect}>
+              <MainActionButton primary={false} onClick={this.saveAndRedirect}>
                 Enregistrer<br />et finir plus tard
-              </SaveForLaterButton>
-              <SubmitButton onClick={this.openDialog}>
+              </MainActionButton>
+              <MainActionButton primary onClick={this.openDialog}>
                 Envoyer mon<br />actualisation
-              </SubmitButton>
+              </MainActionButton>
             </ButtonsContainer>
           </AlwaysVisibleContainer>
         </Form>

@@ -9,7 +9,7 @@ const emails = []
 async function doWork() {
   for (const email of emails) {
     /*
-     * Add integer values for
+     * Add integer values like 201902 (for february 2019) for
      * document_envoye_mois
      * declaration_effectuee_mois
      * to set users as already done for the current month.

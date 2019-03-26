@@ -17,7 +17,6 @@ const declarationWithEmployers = {
   hasInvalidity: false,
   isLookingForJob: true,
   jobSearchStopMotive: null,
-  dates: {},
   hasFinishedDeclaringEmployers: true,
   isFinished: false,
   createdAt: '2019-01-02T15:55:29.957Z',
@@ -64,7 +63,6 @@ const declarationWithoutEmployers = {
   hasInvalidity: false,
   isLookingForJob: true,
   jobSearchStopMotive: null,
-  dates: {},
   ignoreErrors: false,
   userId: 165,
   monthId: 8,
@@ -79,35 +77,34 @@ const declarationWithAllDatesFilled = {
   hasWorked: true,
   hasTrained: false,
   hasInternship: true,
-  dates: {
-    internships: [
-      {
-        startDate: '2018-12-11T23:00:00.000Z',
-        endDate: '2019-01-10T23:00:00.000Z',
-      },
-    ],
-    sickLeaves: [
-      {
-        startDate: '2018-12-17T23:00:00.000Z',
-        endDate: '2019-01-18T23:00:00.000Z',
-      },
-    ],
-
-    maternityLeave: {
+  dates: [
+    {
+      type: 'internship',
+      startDate: '2018-12-11T23:00:00.000Z',
+      endDate: '2019-01-10T23:00:00.000Z',
+    },
+    {
+      type: 'sickLeave',
+      startDate: '2018-12-17T23:00:00.000Z',
+      endDate: '2019-01-18T23:00:00.000Z',
+    },
+    {
+      type: 'maternityLeave',
       startDate: '2018-12-23T23:00:00.000Z',
     },
-    retirement: {
+    {
+      type: 'retirement',
       startDate: '2018-12-18T23:00:00.000Z',
     },
-
-    invalidity: {
+    {
+      type: 'invalidity',
       startDate: '2018-12-24T23:00:00.000Z',
     },
-
-    jobSearch: {
+    {
+      type: 'jobSearch',
       endDate: '2018-12-25T23:00:00.000Z',
     },
-  },
+  ],
   hasSickLeave: true,
   hasMaternityLeave: true,
   hasRetirement: true,
@@ -156,28 +153,28 @@ const declarationWithMultipleSicknessAndInternshipDates = {
   ...declarationWithoutEmployers,
   hasSickLeave: true,
   hasInternship: true,
-  dates: {
-    internships: [
-      {
-        startDate: '2018-12-01T23:00:00.000Z',
-        endDate: '2018-12-08T23:00:00.000Z',
-      },
-      {
-        startDate: '2018-12-11T23:00:00.000Z',
-        endDate: '2019-01-10T23:00:00.000Z',
-      },
-    ],
-    sickLeaves: [
-      {
-        startDate: '2018-12-02T23:00:00.000Z',
-        endDate: '2018-12-08T23:00:00.000Z',
-      },
-      {
-        startDate: '2018-12-17T23:00:00.000Z',
-        endDate: '2019-01-18T23:00:00.000Z',
-      },
-    ],
-  },
+  dates: [
+    {
+      type: 'internship',
+      startDate: '2018-12-01T23:00:00.000Z',
+      endDate: '2018-12-08T23:00:00.000Z',
+    },
+    {
+      type: 'internship',
+      startDate: '2018-12-11T23:00:00.000Z',
+      endDate: '2019-01-10T23:00:00.000Z',
+    },
+    {
+      type: 'sickLeave',
+      startDate: '2018-12-02T23:00:00.000Z',
+      endDate: '2018-12-08T23:00:00.000Z',
+    },
+    {
+      type: 'sickLeave',
+      startDate: '2018-12-17T23:00:00.000Z',
+      endDate: '2019-01-18T23:00:00.000Z',
+    },
+  ],
 }
 
 const accessToken = 'AZERTYUIOP'

@@ -102,6 +102,15 @@ const formFields = [
   'jobSearchStopMotive',
 ]
 
+const types = {
+  INTERNSHIP: 'internship',
+  SICK_LEAVE: 'sickLeave',
+  MATERNITY_LEAVE: 'maternityLeave',
+  RETIREMENT: 'retirement',
+  INVALIDITY: 'invalidity',
+  JOB_SEARCH: 'jobSearch',
+}
+
 const JOB_CHECK_KEY = 'canUseService'
 
 const getJobCheckFromStore = () => {
@@ -133,6 +142,7 @@ export class Actu extends Component {
     consistencyErrors: [],
     validationErrors: [],
     isLoggedOut: false,
+    infos: [],
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
 
@@ -167,30 +177,45 @@ export class Actu extends Component {
     this.setState({ [controlName]: hasAnsweredYes, formError: null })
 
     if (controlName === 'hasTrained') {
-      this.setState({ isLookingForJob: hasAnsweredYes ? true : null })
+      if (hasAnsweredYes) {
+        this.removeDatesOfType(types.JOB_SEARCH)
+        this.setState({ isLookingForJob: true })
+      } else {
+        this.setState({ isLookingForJob: null })
+      }
     }
 
-    if (controlName === 'hasSickLeave') {
-      this.setState({
-        dates: {
-          ...this.state.dates,
-          sickLeaves: hasAnsweredYes
-            ? [{ startDate: null, endDate: null }]
-            : [],
-        },
-      })
+    if (controlName === 'isLookingForJob') {
+      if (!hasAnsweredYes) this.addDates(types.JOB_SEARCH)
+      else this.removeDatesOfType(types.JOB_SEARCH)
     }
 
-    if (controlName === 'hasInternship') {
-      this.setState({
-        dates: {
-          ...this.state.dates,
-          internships: hasAnsweredYes
-            ? [{ startDate: null, endDate: null }]
-            : [],
-        },
-      })
-    }
+    ;[
+      {
+        boolName: 'hasInternship',
+        type: types.INTERNSHIP,
+      },
+      {
+        boolName: 'hasSickLeave',
+        type: types.SICK_LEAVE,
+      },
+      {
+        boolName: 'hasMaternityLeave',
+        type: types.MATERNITY_LEAVE,
+      },
+      {
+        boolName: 'hasInvalidity',
+        type: types.INVALIDITY,
+      },
+      {
+        boolName: 'hasRetirement',
+        type: types.RETIREMENT,
+      },
+    ].forEach(({ boolName, type }) => {
+      if (controlName !== boolName) return
+      if (hasAnsweredYes) return this.addDates(type)
+      this.removeDatesOfType(type)
+    })
   }
 
   onSetDate = ({ controlName, date }) => {
@@ -230,11 +255,14 @@ export class Actu extends Component {
     }
 
     if (hasInternship) {
+      const internshipDates = dates.filter(
+        ({ type }) => type === types.INTERNSHIP,
+      )
       const hasMissingInternshipDates =
-        dates.internships.some(
+        internshipDates.some(
           ({ startDate, endDate }) => !startDate || !endDate,
-        ) || !dates.internships.length
-      const hasWrongInternshipDates = dates.internships.some(
+        ) || !internshipDates.length
+      const hasWrongInternshipDates = internshipDates.some(
         ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
       )
 
@@ -247,11 +275,14 @@ export class Actu extends Component {
     }
 
     if (hasSickLeave) {
+      const sickLeaveDates = dates.filter(
+        ({ type }) => type === types.SICK_LEAVE,
+      )
       const hasMissingSickLeaveDates =
-        dates.sickLeaves.some(
+        sickLeaveDates.some(
           ({ startDate, endDate }) => !startDate || !endDate,
-        ) || !dates.sickLeaves.length
-      const hasWrongSickLeaveDates = dates.sickLeaves.some(
+        ) || !sickLeaveDates.length
+      const hasWrongSickLeaveDates = sickLeaveDates.some(
         ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
       )
 
@@ -263,20 +294,37 @@ export class Actu extends Component {
       }
     }
 
-    if (hasMaternityLeave && !get(dates, 'maternityLeave.startDate')) {
+    if (
+      hasMaternityLeave &&
+      !dates.some(
+        ({ type, startDate }) => type === types.MATERNITY_LEAVE && startDate,
+      )
+    ) {
       return `Merci d'indiquer votre date de départ en congé maternité`
     }
 
-    if (hasRetirement && !get(dates, 'retirement.startDate')) {
+    if (
+      hasMaternityLeave &&
+      !dates.some(
+        ({ type, startDate }) => type === types.RETIREMENT && startDate,
+      )
+    ) {
       return `Merci d'indiquer depuis quand vous touchez une pension retraite`
     }
 
-    if (hasInvalidity && !get(dates, 'invalidity.startDate')) {
+    if (
+      hasMaternityLeave &&
+      !dates.some(
+        ({ type, startDate }) => type === types.INVALIDITY && startDate,
+      )
+    ) {
       return `Merci d'indiquer depuis quand vous touchez une pension d'invalidité`
     }
 
     if (!isLookingForJob) {
-      if (!get(dates, 'jobSearch.endDate')) {
+      if (
+        !dates.some(({ type, endDate }) => type === types.JOB_SEARCH && endDate)
+      ) {
         return `Merci d'indiquer depuis quand vous ne cherchez plus d'emploi`
       }
 
@@ -350,56 +398,33 @@ export class Actu extends Component {
       'month',
     ) && get(this.state[JOB_CHECK_KEY], 'shouldAskAgain', true)
 
-  addSickLeave = () =>
+  addDates = (type) =>
     this.setState({
-      dates: {
-        ...this.state.dates,
-        sickLeaves: (this.state.dates.sickLeaves || []).concat({
-          startDate: null,
-          endDate: null,
-        }),
-      },
+      dates: this.state.dates.concat({
+        type,
+        startDate: null,
+        endDate: null,
+      }),
     })
 
-  addInternship = () =>
+  removeDates = (key) =>
     this.setState({
-      dates: {
-        ...this.state.dates,
-        internships: (this.state.dates.internships || []).concat({
-          startDate: null,
-          endDate: null,
-        }),
-      },
+      dates: this.state.dates.filter((value, index) => index !== key),
     })
 
-  removeSickLeave = (key) =>
+  removeDatesOfType = (typeToRemove) =>
     this.setState({
-      ...this.state,
-      dates: {
-        ...this.state.dates,
-        sickLeaves: this.state.dates.sickLeaves.filter(
-          (val, index) => key !== index,
-        ),
-      },
+      dates: this.state.dates.filter(({ type }) => type !== typeToRemove),
     })
 
-  removeInternship = (key) =>
-    this.setState({
-      ...this.state,
-      dates: {
-        ...this.state.dates,
-        internships: this.state.dates.internships.filter(
-          (val, index) => key !== index,
-        ),
-      },
-    })
-
-  renderDatePickerGroup = (
-    { startDate, endDate },
-    key,
+  renderDatePickerGroup = ({
     type,
-    removeCallback,
-  ) => {
+    showStartDate = true,
+    showEndDate = true,
+    allowRemove = false,
+    startLabel = 'Date de début',
+    endLabel = 'Date de fin',
+  }) => {
     const activeMonthMoment = moment(this.props.activeMonth)
 
     const datePickerMinDate = activeMonthMoment
@@ -411,48 +436,55 @@ export class Actu extends Component {
       .endOf('month')
       .toDate()
 
-    return (
-      <div
-        key={`${type}-${key}`}
-        style={{ display: 'flex', alignItems: 'flex-end' }}
-      >
-        <DatePicker
-          label="Date de début"
-          onSelectDate={this.onSetDate}
-          minDate={datePickerMinDate}
-          maxDate={datePickerMaxDate}
-          name={`dates.${type}[${key}].startDate`}
-          value={startDate}
-        />
-        <DatePicker
-          label="Date de fin"
-          onSelectDate={this.onSetDate}
-          minDate={datePickerMinDate}
-          maxDate={MAX_DATE}
-          // even with a far-away max-date, we want the default
-          // focused date to be in the active month
-          initialFocusedDate={datePickerMaxDate}
-          name={`dates.${type}[${key}].endDate`}
-          value={endDate}
-        />
-        <Button onClick={() => removeCallback(key)}>
-          <Delete />
-          Supprimer
-        </Button>
-      </div>
-    )
-  }
+    const nodes = []
+    this.state.dates.forEach((declarationDate, key) => {
+      if (declarationDate.type !== type) return
 
-  renderSickLeavesDatePickerGroup = (value, key) =>
-    this.renderDatePickerGroup(value, key, 'sickLeaves', this.removeSickLeave)
-  renderInternshipsDatePickerGroup = (value, key) =>
-    this.renderDatePickerGroup(value, key, 'internships', this.removeInternship)
+      nodes.push(
+        <div
+          // eslint-disable-next-line react/no-array-index-key
+          key={`${type}-${key}`}
+          style={{ display: 'flex', alignItems: 'flex-end' }}
+        >
+          {showStartDate && (
+            <DatePicker
+              label={startLabel}
+              onSelectDate={this.onSetDate}
+              minDate={datePickerMinDate}
+              maxDate={datePickerMaxDate}
+              name={`dates[${key}].startDate`}
+              value={declarationDate.startDate}
+            />
+          )}
+          {showEndDate && (
+            <DatePicker
+              label={endLabel}
+              onSelectDate={this.onSetDate}
+              minDate={datePickerMinDate}
+              maxDate={type !== 'jobSearch' ? MAX_DATE : datePickerMaxDate}
+              // even with a far-away max-date, we want the default
+              // focused date to be in the active month
+              initialFocusedDate={datePickerMaxDate}
+              name={`dates[${key}].endDate`}
+              value={declarationDate.endDate}
+            />
+          )}
+          {allowRemove && (
+            <Button onClick={() => this.removeDates(key)}>
+              <Delete />
+              Supprimer
+            </Button>
+          )}
+        </div>,
+      )
+    })
+    return nodes
+  }
 
   render() {
     const {
       formError,
       isLoading,
-      dates = {},
       hasSickLeave,
       hasInternship,
       hasMaternityLeave,
@@ -469,15 +501,6 @@ export class Actu extends Component {
     }
 
     const activeMonthMoment = moment(this.props.activeMonth)
-
-    const datePickerMinDate = activeMonthMoment
-      .clone()
-      .startOf('month')
-      .toDate()
-    const datePickerMaxDate = activeMonthMoment
-      .clone()
-      .endOf('month')
-      .toDate()
 
     return (
       <StyledActu>
@@ -508,12 +531,14 @@ export class Actu extends Component {
               >
                 {hasInternship && (
                   <Fragment>
-                    {(dates.internships || []).map(
-                      this.renderInternshipsDatePickerGroup,
-                    )}
-
+                    {this.renderDatePickerGroup({
+                      type: types.INTERNSHIP,
+                      allowRemove: true,
+                    })}
                     <AddElementButtonContainer>
-                      <AddElementButton onClick={this.addInternship}>
+                      <AddElementButton
+                        onClick={() => this.addDates(types.INTERNSHIP)}
+                      >
                         + Ajouter un stage
                       </AddElementButton>
                     </AddElementButtonContainer>
@@ -533,11 +558,14 @@ export class Actu extends Component {
               >
                 {hasSickLeave && (
                   <Fragment>
-                    {(dates.sickLeaves || []).map(
-                      this.renderSickLeavesDatePickerGroup,
-                    )}
+                    {this.renderDatePickerGroup({
+                      type: types.SICK_LEAVE,
+                      allowRemove: true,
+                    })}
                     <AddElementButtonContainer>
-                      <AddElementButton onClick={this.addSickLeave}>
+                      <AddElementButton
+                        onClick={() => this.addDates(types.SICK_LEAVE)}
+                      >
                         + Ajouter un arrêt maladie
                       </AddElementButton>
                     </AddElementButtonContainer>
@@ -552,14 +580,10 @@ export class Actu extends Component {
                   onAnswer={this.onAnswer}
                   style={{ paddingTop: hasSickLeave ? '3rem' : '1rem' }}
                 >
-                  <DatePicker
-                    label="Date de début"
-                    onSelectDate={this.onSetDate}
-                    minDate={datePickerMinDate}
-                    maxDate={datePickerMaxDate}
-                    name="dates.maternityLeave.startDate"
-                    value={get(dates, 'maternityLeave.startDate', null)}
-                  />
+                  {this.renderDatePickerGroup({
+                    type: types.MATERNITY_LEAVE,
+                    showEndDate: false,
+                  })}
                 </DeclarationQuestion>
               )}
               <DeclarationQuestion
@@ -576,14 +600,11 @@ export class Actu extends Component {
                       : '1rem',
                 }}
               >
-                <DatePicker
-                  label="Depuis le"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="dates.retirement.startDate"
-                  value={get(dates, 'retirement.startDate', null)}
-                />
+                {this.renderDatePickerGroup({
+                  type: types.RETIREMENT,
+                  showEndDate: false,
+                  startLabel: 'Depuis le',
+                })}
               </DeclarationQuestion>
               <DeclarationQuestion
                 label="Percevez-vous une nouvelle pension d'invalidité de 2eme ou 3eme catégorie ?"
@@ -591,14 +612,11 @@ export class Actu extends Component {
                 value={this.state.hasInvalidity}
                 onAnswer={this.onAnswer}
               >
-                <DatePicker
-                  label="Depuis le"
-                  onSelectDate={this.onSetDate}
-                  minDate={datePickerMinDate}
-                  maxDate={datePickerMaxDate}
-                  name="dates.invalidity.startDate"
-                  value={get(dates, 'invalidity.startDate', null)}
-                />
+                {this.renderDatePickerGroup({
+                  type: types.INVALIDITY,
+                  showEndDate: false,
+                  startLabel: 'Depuis le',
+                })}
               </DeclarationQuestion>
             </StyledList>
           </StyledPaper>
@@ -613,15 +631,11 @@ export class Actu extends Component {
                   onAnswer={this.onAnswer}
                   withChildrenOnNo
                 >
-                  <DatePicker
-                    label="Date de fin de recherche"
-                    onSelectDate={this.onSetDate}
-                    minDate={datePickerMinDate}
-                    maxDate={datePickerMaxDate}
-                    name="dates.jobSearch.endDate"
-                    value={get(dates, 'jobSearch.endDate', null)}
-                  />
-
+                  {this.renderDatePickerGroup({
+                    type: types.JOB_SEARCH,
+                    showStartDate: false,
+                    endLabel: 'Date de fin de recherche',
+                  })}
                   <RadioGroup
                     row
                     aria-label="motif d'arrêt de recherche d'emploi"

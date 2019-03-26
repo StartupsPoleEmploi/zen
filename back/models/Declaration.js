@@ -76,7 +76,7 @@ class Declaration extends BaseModel {
           type: 'boolean',
         },
         metadata: { type: 'object' },
-        transmittedAt: { type: ['date', 'null'] },
+        transmittedAt: { type: ['string', 'object', 'null'] },
       },
     }
   }

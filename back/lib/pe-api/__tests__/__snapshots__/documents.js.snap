@@ -4,9 +4,9 @@ exports[`PE API: sendDocuments API call success should send formatted data for d
 Array [
   Object {
     "codeContexte": "1",
-    "codeSituation": "3",
-    "codeTypeDocument": "ASF",
-    "nomDocument": "Stage - 01-2019",
+    "codeSituation": "4",
+    "codeTypeDocument": "AAT",
+    "nomDocument": "Conge Maladie - 01-2019",
   },
   Object {
     "codeContexte": "1",
@@ -34,9 +34,9 @@ Array [
   },
   Object {
     "codeContexte": "1",
-    "codeSituation": "4",
-    "codeTypeDocument": "AAT",
-    "nomDocument": "Conge Maladie - 01-2019",
+    "codeSituation": "3",
+    "codeTypeDocument": "ASF",
+    "nomDocument": "Stage - 01-2019",
   },
   Object {
     "codeContexte": "1",

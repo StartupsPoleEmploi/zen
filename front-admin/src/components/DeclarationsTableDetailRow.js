@@ -12,13 +12,13 @@ const calculateTotal = (employers, field) =>
 
 const statuses = [
   {
-    field: 'internships',
+    field: 'internship',
     boolField: 'hasInternship',
     label: 'a été en stage',
     multiple: true,
   },
   {
-    field: 'sickLeaves',
+    field: 'sickLeave',
     boolField: 'hasSickLeave',
     label: 'a été en congé maladie',
     multiple: true,

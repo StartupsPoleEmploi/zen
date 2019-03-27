@@ -180,7 +180,7 @@ export class Employers extends Component {
         const currentDeclaration = declarations[0]
         const previousDeclaration = declarations[1]
 
-        this.setState({ currentDeclaration, isLoading: false })
+        this.setState({ currentDeclaration })
 
         if (currentDeclaration.employers.length === 0) {
           if (!previousDeclaration) return
@@ -220,6 +220,7 @@ export class Employers extends Component {
           ),
         })
       })
+      .then(() => this.setState({ isLoading: false }))
   }
 
   componentWillUnmount() {

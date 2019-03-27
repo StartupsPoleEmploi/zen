@@ -11,6 +11,7 @@ const checkHeadersAndWait = (headers) => {
 
 /*
   superagent supplement which automatically retries requests if it got an HTTP 429
+  which are sent any time a PE API has its quota (local or global) met
 */
 const resilientRequest = ({
   accessToken,

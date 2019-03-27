@@ -1,10 +1,10 @@
 const { format } = require('date-fns')
-const superagent = require('superagent')
 const config = require('config')
 const { isAfter, isBefore } = require('date-fns')
 
 const winston = require('../log')
 const DeclarationInfo = require('../../models/DeclarationInfo')
+const { request } = require('../resilientRequest')
 
 const docTypes = DeclarationInfo.types
 
@@ -124,22 +124,26 @@ const convertDeclarationToAPIFormat = (declaration) => {
 }
 
 const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) =>
-  superagent
-    .post(
-      `${config.apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
+  request({
+    method: 'post',
+    url: `${
+      config.apiHost
+    }/partenaire/peconnect-actualisation/v1/actualisation`,
+    data: {
+      ...convertDeclarationToAPIFormat(declaration),
+      forceIncoherence: ignoreErrors ? 1 : 0,
+    },
+    accessToken,
+    headers: [
       {
-        ...convertDeclarationToAPIFormat(declaration),
-        forceIncoherence: ignoreErrors ? 1 : 0,
+        key: 'media',
+        value: 'I',
       },
-    )
-    .set('Authorization', `Bearer ${accessToken}`)
-    .set('Accept-Encoding', 'gzip')
-    .set('Accept', 'application/json')
-    .set('media', 'I')
-    .catch((err) => {
-      winston.error('Error while sending declaration', declaration.id, err)
-      throw err
-    })
+    ],
+  }).catch((err) => {
+    winston.error('Error while sending declaration', declaration.id, err)
+    throw err
+  })
 
 module.exports = {
   sendDeclaration,

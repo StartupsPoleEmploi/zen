@@ -10,9 +10,9 @@ const types = {
   jobSearch: 'jobSearch',
 }
 
-class DeclarationDate extends Model {
+class DeclarationInfo extends Model {
   static get tableName() {
-    return 'declaration_dates'
+    return 'declaration_infos'
   }
 
   /*
@@ -46,7 +46,7 @@ class DeclarationDate extends Model {
     const throwValidationError = (label) => {
       throw new ValidationError({
         message: label,
-        type: 'DeclarationDateValidationError',
+        type: 'DeclarationInfoValidationError',
       })
     }
 
@@ -104,7 +104,7 @@ class DeclarationDate extends Model {
         relation: BelongsToOneRelation,
         modelClass: `${__dirname}/Declaration`,
         join: {
-          from: 'declaration_dates.declarationId',
+          from: 'declaration_infos.declarationId',
           to: 'declarations.id',
         },
       },
@@ -116,4 +116,4 @@ class DeclarationDate extends Model {
   }
 }
 
-module.exports = DeclarationDate
+module.exports = DeclarationInfo

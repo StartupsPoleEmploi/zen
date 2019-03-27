@@ -4,9 +4,9 @@ const config = require('config')
 const { isAfter, isBefore } = require('date-fns')
 
 const winston = require('../log')
-const DeclarationDate = require('../../models/DeclarationDate')
+const DeclarationInfo = require('../../models/DeclarationInfo')
 
-const docTypes = DeclarationDate.types
+const docTypes = DeclarationInfo.types
 
 const convertDate = (date) => format(date, 'DDMMYYYY')
 
@@ -49,66 +49,66 @@ const convertDeclarationToAPIFormat = (declaration) => {
    */
   if (declaration.hasInternship) {
     apiDeclaration.dateDebutStage = convertDate(
-      declaration.dates
+      declaration.infos
         .filter(({ type }) => type === docTypes.internship)
         .reduce(
           (prev, { startDate }) =>
             isBefore(prev, startDate) ? prev : startDate,
-          declaration.dates.find(({ type }) => type === docTypes.internship)
+          declaration.infos.find(({ type }) => type === docTypes.internship)
             .startDate,
         ),
     )
     apiDeclaration.dateFinStage = convertDate(
-      declaration.dates
+      declaration.infos
         .filter(({ type }) => type === docTypes.internship)
         .reduce(
           (prev, { endDate }) => (isAfter(prev, endDate) ? prev : endDate),
-          declaration.dates.find(({ type }) => type === docTypes.internship)
+          declaration.infos.find(({ type }) => type === docTypes.internship)
             .endDate,
         ),
     )
   }
   if (declaration.hasSickLeave) {
     apiDeclaration.dateDebutMaladie = convertDate(
-      declaration.dates
+      declaration.infos
         .filter(({ type }) => type === docTypes.sickLeave)
         .reduce(
           (prev, { startDate }) =>
             isBefore(prev, startDate) ? prev : startDate,
-          declaration.dates.find(({ type }) => type === docTypes.sickLeave)
+          declaration.infos.find(({ type }) => type === docTypes.sickLeave)
             .startDate,
         ),
     )
     apiDeclaration.dateFinMaladie = convertDate(
-      declaration.dates
+      declaration.infos
         .filter(({ type }) => type === docTypes.sickLeave)
         .reduce(
           (prev, { endDate }) => (isAfter(prev, endDate) ? prev : endDate),
-          declaration.dates.find(({ type }) => type === docTypes.sickLeave)
+          declaration.infos.find(({ type }) => type === docTypes.sickLeave)
             .endDate,
         ),
     )
   }
   if (declaration.hasMaternityLeave) {
-    const { startDate } = declaration.dates.find(
+    const { startDate } = declaration.infos.find(
       ({ type }) => type === docTypes.maternityLeave,
     )
     apiDeclaration.dateDebutMaternite = convertDate(startDate)
   }
   if (declaration.hasRetirement) {
-    const { startDate } = declaration.dates.find(
+    const { startDate } = declaration.infos.find(
       ({ type }) => type === docTypes.retirement,
     )
     apiDeclaration.dateRetraite = convertDate(startDate)
   }
   if (declaration.hasInvalidity) {
-    const { startDate } = declaration.dates.find(
+    const { startDate } = declaration.infos.find(
       ({ type }) => type === docTypes.invalidity,
     )
     apiDeclaration.dateInvalidite = convertDate(startDate)
   }
   if (!declaration.isLookingForJob) {
-    const { endDate } = declaration.dates.find(
+    const { endDate } = declaration.infos.find(
       ({ type }) => type === docTypes.jobSearch,
     )
     apiDeclaration.dateFinRech = convertDate(endDate)

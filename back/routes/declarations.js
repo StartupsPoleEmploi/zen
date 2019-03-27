@@ -13,14 +13,14 @@ const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
-const DeclarationDate = require('../models/DeclarationDate')
+const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
 
-const docTypes = DeclarationDate.types
+const docTypes = DeclarationInfo.types
 
 const MAX_MONTHS_TO_FETCH = 24 // 2 years
 
-const eagerDeclarationString = `[declarationMonth, dates, employers.documents]`
+const eagerDeclarationString = `[declarationMonth, infos, employers.documents]`
 
 router.get('/', (req, res, next) => {
   if ('last' in req.query || 'active' in req.query) {
@@ -72,31 +72,31 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     'id',
   )
 
-  if (!declarationData.dates) declarationData.dates = []
+  if (!declarationData.infos) declarationData.infos = []
 
-  // This next section is dedicated to the validation of dates and correspondance
-  // between what will be saved in Declaration and DeclarationDate.
+  // This next section is dedicated to the validation of infos and correspondance
+  // between what will be saved in Declaration and DeclarationInfo.
   try {
     Declaration.fromJson(declarationData).$validate()
-    declarationData.dates.forEach((declarationDate) =>
-      DeclarationDate.fromJson(declarationDate).$validate(),
+    declarationData.infos.forEach((declarationInfo) =>
+      DeclarationInfo.fromJson(declarationInfo).$validate(),
     )
 
     if (
       declarationData.hasInternship &&
-      !declarationData.dates.some(({ type }) => type === docTypes.internship)
+      !declarationData.infos.some(({ type }) => type === docTypes.internship)
     ) {
       throw new Error('No internship dates given')
     }
     if (
       declarationData.hasSickLeave &&
-      !declarationData.dates.some(({ type }) => type === docTypes.sickLeave)
+      !declarationData.infos.some(({ type }) => type === docTypes.sickLeave)
     ) {
       throw new Error('No sick leave dates given')
     }
     if (
       declarationData.hasMaternityLeave &&
-      !declarationData.dates.some(
+      !declarationData.infos.some(
         ({ type }) => type === docTypes.maternityLeave,
       )
     ) {
@@ -104,13 +104,13 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     }
     if (
       declarationData.hasRetirement &&
-      !declarationData.dates.some(({ type }) => type === docTypes.retirement)
+      !declarationData.infos.some(({ type }) => type === docTypes.retirement)
     ) {
       throw new Error('No retirement dates given')
     }
     if (
       declarationData.hasInvalidity &&
-      !declarationData.dates.some(({ type }) => type === docTypes.invalidity)
+      !declarationData.infos.some(({ type }) => type === docTypes.invalidity)
     ) {
       throw new Error('No invalidity dates given')
     }
@@ -242,35 +242,35 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 })
 
 router.get('/files', (req, res, next) => {
-  if (!req.query.declarationDateId)
-    return res.status(400).json('Missing declarationDateId')
+  if (!req.query.declarationInfoId)
+    return res.status(400).json('Missing declarationInfoId')
 
-  return DeclarationDate.query()
+  return DeclarationInfo.query()
     .eager('declaration.user')
-    .findById(req.query.declarationDateId)
-    .then((declarationDate) => {
-      if (get(declarationDate, 'declaration.user.id') !== req.session.user.id)
+    .findById(req.query.declarationInfoId)
+    .then((declarationInfo) => {
+      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
         return res.status(404).json('No such file')
-      res.sendFile(declarationDate.file, { root: uploadDestination })
+      res.sendFile(declarationInfo.file, { root: uploadDestination })
     })
     .catch(next)
 })
 
 router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
-  if (!req.body.declarationDateId) {
-    return res.status(400).json('Missing declarationDateId')
+  if (!req.body.declarationInfoId) {
+    return res.status(400).json('Missing declarationInfoId')
   }
 
-  return DeclarationDate.query()
+  return DeclarationInfo.query()
     .eager('declaration.user')
-    .findById(req.body.declarationDateId)
-    .then((declarationDate) => {
+    .findById(req.body.declarationInfoId)
+    .then((declarationInfo) => {
       if (
-        !declarationDate ||
-        declarationDate.declaration.user.id !== req.session.user.id
+        !declarationInfo ||
+        declarationInfo.declaration.user.id !== req.session.user.id
       ) {
-        return res.status(400).json('No such DeclarationDate id')
+        return res.status(400).json('No such DeclarationInfo id')
       }
 
       const documentFileObj = req.body.skip
@@ -281,14 +281,14 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           }
         : { file: req.file.filename }
 
-      return declarationDate
+      return declarationInfo
         .$query()
         .patch(documentFileObj)
         .then(() =>
           Declaration.query()
             .eager(eagerDeclarationString)
             .findOne({
-              id: declarationDate.declaration.id,
+              id: declarationInfo.declaration.id,
               userId: req.session.user.id,
             }),
         )
@@ -325,24 +325,24 @@ router.post('/finish', (req, res, next) => {
 
       const hasMissingDeclarationDocuments =
         (declaration.hasInternship &&
-          declaration.dates.some(
+          declaration.infos.some(
             ({ type, file }) => type === docTypes.internship && isNull(file),
           )) ||
         (declaration.hasSickLeave &&
-          declaration.dates.some(
+          declaration.infos.some(
             ({ type, file }) => type === docTypes.sickLeave && isNull(file),
           )) ||
         (declaration.hasMaternityLeave &&
-          declaration.dates.some(
+          declaration.infos.some(
             ({ type, file }) =>
               type === docTypes.maternityLeave && isNull(file),
           )) ||
         (declaration.hasRetirement &&
-          declaration.dates.some(
+          declaration.infos.some(
             ({ type, file }) => type === docTypes.retirement && isNull(file),
           )) ||
         (declaration.hasInvalidity &&
-          declaration.dates.some(
+          declaration.infos.some(
             ({ type, file }) => type === docTypes.invalidity && isNull(file),
           ))
 

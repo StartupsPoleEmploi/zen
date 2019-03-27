@@ -8,7 +8,7 @@ const { get } = require('lodash')
 
 exports.up = function(knex) {
   return knex.schema
-    .createTable('declaration_dates', (table) => {
+    .createTable('declaration_infos', (table) => {
       table.increments('id').primary()
       table
         .integer('declarationId')
@@ -39,7 +39,7 @@ exports.up = function(knex) {
                 declarationId === declaration.id && type === declarationDocType,
             )
 
-            await knex.table('declaration_dates').insert(
+            await knex.table('declaration_infos').insert(
               {
                 type,
                 declarationId: declaration.id,
@@ -59,7 +59,7 @@ exports.up = function(knex) {
               ({ declarationId, type: declarationDocType }) =>
                 declarationId === declaration.id && type === declarationDocType,
             )
-            await knex.table('declaration_dates').insert(
+            await knex.table('declaration_infos').insert(
               {
                 type,
                 declarationId: declaration.id,
@@ -79,7 +79,7 @@ exports.up = function(knex) {
             ({ declarationId, type: declarationDocType }) =>
               declarationId === declaration.id && type === declarationDocType,
           )
-          await knex.table('declaration_dates').insert(
+          await knex.table('declaration_infos').insert(
             {
               type,
               declarationId: declaration.id,
@@ -100,7 +100,7 @@ exports.up = function(knex) {
             ({ declarationId, type: declarationDocType }) =>
               declarationId === declaration.id && type === declarationDocType,
           )
-          await knex.table('declaration_dates').insert(
+          await knex.table('declaration_infos').insert(
             {
               type,
               declarationId: declaration.id,
@@ -121,7 +121,7 @@ exports.up = function(knex) {
             ({ declarationId, type: declarationDocType }) =>
               declarationId === declaration.id && type === declarationDocType,
           )
-          await knex.table('declaration_dates').insert(
+          await knex.table('declaration_infos').insert(
             {
               type,
               declarationId: declaration.id,
@@ -138,7 +138,7 @@ exports.up = function(knex) {
 
         if (!declaration.isLookingForJob) {
           const type = 'jobSearch'
-          await knex.table('declaration_dates').insert(
+          await knex.table('declaration_infos').insert(
             {
               type,
               declarationId: declaration.id,

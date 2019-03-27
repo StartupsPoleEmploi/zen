@@ -77,7 +77,7 @@ const declarationWithAllDatesFilled = {
   hasWorked: true,
   hasTrained: false,
   hasInternship: true,
-  dates: [
+  infos: [
     {
       type: 'internship',
       startDate: '2018-12-11T23:00:00.000Z',
@@ -153,7 +153,7 @@ const declarationWithMultipleSicknessAndInternshipDates = {
   ...declarationWithoutEmployers,
   hasSickLeave: true,
   hasInternship: true,
-  dates: [
+  infos: [
     {
       type: 'internship',
       startDate: '2018-12-01T23:00:00.000Z',

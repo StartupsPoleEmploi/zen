@@ -97,7 +97,7 @@ const SideButton = styled(Button)`
 
 export class AdditionalDocumentUpload extends Component {
   static propTypes = {
-    declarationDateId: PropTypes.number,
+    declarationInfoId: PropTypes.number,
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
     label: PropTypes.string.isRequired,
@@ -111,15 +111,15 @@ export class AdditionalDocumentUpload extends Component {
   submitFile = ({ target: { files } }) =>
     this.props.submitFile({
       file: files[0],
-      declarationDateId: this.props.declarationDateId,
+      declarationInfoId: this.props.declarationInfoId,
     })
 
   skipFile = () =>
-    this.props.skipFile({ declarationDateId: this.props.declarationDateId })
+    this.props.skipFile({ declarationInfoId: this.props.declarationInfoId })
 
   render() {
     const {
-      declarationDateId,
+      declarationInfoId,
       error,
       fileExistsOnServer,
       isLoading,
@@ -155,7 +155,7 @@ export class AdditionalDocumentUpload extends Component {
                   : fileExistsOnServer && (
                       <Button
                         variant="outlined"
-                        href={`/api/declarations/files?declarationDateId=${declarationDateId}`}
+                        href={`/api/declarations/files?declarationInfoId=${declarationInfoId}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{

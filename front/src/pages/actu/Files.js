@@ -136,7 +136,7 @@ const getErrorKey = ({ id, name, declarationId, index = 0 }) =>
   id ? `error-${id}` : `error-${declarationId}-${name}-${index}`
 
 const getDeclarationMissingFilesNb = (declaration) => {
-  const additionalDocumentsRequiredNb = declaration.dates.filter(
+  const additionalDocumentsRequiredNb = declaration.infos.filter(
     ({ type, file }) => type !== 'jobSearch' && !file,
   ).length
 
@@ -256,14 +256,14 @@ export class Files extends Component {
       })
   }
 
-  submitAdditionalFile = ({ declarationDateId, file, skip }) => {
+  submitAdditionalFile = ({ declarationInfoId, file, skip }) => {
     this.closeSkipModal()
 
     const errorKey = getErrorKey({
-      id: declarationDateId,
+      id: declarationInfoId,
     })
     const loadingKey = getLoadingKey({
-      id: declarationDateId,
+      id: declarationInfoId,
     })
 
     this.setState({
@@ -273,7 +273,7 @@ export class Files extends Component {
     let request = superagent
       .post('/api/declarations/files')
       .set('CSRF-Token', this.props.token)
-      .field('declarationDateId', declarationDateId)
+      .field('declarationInfoId', declarationInfoId)
 
     if (skip) {
       request = request.field('skip', true)
@@ -389,7 +389,7 @@ export class Files extends Component {
 
     const additionalDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => {
-        const dates = declaration.dates.filter(
+        const infos = declaration.infos.filter(
           ({ type }) => type === neededDocumentSpecs.name,
         )
 
@@ -404,7 +404,7 @@ export class Files extends Component {
             <Typography variant="caption">
               {neededDocumentSpecs.multiple && (
                 <ul style={{ paddingLeft: 0 }}>
-                  {dates.map(({ startDate, endDate }, key) => (
+                  {infos.map(({ startDate, endDate }, key) => (
                     /* eslint-disable-next-line react/no-array-index-key */
                     <li key={key} style={{ display: 'block' }}>
                       Du {formatDate(startDate)} au {formatDate(endDate)}
@@ -413,10 +413,10 @@ export class Files extends Component {
                 </ul>
               )}
               {!neededDocumentSpecs.multiple &&
-                (!dates.endDate
-                  ? `À partir du ${formatDate(dates.startDate)}`
-                  : `Du ${formatDate(dates.startDate)} au ${formatDate(
-                      dates.endDate,
+                (!infos.endDate
+                  ? `À partir du ${formatDate(infos.startDate)}`
+                  : `Du ${formatDate(infos.startDate)} au ${formatDate(
+                      infos.endDate,
                     )}`)}
             </Typography>
             <StyledList>
@@ -501,7 +501,7 @@ export class Files extends Component {
     })
 
   renderDocumentsOfType = ({ label, name, declaration, allowSkipFile }) =>
-    declaration.dates
+    declaration.infos
       .filter(({ type }) => type === name)
       .map((additionalDoc) => (
         <AdditionalDocumentUpload
@@ -527,7 +527,7 @@ export class Files extends Component {
             this.askToSkipFile(() =>
               this.submitAdditionalFile({
                 skip: true,
-                declarationDateId: additionalDoc.id,
+                declarationInfoId: additionalDoc.id,
               }),
             )
           }

@@ -152,7 +152,7 @@ export class Actu extends Component {
       hasMaternityLeave:
         this.props.user.gender === USER_GENDER_MALE ? false : null,
       // Set active declaration data, prevent declaration data unrelated to this form.
-      ...pick(this.props.declaration, formFields.concat('id', 'dates')),
+      ...pick(this.props.declaration, formFields.concat('id', 'infos')),
       isLoading: false,
     })
   }
@@ -232,7 +232,7 @@ export class Actu extends Component {
       hasWorked,
       hasTrained,
       hasInternship,
-      dates,
+      infos,
       hasSickLeave,
       hasMaternityLeave,
       hasRetirement,
@@ -255,7 +255,7 @@ export class Actu extends Component {
     }
 
     if (hasInternship) {
-      const internshipDates = dates.filter(
+      const internshipDates = infos.filter(
         ({ type }) => type === types.INTERNSHIP,
       )
       const hasMissingInternshipDates =
@@ -275,7 +275,7 @@ export class Actu extends Component {
     }
 
     if (hasSickLeave) {
-      const sickLeaveDates = dates.filter(
+      const sickLeaveDates = infos.filter(
         ({ type }) => type === types.SICK_LEAVE,
       )
       const hasMissingSickLeaveDates =
@@ -296,7 +296,7 @@ export class Actu extends Component {
 
     if (
       hasMaternityLeave &&
-      !dates.some(
+      !infos.some(
         ({ type, startDate }) => type === types.MATERNITY_LEAVE && startDate,
       )
     ) {
@@ -305,7 +305,7 @@ export class Actu extends Component {
 
     if (
       hasMaternityLeave &&
-      !dates.some(
+      !infos.some(
         ({ type, startDate }) => type === types.RETIREMENT && startDate,
       )
     ) {
@@ -314,7 +314,7 @@ export class Actu extends Component {
 
     if (
       hasMaternityLeave &&
-      !dates.some(
+      !infos.some(
         ({ type, startDate }) => type === types.INVALIDITY && startDate,
       )
     ) {
@@ -323,7 +323,7 @@ export class Actu extends Component {
 
     if (!isLookingForJob) {
       if (
-        !dates.some(({ type, endDate }) => type === types.JOB_SEARCH && endDate)
+        !infos.some(({ type, endDate }) => type === types.JOB_SEARCH && endDate)
       ) {
         return `Merci d'indiquer depuis quand vous ne cherchez plus d'emploi`
       }
@@ -400,7 +400,7 @@ export class Actu extends Component {
 
   addDates = (type) =>
     this.setState({
-      dates: this.state.dates.concat({
+      infos: this.state.infos.concat({
         type,
         startDate: null,
         endDate: null,
@@ -409,12 +409,12 @@ export class Actu extends Component {
 
   removeDates = (key) =>
     this.setState({
-      dates: this.state.dates.filter((value, index) => index !== key),
+      infos: this.state.infos.filter((value, index) => index !== key),
     })
 
   removeDatesOfType = (typeToRemove) =>
     this.setState({
-      dates: this.state.dates.filter(({ type }) => type !== typeToRemove),
+      infos: this.state.infos.filter(({ type }) => type !== typeToRemove),
     })
 
   renderDatePickerGroup = ({
@@ -437,8 +437,8 @@ export class Actu extends Component {
       .toDate()
 
     const nodes = []
-    this.state.dates.forEach((declarationDate, key) => {
-      if (declarationDate.type !== type) return
+    this.state.infos.forEach((declarationInfo, key) => {
+      if (declarationInfo.type !== type) return
 
       nodes.push(
         <div
@@ -452,8 +452,8 @@ export class Actu extends Component {
               onSelectDate={this.onSetDate}
               minDate={datePickerMinDate}
               maxDate={datePickerMaxDate}
-              name={`dates[${key}].startDate`}
-              value={declarationDate.startDate}
+              name={`infos[${key}].startDate`}
+              value={declarationInfo.startDate}
             />
           )}
           {showEndDate && (
@@ -465,8 +465,8 @@ export class Actu extends Component {
               // even with a far-away max-date, we want the default
               // focused date to be in the active month
               initialFocusedDate={datePickerMaxDate}
-              name={`dates[${key}].endDate`}
-              value={declarationDate.endDate}
+              name={`infos[${key}].endDate`}
+              value={declarationInfo.endDate}
             />
           )}
           {allowRemove && (

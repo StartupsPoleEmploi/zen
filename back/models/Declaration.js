@@ -108,12 +108,12 @@ class Declaration extends BaseModel {
           to: 'declaration_months.id',
         },
       },
-      dates: {
+      infos: {
         relation: HasManyRelation,
-        modelClass: `${__dirname}/DeclarationDate`,
+        modelClass: `${__dirname}/DeclarationInfo`,
         join: {
           from: 'declarations.id',
-          to: 'declaration_dates.declarationId',
+          to: 'declaration_infos.declarationId',
         },
       },
       review: {

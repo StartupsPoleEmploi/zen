@@ -101,7 +101,7 @@ describe('employers routes', () => {
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'))
   afterEach(() =>
     Declaration.knex().raw(
-      'TRUNCATE "declarations", "employers", "declaration_dates", "employer_documents" CASCADE',
+      'TRUNCATE "declarations", "employers", "declaration_infos", "employer_documents" CASCADE',
     ))
 
   describe('POST /', () => {

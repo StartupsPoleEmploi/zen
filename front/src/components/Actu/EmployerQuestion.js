@@ -265,7 +265,10 @@ export class EmployerQuestion extends Component {
         </StyledMain>
         <RemoveButton onClick={this.onRemove} type="button">
           <CancelIcon />
-          <Typography variant="caption" style={{ color: 'black' }}>
+          <Typography
+            variant="caption"
+            style={{ color: 'black', display: 'block' }}
+          >
             Supprimer
           </Typography>
         </RemoveButton>

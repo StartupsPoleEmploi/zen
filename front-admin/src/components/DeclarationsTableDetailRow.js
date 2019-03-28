@@ -15,31 +15,31 @@ const statuses = [
     field: 'internship',
     boolField: 'hasInternship',
     label: 'a été en stage',
-    multiple: true,
   },
   {
     field: 'sickLeave',
     boolField: 'hasSickLeave',
     label: 'a été en congé maladie',
-    multiple: true,
   },
   {
     field: 'maternityLeave',
     boolField: 'hasMaternityLeave',
     label: 'a été en congé maternité',
-    multiple: false,
   },
   {
     field: 'retirement',
     boolField: 'hasRetirement',
     label: 'est en retraite',
-    multiple: false,
   },
   {
     field: 'invalidity',
     boolField: 'hasInvalidity',
     label: 'est invalide',
-    multiple: false,
+  },
+  {
+    field: 'jobSearch',
+    boolField: 'isLookingForJob',
+    label: 'a arrêté de chercher du travail',
   },
 ]
 
@@ -130,27 +130,31 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
         </label>
       </div>
       <p>
-        {statuses
-          .map((status) => {
-            if (!declaration[status.boolField]) return null
-
+        {declaration.infos
+          .sort((a, b) => (a.type > b.type ? 1 : -1))
+          .map((info) => {
             const formatDates = ({ startDate, endDate }) =>
-              endDate
+              startDate && endDate
                 ? `du ${format(startDate, 'DD/MM')} au ${format(
                     endDate,
                     'DD/MM',
                   )}`
-                : `à partir du ${format(startDate, 'DD/MM')}`
+                : `à partir du ${format(startDate || endDate, 'DD/MM')}`
 
-            if (status.multiple) {
-              return `${status.label} `.concat(
-                declaration.dates[status.field].map(formatDates).join(' et '),
-              )
+            const status = statuses.find(({ field }) => field === info.type)
+
+            // Used to filter data in case something happened and some dates were saved
+            // without the correct field set up.
+            if (
+              (!declaration[status.boolField] &&
+                status.boolField !== 'isLookingForJob') ||
+              (declaration[status.boolField] &&
+                status.boolField === 'isLookingForJob')
+            ) {
+              return null
             }
 
-            return `${status.label} ${formatDates(
-              declaration.dates[status.field],
-            )}`
+            return `${status.label} ${formatDates(info)}`
           })
           .filter((a) => a)
           .join(', ')}

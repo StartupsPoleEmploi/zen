@@ -145,7 +145,8 @@ const doConfirm = ({ conversionId, document, accessToken }) =>
   }).then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
 
 const sendDocuments = async ({ declaration, accessToken }) => {
-  const documentsToTransmit = declaration.documents
+  const documentsToTransmit = declaration.infos
+    .filter(({ file }) => file)
     .map((dbDocument) => {
       const typeInfos = documentsToTransmitTypes.find(
         ({ type }) => type === dbDocument.type,

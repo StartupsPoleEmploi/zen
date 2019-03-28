@@ -453,7 +453,7 @@ exports[`Storyshots AdditionalDocumentUpload with file 1`] = `
               >
                 <a
                   className="MuiButtonBase-root-276 MuiButton-root-250 MuiButton-outlined-258"
-                  href="/api/declarations/files?documentId=1"
+                  href="/api/declarations/files?declarationInfoId=1"
                   onBlur={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}

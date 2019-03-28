@@ -31,7 +31,7 @@ router.get('/declarations', (req, res, next) => {
   }
 
   Declaration.query()
-    .eager('[user, employers, review]')
+    .eager('[user, employers, review, infos]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
     .catch(next)
@@ -133,7 +133,7 @@ router.get('/activityLog', (req, res) => {
 
 router.get('/declarations/:declarationId/files', (req, res) => {
   Declaration.query()
-    .eager(`[documents, employers.documents, user, declarationMonth]`)
+    .eager(`[infos, employers.documents, user, declarationMonth]`)
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration')
@@ -143,10 +143,10 @@ router.get('/declarations/:declarationId/files', (req, res) => {
         'MM-YYYY',
       )
 
-      const files = declaration.documents
-        .map((document) => ({
-          label: document.type,
-          value: document.file,
+      const files = declaration.infos
+        .map((info) => ({
+          label: info.type,
+          value: info.file,
         }))
         .concat(
           declaration.employers.map((employer) => ({

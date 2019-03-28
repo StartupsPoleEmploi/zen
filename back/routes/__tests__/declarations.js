@@ -40,21 +40,26 @@ const declarationFormData = {
   hasWorked: true,
   hasTrained: false,
   hasInternship: false,
-  hasSickLeave: false,
+  hasSickLeave: true,
   hasMaternityLeave: false,
   hasRetirement: false,
   hasInvalidity: false,
   isLookingForJob: true,
+  infos: [
+    {
+      type: 'sickLeave',
+      startDate: new Date(0),
+      endDate: new Date(),
+    },
+  ],
 }
 
 const addBasicDeclaration = (params = {}) =>
-  Declaration.query()
-    .insert({
-      ...declarationFormData,
-      userId: user.id,
-      ...params,
-    })
-    .returning('*')
+  Declaration.query().upsertGraphAndFetch({
+    ...declarationFormData,
+    userId: user.id,
+    ...params,
+  })
 
 const addActiveDeclaration = (params = {}) =>
   getActiveMonth().then((activeMonth) =>
@@ -96,11 +101,10 @@ const addDeclarationWithEmployers = ({ withFile = false }) =>
 const postSickLeaveDocument = () =>
   addActiveDeclaration({
     hasSickLeave: true,
-    dates: { sickLeaves: [{ startDate: new Date(), endDate: new Date() }] },
   }).then((declaration) =>
     supertest(app)
       .post(`/files`)
-      .field('declarationId', declaration.id)
+      .field('declarationInfoId', declaration.infos[0].id)
       .field('name', 'sickLeave')
       .attach('document', 'tests/mockDocument.pdf')
       .expect(200)
@@ -125,7 +129,7 @@ describe('declarations routes', () => {
 
   afterEach(() =>
     Declaration.knex().raw(
-      'TRUNCATE "declarations", "employers", "declaration_documents", "employer_documents" CASCADE',
+      'TRUNCATE "declarations", "employers", "declaration_infos", "employer_documents" CASCADE',
     ))
 
   describe('GET /', () => {
@@ -190,15 +194,15 @@ describe('declarations routes', () => {
 
     test('HTTP 404 if no file was found', () =>
       supertest(app)
-        .get(`/files?documentId=${IMPOSSIBLE_ID}`)
+        .get(`/files?declarationInfoId=${IMPOSSIBLE_ID}`)
         .expect(404))
 
     test('HTTP 200 if the file was found', () =>
       postSickLeaveDocument().then((declaration) =>
         supertest(app)
           .get(
-            `/files?documentId=${
-              declaration.documents.find((doc) => doc.type === 'sickLeave').id
+            `/files?declarationInfoId=${
+              declaration.infos.find((doc) => doc.type === 'sickLeave').id
             }`,
           )
           .expect(200),
@@ -210,7 +214,7 @@ describe('declarations routes', () => {
       postSickLeaveDocument() // HTTP 200 checked here
         .then((declaration) =>
           expect(
-            declaration.documents.find((doc) => doc.type === 'sickLeave').file,
+            declaration.infos.find((doc) => doc.type === 'sickLeave').file,
           ).toMatch(/\.pdf$/),
         ))
   })

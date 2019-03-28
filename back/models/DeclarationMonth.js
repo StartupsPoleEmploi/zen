@@ -13,9 +13,9 @@ class DeclarationMonth extends BaseModel {
 
       properties: {
         id: { type: 'integer' },
-        month: { type: 'date' },
-        startDate: { type: 'date' },
-        endDate: { type: 'date' },
+        month: { type: ['string', 'object'] },
+        startDate: { type: ['string', 'object'] },
+        endDate: { type: ['string', 'object'] },
       },
     }
   }

@@ -87,6 +87,7 @@ const Caption = styled(Typography).attrs({ variant: 'caption' })`
     max-width: 38.4rem;
     text-align: center;
     font-size: 1.8rem;
+    display: block;
   }
 `
 

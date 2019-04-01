@@ -63,7 +63,9 @@ export class UserJobCheck extends Component {
     this.props.onValidate({ shouldAskAgain: this.state.shouldAskAgain })
 
   toggleCheckbox = () =>
-    this.setState({ shouldAskAgain: !this.state.shouldAskAgain })
+    this.setState((prevState) => ({
+      shouldAskAgain: !prevState.shouldAskAgain,
+    }))
 
   render() {
     return (

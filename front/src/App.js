@@ -103,6 +103,19 @@ class App extends Component {
     isServiceDown: false,
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (
+      get(state.user, 'isAuthorized') &&
+      props.location.pathname !== state.pathname
+    ) {
+      return {
+        isLoadingActiveDeclaration: true,
+        pathname: props.location.pathname,
+      }
+    }
+    return null
+  }
+
   componentDidMount() {
     Promise.all([
       superagent.get('/api/status').then((res) => res.body),
@@ -196,19 +209,6 @@ class App extends Component {
           err,
         }),
       )
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (
-      get(state.user, 'isAuthorized') &&
-      props.location.pathname !== state.pathname
-    ) {
-      return {
-        isLoadingActiveDeclaration: true,
-        pathname: props.location.pathname,
-      }
-    }
-    return null
   }
 
   componentDidUpdate(prevProps) {

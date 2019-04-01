@@ -1,7 +1,8 @@
 const nock = require('nock')
-const { request } = require('../resilientRequest')
 const { omit } = require('lodash')
 const fs = require('fs')
+
+const { request } = require('../resilientRequest')
 
 const accessToken = '1234567890'
 

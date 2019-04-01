@@ -1,4 +1,5 @@
 const { format, subMonths } = require('date-fns')
+const fr = require('date-fns/locale/fr')
 const { get } = require('lodash')
 const {
   createCampaignDraft,
@@ -8,7 +9,6 @@ const {
   createSegment,
   formatDateForSegmentFilter,
 } = require('./mailjet')
-const fr = require('date-fns/locale/fr')
 
 const DOCS_REMINDER_CAMPAIGN_ID = 510671
 

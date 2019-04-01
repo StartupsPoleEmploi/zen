@@ -1,6 +1,6 @@
 const express = require('express')
-const declarationsRouter = require('../declarations')
 const supertest = require('supertest')
+const declarationsRouter = require('../declarations')
 const Declaration = require('../../models/Declaration')
 const DeclarationMonth = require('../../models/DeclarationMonth')
 const User = require('../../models/User')

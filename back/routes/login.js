@@ -34,6 +34,7 @@ const credentials = {
   },
 }
 
+// eslint-disable-next-line import/order
 const oauth2 = require('simple-oauth2').create(credentials)
 
 const tokenConfig = {

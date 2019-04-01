@@ -1,6 +1,6 @@
 const express = require('express')
-const employersRouter = require('../employers')
 const supertest = require('supertest')
+const employersRouter = require('../employers')
 const Declaration = require('../../models/Declaration')
 const DeclarationMonth = require('../../models/DeclarationMonth')
 const User = require('../../models/User')
@@ -96,13 +96,15 @@ describe('employers routes', () => {
       .returning('*')
       .then((dbUser) => {
         user = dbUser
-      }))
+      }),
+  )
 
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'))
   afterEach(() =>
     Declaration.knex().raw(
       'TRUNCATE "declarations", "employers", "declaration_infos", "employer_documents" CASCADE',
-    ))
+    ),
+  )
 
   describe('POST /', () => {
     test('HTTP 400 if no data sent', () =>

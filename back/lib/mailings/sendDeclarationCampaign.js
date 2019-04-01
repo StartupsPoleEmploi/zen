@@ -1,4 +1,5 @@
 const { format } = require('date-fns')
+const fr = require('date-fns/locale/fr')
 const { get } = require('lodash')
 const {
   createCampaignDraft,
@@ -6,7 +7,6 @@ const {
   scheduleCampaign,
   setCampaignTemplate,
 } = require('./mailjet')
-const fr = require('date-fns/locale/fr')
 
 const VALIDATED_USERS_SEGMENT_ID = 337
 const DECLARATION_CAMPAIGN_TEMPLATE = 494021

@@ -16,5 +16,6 @@ module.exports = {
     'no-nested-ternary': 0,
     'no-param-reassign': 0, // Useful for our wotk with db models
     'func-names': 0,
+    'no-restricted-syntax': 0,
   },
 }

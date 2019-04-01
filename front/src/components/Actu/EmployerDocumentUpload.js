@@ -252,7 +252,8 @@ export class EmployerDocumentUpload extends Component {
               >
                 <SideButton onClick={skipFile}>
                   <CheckBoxOutlineBlank />
-                  Transmis à Pôle Emploi{/* eslint-disable-line */}
+                  {/* eslint-disable-next-line no-irregular-whitespace */}
+                  Transmis à Pôle Emploi
                 </SideButton>
               </Tooltip>
             )

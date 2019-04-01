@@ -130,7 +130,7 @@ export class Actu extends Component {
       gender: PropTypes.string,
       csrfToken: PropTypes.string.isRequired,
     }),
-    declaration: PropTypes.object, // eslint-disable-line
+    declaration: PropTypes.object,
   }
 
   state = {

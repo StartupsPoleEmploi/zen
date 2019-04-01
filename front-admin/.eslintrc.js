@@ -27,7 +27,42 @@ module.exports = {
     'react/jsx-filename-extension': [2, { extensions: ['.js'] }],
     'react/require-default-props': 0,
     'react/forbid-prop-types': 0, // Instead of activating this rule, flow or TS
-    'react/sort-comp': 0,
+    'react/sort-comp': [
+      2,
+      {
+        order: ['static-methods', 'lifecycle', 'everything-else', 'render'],
+        groups: {
+          lifecycle: [
+            'displayName',
+            'propTypes',
+            'contextTypes',
+            'childContextTypes',
+            'mixins',
+            'statics',
+            'defaultProps',
+            'constructor',
+            'getDefaultProps',
+            'state',
+            'getInitialState',
+            'getChildContext',
+            'getDerivedStateFromProps',
+            'componentWillMount',
+            'UNSAFE_componentWillMount',
+            'componentDidMount',
+            'componentWillReceiveProps',
+            'UNSAFE_componentWillReceiveProps',
+            'shouldComponentUpdate',
+            'componentWillUpdate',
+            'UNSAFE_componentWillUpdate',
+            'getSnapshotBeforeUpdate',
+            'componentDidUpdate',
+            'componentDidCatch',
+            'componentWillUnmount',
+          ],
+        },
+      },
+    ],
+    'react/destructuring-assignment': 0,
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
@@ -36,5 +71,6 @@ module.exports = {
         aspects: ['noHref', 'invalidHref', 'preferButton'],
       },
     ],
+    'no-plusplus': 0,
   },
 }

@@ -79,12 +79,13 @@ export class UserJobCheck extends Component {
           Êtes-vous créateur / créatrice d'entreprise ?
         </StyledTypography>
         <ButtonsContainer>
-          <StyledButton onClick={this.onValidate}>Oui</StyledButton>
-          <StyledButton onClick={this.onInvalid}>Non</StyledButton>
+          <StyledButton onClick={this.onInvalid}>Oui</StyledButton>
+          <StyledButton onClick={this.onValidate}>Non</StyledButton>
         </ButtonsContainer>
         {this.state.showUnavailableMessage && (
           <Typography variant="body2">
-            Nous sommes désolés, mais ce service n'est pas adapté à votre usage.
+            Si vous êtes créateur d'entreprise, vous ne pouvez pas faire votre
+            actualisation sur Zen.
             <br />
             Merci d'effectuer votre actualisation sur{' '}
             <a href="https://www.pole-emploi.fr" rel="noopener noreferrer">

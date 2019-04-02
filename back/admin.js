@@ -6,8 +6,8 @@ const { Model } = require('objection')
 const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
-const adminRouter = require('./routes/admin')
 const pgConnectSimple = require('connect-pg-simple')
+const adminRouter = require('./routes/admin')
 
 const knex = Knex({
   client: 'pg',

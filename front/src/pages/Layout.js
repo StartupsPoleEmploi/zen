@@ -69,6 +69,7 @@ export class Layout extends Component {
   state = { isTooltipOpened: false }
 
   setTooltipClosed = () => this.setState({ isTooltipOpened: false })
+
   toggleTooltip = () =>
     this.setState((state) => ({ isTooltipOpened: !state.isTooltipOpened }))
 

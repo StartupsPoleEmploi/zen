@@ -131,7 +131,7 @@ export class EmployerQuestion extends Component {
       error: PropTypes.string,
     }),
     index: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired, // eslint-disable-line
+    onChange: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     activeMonth: PropTypes.instanceOf(Date).isRequired,
   }
@@ -213,7 +213,7 @@ export class EmployerQuestion extends Component {
                 InputProps={{
                   inputComponent: HourInput,
                 }}
-                // eslint-disable-next-line
+                // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   maxLength: 4,
                 }}
@@ -241,7 +241,7 @@ export class EmployerQuestion extends Component {
                 InputProps={{
                   inputComponent: EuroInput,
                 }}
-                // eslint-disable-next-line
+                // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   maxLength: 10,
                 }}
@@ -250,8 +250,9 @@ export class EmployerQuestion extends Component {
           </FieldsContainer>
           <StyledFormControl>
             <StyledFormLabel>
-              Ce contrat se<br />termine-t-il en{' '}
-              {moment(this.props.activeMonth).format('MMMM')} ?
+              Ce contrat se
+              <br />
+              termine-t-il en {moment(this.props.activeMonth).format('MMMM')} ?
               {hasEndedThisMonth.error && (
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
               )}

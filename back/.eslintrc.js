@@ -4,8 +4,9 @@ module.exports = {
     jest: true,
     node: true,
   },
+  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2018,
   },
   rules: {
     'class-methods-use-this': 0,
@@ -15,5 +16,6 @@ module.exports = {
     'no-nested-ternary': 0,
     'no-param-reassign': 0, // Useful for our wotk with db models
     'func-names': 0,
+    'no-restricted-syntax': 0,
   },
 }

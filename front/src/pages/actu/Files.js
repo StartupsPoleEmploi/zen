@@ -198,20 +198,20 @@ export class Files extends Component {
       declarationId: dId,
       employerId: eId,
       ...dataToSet
-    }) => {
-      const declarations = cloneDeep(this.state.declarations)
-      const declarationIndex = this.state.declarations.findIndex(
-        ({ id }) => id === dId,
-      )
-      declarations[declarationIndex].employers = declarations[
-        declarationIndex
-      ].employers.map(
-        (employer) =>
+    }) =>
+      this.setState((prevState) => {
+        const declarations = cloneDeep(prevState.declarations)
+        const declarationIndex = this.state.declarations.findIndex(
+          ({ id }) => id === dId,
+        )
+        declarations[declarationIndex].employers = declarations[
+          declarationIndex
+        ].employers.map((employer) =>
           employer.id === eId ? { ...employer, ...dataToSet } : employer,
-      )
+        )
 
-      return this.setState({ declarations })
-    }
+        return { declarations }
+      })
 
     updateEmployer({ declarationId, employerId, isLoading: true })
 
@@ -242,8 +242,8 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-              ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+            ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -284,16 +284,18 @@ export class Files extends Component {
     return request
       .then((res) => res.body)
       .then((declaration) => {
-        const declarations = cloneDeep(this.state.declarations)
-        const declarationIndex = declarations.findIndex(
-          ({ id }) => declaration.id === id,
-        )
-        declarations[declarationIndex] = declaration
+        return this.setState((prevState) => {
+          const declarations = cloneDeep(prevState.declarations)
+          const declarationIndex = declarations.findIndex(
+            ({ id }) => declaration.id === id,
+          )
+          declarations[declarationIndex] = declaration
 
-        return this.setState({
-          declarations,
-          [loadingKey]: false,
-          [errorKey]: null,
+          return {
+            declarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
         })
       })
       .catch((err) => {
@@ -301,8 +303,8 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-              ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+            ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -468,9 +470,9 @@ export class Files extends Component {
               style={{ textTransform: 'uppercase' }}
             >
               <b>
-                {certificateNodes.length} contrat{certificateNodes.length > 1 &&
-                  's'}{' '}
-                terminé{certificateNodes.length > 1 && 's'}
+                {certificateNodes.length} contrat
+                {certificateNodes.length > 1 && 's'} terminé
+                {certificateNodes.length > 1 && 's'}
               </b>
             </Typography>
             <Typography variant="caption">

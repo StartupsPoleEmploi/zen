@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 const config = require('config')
 const nock = require('nock')
@@ -236,7 +235,8 @@ describe('PE API: sendDeclaration', () => {
         .post('/partenaire/peconnect-actualisation/v1/actualisation')
         .reply(500, {
           statut: 'Everything has exploded',
-        }))
+        }),
+    )
     it('should fail if there was a server error', () => {
       sendDeclaration({
         declaration: declarationWithEmployers,

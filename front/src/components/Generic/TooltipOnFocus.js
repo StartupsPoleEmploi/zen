@@ -75,14 +75,14 @@ const styles = (theme) => ({
 })
 
 class TootlipOnFocus extends Component {
-  state = {
-    arrowRef: null,
-  }
-
   static propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     content: PropTypes.node,
+  }
+
+  state = {
+    arrowRef: null,
   }
 
   handleArrowRef = (arrowRef) =>

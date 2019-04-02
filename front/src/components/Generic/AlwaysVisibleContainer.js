@@ -14,7 +14,7 @@ export class AlwaysVisibleContainer extends Component {
     usePositionFixed: false,
   }
 
-  offsetHeight = 0
+  offsetHeight = 0 // eslint-disable-line react/sort-comp
 
   componentDidMount() {
     this.scrollListener = throttle(this.handleEvent, 100)

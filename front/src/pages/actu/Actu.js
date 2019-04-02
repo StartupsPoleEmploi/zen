@@ -130,7 +130,7 @@ export class Actu extends Component {
       gender: PropTypes.string,
       csrfToken: PropTypes.string.isRequired,
     }),
-    declaration: PropTypes.object, // eslint-disable-line
+    declaration: PropTypes.object,
   }
 
   state = {
@@ -399,23 +399,23 @@ export class Actu extends Component {
     ) && get(this.state[JOB_CHECK_KEY], 'shouldAskAgain', true)
 
   addDates = (type) =>
-    this.setState({
-      infos: this.state.infos.concat({
+    this.setState((prevState) => ({
+      infos: prevState.infos.concat({
         type,
         startDate: null,
         endDate: null,
       }),
-    })
+    }))
 
   removeDates = (key) =>
-    this.setState({
-      infos: this.state.infos.filter((value, index) => index !== key),
-    })
+    this.setState((prevState) => ({
+      infos: prevState.infos.filter((value, index) => index !== key),
+    }))
 
   removeDatesOfType = (typeToRemove) =>
-    this.setState({
-      infos: this.state.infos.filter(({ type }) => type !== typeToRemove),
-    })
+    this.setState((prevState) => ({
+      infos: prevState.infos.filter(({ type }) => type !== typeToRemove),
+    }))
 
   renderDatePickerGroup = ({
     type,

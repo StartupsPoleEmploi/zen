@@ -60,43 +60,37 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
   const debouncedIsVerified = useDebounce(isVerified, 500)
   const debouncedNotes = useDebounce(notes, 500)
 
-  useEffect(
-    () => {
-      if (!isComponentModified) return
+  useEffect(() => {
+    if (!isComponentModified) return
 
-      superagent
-        .post(`/zen-admin-api/declarations/review`, {
-          isVerified: debouncedIsVerified,
-          declarationId: declaration.id,
-        })
-        .then(() => {})
-        .catch(() =>
-          alert(
-            `Une erreur s'est produite en mettant à jour les données, merci d'actualiser (si ceci se reproduit, contacter le développeur)`,
-          ),
-        )
-    },
-    [debouncedIsVerified],
-  )
+    superagent
+      .post(`/zen-admin-api/declarations/review`, {
+        isVerified: debouncedIsVerified,
+        declarationId: declaration.id,
+      })
+      .then(() => {})
+      .catch(() =>
+        alert(
+          `Une erreur s'est produite en mettant à jour les données, merci d'actualiser (si ceci se reproduit, contacter le développeur)`,
+        ),
+      )
+  }, [debouncedIsVerified])
 
-  useEffect(
-    () => {
-      if (!isComponentModified) return
+  useEffect(() => {
+    if (!isComponentModified) return
 
-      superagent
-        .post(`/zen-admin-api/declarations/review`, {
-          notes: debouncedNotes,
-          declarationId: declaration.id,
-        })
-        .then(() => {})
-        .catch(() =>
-          alert(
-            `Une erreur s'est produite en mettant à jour les données, merci d'actualiser (si ceci se reproduit, contacter le développeur)`,
-          ),
-        )
-    },
-    [debouncedNotes],
-  )
+    superagent
+      .post(`/zen-admin-api/declarations/review`, {
+        notes: debouncedNotes,
+        declarationId: declaration.id,
+      })
+      .then(() => {})
+      .catch(() =>
+        alert(
+          `Une erreur s'est produite en mettant à jour les données, merci d'actualiser (si ceci se reproduit, contacter le développeur)`,
+        ),
+      )
+  }, [debouncedNotes])
 
   return (
     <div>
@@ -104,6 +98,7 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
         {declaration.user.firstName} {declaration.user.lastName}
       </h3>
       <div>
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           <input
             type="checkbox"
@@ -116,6 +111,7 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
           Vérifié
         </label>
         <br />
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           <input
             type="text"
@@ -180,9 +176,8 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
       </p>
       <p>
         <a href={`/zen-admin-api/declarations/${declaration.id}/files`}>
-          Télécharger les fichiers ({declaration.isFinished
-            ? 'validées'
-            : 'non validés'})
+          Télécharger les fichiers (
+          {declaration.isFinished ? 'validées' : 'non validés'})
         </a>
       </p>
     </div>

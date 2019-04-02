@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "lint": "eslint './**/*.js' --ignore-pattern node_modules/",
     "test": "npm run test:back && npm run test:front",
     "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front npm test",
     "test:front:snapshots": "docker-compose -p test-front -f docker-compose.test.yml run --rm front npm test -- -u",

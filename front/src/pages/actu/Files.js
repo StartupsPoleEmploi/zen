@@ -12,13 +12,12 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
-import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
+import DocumentUpload from '../../components/Actu/DocumentUpload'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -88,8 +87,6 @@ const StyledList = styled(List)`
   }
 `
 
-const DECLARATION_SUBMIT_ERROR_NAME = 'DECLARATION'
-
 const additionalDocumentsSpecs = [
   {
     name: 'sickLeave',
@@ -130,11 +127,6 @@ const additionalDocumentsSpecs = [
   },
 ]
 
-const getLoadingKey = ({ id, name, declarationId, index = 0 }) =>
-  id ? `isLoading-${id}` : `$isLoading-${declarationId}-${name}-${index}`
-const getErrorKey = ({ id, name, declarationId, index = 0 }) =>
-  id ? `error-${id}` : `error-${declarationId}-${name}-${index}`
-
 const getDeclarationMissingFilesNb = (declaration) => {
   const additionalDocumentsRequiredNb = declaration.infos.filter(
     ({ type, file }) => type !== 'jobSearch' && !file,
@@ -163,7 +155,6 @@ export class Files extends Component {
 
   state = {
     isLoading: true,
-    error: null,
     showMissingDocs: false,
     declarations: [],
     isSendingFiles: false,
@@ -191,34 +182,34 @@ export class Files extends Component {
 
   displayMissingDocs = () => this.setState({ showMissingDocs: true })
 
-  submitEmployerFile = ({ declarationId, file, employerId, skip }) => {
+  submitEmployerFile = ({ id, file, skip }) => {
     this.closeSkipModal()
 
-    const updateEmployer = ({
-      declarationId: dId,
-      employerId: eId,
-      ...dataToSet
-    }) =>
+    // Update a specific employer
+    const updateEmployer = ({ ...dataToSet }) =>
       this.setState((prevState) => {
-        const declarations = cloneDeep(prevState.declarations)
-        const declarationIndex = this.state.declarations.findIndex(
-          ({ id }) => id === dId,
-        )
-        declarations[declarationIndex].employers = declarations[
-          declarationIndex
-        ].employers.map((employer) =>
-          employer.id === eId ? { ...employer, ...dataToSet } : employer,
+        const updatedDeclarations = prevState.declarations.map(
+          (declaration) => ({
+            ...declaration,
+            employers: declaration.employers.map((employer) => {
+              if (employer.id !== id) return employer
+              return {
+                ...employer,
+                ...dataToSet,
+              }
+            }),
+          }),
         )
 
-        return { declarations }
+        return { declarations: updatedDeclarations }
       })
 
-    updateEmployer({ declarationId, employerId, isLoading: true })
+    updateEmployer({ isLoading: true })
 
     let request = superagent
       .post('/api/employers/files')
       .set('CSRF-Token', this.props.token)
-      .field('employerId', employerId)
+      .field('employerId', id)
 
     if (skip) {
       request = request.field('skip', true)
@@ -230,8 +221,6 @@ export class Files extends Component {
       .then((res) => res.body)
       .then((updatedEmployer) =>
         updateEmployer({
-          declarationId,
-          employerId: updatedEmployer.id,
           isLoading: false,
           error: null,
           ...updatedEmployer,
@@ -248,32 +237,40 @@ export class Files extends Component {
         // (file too big, etc)
         window.Raven.captureException(err)
         updateEmployer({
-          declarationId,
-          employerId,
           isLoading: false,
           error: errorLabel,
         })
       })
   }
 
-  submitAdditionalFile = ({ declarationInfoId, file, skip }) => {
+  submitAdditionalFile = ({ id, file, skip }) => {
     this.closeSkipModal()
 
-    const errorKey = getErrorKey({
-      id: declarationInfoId,
-    })
-    const loadingKey = getLoadingKey({
-      id: declarationInfoId,
-    })
+    const updateInfo = (dataToSet) => {
+      this.setState((prevState) => {
+        const updatedDeclarations = prevState.declarations.map(
+          (declaration) => ({
+            ...declaration,
+            infos: declaration.infos.map((info) => {
+              if (info.id !== id) return info
+              return {
+                ...info,
+                ...dataToSet,
+              }
+            }),
+          }),
+        )
 
-    this.setState({
-      [loadingKey]: true,
-    })
+        return { declarations: updatedDeclarations }
+      })
+    }
+
+    updateInfo({ isLoading: true })
 
     let request = superagent
       .post('/api/declarations/files')
       .set('CSRF-Token', this.props.token)
-      .field('declarationInfoId', declarationInfoId)
+      .field('declarationInfoId', id)
 
     if (skip) {
       request = request.field('skip', true)
@@ -287,14 +284,12 @@ export class Files extends Component {
         return this.setState((prevState) => {
           const declarations = cloneDeep(prevState.declarations)
           const declarationIndex = declarations.findIndex(
-            ({ id }) => declaration.id === id,
+            ({ id: declarationId }) => declaration.id === declarationId,
           )
           declarations[declarationIndex] = declaration
 
           return {
             declarations,
-            [loadingKey]: false,
-            [errorKey]: null,
           }
         })
       })
@@ -309,9 +304,9 @@ export class Files extends Component {
         // (file too big, etc)
         window.Raven.captureException(err)
 
-        this.setState({
-          [loadingKey]: false,
-          [errorKey]: errorLabel,
+        updateInfo({
+          isLoading: false,
+          error: errorLabel,
         })
       })
   }
@@ -351,12 +346,17 @@ export class Files extends Component {
           return this.setState({ isLoggedOut: true })
         }
 
-        this.setState({
-          [getErrorKey({
-            declarationId: declaration.id,
-            name: DECLARATION_SUBMIT_ERROR_NAME,
-          })]: error,
-          isSendingFiles: false,
+        this.setState((prevState) => {
+          return {
+            isSendingFiles: false,
+            declarations: prevState.declarations.map((prevDeclaration) => {
+              if (declaration.id !== prevDeclaration.id) return prevDeclaration
+              return {
+                ...declaration,
+                error,
+              }
+            }),
+          }
         })
         this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
@@ -374,7 +374,6 @@ export class Files extends Component {
       .map((employer) =>
         this.renderEmployerRow({
           employer,
-          declaration,
           allowSkipFile: isOldMonth,
         }),
       )
@@ -384,7 +383,6 @@ export class Files extends Component {
       .map((employer) =>
         this.renderEmployerRow({
           employer,
-          declaration,
           allowSkipFile: isOldMonth,
         }),
       )
@@ -506,63 +504,50 @@ export class Files extends Component {
     declaration.infos
       .filter(({ type }) => type === name)
       .map((additionalDoc) => (
-        <AdditionalDocumentUpload
+        <DocumentUpload
           key={`${name}-${additionalDoc.id}`}
+          id={additionalDoc.id}
+          type={DocumentUpload.types.info}
           label={label}
-          error={
-            this.state[
-              getErrorKey({
-                id: additionalDoc.id,
-              })
-            ]
-          }
           fileExistsOnServer={!!additionalDoc.file}
-          isLoading={
-            this.state[
-              getLoadingKey({
-                id: additionalDoc.id,
-              })
-            ]
-          }
           submitFile={this.submitAdditionalFile}
           skipFile={() =>
-            this.askToSkipFile(() =>
-              this.submitAdditionalFile({
-                skip: true,
-                declarationInfoId: additionalDoc.id,
-              }),
-            )
+            this.askToSkipFile((params) => this.submitAdditionalFile(params))
           }
           allowSkipFile={allowSkipFile}
           isTransmitted={additionalDoc.isTransmitted}
           declarationInfoId={additionalDoc.id}
+          isLoading={additionalDoc.isLoading}
+          error={additionalDoc.error}
         />
       ))
 
-  renderEmployerRow = ({ employer, declaration, allowSkipFile }) => (
-    <EmployerDocumentUpload
+  renderEmployerRow = ({ employer, allowSkipFile }) => (
+    <DocumentUpload
       key={employer.id}
-      {...employer}
-      submitFile={({ file }) =>
-        this.submitEmployerFile({
-          declarationId: declaration.id,
-          employerId: employer.id,
-          file,
-        })
-      }
-      skipFile={() =>
-        this.askToSkipFile(() =>
-          this.submitEmployerFile({
-            declarationId: declaration.id,
-            skip: true,
-            employerId: employer.id,
-          }),
-        )
+      id={get(employer, 'documents[0].id')}
+      id={employer.id}
+      /* FIXME DO NOT MERGE ME */
+      type={DocumentUpload.types.employer}
+      label={`${
+        employer.hasEndedThisMonth
+          ? 'Attestation employeur'
+          : 'Bulletin de salaire'
+      } : ${employer.employerName}`}
+      fileExistsOnServer={!!employer.documents[0]}
+      submitFile={this.submitEmployerFile}
+      skipFile={(params) =>
+        this.askToSkipFile(() => this.submitEmployerFile(params))
       }
       allowSkipFile={allowSkipFile}
-      fileExistsOnServer={!!employer.documents[0]}
       isTransmitted={get(employer.documents[0], 'isTransmitted')}
-      documentId={get(employer, 'documents[0].id')}
+      isLoading={employer.isLoading}
+      error={employer.error}
+      infoTooltipText={
+        employer.hasEndedThisMonth
+          ? `Le document contenant votre attestation employeur doit être composé d'exactement deux pages`
+          : null
+      }
     />
   )
 
@@ -570,13 +555,6 @@ export class Files extends Component {
 
   renderSection = (declaration, isOldMonth) => {
     const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
-
-    const error = this.state[
-      getErrorKey({
-        declarationId: declaration.id,
-        name: DECLARATION_SUBMIT_ERROR_NAME,
-      })
-    ]
 
     const formattedMonth = moment(declaration.declarationMonth.month).format(
       'MMMM YYYY',
@@ -624,7 +602,7 @@ export class Files extends Component {
             Cela permettra une meilleure gestion de votre dossier.
           </Typography>
         </StyledInfo>
-        {error && (
+        {declaration.error && (
           <ErrorMessage variant="body1">
             Nous sommes désolés, une erreur s'est produite lors de l'envoi des
             documents. Merci de bien vouloir réessayer.

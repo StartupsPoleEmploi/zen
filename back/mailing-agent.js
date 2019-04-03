@@ -29,7 +29,7 @@ console.log('Starting mailing agent')
 if (config.get('shouldSendCampaignEmails')) {
   job('0 0 9 27 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
   job(
-    '0 0 9 6,10 * *',
+    '0 0 9 6,10,14 * *',
     sendDeclarationReminderCampaign,
     null,
     true,
@@ -37,6 +37,7 @@ if (config.get('shouldSendCampaignEmails')) {
   )
   job('0 0 9 6,10 * *', sendDocsReminderCampaign, null, true, 'Europe/Paris')
 }
+
 if (config.get('shouldSendTransactionalEmails')) {
   job(
     '0 * * * * *',

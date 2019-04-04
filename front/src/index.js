@@ -59,6 +59,12 @@ const theme = createMuiTheme({
         boxShadow: 'unset',
       },
     },
+    MuiTooltip: {
+      popper: {
+        // default value is pointer-events none, which breaks logout in tooltip
+        pointerEvents: 'auto',
+      },
+    },
   },
 })
 

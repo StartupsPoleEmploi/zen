@@ -382,24 +382,6 @@ export class Files extends Component {
 
     const sortedEmployers = sortBy(declaration.employers, 'name')
 
-    const salaryNodes = sortedEmployers
-      .filter((employer) => !employer.hasEndedThisMonth)
-      .map((employer) =>
-        this.renderEmployerRow({
-          employer,
-          allowSkipFile: isOldMonth,
-        }),
-      )
-
-    const certificateNodes = sortedEmployers
-      .filter((employer) => employer.hasEndedThisMonth)
-      .map((employer) =>
-        this.renderEmployerRow({
-          employer,
-          allowSkipFile: isOldMonth,
-        }),
-      )
-
     const additionalDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => {
         const infos = declaration.infos.filter(
@@ -447,52 +429,27 @@ export class Files extends Component {
     )
 
     // do not display a section if there are no documents to display.
-    if (
-      salaryNodes.length +
-        certificateNodes.length +
-        additionalDocumentsNodes.length ===
-      0
-    )
+    if (sortedEmployers.length + additionalDocumentsNodes.length === 0)
       return null
 
     return (
       <div>
-        <div>
-          <Typography
-            variant="subtitle1"
-            style={{ textTransform: 'uppercase' }}
-          >
-            <b>
-              {salaryNodes.length} bulletin{salaryNodes.length > 1 && 's'} de
-              salaire
-            </b>
-          </Typography>
-          <Typography variant="caption">
-            Salaire pour{' '}
-            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
-          </Typography>
-          <StyledList>{salaryNodes}</StyledList>
-        </div>
-
-        {certificateNodes.length > 0 && (
-          <div>
+        {sortedEmployers.map((employer) => (
+          <div key={employer.id}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
             >
-              <b>
-                {certificateNodes.length} contrat
-                {certificateNodes.length > 1 && 's'} terminé
-                {certificateNodes.length > 1 && 's'}
-              </b>
+              <b>Documents employeur&nbsp;: {employer.employerName}</b>
             </Typography>
-            <Typography variant="caption">
-              Fin de contrat{certificateNodes.length > 1 && 's'} en{' '}
-              {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
-            </Typography>
-            <StyledList>{certificateNodes}</StyledList>
+            <StyledList>
+              {this.renderEmployerRow({
+                employer,
+                allowSkipFile: isOldMonth,
+              })}
+            </StyledList>
           </div>
-        )}
+        ))}
 
         <div>{additionalDocumentsNodes}</div>
       </div>
@@ -559,7 +516,7 @@ export class Files extends Component {
         {...defaultProps}
         key={`${employer.id}-salarySheet`}
         id={get(salaryDoc, 'id')}
-        label={`Bulletin de salaire : ${employer.employerName}`}
+        label="Bulletin de salaire"
         fileExistsOnServer={!!salaryDoc}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
@@ -573,7 +530,7 @@ export class Files extends Component {
         {...defaultProps}
         key={`${employer.id}-employerCertificate`}
         id={get(certificateDoc, 'id')}
-        label={`Attestation employeur : ${employer.employerName}`}
+        label="Attestation employeur"
         fileExistsOnServer={!!certificateDoc}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={

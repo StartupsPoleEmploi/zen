@@ -73,7 +73,10 @@ router.post('/users/authorize', (req, res, next) => {
           .patch({ isAuthorized: true })
           .whereIn('id', users.map((user) => user.id)),
         users.length > 0 &&
-          mailjet.authorizeContactsAndSendConfirmationEmails(users),
+          mailjet.authorizeContactsAndSendConfirmationEmails({
+            users,
+            activeMonth: get(req.activeMonth, 'month'),
+          }),
       ]),
     )
     .then(([updatedRowsNb]) =>

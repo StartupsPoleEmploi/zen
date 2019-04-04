@@ -35,6 +35,9 @@ const manageContact = ({ email, name, properties }) =>
       Action: 'addnoforce',
     })
 
+const formatDateForSegmentFilter = (date) =>
+  parseInt(format(date, 'YYYYMM'), 10)
+
 module.exports = {
   sendMail,
 
@@ -133,7 +136,7 @@ module.exports = {
       })
   },
 
-  authorizeContactsAndSendConfirmationEmails: (users) =>
+  authorizeContactsAndSendConfirmationEmails: ({ users, activeMonth }) =>
     (isProd
       ? mailjet
           .post('contactslist', { version: 'v3' })
@@ -145,6 +148,15 @@ module.exports = {
               Email: user.email,
               Properties: {
                 validation_necessaire: false,
+                // If we activate users during a declaration period, we don't want to send them
+                // reminder during this period, as they may already have done their declarations
+                // using pe.fr
+                declaration_effectuee_mois: activeMonth
+                  ? formatDateForSegmentFilter(activeMonth)
+                  : undefined,
+                document_envoye_mois: activeMonth
+                  ? formatDateForSegmentFilter(activeMonth)
+                  : undefined,
               },
             })),
           })
@@ -171,5 +183,5 @@ module.exports = {
       }),
     ),
 
-  formatDateForSegmentFilter: (date) => parseInt(format(date, 'YYYYMM'), 10),
+  formatDateForSegmentFilter,
 }

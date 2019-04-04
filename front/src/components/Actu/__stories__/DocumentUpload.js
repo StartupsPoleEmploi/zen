@@ -6,7 +6,7 @@ import { host } from 'storybook-host'
 import DocumentUpload from '../DocumentUpload'
 
 const defaultProps = {
-  id: 1,
+  documentId: 1,
   label: 'Feuille maladie',
   submitFile: action('Submit file'),
   skipFile: () => {},
@@ -28,6 +28,8 @@ storiesOf('DocumentUpload', module)
       {...defaultProps}
       label="Attestation employeur"
       type={DocumentUpload.types.employer}
+      employerId={2}
+      employerDocType="salarySheet"
     />
   ))
   .add('loading', () => <DocumentUpload {...defaultProps} isLoading />)

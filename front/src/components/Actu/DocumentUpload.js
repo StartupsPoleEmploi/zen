@@ -114,6 +114,8 @@ export class DocumentUpload extends Component {
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
     infoTooltipText: PropTypes.string,
+    employerId: PropTypes.number,
+    employerDocType: PropTypes.string,
   }
 
   static types = { employer: employerType, infos: infosType }
@@ -121,16 +123,20 @@ export class DocumentUpload extends Component {
   submitFile = ({ target: { files } }) =>
     this.props.submitFile({
       file: files[0],
-      id: this.props.id,
+      documentId: this.props.id,
       type: this.props.type,
       skip: false,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
     })
 
   skipFile = () =>
     this.props.skipFile({
       type: this.props.type,
-      id: this.props.id,
+      documentId: this.props.id,
       skip: true,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
     })
 
   render() {

@@ -6,7 +6,7 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
 import { cloneDeep, get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -127,6 +127,9 @@ const additionalDocumentsSpecs = [
   },
 ]
 
+const salarySheetType = 'salarySheet'
+const employerCertificateType = 'employerCertificate'
+
 const getDeclarationMissingFilesNb = (declaration) => {
   const additionalDocumentsRequiredNb = declaration.infos.filter(
     ({ type, file }) => type !== 'jobSearch' && !file,
@@ -182,7 +185,13 @@ export class Files extends Component {
 
   displayMissingDocs = () => this.setState({ showMissingDocs: true })
 
-  submitEmployerFile = ({ id, file, skip }) => {
+  submitEmployerFile = ({
+    documentId,
+    file,
+    skip,
+    employerId,
+    employerDocType,
+  }) => {
     this.closeSkipModal()
 
     // Update a specific employer
@@ -192,7 +201,7 @@ export class Files extends Component {
           (declaration) => ({
             ...declaration,
             employers: declaration.employers.map((employer) => {
-              if (employer.id !== id) return employer
+              if (employer.id !== employerId) return employer
               return {
                 ...employer,
                 ...dataToSet,
@@ -209,8 +218,12 @@ export class Files extends Component {
     let request = superagent
       .post('/api/employers/files')
       .set('CSRF-Token', this.props.token)
-      .field('employerId', id)
+      .field('employerId', employerId)
+      .field('documentType', employerDocType)
 
+    if (documentId) {
+      request = request.field('id', documentId)
+    }
     if (skip) {
       request = request.field('skip', true)
     } else {
@@ -243,7 +256,7 @@ export class Files extends Component {
       })
   }
 
-  submitAdditionalFile = ({ id, file, skip }) => {
+  submitAdditionalFile = ({ documentId, file, skip }) => {
     this.closeSkipModal()
 
     const updateInfo = (dataToSet) => {
@@ -252,7 +265,7 @@ export class Files extends Component {
           (declaration) => ({
             ...declaration,
             infos: declaration.infos.map((info) => {
-              if (info.id !== id) return info
+              if (info.id !== documentId) return info
               return {
                 ...info,
                 ...dataToSet,
@@ -270,7 +283,7 @@ export class Files extends Component {
     let request = superagent
       .post('/api/declarations/files')
       .set('CSRF-Token', this.props.token)
-      .field('declarationInfoId', id)
+      .field('declarationInfoId', documentId)
 
     if (skip) {
       request = request.field('skip', true)
@@ -522,34 +535,63 @@ export class Files extends Component {
         />
       ))
 
-  renderEmployerRow = ({ employer, allowSkipFile }) => (
-    <DocumentUpload
-      key={employer.id}
-      id={get(employer, 'documents[0].id')}
-      id={employer.id}
-      /* FIXME DO NOT MERGE ME */
-      type={DocumentUpload.types.employer}
-      label={`${
-        employer.hasEndedThisMonth
-          ? 'Attestation employeur'
-          : 'Bulletin de salaire'
-      } : ${employer.employerName}`}
-      fileExistsOnServer={!!employer.documents[0]}
-      submitFile={this.submitEmployerFile}
-      skipFile={(params) =>
-        this.askToSkipFile(() => this.submitEmployerFile(params))
-      }
-      allowSkipFile={allowSkipFile}
-      isTransmitted={get(employer.documents[0], 'isTransmitted')}
-      isLoading={employer.isLoading}
-      error={employer.error}
-      infoTooltipText={
-        employer.hasEndedThisMonth
-          ? `Le document contenant votre attestation employeur doit être composé d'exactement deux pages`
-          : null
-      }
-    />
-  )
+  renderEmployerRow = ({ employer, allowSkipFile }) => {
+    const salaryDoc = employer.documents.find(
+      ({ type }) => type === salarySheetType,
+    )
+    const certificateDoc = employer.documents.find(
+      ({ type }) => type === employerCertificateType,
+    )
+
+    const defaultProps = {
+      type: DocumentUpload.types.employer,
+      submitFile: this.submitEmployerFile,
+      skipFile: (params) =>
+        this.askToSkipFile(() => this.submitEmployerFile(params)),
+      allowSkipFile,
+      isLoading: employer.isLoading, // FIXME DO NOT MERGE
+      error: employer.error, // FIXME DO NOT MERGE
+      employerId: employer.id,
+    }
+
+    const salarySheetUpload = (
+      <DocumentUpload
+        {...defaultProps}
+        key={`${employer.id}-salarySheet`}
+        id={get(salaryDoc, 'id')}
+        label={`Bulletin de salaire : ${employer.employerName}`}
+        fileExistsOnServer={!!salaryDoc}
+        isTransmitted={get(salaryDoc, 'isTransmitted')}
+        employerDocType={salarySheetType}
+      />
+    )
+
+    if (!employer.hasEndedThisMonth) return salarySheetUpload
+
+    const certificateUpload = (
+      <DocumentUpload
+        {...defaultProps}
+        key={`${employer.id}-employerCertificate`}
+        id={get(certificateDoc, 'id')}
+        label={`Attestation employeur : ${employer.employerName}`}
+        fileExistsOnServer={!!certificateDoc}
+        isTransmitted={get(certificateDoc, 'isTransmitted')}
+        infoTooltipText={
+          employer.hasEndedThisMonth
+            ? `Le document contenant votre attestation employeur doit être composé d'exactement deux pages`
+            : null
+        }
+        employerDocType={employerCertificateType}
+      />
+    )
+
+    return (
+      <Fragment>
+        {salarySheetUpload}
+        {certificateUpload}
+      </Fragment>
+    )
+  }
 
   renderOldSection = (declaration) => this.renderSection(declaration, true)
 

@@ -197,8 +197,20 @@ router.get('/files', (req, res, next) => {
 })
 
 router.post('/files', upload.single('document'), (req, res, next) => {
-  if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
+  const { documentType: type, skip } = req.body
+  const { file } = req
+
+  if (!file && !req.body.skip) return res.status(400).json('Missing file')
   if (!req.body.employerId) return res.status(400).json('Missing employerId')
+  if (!Object.values(EmployerDocument.types).includes(type)) {
+    return res.status(400).json('Missing documentType')
+  }
+
+  /*
+    2 possibilities :
+    * We have an employerId >> it's a new document being added
+    * We have a id >> it's a document being updated
+  */
 
   const fetchEmployer = () =>
     Employer.query()
@@ -212,35 +224,32 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     .then((employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
-      const type = employer.hasEndedThisMonth
-        ? 'employerCertificate'
-        : 'salarySheet'
-
-      const documentFileObj = req.body.skip
+      const documentFileObj = skip
         ? {
             // Used in case the user sent his file by another means.
             file: null,
             isTransmitted: true,
             type,
           }
-        : { file: req.file.filename, type }
-
-      const documentIndex = employer.documents.findIndex(
-        (document) => document.type === type,
-      )
+        : { file: file.filename, type }
 
       let savePromise
-      if (documentIndex !== -1) {
-        savePromise = employer.documents[documentIndex].$query().patch({
-          id: employer.documents[documentIndex].id,
-          ...documentFileObj,
-        })
-      } else {
+
+      if (!req.body.id) {
         savePromise = EmployerDocument.query().insert({
           employerId: employer.id,
           ...documentFileObj,
         })
+      } else {
+        const documentIndex = employer.documents.findIndex(
+          (document) => document.id === parseInt(req.body.id, 10),
+        )
+
+        savePromise = employer.documents[documentIndex].$query().patch({
+          ...documentFileObj,
+        })
       }
+
       return savePromise
         .then(fetchEmployer)
         .then((savedEmployer) => res.json(savedEmployer))

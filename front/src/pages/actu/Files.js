@@ -130,6 +130,9 @@ const additionalDocumentsSpecs = [
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
 
+const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
+const getErrorKey = ({ id, type }) => `${id}-${type}-error`
+
 const getDeclarationMissingFilesNb = (declaration) => {
   const additionalDocumentsRequiredNb = declaration.infos.filter(
     ({ type, file }) => type !== 'jobSearch' && !file,
@@ -192,28 +195,15 @@ export class Files extends Component {
     employerId,
     employerDocType,
   }) => {
+    const loadingKey = getLoadingKey({
+      id: employerId,
+      type: employerDocType,
+    })
+    const errorKey = getErrorKey({ id: employerId, type: employerDocType })
+
     this.closeSkipModal()
 
-    // Update a specific employer
-    const updateEmployer = ({ ...dataToSet }) =>
-      this.setState((prevState) => {
-        const updatedDeclarations = prevState.declarations.map(
-          (declaration) => ({
-            ...declaration,
-            employers: declaration.employers.map((employer) => {
-              if (employer.id !== employerId) return employer
-              return {
-                ...employer,
-                ...dataToSet,
-              }
-            }),
-          }),
-        )
-
-        return { declarations: updatedDeclarations }
-      })
-
-    updateEmployer({ isLoading: true })
+    this.setState({ [loadingKey]: true, [errorKey]: null })
 
     let request = superagent
       .post('/api/employers/files')
@@ -232,13 +222,25 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then((updatedEmployer) =>
-        updateEmployer({
-          isLoading: false,
-          error: null,
-          ...updatedEmployer,
-        }),
-      )
+      .then((updatedEmployer) => {
+        this.setState((prevState) => {
+          const updatedDeclarations = prevState.declarations.map(
+            (declaration) => ({
+              ...declaration,
+              employers: declaration.employers.map((employer) => {
+                if (employer.id !== employerId) return employer
+                return updatedEmployer
+              }),
+            }),
+          )
+
+          return {
+            declarations: updatedDeclarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
+        })
+      })
       .catch((err) => {
         const errorLabel =
           err.status === 413
@@ -249,10 +251,7 @@ export class Files extends Component {
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
-        updateEmployer({
-          isLoading: false,
-          error: errorLabel,
-        })
+        this.setState({ [loadingKey]: false, [errorKey]: errorLabel })
       })
   }
 
@@ -500,26 +499,30 @@ export class Files extends Component {
       ({ type }) => type === employerCertificateType,
     )
 
-    const defaultProps = {
+    const commonProps = {
       type: DocumentUpload.types.employer,
       submitFile: this.submitEmployerFile,
       skipFile: (params) =>
         this.askToSkipFile(() => this.submitEmployerFile(params)),
       allowSkipFile,
-      isLoading: employer.isLoading, // FIXME DO NOT MERGE
-      error: employer.error, // FIXME DO NOT MERGE
       employerId: employer.id,
     }
 
     const salarySheetUpload = (
       <DocumentUpload
-        {...defaultProps}
-        key={`${employer.id}-salarySheet`}
+        {...commonProps}
+        key={`${employer.id}-${salarySheetType}`}
         id={get(salaryDoc, 'id')}
         label="Bulletin de salaire"
         fileExistsOnServer={!!salaryDoc}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
+        isLoading={
+          this.state[getLoadingKey({ id: employer.id, type: salarySheetType })]
+        }
+        error={
+          this.state[getErrorKey({ id: employer.id, type: salarySheetType })]
+        }
       />
     )
 
@@ -527,8 +530,8 @@ export class Files extends Component {
 
     const certificateUpload = (
       <DocumentUpload
-        {...defaultProps}
-        key={`${employer.id}-employerCertificate`}
+        {...commonProps}
+        key={`${employer.id}-${employerCertificateType}`}
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
         fileExistsOnServer={!!certificateDoc}
@@ -539,6 +542,16 @@ export class Files extends Component {
             : null
         }
         employerDocType={employerCertificateType}
+        isLoading={
+          this.state[
+            getLoadingKey({ id: employer.id, type: employerCertificateType })
+          ]
+        }
+        error={
+          this.state[
+            getErrorKey({ id: employer.id, type: employerCertificateType })
+          ]
+        }
       />
     )
 

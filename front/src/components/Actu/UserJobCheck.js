@@ -32,17 +32,8 @@ const StyledButton = styled(Button).attrs({
   && {
     color: #000;
     max-width: 100%;
-    width: 10rem;
-  }
-`
-
-const StyledTypography = styled(Typography).attrs({
-  variant: 'subtitle1',
-  component: 'p',
-})`
-  && {
-    line-height: 2.5rem;
-    margin-bottom: 2.5rem;
+    width: 15rem;
+    margin-top: 2rem;
   }
 `
 
@@ -53,14 +44,13 @@ export class UserJobCheck extends Component {
   static propTypes = { onValidate: PropTypes.func.isRequired }
 
   state = {
-    showUnavailableMessage: false,
     shouldAskAgain: true,
   }
 
-  onInvalid = () => this.setState({ showUnavailableMessage: true })
-
-  onValidate = () =>
-    this.props.onValidate({ shouldAskAgain: this.state.shouldAskAgain })
+  showDeclarationForm = () =>
+    this.props.onValidate({
+      shouldAskAgain: this.state.shouldAskAgain,
+    })
 
   toggleCheckbox = () =>
     this.setState((prevState) => ({
@@ -70,31 +60,21 @@ export class UserJobCheck extends Component {
   render() {
     return (
       <StyledUserJobCheck>
-        <StyledTypography>
-          <b>
-            Avant de commencer votre actualisation,
-            <br />
-            veuillez répondre à cette question.
-          </b>
-        </StyledTypography>
-        <StyledTypography>
-          Êtes-vous créateur / créatrice d'entreprise ?
-        </StyledTypography>
+        <Typography variant="body2">
+          Si vous êtes créateur d'entreprise, vous ne pouvez pas faire votre
+          actualisation sur Zen.
+          <br />
+          Merci d'effectuer votre actualisation sur{' '}
+          <a href="https://www.pole-emploi.fr" rel="noopener noreferrer">
+            pole-emploi.fr
+          </a>
+        </Typography>
         <ButtonsContainer>
-          <StyledButton onClick={this.onInvalid}>Oui</StyledButton>
-          <StyledButton onClick={this.onValidate}>Non</StyledButton>
+          <StyledButton onClick={this.showDeclarationForm}>
+            J'ai compris
+          </StyledButton>
         </ButtonsContainer>
-        {this.state.showUnavailableMessage && (
-          <Typography variant="body2">
-            Si vous êtes créateur d'entreprise, vous ne pouvez pas faire votre
-            actualisation sur Zen.
-            <br />
-            Merci d'effectuer votre actualisation sur{' '}
-            <a href="https://www.pole-emploi.fr" rel="noopener noreferrer">
-              pole-emploi.fr
-            </a>
-          </Typography>
-        )}
+
         {ACTIVATE_CHECKBOX_DISPLAY && (
           <FormControlLabel
             control={

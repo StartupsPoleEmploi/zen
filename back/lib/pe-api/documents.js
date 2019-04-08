@@ -21,6 +21,7 @@ const path = require('path')
 const { deburr } = require('lodash')
 
 const { request, checkHeadersAndWait } = require('../resilientRequest')
+const EmployerDocument = require('../../models/EmployerDocument')
 
 const winston = require('../log')
 
@@ -161,17 +162,22 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     })
     .concat(
       declaration.employers.reduce(
-        (prev, { employerName, documents, hasEndedThisMonth }) => {
+        (prev, { employerName, documents, type }) => {
           if (!documents[0] || !documents[0].file) return prev
 
           return prev.concat(
             documents.map((document) => ({
               filePath: `${uploadsDirectory}${document.file}`,
-              label: `${hasEndedThisMonth ? 'AE' : 'BS'} - ${employerName}`,
+              label: `${
+                type === EmployerDocument.types.employerCertificate
+                  ? 'AE'
+                  : 'BS'
+              } - ${employerName}`,
               dbDocument: document,
-              confirmationData: hasEndedThisMonth
-                ? CODES.EMPLOYER_CERTIFICATE
-                : CODES.SALARY_SHEET,
+              confirmationData:
+                type === EmployerDocument.types.employerCertificate
+                  ? CODES.EMPLOYER_CERTIFICATE
+                  : CODES.SALARY_SHEET,
             })),
           )
         },

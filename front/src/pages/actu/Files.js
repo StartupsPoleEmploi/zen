@@ -138,13 +138,25 @@ const getDeclarationMissingFilesNb = (declaration) => {
     ({ type, file }) => type !== 'jobSearch' && !file,
   ).length
 
-  // TODO only handles 1 doc / employer, which will have to change whene multiple
-  // docs will be sendable
   return (
-    declaration.employers.reduce(
-      (prev, employer) => prev + (employer.documents[0] ? 0 : 1),
-      0,
-    ) + additionalDocumentsRequiredNb
+    declaration.employers.reduce((prev, employer) => {
+      if (!employer.hasEndedThisMonth)
+        return prev + (employer.documents[0] ? 0 : 1)
+
+      /*
+          The salary sheet is optional for users which have already sent their employer certificate,
+          in which case we do not count it in the needed documents.
+        */
+      const hasEmployerCertificate = employer.documents.some(
+        ({ type }) => type === employerCertificateType,
+      )
+      const hasSalarySheet = employer.documents.some(
+        ({ type }) => type === salarySheetType,
+      )
+
+      if (hasEmployerCertificate) return prev + 0
+      return prev + (hasSalarySheet ? 1 : 2)
+    }, 0) + additionalDocumentsRequiredNb
   )
 }
 
@@ -557,8 +569,22 @@ export class Files extends Component {
 
     return (
       <Fragment>
-        {salarySheetUpload}
         {certificateUpload}
+        {certificateDoc && !salaryDoc ? (
+          <Typography variant="caption">
+            <span
+              style={{ display: 'inline-block', marginRight: '0.5rem' }}
+              aria-label="Pouce levé"
+              role="img"
+            >
+              👍
+            </span>
+            Nous n'avons pas besoin de votre bulletin de salaire pour cet
+            employeur, car vous nous avez déjà transmis votre attestation
+          </Typography>
+        ) : (
+          salarySheetUpload
+        )}
       </Fragment>
     )
   }

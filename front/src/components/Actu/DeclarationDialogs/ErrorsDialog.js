@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import CustomColorButton from '../../Generic/CustomColorButton'
 import CustomDialog from '../../Generic/CustomDialog'
 
-const ErrorsDialog = ({ validationErrors, onCancel, defaultProps }) => {
+const ErrorsDialog = ({ validationErrors, onCancel, props }) => {
   return (
     <CustomDialog
       content={
@@ -43,7 +43,7 @@ const ErrorsDialog = ({ validationErrors, onCancel, defaultProps }) => {
           </Button>
         </Fragment>
       }
-      {...defaultProps}
+      {...props}
     />
   )
 }
@@ -51,7 +51,7 @@ const ErrorsDialog = ({ validationErrors, onCancel, defaultProps }) => {
 ErrorsDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   validationErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  defaultProps: PropTypes.object.isRequired,
+  props: PropTypes.object.isRequired,
 }
 
 export default ErrorsDialog

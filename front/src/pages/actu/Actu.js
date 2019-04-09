@@ -111,6 +111,12 @@ export const types = {
   JOB_SEARCH: 'jobSearch',
 }
 
+export const JOB_SEARCH_END_MOTIVE = {
+  WORK: 'work',
+  RETIREMENT: 'retirement',
+  OTHER: 'other',
+}
+
 const JOB_CHECK_KEY = 'canUseService'
 
 const getJobCheckFromStore = () => {
@@ -644,17 +650,17 @@ export class Actu extends Component {
                     onChange={this.onJobSearchStopMotive}
                   >
                     <FormControlLabel
-                      value="work"
+                      value={JOB_SEARCH_END_MOTIVE.WORK}
                       control={<Radio color="primary" />}
                       label="Reprise du travail"
                     />
                     <FormControlLabel
-                      value="retirement"
+                      value={JOB_SEARCH_END_MOTIVE.RETIREMENT}
                       control={<Radio color="primary" />}
                       label="Retraite"
                     />
                     <FormControlLabel
-                      value="other"
+                      value={JOB_SEARCH_END_MOTIVE.OTHER}
                       control={<Radio color="primary" />}
                       label="Autre"
                     />

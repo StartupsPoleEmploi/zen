@@ -10,7 +10,7 @@ const ConsistencyErrorsDialogs = ({
   consistencyErrors,
   onCancel,
   confirmAndIgnoreErrors,
-  defaultProps,
+  props,
 }) => {
   return (
     <CustomDialog
@@ -49,7 +49,7 @@ const ConsistencyErrorsDialogs = ({
           </Button>
         </Fragment>
       }
-      {...defaultProps}
+      {...props}
     />
   )
 }
@@ -58,7 +58,7 @@ ConsistencyErrorsDialogs.propTypes = {
   onCancel: PropTypes.func.isRequired,
   confirmAndIgnoreErrors: PropTypes.func.isRequired,
   consistencyErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  defaultProps: PropTypes.object.isRequired,
+  props: PropTypes.object.isRequired,
 }
 
 export default ConsistencyErrorsDialogs

@@ -1,6 +1,5 @@
 import { isObject } from 'lodash'
 
-// Note : these values are duplicated in WorkSummary
 export const WORK_HOURS = 'workHours'
 export const SALARY = 'salary'
 export const MIN_SALARY = 1

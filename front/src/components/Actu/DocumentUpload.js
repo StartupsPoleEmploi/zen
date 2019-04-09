@@ -125,7 +125,6 @@ export class DocumentUpload extends Component {
       file: files[0],
       documentId: this.props.id,
       type: this.props.type,
-      skip: false,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
@@ -134,7 +133,6 @@ export class DocumentUpload extends Component {
     this.props.skipFile({
       type: this.props.type,
       documentId: this.props.id,
-      skip: true,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })

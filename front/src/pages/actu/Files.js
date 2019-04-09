@@ -129,6 +129,7 @@ const additionalDocumentsSpecs = [
 
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
+const infoType = 'info'
 
 const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
 const getErrorKey = ({ id, type }) => `${id}-${type}-error`
@@ -268,28 +269,15 @@ export class Files extends Component {
   }
 
   submitAdditionalFile = ({ documentId, file, skip }) => {
+    const loadingKey = getLoadingKey({ id: documentId, type: infoType })
+    const errorKey = getErrorKey({ id: documentId, type: infoType })
+
     this.closeSkipModal()
 
-    const updateInfo = (dataToSet) => {
-      this.setState((prevState) => {
-        const updatedDeclarations = prevState.declarations.map(
-          (declaration) => ({
-            ...declaration,
-            infos: declaration.infos.map((info) => {
-              if (info.id !== documentId) return info
-              return {
-                ...info,
-                ...dataToSet,
-              }
-            }),
-          }),
-        )
-
-        return { declarations: updatedDeclarations }
-      })
-    }
-
-    updateInfo({ isLoading: true })
+    this.setState({
+      [loadingKey]: true,
+      [errorKey]: null,
+    })
 
     let request = superagent
       .post('/api/declarations/files')
@@ -314,6 +302,7 @@ export class Files extends Component {
 
           return {
             declarations,
+            [loadingKey]: false,
           }
         })
       })
@@ -328,9 +317,9 @@ export class Files extends Component {
         // (file too big, etc)
         window.Raven.captureException(err)
 
-        updateInfo({
-          isLoading: false,
-          error: errorLabel,
+        this.setState({
+          [loadingKey]: false,
+          [errorKey]: errorLabel,
         })
       })
   }
@@ -493,13 +482,19 @@ export class Files extends Component {
           fileExistsOnServer={!!additionalDoc.file}
           submitFile={this.submitAdditionalFile}
           skipFile={() =>
-            this.askToSkipFile((params) => this.submitAdditionalFile(params))
+            this.askToSkipFile((params) =>
+              this.submitAdditionalFile({ ...params, skip: true }),
+            )
           }
           allowSkipFile={allowSkipFile}
           isTransmitted={additionalDoc.isTransmitted}
           declarationInfoId={additionalDoc.id}
-          isLoading={additionalDoc.isLoading}
-          error={additionalDoc.error}
+          isLoading={
+            this.state[getLoadingKey({ id: additionalDoc.id, type: infoType })]
+          }
+          error={
+            this.state[getErrorKey({ id: additionalDoc.id, type: infoType })]
+          }
         />
       ))
 
@@ -515,7 +510,9 @@ export class Files extends Component {
       type: DocumentUpload.types.employer,
       submitFile: this.submitEmployerFile,
       skipFile: (params) =>
-        this.askToSkipFile(() => this.submitEmployerFile(params)),
+        this.askToSkipFile(() =>
+          this.submitEmployerFile({ ...params, skip: true }),
+        ),
       allowSkipFile,
       employerId: employer.id,
     }

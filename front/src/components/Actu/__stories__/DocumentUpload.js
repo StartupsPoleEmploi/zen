@@ -34,7 +34,7 @@ storiesOf('DocumentUpload', module)
   ))
   .add('loading', () => <DocumentUpload {...defaultProps} isLoading />)
   .add('with file', () => (
-    <DocumentUpload {...defaultProps} fileExistsOnServer name="MyFileName" />
+    <DocumentUpload {...defaultProps} fileExistsOnServer />
   ))
   .add('error', () => (
     <DocumentUpload {...defaultProps} error="Tout est cassé" />

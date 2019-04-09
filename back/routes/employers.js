@@ -197,11 +197,10 @@ router.get('/files', (req, res, next) => {
 })
 
 router.post('/files', upload.single('document'), (req, res, next) => {
-  const { documentType: type, skip } = req.body
-  const { file } = req
+  const { documentType: type, employerId, skip } = req.body
 
-  if (!file && !req.body.skip) return res.status(400).json('Missing file')
-  if (!req.body.employerId) return res.status(400).json('Missing employerId')
+  if (!req.file && !skip) return res.status(400).json('Missing file')
+  if (!employerId) return res.status(400).json('Missing employerId')
   if (!Object.values(EmployerDocument.types).includes(type)) {
     return res.status(400).json('Missing documentType')
   }
@@ -216,7 +215,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     Employer.query()
       .eager('documents')
       .findOne({
-        id: req.body.employerId,
+        id: employerId,
         userId: req.session.user.id,
       })
 
@@ -231,7 +230,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
             isTransmitted: true,
             type,
           }
-        : { file: file.filename, type }
+        : { file: req.file.filename, type }
 
       const existingDocument = employer.documents.find(
         (document) => document.type === type,

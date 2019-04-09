@@ -4,13 +4,13 @@ import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 import { cloneDeep, get, noop, sortBy } from 'lodash'
-import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
+import moment from 'moment'
 
 import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
 import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
@@ -19,6 +19,7 @@ import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
+import { formattedDeclarationMonth } from '../../lib/date'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -444,6 +445,10 @@ export class Files extends Component {
     )
       return null
 
+    const formattedMonth = formattedDeclarationMonth(
+      declaration.declarationMonth.month,
+    )
+
     return (
       <div>
         <div>
@@ -457,8 +462,7 @@ export class Files extends Component {
             </b>
           </Typography>
           <Typography variant="caption">
-            Salaire pour{' '}
-            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
+            Salaire pour {formattedMonth}
           </Typography>
           <StyledList>{salaryNodes}</StyledList>
         </div>
@@ -477,7 +481,7 @@ export class Files extends Component {
             </Typography>
             <Typography variant="caption">
               Fin de contrat{certificateNodes.length > 1 && 's'} en{' '}
-              {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
+              {formattedMonth}
             </Typography>
             <StyledList>{certificateNodes}</StyledList>
           </div>
@@ -578,8 +582,8 @@ export class Files extends Component {
       })
     ]
 
-    const formattedMonth = moment(declaration.declarationMonth.month).format(
-      'MMMM YYYY',
+    const formattedMonth = formattedDeclarationMonth(
+      declaration.declarationMonth.month,
     )
 
     if (declaration.isFinished) {
@@ -705,7 +709,7 @@ export class Files extends Component {
         {lastDeclaration.isFinished ? (
           <StyledTitle variant="h6" component="h1">
             Vous avez terminé l'envoi des documents du mois de{' '}
-            {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
+            {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
           </StyledTitle>
         ) : (
           this.renderSection(lastDeclaration)

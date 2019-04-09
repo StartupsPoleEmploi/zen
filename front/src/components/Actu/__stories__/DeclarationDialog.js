@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { host } from 'storybook-host'
 
-import DeclarationDialog from '../DeclarationDialog'
+import DeclarationDialog from '../DeclarationDialogs/DeclarationDialog'
 
 const defaultProps = {
   isOpened: true,

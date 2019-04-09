@@ -15,7 +15,7 @@ import store from 'store2'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import DeclarationDialog from '../../components/Actu/DeclarationDialog'
+import DeclarationDialog from '../../components/Actu/DeclarationDialogs/DeclarationDialog'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import UserJobCheck from '../../components/Actu/UserJobCheck'
 import DatePicker from '../../components/Generic/DatePicker'
@@ -102,7 +102,7 @@ const formFields = [
   'jobSearchStopMotive',
 ]
 
-const types = {
+export const types = {
   INTERNSHIP: 'internship',
   SICK_LEAVE: 'sickLeave',
   MATERNITY_LEAVE: 'maternityLeave',

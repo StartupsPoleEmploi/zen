@@ -630,7 +630,7 @@ exports[`Storyshots DatePicker default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-19powsn MuiTextField-root-1iyhk6f sc-jhAzac VgTDW"
+          className="MuiFormControl-root-19powsn MuiTextField-root-1iyhk6f sc-hzDkRC jgqZRh"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
@@ -723,7 +723,7 @@ exports[`Storyshots DatePicker with selected date 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-19powsn MuiTextField-root-1iyhk6f sc-jhAzac VgTDW"
+          className="MuiFormControl-root-19powsn MuiTextField-root-1iyhk6f sc-hzDkRC jgqZRh"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
@@ -4340,18 +4340,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-fBuWsC kCTyxu"
+          className="sc-jhAzac bSjgEF"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fMiknA kRhoQq"
+            className="sc-fBuWsC gjAgEa"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-dVhcbM cCMGqG"
+            className="sc-fMiknA hXQiRK"
           >
             Se connecter avec pôle emploi
           </span>
@@ -4418,18 +4418,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-fBuWsC fMZVJX"
+          className="sc-jhAzac WNkDa"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fMiknA kRhoQq"
+            className="sc-fBuWsC gjAgEa"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-dVhcbM cCMGqG"
+            className="sc-fMiknA hXQiRK"
           >
             Se connecter avec pôle emploi
           </span>
@@ -4499,24 +4499,24 @@ exports[`Storyshots UserJobCheck default 1`] = `
           className="sc-csuQGl hstdTp"
         >
           <p
-            className="MuiTypography-root-1p49hpg MuiTypography-subtitle1-1r3n0fv sc-hzDkRC jJOVok"
+            className="MuiTypography-root-1p49hpg MuiTypography-body2-uo965l"
           >
-            <b>
-              Avant de commencer votre actualisation,
-              <br />
-              veuillez répondre à cette question.
-            </b>
-          </p>
-          <p
-            className="MuiTypography-root-1p49hpg MuiTypography-subtitle1-1r3n0fv sc-hzDkRC jJOVok"
-          >
-            Êtes-vous créateur / créatrice d'entreprise ?
+            Si vous êtes créateur d'entreprise, vous ne pouvez pas faire votre actualisation sur Zen.
+            <br />
+            Merci d'effectuer votre actualisation sur
+             
+            <a
+              href="https://www.pole-emploi.fr"
+              rel="noopener noreferrer"
+            >
+              pole-emploi.fr
+            </a>
           </p>
           <div
             className="sc-Rmtcm dIJOXK"
           >
             <button
-              className="MuiButtonBase-root-wy1rlu MuiButton-root-1nrevdb MuiButton-outlined-1jsf8xz MuiButton-outlinedPrimary-xuforn MuiButton-sizeLarge-1igckjy sc-bRBYWo cbrZD"
+              className="MuiButtonBase-root-wy1rlu MuiButton-root-1nrevdb MuiButton-outlined-1jsf8xz MuiButton-outlinedPrimary-xuforn MuiButton-sizeLarge-1igckjy sc-bRBYWo cJJOab"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4535,33 +4535,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
               <span
                 className="MuiButton-label-1mzxhoz"
               >
-                Oui
-              </span>
-              <span
-                className="MuiTouchRipple-root-1glk3j"
-              />
-            </button>
-            <button
-              className="MuiButtonBase-root-wy1rlu MuiButton-root-1nrevdb MuiButton-outlined-1jsf8xz MuiButton-outlinedPrimary-xuforn MuiButton-sizeLarge-1igckjy sc-bRBYWo cbrZD"
-              disabled={false}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              tabIndex="0"
-              type="button"
-            >
-              <span
-                className="MuiButton-label-1mzxhoz"
-              >
-                Non
+                J'ai compris
               </span>
               <span
                 className="MuiTouchRipple-root-1glk3j"

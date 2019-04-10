@@ -569,13 +569,7 @@ export class Files extends Component {
         {certificateUpload}
         {certificateDoc && !salaryDoc ? (
           <Typography variant="caption">
-            <span
-              style={{ display: 'inline-block', marginRight: '0.5rem' }}
-              aria-label="Pouce levé"
-              role="img"
-            >
-              👍
-            </span>
+            <span aria-hidden>👍</span>
             Nous n'avons pas besoin de votre bulletin de salaire pour cet
             employeur, car vous nous avez déjà transmis votre attestation
           </Typography>

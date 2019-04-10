@@ -77,7 +77,6 @@ const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  flex-wrap: wrap;
   width: 100%;
   text-align: center;
   max-width: 40rem;
@@ -94,6 +93,22 @@ const ErrorMessage = styled(Typography).attrs({
     margin: auto;
     margin-bottom: 2rem;
     max-width: 70rem;
+  }
+`
+
+const StyledAlwaysVisibleContainer = styled(AlwaysVisibleContainer)`
+  && {
+    @media (max-width: 550px) {
+      padding: 2rem 1rem;
+    }
+  }
+`
+
+const StyledMainActionButton = styled(MainActionButton)`
+  && {
+    @media (max-width: 550px) {
+      padding: 1rem 0.5rem;
+    }
   }
 `
 
@@ -229,8 +244,10 @@ export class Employers extends Component {
     if (
       !this.state.isLoading &&
       !this.hasSubmittedAndFinished &&
-      get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
-        false
+      get(
+        this.state.currentDeclaration,
+        'hasFinishedDeclaringEmployers',
+      ) === false
     ) {
       this.onSave()
     }
@@ -250,9 +267,8 @@ export class Employers extends Component {
 
   updateValue = ({ index, name, value, error }) =>
     this.setState(({ employers: prevEmployers }) => ({
-      employers: prevEmployers.map(
-        (employer, key) =>
-          key === index ? { ...employer, [name]: { value, error } } : employer,
+      employers: prevEmployers.map((employer, key) =>
+        key === index ? { ...employer, [name]: { value, error } } : employer,
       ),
       error: null,
     }))
@@ -418,8 +434,7 @@ export class Employers extends Component {
         <Title variant="h6" component="h1">
           Pour quels employeurs avez-vous travaillé en{' '}
           {moment(this.props.activeMonth).format('MMMM YYYY')}
-          {' '}
-          ?
+          {' '}?
         </Title>
         <Form>
           {employers.map(this.renderEmployerQuestion)}
@@ -437,22 +452,31 @@ export class Employers extends Component {
             <LineDiv />
           </AddEmployersButtonContainer>
 
-          <WorkSummary employers={employers} />
-
-          <AlwaysVisibleContainer
+          <StyledAlwaysVisibleContainer
             style={{ marginTop: '2rem', alignSelf: 'stretch' }}
           >
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
+            <WorkSummary employers={employers} />
+
             <ButtonsContainer>
-              <MainActionButton primary={false} onClick={this.saveAndRedirect}>
-                Enregistrer<br />et finir plus tard
-              </MainActionButton>
-              <MainActionButton primary onClick={this.openDialog}>
-                Envoyer mon<br />actualisation
-              </MainActionButton>
+              <StyledMainActionButton
+                primary={false}
+                onClick={this.saveAndRedirect}
+              >
+                Enregistrer
+                <br />
+                et finir plus tard
+              </StyledMainActionButton>
+              <StyledMainActionButton
+                primary
+                onClick={this.openDialog}>
+                Envoyer mon
+                <br />
+                actualisation
+              </StyledMainActionButton>
             </ButtonsContainer>
-          </AlwaysVisibleContainer>
+          </StyledAlwaysVisibleContainer>
         </Form>
         <DeclarationDialog
           isLoading={this.state.isValidating}

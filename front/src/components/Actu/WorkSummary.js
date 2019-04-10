@@ -13,16 +13,37 @@ const MIN_WORK_HOURS = 1
 const MAX_SALARY = 99999
 const MAX_WORK_HOURS = 1000
 
-const SummaryContainer = styled.div`
-  padding-bottom: 1rem;
-  text-align: center;
+const SummaryContainer = styled.ul`
+  padding: 0;
+  width: 27rem;
+  list-style: none;
+  margin: auto auto 2rem auto;
 `
 
-const SummaryNumber = styled.span`
-  background: #f0f0f0;
-  border-radius: 0.3rem;
-  padding: 0 2rem;
+const Label = styled(Typography).attrs({
+  component: 'span',
+  variant: 'body1',
+})`
+  && {
+    display: inline-block;
+    width: 18rem;
+    font-size: 1.5rem;
+    line-height: 1.6rem;
+  }
 `
+
+const Value = styled(Typography).attrs({
+  component: 'span',
+  variant: 'body1',
+})`
+  && {
+    font-size: 1.5rem;
+    padding-left: 1.5rem;
+    border-left: solid 1px #39679e;
+    display: inline-block;
+  }
+`
+
 
 const calculateTotal = (employers, field, lowLimit, highLimit) => {
   const total = employers.reduce((prev, employer) => {
@@ -49,35 +70,39 @@ const WorkSummary = ({ employers }) => {
 
   return (
     <SummaryContainer>
-      <Typography variant="body1">
-        Heures déclarées :{' '}
-        <SummaryNumber>
-          {_isNaN(totalWorkHours) || totalWorkHours === 0
-            ? '-'
-            : totalWorkHours}
-        </SummaryNumber>
-        {' '}
-        h
-      </Typography>
-      <Typography variant="body1">
-        Salaire brut déclaré :{' '}
-        <SummaryNumber>
-          {_isNaN(totalSalary) || totalSalary === 0 ? (
-            '-'
-          ) : (
-            <NumberFormat
-              thousandSeparator=" "
-              decimalSeparator=","
-              decimalScale={0}
-              fixedDecimalScale
-              displayType="text"
-              value={totalSalary}
-            />
-          )}
-        </SummaryNumber>
-        {' '}
-        €
-      </Typography>
+      <li>
+        <Label>Heures déclarées : </Label>
+
+        <Value style={{ paddingBottom: '0.5rem' }}>
+          <b>
+            {_isNaN(totalWorkHours) || totalWorkHours === 0
+              ? '-'
+              : totalWorkHours}
+          </b>
+          {' '}h
+        </Value>
+      </li>
+
+      <li>
+        <Label>Salaire brut déclaré : </Label>
+        <Value>
+          <b>
+            {_isNaN(totalSalary) || totalSalary === 0 ? (
+              '-'
+            ) : (
+                <NumberFormat
+                  thousandSeparator=" "
+                  decimalSeparator=","
+                  decimalScale={0}
+                  fixedDecimalScale
+                  displayType="text"
+                  value={totalSalary}
+                />
+              )}
+          </b>
+          {' '}€
+        </Value>
+      </li>
     </SummaryContainer>
   )
 }

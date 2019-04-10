@@ -6,9 +6,12 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import CustomColorButton from '../../Generic/CustomColorButton'
 import CustomDialog from '../../Generic/CustomDialog'
 
-const ConsistencyErrorsDialogs = (props) => {
-  const { consistencyErrors, onCancel, confirmAndIgnoreErrors } = props
-
+const ConsistencyErrorsDialogs = ({
+  consistencyErrors,
+  onCancel,
+  confirmAndIgnoreErrors,
+  ...props
+}) => {
   return (
     <CustomDialog
       content={
@@ -55,7 +58,6 @@ ConsistencyErrorsDialogs.propTypes = {
   onCancel: PropTypes.func.isRequired,
   confirmAndIgnoreErrors: PropTypes.func.isRequired,
   consistencyErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  props: PropTypes.object.isRequired,
 }
 
 export default ConsistencyErrorsDialogs

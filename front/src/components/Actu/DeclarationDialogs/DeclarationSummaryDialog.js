@@ -28,8 +28,8 @@ const StyledDialogContentText = styled(DialogContentText)`
   && {
     padding-bottom: 3rem;
     border-bottom: solid 2px #f2f2f2;
-    margin-left: -24px;
-    margin-right: -24px;
+    margin-left: -2.4rem;
+    margin-right: -2.4rem;
     margin-bottom: 2.5rem;
     padding: 0 5rem 2rem 5rem;
     color: black;
@@ -68,9 +68,13 @@ const DeclarationList = styled.ul`
   color: #37669f;
 `
 
-const DeclarationSummaryDialog = (props) => {
-  const { declaration, employers, onCancel, onConfirm } = props
-
+const DeclarationSummaryDialog = ({
+  declaration,
+  employers,
+  onCancel,
+  onConfirm,
+  ...props
+}) => {
   const sickLeaves = declaration.infos.filter(
     (info) => info.type === types.SICK_LEAVE,
   )
@@ -126,11 +130,11 @@ const DeclarationSummaryDialog = (props) => {
                     {employers.length >= 2 ? 'employeurs' : 'employeur'}
                   </DeclarationHeader>
                   <DeclarationList>
-                    {employers.map((employer) => (
-                      <li key={employer.employerName.value}>
-                        {employer.employerName.value}
-                      </li>
-                    ))}
+                    {console.log(employers)}
+                    {employers.map((employer, i) => {
+                      const key = `${i}-${employer.employerName.value}`
+                      return <li key={key}>{employer.employerName.value}</li>
+                    })}
                   </DeclarationList>
                 </div>
 
@@ -180,9 +184,7 @@ const DeclarationSummaryDialog = (props) => {
               <div>
                 <DeclarationHeader>
                   {sickLeaves.length}{' '}
-                  {sickLeaves.length >= 2
-                    ? 'arrêts maladie ou congés paternité'
-                    : 'arrêt maladie ou congé paternité'}
+                  {sickLeaves.length >= 2 ? 'arrêts maladie' : 'arrêt maladie'}
                 </DeclarationHeader>
                 <DeclarationList>
                   {sickLeaves.map((sickLeave) => (
@@ -208,14 +210,14 @@ const DeclarationSummaryDialog = (props) => {
 
             {declaration.hasRetirement && (
               <div>
-                <DeclarationHeader>Pension de retraite</DeclarationHeader>
+                <DeclarationHeader>Retraite</DeclarationHeader>
                 <DeclarationValues color="primary">
-                  Depuis le {formatDate(retirement.startDate)}
+                  Départ le {formatDate(retirement.startDate)}
                 </DeclarationValues>
               </div>
             )}
 
-            {!declaration.isLookingForJob && (
+            {!declaration.isLookingForJob ? (
               <div>
                 <DeclarationHeader>Fin de recherche</DeclarationHeader>
                 <DeclarationValues color="primary">
@@ -224,19 +226,17 @@ const DeclarationSummaryDialog = (props) => {
                 <DeclarationValues color="primary">
                   Motif:{' '}
                   {declaration.jobSearchStopMotive ===
-                  JOB_SEARCH_END_MOTIVE.WORK
-                    ? 'Reprise du travail'
-                    : null}
+                    JOB_SEARCH_END_MOTIVE.WORK && 'Reprise du travail'}
                   {declaration.jobSearchStopMotive ===
-                  JOB_SEARCH_END_MOTIVE.RETIREMENT
-                    ? 'Retraite'
-                    : null}
+                    JOB_SEARCH_END_MOTIVE.RETIREMENT && 'Retraite'}
                   {declaration.jobSearchStopMotive ===
-                  JOB_SEARCH_END_MOTIVE.OTHER
-                    ? 'Autre'
-                    : null}
+                    JOB_SEARCH_END_MOTIVE.OTHER && 'Autre'}
                 </DeclarationValues>
               </div>
+            ) : (
+              <DeclarationHeader>
+                Vous avez déclaré vouloir rester inscrit à Pôle emploi
+              </DeclarationHeader>
             )}
           </DeclarationContent>
         </Fragment>

@@ -2,15 +2,13 @@ FROM node:10.15.0
 
 WORKDIR /home/back
 
-COPY back/package.json /home/back/package.json
-COPY back/package-lock.json /home/back/package-lock.json
-
-CMD if [ "$NODE_ENV" = "production" ] || [ "$NODE_ENV" = "qa" ]; then \
-        npm install --only=production && \
-        npm run knex migrate:latest && \
-        npm run production; \
+CMD (which yarn || npm i -g yarn@1.15.2) && \
+    if [ "$NODE_ENV" = "production" ] || [ "$NODE_ENV" = "qa" ]; then \
+        yarn install --production && \
+        yarn run knex migrate:latest && \
+        yarn run production; \
     else \
-        npm install && \
-        npm run knex migrate:latest && \
-        npm start; \
+        yarn install && \
+        yarn run knex migrate:latest && \
+        yarn start; \
     fi

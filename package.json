@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "npm run test:front && npm run test:back",
-    "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front npm test",
-    "test:front:snapshots": "docker-compose -p test-front -f docker-compose.test.yml run --rm front npm test -- -u",
-    "test:back": "docker-compose -p test-back -f docker-compose.test.yml run --rm node npm test; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f db",
-    "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run --rm node npm test -- -u; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f db"
+    "test": "yarn run test:front && yarn run test:back",
+    "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test",
+    "test:front:snapshots": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test -- -u",
+    "test:back": "docker-compose -p test-back -f docker-compose.test.yml run --rm node yarn test; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f db",
+    "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run --rm node yarn test -- -u; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f db"
   },
   "lint-staged": {
     "*.js": [
@@ -41,7 +41,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "precise-commits && lint-staged",
-      "pre-push": "npm test"
+      "pre-push": "yarn test"
     }
   }
 }

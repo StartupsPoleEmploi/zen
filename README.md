@@ -6,9 +6,10 @@
 
 **For front-end Sentry use, a `front/.env.local` needs creation and configuration too.**
 
-Install Docker and Docker-Compose, then
+Install Docker, Docker-Compose and yarn, then
 
 ```
+yarn
 docker-compose build
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up # dev
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up # prod

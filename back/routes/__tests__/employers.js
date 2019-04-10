@@ -74,6 +74,7 @@ const addDeclarationWithEmployers = () =>
       .returning('*'),
   )
 
+// Adds a document, returned for further use, and tests that the upload worked correctly
 const postEmployerDocument = (declaration, type = 'salarySheet') =>
   supertest(app)
     .post(`/files`)

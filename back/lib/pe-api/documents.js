@@ -11,6 +11,13 @@
  * Sending multiple documents is done sequentially instead of in parallel, as
  * we need to handle the limit of requests / seconds given to us
  * (at the time of writing, it is assumed it'll be about 1 request / second)
+ *
+ * Uploading files requires two API calls:
+ * * The first one does the actual file upload
+ * * The second one adds information (labels, context information needed by PE API
+ *    to correctly identify the document) and confirms the upload.
+ *
+ * Without both calls, the document will not be handled by PE.
  */
 
 const { uploadsDirectory } = require('config')
@@ -165,19 +172,20 @@ const sendDocuments = async ({ declaration, accessToken }) => {
         (prev, { employerName, documents, type }) => {
           if (!documents[0] || !documents[0].file) return prev
 
+          const label = `${
+            type === EmployerDocument.types.employerCertificate ? 'AE' : 'BS'
+          } - ${employerName}`
+          const confirmationData =
+            type === EmployerDocument.types.employerCertificate
+              ? CODES.EMPLOYER_CERTIFICATE
+              : CODES.SALARY_SHEET
+
           return prev.concat(
             documents.map((document) => ({
               filePath: `${uploadsDirectory}${document.file}`,
-              label: `${
-                type === EmployerDocument.types.employerCertificate
-                  ? 'AE'
-                  : 'BS'
-              } - ${employerName}`,
+              label,
               dbDocument: document,
-              confirmationData:
-                type === EmployerDocument.types.employerCertificate
-                  ? CODES.EMPLOYER_CERTIFICATE
-                  : CODES.SALARY_SHEET,
+              confirmationData,
             })),
           )
         },

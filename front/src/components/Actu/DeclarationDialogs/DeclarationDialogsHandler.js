@@ -18,8 +18,6 @@ class DeclarationDialogsHandler extends Component {
     employers: PropTypes.arrayOf(PropTypes.object),
   }
 
-  confirm = () => this.props.onConfirm()
-
   confirmAndIgnoreErrors = () => this.props.onConfirm({ ignoreErrors: true })
 
   render() {
@@ -71,7 +69,7 @@ class DeclarationDialogsHandler extends Component {
           declaration={declaration}
           employers={employers}
           onCancel={onCancel}
-          onConfirm={this.confirm}
+          onConfirm={this.props.onConfirm}
           {...defaultProps}
         />
       )

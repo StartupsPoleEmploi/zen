@@ -7,6 +7,8 @@ const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
+
+const { setActiveMonth } = require('./lib/activeMonthMiddleware')
 const adminRouter = require('./routes/admin')
 
 const knex = Knex({
@@ -34,6 +36,8 @@ app.use(
     store: new (pgConnectSimple(session))(),
   }),
 )
+app.use(setActiveMonth)
+
 app.use('/', adminRouter)
 
 module.exports = app

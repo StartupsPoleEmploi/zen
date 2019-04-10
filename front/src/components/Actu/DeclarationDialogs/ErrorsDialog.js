@@ -7,7 +7,9 @@ import Button from '@material-ui/core/Button'
 import CustomColorButton from '../../Generic/CustomColorButton'
 import CustomDialog from '../../Generic/CustomDialog'
 
-const ErrorsDialog = ({ validationErrors, onCancel, props }) => {
+const ErrorsDialog = (props) => {
+  const { validationErrors, onCancel } = props
+
   return (
     <CustomDialog
       content={

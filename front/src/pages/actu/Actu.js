@@ -15,7 +15,7 @@ import store from 'store2'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import DeclarationDialog from '../../components/Actu/DeclarationDialogs/DeclarationDialog'
+import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import UserJobCheck from '../../components/Actu/UserJobCheck'
 import DatePicker from '../../components/Generic/DatePicker'
@@ -683,7 +683,7 @@ export class Actu extends Component {
           </AlwaysVisibleContainer>
         </form>
 
-        <DeclarationDialog
+        <DeclarationDialogsHandler
           isLoading={this.state.isValidating}
           isOpened={this.state.isDialogOpened}
           onCancel={this.closeDialog}

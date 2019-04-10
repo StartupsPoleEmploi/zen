@@ -18,7 +18,7 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import DeclarationDialog from '../../components/Actu/DeclarationDialogs/DeclarationDialog'
+import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
@@ -458,7 +458,7 @@ export class Employers extends Component {
           </AlwaysVisibleContainer>
         </Form>
 
-        <DeclarationDialog
+        <DeclarationDialogsHandler
           isLoading={this.state.isValidating}
           isOpened={this.state.isDialogOpened}
           onCancel={this.closeDialog}

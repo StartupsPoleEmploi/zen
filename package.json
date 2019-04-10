@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "npm run test:back && npm run test:front",
+    "test": "npm run test:front && npm run test:back",
     "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front npm test",
     "test:front:snapshots": "docker-compose -p test-front -f docker-compose.test.yml run --rm front npm test -- -u",
     "test:back": "docker-compose -p test-back -f docker-compose.test.yml run --rm node npm test; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f db",

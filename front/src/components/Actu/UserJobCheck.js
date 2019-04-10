@@ -1,10 +1,11 @@
-import Button from '@material-ui/core/Button'
+import React, { Component } from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import styled from 'styled-components'
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
+import MainActionButton from '../Generic/MainActionButton'
 
 const StyledUserJobCheck = styled.div`
   display: flex;
@@ -24,15 +25,15 @@ const ButtonsContainer = styled.div`
   width: 100%;
 `
 
-const StyledButton = styled(Button).attrs({
-  color: 'primary',
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
+`
+
+const StyledMainActionButton = styled(MainActionButton).attrs({
   size: 'large',
-  variant: 'outlined',
 })`
   && {
-    color: #000;
-    max-width: 100%;
-    width: 15rem;
+    width: 20rem;
     margin-top: 2rem;
   }
 `
@@ -61,18 +62,14 @@ export class UserJobCheck extends Component {
     return (
       <StyledUserJobCheck>
         <Typography variant="body2">
-          Si vous êtes créateur d'entreprise, vous ne pouvez pas faire votre
-          actualisation sur Zen.
-          <br />
-          Merci d'effectuer votre actualisation sur{' '}
-          <a href="https://www.pole-emploi.fr" rel="noopener noreferrer">
-            pole-emploi.fr
-          </a>
+          Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur,
+          vous ne pouvez pas effectuer votre actualisation sur Zen.
         </Typography>
         <ButtonsContainer>
-          <StyledButton onClick={this.showDeclarationForm}>
+          <StyledMainActionButton primary onClick={this.showDeclarationForm}>
             J'ai compris
-          </StyledButton>
+            <StyledArrowRightAlt />
+          </StyledMainActionButton>
         </ButtonsContainer>
 
         {ACTIVATE_CHECKBOX_DISPLAY && (

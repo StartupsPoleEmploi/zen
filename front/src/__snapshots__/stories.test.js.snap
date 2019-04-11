@@ -1176,9 +1176,11 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                     }
                   }
                 >
-                  <b>
-                    Feuille maladie
-                  </b>
+                  <div>
+                    <b>
+                      Feuille maladie
+                    </b>
+                  </div>
                 </div>
               </span>
             </div>
@@ -1337,9 +1339,11 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                     }
                   }
                 >
-                  <b>
-                    Attestation employeur
-                  </b>
+                  <div>
+                    <b>
+                      Attestation employeur
+                    </b>
+                  </div>
                 </div>
               </span>
             </div>
@@ -1498,9 +1502,11 @@ exports[`Storyshots DocumentUpload error 1`] = `
                     }
                   }
                 >
-                  <b>
-                    Feuille maladie
-                  </b>
+                  <div>
+                    <b>
+                      Feuille maladie
+                    </b>
+                  </div>
                 </div>
               </span>
             </div>
@@ -1648,9 +1654,11 @@ exports[`Storyshots DocumentUpload loading 1`] = `
                     }
                   }
                 >
-                  <b>
-                    Feuille maladie
-                  </b>
+                  <div>
+                    <b>
+                      Feuille maladie
+                    </b>
+                  </div>
                 </div>
               </span>
             </div>
@@ -1775,9 +1783,11 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                     }
                   }
                 >
-                  <b>
-                    Feuille maladie
-                  </b>
+                  <div>
+                    <b>
+                      Feuille maladie
+                    </b>
+                  </div>
                 </div>
               </span>
             </div>

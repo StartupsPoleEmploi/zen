@@ -162,6 +162,11 @@ const getDeclarationMissingFilesNb = (declaration) => {
 }
 
 const formatDate = (date) => moment(date).format('DD MMMM YYYY')
+const formatInfoDates = ({ startDate, endDate }) => {
+  return !endDate
+    ? `À partir du ${formatDate(startDate)}`
+    : `Du ${formatDate(startDate)} au ${formatDate(endDate)}`
+}
 
 export class Files extends Component {
   static propTypes = {
@@ -383,49 +388,25 @@ export class Files extends Component {
     const sortedEmployers = sortBy(declaration.employers, 'name')
 
     const additionalDocumentsNodes = neededAdditionalDocumentsSpecs.map(
-      (neededDocumentSpecs) => {
-        const infos = declaration.infos.filter(
-          ({ type }) => type === neededDocumentSpecs.name,
-        )
-
-        return (
-          <div key={neededDocumentSpecs.name}>
-            <Typography
-              variant="subtitle1"
-              style={{ textTransform: 'uppercase' }}
-            >
-              <b>{neededDocumentSpecs.sectionLabel}</b>
-            </Typography>
-            <Typography variant="caption">
-              {neededDocumentSpecs.multiple && (
-                <ul style={{ paddingLeft: 0 }}>
-                  {infos.map(({ startDate, endDate }, key) => (
-                    /* eslint-disable-next-line react/no-array-index-key */
-                    <li key={key} style={{ display: 'block' }}>
-                      Du {formatDate(startDate)} au {formatDate(endDate)}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {!neededDocumentSpecs.multiple &&
-                (!infos.endDate
-                  ? `À partir du ${formatDate(infos.startDate)}`
-                  : `Du ${formatDate(infos.startDate)} au ${formatDate(
-                      infos.endDate,
-                    )}`)}
-            </Typography>
-            <StyledList>
-              {this.renderDocumentsOfType({
-                label: neededDocumentSpecs.label,
-                name: neededDocumentSpecs.name,
-                multiple: neededDocumentSpecs.multiple,
-                declaration,
-                allowSkipFile: isOldMonth,
-              })}
-            </StyledList>
-          </div>
-        )
-      },
+      (neededDocumentSpecs) => (
+        <div key={neededDocumentSpecs.name}>
+          <Typography
+            variant="subtitle1"
+            style={{ textTransform: 'uppercase' }}
+          >
+            <b>{neededDocumentSpecs.sectionLabel}</b>
+          </Typography>
+          <StyledList>
+            {this.renderDocumentsOfType({
+              label: neededDocumentSpecs.label,
+              name: neededDocumentSpecs.name,
+              multiple: neededDocumentSpecs.multiple,
+              declaration,
+              allowSkipFile: isOldMonth,
+            })}
+          </StyledList>
+        </div>
+      ),
     )
 
     // do not display a section if there are no documents to display.
@@ -479,6 +460,7 @@ export class Files extends Component {
           id={additionalDoc.id}
           type={DocumentUpload.types.info}
           label={label}
+          caption={formatInfoDates(additionalDoc)}
           fileExistsOnServer={!!additionalDoc.file}
           submitFile={this.submitAdditionalFile}
           skipFile={() =>

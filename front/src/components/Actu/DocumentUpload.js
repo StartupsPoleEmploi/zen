@@ -107,6 +107,7 @@ export class DocumentUpload extends Component {
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
     label: PropTypes.string.isRequired,
+    caption: PropTypes.string,
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
@@ -140,6 +141,7 @@ export class DocumentUpload extends Component {
   render() {
     const {
       id,
+      caption,
       error,
       fileExistsOnServer,
       isLoading,
@@ -174,7 +176,15 @@ export class DocumentUpload extends Component {
           <ListItemText
             primary={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <b>{label}</b>
+                <div>
+                  <b>{label}</b>
+                  {caption && (
+                    <Fragment>
+                      <br />
+                      <Typography variant="caption">{caption}</Typography>
+                    </Fragment>
+                  )}
+                </div>
                 {infoTooltipText && (
                   <Tooltip
                     title={

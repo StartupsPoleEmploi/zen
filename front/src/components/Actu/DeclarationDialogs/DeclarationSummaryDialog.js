@@ -130,7 +130,6 @@ const DeclarationSummaryDialog = ({
                     {employers.length >= 2 ? 'employeurs' : 'employeur'}
                   </DeclarationHeader>
                   <DeclarationList>
-                    {console.log(employers)}
                     {employers.map((employer, i) => {
                       const key = `${i}-${employer.employerName.value}`
                       return <li key={key}>{employer.employerName.value}</li>

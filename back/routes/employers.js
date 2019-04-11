@@ -197,14 +197,25 @@ router.get('/files', (req, res, next) => {
 })
 
 router.post('/files', upload.single('document'), (req, res, next) => {
-  if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
-  if (!req.body.employerId) return res.status(400).json('Missing employerId')
+  const { documentType: type, employerId, skip } = req.body
+
+  if (!req.file && !skip) return res.status(400).json('Missing file')
+  if (!employerId) return res.status(400).json('Missing employerId')
+  if (!Object.values(EmployerDocument.types).includes(type)) {
+    return res.status(400).json('Missing documentType')
+  }
+
+  /*
+    2 possibilities :
+    * We have an employerId >> it's a new document being added
+    * We have a id >> it's a document being updated
+  */
 
   const fetchEmployer = () =>
     Employer.query()
       .eager('documents')
       .findOne({
-        id: req.body.employerId,
+        id: employerId,
         userId: req.session.user.id,
       })
 
@@ -212,11 +223,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     .then((employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
-      const type = employer.hasEndedThisMonth
-        ? 'employerCertificate'
-        : 'salarySheet'
-
-      const documentFileObj = req.body.skip
+      const documentFileObj = skip
         ? {
             // Used in case the user sent his file by another means.
             file: null,
@@ -225,22 +232,23 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           }
         : { file: req.file.filename, type }
 
-      const documentIndex = employer.documents.findIndex(
+      const existingDocument = employer.documents.find(
         (document) => document.type === type,
       )
 
       let savePromise
-      if (documentIndex !== -1) {
-        savePromise = employer.documents[documentIndex].$query().patch({
-          id: employer.documents[documentIndex].id,
-          ...documentFileObj,
-        })
-      } else {
+
+      if (!existingDocument) {
         savePromise = EmployerDocument.query().insert({
           employerId: employer.id,
           ...documentFileObj,
         })
+      } else {
+        savePromise = existingDocument.$query().patch({
+          ...documentFileObj,
+        })
       }
+
       return savePromise
         .then(fetchEmployer)
         .then((savedEmployer) => res.json(savedEmployer))

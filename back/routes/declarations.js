@@ -15,6 +15,7 @@ const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
+const EmployerDocument = require('../models/EmployerDocument')
 
 const docTypes = DeclarationInfo.types
 
@@ -49,8 +50,8 @@ router.get('/', (req, res, next) => {
   const limit = Number.isNaN(queryLimit)
     ? MAX_MONTHS_TO_FETCH
     : queryLimit < MAX_MONTHS_TO_FETCH
-      ? queryLimit
-      : MAX_MONTHS_TO_FETCH
+    ? queryLimit
+    : MAX_MONTHS_TO_FETCH
 
   return Declaration.query()
     .eager(eagerDeclarationString)
@@ -299,7 +300,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
 /* This busyDeclarations is used to avoid files being sent multiple times
  * It'll be removed when we send documents as they are received.
-*/
+ */
 const busyDeclarations = []
 
 router.post('/finish', (req, res, next) => {
@@ -318,9 +319,17 @@ router.post('/finish', (req, res, next) => {
       if (declaration.isFinished)
         return res.status(400).json('Declaration already finished')
 
-      // TODO this check will need reviewing when we'll be able to send 2 documents / employer
       const hasMissingEmployersDocuments = declaration.employers.some(
-        (employer) => employer.documents.length === 0,
+        (employer) => {
+          // If employer contract is still going on, we only need one document (the salary sheet)
+          // to validate it. Otherwise, we need an employer certificate.
+          if (!employer.hasEndedThisMonth) {
+            return employer.documents.length !== 0
+          }
+          return employer.documents.some(
+            ({ type }) => type === EmployerDocument.types.employerCertificate,
+          )
+        },
       )
 
       const hasMissingDeclarationDocuments =

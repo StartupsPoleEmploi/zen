@@ -6,19 +6,18 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
 import { cloneDeep, get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import AdditionalDocumentUpload from '../../components/Actu/AdditionalDocumentUpload'
-import EmployerDocumentUpload from '../../components/Actu/EmployerDocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
+import DocumentUpload from '../../components/Actu/DocumentUpload'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -88,8 +87,6 @@ const StyledList = styled(List)`
   }
 `
 
-const DECLARATION_SUBMIT_ERROR_NAME = 'DECLARATION'
-
 const additionalDocumentsSpecs = [
   {
     name: 'sickLeave',
@@ -130,23 +127,37 @@ const additionalDocumentsSpecs = [
   },
 ]
 
-const getLoadingKey = ({ id, name, declarationId, index = 0 }) =>
-  id ? `isLoading-${id}` : `$isLoading-${declarationId}-${name}-${index}`
-const getErrorKey = ({ id, name, declarationId, index = 0 }) =>
-  id ? `error-${id}` : `error-${declarationId}-${name}-${index}`
+const salarySheetType = 'salarySheet'
+const employerCertificateType = 'employerCertificate'
+const infoType = 'info'
+
+const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
+const getErrorKey = ({ id, type }) => `${id}-${type}-error`
 
 const getDeclarationMissingFilesNb = (declaration) => {
   const additionalDocumentsRequiredNb = declaration.infos.filter(
     ({ type, file }) => type !== 'jobSearch' && !file,
   ).length
 
-  // TODO only handles 1 doc / employer, which will have to change whene multiple
-  // docs will be sendable
   return (
-    declaration.employers.reduce(
-      (prev, employer) => prev + (employer.documents[0] ? 0 : 1),
-      0,
-    ) + additionalDocumentsRequiredNb
+    declaration.employers.reduce((prev, employer) => {
+      if (!employer.hasEndedThisMonth)
+        return prev + (employer.documents[0] ? 0 : 1)
+
+      /*
+          The salary sheet is optional for users which have already sent their employer certificate,
+          in which case we do not count it in the needed documents.
+        */
+      const hasEmployerCertificate = employer.documents.some(
+        ({ type }) => type === employerCertificateType,
+      )
+      const hasSalarySheet = employer.documents.some(
+        ({ type }) => type === salarySheetType,
+      )
+
+      if (hasEmployerCertificate) return prev + 0
+      return prev + (hasSalarySheet ? 1 : 2)
+    }, 0) + additionalDocumentsRequiredNb
   )
 }
 
@@ -163,7 +174,6 @@ export class Files extends Component {
 
   state = {
     isLoading: true,
-    error: null,
     showMissingDocs: false,
     declarations: [],
     isSendingFiles: false,
@@ -191,35 +201,32 @@ export class Files extends Component {
 
   displayMissingDocs = () => this.setState({ showMissingDocs: true })
 
-  submitEmployerFile = ({ declarationId, file, employerId, skip }) => {
+  submitEmployerFile = ({
+    documentId,
+    file,
+    skip,
+    employerId,
+    employerDocType,
+  }) => {
+    const loadingKey = getLoadingKey({
+      id: employerId,
+      type: employerDocType,
+    })
+    const errorKey = getErrorKey({ id: employerId, type: employerDocType })
+
     this.closeSkipModal()
 
-    const updateEmployer = ({
-      declarationId: dId,
-      employerId: eId,
-      ...dataToSet
-    }) =>
-      this.setState((prevState) => {
-        const declarations = cloneDeep(prevState.declarations)
-        const declarationIndex = this.state.declarations.findIndex(
-          ({ id }) => id === dId,
-        )
-        declarations[declarationIndex].employers = declarations[
-          declarationIndex
-        ].employers.map((employer) =>
-          employer.id === eId ? { ...employer, ...dataToSet } : employer,
-        )
-
-        return { declarations }
-      })
-
-    updateEmployer({ declarationId, employerId, isLoading: true })
+    this.setState({ [loadingKey]: true, [errorKey]: null })
 
     let request = superagent
       .post('/api/employers/files')
       .set('CSRF-Token', this.props.token)
       .field('employerId', employerId)
+      .field('documentType', employerDocType)
 
+    if (documentId) {
+      request = request.field('id', documentId)
+    }
     if (skip) {
       request = request.field('skip', true)
     } else {
@@ -228,15 +235,25 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then((updatedEmployer) =>
-        updateEmployer({
-          declarationId,
-          employerId: updatedEmployer.id,
-          isLoading: false,
-          error: null,
-          ...updatedEmployer,
-        }),
-      )
+      .then((updatedEmployer) => {
+        this.setState((prevState) => {
+          const updatedDeclarations = prevState.declarations.map(
+            (declaration) => ({
+              ...declaration,
+              employers: declaration.employers.map((employer) => {
+                if (employer.id !== employerId) return employer
+                return updatedEmployer
+              }),
+            }),
+          )
+
+          return {
+            declarations: updatedDeclarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
+        })
+      })
       .catch((err) => {
         const errorLabel =
           err.status === 413
@@ -247,33 +264,25 @@ export class Files extends Component {
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
-        updateEmployer({
-          declarationId,
-          employerId,
-          isLoading: false,
-          error: errorLabel,
-        })
+        this.setState({ [loadingKey]: false, [errorKey]: errorLabel })
       })
   }
 
-  submitAdditionalFile = ({ declarationInfoId, file, skip }) => {
-    this.closeSkipModal()
+  submitAdditionalFile = ({ documentId, file, skip }) => {
+    const loadingKey = getLoadingKey({ id: documentId, type: infoType })
+    const errorKey = getErrorKey({ id: documentId, type: infoType })
 
-    const errorKey = getErrorKey({
-      id: declarationInfoId,
-    })
-    const loadingKey = getLoadingKey({
-      id: declarationInfoId,
-    })
+    this.closeSkipModal()
 
     this.setState({
       [loadingKey]: true,
+      [errorKey]: null,
     })
 
     let request = superagent
       .post('/api/declarations/files')
       .set('CSRF-Token', this.props.token)
-      .field('declarationInfoId', declarationInfoId)
+      .field('declarationInfoId', documentId)
 
     if (skip) {
       request = request.field('skip', true)
@@ -287,14 +296,13 @@ export class Files extends Component {
         return this.setState((prevState) => {
           const declarations = cloneDeep(prevState.declarations)
           const declarationIndex = declarations.findIndex(
-            ({ id }) => declaration.id === id,
+            ({ id: declarationId }) => declaration.id === declarationId,
           )
           declarations[declarationIndex] = declaration
 
           return {
             declarations,
             [loadingKey]: false,
-            [errorKey]: null,
           }
         })
       })
@@ -351,12 +359,17 @@ export class Files extends Component {
           return this.setState({ isLoggedOut: true })
         }
 
-        this.setState({
-          [getErrorKey({
-            declarationId: declaration.id,
-            name: DECLARATION_SUBMIT_ERROR_NAME,
-          })]: error,
-          isSendingFiles: false,
+        this.setState((prevState) => {
+          return {
+            isSendingFiles: false,
+            declarations: prevState.declarations.map((prevDeclaration) => {
+              if (declaration.id !== prevDeclaration.id) return prevDeclaration
+              return {
+                ...declaration,
+                error,
+              }
+            }),
+          }
         })
         this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
@@ -368,26 +381,6 @@ export class Files extends Component {
     )
 
     const sortedEmployers = sortBy(declaration.employers, 'name')
-
-    const salaryNodes = sortedEmployers
-      .filter((employer) => !employer.hasEndedThisMonth)
-      .map((employer) =>
-        this.renderEmployerRow({
-          employer,
-          declaration,
-          allowSkipFile: isOldMonth,
-        }),
-      )
-
-    const certificateNodes = sortedEmployers
-      .filter((employer) => employer.hasEndedThisMonth)
-      .map((employer) =>
-        this.renderEmployerRow({
-          employer,
-          declaration,
-          allowSkipFile: isOldMonth,
-        }),
-      )
 
     const additionalDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => {
@@ -436,52 +429,27 @@ export class Files extends Component {
     )
 
     // do not display a section if there are no documents to display.
-    if (
-      salaryNodes.length +
-        certificateNodes.length +
-        additionalDocumentsNodes.length ===
-      0
-    )
+    if (sortedEmployers.length + additionalDocumentsNodes.length === 0)
       return null
 
     return (
       <div>
-        <div>
-          <Typography
-            variant="subtitle1"
-            style={{ textTransform: 'uppercase' }}
-          >
-            <b>
-              {salaryNodes.length} bulletin{salaryNodes.length > 1 && 's'} de
-              salaire
-            </b>
-          </Typography>
-          <Typography variant="caption">
-            Salaire pour{' '}
-            {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
-          </Typography>
-          <StyledList>{salaryNodes}</StyledList>
-        </div>
-
-        {certificateNodes.length > 0 && (
-          <div>
+        {sortedEmployers.map((employer) => (
+          <div key={employer.id}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
             >
-              <b>
-                {certificateNodes.length} contrat
-                {certificateNodes.length > 1 && 's'} terminé
-                {certificateNodes.length > 1 && 's'}
-              </b>
+              <b>Documents employeur&nbsp;: {employer.employerName}</b>
             </Typography>
-            <Typography variant="caption">
-              Fin de contrat{certificateNodes.length > 1 && 's'} en{' '}
-              {moment(declaration.declarationMonth.month).format('MMMM YYYY')}
-            </Typography>
-            <StyledList>{certificateNodes}</StyledList>
+            <StyledList>
+              {this.renderEmployerRow({
+                employer,
+                allowSkipFile: isOldMonth,
+              })}
+            </StyledList>
           </div>
-        )}
+        ))}
 
         <div>{additionalDocumentsNodes}</div>
       </div>
@@ -506,77 +474,116 @@ export class Files extends Component {
     declaration.infos
       .filter(({ type }) => type === name)
       .map((additionalDoc) => (
-        <AdditionalDocumentUpload
+        <DocumentUpload
           key={`${name}-${additionalDoc.id}`}
+          id={additionalDoc.id}
+          type={DocumentUpload.types.info}
           label={label}
-          error={
-            this.state[
-              getErrorKey({
-                id: additionalDoc.id,
-              })
-            ]
-          }
           fileExistsOnServer={!!additionalDoc.file}
-          isLoading={
-            this.state[
-              getLoadingKey({
-                id: additionalDoc.id,
-              })
-            ]
-          }
           submitFile={this.submitAdditionalFile}
           skipFile={() =>
-            this.askToSkipFile(() =>
-              this.submitAdditionalFile({
-                skip: true,
-                declarationInfoId: additionalDoc.id,
-              }),
+            this.askToSkipFile((params) =>
+              this.submitAdditionalFile({ ...params, skip: true }),
             )
           }
           allowSkipFile={allowSkipFile}
           isTransmitted={additionalDoc.isTransmitted}
           declarationInfoId={additionalDoc.id}
+          isLoading={
+            this.state[getLoadingKey({ id: additionalDoc.id, type: infoType })]
+          }
+          error={
+            this.state[getErrorKey({ id: additionalDoc.id, type: infoType })]
+          }
         />
       ))
 
-  renderEmployerRow = ({ employer, declaration, allowSkipFile }) => (
-    <EmployerDocumentUpload
-      key={employer.id}
-      {...employer}
-      submitFile={({ file }) =>
-        this.submitEmployerFile({
-          declarationId: declaration.id,
-          employerId: employer.id,
-          file,
-        })
-      }
-      skipFile={() =>
+  renderEmployerRow = ({ employer, allowSkipFile }) => {
+    const salaryDoc = employer.documents.find(
+      ({ type }) => type === salarySheetType,
+    )
+    const certificateDoc = employer.documents.find(
+      ({ type }) => type === employerCertificateType,
+    )
+
+    const commonProps = {
+      type: DocumentUpload.types.employer,
+      submitFile: this.submitEmployerFile,
+      skipFile: (params) =>
         this.askToSkipFile(() =>
-          this.submitEmployerFile({
-            declarationId: declaration.id,
-            skip: true,
-            employerId: employer.id,
-          }),
-        )
-      }
-      allowSkipFile={allowSkipFile}
-      fileExistsOnServer={!!employer.documents[0]}
-      isTransmitted={get(employer.documents[0], 'isTransmitted')}
-      documentId={get(employer, 'documents[0].id')}
-    />
-  )
+          this.submitEmployerFile({ ...params, skip: true }),
+        ),
+      allowSkipFile,
+      employerId: employer.id,
+    }
+
+    const salarySheetUpload = (
+      <DocumentUpload
+        {...commonProps}
+        key={`${employer.id}-${salarySheetType}`}
+        id={get(salaryDoc, 'id')}
+        label="Bulletin de salaire"
+        fileExistsOnServer={!!salaryDoc}
+        isTransmitted={get(salaryDoc, 'isTransmitted')}
+        employerDocType={salarySheetType}
+        isLoading={
+          this.state[getLoadingKey({ id: employer.id, type: salarySheetType })]
+        }
+        error={
+          this.state[getErrorKey({ id: employer.id, type: salarySheetType })]
+        }
+      />
+    )
+
+    if (!employer.hasEndedThisMonth) return salarySheetUpload
+
+    const certificateUpload = (
+      <DocumentUpload
+        {...commonProps}
+        key={`${employer.id}-${employerCertificateType}`}
+        id={get(certificateDoc, 'id')}
+        label="Attestation employeur"
+        fileExistsOnServer={!!certificateDoc}
+        isTransmitted={get(certificateDoc, 'isTransmitted')}
+        infoTooltipText={
+          employer.hasEndedThisMonth
+            ? `Le document contenant votre attestation employeur doit être composé d'exactement deux pages`
+            : null
+        }
+        employerDocType={employerCertificateType}
+        isLoading={
+          this.state[
+            getLoadingKey({ id: employer.id, type: employerCertificateType })
+          ]
+        }
+        error={
+          this.state[
+            getErrorKey({ id: employer.id, type: employerCertificateType })
+          ]
+        }
+      />
+    )
+
+    return (
+      <Fragment>
+        {certificateUpload}
+        {certificateDoc && !salaryDoc ? (
+          <Typography variant="caption">
+            <span aria-hidden>👍</span>
+            Nous n'avons pas besoin de votre bulletin de salaire pour cet
+            employeur, car vous nous avez déjà transmis votre attestation
+          </Typography>
+        ) : (
+          salarySheetUpload
+        )}
+      </Fragment>
+    )
+  }
 
   renderOldSection = (declaration) => this.renderSection(declaration, true)
 
   renderSection = (declaration, isOldMonth) => {
     const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
-
-    const error = this.state[
-      getErrorKey({
-        declarationId: declaration.id,
-        name: DECLARATION_SUBMIT_ERROR_NAME,
-      })
-    ]
 
     const formattedMonth = moment(declaration.declarationMonth.month).format(
       'MMMM YYYY',
@@ -624,7 +631,7 @@ export class Files extends Component {
             Cela permettra une meilleure gestion de votre dossier.
           </Typography>
         </StyledInfo>
-        {error && (
+        {declaration.error && (
           <ErrorMessage variant="body1">
             Nous sommes désolés, une erreur s'est produite lors de l'envoi des
             documents. Merci de bien vouloir réessayer.

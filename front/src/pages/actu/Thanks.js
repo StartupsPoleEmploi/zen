@@ -35,9 +35,7 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
             {activeMonth
               ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
               : ' '}
-            <span role="img" aria-label="Pouce levé">
-              👍
-            </span>
+            <span aria-hidden>👍</span>
           </Title>
           <Typography paragraph>
             Pôle Emploi va recevoir et traiter les documents que vous nous avez

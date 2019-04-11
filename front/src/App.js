@@ -128,15 +128,16 @@ class App extends Component {
 
         if (!user) return
 
+        if (!user.isTokenValid) {
+          window.location = '/api/login'
+          return
+        }
+
         this.setState({ user })
 
         window.Raven.setUserContext({
           id: user.id,
         })
-        if (!user.isTokenValid) {
-          window.location = '/api/login'
-          return
-        }
 
         return Promise.all([
           superagent

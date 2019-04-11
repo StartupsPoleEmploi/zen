@@ -87,7 +87,7 @@ const StyledList = styled(List)`
   }
 `
 
-const additionalDocumentsSpecs = [
+const infoSpecs = [
   {
     name: 'sickLeave',
     fieldToCheck: 'hasSickLeave',
@@ -135,7 +135,7 @@ const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
 const getErrorKey = ({ id, type }) => `${id}-${type}-error`
 
 const getDeclarationMissingFilesNb = (declaration) => {
-  const additionalDocumentsRequiredNb = declaration.infos.filter(
+  const infoDocumentsRequiredNb = declaration.infos.filter(
     ({ type, file }) => type !== 'jobSearch' && !file,
   ).length
 
@@ -157,7 +157,7 @@ const getDeclarationMissingFilesNb = (declaration) => {
 
       if (hasEmployerCertificate) return prev + 0
       return prev + (hasSalarySheet ? 1 : 2)
-    }, 0) + additionalDocumentsRequiredNb
+    }, 0) + infoDocumentsRequiredNb
   )
 }
 
@@ -381,13 +381,13 @@ export class Files extends Component {
   }
 
   renderDocumentList = ({ declaration, isOldMonth }) => {
-    const neededAdditionalDocumentsSpecs = additionalDocumentsSpecs.filter(
+    const neededAdditionalDocumentsSpecs = infoSpecs.filter(
       (spec) => !!declaration[spec.fieldToCheck],
     )
 
     const sortedEmployers = sortBy(declaration.employers, 'name')
 
-    const additionalDocumentsNodes = neededAdditionalDocumentsSpecs.map(
+    const infoDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => (
         <div key={neededDocumentSpecs.name}>
           <Typography
@@ -410,8 +410,7 @@ export class Files extends Component {
     )
 
     // do not display a section if there are no documents to display.
-    if (sortedEmployers.length + additionalDocumentsNodes.length === 0)
-      return null
+    if (sortedEmployers.length + infoDocumentsNodes.length === 0) return null
 
     return (
       <div>
@@ -432,7 +431,7 @@ export class Files extends Component {
           </div>
         ))}
 
-        <div>{additionalDocumentsNodes}</div>
+        <div>{infoDocumentsNodes}</div>
       </div>
     )
   }
@@ -454,14 +453,14 @@ export class Files extends Component {
   renderDocumentsOfType = ({ label, name, declaration, allowSkipFile }) =>
     declaration.infos
       .filter(({ type }) => type === name)
-      .map((additionalDoc) => (
+      .map((info) => (
         <DocumentUpload
-          key={`${name}-${additionalDoc.id}`}
-          id={additionalDoc.id}
+          key={`${name}-${info.id}`}
+          id={info.id}
           type={DocumentUpload.types.info}
           label={label}
-          caption={formatInfoDates(additionalDoc)}
-          fileExistsOnServer={!!additionalDoc.file}
+          caption={formatInfoDates(info)}
+          fileExistsOnServer={!!info.file}
           submitFile={this.submitAdditionalFile}
           skipFile={() =>
             this.askToSkipFile((params) =>
@@ -469,14 +468,10 @@ export class Files extends Component {
             )
           }
           allowSkipFile={allowSkipFile}
-          isTransmitted={additionalDoc.isTransmitted}
-          declarationInfoId={additionalDoc.id}
-          isLoading={
-            this.state[getLoadingKey({ id: additionalDoc.id, type: infoType })]
-          }
-          error={
-            this.state[getErrorKey({ id: additionalDoc.id, type: infoType })]
-          }
+          isTransmitted={info.isTransmitted}
+          declarationInfoId={info.id}
+          isLoading={this.state[getLoadingKey({ id: info.id, type: infoType })]}
+          error={this.state[getErrorKey({ id: info.id, type: infoType })]}
         />
       ))
 

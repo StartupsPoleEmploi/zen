@@ -35,6 +35,12 @@ const SecondaryButton = styled(BaseButton).attrs({
 })`
   && {
     color: #000;
+    border: solid 2px #39679e;
+
+    &:hover,
+    &:focus {
+      border: solid 2px #39679e;
+    }
   }
 `
 

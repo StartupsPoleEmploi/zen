@@ -155,18 +155,18 @@ router.post('/', requireActiveMonth, (req, res, next) => {
             Promise.all([
               savedDeclaration,
               !declaration &&
-                ActivityLog.query(trx).insert({
-                  userId: req.session.user.id,
-                  action: ActivityLog.actions.VALIDATE_DECLARATION,
-                }),
+              ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_DECLARATION,
+              }),
               !declarationData.hasWorked &&
-                ActivityLog.query(trx).insert({
-                  userId: req.session.user.id,
-                  action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-                  metadata: JSON.stringify({
-                    declarationId: savedDeclaration.id,
-                  }),
+              ActivityLog.query(trx).insert({
+                userId: req.session.user.id,
+                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                metadata: JSON.stringify({
+                  declarationId: savedDeclaration.id,
                 }),
+              }),
             ]),
           ),
         )
@@ -242,6 +242,22 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     .catch(next)
 })
 
+router.get('/declaration-summary-file', (req, res, next) => {
+  // TODO
+  if (!req.query.declarationInfoId)
+    return res.status(400).json('Missing declarationInfoId')
+
+  return DeclarationInfo.query()
+    .eager('declaration.user')
+    .findById(req.query.declarationInfoId)
+    .then((declarationInfo) => {
+      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
+        return res.status(404).json('No such file')
+      res.sendFile(declarationInfo.file, { root: uploadDestination })
+    })
+    .catch(next)
+})
+
 router.get('/files', (req, res, next) => {
   if (!req.query.declarationInfoId)
     return res.status(400).json('Missing declarationInfoId')
@@ -276,10 +292,10 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
       const documentFileObj = req.body.skip
         ? {
-            // Used in case the user sent his file by another means.
-            file: null,
-            isTransmitted: true,
-          }
+          // Used in case the user sent his file by another means.
+          file: null,
+          isTransmitted: true,
+        }
         : { file: req.file.filename }
 
       return declarationInfo

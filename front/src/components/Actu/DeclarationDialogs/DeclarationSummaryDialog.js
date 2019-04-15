@@ -5,10 +5,9 @@ import { isNaN as _isNaN } from 'lodash'
 import styled from 'styled-components'
 
 import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
 import DialogContentText from '@material-ui/core/DialogContentText'
 
-import CustomColorButton from '../../Generic/CustomColorButton'
+import MainActionButton from '../../Generic/MainActionButton'
 import CustomDialog from '../../Generic/CustomDialog'
 
 import {
@@ -68,6 +67,23 @@ const DeclarationList = styled.ul`
   color: #37669f;
 `
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  max-width: 400px;
+  padding-top: 0.5rem
+`
+
+const StyledMainActionButton = styled(MainActionButton)`
+  && {
+    padding: 1rem;
+    font-size: 1.6rem;
+
+    &:first-child {
+      margin-right: 4rem;
+    }
+  }
+`
+
 const DeclarationSummaryDialog = ({
   declaration,
   employers,
@@ -108,20 +124,6 @@ const DeclarationSummaryDialog = ({
           </StyledDialogContentText>
 
           <DeclarationContent>
-            {!declaration.hasWorked && (
-              <div>
-                <DeclarationHeader>Travaillé</DeclarationHeader>
-                <DeclarationValues>Non</DeclarationValues>
-              </div>
-            )}
-
-            {declaration.hasTrained && (
-              <div>
-                <DeclarationHeader>Formation suivi</DeclarationHeader>
-                <DeclarationValues>Oui</DeclarationValues>
-              </div>
-            )}
-
             {employers.length && (
               <Fragment>
                 <div>
@@ -145,16 +147,16 @@ const DeclarationSummaryDialog = ({
                     {_isNaN(totalSalary) || totalSalary === 0 ? (
                       '-'
                     ) : (
-                      <NumberFormat
-                        thousandSeparator=" "
-                        decimalSeparator=","
-                        decimalScale={2}
-                        fixedDecimalScale
-                        displayType="text"
-                        suffix=" €"
-                        value={totalSalary}
-                      />
-                    )}
+                        <NumberFormat
+                          thousandSeparator=" "
+                          decimalSeparator=","
+                          decimalScale={2}
+                          fixedDecimalScale
+                          displayType="text"
+                          suffix=" €"
+                          value={totalSalary}
+                        />
+                      )}
                   </DeclarationValues>
                 </div>
               </Fragment>
@@ -216,44 +218,44 @@ const DeclarationSummaryDialog = ({
               </div>
             )}
 
-            {!declaration.isLookingForJob ? (
-              <div>
-                <DeclarationHeader>Fin de recherche</DeclarationHeader>
-                <DeclarationValues color="primary">
-                  Date de fin : {formatDate(jobSearch.endDate)}
-                </DeclarationValues>
-                <DeclarationValues color="primary">
-                  Motif:{' '}
-                  {declaration.jobSearchStopMotive ===
-                    JOB_SEARCH_END_MOTIVE.WORK && 'Reprise du travail'}
-                  {declaration.jobSearchStopMotive ===
-                    JOB_SEARCH_END_MOTIVE.RETIREMENT && 'Retraite'}
-                  {declaration.jobSearchStopMotive ===
-                    JOB_SEARCH_END_MOTIVE.OTHER && 'Autre'}
-                </DeclarationValues>
-              </div>
-            ) : (
-              <DeclarationHeader>
-                Vous avez déclaré vouloir rester inscrit à Pôle emploi
-              </DeclarationHeader>
-            )}
+            <div>
+              <DeclarationHeader>Souhaitez-vous rester inscrit à pole emploi </DeclarationHeader>
+              {declaration.isLookingForJob ?
+                <DeclarationValues color="primary">Oui, je souhaite rester inscrit à Pôle emploi</DeclarationValues> :
+                <Fragment>
+                  <DeclarationValues color="primary">Non, je ne souhaite pas rester inscrit à Pole Emploi</DeclarationValues>
+
+                  <DeclarationValues color="primary">
+                    Date de fin : {formatDate(jobSearch.endDate)}
+                  </DeclarationValues>
+                  <DeclarationValues color="primary">
+                    Motif:{' '}
+                    {declaration.jobSearchStopMotive ===
+                      JOB_SEARCH_END_MOTIVE.WORK && 'Reprise du travail'}
+                    {declaration.jobSearchStopMotive ===
+                      JOB_SEARCH_END_MOTIVE.RETIREMENT && 'Retraite'}
+                    {declaration.jobSearchStopMotive ===
+                      JOB_SEARCH_END_MOTIVE.OTHER && 'Autre'}
+                  </DeclarationValues>
+                </Fragment>}
+            </div>
           </DeclarationContent>
         </Fragment>
       }
       actions={
-        <Fragment>
-          <CustomColorButton onClick={onCancel}>
+        <ButtonsContainer>
+          <StyledMainActionButton primary={false} onClick={onCancel}>
             Non, je modifie
-          </CustomColorButton>
-          <Button
+          </StyledMainActionButton>
+          <StyledMainActionButton
             variant="contained"
             onClick={onConfirm}
-            color="primary"
+            primary
             autoFocus
           >
             Oui, je confirme
-          </Button>
-        </Fragment>
+          </StyledMainActionButton>
+        </ButtonsContainer>
       }
       {...props}
     />

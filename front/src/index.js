@@ -50,6 +50,9 @@ const theme = createMuiTheme({
     secondary: {
       main: '#39679e',
     },
+    background: {
+      default: '#fff',
+    },
   },
   overrides: {
     MuiButton: {

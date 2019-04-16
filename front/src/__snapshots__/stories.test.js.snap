@@ -630,23 +630,23 @@ exports[`Storyshots DatePicker default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-1968 sc-hMqMXs dZTqsM"
+          className="MuiFormControl-root-1977 sc-hMqMXs dZTqsM"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
           <label
-            className="MuiFormLabel-root-1983 MuiInputLabel-root-1972 MuiInputLabel-formControl-1977 MuiInputLabel-animated-1980"
+            className="MuiFormLabel-root-1992 MuiInputLabel-root-1981 MuiInputLabel-formControl-1986 MuiInputLabel-animated-1989"
             data-shrink={false}
           >
             Entrez une date
           </label>
           <div
-            className="MuiInputBase-root-2003 MuiInput-root-1990 MuiInput-underline-1994 MuiInputBase-formControl-2004 MuiInput-formControl-1991"
+            className="MuiInputBase-root-2012 MuiInput-root-1999 MuiInput-underline-2003 MuiInputBase-formControl-2013 MuiInput-formControl-2000"
             onClick={[Function]}
           >
             <input
               aria-invalid={false}
-              className="MuiInputBase-input-2013 MuiInput-input-1998"
+              className="MuiInputBase-input-2022 MuiInput-input-2007"
               disabled={false}
               mask={null}
               onBlur={[Function]}
@@ -723,23 +723,23 @@ exports[`Storyshots DatePicker with selected date 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-2044 sc-hMqMXs dZTqsM"
+          className="MuiFormControl-root-2053 sc-hMqMXs dZTqsM"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
           <label
-            className="MuiFormLabel-root-2059 MuiFormLabel-filled-2063 MuiInputLabel-root-2048 MuiInputLabel-formControl-2053 MuiInputLabel-animated-2056 MuiInputLabel-shrink-2055"
+            className="MuiFormLabel-root-2068 MuiFormLabel-filled-2072 MuiInputLabel-root-2057 MuiInputLabel-formControl-2062 MuiInputLabel-animated-2065 MuiInputLabel-shrink-2064"
             data-shrink={true}
           >
             Entrez une date
           </label>
           <div
-            className="MuiInputBase-root-2079 MuiInput-root-2066 MuiInput-underline-2070 MuiInputBase-formControl-2080 MuiInput-formControl-2067"
+            className="MuiInputBase-root-2088 MuiInput-root-2075 MuiInput-underline-2079 MuiInputBase-formControl-2089 MuiInput-formControl-2076"
             onClick={[Function]}
           >
             <input
               aria-invalid={false}
-              className="MuiInputBase-input-2089 MuiInput-input-2074"
+              className="MuiInputBase-input-2098 MuiInput-input-2083"
               disabled={false}
               mask={null}
               onBlur={[Function]}
@@ -4496,69 +4496,18 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-hzDkRC dppXPs"
+          className="sc-dxgOiQ hNugHD"
         >
           <p
-            className="MuiTypography-root-1p49hpg MuiTypography-body2-uo965l"
+            className="MuiTypography-root-1896 MuiTypography-body2-1904"
           >
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
-          </p>
-          <div
-            className="sc-jhAzac fGaSpH"
-          >
-            <button
-              className="MuiButtonBase-root-wy1rlu MuiButton-root-1nrevdb MuiButton-contained-19j4qmz MuiButton-containedPrimary-1rat400 MuiButton-sizeLarge-1igckjy sc-csuQGl sc-fMiknA iTSEiG sc-Rmtcm cyxmfC"
-        >
-          <p
-            className="MuiTypography-root-1896 MuiTypography-subtitle1-1914 sc-eNQAEJ hIVxBU"
-          >
-            <b>
-              Avant de commencer votre actualisation,
-              <br />
-              veuillez répondre à cette question.
-            </b>
-          </p>
-          <p
-            className="MuiTypography-root-1896 MuiTypography-subtitle1-1914 sc-eNQAEJ hIVxBU"
-          >
-            Êtes-vous créateur / créatrice d'entreprise ?
           </p>
           <div
             className="sc-ckVGcZ gIPAFE"
           >
             <button
-              className="MuiButtonBase-root-1958 MuiButton-root-1932 MuiButton-outlined-1940 MuiButton-outlinedPrimary-1941 MuiButton-sizeLarge-1956 sc-jKJlTe cFBEwq"
-              disabled={false}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onContextMenu={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              tabIndex="0"
-              type="button"
-            >
-              <span
-                className="MuiButton-label-1933"
-              >
-                Oui
-              </span>
-              <span
-                className="MuiTouchRipple-root-1961"
-              />
-            </button>
-            <button
-<<<<<<< HEAD
-              className="MuiButtonBase-root-wy1rlu MuiButton-root-1nrevdb MuiButton-outlined-1jsf8xz MuiButton-outlinedPrimary-xuforn MuiButton-sizeLarge-1igckjy sc-kpOJdX iPLzbv"
-=======
-              className="MuiButtonBase-root-1958 MuiButton-root-1932 MuiButton-outlined-1940 MuiButton-outlinedPrimary-1941 MuiButton-sizeLarge-1956 sc-jKJlTe cFBEwq"
->>>>>>> Fix snapshots
+              className="MuiButtonBase-root-1958 MuiButton-root-1932 MuiButton-contained-1943 MuiButton-containedPrimary-1944 MuiButton-raised-1946 MuiButton-raisedPrimary-1947 MuiButton-sizeLarge-1956 sc-VigVT sc-eNQAEJ bUXCM sc-jTzLTM sTdwg"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4581,7 +4530,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden="true"
-                  className="MuiSvgIcon-root-b8skcp sc-fBuWsC cwfsEu"
+                  className="MuiSvgIcon-root-1961 sc-jKJlTe fLRsOI"
                   focusable="false"
                   role="presentation"
                   viewBox="0 0 24 24"
@@ -4596,7 +4545,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 </svg>
               </span>
               <span
-                className="MuiTouchRipple-root-1961"
+                className="MuiTouchRipple-root-1970"
               />
             </button>
           </div>

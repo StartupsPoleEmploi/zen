@@ -7,7 +7,7 @@ const Raven = require('raven')
 
 const { DECLARATION_STATUSES } = require('../constants')
 const winston = require('../lib/log')
-const { upload, uploadDestination } = require('../lib/upload')
+const { upload, uploadDestination, uploadsDeclarationDirectory } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
@@ -15,7 +15,12 @@ const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
+<<<<<<< HEAD
 const EmployerDocument = require('../models/EmployerDocument')
+=======
+const generatePDFName = require('../lib/files')
+
+>>>>>>> WIP
 
 const docTypes = DeclarationInfo.types
 
@@ -242,20 +247,21 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/declaration-summary-file', (req, res, next) => {
-  // TODO
-  if (!req.query.declarationInfoId)
-    return res.status(400).json('Missing declarationInfoId')
-
-  return DeclarationInfo.query()
-    .eager('declaration.user')
-    .findById(req.query.declarationInfoId)
-    .then((declarationInfo) => {
-      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
-        return res.status(404).json('No such file')
-      res.sendFile(declarationInfo.file, { root: uploadDestination })
+router.get('/summary-file', requireActiveMonth, (req, res, next) => {
+  return Declaration.query()
+    .findOne({
+      id: req.body.id,
+      userId: req.session.user.id,
+      monthId: req.activeMonth.id,
     })
-    .catch(next)
+    // .skipUndefined() // ? useful ?
+    .then((declaration) => {
+      if (!declaration)
+
+        return res.status(400).json('Please send declaration first')
+
+      res.sendFile(generatePDFName(declaration), { root: uploadsDeclarationDirectory })
+    }).catch(next)
 })
 
 router.get('/files', (req, res, next) => {
@@ -271,7 +277,7 @@ router.get('/files', (req, res, next) => {
       res.sendFile(declarationInfo.file, { root: uploadDestination })
     })
     .catch(next)
-})
+});
 
 router.post('/files', upload.single('document'), (req, res, next) => {
   if (!req.file && !req.body.skip) return res.status(400).json('Missing file')

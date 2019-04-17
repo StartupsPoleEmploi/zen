@@ -6,13 +6,14 @@ import styled from 'styled-components'
 
 import AppTitle from '../../components/Generic/AppTitle'
 import LinkButton from '../../components/Generic/LinkButton'
+import YoutubeVideo from '../../components/Generic/YoutubeVideo'
 import landingBackground from '../../images/landingBackground.svg'
-import logoPEMono from '../../images/logoPE-mono.png'
 import step3 from '../../images/paper-plane.svg'
 import step2 from '../../images/people.svg'
 import step1ToStep2 from '../../images/step1-to-step2.svg'
 import step2ToStep3 from '../../images/step2-to-step3.svg'
 import step1 from '../../images/woman-holding-phone.svg'
+import youtubeVideoThumb from '../../images/youtube-video-thumbnail.jpg'
 
 const lightBlue = '#0076FF'
 const darkBlue = '#1E2C59'
@@ -79,7 +80,7 @@ const Tagline = styled(Typography).attrs({
   }
 `
 
-const ConnectButton = styled(LinkButton).attrs({ color: 'primary' })`
+const ConnectButton = styled(LinkButton).attrs({ color: 'secondary' })`
   && {
     width: 40rem;
     max-width: 100%;
@@ -263,14 +264,10 @@ export const Home = ({ location: { search } }) => (
             S'inscrire | Se connecter
           </ConnectButton>
         </div>
-        <iframe
+        <YoutubeVideo
           title="Vidéo de présentation du service Zen"
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/IjC1vgptPX0"
-          frameBorder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
+          url="https://www.youtube.com/embed/IjC1vgptPX0"
+          image={youtubeVideoThumb}
         />
       </HeaderMain>
     </header>
@@ -330,7 +327,7 @@ export const Home = ({ location: { search } }) => (
 
     <FlexSection>
       <SectionHalfContainer>
-        <SectionTitle>
+        <SectionTitle color="primary">
           Je suis informé(e) tous les mois du début de l'actualisation
         </SectionTitle>
         <Typography>
@@ -345,7 +342,7 @@ export const Home = ({ location: { search } }) => (
 
     <FlexSectionReverse>
       <SectionHalfContainer>
-        <SectionTitle>
+        <SectionTitle color="primary">
           Je bénéficie d'une expérience plus facile pour m'actualiser.
         </SectionTitle>
         <Typography>
@@ -360,7 +357,7 @@ export const Home = ({ location: { search } }) => (
 
     <FlexSection>
       <SectionHalfContainer>
-        <SectionTitle>
+        <SectionTitle color="primary">
           <span style={{ fontWeight: 'normal' }}>
             Et si je n'ai pas mes justificatifs à temps pour l'actualisation ?
           </span>{' '}

@@ -14,6 +14,21 @@ const DeclarationReview = require('../models/DeclarationReview')
 const User = require('../models/User')
 const Status = require('../models/Status')
 
+/*
+  This is temporary behaviour while a test is conducted:
+  We have some emails stored in a json file, and we prevent
+  them from being authorized in Zen.
+ */
+let emailsToIgnore = []
+try {
+  /* eslint-disable-next-line global-require */
+  emailsToIgnore = require('../constants/users-to-ignore.json').map((email) =>
+    email.toLowerCase(),
+  )
+} catch (e) {
+  winston.warn('No user in list of users to ignore')
+}
+
 const router = express.Router()
 router.use(zip())
 
@@ -54,8 +69,12 @@ router.post('/users/authorize', (req, res, next) => {
   let query = User.query()
 
   if (useEmails) {
+    const emails = req.body.emails.filter(
+      (email) => !emailsToIgnore.includes(email.toLowerCase()),
+    )
+
     query.where(function() {
-      query = this.where('email', 'ilike', req.body.emails[0])
+      query = this.where('email', 'ilike', emails)
       req.body.emails.slice(1).forEach((email) => {
         query = this.orWhere('email', 'ilike', email)
       })

@@ -15,12 +15,9 @@ const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
-<<<<<<< HEAD
 const EmployerDocument = require('../models/EmployerDocument')
-=======
 const generatePDFName = require('../lib/files')
 
->>>>>>> WIP
 
 const docTypes = DeclarationInfo.types
 
@@ -55,8 +52,8 @@ router.get('/', (req, res, next) => {
   const limit = Number.isNaN(queryLimit)
     ? MAX_MONTHS_TO_FETCH
     : queryLimit < MAX_MONTHS_TO_FETCH
-    ? queryLimit
-    : MAX_MONTHS_TO_FETCH
+      ? queryLimit
+      : MAX_MONTHS_TO_FETCH
 
   return Declaration.query()
     .eager(eagerDeclarationString)

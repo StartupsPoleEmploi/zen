@@ -21,13 +21,11 @@ const ConsistencyErrorsDialogs = ({
             actualisation{' '}:
           </DialogContentText>
           <ul style={{ padding: 0 }}>
-            <Fragment>
-              {consistencyErrors.map((error) => (
-                <DialogContentText component="li" key={error}>
-                  {error}
-                </DialogContentText>
-              ))}
-            </Fragment>
+            {consistencyErrors.map((error) => (
+              <DialogContentText component="li" key={error}>
+                {error}
+              </DialogContentText>
+            ))}
           </ul>
           <DialogContentText>
             Confirmez-vous ces informations ?

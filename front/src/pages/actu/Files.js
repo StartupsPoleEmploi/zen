@@ -18,6 +18,8 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
+import { formattedDeclarationMonth } from '../../lib/date'
+
 
 const StyledFiles = styled.div`
   display: flex;
@@ -264,8 +266,8 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-            ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+              ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -316,8 +318,8 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-            ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+              ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -530,12 +532,15 @@ export class Files extends Component {
         employerDocType={employerCertificateType}
         isLoading={
           this.state[
-            getLoadingKey({ id: employer.id, type: employerCertificateType })
+          getLoadingKey({ id: employer.id, type: employerCertificateType })
           ]
         }
         error={
           this.state[
-            getErrorKey({ id: employer.id, type: employerCertificateType })
+          getErrorKey({
+            id: employer.id,
+            type: employerCertificateType
+          })
           ]
         }
       />
@@ -551,8 +556,8 @@ export class Files extends Component {
             employeur, car vous nous avez déjà transmis votre attestation
           </Typography>
         ) : (
-          salarySheetUpload
-        )}
+            salarySheetUpload
+          )}
       </Fragment>
     )
   }
@@ -562,8 +567,8 @@ export class Files extends Component {
   renderSection = (declaration, isOldMonth) => {
     const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
 
-    const formattedMonth = moment(declaration.declarationMonth.month).format(
-      'MMMM YYYY',
+    const formattedMonth = formattedDeclarationMonth(
+      declaration.declarationMonth.month,
     )
 
     if (declaration.isFinished) {
@@ -689,11 +694,11 @@ export class Files extends Component {
         {lastDeclaration.isFinished ? (
           <StyledTitle variant="h6" component="h1">
             Vous avez terminé l'envoi des documents du mois de{' '}
-            {moment(lastDeclaration.declarationMonth.month).format('MMMM YYYY')}
+            {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
           </StyledTitle>
         ) : (
-          this.renderSection(lastDeclaration)
-        )}
+            this.renderSection(lastDeclaration)
+          )}
         {areUnfinishedDeclarations > 0 && (
           <OtherDocumentsContainer>
             <Typography paragraph>
@@ -704,8 +709,8 @@ export class Files extends Component {
                 Afficher les documents manquants
               </Button>
             ) : (
-              declarations.slice(1).map(this.renderOldSection)
-            )}
+                declarations.slice(1).map(this.renderOldSection)
+              )}
           </OtherDocumentsContainer>
         )}
         <FilesDialog isOpened={this.state.isSendingFiles} />

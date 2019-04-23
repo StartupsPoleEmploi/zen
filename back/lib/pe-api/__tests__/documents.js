@@ -3,7 +3,7 @@ const config = require('config')
 const nock = require('nock')
 const { sendDocuments } = require('../documents')
 
-const $query = () => ({ patch: () => {} })
+const $query = () => ({ patch: () => { } })
 
 const declarationWithLotsOfDocuments = {
   id: 649,
@@ -153,7 +153,7 @@ describe('PE API: sendDocuments', () => {
     beforeAll(() => {
       uploadScope = nock(config.apiHost)
         .post(`/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`)
-        .reply(function() {
+        .reply(function () {
           parsedUploadHeadersArray.push(this.req.headers)
           return [200, { conversionId }]
         })
@@ -167,7 +167,7 @@ describe('PE API: sendDocuments', () => {
             return body
           },
         )
-        .reply(function() {
+        .reply(function () {
           parsedConfirmationHeadersArray.push(this.req.headers)
           return [200]
         })

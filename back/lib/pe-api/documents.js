@@ -96,11 +96,11 @@ const documentsToTransmitTypes = [
 
 const uploadUrl = `${
   config.apiHost
-}/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`
+  }/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`
 
 const getConfirmationUrl = (conversionId) =>
   `${
-    config.apiHost
+  config.apiHost
   }/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))

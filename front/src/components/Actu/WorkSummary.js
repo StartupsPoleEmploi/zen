@@ -43,7 +43,7 @@ const WorkSummary = ({ employers }) => {
             ? '-'
             : totalWorkHours}
         </SummaryNumber>
-        {' '}h
+        {' '}h
       </Typography>
       <Typography variant="body1">
         Salaire brut déclaré :{' '}
@@ -51,16 +51,16 @@ const WorkSummary = ({ employers }) => {
           {_isNaN(totalSalary) || totalSalary === 0 ? (
             '-'
           ) : (
-            <NumberFormat
-              thousandSeparator=" "
-              decimalSeparator=","
-              decimalScale={0}
-              fixedDecimalScale
-              displayType="text"
-              suffix=" €"
-              value={totalSalary}
-            />
-          )}
+              <NumberFormat
+                thousandSeparator=" "
+                decimalSeparator=","
+                decimalScale={0}
+                fixedDecimalScale
+                displayType="text"
+                suffix=" €"
+                value={totalSalary}
+              />
+            )}
         </SummaryNumber>
       </Typography>
     </SummaryContainer>

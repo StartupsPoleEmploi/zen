@@ -33,7 +33,7 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
           <Title variant="h6">
             Merci, votre actualisation et l'envoi de vos documents sont terminés
             {activeMonth
-              ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
+              ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
               : ' '}
             <span role="img" aria-label="Pouce levé">
               👍
@@ -55,15 +55,15 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
           </Typography>
         </Fragment>
       ) : (
-        <Fragment>
-          <Title variant="h6">
-            Merci, vos données ont bien été enregistrées.
+          <Fragment>
+            <Title variant="h6">
+              Merci, vos données ont bien été enregistrées.
           </Title>
-          <Typography paragraph>
-            Vous pourrez reprendre ultérieurement.
+            <Typography paragraph>
+              Vous pourrez reprendre ultérieurement.
           </Typography>
-        </Fragment>
-      )}
+          </Fragment>
+        )}
     </StyledThanks>
   )
 }

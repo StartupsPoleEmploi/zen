@@ -107,12 +107,12 @@ describe('employers routes', () => {
   )
 
   describe('POST /', () => {
-    test('HTTP 400 if no data sent', () =>
+    test('HTTP 400 if no data sent', () =>
       supertest(app)
         .post('/')
         .expect(400))
 
-    test('HTTP 400 if no declaration is found', () =>
+    test('HTTP 400 if no declaration is found', () =>
       supertest(app)
         .post('/')
         .send({ employers: [employer1] })
@@ -142,12 +142,12 @@ describe('employers routes', () => {
   })
 
   describe('GET /files', () => {
-    test('HTTP 400 if no employerId is sent', () =>
+    test('HTTP 400 if no employerId is sent', () =>
       supertest(app)
         .get('/files')
         .expect(400))
 
-    test('HTTP 404 if no file is found', () =>
+    test('HTTP 404 if no file is found', () =>
       supertest(app)
         .get(`/files?documentId=${IMPOSSIBLE_ID}`)
         .expect(404))

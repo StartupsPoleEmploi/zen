@@ -556,7 +556,7 @@ export class Actu extends Component {
                   user.gender === USER_GENDER_MALE
                     ? 'ou en congé paternité'
                     : ''
-                } ?`}
+                  } ?`}
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
@@ -593,7 +593,7 @@ export class Actu extends Component {
                 </DeclarationQuestion>
               )}
               <DeclarationQuestion
-                label="Percevez-vous une nouvelle pension retraite ?"
+                label="Percevez-vous une nouvelle pension retraite ?"
                 name="hasRetirement"
                 value={this.state.hasRetirement}
                 onAnswer={this.onAnswer}
@@ -631,7 +631,7 @@ export class Actu extends Component {
             <StyledPaper>
               <List>
                 <DeclarationQuestion
-                  label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
+                  label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
                   name="isLookingForJob"
                   value={this.state.isLookingForJob}
                   onAnswer={this.onAnswer}

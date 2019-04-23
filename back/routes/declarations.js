@@ -324,9 +324,9 @@ router.post('/finish', (req, res, next) => {
           // If employer contract is still going on, we only need one document (the salary sheet)
           // to validate it. Otherwise, we need an employer certificate.
           if (!employer.hasEndedThisMonth) {
-            return employer.documents.length !== 0
+            return employer.documents.length === 0
           }
-          return employer.documents.some(
+          return !employer.documents.find(
             ({ type }) => type === EmployerDocument.types.employerCertificate,
           )
         },
@@ -359,8 +359,9 @@ router.post('/finish', (req, res, next) => {
         !declaration.hasFinishedDeclaringEmployers ||
         hasMissingEmployersDocuments ||
         hasMissingDeclarationDocuments
-      )
+      ) {
         return res.status(400).json('Declaration not complete')
+      }
 
       if (busyDeclarations.includes(declaration.id)) {
         return res.status(400).json('Already busy sending files')

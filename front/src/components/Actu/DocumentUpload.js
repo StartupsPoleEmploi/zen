@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import Autorenew from '@material-ui/icons/Autorenew'
 import Check from '@material-ui/icons/Check'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
+import Info from '@material-ui/icons/InfoOutlined'
 import Eye from '@material-ui/icons/RemoveRedEye'
 import Warning from '@material-ui/icons/WarningRounded'
 import PropTypes from 'prop-types'
@@ -17,8 +18,6 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import CustomColorButton from '../Generic/CustomColorButton'
-
-// TODO merge with EmployerDocumentUpload
 
 const StyledContainer = styled.div`
   display: flex;
@@ -75,6 +74,10 @@ const Container = styled.div`
   align-items: center;
 `
 
+const InfoIcon = styled(Info)`
+  margin-left: 0.5rem;
+`
+
 const EyeIcon = styled(Eye)`
   margin-right: 2rem;
 `
@@ -95,37 +98,58 @@ const SideButton = styled(Button)`
   }
 `
 
-export class AdditionalDocumentUpload extends Component {
+const employerType = 'employer'
+const infosType = 'infos'
+
+export class DocumentUpload extends Component {
   static propTypes = {
-    declarationInfoId: PropTypes.number,
+    id: PropTypes.number,
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
     label: PropTypes.string.isRequired,
+    caption: PropTypes.string,
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
     allowSkipFile: PropTypes.bool,
     skipFile: PropTypes.func.isRequired,
+    type: PropTypes.oneOf([employerType, infosType]),
+    infoTooltipText: PropTypes.string,
+    employerId: PropTypes.number,
+    employerDocType: PropTypes.string,
   }
+
+  static types = { employer: employerType, infos: infosType }
 
   submitFile = ({ target: { files } }) =>
     this.props.submitFile({
       file: files[0],
-      declarationInfoId: this.props.declarationInfoId,
+      documentId: this.props.id,
+      type: this.props.type,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
     })
 
   skipFile = () =>
-    this.props.skipFile({ declarationInfoId: this.props.declarationInfoId })
+    this.props.skipFile({
+      type: this.props.type,
+      documentId: this.props.id,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
 
   render() {
     const {
-      declarationInfoId,
+      id,
+      caption,
       error,
       fileExistsOnServer,
       isLoading,
       isTransmitted,
       label,
       allowSkipFile,
+      type,
+      infoTooltipText,
     } = this.props
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
@@ -139,12 +163,47 @@ export class AdditionalDocumentUpload extends Component {
       />
     )
 
+    const url =
+      type === employerType
+        ? `/api/employers/files?documentId=${id}`
+        : `/api/declarations/files?declarationInfoId=${id}`
+
     return (
       <StyledContainer>
         <StyledListItem
           style={{ borderColor: fileExistsOnServer ? '#3e689b' : '#df5555' }}
         >
-          <ListItemText primary={<b>{label}</b>} />
+          <ListItemText
+            primary={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div>
+                  <b>{label}</b>
+                  {caption && (
+                    <Fragment>
+                      <br />
+                      <Typography variant="caption">{caption}</Typography>
+                    </Fragment>
+                  )}
+                </div>
+                {infoTooltipText && (
+                  <Tooltip
+                    title={
+                      <Typography style={{ color: '#fff' }}>
+                        {infoTooltipText}
+                      </Typography>
+                    }
+                    placement="top"
+                    enterDelay={0}
+                    leaveDelay={1500}
+                    enterTouchDelay={0}
+                    leaveTouchDelay={3000}
+                  >
+                    <InfoIcon />
+                  </Tooltip>
+                )}
+              </div>
+            }
+          />
           <FormControl>
             {isLoading ? (
               <CircularProgress />
@@ -155,7 +214,7 @@ export class AdditionalDocumentUpload extends Component {
                   : fileExistsOnServer && (
                       <Button
                         variant="outlined"
-                        href={`/api/declarations/files?declarationInfoId=${declarationInfoId}`}
+                        href={url}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
@@ -231,4 +290,4 @@ export class AdditionalDocumentUpload extends Component {
   }
 }
 
-export default AdditionalDocumentUpload
+export default DocumentUpload

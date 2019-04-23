@@ -392,11 +392,17 @@ export class Actu extends Component {
   }
 
   // display job check if not validated for current month and should ask again (default)
-  shouldDisplayJobCheck = () =>
-    !moment(get(this.state[JOB_CHECK_KEY], 'validatedForMonth')).isSame(
-      this.props.activeMonth,
-      'month',
-    ) && get(this.state[JOB_CHECK_KEY], 'shouldAskAgain', true)
+  shouldDisplayJobCheck = () => {
+    const lastMonthValidated = get(
+      this.state[JOB_CHECK_KEY],
+      'validatedForMonth',
+    )
+    if (!lastMonthValidated) return true
+    return (
+      !moment(lastMonthValidated).isSame(this.props.activeMonth, 'month') &&
+      get(this.state[JOB_CHECK_KEY], 'shouldAskAgain', true)
+    )
+  }
 
   addDates = (type) =>
     this.setState((prevState) => ({

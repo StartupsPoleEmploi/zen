@@ -154,18 +154,18 @@ router.post('/', requireActiveMonth, (req, res, next) => {
             Promise.all([
               savedDeclaration,
               !declaration &&
-              ActivityLog.query(trx).insert({
-                userId: req.session.user.id,
-                action: ActivityLog.actions.VALIDATE_DECLARATION,
-              }),
+                    ActivityLog.query(trx).insert({
+                      userId: req.session.user.id,
+                      action: ActivityLog.actions.VALIDATE_DECLARATION,
+                    }),
               !declarationData.hasWorked &&
-              ActivityLog.query(trx).insert({
-                userId: req.session.user.id,
-                action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-                metadata: JSON.stringify({
-                  declarationId: savedDeclaration.id,
-                }),
-              }),
+                    ActivityLog.query(trx).insert({
+                      userId: req.session.user.id,
+                      action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                      metadata: JSON.stringify({
+                        declarationId: savedDeclaration.id,
+                      }),
+                    }),
             ]),
           ),
         )
@@ -275,10 +275,10 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
       const documentFileObj = req.body.skip
         ? {
-          // Used in case the user sent his file by another means.
-          file: null,
-          isTransmitted: true,
-        }
+            // Used in case the user sent his file by another means.
+            file: null,
+            isTransmitted: true,
+          }
         : { file: req.file.filename }
 
       return declarationInfo

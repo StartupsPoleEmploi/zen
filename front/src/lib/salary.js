@@ -8,15 +8,50 @@ export const MAX_SALARY = 99999
 export const MAX_WORK_HOURS = 999
 
 export const calculateTotal = (employers, field, lowLimit, highLimit) => {
-  const total = employers.reduce((prev, employer) => {
-    const number = parseFloat(
-      isObject(employer[field]) ? employer[field].value : employer[field],
-    )
-    if (number < lowLimit || number > highLimit) return NaN
-    return number + prev
-  }, 0)
+                                                                           const total = employers.reduce(
+                                                                             (
+                                                                               prev,
+                                                                               employer,
+                                                                             ) => {
+                                                                               const number = parseFloat(
+                                                                                 isObject(
+                                                                                   employer[
+                                                                                     field
+                                                                                   ],
+                                                                                 )
+                                                                                   ? employer[
+                                                                                       field
+                                                                                     ]
+                                                                                       .value
+                                                                                   : employer[
+                                                                                       field
+                                                                                     ],
+                                                                               )
+                                                                               if (
+                                                                                 number <
+                                                                                   lowLimit ||
+                                                                                 number >
+                                                                                   highLimit
+                                                                               )
+                                                                                 return NaN
+                                                                               return (
+                                                                                 number +
+                                                                                 prev
+                                                                               )
+                                                                             },
+                                                                             0,
+                                                                           )
 
-  if (total < lowLimit || total > highLimit) return NaN
+                                                                           if (
+                                                                             total <
+                                                                               lowLimit ||
+                                                                             total >
+                                                                               highLimit
+                                                                           )
+                                                                             return NaN
 
-  return Math.round(total, 10)
-}
+                                                                           return Math.round(
+                                                                             total,
+                                                                             10,
+                                                                           )
+                                                                         }

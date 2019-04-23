@@ -556,7 +556,7 @@ export class Actu extends Component {
                   user.gender === USER_GENDER_MALE
                     ? 'ou en congé paternité'
                     : ''
-                  } ?`}
+            } ?`}
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
@@ -675,7 +675,12 @@ export class Actu extends Component {
             <FinalButtonsContainer>
               <MainActionButton
                 primary
-                onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
+                onClick={
+                  
+                  this.state.hasWorked ? this.onSubmit : this.openDialog
+                
+                
+                }
               >
                 Suivant
               </MainActionButton>

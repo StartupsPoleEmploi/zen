@@ -31,7 +31,11 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
       {isDeclarationFinished ? (
         <Fragment>
           <Title variant="h6">
-            Merci, votre actualisation et l'envoi de vos documents sont terminés
+            Merci, votre actualisation et l'envoi de vos documents sont
+           
+           
+           
+            terminés
             {activeMonth
               ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
               : ' '}
@@ -40,30 +44,30 @@ export const Thanks = ({ activeMonth, location: { search } }) => {
             </span>
           </Title>
           <Typography paragraph>
-            Pôle Emploi va recevoir et traiter les documents que vous nous avez
-            fait parvenir. Si vous rencontrez un problème ou si vous vous posez
-            des questions, vous pouvez joindre votre conseiller depuis votre
-            espace personnel.
+            Pôle Emploi va recevoir et traiter les documents que vous
+        posez posez     avez avez fait parvenir. Si vous rencontrez un problème ou si vous
+         avez    posez posez des questions, vous joindre votre conseiller depuis
+          votre votre  votre  votre espace personnel.
           </Typography>
           <br />
           <Typography paragraph>
-            Si vous souhaitez transmettre d'autres documents pour de précédentes
-            actualisations effectuées via Zen,{' '}
+            Si vous souhaitez transmettre d'autres documents pour de
+            précédentes actualisations effectuées via Zen,{' '}
             <Link to="/files">
               cliquez ici pour revenir à la page d'envoi de documents.
             </Link>
           </Typography>
         </Fragment>
       ) : (
-          <Fragment>
-            <Title variant="h6">
-              Merci, vos données ont bien été enregistrées.
+        <Fragment>
+      <Title variant="h6">
+         Merci, vos données ont bien été enregistrées.
           </Title>
-            <Typography paragraph>
-              Vous pourrez reprendre ultérieurement.
+          <Typography paragraph>
+      Vous pourrez reprendre ultérieurement.
           </Typography>
-          </Fragment>
-        )}
+        </Fragment>
+    )}
     </StyledThanks>
   )
 }

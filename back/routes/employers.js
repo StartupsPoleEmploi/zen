@@ -152,12 +152,12 @@ router.post('/', requireActiveMonth, (req, res, next) => {
               declaration.$query(trx).upsertGraph(),
               shouldLog
                 ? ActivityLog.query(trx).insert({
-                  userId: req.session.user.id,
-                  action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-                  metadata: JSON.stringify({
-                    declarationId: declaration.id,
-                  }),
-                })
+                    userId: req.session.user.id,
+                    action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+                    metadata: JSON.stringify({
+                      declarationId: declaration.id,
+                    }),
+                  })
                 : Promise.resolve(),
             ]),
           ).then(() => res.json(declaration))
@@ -218,11 +218,11 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
       const documentFileObj = req.body.skip
         ? {
-          // Used in case the user sent his file by another means.
-          file: null,
-          isTransmitted: true,
-          type,
-        }
+            // Used in case the user sent his file by another means.
+            file: null,
+            isTransmitted: true,
+            type,
+          }
         : { file: req.file.filename, type }
 
       const documentIndex = employer.documents.findIndex(

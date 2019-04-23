@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -11,6 +11,8 @@ import Print from '@material-ui/icons/Print'
 
 import MainActionButton from '../../components/Generic/MainActionButton'
 import moneyBank from '../../images/money-bank.svg'
+
+const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 
 const StyledThanks = styled.div`
   margin: auto;
@@ -34,7 +36,7 @@ const ButtonsContainers = styled.div`
   margin-bottom: 5rem;
 `
 
-const DownloadButton = styled(MainActionButton)`
+const DownloadButton = styled(MainActionButton).attrs({ component: 'a' })`
   && {
     flex: 1;
     width: 20rem;
@@ -65,83 +67,116 @@ const StyledPrint = styled(Print)`
   }
 `
 
-export const Thanks = ({ activeMonth, location: { search } }) => {
-  const isDeclarationFinished = !search.includes('later')
+export default class Thanks extends Component {
+  constructor(props) {
+    super(props)
 
-  function downloadFiles() {
-    alert('Download')
+    this.state = {
+      showPrintIframe: false,
+      isDeclarationFinished: !this.props.location.search.includes('later'),
+    }
   }
 
-  function printFiles() {
-    alert('Print')
+  printDeclaration = (e) => {
+    e.preventDefault()
+
+    if (this.state.showPrintIframe) {
+      /*
+      To make declaration printable, we need to keep the iframe open.
+      So when the user want to print declation again, we remove briefly
+      to the iframe to create a new one.
+      */
+      this.setState({ showPrintIframe: false })
+      setTimeout(() => this.setState({ showPrintIframe: true }), 250)
+    } else {
+      this.setState({ showPrintIframe: true })
+    }
   }
 
-  return (
-    <StyledThanks>
-      <StyledImg src={moneyBank} alt="" />
-      {isDeclarationFinished ? (
-        <Fragment>
-          <Title variant="h6">
-            Merci, votre actualisation et l'envoi de vos documents sont terminés
-            {activeMonth
-              ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
-              : ' '}
-            <span aria-hidden="true">👍</span>
-          </Title>
+  printIframeContent = (e) => {
+    e.target.contentWindow.print()
+  }
 
-          <ButtonsContainers>
-            <DownloadButton
-              primary={false}
-              onClick={downloadFiles}
-              style={{ marginRight: '3rem' }}
-            >
-              <StyledDownload />
-              <ButtonText>
-                Télécharger
-                <br /> ma déclaration
-              </ButtonText>
-            </DownloadButton>
-            <DownloadButton primary={false} onClick={printFiles}>
-              <StyledPrint />
-              <ButtonText>
-                Imprimer
-                <br /> ma déclaration
-              </ButtonText>
-            </DownloadButton>
-          </ButtonsContainers>
+  render() {
+    const { showPrintIframe } = this.state
+    const { activeMonth } = this.props
 
-          <Typography paragraph>
-            Pôle Emploi va recevoir et traiter les documents que vous nous avez
-            fait parvenir. Si vous rencontrez un problème ou si vous vous posez
-            des questions, vous pouvez joindre votre conseiller depuis votre
-            espace personnel.
-          </Typography>
-          <br />
-          <Typography paragraph>
-            Si vous souhaitez transmettre d'autres documents pour de précédentes
-            actualisations effectuées via Zen,{' '}
-            <Link to="/files">
-              cliquez ici pour revenir à la page d'envoi de documents.
-            </Link>
-          </Typography>
-        </Fragment>
-      ) : (
+    return (
+      <StyledThanks>
+        <StyledImg src={moneyBank} alt="" />
+        {this.state.isDeclarationFinished ? (
           <Fragment>
             <Title variant="h6">
-              Merci, vos données ont bien été enregistrées.
-          </Title>
+              Merci, votre actualisation et l'envoi de vos documents sont terminés
+              {activeMonth
+                ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
+                : ' '}
+              <span aria-hidden="true">👍</span>
+            </Title>
+
+            <ButtonsContainers>
+              <DownloadButton
+                primary={false}
+                href="/api/declarations/summary-file?download=true"
+                target="_blank"
+                title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
+                style={{ marginRight: '3rem' }}
+              >
+                <StyledDownload />
+                <ButtonText>
+                  Télécharger
+                  <br /> ma déclaration
+                </ButtonText>
+              </DownloadButton>
+              <DownloadButton primary={false} onClick={this.printDeclaration}>
+                <StyledPrint />
+                <ButtonText>
+                  Imprimer
+                  <br /> ma déclaration
+                </ButtonText>
+              </DownloadButton>
+            </ButtonsContainers>
+
             <Typography paragraph>
-              Vous pourrez reprendre ultérieurement.
-          </Typography>
+              Pôle Emploi va recevoir et traiter les documents que vous nous
+              avez fait parvenir. Si vous rencontrez un problème ou si vous vous
+              posez des questions, vous pouvez joindre votre conseiller depuis
+              votre espace personnel.
+            </Typography>
+            <br />
+            <Typography paragraph>
+              Si vous souhaitez transmettre d'autres documents pour de
+              précédentes actualisations effectuées via Zen,{' '}
+              <Link to="/files">
+                cliquez ici pour revenir à la page d'envoi de documents.
+              </Link>
+            </Typography>
+
+            {showPrintIframe && (
+              <iframe
+                src={DECLARATION_FILE_URL}
+                title="Aucun contenu (dispositif technique)"
+                style={{ display: 'none' }}
+                onLoad={this.printIframeContent}
+              />
+            )}
           </Fragment>
-        )}
-    </StyledThanks>
-  )
+        ) : (
+            <Fragment>
+              <Title variant="h6">
+                Merci, vos données ont bien été enregistrées.
+            </Title>
+              <Typography paragraph>
+                Vous pourrez reprendre ultérieurement.
+            </Typography>
+            </Fragment>
+          )}
+      </StyledThanks>
+    )
+  }
 }
 
 Thanks.propTypes = {
   activeMonth: PropTypes.instanceOf(Date),
   location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
 }
-
-export default Thanks

@@ -22,6 +22,15 @@ export const generatePDFName = (declaration) => {
   return `${declarationDate}__${declaration.userId}.pdf`
 }
 
+const getFriendlyPDFName = (declaration) => {
+  const declarationDate = format(
+    declaration.declarationMonth.month,
+    'MMMM-YYYY',
+    { locale: fr },
+  )
+  return `declaration-${declarationDate}.pdf`
+}
+
 
 const generatePDFPath = (declaration) => {
   return `${uploadsDeclarationDirectory}${generatePDFName(declaration)}`
@@ -165,4 +174,9 @@ const getDeclarationPDF = (declaration) => {
   })
 }
 
-module.exports = getDeclarationPDF
+module.exports = {
+  getDeclarationPDF,
+  generatePDFName,
+  generatePDFPath,
+  getFriendlyPDFName,
+}

@@ -15,8 +15,13 @@ const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
+
 const EmployerDocument = require('../models/EmployerDocument')
-const generatePDFName = require('../lib/files')
+const {
+  generatePDFPath,
+  getDeclarationPDF,
+  getFriendlyPDFName,
+} = require('../lib/files')
 
 
 const docTypes = DeclarationInfo.types
@@ -245,6 +250,8 @@ router.post('/', requireActiveMonth, (req, res, next) => {
 })
 
 router.get('/summary-file', requireActiveMonth, (req, res, next) => {
+  const download = req.query.download === 'true'
+
   return Declaration.query()
     .findOne({
       id: req.body.id,
@@ -257,7 +264,18 @@ router.get('/summary-file', requireActiveMonth, (req, res, next) => {
 
         return res.status(400).json('Please send declaration first')
 
-      res.sendFile(generatePDFName(declaration), { root: uploadsDeclarationDirectory })
+      getDeclarationPDF(declaration)
+        .then(() => {
+          const pdfPath = generatePDFPath(declaration)
+          const filename = getFriendlyPDFName(declaration)
+
+          if (download) {
+            res.download(pdfPath, filename)
+          } else {
+            res.sendFile(pdfPath)
+          }
+        })
+        .catch(next)
     }).catch(next)
 })
 

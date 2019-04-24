@@ -86,19 +86,21 @@ router.post('/users/authorize', (req, res, next) => {
   // first get users to avoid sending "welcome" message to already subscribed users
   return query
     .andWhere('isAuthorized', false)
-    .then((users) =>
-      Promise.all([
-        User.query()
-          .patch({ isAuthorized: true })
-          .whereIn('id', users.map((user) => user.id)),
-        users.length > 0 &&
-          mailjet.authorizeContactsAndSendConfirmationEmails({
-            users,
-            activeMonth: get(req.activeMonth, 'month'),
-          }),
-      ]),
-    )
-    .then(([updatedRowsNb]) =>
+    .then((users) => {
+      if (users.length === 0) return
+
+      return mailjet
+        .authorizeContactsAndSendConfirmationEmails({
+          users,
+          activeMonth: get(req.activeMonth, 'month'),
+        })
+        .then(() =>
+          User.query()
+            .patch({ isAuthorized: true })
+            .whereIn('id', users.map((user) => user.id)),
+        )
+    })
+    .then((updatedRowsNb = 0) =>
       res.json({
         updatedRowsNb,
       }),

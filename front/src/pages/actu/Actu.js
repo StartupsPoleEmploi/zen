@@ -304,7 +304,7 @@ export class Actu extends Component {
     }
 
     if (
-      hasMaternityLeave &&
+      hasRetirement &&
       !infos.some(
         ({ type, startDate }) => type === types.RETIREMENT && startDate,
       )
@@ -313,7 +313,7 @@ export class Actu extends Component {
     }
 
     if (
-      hasMaternityLeave &&
+      hasInvalidity &&
       !infos.some(
         ({ type, startDate }) => type === types.INVALIDITY && startDate,
       )

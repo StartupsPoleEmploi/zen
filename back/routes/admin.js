@@ -73,9 +73,15 @@ router.post('/users/authorize', (req, res, next) => {
       (email) => !emailsToIgnore.includes(email.toLowerCase()),
     )
 
+    if (emails.length === 0) {
+      return res.json({
+        updatedRowsNb: 0,
+      })
+    }
+
     query.where(function() {
-      query = this.where('email', 'ilike', emails)
-      req.body.emails.slice(1).forEach((email) => {
+      query = this.where('email', 'ilike', emails[0])
+      emails.slice(1).forEach((email) => {
         query = this.orWhere('email', 'ilike', email)
       })
     })

@@ -62,7 +62,6 @@ const ErrorMessage = styled(Typography)`
 
 const OtherDocumentsContainer = styled.div`
   background-color: #f2f2f2;
-  text-align: center;
 
   /* Overflowing background*/
   padding: 1rem;
@@ -696,7 +695,7 @@ export class Files extends Component {
         )}
         {areUnfinishedDeclarations > 0 && (
           <OtherDocumentsContainer>
-            <Typography paragraph>
+            <Typography paragraph style={{ textAlign: 'center' }}>
               Des documents de précédents mois n'ont pas encore été transmis
             </Typography>
             {!this.state.showMissingDocs ? (

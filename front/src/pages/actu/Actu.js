@@ -15,7 +15,7 @@ import store from 'store2'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import DeclarationDialog from '../../components/Actu/DeclarationDialog'
+import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import UserJobCheck from '../../components/Actu/UserJobCheck'
 import DatePicker from '../../components/Generic/DatePicker'
@@ -102,13 +102,19 @@ const formFields = [
   'jobSearchStopMotive',
 ]
 
-const types = {
+export const types = {
   INTERNSHIP: 'internship',
   SICK_LEAVE: 'sickLeave',
   MATERNITY_LEAVE: 'maternityLeave',
   RETIREMENT: 'retirement',
   INVALIDITY: 'invalidity',
   JOB_SEARCH: 'jobSearch',
+}
+
+export const JOB_SEARCH_END_MOTIVE = {
+  WORK: 'work',
+  RETIREMENT: 'retirement',
+  OTHER: 'other',
 }
 
 const JOB_CHECK_KEY = 'canUseService'
@@ -650,17 +656,17 @@ export class Actu extends Component {
                     onChange={this.onJobSearchStopMotive}
                   >
                     <FormControlLabel
-                      value="work"
+                      value={JOB_SEARCH_END_MOTIVE.WORK}
                       control={<Radio color="primary" />}
                       label="Reprise du travail"
                     />
                     <FormControlLabel
-                      value="retirement"
+                      value={JOB_SEARCH_END_MOTIVE.RETIREMENT}
                       control={<Radio color="primary" />}
                       label="Retraite"
                     />
                     <FormControlLabel
-                      value="other"
+                      value={JOB_SEARCH_END_MOTIVE.OTHER}
                       control={<Radio color="primary" />}
                       label="Autre"
                     />
@@ -683,7 +689,7 @@ export class Actu extends Component {
           </AlwaysVisibleContainer>
         </form>
 
-        <DeclarationDialog
+        <DeclarationDialogsHandler
           isLoading={this.state.isValidating}
           isOpened={this.state.isDialogOpened}
           onCancel={this.closeDialog}

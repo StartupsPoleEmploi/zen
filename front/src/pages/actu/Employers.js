@@ -18,7 +18,7 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import DeclarationDialog from '../../components/Actu/DeclarationDialog'
+import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
@@ -26,13 +26,14 @@ import WorkSummary from '../../components/Actu/WorkSummary'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
 import MainActionButton from '../../components/Generic/MainActionButton'
 
-// Note : these values are duplicated in WorkSummary
-const WORK_HOURS = 'workHours'
-const SALARY = 'salary'
-const MIN_SALARY = 1
-const MIN_WORK_HOURS = 1
-const MAX_SALARY = 99999
-const MAX_WORK_HOURS = 999
+import {
+  WORK_HOURS,
+  SALARY,
+  MIN_SALARY,
+  MIN_WORK_HOURS,
+  MAX_SALARY,
+  MAX_WORK_HOURS,
+} from '../../lib/salary'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -170,7 +171,8 @@ const calculateTotal = (employers, field) => {
 export class Employers extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
-    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    history: PropTypes.shape({ push: PropTypes.func.isRequired })
+      .isRequired,
     token: PropTypes.string.isRequired,
   }
 
@@ -208,7 +210,10 @@ export class Employers extends Component {
           return this.setState({
             employers: relevantPreviousEmployers.map((employer) => ({
               ...employerTemplate,
-              employerName: { value: employer.employerName, error: null },
+              employerName: {
+                value: employer.employerName,
+                error: null,
+              },
             })),
             previousEmployers: relevantPreviousEmployers,
             showPreviousEmployersModal: true,
@@ -228,7 +233,10 @@ export class Employers extends Component {
             ).reduce(
               (obj, fieldName) => ({
                 ...obj,
-                [fieldName]: { value: employer[fieldName], error: null },
+                [fieldName]: {
+                  value: employer[fieldName],
+                  error: null,
+                },
               }),
               {},
             ),
@@ -240,14 +248,13 @@ export class Employers extends Component {
 
   componentWillUnmount() {
     // Save at exit, but avoid saving in case where the user is redirected somewhere else
-    // So we make sure data was loaded, and curent declaration hasn't been validated for employers yet
+    // So we make sure data was loaded, and curent declaration
+    // hasn't been validated for employers,yet
     if (
       !this.state.isLoading &&
       !this.hasSubmittedAndFinished &&
-      get(
-        this.state.currentDeclaration,
-        'hasFinishedDeclaringEmployers',
-      ) === false
+      get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
+      false
     ) {
       this.onSave()
     }
@@ -281,20 +288,26 @@ export class Employers extends Component {
   onSave = () =>
     superagent
       .post('/api/employers', {
-        employers: getEmployersMapFromFormData(this.state.employers),
+        employers: getEmployersMapFromFormData(
+          this.state.employers,
+        ),
       })
       .set('CSRF-Token', this.props.token)
       .then((res) => res) // Not triggered without a then
 
   saveAndRedirect = () =>
-    this.onSave().then(() => this.props.history.push('/thanks?later'))
+    this.onSave().then(() =>
+      this.props.history.push('/thanks?later'),
+    )
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
 
     return superagent
       .post('/api/employers', {
-        employers: getEmployersMapFromFormData(this.state.employers),
+        employers: getEmployersMapFromFormData(
+          this.state.employers,
+        ),
         isFinished: true,
         ignoreErrors,
       })
@@ -311,7 +324,8 @@ export class Employers extends Component {
         ) {
           // We handle the error inside the modal
           return this.setState({
-            consistencyErrors: err.response.body.consistencyErrors,
+            consistencyErrors:
+              err.response.body.consistencyErrors,
             validationErrors: err.response.body.validationErrors,
             isValidating: false,
           })
@@ -368,6 +382,7 @@ export class Employers extends Component {
     if (isFormValid) {
       const workHoursTotal = calculateTotal(employersFormData, WORK_HOURS)
       const salaryTotal = calculateTotal(employersFormData, SALARY)
+
 
       if (workHoursTotal > MAX_WORK_HOURS) {
         error += `Vous ne pouvez pas déclarer plus de ${MAX_WORK_HOURS}h totales de travail. `
@@ -433,8 +448,7 @@ export class Employers extends Component {
       <StyledEmployers>
         <Title variant="h6" component="h1">
           Pour quels employeurs avez-vous travaillé en{' '}
-          {moment(this.props.activeMonth).format('MMMM YYYY')}
-          {' '}?
+          {moment(this.props.activeMonth).format('MMMM YYYY')} ?
         </Title>
         <Form>
           {employers.map(this.renderEmployerQuestion)}
@@ -448,7 +462,7 @@ export class Employers extends Component {
               size="small"
             >
               + Ajouter un employeur
-            </AddEmployersButton>
+                   </AddEmployersButton>
             <LineDiv />
           </AddEmployersButtonContainer>
 
@@ -460,17 +474,12 @@ export class Employers extends Component {
             <WorkSummary employers={employers} />
 
             <ButtonsContainer>
-              <StyledMainActionButton
-                primary={false}
-                onClick={this.saveAndRedirect}
-              >
+              <StyledMainActionButton primary={false} onClick={this.saveAndRedirect}>
                 Enregistrer
                 <br />
                 et finir plus tard
               </StyledMainActionButton>
-              <StyledMainActionButton
-                primary
-                onClick={this.openDialog}>
+              <StyledMainActionButton primary onClick={this.openDialog}>
                 Envoyer mon
                 <br />
                 actualisation
@@ -478,11 +487,14 @@ export class Employers extends Component {
             </ButtonsContainer>
           </StyledAlwaysVisibleContainer>
         </Form>
-        <DeclarationDialog
+
+        <DeclarationDialogsHandler
           isLoading={this.state.isValidating}
           isOpened={this.state.isDialogOpened}
           onCancel={this.closeDialog}
           onConfirm={this.onSubmit}
+          declaration={this.state.currentDeclaration}
+          employers={this.state.employers}
           consistencyErrors={this.state.consistencyErrors}
           validationErrors={this.state.validationErrors}
         />

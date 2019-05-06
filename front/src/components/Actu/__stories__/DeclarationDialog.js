@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { host } from 'storybook-host'
 
-import DeclarationDialog from '../DeclarationDialog'
+import DeclarationDialogsHandler from '../DeclarationDialogs/DeclarationDialogsHandler'
 
 const defaultProps = {
   isOpened: true,
@@ -21,10 +21,12 @@ storiesOf('DeclarationDialog', module)
       width: 600,
     }),
   )
-  .add('default', () => <DeclarationDialog {...defaultProps} />)
-  .add('loading', () => <DeclarationDialog {...defaultProps} isLoading />)
+  .add('default', () => <DeclarationDialogsHandler {...defaultProps} />)
+  .add('loading', () => (
+    <DeclarationDialogsHandler {...defaultProps} isLoading />
+  ))
   .add('consistency error', () => (
-    <DeclarationDialog
+    <DeclarationDialogsHandler
       {...defaultProps}
       consistencyErrors={[
         'Arrêt du travail du 02/03 au 01/03',
@@ -33,7 +35,7 @@ storiesOf('DeclarationDialog', module)
     />
   ))
   .add('validation error', () => (
-    <DeclarationDialog
+    <DeclarationDialogsHandler
       {...defaultProps}
       validationErrors={['Votre statut ne vous permet pas de déclarer ceci']}
     />

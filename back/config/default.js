@@ -10,6 +10,7 @@ module.exports = {
   // should be the same ASAP.
   // https://github.com/Unitech/pm2/issues/3158
   uploadsDirectory: '/home/back/uploads/',
+  uploadsDeclarationDirectory: '/home/back/uploads/declarations/',
   shouldSendCampaignEmails: process.env.SEND_CAMPAIGN_EMAILS === 'true',
   shouldSendTransactionalEmails:
     process.env.SEND_TRANSACTIONAL_EMAILS === 'true',

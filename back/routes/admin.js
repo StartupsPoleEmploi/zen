@@ -2,6 +2,7 @@ const express = require('express')
 const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
+const superagent = require('superagent')
 const { get, isUndefined, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
@@ -217,12 +218,18 @@ router.post('/status', (req, res, next) =>
     .update({ up: req.body.up })
     .returning('*')
     .then((result) => {
-      winston.info(
-        `Following action in administration interface, Zen is now *${
-          req.body.up ? '' : 'de'
-        }activated*`,
-      )
-      res.json(result[0])
+      const message = `Following action in administration interface, Zen is now *${
+        req.body.up ? '' : 'de'
+      }activated*`
+
+      // No return for this promise : Slack being up or not should prevent us from sending back a 200
+      superagent
+        .post(process.env.SLACK_WEBHOOK_SU_ZEN, {
+          text: message,
+        })
+        .catch((err) => winston.warn('Error sending message to Slack', err))
+
+      return res.json(result[0])
     })
     .catch(next),
 )

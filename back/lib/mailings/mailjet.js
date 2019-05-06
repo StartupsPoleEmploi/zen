@@ -123,12 +123,10 @@ module.exports = {
 
         const message = `L'envoi de la campagne e-mail *${
           campaignInfos.Title
-        }* est programmé et sera effectuée le *${format(
+        }* est programmé et sera effectué le *${format(
           scheduledDate,
           'DD/MM/YYYY à HH:mm',
-        )}*. Merci de vérifier le segment utilisé à l'adresse https://app.mailjet.com/segmentation/edit/${
-          campaignInfos.SegmentationID
-        } en vérifiant le nombre d'utilisateurs concernés (sélectionner la liste « Utilisateurs » et appuyer sur « Calculer »)`
+        )}*. Merci d'en vérifier les détails à l'adresse https://app.mailjet.com/campaigns`
 
         return superagent.post(process.env.SLACK_WEBHOOK_SU_ZEN, {
           text: message,

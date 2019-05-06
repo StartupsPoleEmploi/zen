@@ -11,7 +11,8 @@ const FilesDialog = ({ isOpened }) => (
       <Fragment>
         <CircularProgress />
         <DialogContentText>
-          Envoi en cours…<br />
+          Envoi en cours…
+          <br />
           Merci de patienter et de ne pas fermer cette fenêtre…
         </DialogContentText>
       </Fragment>

@@ -28,7 +28,8 @@ describe('Declaration Model', () => {
     ]).then(([savedUser, declarationMonth]) => {
       user = savedUser
       validDeclaration.monthId = declarationMonth.id
-    }))
+    }),
+  )
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE'))
 
   afterEach(() => Declaration.knex().raw('TRUNCATE "declarations" CASCADE'))

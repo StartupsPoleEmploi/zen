@@ -15,7 +15,8 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
           directement par{' '}
           <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
             Pole-Emploi.fr
-          </a>.
+          </a>
+          .
         </DialogContentText>
         <DialogContentText gutterBottom>
           Vous ne pouvez donc utiliser Zen pour votre actualisation ce mois-ci.

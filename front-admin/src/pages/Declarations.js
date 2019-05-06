@@ -16,20 +16,17 @@ export const Declarations = () => {
     })
   }, [])
 
-  useEffect(
-    () => {
-      if (!selectedMonthId) return
-      setIsLoading(true)
+  useEffect(() => {
+    if (!selectedMonthId) return
+    setIsLoading(true)
 
-      superagent
-        .get(`/zen-admin-api/declarations?monthId=${selectedMonthId}`)
-        .then(({ body }) => {
-          setDeclarations(body)
-          setIsLoading(false)
-        })
-    },
-    [selectedMonthId],
-  )
+    superagent
+      .get(`/zen-admin-api/declarations?monthId=${selectedMonthId}`)
+      .then(({ body }) => {
+        setDeclarations(body)
+        setIsLoading(false)
+      })
+  }, [selectedMonthId])
 
   return (
     <div style={{ textAlign: 'center' }}>

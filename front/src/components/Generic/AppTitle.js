@@ -6,7 +6,7 @@ const BLUE = '#39679e'
 
 const StyledTitle = styled(Typography).attrs({
   variant: 'h4',
-  component: 'div'
+  component: 'div',
 })`
   && {
     color: #000;

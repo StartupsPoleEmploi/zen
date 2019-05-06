@@ -44,7 +44,6 @@ const Value = styled(Typography).attrs({
   }
 `
 
-
 const calculateTotal = (employers, field, lowLimit, highLimit) => {
   const total = employers.reduce((prev, employer) => {
     const number = parseFloat(
@@ -90,15 +89,15 @@ const WorkSummary = ({ employers }) => {
             {_isNaN(totalSalary) || totalSalary === 0 ? (
               '-'
             ) : (
-                <NumberFormat
-                  thousandSeparator=" "
-                  decimalSeparator=","
-                  decimalScale={0}
-                  fixedDecimalScale
-                  displayType="text"
-                  value={totalSalary}
-                />
-              )}
+              <NumberFormat
+                thousandSeparator=" "
+                decimalSeparator=","
+                decimalScale={0}
+                fixedDecimalScale
+                displayType="text"
+                value={totalSalary}
+              />
+            )}
           </b>
           {' '}€
         </Value>

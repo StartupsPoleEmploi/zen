@@ -53,12 +53,9 @@ export const UsersList = () => {
       .then(() => setLoading(false))
   }
 
-  useEffect(
-    () => {
-      fetchUsers()
-    },
-    [showAuthorizedUsers],
-  )
+  useEffect(() => {
+    fetchUsers()
+  }, [showAuthorizedUsers])
 
   if (users.length === 0) return null
 

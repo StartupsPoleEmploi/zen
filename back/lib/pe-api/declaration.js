@@ -116,8 +116,8 @@ const convertDeclarationToAPIFormat = (declaration) => {
       declaration.jobSearchStopMotive === 'work'
         ? JOB_SEARCH_STOP_MOTIVES.WORK
         : declaration.jobSearchStopMotive === 'retirement'
-          ? JOB_SEARCH_STOP_MOTIVES.RETIREMENT
-          : JOB_SEARCH_STOP_MOTIVES.OTHER
+        ? JOB_SEARCH_STOP_MOTIVES.RETIREMENT
+        : JOB_SEARCH_STOP_MOTIVES.OTHER
   }
 
   return apiDeclaration

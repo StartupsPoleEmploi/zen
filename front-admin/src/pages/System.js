@@ -11,16 +11,13 @@ export const System = () => {
     superagent.get('/api/status').then(({ body }) => setIsActivated(body.up))
   }, [])
 
-  useEffect(
-    () => {
-      if (!isModified) return
+  useEffect(() => {
+    if (!isModified) return
 
-      superagent
-        .post('/zen-admin-api/status', { up: isActivated })
-        .then(({ body }) => setIsActivated(body.up))
-    },
-    [isActivated],
-  )
+    superagent
+      .post('/zen-admin-api/status', { up: isActivated })
+      .then(({ body }) => setIsActivated(body.up))
+  }, [isActivated])
 
   return (
     <div style={{ textAlign: 'center' }}>

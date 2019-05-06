@@ -17,7 +17,12 @@ const FileTransmittedToPE = ({ isOpened, onCancel, onConfirm }) => (
     actions={
       <Fragment>
         <CustomColorButton onClick={onCancel}>Non</CustomColorButton>
-        <Button variant="contained" onClick={onConfirm} color="primary" autoFocus>
+        <Button
+          variant="contained"
+          onClick={onConfirm}
+          color="primary"
+          autoFocus
+        >
           Oui
         </Button>
       </Fragment>

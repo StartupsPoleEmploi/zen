@@ -44,10 +44,7 @@ class DeclarationDialogsHandler extends Component {
 
     if (validationErrors.length > 0) {
       return (
-        <ErrorsDialog
-          validationErrors={validationErrors}
-          {...defaultProps}
-        />
+        <ErrorsDialog validationErrors={validationErrors} {...defaultProps} />
       )
     }
 

@@ -123,14 +123,16 @@ describe('declarations routes', () => {
       .returning('*')
       .then((dbUser) => {
         user = dbUser
-      }))
+      }),
+  )
 
   afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'))
 
   afterEach(() =>
     Declaration.knex().raw(
       'TRUNCATE "declarations", "employers", "declaration_infos", "employer_documents" CASCADE',
-    ))
+    ),
+  )
 
   describe('GET /', () => {
     test('HTTP 200 with array of Declarations with no querystring', () =>

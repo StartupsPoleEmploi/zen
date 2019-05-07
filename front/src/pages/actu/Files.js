@@ -704,9 +704,11 @@ export class Files extends Component {
               Des documents de précédents mois n'ont pas encore été transmis
             </Typography>
             {!this.state.showMissingDocs ? (
-              <Button color="primary" onClick={this.displayMissingDocs}>
-                Afficher les documents manquants
-              </Button>
+              <div style={{ textAlign: 'center' }}>
+                <Button color="primary" onClick={this.displayMissingDocs}>
+                  Afficher les documents manquants
+                </Button>
+              </div>
             ) : (
                 declarations.slice(1).map(this.renderOldSection)
               )}

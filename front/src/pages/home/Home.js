@@ -1,22 +1,26 @@
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import Check from '@material-ui/icons/Check'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
 import AppTitle from '../../components/Generic/AppTitle'
-import LinkButton from '../../components/Generic/LinkButton'
 import YoutubeVideo from '../../components/Generic/YoutubeVideo'
-import landingBackground from '../../images/landingBackground.svg'
-import step3 from '../../images/paper-plane.svg'
-import step2 from '../../images/people.svg'
-import step1ToStep2 from '../../images/step1-to-step2.svg'
-import step2ToStep3 from '../../images/step2-to-step3.svg'
-import step1 from '../../images/woman-holding-phone.svg'
+import logoPEMono from '../../images/logoPE-mono.png'
+import step3 from '../../images/step3.svg'
+import step2 from '../../images/step2.svg'
+import step1 from '../../images/step1.svg'
+import photo3 from '../../images/photo3.jpg'
+import photo2 from '../../images/photo2.jpg'
+import photo1 from '../../images/photo1.jpg'
 import youtubeVideoThumb from '../../images/youtube-video-thumbnail.jpg'
+import characters from '../../images/characters.svg'
 
 const lightBlue = '#0076FF'
 const darkBlue = '#1E2C59'
+
+const mobileBreakpoint = '42rem'
+const intermediaryBreakpoint = '60rem'
 
 const windowWidthElement = `
   width: 100vw;
@@ -28,40 +32,63 @@ const windowWidthElement = `
 const StyledHome = styled.div`
   max-width: 144rem;
   margin: auto;
-  padding: 5rem 10rem 0;
-  @media (max-width: 42rem) {
-    padding: 5rem 2rem 0;
+  padding: 0 10rem;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding: 0 2rem;
   }
 `
 
 const LoginError = styled.div`
   padding: 1rem;
-  margin-bottom: 2rem;
   background-color: #f57264;
-  width: 100%;
   text-align: center;
-  margin-top: -5rem;
 
   ${windowWidthElement}
 `
 
-const LogosContainer = styled.div`
+const Header = styled.header.attrs({ role: 'banner' })`
+  background-color: #f3f4f5;
+  padding: 5rem 10rem 4rem;
+
+  ${windowWidthElement}
+`
+
+const HeaderContent = styled.header`
+  max-width: 144rem;
   display: flex;
   align-items: flex-end;
-  padding-bottom: 4rem;
+  margin: auto;
 
-  @media (max-width: 60rem) {
+  @media (max-width: ${intermediaryBreakpoint}) {
     justify-content: center;
     align-items: center;
   }
 `
 
-const HeaderMain = styled.div`
+const TopContentContainer = styled.section`
+  background-color: #f3f4f5;
+  padding: 0 10rem;
+  border-bottom-left-radius: 95% 15%;
+  border-bottom-right-radius: 95% 15%;
+  padding-bottom: 15rem;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    padding: 0 2rem 15rem;
+  }
+
+  ${windowWidthElement}
+`
+
+const TopContent = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 2rem;
+  margin: 0 0 2rem;
+  max-width: 144rem;
+  margin: 0 auto;
 
-  @media (max-width: 60rem) {
+  @media (max-width: ${intermediaryBreakpoint}) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -69,25 +96,54 @@ const HeaderMain = styled.div`
   }
 `
 
-const Tagline = styled(Typography).attrs({
-  variant: 'h3',
-  component: 'h1',
-})`
-  && {
-    margin-bottom: 3rem;
-    font-weight: bold;
-    text-transform: uppercase;
+const TopContentTextsContainer = styled.div`
+  max-width: 100%;
+  padding-right: 2rem;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding-right: 0;
   }
 `
 
-const ConnectButton = styled(LinkButton).attrs({ color: 'secondary' })`
+const Title = styled(Typography).attrs({
+  variant: 'h3',
+  component: 'h1',
+  paragraph: true,
+})`
+  && {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+
+    @media (max-width: ${mobileBreakpoint}) {
+      font-size: 3.4rem;
+    }
+  }
+`
+
+const Tagline = styled(Typography).attrs({
+  variant: 'h6',
+  component: 'h2',
+  paragraph: true,
+})``
+
+const ConnectButton = styled(Button).attrs({
+  color: 'primary',
+  variant: 'contained',
+  href: '/api/login',
+  role: 'link', // override material-ui default role for buttons, even if links
+})`
   && {
     width: 40rem;
     max-width: 100%;
-    height: 6.4rem;
+    min-height: 6.4rem;
     font-size: 2.2rem;
     border-radius: 3rem;
-    margin-bottom: 2rem;
+    margin: 1rem 0 4rem;
+
+    @media (max-width: ${mobileBreakpoint}) {
+      font-size: 1.6rem;
+    }
   }
 `
 
@@ -95,14 +151,10 @@ const WhiteConnectButton = styled(ConnectButton)`
   && {
     background-color: #fff;
     color: #000;
-  }
-`
 
-const GreenCheck = styled(Check)`
-  && {
-    color: green;
-    width: 3rem;
-    height: 3rem;
+    &:hover {
+      background-color: #fff;
+    }
   }
 `
 
@@ -114,105 +166,131 @@ const SectionTitle = styled(Typography).attrs({
 })`
   && {
     font-weight: bold;
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
   }
 `
 
-const FlexSection = styled(Section)`
+const FlexDiv = styled.div`
   display: flex;
-  margin-left: -10rem;
-  margin-right: -10rem;
 
-  @media (max-width: 60rem) {
+  @media (max-width: ${intermediaryBreakpoint}) {
     flex-direction: column;
-    margin-left: -2rem;
-    margin-right: -2rem;
   }
 `
 
-const FlexSectionReverse = styled(FlexSection)`
+const FlexDivReverse = styled(FlexDiv)`
   flex-direction: row-reverse;
 `
 
-const SectionHalfContainer = styled.div`
+const AccessibleHiddenTitle = styled.h2`
+  position: absolute;
+  left: -999rem;
+`
+
+const StepText = styled.div`
   flex: 0 1 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fafafa;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 5rem;
-`
 
-const SectionHalfContainerWithBg = styled(SectionHalfContainer)`
-  min-height: 35rem;
-`
-
-const StepsContainer = styled.div`
-  display: flex;
-
-  @media (max-width: 60rem) {
-    flex-direction: column;
+  @media (max-width: ${intermediaryBreakpoint}) {
+    text-align: center;
   }
 `
 
-const Step = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const StepTitle = styled(SectionTitle).attrs({
+  color: 'secondary',
+  component: 'h3',
+})``
+
+const StepNumber = styled(Typography).attrs({
+  variant: 'h2',
+  component: 'div',
+  color: 'primary',
+})`
+  && {
+    align-self: flex-start;
+    font-weight: bold;
+
+    @media (max-width: ${intermediaryBreakpoint}) {
+      align-self: center;
+      text-align: center;
+    }
+  }
 `
 
-const StepTextContainer = styled.div`
+const SectionImg = styled.img`
+  width: 30rem;
+  height: 30rem;
+  margin: 2rem auto;
+`
+
+const SummaryUl = styled.ul`
+  display: flex;
+  list-style: none;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    flex-direction: column;
+    align-items: center;
+  }
+`
+
+const SummaryLi = styled.li`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 0 1rem;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 22rem;
-  padding: 3rem;
+  text-align: center;
+  padding: 2rem;
 `
 
-const StepImg = styled.img`
-  max-height: 15rem;
-  width: auto;
+const SummaryImg = styled.img`
+  display: block;
+  background: #f3f4f5;
+  border-radius: 50%;
+  flex: 0;
   height: auto;
-  flex-shrink: 1;
+  width: 10rem;
+  margin-bottom: 1rem;
+`
+
+const SummaryText = styled(Typography)`
+  && {
+    font-weight: bold;
+  }
 `
 
 const TestimoniesContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  flex-wrap: wrap;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const TestimonyContainer = styled.div`
-  flex: 0 0 25rem;
+  flex: 0 0 auto;
   border: 1px solid #bbb;
   padding: 2rem;
-  margin: 0.5rem;
+  margin: 1rem;
+  max-width: 25rem;
 `
 const TestimonyTitle = styled(Typography).attrs({
-  color: 'primary',
+  color: 'secondary',
 })`
   padding-bottom: 2rem;
 `
 
 const TestimonyText = styled(Typography)``
 
-const IntermediateImg = styled.img`
-  display: block;
-  width: 15rem;
-  height: auto;
-  padding-left: 4rem;
-  padding-right: 4rem;
-`
-
 const FullWidthSection = styled.section`
   background-color: ${lightBlue};
-  padding: 5rem;
+  padding: 5rem 5rem 1rem;
   text-align: center;
   min-height: 25rem;
 
@@ -236,199 +314,235 @@ export const Home = ({ location: { search } }) => (
     {search === '?loginFailed' && (
       <LoginError>
         <Typography>
-          La connexion a échoué, merci de bien vouloir réessayer ultérieurement.
+          <strong>
+            La connexion a échoué, merci de bien vouloir réessayer
+            ultérieurement.
+          </strong>
         </Typography>
       </LoginError>
     )}
-    <header>
-      <LogosContainer>
+
+    <Header>
+      <HeaderContent>
         <AppTitle />
         <img
           src={logoPEMono}
           alt="logo pole emploi"
-          style={{ height: '3.5rem', width: 'auto', display: 'block' }}
+          style={{
+            height: '3.5rem',
+            width: 'auto',
+            display: 'block',
+          }}
         />
-      </LogosContainer>
-      <HeaderMain>
-        <div>
-          <Tagline>
-            L'actualisation
-            <br />
-            Pôle emploi
-            <br />
-            en toute
-            <br />
-            simplicité .
-          </Tagline>
-          <ConnectButton to="/api/login" target="_self">
-            S'inscrire | Se connecter
-          </ConnectButton>
-        </div>
-        <YoutubeVideo
-          title="Vidéo de présentation du service Zen"
-          url="https://www.youtube.com/embed/IjC1vgptPX0"
-          image={youtubeVideoThumb}
-        />
-      </HeaderMain>
-    </header>
+      </HeaderContent>
+    </Header>
 
-    <Section
-      style={{
-        paddingBottom: '3rem',
-        display: 'flex',
-        flexDirection: 'column',
-        jusityContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
-      <SectionTitle>En quelques clics seulement !</SectionTitle>
-      <StepsContainer>
-        <Step>
-          <StepImg src={step1} alt="Étape 1" />
-          <StepTextContainer>
-            <Typography gutterBottom>
-              <GreenCheck />
-              <b>Mise à jour de votre situation</b>
-            </Typography>
-            <IntermediateImg src={step1ToStep2} alt="" />
-          </StepTextContainer>
-        </Step>
+    <main role="main">
+      <TopContentContainer>
+        <TopContent>
+          <TopContentTextsContainer>
+            <Title
+              variant="h4"
+              component="h1"
+              paragraph
+              style={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+              }}
+            >
+              L'actualisation
+              <br />
+              Pôle emploi
+              <br />
+              en toute
+              <br />
+              simplicité.
+            </Title>
+            <Tagline>
+              Zen vous propose une actualisation
+              <br />
+              et un envoi de documents simplifiés.
+            </Tagline>
+            <ConnectButton>Se connecter avec Pôle Emploi</ConnectButton>
+          </TopContentTextsContainer>
+          <YoutubeVideo
+            title="Vidéo de présentation du service Zen"
+            url="https://www.youtube.com/embed/IjC1vgptPX0"
+            image={youtubeVideoThumb}
+          />
+        </TopContent>
+      </TopContentContainer>
 
-        <Step>
-          <StepTextContainer>
-            <Typography>
-              <GreenCheck />
-              <b>Renseignez vos revenus par employeur</b>
-            </Typography>
-          </StepTextContainer>
-          <StepImg src={step2} alt="Étape 2" />
-        </Step>
-      </StepsContainer>
-      <div
+      <Section
         style={{
+          paddingBottom: '3rem',
           display: 'flex',
+          flexDirection: 'column',
+          jusityContent: 'center',
           alignItems: 'center',
-          justifyContent: 'center',
+          width: '100%',
         }}
       >
-        <IntermediateImg src={step2ToStep3} alt="" />
-      </div>
-      <Step>
-        <StepImg src={step3} alt="Étape 3" />
-        <StepTextContainer>
-          <Typography>
-            <GreenCheck />
-            <b>Transmettez facilement les justificatifs demandés par Zen</b>
-          </Typography>
-        </StepTextContainer>
-      </Step>
-    </Section>
+        <img
+          src={characters}
+          alt=""
+          style={{
+            marginTop: '-15rem',
+            marginBottom: '3rem',
+            position: 'relative',
+            maxWidth: '100%',
+            minHeight: '15rem',
+          }}
+        />
+        <SectionTitle>En quelques clics seulement&nbsp;!</SectionTitle>
+        <SummaryUl>
+          <SummaryLi>
+            <SummaryImg src={step1} alt="" />
+            <SummaryText>
+              Zen additionne pour vous
+              <br />
+              vos heures travaillées et totalise <br />
+              vos revenus mensuels !
+            </SummaryText>
+          </SummaryLi>
+          <SummaryLi>
+            <SummaryImg src={step2} alt="" />
+            <SummaryText>
+              Zen vous indique <br />
+              les justificatifs à transmettre selon
+              <br /> votre déclaration.
+            </SummaryText>
+          </SummaryLi>
+          <SummaryLi>
+            <SummaryImg src={step3} alt="" />
+            <SummaryText>
+              Accédez à un espace personnel
+              <br /> avec tous vos documents
+              <br /> transmis mois par mois.
+            </SummaryText>
+          </SummaryLi>
+        </SummaryUl>
+      </Section>
 
-    <FlexSection>
-      <SectionHalfContainer>
-        <SectionTitle color="primary">
-          Je suis informé(e) tous les mois du début de l'actualisation
+      <Section>
+        <FlexDiv>
+          <AccessibleHiddenTitle>En résumé</AccessibleHiddenTitle>
+          <StepText>
+            <StepNumber>1</StepNumber>
+            <StepTitle>
+              Je suis informé(e) tous les mois du début de l'actualisation
+            </StepTitle>
+            <Typography>
+              Recevez chaque mois un rappel par mail pour ne pas oublier que
+              vous devez vous actualiser. Soyez Zen&nbsp;!
+            </Typography>
+          </StepText>
+          <SectionImg alt="" src={photo1} />
+        </FlexDiv>
+
+        <FlexDivReverse>
+          <StepText>
+            <StepNumber>2</StepNumber>
+            <StepTitle>
+              Mon dossier est à jour, je perçois le bon montant d'indemnité :
+              moins de risque de trop perçus !
+            </StepTitle>
+            <Typography>
+              Zen m'indique les justificatifs à transmettre selon ma
+              déclaration. Je peux mettre à jour mon dossier sur l'interface Zen
+              en transmettant mes pièces manquantes.
+            </Typography>
+          </StepText>
+          <SectionImg alt="" src={photo2} />
+        </FlexDivReverse>
+
+        <FlexDiv>
+          <StepText>
+            <StepNumber>3</StepNumber>
+            <StepTitle>
+              J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser
+              sur le site Pôle Emploi !
+            </StepTitle>
+            <Typography>
+              Vous pouvez imprimer ou télécharger votre déclaration sur le site
+              de Zen ou bien la recevoir par mail après votre actualisation.
+              C'est simple, c'est Zen !
+            </Typography>
+          </StepText>
+          <SectionImg alt="" src={photo3} />
+        </FlexDiv>
+      </Section>
+
+      <FullWidthSection style={{}}>
+        <SectionTitle style={{ color: '#fff' }}>
+          Rejoignez les utilisateurs de Zen&nbsp;!
         </SectionTitle>
-        <Typography>
-          Recevez chaque mois un rappel par mail pour ne pas oublier que vous
-          devez vous actualiser. Soyez Zen !
+        <Typography paragraph style={{ color: '#fff' }}>
+          Zen est un service innovant de Pôle Emploi pour faciliter <br />
+          l'actualisation. Il est dédié aux personnes ayant plusieurs
+          employeurs.
+          <br />
+          <b>
+            Ce service est actuellement disponible pour <br />
+            les assistantes maternelles en Hauts-de-France.
+          </b>
         </Typography>
-      </SectionHalfContainer>
-      <SectionHalfContainerWithBg
-        style={{ backgroundImage: `url(${landingBackground})` }}
-      />
-    </FlexSection>
 
-    <FlexSectionReverse>
-      <SectionHalfContainer>
-        <SectionTitle color="primary">
-          Je bénéficie d'une expérience plus facile pour m'actualiser.
-        </SectionTitle>
-        <Typography>
-          Tous les justificatifs que vous devez fournir vous sont énumérés selon
-          votre situation.
-        </Typography>
-      </SectionHalfContainer>
-      <SectionHalfContainerWithBg
-        style={{ backgroundImage: `url(${landingBackground})` }}
-      />
-    </FlexSectionReverse>
+        <WhiteConnectButton>Se connecter avec Pôle Emploi</WhiteConnectButton>
+      </FullWidthSection>
 
-    <FlexSection>
-      <SectionHalfContainer>
-        <SectionTitle color="primary">
-          <span style={{ fontWeight: 'normal' }}>
-            Et si je n'ai pas mes justificatifs à temps pour l'actualisation ?
-          </span>{' '}
-          Pas de problème, Zen me permet de les transmettre à tout moment !
-        </SectionTitle>
-        <Typography>
-          Vous pouvez vous connecter à tout moment et vous rendre dans la partie{' '}
-          <b>Mes justificatifs</b> pour envoyer à Pôle Emploi ceux qui sont
-          manquants.
-        </Typography>
-      </SectionHalfContainer>
-      <SectionHalfContainerWithBg
-        style={{ backgroundImage: `url(${landingBackground})` }}
-      />
-    </FlexSection>
+      <Section style={{ textAlign: 'center', padding: '5rem' }}>
+        <SectionTitle>Nos utilisateurs approuvent !</SectionTitle>
+        <TestimoniesContainer>
+          <TestimonyContainer>
+            <TestimonyTitle>
+              <b>
+                Déborah - Lille
+                <br />
+                (11/04/19)
+              </b>
+            </TestimonyTitle>
+            <TestimonyText>
+              « Merci pour ce site qui prend en compte pleinement notre métier
+              d'assistante maternelle&nbsp;»
+            </TestimonyText>
+          </TestimonyContainer>
+          <TestimonyContainer>
+            <TestimonyTitle>
+              <b>
+                Sophie - Condette
+                <br />
+                (10/04/19)
+              </b>
+            </TestimonyTitle>
+            <TestimonyText>
+              « Plus simple vu le nombre d'employeurs. Belle innovation&nbsp;»
+            </TestimonyText>
+          </TestimonyContainer>
+          <TestimonyContainer>
+            <TestimonyTitle>
+              <b>
+                Fatima - Amiens
+                <br />
+                (09/04/19)
+              </b>
+            </TestimonyTitle>
+            <TestimonyText>
+              « C'est plus rapide, moins prise de tête, et facile à
+              comprendre&nbsp;!&nbsp;»
+            </TestimonyText>
+          </TestimonyContainer>
+        </TestimoniesContainer>
+      </Section>
+    </main>
 
-    <Section style={{ textAlign: 'center', padding: '5rem' }}>
-      <SectionTitle>Nos utilisateurs approuvent !</SectionTitle>
-      <TestimoniesContainer>
-        <TestimonyContainer>
-          <TestimonyTitle>
-            <b>Alex, assistante maternelle</b>
-          </TestimonyTitle>
-          <TestimonyText>
-            « Je passe par Zen depuis octobre 2018 et pour le moment simple et
-            très rapide, très satisfaite ! »
-          </TestimonyText>
-        </TestimonyContainer>
-        <TestimonyContainer>
-          <TestimonyTitle>
-            <b>Isabelle, assistante maternelle</b>
-          </TestimonyTitle>
-          <TestimonyText>
-            « Je passe par Zen depuis octobre 2018 et pour le moment simple et
-            très rapide, très satisfaite ! » Yeah youpi danse de la victoire !
-          </TestimonyText>
-        </TestimonyContainer>
-        <TestimonyContainer>
-          <TestimonyTitle>
-            <b>Perrine, assistante maternelle</b>
-          </TestimonyTitle>
-          <TestimonyText>
-            « Je passe par Zen depuis octobre 2018 et pour le moment simple et
-            très rapide, très satisfaite ! » Yeah yay youpi on est content de
-            cette belle initiative fioulalalala !
-          </TestimonyText>
-        </TestimonyContainer>
-      </TestimoniesContainer>
-    </Section>
-
-    <FullWidthSection style={{}}>
-      <SectionTitle style={{ color: '#fff' }}>
-        Pas d'engagement avec zen !
-      </SectionTitle>
-      <Typography paragraph style={{ color: '#fff' }}>
-        Testez Zen et rejoignez notre communauté !
-        <br />
-        Sachez qu'à tout moment, vous pouvez arrêter votre essai de Zen.
-      </Typography>
-
-      <WhiteConnectButton to="/api/login" target="_self">
-        S'inscrire | Se connecter
-      </WhiteConnectButton>
-    </FullWidthSection>
-
-    <Footer>
+    <Footer role="contentinfo">
       <AppTitle style={{ color: '#fff' }} />
       <br />
       <Typography
         variant="caption"
-        style={{ color: '#fff', opacity: 0.5, letterSpacing: 1.5 }}
+        // 0.51 (not 0.5) is the accessibility threshold for our background color
+        style={{ color: '#fff', opacity: 0.51, letterSpacing: 1.5 }}
       >
         Un service propulsé par Pôle Emploi
       </Typography>

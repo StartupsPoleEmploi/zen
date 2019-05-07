@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
+import { primaryBlue } from '../../constants/colors'
+
 const BaseButton = styled(Button).attrs({
   color: 'primary',
 })`
@@ -21,11 +23,11 @@ const PrimaryButton = styled(BaseButton).attrs({
     &:disabled {
       color: #fff;
       background-color: rgba(
-        57,
-        103,
-        158,
+        0,
+        101,
+        219,
         0.5
-      ); /* rgb(57,103,158) is our primary color, #39679E */
+      ); /* rgb(0,101,219) is our primary color, #0065DB */
     }
   }
 `
@@ -35,10 +37,10 @@ const SecondaryButton = styled(BaseButton).attrs({
 })`
   && {
     color: #000;
-    border: solid 2px #39679e;
+    border: solid 2px ${primaryBlue};
     &:hover,
     &:focus {
-      border: solid 2px #39679e;
+      border: solid 2px ${primaryBlue};
     }
   }
 `

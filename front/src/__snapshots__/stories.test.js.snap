@@ -1765,7 +1765,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
             disabled={false}
             style={
               Object {
-                "borderColor": "#3e689b",
+                "borderColor": "#0065DB",
               }
             }
           >
@@ -3621,7 +3621,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             className="sc-jTzLTM exbSWw"
           >
             <button
-              className="MuiButtonBase-root-1426 MuiButton-root-1400 MuiButton-contained-1411 MuiButton-containedPrimary-1412 MuiButton-raised-1414 MuiButton-raisedPrimary-1415 MuiButton-sizeLarge-1424 sc-bxivhb sc-jzJRlG giopXU sc-ifAKCX jwLkKD"
+              className="MuiButtonBase-root-1426 MuiButton-root-1400 MuiButton-contained-1411 MuiButton-containedPrimary-1412 MuiButton-raised-1414 MuiButton-raisedPrimary-1415 MuiButton-sizeLarge-1424 sc-bxivhb sc-jzJRlG giopXU sc-ifAKCX iBcXwT"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}

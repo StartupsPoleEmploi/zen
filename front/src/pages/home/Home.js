@@ -16,8 +16,7 @@ import photo1 from '../../images/photo1.jpg'
 import youtubeVideoThumb from '../../images/youtube-video-thumbnail.jpg'
 import characters from '../../images/characters.svg'
 
-const lightBlue = '#0076FF'
-const darkBlue = '#1E2C59'
+import { primaryBlue, secondaryBlue } from '../../constants/colors'
 
 const mobileBreakpoint = '42rem'
 const intermediaryBreakpoint = '60rem'
@@ -289,7 +288,7 @@ const TestimonyTitle = styled(Typography).attrs({
 const TestimonyText = styled(Typography)``
 
 const FullWidthSection = styled.section`
-  background-color: ${lightBlue};
+  background-color: ${primaryBlue};
   padding: 5rem 5rem 1rem;
   text-align: center;
   min-height: 25rem;
@@ -303,7 +302,7 @@ const Footer = styled.footer`
   align-items: center;
   justify-content: center;
   min-height: 15rem;
-  background-color: ${darkBlue};
+  background-color: ${secondaryBlue};
   text-align: center;
 
   ${windowWidthElement}

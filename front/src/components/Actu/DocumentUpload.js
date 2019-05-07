@@ -17,6 +17,7 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
+import { primaryBlue } from '../../constants/colors'
 import CustomColorButton from '../Generic/CustomColorButton'
 
 const StyledContainer = styled.div`
@@ -209,7 +210,9 @@ export class DocumentUpload extends Component {
     return (
       <StyledContainer>
         <StyledListItem
-          style={{ borderColor: fileExistsOnServer ? '#3e689b' : '#df5555' }}
+          style={{
+            borderColor: fileExistsOnServer ? primaryBlue : '#df5555',
+          }}
         >
           <ListItemText
             primary={

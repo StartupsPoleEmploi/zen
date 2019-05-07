@@ -71,6 +71,7 @@ module.exports = {
         aspects: ['noHref', 'invalidHref', 'preferButton'],
       },
     ],
+    'no-continue': 0,
     'no-plusplus': 0,
   },
 }

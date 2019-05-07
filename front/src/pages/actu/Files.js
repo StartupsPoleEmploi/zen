@@ -638,8 +638,7 @@ export class Files extends Component {
             primary
             onClick={() => this.onSubmit({ declaration })}
           >
-            Envoyer
-            {!isOldMonth && <br />}
+            Envoyer {!isOldMonth && <br />}
             {isOldMonth
               ? `les documents de ${formattedMonth}`
               : 'à Pôle Emploi'}

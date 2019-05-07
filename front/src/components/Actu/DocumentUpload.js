@@ -168,6 +168,44 @@ export class DocumentUpload extends Component {
         ? `/api/employers/files?documentId=${id}`
         : `/api/declarations/files?declarationInfoId=${id}`
 
+    let sideFormLabelContent = null
+    if (isTransmitted) {
+      sideFormLabelContent = (
+        <SideButton disabled>
+          <Check />
+          Transmis à Pôle Emploi
+        </SideButton>
+      )
+    } else if (fileExistsOnServer) {
+      sideFormLabelContent = (
+        <Fragment>
+          {hiddenInput}
+          <SideButton component="span" size="small">
+            <Autorenew style={{ transform: 'rotate(-90deg)' }} />
+            Remplacer le document
+          </SideButton>
+        </Fragment>
+      )
+    } else if (allowSkipFile) {
+      sideFormLabelContent = (
+        <Tooltip
+          placement="top"
+          title={
+            <Typography style={{ color: '#fff' }}>
+              Cochez cette case si vous avez transmis ce document à Pôle Emploi
+              par d'autres moyens que Zen.
+            </Typography>
+          }
+        >
+          <SideButton onClick={this.skipFile}>
+            <CheckBoxOutlineBlank />
+            {/* eslint-disable-next-line no-irregular-whitespace */}
+            Transmis à Pôle Emploi
+          </SideButton>
+        </Tooltip>
+      )
+    }
+
     return (
       <StyledContainer>
         <StyledListItem
@@ -229,7 +267,7 @@ export class DocumentUpload extends Component {
                         Voir le document fourni
                       </Button>
                     )}
-                {!fileExistsOnServer && (
+                {!fileExistsOnServer && !isTransmitted && (
                   <StyledFormLabel>
                     {hiddenInput}
                     {!error && (
@@ -249,42 +287,7 @@ export class DocumentUpload extends Component {
             )}
           </FormControl>
         </StyledListItem>
-        <SideFormLabel>
-          {fileExistsOnServer ? (
-            isTransmitted ? (
-              <SideButton disabled>
-                <Check />
-                Transmis à Pôle Emploi
-              </SideButton>
-            ) : (
-              <Fragment>
-                {hiddenInput}
-                <SideButton component="span" size="small">
-                  <Autorenew style={{ transform: 'rotate(-90deg)' }} />
-                  Remplacer le document
-                </SideButton>
-              </Fragment>
-            )
-          ) : (
-            allowSkipFile && (
-              <Tooltip
-                placement="top"
-                title={
-                  <Typography style={{ color: '#fff' }}>
-                    Cochez cette case si vous avez transmis ce document à Pôle
-                    Emploi par d'autres moyens que Zen.
-                  </Typography>
-                }
-              >
-                <SideButton onClick={this.skipFile}>
-                  <CheckBoxOutlineBlank />
-                  {/* eslint-disable-next-line no-irregular-whitespace */}
-                  Transmis à Pôle Emploi
-                </SideButton>
-              </Tooltip>
-            )
-          )}
-        </SideFormLabel>
+        <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
       </StyledContainer>
     )
   }

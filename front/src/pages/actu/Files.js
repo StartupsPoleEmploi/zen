@@ -501,7 +501,7 @@ export class Files extends Component {
         key={`${employer.id}-${salarySheetType}`}
         id={get(salaryDoc, 'id')}
         label="Bulletin de salaire"
-        fileExistsOnServer={!!salaryDoc}
+        fileExistsOnServer={!!get(salaryDoc, 'file')}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={
@@ -521,7 +521,7 @@ export class Files extends Component {
         key={`${employer.id}-${employerCertificateType}`}
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
-        fileExistsOnServer={!!certificateDoc}
+        fileExistsOnServer={!!get(certificateDoc, 'file')}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth

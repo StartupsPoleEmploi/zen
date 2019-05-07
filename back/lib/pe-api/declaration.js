@@ -116,15 +116,21 @@ const convertDeclarationToAPIFormat = (declaration) => {
       declaration.jobSearchStopMotive === 'work'
         ? JOB_SEARCH_STOP_MOTIVES.WORK
         : declaration.jobSearchStopMotive === 'retirement'
-          ? JOB_SEARCH_STOP_MOTIVES.RETIREMENT
-          : JOB_SEARCH_STOP_MOTIVES.OTHER
+        ? JOB_SEARCH_STOP_MOTIVES.RETIREMENT
+        : JOB_SEARCH_STOP_MOTIVES.OTHER
   }
 
   return apiDeclaration
 }
 
-const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) =>
-  request({
+const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) => {
+  // NEVER ACTIVATE IN PRODUCTION
+  if (config.get('bypassDeclarationDispatch')) {
+    winston.info(`Simulating sending ${declaration.id} to PE`)
+    return Promise.resolve({ body: { statut: 0 } })
+  }
+
+  return request({
     method: 'post',
     url: `${
       config.apiHost
@@ -144,6 +150,7 @@ const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) =>
     winston.error('Error while sending declaration', declaration.id, err)
     throw err
   })
+}
 
 module.exports = {
   sendDeclaration,

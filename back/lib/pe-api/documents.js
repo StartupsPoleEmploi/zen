@@ -150,7 +150,7 @@ const doConfirm = ({ conversionId, document, accessToken }) =>
       ...document.confirmationData,
       nomDocument: document.label,
     },
-  }).then(() => document.dbDocument.$query().patch({ isTransmitted: true }))
+  })
 
 const sendDocuments = async ({ declaration, accessToken }) => {
   const documentsToTransmit = declaration.infos
@@ -201,7 +201,21 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     .filter(({ dbDocument }) => !dbDocument.isTransmitted)
 
   for (const key in documentsToTransmit) {
+    // NEVER ACTIVATE IN PRODUCTION
+    if (config.get('bypassDocumentsDispatch')) {
+      winston.info(
+        `Simulating sending document ${
+          documentsToTransmit[key].dbDocument.id
+        } to PE`,
+      )
+      await documentsToTransmit[key].dbDocument
+        .$query()
+        .patch({ isTransmitted: true })
+
+      continue
+    }
     if (key !== 0) await wait(DEFAULT_WAIT_TIME)
+
     const {
       body: { conversionId },
     } = await doUpload({
@@ -230,6 +244,10 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       )
       throw err
     })
+
+    await documentsToTransmit[key].dbDocument
+      .$query()
+      .patch({ isTransmitted: true })
   }
 }
 

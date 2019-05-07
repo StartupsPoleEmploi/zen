@@ -45,9 +45,19 @@ const knex = Knex({
 Model.knex(knex)
 
 const isDevEnv = process.env.NODE_ENV === 'development'
+const isProd = process.env.NODE_ENV === 'production'
 
 if (!isDevEnv) {
   winston.info('Starting back')
+}
+if (
+  isProd &&
+  (config.get('bypassDeclarationDispatch') ||
+    config.get('bypassDocumentsDispatch'))
+) {
+  const message = 'Bypasses must NOT be activated in production.'
+  winston.error(message)
+  throw new Error(message)
 }
 
 const app = express()
@@ -77,7 +87,7 @@ app.use(
     httpOnly: true,
     resave: false,
     saveUninitialized: false,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProd,
     secret: config.cookieSecret,
     store: new (pgConnectSimple(session))(),
   }),

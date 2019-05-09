@@ -5,7 +5,7 @@ winston.add(slackWinston, {
   // Send this file's logs to Slack
   webhook_url: process.env.SLACK_WEBHOOK_SU_ZEN_TECH,
   message: `*{{level}}*: {{message}}\n\n{{meta}}`,
-  level: 'info',
+  level: 'warn',
 })
 
 module.exports = winston

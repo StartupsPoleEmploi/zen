@@ -501,7 +501,7 @@ export class Files extends Component {
         key={`${employer.id}-${salarySheetType}`}
         id={get(salaryDoc, 'id')}
         label="Bulletin de salaire"
-        fileExistsOnServer={!!salaryDoc}
+        fileExistsOnServer={!!get(salaryDoc, 'file')}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={
@@ -521,7 +521,7 @@ export class Files extends Component {
         key={`${employer.id}-${employerCertificateType}`}
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
-        fileExistsOnServer={!!certificateDoc}
+        fileExistsOnServer={!!get(certificateDoc, 'file')}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth
@@ -638,8 +638,7 @@ export class Files extends Component {
             primary
             onClick={() => this.onSubmit({ declaration })}
           >
-            Envoyer
-            {!isOldMonth && <br />}
+            Envoyer {!isOldMonth && <br />}
             {isOldMonth
               ? `les documents de ${formattedMonth}`
               : 'à Pôle Emploi'}
@@ -704,9 +703,11 @@ export class Files extends Component {
               Des documents de précédents mois n'ont pas encore été transmis
             </Typography>
             {!this.state.showMissingDocs ? (
-              <Button color="primary" onClick={this.displayMissingDocs}>
-                Afficher les documents manquants
-              </Button>
+              <div style={{ textAlign: 'center' }}>
+                <Button color="primary" onClick={this.displayMissingDocs}>
+                  Afficher les documents manquants
+                </Button>
+              </div>
             ) : (
                 declarations.slice(1).map(this.renderOldSection)
               )}

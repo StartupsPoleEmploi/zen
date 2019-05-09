@@ -20,7 +20,6 @@ import MainActionButton from '../../components/Generic/MainActionButton'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
 import { formattedDeclarationMonth } from '../../lib/date'
 
-
 const StyledFiles = styled.div`
   display: flex;
   flex-direction: column;
@@ -265,8 +264,8 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-              ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+            ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -317,8 +316,8 @@ export class Files extends Component {
           err.status === 413
             ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
             : err.status === 400
-              ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-              : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+            ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
         // TODO this should be refined to not send all common errors
         // (file too big, etc)
         window.Raven.captureException(err)
@@ -531,15 +530,15 @@ export class Files extends Component {
         employerDocType={employerCertificateType}
         isLoading={
           this.state[
-          getLoadingKey({ id: employer.id, type: employerCertificateType })
+            getLoadingKey({ id: employer.id, type: employerCertificateType })
           ]
         }
         error={
           this.state[
-          getErrorKey({
-            id: employer.id,
-            type: employerCertificateType
-          })
+            getErrorKey({
+              id: employer.id,
+              type: employerCertificateType,
+            })
           ]
         }
       />
@@ -555,8 +554,8 @@ export class Files extends Component {
             employeur, car vous nous avez déjà transmis votre attestation
           </Typography>
         ) : (
-            salarySheetUpload
-          )}
+          salarySheetUpload
+        )}
       </Fragment>
     )
   }
@@ -695,8 +694,8 @@ export class Files extends Component {
             {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
           </StyledTitle>
         ) : (
-            this.renderSection(lastDeclaration)
-          )}
+          this.renderSection(lastDeclaration)
+        )}
         {areUnfinishedDeclarations > 0 && (
           <OtherDocumentsContainer>
             <Typography paragraph style={{ textAlign: 'center' }}>
@@ -709,8 +708,8 @@ export class Files extends Component {
                 </Button>
               </div>
             ) : (
-                declarations.slice(1).map(this.renderOldSection)
-              )}
+              declarations.slice(1).map(this.renderOldSection)
+            )}
           </OtherDocumentsContainer>
         )}
         <FilesDialog isOpened={this.state.isSendingFiles} />

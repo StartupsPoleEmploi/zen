@@ -187,7 +187,9 @@ export const Home = ({ location: { search } }) => (
           }}
         />
         <Tagline>
-          L'actualisation Pôle emploi<br />en toute simplicité
+          L'actualisation Pôle emploi
+          <br />
+          en toute simplicité
         </Tagline>
         <BodyTypography>
           Vous avez plusieurs employeurs ?<br />

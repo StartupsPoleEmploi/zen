@@ -171,8 +171,7 @@ const calculateTotal = (employers, field) => {
 export class Employers extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
-    history: PropTypes.shape({ push: PropTypes.func.isRequired })
-      .isRequired,
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
     token: PropTypes.string.isRequired,
   }
 
@@ -254,7 +253,7 @@ export class Employers extends Component {
       !this.state.isLoading &&
       !this.hasSubmittedAndFinished &&
       get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
-      false
+        false
     ) {
       this.onSave()
     }
@@ -288,26 +287,20 @@ export class Employers extends Component {
   onSave = () =>
     superagent
       .post('/api/employers', {
-        employers: getEmployersMapFromFormData(
-          this.state.employers,
-        ),
+        employers: getEmployersMapFromFormData(this.state.employers),
       })
       .set('CSRF-Token', this.props.token)
       .then((res) => res) // Not triggered without a then
 
   saveAndRedirect = () =>
-    this.onSave().then(() =>
-      this.props.history.push('/thanks?later'),
-    )
+    this.onSave().then(() => this.props.history.push('/thanks?later'))
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
 
     return superagent
       .post('/api/employers', {
-        employers: getEmployersMapFromFormData(
-          this.state.employers,
-        ),
+        employers: getEmployersMapFromFormData(this.state.employers),
         isFinished: true,
         ignoreErrors,
       })
@@ -324,8 +317,7 @@ export class Employers extends Component {
         ) {
           // We handle the error inside the modal
           return this.setState({
-            consistencyErrors:
-              err.response.body.consistencyErrors,
+            consistencyErrors: err.response.body.consistencyErrors,
             validationErrors: err.response.body.validationErrors,
             isValidating: false,
           })
@@ -382,7 +374,6 @@ export class Employers extends Component {
     if (isFormValid) {
       const workHoursTotal = calculateTotal(employersFormData, WORK_HOURS)
       const salaryTotal = calculateTotal(employersFormData, SALARY)
-
 
       if (workHoursTotal > MAX_WORK_HOURS) {
         error += `Vous ne pouvez pas déclarer plus de ${MAX_WORK_HOURS}h totales de travail. `
@@ -462,7 +453,7 @@ export class Employers extends Component {
               size="small"
             >
               + Ajouter un employeur
-                   </AddEmployersButton>
+            </AddEmployersButton>
             <LineDiv />
           </AddEmployersButtonContainer>
 
@@ -474,7 +465,10 @@ export class Employers extends Component {
             <WorkSummary employers={employers} />
 
             <ButtonsContainer>
-              <StyledMainActionButton primary={false} onClick={this.saveAndRedirect}>
+              <StyledMainActionButton
+                primary={false}
+                onClick={this.saveAndRedirect}
+              >
                 Enregistrer
                 <br />
                 et finir plus tard

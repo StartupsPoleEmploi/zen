@@ -67,12 +67,11 @@ const sendDocumentsConfirmationEmails = () => {
           }
 
           return promise
-            .then(
-              () =>
-                // Don't send the e-mail if the user hasn't sent any document
-                Declaration.needsDocuments(declaration)
-                  ? sendDocumentsEmail(declaration)
-                  : Promise.resolve(),
+            .then(() =>
+              // Don't send the e-mail if the user hasn't sent any document
+              Declaration.needsDocuments(declaration)
+                ? sendDocumentsEmail(declaration)
+                : Promise.resolve(),
             )
             .then(() => declaration.$query().patch({ isDocEmailSent: true }))
             .catch((err) =>

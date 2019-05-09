@@ -23,7 +23,8 @@ const UnableToDeclareDialog = ({ onCancel, isOpened }) => (
             rel="noopener noreferrer"
           >
             Pole-Emploi.fr
-          </a>.
+          </a>
+          .
         </DialogContentText>
         <DialogContentText>
           Vous pouvez cependant accéder à l'interface d'envoi de documents s'il

@@ -64,3 +64,4 @@ typings/
 uploads
 extracts
 config/*production*.js
+config/local*.js

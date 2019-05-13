@@ -13,6 +13,9 @@ module.exports = {
   shouldSendCampaignEmails: process.env.SEND_CAMPAIGN_EMAILS === 'true',
   shouldSendTransactionalEmails:
     process.env.SEND_TRANSACTIONAL_EMAILS === 'true',
-  shouldTransmitDataToPE: process.env.TRANSMIT_DATA_TO_PE === 'true',
   authorizeAllUsers: process.env.AUTHORIZE_ALL_USERS === 'true',
+  // The following 2 values should never be activated out of local development
+  // they are only listed here as an information of their existence.
+  bypassDeclarationDispatch: false,
+  bypassDocumentsDispatch: false,
 }

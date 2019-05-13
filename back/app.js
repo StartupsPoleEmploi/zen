@@ -26,6 +26,7 @@ const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const declarationMonthsRouter = require('./routes/declarationMonths')
 const employersRouter = require('./routes/employers')
+const developerRouter = require('./routes/developer')
 
 /* https://github.com/tgriesser/knex/issues/927
  * This tells node-pg to use float type for decimal
@@ -43,8 +44,20 @@ const knex = Knex({
 })
 Model.knex(knex)
 
-if (process.env.NODE_ENV !== 'development') {
+const isDevEnv = process.env.NODE_ENV === 'development'
+const isProd = process.env.NODE_ENV === 'production'
+
+if (!isDevEnv) {
   winston.info('Starting back')
+}
+if (
+  isProd &&
+  (config.get('bypassDeclarationDispatch') ||
+    config.get('bypassDocumentsDispatch'))
+) {
+  const message = 'Bypasses must NOT be activated in production.'
+  winston.error(message)
+  throw new Error(message)
 }
 
 const app = express()
@@ -62,7 +75,7 @@ if (sentryUrl) {
 }
 
 app.use(helmet())
-app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'))
+app.use(morgan(isDevEnv ? 'dev' : 'combined'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -74,7 +87,7 @@ app.use(
     httpOnly: true,
     resave: false,
     saveUninitialized: false,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProd,
     secret: config.cookieSecret,
     store: new (pgConnectSimple(session))(),
   }),
@@ -92,9 +105,14 @@ app.use(setIsServiceUp)
 
 app.use('/status', (req, res) => res.json({ up: req.isServiceUp }))
 
+if (isDevEnv) {
+  app.use('/developer', developerRouter)
+}
+
 app.use((req, res, next) => {
-  if (!req.path.startsWith('/login') && !req.session.user)
+  if (!req.path.startsWith('/login') && !req.session.user) {
     return res.status(401).json('Unauthorized')
+  }
 
   req.user = req.session.user // For sentry reporting
 

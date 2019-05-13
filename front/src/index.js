@@ -14,6 +14,7 @@ import './lib/external/zopim'
 
 import { version } from '../package.json'
 import App from './App'
+import DeveloperDialog from './components/Generic/DeveloperDialog'
 
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
 
@@ -72,6 +73,8 @@ ReactDOM.render(
   <Fragment>
     <CssBaseline />
     <MuiThemeProvider theme={theme}>
+      {/* The following modal must never be displayed out of dev mode, modify with extreme caution */
+      process.env.NODE_ENV === 'development' && <DeveloperDialog />}
       <BrowserRouter>
         <App />
       </BrowserRouter>

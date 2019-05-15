@@ -25,11 +25,7 @@ import {
 
 const StyledDialogContentText = styled(DialogContentText)`
   && {
-    padding-bottom: 3rem;
     border-bottom: solid 2px #f2f2f2;
-    margin-left: -2.4rem;
-    margin-right: -2.4rem;
-    margin-bottom: 2.5rem;
     padding: 0 5rem 2rem 5rem;
     color: black;
   }
@@ -67,30 +63,16 @@ const DeclarationUl = styled.ul`
   font-weight: bold;
 `
 
-const DeclarationLi = styled(Typography).attrs({
-  color: 'secondary',
+const DeclarationLi = styled(DeclarationValues).attrs({
   component: 'li',
-})`
-  && {
-    font-weight: bold;
-  }
-`
+})``
 
 const ButtonsContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   max-width: 40rem;
   padding-top: 0.5rem;
-`
-
-const StyledMainActionButton = styled(MainActionButton)`
-  && {
-    padding: 1rem;
-    font-size: 1.6rem;
-
-    &:first-child {
-      margin-right: 4rem;
-    }
-  }
 `
 
 const DeclarationSummaryDialog = ({
@@ -272,17 +254,17 @@ const DeclarationSummaryDialog = ({
       }
       actions={
         <ButtonsContainer>
-          <StyledMainActionButton primary={false} onClick={onCancel}>
+          <MainActionButton primary={false} onClick={onCancel}>
             Non, je modifie
-          </StyledMainActionButton>
-          <StyledMainActionButton
+          </MainActionButton>
+          <MainActionButton
             variant="contained"
             onClick={onConfirm}
             primary
             autoFocus
           >
             Oui, je confirme
-          </StyledMainActionButton>
+          </MainActionButton>
         </ButtonsContainer>
       }
       {...props}

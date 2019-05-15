@@ -13,7 +13,7 @@ const StyledSignup = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-width: 48rem;
+  max-width: 50rem;
 `
 
 const LandingText = styled(Typography).attrs({
@@ -43,6 +43,18 @@ const StyledTextField = styled(TextField)`
   && {
     margin-bottom: 1rem;
   }
+`
+
+const StyleSeparator = styled.div`
+  background-color: #0065db;
+  border-radius: 2px;
+  width: 4.5rem;
+  height: 0.6rem;
+`
+
+const ClockImg = styled.img`
+  margin-bottom: 2rem;
+  height: 6rem;
 `
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -132,19 +144,35 @@ export class Signup extends Component {
 
     return (
       <StyledSignup>
-        <LandingText>Inscription terminée</LandingText>
+        <ClockImg src="noun-clock.svg" alt="" />
+        <LandingText
+          component="h1"
+          style={{
+            marginBottom: '5rem',
+          }}
+        >
+          Votre demande d'inscription
+          <br />
+          est en cours d'enregistrement.
+        </LandingText>
 
-        <Typography paragraph>Votre inscription à Zen est terminée.</Typography>
-        <Typography paragraph>
-          Nous vous contacterons prochainement pour un prochain test.
+        <Typography paragraph variant="body1" style={{ marginBottom: '5rem' }}>
+          <strong>
+            Le service est en test uniquement dans les Hauts de France
+            <br />
+            pour les{' '}
+            <span aria-label="assistants et assistantes">
+              assistant.e.s
+            </span>{' '}
+            maternelles.
+          </strong>
         </Typography>
-        <Typography paragraph>
-          Si vous souhaitez contacter l'équipe, vous pouvez envoyer un message à{' '}
-          <a href="mailto:zen@pole-emploi.fr">zen@pole-emploi.fr</a>
-        </Typography>
-        <Typography paragraph>
+
+        <Typography paragraph variant="subheading">
           Merci de l'intérêt que vous portez à Zen.
         </Typography>
+
+        <StyleSeparator />
       </StyledSignup>
     )
   }

@@ -52,19 +52,28 @@ const DeclarationHeader = styled.div`
   margin-top: 2rem;
   text-transform: uppercase;
 `
-const DeclarationValues = styled(Typography)`
+
+const DeclarationValues = styled(Typography).attrs({ color: 'secondary' })`
   && {
     font-weight: bold;
     font-size: 1.6rem;
   }
 `
 
-const DeclarationList = styled.ul`
+const DeclarationUl = styled.ul`
   padding: 0;
   margin: 0;
   list-style: none;
   font-weight: bold;
-  color: #37669f;
+`
+
+const DeclarationLi = styled(Typography).attrs({
+  color: 'secondary',
+  component: 'li',
+})`
+  && {
+    font-weight: bold;
+  }
 `
 
 const ButtonsContainer = styled.div`
@@ -134,19 +143,23 @@ const DeclarationSummaryDialog = ({
                     {employers.length}{' '}
                     {employers.length >= 2 ? 'employeurs' : 'employeur'}
                   </DeclarationHeader>
-                  <DeclarationList>
+                  <DeclarationUl>
                     {employers.map((employer, i) => {
                       const key = `${i}-${employer.employerName.value}`
-                      return <li key={key}>{employer.employerName.value}</li>
+                      return (
+                        <DeclarationLi key={key}>
+                          {employer.employerName.value}
+                        </DeclarationLi>
+                      )
                     })}
-                  </DeclarationList>
+                  </DeclarationUl>
                 </div>
 
                 <div>
                   <DeclarationHeader>
                     Salaire(s) brut déclaré(s)
                   </DeclarationHeader>
-                  <DeclarationValues color="primary">
+                  <DeclarationValues>
                     {_isNaN(totalSalary) || totalSalary === 0 ? (
                       '-'
                     ) : (
@@ -171,16 +184,16 @@ const DeclarationSummaryDialog = ({
                   {interships.length}{' '}
                   {interships.length >= 2 ? 'stages' : 'stage'}
                 </DeclarationHeader>
-                <DeclarationList>
+                <DeclarationUl>
                   {interships.map((intership) => (
-                    <li key={intership.startDate}>
+                    <DeclarationLi key={intership.startDate}>
                       {formatIntervalDates(
                         intership.startDate,
                         intership.endDate,
                       )}
-                    </li>
+                    </DeclarationLi>
                   ))}
-                </DeclarationList>
+                </DeclarationUl>
               </div>
             )}
 
@@ -190,29 +203,29 @@ const DeclarationSummaryDialog = ({
                   {sickLeaves.length}{' '}
                   {sickLeaves.length >= 2 ? 'arrêts maladie' : 'arrêt maladie'}
                 </DeclarationHeader>
-                <DeclarationList>
+                <DeclarationUl>
                   {sickLeaves.map((sickLeave) => (
-                    <li key={sickLeave.startDate}>
+                    <DeclarationLi key={sickLeave.startDate}>
                       {formatDate(sickLeave.startDate)}
-                    </li>
+                    </DeclarationLi>
                   ))}
-                </DeclarationList>
+                </DeclarationUl>
               </div>
             )}
 
             {declaration.hasMaternityLeave && (
               <div>
                 <DeclarationHeader>Congé maternité</DeclarationHeader>
-                <DeclarationList>
-                  <li>{formatDate(maternityLeave.startDate)}</li>
-                </DeclarationList>
+                <DeclarationValues>
+                  {formatDate(maternityLeave.startDate)}
+                </DeclarationValues>
               </div>
             )}
 
             {declaration.hasInvalidity && (
               <div>
                 <DeclarationHeader>Invalidité</DeclarationHeader>
-                <DeclarationValues color="primary">
+                <DeclarationValues>
                   Depuis le {formatDate(invalidity.startDate)}
                 </DeclarationValues>
               </div>
@@ -221,7 +234,7 @@ const DeclarationSummaryDialog = ({
             {declaration.hasRetirement && (
               <div>
                 <DeclarationHeader>Retraite</DeclarationHeader>
-                <DeclarationValues color="primary">
+                <DeclarationValues>
                   Départ le {formatDate(retirement.startDate)}
                 </DeclarationValues>
               </div>
@@ -230,19 +243,19 @@ const DeclarationSummaryDialog = ({
             <div>
               <DeclarationHeader>Inscription</DeclarationHeader>
               {declaration.isLookingForJob ? (
-                <DeclarationValues color="primary">
+                <DeclarationValues>
                   Oui, je souhaite rester inscrit à Pôle emploi
                 </DeclarationValues>
               ) : (
                 <Fragment>
-                  <DeclarationValues color="primary">
+                  <DeclarationValues>
                     Non, je ne souhaite pas rester inscrit à Pole Emploi
                   </DeclarationValues>
 
-                  <DeclarationValues color="primary">
+                  <DeclarationValues>
                     Date de fin : {formatDate(jobSearch.endDate)}
                   </DeclarationValues>
-                  <DeclarationValues color="primary">
+                  <DeclarationValues>
                     Motif :{' '}
                     {declaration.jobSearchStopMotive ===
                       JOB_SEARCH_END_MOTIVE.WORK && 'Reprise du travail'}

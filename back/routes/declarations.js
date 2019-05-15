@@ -1,13 +1,17 @@
 const express = require('express')
 
 const router = express.Router()
-const { get, isNull, pick, remove, omit } = require('lodash')
+const { get, pick, remove, omit } = require('lodash')
 const { transaction } = require('objection')
 const Raven = require('raven')
 
 const { DECLARATION_STATUSES } = require('../constants')
 const winston = require('../lib/log')
 const { upload, uploadDestination } = require('../lib/upload')
+const {
+  hasMissingEmployersDocuments,
+  hasMissingDeclarationDocuments,
+} = require('../lib/declaration')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
@@ -15,7 +19,11 @@ const isUserTokenValid = require('../lib/isUserTokenValid')
 const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
-const EmployerDocument = require('../models/EmployerDocument')
+const {
+  generatePDFPath,
+  getDeclarationPDF,
+  getFriendlyPDFName,
+} = require('../lib/files')
 
 const docTypes = DeclarationInfo.types
 
@@ -242,6 +250,36 @@ router.post('/', requireActiveMonth, (req, res, next) => {
     .catch(next)
 })
 
+router.get('/summary-file', requireActiveMonth, (req, res, next) => {
+  const download = req.query.download === 'true'
+
+  return Declaration.query()
+    .eager('[declarationMonth, user, employers]')
+    .findOne({ id: req.body.id, userId: req.session.user.id })
+    .orderBy('createdAt', 'desc')
+    .skipUndefined()
+    .then((declaration) => {
+      if (!declaration)
+        return res.status(404).json('Please send declaration first')
+
+      if (!declaration.hasFinishedDeclaringEmployers) {
+        return res.status(403).json('Declaration not complete')
+      }
+
+      return getDeclarationPDF(declaration).then(() => {
+        const pdfPath = generatePDFPath(declaration)
+        const filename = getFriendlyPDFName(declaration)
+
+        if (download) {
+          res.download(pdfPath, filename)
+        } else {
+          res.sendFile(pdfPath)
+        }
+      })
+    })
+    .catch(next)
+})
+
 router.get('/files', (req, res, next) => {
   if (!req.query.declarationInfoId)
     return res.status(400).json('Missing declarationInfoId')
@@ -252,6 +290,7 @@ router.get('/files', (req, res, next) => {
     .then((declarationInfo) => {
       if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
         return res.status(404).json('No such file')
+
       res.sendFile(declarationInfo.file, { root: uploadDestination })
     })
     .catch(next)
@@ -319,46 +358,10 @@ router.post('/finish', (req, res, next) => {
       if (declaration.isFinished)
         return res.status(400).json('Declaration already finished')
 
-      const hasMissingEmployersDocuments = declaration.employers.some(
-        (employer) => {
-          // If employer contract is still going on, we only need one document (the salary sheet)
-          // to validate it. Otherwise, we need an employer certificate.
-          if (!employer.hasEndedThisMonth) {
-            return employer.documents.length === 0
-          }
-          return !employer.documents.find(
-            ({ type }) => type === EmployerDocument.types.employerCertificate,
-          )
-        },
-      )
-
-      const hasMissingDeclarationDocuments =
-        (declaration.hasInternship &&
-          declaration.infos.some(
-            ({ type, file }) => type === docTypes.internship && isNull(file),
-          )) ||
-        (declaration.hasSickLeave &&
-          declaration.infos.some(
-            ({ type, file }) => type === docTypes.sickLeave && isNull(file),
-          )) ||
-        (declaration.hasMaternityLeave &&
-          declaration.infos.some(
-            ({ type, file }) =>
-              type === docTypes.maternityLeave && isNull(file),
-          )) ||
-        (declaration.hasRetirement &&
-          declaration.infos.some(
-            ({ type, file }) => type === docTypes.retirement && isNull(file),
-          )) ||
-        (declaration.hasInvalidity &&
-          declaration.infos.some(
-            ({ type, file }) => type === docTypes.invalidity && isNull(file),
-          ))
-
       if (
         !declaration.hasFinishedDeclaringEmployers ||
-        hasMissingEmployersDocuments ||
-        hasMissingDeclarationDocuments
+        hasMissingEmployersDocuments(declaration) ||
+        hasMissingDeclarationDocuments(declaration)
       ) {
         return res.status(400).json('Declaration not complete')
       }

@@ -188,7 +188,10 @@ const DeclarationSummaryDialog = ({
                 <DeclarationUl>
                   {sickLeaves.map((sickLeave) => (
                     <DeclarationLi key={sickLeave.startDate}>
-                      {formatDate(sickLeave.startDate)}
+                      {formatIntervalDates(
+                        sickLeave.startDate,
+                        sickLeave.endDate,
+                      )}
                     </DeclarationLi>
                   ))}
                 </DeclarationUl>
@@ -199,7 +202,7 @@ const DeclarationSummaryDialog = ({
               <div>
                 <DeclarationHeader>Congé maternité</DeclarationHeader>
                 <DeclarationValues>
-                  {formatDate(maternityLeave.startDate)}
+                  Depuis le {formatDate(maternityLeave.startDate)}
                 </DeclarationValues>
               </div>
             )}

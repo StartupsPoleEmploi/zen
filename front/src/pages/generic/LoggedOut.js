@@ -1,7 +1,6 @@
+import Button from '@material-ui/core/Button'
 import React from 'react'
 import styled from 'styled-components'
-
-import LinkButton from '../../components/Generic/LinkButton'
 
 const StyledDiv = styled.div`
   text-align: center;
@@ -10,7 +9,9 @@ const StyledDiv = styled.div`
 export const LoggedOut = () => (
   <StyledDiv>
     <p>Vous avez été déconnecté</p>
-    <LinkButton to="/">Retour à la page d'accueil</LinkButton>
+    <Button href="/" role="link" variant="contained">
+      Retour à la page d'accueil
+    </Button>
   </StyledDiv>
 )
 

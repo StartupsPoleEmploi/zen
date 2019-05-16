@@ -88,34 +88,29 @@ router.get('/users', (req, res, next) => {
 })
 
 router.post('/users/authorize', (req, res, next) => {
-  const useIds = Array.isArray(req.body.ids)
   const useEmails = Array.isArray(req.body.emails)
-  if (!useIds && !useEmails) {
+  if (!useEmails) {
     return res.status(400).json('Bad request')
   }
 
   let query = User.query()
 
-  if (useEmails) {
-    const emails = req.body.emails.filter(
-      (email) => !emailsToIgnore.includes(email.toLowerCase()),
-    )
+  const emails = req.body.emails.filter(
+    (email) => !emailsToIgnore.includes(email.toLowerCase()),
+  )
 
-    if (emails.length === 0) {
-      return res.json({
-        updatedRowsNb: 0,
-      })
-    }
-
-    query.where(function() {
-      query = this.where('email', 'ilike', emails[0])
-      emails.slice(1).forEach((email) => {
-        query = this.orWhere('email', 'ilike', email)
-      })
+  if (emails.length === 0) {
+    return res.json({
+      updatedRowsNb: 0,
     })
-  } else {
-    query = query.whereIn('id', req.body.ids).whereNotNull('email')
   }
+
+  query.where(function() {
+    query = this.where('email', 'ilike', emails[0])
+    emails.slice(1).forEach((email) => {
+      query = this.orWhere('email', 'ilike', email)
+    })
+  })
 
   // first get users to avoid sending "welcome" message to already subscribed users
   return query

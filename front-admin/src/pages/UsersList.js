@@ -80,16 +80,17 @@ export const UsersList = () => {
           label={`Utilisateurs ${showAuthorizedUsers ? '' : ' non '} autorisés`}
         />
         <br />
-        {!showAuthorizedUsers && (
-          <Button
-            onClick={authorizeUsers}
-            disabled={selectedUsersIds.length === 0}
-            variant="outlined"
-            style={{ marginBottom: '1rem' }}
-          >
-            Autoriser les nouveaux utilisateurs
-          </Button>
-        )}
+        <Button
+          href={`/zen-admin-api/users?csv&authorized=${
+            showAuthorizedUsers ? 'true' : 'false'
+          }`}
+          variant="contained"
+          color="primary"
+        >
+          Télécharger un extract des utilisateurs{' '}
+          {showAuthorizedUsers ? '' : 'non'} autorisés
+        </Button>
+        <br />
         <UsersTable
           allowSelection={!showAuthorizedUsers}
           users={users}

@@ -5,6 +5,7 @@ const path = require('path')
 const superagent = require('superagent')
 const { get, isUndefined, kebabCase } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
+const { Parser } = require('json2csv')
 
 const winston = require('../lib/log')
 const mailjet = require('../lib/mailings/mailjet')
@@ -22,7 +23,7 @@ const Status = require('../models/Status')
  */
 let emailsToIgnore = []
 try {
-  /* eslint-disable-next-line global-require */
+  /* eslint-disable-next-line */
   emailsToIgnore = require('../constants/users-to-ignore.json').map((email) =>
     email.toLowerCase(),
   )
@@ -54,41 +55,62 @@ router.get('/declarations', (req, res, next) => {
 })
 
 router.get('/users', (req, res, next) => {
-  User.query()
-    .where({ isAuthorized: req.query.authorized === 'true' })
-    .then((users) => res.json(users))
+  const isAuthorized = req.query.authorized === 'true'
+
+  return User.query()
+    .where({ isAuthorized })
+    .then((users) => {
+      if ('csv' in req.query) {
+        const fields = [
+          'firstName',
+          'lastName',
+          'email',
+          'postalCode',
+          'isAuthorized',
+        ]
+
+        const json2csvParser = new Parser({ fields })
+        const csv = json2csvParser.parse(users)
+
+        res.set(
+          'Content-disposition',
+          `attachment; filename=users-${
+            isAuthorized ? 'not-' : ''
+          }authorized-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+        )
+        res.set('Content-type', 'text/csv')
+        return res.send(csv)
+      }
+
+      return res.json(users)
+    })
     .catch(next)
 })
 
 router.post('/users/authorize', (req, res, next) => {
-  const useIds = Array.isArray(req.body.ids)
   const useEmails = Array.isArray(req.body.emails)
-  if (!useIds && !useEmails) {
+  if (!useEmails) {
     return res.status(400).json('Bad request')
   }
 
   let query = User.query()
 
-  if (useEmails) {
-    const emails = req.body.emails.filter(
-      (email) => !emailsToIgnore.includes(email.toLowerCase()),
-    )
+  const emails = req.body.emails.filter(
+    (email) => !emailsToIgnore.includes(email.toLowerCase()),
+  )
 
-    if (emails.length === 0) {
-      return res.json({
-        updatedRowsNb: 0,
-      })
-    }
-
-    query.where(function() {
-      query = this.where('email', 'ilike', emails[0])
-      emails.slice(1).forEach((email) => {
-        query = this.orWhere('email', 'ilike', email)
-      })
+  if (emails.length === 0) {
+    return res.json({
+      updatedRowsNb: 0,
     })
-  } else {
-    query = query.whereIn('id', req.body.ids).whereNotNull('email')
   }
+
+  query.where(function() {
+    query = this.where('email', 'ilike', emails[0])
+    emails.slice(1).forEach((email) => {
+      query = this.orWhere('email', 'ilike', email)
+    })
+  })
 
   // first get users to avoid sending "welcome" message to already subscribed users
   return query

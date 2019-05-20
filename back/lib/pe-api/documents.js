@@ -168,29 +168,25 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       }
     })
     .concat(
-      declaration.employers.reduce(
-        (prev, { employerName, documents, type }) => {
-          if (!documents[0] || !documents[0].file) return prev
+      declaration.employers.reduce((prev, { employerName, documents }) => {
+        if (!documents[0] || !documents[0].file) return prev
 
-          const label = `${
-            type === EmployerDocument.types.employerCertificate ? 'AE' : 'BS'
-          } - ${employerName}`
-          const confirmationData =
-            type === EmployerDocument.types.employerCertificate
-              ? CODES.EMPLOYER_CERTIFICATE
-              : CODES.SALARY_SHEET
-
-          return prev.concat(
-            documents.map((document) => ({
-              filePath: `${uploadsDirectory}${document.file}`,
-              label,
-              dbDocument: document,
-              confirmationData,
-            })),
-          )
-        },
-        [],
-      ),
+        return prev.concat(
+          documents.map((document) => ({
+            filePath: `${uploadsDirectory}${document.file}`,
+            label: `${
+              document.type === EmployerDocument.types.employerCertificate
+                ? 'AE'
+                : 'BS'
+            } - ${employerName}`,
+            dbDocument: document,
+            confirmationData:
+              document.type === EmployerDocument.types.employerCertificate
+                ? CODES.EMPLOYER_CERTIFICATE
+                : CODES.SALARY_SHEET,
+          })),
+        )
+      }, []),
     )
     .map(({ label, ...rest }) => ({
       label: deburr(

@@ -2,7 +2,6 @@
 const config = require('config')
 const nock = require('nock')
 const { sendDocuments } = require('../documents')
-const EmployerDocument = require('../../../models/EmployerDocument')
 
 const $query = () => ({ patch: () => {} })
 
@@ -91,7 +90,6 @@ const declarationWithLotsOfDocuments = {
       workHours: 222,
       salary: 894,
       hasEndedThisMonth: false,
-      type: EmployerDocument.types.salarySheet,
       createdAt: '2019-01-28T08:07:38.640Z',
       updatedAt: '2019-02-21T11:20:00.140Z',
       documents: [
@@ -115,7 +113,6 @@ const declarationWithLotsOfDocuments = {
       workHours: 122,
       salary: 490,
       hasEndedThisMonth: true,
-      type: EmployerDocument.types.employerCertificate,
       createdAt: '2019-01-28T08:07:38.640Z',
       updatedAt: '2019-02-21T11:20:00.140Z',
       documents: [
@@ -125,7 +122,7 @@ const declarationWithLotsOfDocuments = {
           isTransmitted: false,
           createdAt: '2019-02-18T12:38:44.215Z',
           updatedAt: '2019-02-21T12:27:30.495Z',
-          type: 'salarySheet',
+          type: 'employerCertificate',
           employerId: 2069,
           $query,
         },

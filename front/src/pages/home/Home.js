@@ -16,7 +16,6 @@ import photo3 from '../../images/photo3.jpg'
 import step1 from '../../images/step1.svg'
 import step2 from '../../images/step2.svg'
 import step3 from '../../images/step3.svg'
-import youtubeVideoThumb from '../../images/youtube-video-thumbnail.jpg'
 
 const mobileBreakpoint = '42rem'
 const intermediaryBreakpoint = '60rem'
@@ -373,11 +372,7 @@ export const Home = ({ location: { search } }) => (
             </Tagline>
             <ConnectButton>Se connecter avec Pôle Emploi</ConnectButton>
           </TopContentTextsContainer>
-          <YoutubeVideo
-            title="Vidéo de présentation du service Zen"
-            url="https://www.youtube.com/embed/IjC1vgptPX0"
-            image={youtubeVideoThumb}
-          />
+          <YoutubeVideo />
         </TopContent>
       </TopContentContainer>
 

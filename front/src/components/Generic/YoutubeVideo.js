@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import image from '../../images/youtube-video-thumbnail.jpg'
+import image from '../../images/youtube-video-thumb.jpg'
+import player from '../../images/player.svg'
 
 const Button = styled.button`
   border: none;
@@ -10,6 +11,7 @@ const Button = styled.button`
   cursor: pointer;
   background: none;
   display: block;
+  position: relative;
 
   background-position: center;
   background-size: contain;
@@ -70,6 +72,20 @@ export class YoutubeVideo extends Component {
         onClick={this.showVideo}
         style={{ ...style, ...shadowStyle }}
       >
+        <div
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            top: 0,
+            left: 0,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            width: '100%',
+          }}
+        >
+          <img src={player} alt="" />
+        </div>
         <img src={image} alt={title} style={style} />
       </Button>
     )

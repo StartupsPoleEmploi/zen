@@ -2,8 +2,6 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const config = require('config')
-const { Model } = require('objection')
-const Knex = require('knex')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
@@ -11,12 +9,7 @@ const pgConnectSimple = require('connect-pg-simple')
 const { setActiveMonth } = require('./lib/activeMonthMiddleware')
 const adminRouter = require('./routes/admin')
 
-const knex = Knex({
-  client: 'pg',
-  useNullAsDefault: true,
-  connection: process.env.DATABASE_URL,
-})
-Model.knex(knex)
+require('./lib/db') // setup db connection
 
 const app = express()
 

@@ -1,9 +1,6 @@
-const knex = require('./getKnexTestInstance')
 const knexCleaner = require('knex-cleaner') // eslint-disable-line
 const DeclarationMonth = require('../models/DeclarationMonth')
-const { Model } = require('objection')
-
-Model.knex(knex)
+const knex = require('../lib/db')
 
 // Initial setup : Empty db (except potential migrations data)
 // Then add a month in declaration months (will avoid putting it everywhere in the tests)

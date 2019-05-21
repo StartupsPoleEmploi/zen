@@ -1,3 +1,3 @@
-const knex = require('./getKnexTestInstance')
+const knex = require('../lib/db')
 
 module.exports = () => knex.destroy()

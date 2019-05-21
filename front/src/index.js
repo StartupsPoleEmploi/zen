@@ -10,7 +10,6 @@ import { BrowserRouter } from 'react-router-dom'
 
 import './lib/external/gtm'
 import './lib/external/hotjar'
-import './lib/external/zopim'
 
 import { version } from '../package.json'
 import App from './App'

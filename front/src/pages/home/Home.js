@@ -5,17 +5,17 @@ import React from 'react'
 import styled from 'styled-components'
 
 import AppTitle from '../../components/Generic/AppTitle'
-import FaqLink from '../../components/Generic/FaqLink'
 import YoutubeVideo from '../../components/Generic/YoutubeVideo'
-import { primaryBlue, secondaryBlue } from '../../constants/colors'
-import characters from '../../images/characters.svg'
 import logoPEMono from '../../images/logoPE-mono.png'
-import photo1 from '../../images/photo1.jpg'
-import photo2 from '../../images/photo2.jpg'
-import photo3 from '../../images/photo3.jpg'
-import step1 from '../../images/step1.svg'
-import step2 from '../../images/step2.svg'
 import step3 from '../../images/step3.svg'
+import step2 from '../../images/step2.svg'
+import step1 from '../../images/step1.svg'
+import photo3 from '../../images/photo3.jpg'
+import photo2 from '../../images/photo2.jpg'
+import photo1 from '../../images/photo1.jpg'
+import characters from '../../images/characters.svg'
+
+import { primaryBlue, secondaryBlue } from '../../constants/colors'
 
 const mobileBreakpoint = '42rem'
 const intermediaryBreakpoint = '60rem'
@@ -303,17 +303,8 @@ const Footer = styled.footer`
   min-height: 15rem;
   background-color: ${secondaryBlue};
   text-align: center;
-  position: relative;
 
   ${windowWidthElement}
-`
-
-const FaqLinkContainer = styled.div`
-  @media (min-width: ${mobileBreakpoint}) {
-    position: absolute;
-    bottom: 5rem;
-    right: 3rem;
-  }
 `
 
 export const Home = ({ location: { search } }) => (
@@ -540,19 +531,15 @@ export const Home = ({ location: { search } }) => (
     </main>
 
     <Footer role="contentinfo">
-      <div>
-        <AppTitle style={{ color: '#fff' }} />
-        <Typography
-          variant="caption"
-          // 0.51 (not 0.5) is the accessibility threshold for our background color
-          style={{ color: '#fff', opacity: 0.51, letterSpacing: 1.5 }}
-        >
-          Un service propulsé par Pôle Emploi
-        </Typography>
-      </div>
-      <FaqLinkContainer>
-        <FaqLink useWhiteVersion />
-      </FaqLinkContainer>
+      <AppTitle style={{ color: '#fff' }} />
+      <br />
+      <Typography
+        variant="caption"
+        // 0.51 (not 0.5) is the accessibility threshold for our background color
+        style={{ color: '#fff', opacity: 0.51, letterSpacing: 1.5 }}
+      >
+        Un service propulsé par Pôle Emploi
+      </Typography>
     </Footer>
   </StyledHome>
 )

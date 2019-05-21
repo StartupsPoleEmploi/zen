@@ -3302,53 +3302,57 @@ exports[`Storyshots Home default 1`] = `
 <div
   className="sc-hqyNC lecjLT"
 >
-  <div
-    className="sc-dNLxif cAeBMP"
+  <header
+    className="sc-dNLxif jiDWgk"
+    role="banner"
   >
     <header
-      className="sc-jqCOkK iMZvnK"
+      className="sc-jqCOkK bXrpvC"
     >
       <div
-        className="sc-bbmXgH SJUJX"
+        className="MuiTypography-root-1597 MuiTypography-h4-1612 sc-ksYbfQ fnUAgv"
       >
-        <div
-          className="MuiTypography-root-1597 MuiTypography-h4-1612 sc-ksYbfQ fnUAgv"
-        >
-          zen
-          <span
-            style={
-              Object {
-                "color": "#0065DB",
-              }
-            }
-          >
-            .
-          </span>
-        </div>
-        <img
-          alt="logo pole emploi"
-          src="logoPE-mono.png"
+        zen
+        <span
           style={
             Object {
-              "display": "block",
-              "height": "3.5rem",
-              "width": "auto",
+              "color": "#0065DB",
             }
           }
-        />
+        >
+          .
+        </span>
       </div>
+      <img
+        alt="logo pole emploi"
+        src="logoPE-mono.png"
+        style={
+          Object {
+            "display": "block",
+            "height": "3.5rem",
+            "width": "auto",
+          }
+        }
+      />
+    </header>
+  </header>
+  <main
+    role="main"
+  >
+    <section
+      className="sc-uJMKN dxrcwp"
+    >
       <div
-        className="sc-fYxtnH bWZCps"
+        className="sc-bbmXgH kihVXi"
       >
         <div
-          className="sc-uJMKN dFCOip"
+          className="sc-gGBfsJ eNmQjt"
         >
           <h1
-            className="MuiTypography-root-1597 MuiTypography-h4-1612 MuiTypography-paragraph-1625 sc-gGBfsJ kRLVHR"
+            className="MuiTypography-root-1597 MuiTypography-h4-1612 MuiTypography-paragraph-1625 sc-jnlKLf kbYjjl"
             style={
               Object {
                 "fontWeight": "bold",
-                "hyphens": "manual",
                 "textTransform": "uppercase",
               }
             }
@@ -3362,7 +3366,7 @@ exports[`Storyshots Home default 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1597 MuiTypography-h6-1614 MuiTypography-paragraph-1625 sc-jnlKLf jKMWma"
+            className="MuiTypography-root-1597 MuiTypography-h6-1614 MuiTypography-paragraph-1625 sc-fYxtnH hSLfWw"
           >
             Zen vous propose une actualisation
             <br />
@@ -3445,11 +3449,7 @@ exports[`Storyshots Home default 1`] = `
           />
         </button>
       </div>
-    </header>
-  </div>
-  <main
-    role="main"
-  >
+    </section>
     <section
       className="sc-ktHwxA bwPBzM"
       style={
@@ -3820,6 +3820,7 @@ exports[`Storyshots Home default 1`] = `
         onTouchEnd={[Function]}
         onTouchMove={[Function]}
         onTouchStart={[Function]}
+        rel="noopener noreferrer"
         role="link"
         tabIndex="0"
         target="_blank"
@@ -3870,53 +3871,57 @@ exports[`Storyshots Home loginFailed 1`] = `
       </strong>
     </p>
   </div>
-  <div
-    className="sc-dNLxif cAeBMP"
+  <header
+    className="sc-dNLxif jiDWgk"
+    role="banner"
   >
     <header
-      className="sc-jqCOkK iMZvnK"
+      className="sc-jqCOkK bXrpvC"
     >
       <div
-        className="sc-bbmXgH SJUJX"
+        className="MuiTypography-root-1669 MuiTypography-h4-1684 sc-ksYbfQ fnUAgv"
       >
-        <div
-          className="MuiTypography-root-1669 MuiTypography-h4-1684 sc-ksYbfQ fnUAgv"
-        >
-          zen
-          <span
-            style={
-              Object {
-                "color": "#0065DB",
-              }
-            }
-          >
-            .
-          </span>
-        </div>
-        <img
-          alt="logo pole emploi"
-          src="logoPE-mono.png"
+        zen
+        <span
           style={
             Object {
-              "display": "block",
-              "height": "3.5rem",
-              "width": "auto",
+              "color": "#0065DB",
             }
           }
-        />
+        >
+          .
+        </span>
       </div>
+      <img
+        alt="logo pole emploi"
+        src="logoPE-mono.png"
+        style={
+          Object {
+            "display": "block",
+            "height": "3.5rem",
+            "width": "auto",
+          }
+        }
+      />
+    </header>
+  </header>
+  <main
+    role="main"
+  >
+    <section
+      className="sc-uJMKN dxrcwp"
+    >
       <div
-        className="sc-fYxtnH bWZCps"
+        className="sc-bbmXgH kihVXi"
       >
         <div
-          className="sc-uJMKN dFCOip"
+          className="sc-gGBfsJ eNmQjt"
         >
           <h1
-            className="MuiTypography-root-1669 MuiTypography-h4-1684 MuiTypography-paragraph-1697 sc-gGBfsJ kRLVHR"
+            className="MuiTypography-root-1669 MuiTypography-h4-1684 MuiTypography-paragraph-1697 sc-jnlKLf kbYjjl"
             style={
               Object {
                 "fontWeight": "bold",
-                "hyphens": "manual",
                 "textTransform": "uppercase",
               }
             }
@@ -3930,7 +3935,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1669 MuiTypography-h6-1686 MuiTypography-paragraph-1697 sc-jnlKLf jKMWma"
+            className="MuiTypography-root-1669 MuiTypography-h6-1686 MuiTypography-paragraph-1697 sc-fYxtnH hSLfWw"
           >
             Zen vous propose une actualisation
             <br />
@@ -4013,11 +4018,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           />
         </button>
       </div>
-    </header>
-  </div>
-  <main
-    role="main"
-  >
+    </section>
     <section
       className="sc-ktHwxA bwPBzM"
       style={
@@ -4388,6 +4389,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         onTouchEnd={[Function]}
         onTouchMove={[Function]}
         onTouchStart={[Function]}
+        rel="noopener noreferrer"
         role="link"
         tabIndex="0"
         target="_blank"

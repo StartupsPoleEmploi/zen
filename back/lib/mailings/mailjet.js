@@ -4,7 +4,7 @@ const superagent = require('superagent')
 const { get } = require('lodash')
 
 const isProd = process.env.NODE_ENV === 'production'
-const LIST_ID = isProd ? 14703 : 19487
+const LIST_ID = isProd ? 14703 : 10129294 // id of prod list / a test list with devs
 
 if (!process.env.EMAIL_KEY || !process.env.EMAIL_KEY_SECRET) {
   throw new Error('Mailjet info is not configured')

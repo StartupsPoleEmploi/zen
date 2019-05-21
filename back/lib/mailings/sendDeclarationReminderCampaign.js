@@ -32,7 +32,7 @@ const sendDeclarationReminderCampaign = () => {
       const segmentId = get(segmentRes, 'body.Data.0.ID')
       if (!segmentId) throw new Error('No Campaign ID')
       return createCampaignDraft({
-        Subject: 'N’oubliez pas de faire votre actualisation',
+        Subject: 'Avez-vous pensé à vous actualiser ?',
         Title: `Rappel actu ${format(new Date(), 'DD/MM/YYYY')}`.concat(
           process.env.NODE_ENV !== 'production' ? ' (test)' : '',
         ),

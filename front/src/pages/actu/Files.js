@@ -12,12 +12,13 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
+import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
-import DocumentUpload from '../../components/Actu/DocumentUpload'
+import { secondaryBlue } from '../../constants/colors'
 import { formattedDeclarationMonth } from '../../lib/date'
 
 const StyledFiles = styled.div`
@@ -590,7 +591,8 @@ export class Files extends Component {
           <Typography
             variant="body1"
             style={{
-              color: declarationRemainingDocsNb > 0 ? '#df5555' : '#3e689b',
+              color:
+                declarationRemainingDocsNb <= 0 ? '#df5555' : secondaryBlue,
               paddingBottom: '2rem',
             }}
           >

@@ -45,10 +45,13 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#39679e',
+      main: '#0065DB',
     },
     secondary: {
-      main: '#39679e',
+      main: '#262C65',
+    },
+    background: {
+      default: '#fff',
     },
   },
   overrides: {

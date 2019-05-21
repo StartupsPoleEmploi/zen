@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const GREEN = '#39679e'
+import { primaryBlue } from '../../constants/colors'
 
 const Rectangle = ({ style }) => (
   <div
     style={{
-      backgroundColor: GREEN,
+      backgroundColor: primaryBlue,
       width: '2rem',
       height: '0.5rem',
       borderRadius: '0.2rem',

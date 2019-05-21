@@ -1,42 +1,38 @@
 /* eslint-disable react/no-did-update-set-state */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
+import { get } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { hot } from 'react-hot-loader'
 import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
-import { get } from 'lodash'
 
+import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
+import StatusErrorDialog from './components/Actu/StatusErrorDialog'
+import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
 import PrivateRoute from './components/Generic/PrivateRoute'
+import { primaryBlue } from './constants/colors'
 import { getUser } from './lib/user'
 import Actu from './pages/actu/Actu'
 import { Employers } from './pages/actu/Employers'
 import { Files } from './pages/actu/Files'
 import Thanks from './pages/actu/Thanks'
 import { LoggedOut } from './pages/generic/LoggedOut'
+import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 import Signup from './pages/other/Signup'
-import Home from './pages/home/Home'
-import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
-import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
-import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 
 const stepperRoutes = ['/actu', '/employers', '/files']
 const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
 
 const StyledLink = styled(Link)`
-  color: #39679e;
+  color: ${primaryBlue};
   text-decoration: none;
 
   &:visited {
-    color: #39679e;
-  }
-
-  & > * {
-    /* override Typography font color */
-    color: #39679e !important;
+    color: ${primaryBlue};
   }
 `
 

@@ -5,6 +5,8 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import styled from 'styled-components'
 
+import { primaryBlue } from '../../constants/colors'
+
 // Note : these values are duplicated in Employers
 const WORK_HOURS = 'workHours'
 const SALARY = 'salary'
@@ -39,7 +41,7 @@ const Value = styled(Typography).attrs({
   && {
     font-size: 1.5rem;
     padding-left: 1.5rem;
-    border-left: solid 1px #39679e;
+    border-left: solid 1px ${primaryBlue};
     display: inline-block;
   }
 `

@@ -1765,7 +1765,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
             disabled={false}
             style={
               Object {
-                "borderColor": "#3e689b",
+                "borderColor": "#0065DB",
               }
             }
           >
@@ -3298,6 +3298,1131 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 </div>
 `;
 
+exports[`Storyshots Home default 1`] = `
+<div
+  className="sc-hqyNC lecjLT"
+>
+  <div
+    className="sc-dNLxif cAeBMP"
+  >
+    <header
+      className="sc-jqCOkK iMZvnK"
+    >
+      <div
+        className="sc-bbmXgH SJUJX"
+      >
+        <div
+          className="MuiTypography-root-1597 MuiTypography-h4-1612 sc-ksYbfQ fnUAgv"
+        >
+          zen
+          <span
+            style={
+              Object {
+                "color": "#0065DB",
+              }
+            }
+          >
+            .
+          </span>
+        </div>
+        <img
+          alt="logo pole emploi"
+          src="logoPE-mono.png"
+          style={
+            Object {
+              "display": "block",
+              "height": "3.5rem",
+              "width": "auto",
+            }
+          }
+        />
+      </div>
+      <div
+        className="sc-fYxtnH bWZCps"
+      >
+        <div
+          className="sc-uJMKN dFCOip"
+        >
+          <h1
+            className="MuiTypography-root-1597 MuiTypography-h4-1612 MuiTypography-paragraph-1625 sc-gGBfsJ kRLVHR"
+            style={
+              Object {
+                "fontWeight": "bold",
+                "hyphens": "manual",
+                "textTransform": "uppercase",
+              }
+            }
+          >
+            L'actualisation
+            <br />
+            Pôle emploi
+            <br />
+            en toute
+            <br />
+            simplicité.
+          </h1>
+          <h2
+            className="MuiTypography-root-1597 MuiTypography-h6-1614 MuiTypography-paragraph-1625 sc-jnlKLf jKMWma"
+          >
+            Zen vous propose une actualisation
+            <br />
+            et un envoi de documents simplifiés.
+          </h2>
+          <a
+            className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-contained-1644 MuiButton-containedPrimary-1645 MuiButton-raised-1647 MuiButton-raisedPrimary-1648 sc-tilXH fFsdUq"
+            href="/api/login"
+            onBlur={[Function]}
+            onContextMenu={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            role="link"
+            tabIndex="0"
+          >
+            <span
+              className="MuiButton-label-1634"
+            >
+              Se connecter avec Pôle Emploi
+            </span>
+            <span
+              className="MuiTouchRipple-root-1662"
+            />
+          </a>
+        </div>
+        <button
+          className="sc-cHGsZl kRpYEJ"
+          onClick={[Function]}
+          style={
+            Object {
+              "borderRadius": "5%",
+              "boxShadow": "0 0 1.5rem 0.5rem rgba(0, 0, 0, 0.05)",
+              "maxHeight": "35rem",
+              "maxWidth": "100%",
+              "overflow": "hidden",
+              "width": "62rem",
+            }
+          }
+          title="Visualiser : Vidéo de présentation du service Zen"
+          type="button"
+        >
+          <div
+            style={
+              Object {
+                "alignItems": "center",
+                "display": "flex",
+                "height": "100%",
+                "justifyContent": "center",
+                "left": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": "100%",
+              }
+            }
+          >
+            <img
+              alt=""
+              src="player.svg"
+            />
+          </div>
+          <img
+            alt="Vidéo de présentation du service Zen"
+            src="youtube-video-thumb.jpg"
+            style={
+              Object {
+                "borderRadius": "5%",
+                "maxHeight": "35rem",
+                "maxWidth": "100%",
+                "overflow": "hidden",
+                "width": "62rem",
+              }
+            }
+          />
+        </button>
+      </div>
+    </header>
+  </div>
+  <main
+    role="main"
+  >
+    <section
+      className="sc-ktHwxA bwPBzM"
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "jusityContent": "center",
+          "paddingBottom": "3rem",
+          "width": "100%",
+        }
+      }
+    >
+      <img
+        alt=""
+        src="characters.svg"
+        style={
+          Object {
+            "marginBottom": "3rem",
+            "marginTop": "-15rem",
+            "maxWidth": "100%",
+            "minHeight": "15rem",
+            "position": "relative",
+          }
+        }
+      />
+      <h2
+        className="MuiTypography-root-1597 MuiTypography-h5-1613 sc-cIShpX duZDNm"
+      >
+        En quelques clics seulement !
+      </h2>
+      <ul
+        className="sc-bYSBpT igTMZL"
+      >
+        <li
+          className="sc-elJkPf cGjyYi"
+        >
+          <img
+            alt=""
+            className="sc-jtRfpW eqyDOz"
+            src="step1.svg"
+          />
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 sc-kTUwUJ ijlERP"
+          >
+            Zen additionne pour vous
+            <br />
+            vos heures travaillées et totalise 
+            <br />
+            vos revenus mensuels !
+          </p>
+        </li>
+        <li
+          className="sc-elJkPf cGjyYi"
+        >
+          <img
+            alt=""
+            className="sc-jtRfpW eqyDOz"
+            src="step2.svg"
+          />
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 sc-kTUwUJ ijlERP"
+          >
+            Zen vous indique 
+            <br />
+            les justificatifs à transmettre selon
+            <br />
+             votre déclaration.
+          </p>
+        </li>
+        <li
+          className="sc-elJkPf cGjyYi"
+        >
+          <img
+            alt=""
+            className="sc-jtRfpW eqyDOz"
+            src="step3.svg"
+          />
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 sc-kTUwUJ ijlERP"
+          >
+            Accédez à un espace personnel
+            <br />
+             avec tous vos documents
+            <br />
+             transmis mois par mois.
+          </p>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="sc-ktHwxA bwPBzM"
+    >
+      <div
+        className="sc-kafWEX fvQWnc"
+      >
+        <h2
+          className="sc-iELTvK bGWvQr"
+        >
+          En résumé
+        </h2>
+        <div
+          className="sc-cmTdod fLWaJu"
+        >
+          <div
+            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-btzYZH hnsoDT"
+          >
+            1
+          </div>
+          <h3
+            className="MuiTypography-root-1597 MuiTypography-h5-1613 MuiTypography-colorSecondary-1628 sc-cIShpX sc-jwKygS joncjD"
+          >
+            Je suis informé(e) tous les mois du début de l'actualisation
+          </h3>
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606"
+          >
+            Recevez chaque mois un rappel par mail pour ne pas oublier que vous devez vous actualiser. Soyez Zen !
+          </p>
+        </div>
+        <img
+          alt=""
+          className="sc-lhVmIH bQpVkf"
+          src="photo1.jpg"
+        />
+      </div>
+      <div
+        className="sc-kafWEX sc-feJyhm hXHuAS"
+      >
+        <div
+          className="sc-cmTdod fLWaJu"
+        >
+          <div
+            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-btzYZH hnsoDT"
+          >
+            2
+          </div>
+          <h3
+            className="MuiTypography-root-1597 MuiTypography-h5-1613 MuiTypography-colorSecondary-1628 sc-cIShpX sc-jwKygS joncjD"
+          >
+            Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
+          </h3>
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606"
+          >
+            Zen m'indique les justificatifs à transmettre selon ma déclaration. Je peux mettre à jour mon dossier sur l'interface Zen en transmettant mes pièces manquantes.
+          </p>
+        </div>
+        <img
+          alt=""
+          className="sc-lhVmIH bQpVkf"
+          src="photo2.jpg"
+        />
+      </div>
+      <div
+        className="sc-kafWEX fvQWnc"
+      >
+        <div
+          className="sc-cmTdod fLWaJu"
+        >
+          <div
+            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-btzYZH hnsoDT"
+          >
+            3
+          </div>
+          <h3
+            className="MuiTypography-root-1597 MuiTypography-h5-1613 MuiTypography-colorSecondary-1628 sc-cIShpX sc-jwKygS joncjD"
+          >
+            J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
+          </h3>
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606"
+          >
+            Vous pouvez imprimer ou télécharger votre déclaration sur le site de Zen ou bien la recevoir par mail après votre actualisation. C'est simple, c'est Zen !
+          </p>
+        </div>
+        <img
+          alt=""
+          className="sc-lhVmIH bQpVkf"
+          src="photo3.jpg"
+        />
+      </div>
+    </section>
+    <section
+      className="sc-iyvyFf QgmLP"
+      style={Object {}}
+    >
+      <h2
+        className="MuiTypography-root-1597 MuiTypography-h5-1613 sc-cIShpX duZDNm"
+        style={
+          Object {
+            "color": "#fff",
+          }
+        }
+      >
+        Rejoignez les utilisateurs de Zen !
+      </h2>
+      <p
+        className="MuiTypography-root-1597 MuiTypography-body1-1606 MuiTypography-paragraph-1625"
+        style={
+          Object {
+            "color": "#fff",
+          }
+        }
+      >
+        Zen est un service innovant de Pôle Emploi pour faciliter 
+        <br />
+        l'actualisation. Il est dédié aux personnes ayant plusieurs employeurs.
+        <br />
+        <b>
+          Ce service est actuellement disponible pour 
+          <br />
+          les assistantes maternelles en Hauts-de-France.
+        </b>
+      </p>
+      <a
+        className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-contained-1644 MuiButton-containedPrimary-1645 MuiButton-raised-1647 MuiButton-raisedPrimary-1648 sc-tilXH sc-hEsumM jEKFvO"
+        href="/api/login"
+        onBlur={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="link"
+        tabIndex="0"
+      >
+        <span
+          className="MuiButton-label-1634"
+        >
+          Se connecter avec Pôle Emploi
+        </span>
+        <span
+          className="MuiTouchRipple-root-1662"
+        />
+      </a>
+    </section>
+    <section
+      className="sc-ktHwxA bwPBzM"
+      style={
+        Object {
+          "padding": "5rem",
+          "textAlign": "center",
+        }
+      }
+    >
+      <h2
+        className="MuiTypography-root-1597 MuiTypography-h5-1613 sc-cIShpX duZDNm"
+      >
+        Nos utilisateurs approuvent !
+      </h2>
+      <div
+        className="sc-dqBHgY biFFJV"
+      >
+        <div
+          className="sc-gxMtzJ eypUZp"
+        >
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 MuiTypography-colorSecondary-1628 sc-dfVpRl jgfAJt"
+          >
+            <b>
+              Déborah - Lille
+              <br />
+              (11/04/19)
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 sc-gzOgki ehNPHd"
+          >
+            « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
+          </p>
+        </div>
+        <div
+          className="sc-gxMtzJ eypUZp"
+        >
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 MuiTypography-colorSecondary-1628 sc-dfVpRl jgfAJt"
+          >
+            <b>
+              Sophie - Condette
+              <br />
+              (10/04/19)
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 sc-gzOgki ehNPHd"
+          >
+            « Plus simple vu le nombre d'employeurs. Belle innovation »
+          </p>
+        </div>
+        <div
+          className="sc-gxMtzJ eypUZp"
+        >
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 MuiTypography-colorSecondary-1628 sc-dfVpRl jgfAJt"
+          >
+            <b>
+              Fatima - Amiens
+              <br />
+              (09/04/19)
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1597 MuiTypography-body1-1606 sc-gzOgki ehNPHd"
+          >
+            « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer
+    className="sc-hwwEjo dJPVtI"
+    role="contentinfo"
+  >
+    <div>
+      <div
+        className="MuiTypography-root-1597 MuiTypography-h4-1612 sc-ksYbfQ fnUAgv"
+        style={
+          Object {
+            "color": "#fff",
+          }
+        }
+      >
+        zen
+        <span
+          style={
+            Object {
+              "color": "#0065DB",
+            }
+          }
+        >
+          .
+        </span>
+      </div>
+      <span
+        className="MuiTypography-root-1597 MuiTypography-caption-1607"
+        style={
+          Object {
+            "color": "#fff",
+            "letterSpacing": 1.5,
+            "opacity": 0.51,
+          }
+        }
+      >
+        Un service propulsé par Pôle Emploi
+      </span>
+    </div>
+    <div
+      className="sc-kPVwWT bmVVUp"
+    >
+      <a
+        className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-outlined-1641 sc-hmzhuo sc-frDJqD kOVSGs"
+        href="https://pole-emploi.zendesk.com"
+        onBlur={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="link"
+        tabIndex="0"
+        target="_blank"
+      >
+        <span
+          className="MuiButton-label-1634"
+        >
+          Des questions ?
+          <div
+            style={
+              Object {
+                "alignItems": "center",
+                "border": "1px solid #0065DB",
+                "borderRadius": "50%",
+                "color": "#0065DB",
+                "display": "flex",
+                "height": "1.8rem",
+                "justifyContent": "center",
+                "marginLeft": "1rem",
+                "width": "1.8rem",
+              }
+            }
+          >
+            ?
+          </div>
+        </span>
+        <span
+          className="MuiTouchRipple-root-1662"
+        />
+      </a>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`Storyshots Home loginFailed 1`] = `
+<div
+  className="sc-hqyNC lecjLT"
+>
+  <div
+    className="sc-jbKcbu irbUNc"
+  >
+    <p
+      className="MuiTypography-root-1669 MuiTypography-body1-1678"
+    >
+      <strong>
+        La connexion a échoué, merci de bien vouloir réessayer ultérieurement.
+      </strong>
+    </p>
+  </div>
+  <div
+    className="sc-dNLxif cAeBMP"
+  >
+    <header
+      className="sc-jqCOkK iMZvnK"
+    >
+      <div
+        className="sc-bbmXgH SJUJX"
+      >
+        <div
+          className="MuiTypography-root-1669 MuiTypography-h4-1684 sc-ksYbfQ fnUAgv"
+        >
+          zen
+          <span
+            style={
+              Object {
+                "color": "#0065DB",
+              }
+            }
+          >
+            .
+          </span>
+        </div>
+        <img
+          alt="logo pole emploi"
+          src="logoPE-mono.png"
+          style={
+            Object {
+              "display": "block",
+              "height": "3.5rem",
+              "width": "auto",
+            }
+          }
+        />
+      </div>
+      <div
+        className="sc-fYxtnH bWZCps"
+      >
+        <div
+          className="sc-uJMKN dFCOip"
+        >
+          <h1
+            className="MuiTypography-root-1669 MuiTypography-h4-1684 MuiTypography-paragraph-1697 sc-gGBfsJ kRLVHR"
+            style={
+              Object {
+                "fontWeight": "bold",
+                "hyphens": "manual",
+                "textTransform": "uppercase",
+              }
+            }
+          >
+            L'actualisation
+            <br />
+            Pôle emploi
+            <br />
+            en toute
+            <br />
+            simplicité.
+          </h1>
+          <h2
+            className="MuiTypography-root-1669 MuiTypography-h6-1686 MuiTypography-paragraph-1697 sc-jnlKLf jKMWma"
+          >
+            Zen vous propose une actualisation
+            <br />
+            et un envoi de documents simplifiés.
+          </h2>
+          <a
+            className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-contained-1716 MuiButton-containedPrimary-1717 MuiButton-raised-1719 MuiButton-raisedPrimary-1720 sc-tilXH fFsdUq"
+            href="/api/login"
+            onBlur={[Function]}
+            onContextMenu={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            role="link"
+            tabIndex="0"
+          >
+            <span
+              className="MuiButton-label-1706"
+            >
+              Se connecter avec Pôle Emploi
+            </span>
+            <span
+              className="MuiTouchRipple-root-1734"
+            />
+          </a>
+        </div>
+        <button
+          className="sc-cHGsZl kRpYEJ"
+          onClick={[Function]}
+          style={
+            Object {
+              "borderRadius": "5%",
+              "boxShadow": "0 0 1.5rem 0.5rem rgba(0, 0, 0, 0.05)",
+              "maxHeight": "35rem",
+              "maxWidth": "100%",
+              "overflow": "hidden",
+              "width": "62rem",
+            }
+          }
+          title="Visualiser : Vidéo de présentation du service Zen"
+          type="button"
+        >
+          <div
+            style={
+              Object {
+                "alignItems": "center",
+                "display": "flex",
+                "height": "100%",
+                "justifyContent": "center",
+                "left": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": "100%",
+              }
+            }
+          >
+            <img
+              alt=""
+              src="player.svg"
+            />
+          </div>
+          <img
+            alt="Vidéo de présentation du service Zen"
+            src="youtube-video-thumb.jpg"
+            style={
+              Object {
+                "borderRadius": "5%",
+                "maxHeight": "35rem",
+                "maxWidth": "100%",
+                "overflow": "hidden",
+                "width": "62rem",
+              }
+            }
+          />
+        </button>
+      </div>
+    </header>
+  </div>
+  <main
+    role="main"
+  >
+    <section
+      className="sc-ktHwxA bwPBzM"
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "jusityContent": "center",
+          "paddingBottom": "3rem",
+          "width": "100%",
+        }
+      }
+    >
+      <img
+        alt=""
+        src="characters.svg"
+        style={
+          Object {
+            "marginBottom": "3rem",
+            "marginTop": "-15rem",
+            "maxWidth": "100%",
+            "minHeight": "15rem",
+            "position": "relative",
+          }
+        }
+      />
+      <h2
+        className="MuiTypography-root-1669 MuiTypography-h5-1685 sc-cIShpX duZDNm"
+      >
+        En quelques clics seulement !
+      </h2>
+      <ul
+        className="sc-bYSBpT igTMZL"
+      >
+        <li
+          className="sc-elJkPf cGjyYi"
+        >
+          <img
+            alt=""
+            className="sc-jtRfpW eqyDOz"
+            src="step1.svg"
+          />
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 sc-kTUwUJ ijlERP"
+          >
+            Zen additionne pour vous
+            <br />
+            vos heures travaillées et totalise 
+            <br />
+            vos revenus mensuels !
+          </p>
+        </li>
+        <li
+          className="sc-elJkPf cGjyYi"
+        >
+          <img
+            alt=""
+            className="sc-jtRfpW eqyDOz"
+            src="step2.svg"
+          />
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 sc-kTUwUJ ijlERP"
+          >
+            Zen vous indique 
+            <br />
+            les justificatifs à transmettre selon
+            <br />
+             votre déclaration.
+          </p>
+        </li>
+        <li
+          className="sc-elJkPf cGjyYi"
+        >
+          <img
+            alt=""
+            className="sc-jtRfpW eqyDOz"
+            src="step3.svg"
+          />
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 sc-kTUwUJ ijlERP"
+          >
+            Accédez à un espace personnel
+            <br />
+             avec tous vos documents
+            <br />
+             transmis mois par mois.
+          </p>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="sc-ktHwxA bwPBzM"
+    >
+      <div
+        className="sc-kafWEX fvQWnc"
+      >
+        <h2
+          className="sc-iELTvK bGWvQr"
+        >
+          En résumé
+        </h2>
+        <div
+          className="sc-cmTdod fLWaJu"
+        >
+          <div
+            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-btzYZH hnsoDT"
+          >
+            1
+          </div>
+          <h3
+            className="MuiTypography-root-1669 MuiTypography-h5-1685 MuiTypography-colorSecondary-1700 sc-cIShpX sc-jwKygS joncjD"
+          >
+            Je suis informé(e) tous les mois du début de l'actualisation
+          </h3>
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678"
+          >
+            Recevez chaque mois un rappel par mail pour ne pas oublier que vous devez vous actualiser. Soyez Zen !
+          </p>
+        </div>
+        <img
+          alt=""
+          className="sc-lhVmIH bQpVkf"
+          src="photo1.jpg"
+        />
+      </div>
+      <div
+        className="sc-kafWEX sc-feJyhm hXHuAS"
+      >
+        <div
+          className="sc-cmTdod fLWaJu"
+        >
+          <div
+            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-btzYZH hnsoDT"
+          >
+            2
+          </div>
+          <h3
+            className="MuiTypography-root-1669 MuiTypography-h5-1685 MuiTypography-colorSecondary-1700 sc-cIShpX sc-jwKygS joncjD"
+          >
+            Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
+          </h3>
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678"
+          >
+            Zen m'indique les justificatifs à transmettre selon ma déclaration. Je peux mettre à jour mon dossier sur l'interface Zen en transmettant mes pièces manquantes.
+          </p>
+        </div>
+        <img
+          alt=""
+          className="sc-lhVmIH bQpVkf"
+          src="photo2.jpg"
+        />
+      </div>
+      <div
+        className="sc-kafWEX fvQWnc"
+      >
+        <div
+          className="sc-cmTdod fLWaJu"
+        >
+          <div
+            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-btzYZH hnsoDT"
+          >
+            3
+          </div>
+          <h3
+            className="MuiTypography-root-1669 MuiTypography-h5-1685 MuiTypography-colorSecondary-1700 sc-cIShpX sc-jwKygS joncjD"
+          >
+            J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
+          </h3>
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678"
+          >
+            Vous pouvez imprimer ou télécharger votre déclaration sur le site de Zen ou bien la recevoir par mail après votre actualisation. C'est simple, c'est Zen !
+          </p>
+        </div>
+        <img
+          alt=""
+          className="sc-lhVmIH bQpVkf"
+          src="photo3.jpg"
+        />
+      </div>
+    </section>
+    <section
+      className="sc-iyvyFf QgmLP"
+      style={Object {}}
+    >
+      <h2
+        className="MuiTypography-root-1669 MuiTypography-h5-1685 sc-cIShpX duZDNm"
+        style={
+          Object {
+            "color": "#fff",
+          }
+        }
+      >
+        Rejoignez les utilisateurs de Zen !
+      </h2>
+      <p
+        className="MuiTypography-root-1669 MuiTypography-body1-1678 MuiTypography-paragraph-1697"
+        style={
+          Object {
+            "color": "#fff",
+          }
+        }
+      >
+        Zen est un service innovant de Pôle Emploi pour faciliter 
+        <br />
+        l'actualisation. Il est dédié aux personnes ayant plusieurs employeurs.
+        <br />
+        <b>
+          Ce service est actuellement disponible pour 
+          <br />
+          les assistantes maternelles en Hauts-de-France.
+        </b>
+      </p>
+      <a
+        className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-contained-1716 MuiButton-containedPrimary-1717 MuiButton-raised-1719 MuiButton-raisedPrimary-1720 sc-tilXH sc-hEsumM jEKFvO"
+        href="/api/login"
+        onBlur={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="link"
+        tabIndex="0"
+      >
+        <span
+          className="MuiButton-label-1706"
+        >
+          Se connecter avec Pôle Emploi
+        </span>
+        <span
+          className="MuiTouchRipple-root-1734"
+        />
+      </a>
+    </section>
+    <section
+      className="sc-ktHwxA bwPBzM"
+      style={
+        Object {
+          "padding": "5rem",
+          "textAlign": "center",
+        }
+      }
+    >
+      <h2
+        className="MuiTypography-root-1669 MuiTypography-h5-1685 sc-cIShpX duZDNm"
+      >
+        Nos utilisateurs approuvent !
+      </h2>
+      <div
+        className="sc-dqBHgY biFFJV"
+      >
+        <div
+          className="sc-gxMtzJ eypUZp"
+        >
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 MuiTypography-colorSecondary-1700 sc-dfVpRl jgfAJt"
+          >
+            <b>
+              Déborah - Lille
+              <br />
+              (11/04/19)
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 sc-gzOgki ehNPHd"
+          >
+            « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
+          </p>
+        </div>
+        <div
+          className="sc-gxMtzJ eypUZp"
+        >
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 MuiTypography-colorSecondary-1700 sc-dfVpRl jgfAJt"
+          >
+            <b>
+              Sophie - Condette
+              <br />
+              (10/04/19)
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 sc-gzOgki ehNPHd"
+          >
+            « Plus simple vu le nombre d'employeurs. Belle innovation »
+          </p>
+        </div>
+        <div
+          className="sc-gxMtzJ eypUZp"
+        >
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 MuiTypography-colorSecondary-1700 sc-dfVpRl jgfAJt"
+          >
+            <b>
+              Fatima - Amiens
+              <br />
+              (09/04/19)
+            </b>
+          </p>
+          <p
+            className="MuiTypography-root-1669 MuiTypography-body1-1678 sc-gzOgki ehNPHd"
+          >
+            « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer
+    className="sc-hwwEjo dJPVtI"
+    role="contentinfo"
+  >
+    <div>
+      <div
+        className="MuiTypography-root-1669 MuiTypography-h4-1684 sc-ksYbfQ fnUAgv"
+        style={
+          Object {
+            "color": "#fff",
+          }
+        }
+      >
+        zen
+        <span
+          style={
+            Object {
+              "color": "#0065DB",
+            }
+          }
+        >
+          .
+        </span>
+      </div>
+      <span
+        className="MuiTypography-root-1669 MuiTypography-caption-1679"
+        style={
+          Object {
+            "color": "#fff",
+            "letterSpacing": 1.5,
+            "opacity": 0.51,
+          }
+        }
+      >
+        Un service propulsé par Pôle Emploi
+      </span>
+    </div>
+    <div
+      className="sc-kPVwWT bmVVUp"
+    >
+      <a
+        className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-outlined-1713 sc-hmzhuo sc-frDJqD kOVSGs"
+        href="https://pole-emploi.zendesk.com"
+        onBlur={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="link"
+        tabIndex="0"
+        target="_blank"
+      >
+        <span
+          className="MuiButton-label-1706"
+        >
+          Des questions ?
+          <div
+            style={
+              Object {
+                "alignItems": "center",
+                "border": "1px solid #0065DB",
+                "borderRadius": "50%",
+                "color": "#0065DB",
+                "display": "flex",
+                "height": "1.8rem",
+                "justifyContent": "center",
+                "marginLeft": "1rem",
+                "width": "1.8rem",
+              }
+            }
+          >
+            ?
+          </div>
+        </span>
+        <span
+          className="MuiTouchRipple-root-1734"
+        />
+      </a>
+    </div>
+  </footer>
+</div>
+`;
+
 exports[`Storyshots HourInput default 1`] = `
 <div
   data-css-18sl43g=""
@@ -3454,18 +4579,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-cHGsZl jXJoHt"
+          className="sc-TOsTZ kpsexy"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-TOsTZ cwAarn"
+            className="sc-kgAjT fqNHNm"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-kgAjT kUsRCN"
+            className="sc-cJSrbW kNEnnW"
           >
             Se connecter avec pôle emploi
           </span>
@@ -3532,18 +4657,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-cHGsZl frtxSb"
+          className="sc-TOsTZ JsRvV"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-TOsTZ cwAarn"
+            className="sc-kgAjT fqNHNm"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-kgAjT kUsRCN"
+            className="sc-cJSrbW kNEnnW"
           >
             Se connecter avec pôle emploi
           </span>
@@ -3621,7 +4746,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             className="sc-jTzLTM exbSWw"
           >
             <button
-              className="MuiButtonBase-root-1426 MuiButton-root-1400 MuiButton-contained-1411 MuiButton-containedPrimary-1412 MuiButton-raised-1414 MuiButton-raisedPrimary-1415 MuiButton-sizeLarge-1424 sc-bxivhb sc-jzJRlG giopXU sc-ifAKCX jwLkKD"
+              className="MuiButtonBase-root-1426 MuiButton-root-1400 MuiButton-contained-1411 MuiButton-containedPrimary-1412 MuiButton-raised-1414 MuiButton-raisedPrimary-1415 MuiButton-sizeLarge-1424 sc-bxivhb sc-jzJRlG giopXU sc-ifAKCX iBcXwT"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -3664,6 +4789,116 @@ exports[`Storyshots UserJobCheck default 1`] = `
             </button>
           </div>
         </div>
+        <div>
+          <div
+            data-css-1xjdp6g=""
+          >
+            <div
+              data-css-1u3clyi=""
+            />
+            <div
+              data-css-1vfpuyw=""
+            />
+          </div>
+          <div
+            data-css-1l117w4=""
+          >
+            <div
+              data-css-6x2xk9=""
+            />
+            <div
+              data-css-dh4rml=""
+            />
+          </div>
+          <div
+            data-css-3dqrhs=""
+          >
+            <div
+              data-css-jidh41=""
+            />
+            <div
+              data-css-zkhvkf=""
+            />
+          </div>
+          <div
+            data-css-14agfjn=""
+          >
+            <div
+              data-css-1dkszzo=""
+            />
+            <div
+              data-css-mqumhe=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots YoutubeVideo default 1`] = `
+<div
+  data-css-18sl43g=""
+>
+  <div
+    data-css-1uksfg7=""
+  >
+    <div
+      data-css-t3tkv6=""
+    >
+      <div
+        data-css-1v8lkxq=""
+      >
+        <button
+          className="sc-cHGsZl kRpYEJ"
+          onClick={[Function]}
+          style={
+            Object {
+              "borderRadius": "5%",
+              "boxShadow": "0 0 1.5rem 0.5rem rgba(0, 0, 0, 0.05)",
+              "maxHeight": "35rem",
+              "maxWidth": "100%",
+              "overflow": "hidden",
+              "width": "62rem",
+            }
+          }
+          title="Visualiser : Vidéo de présentation du service Zen"
+          type="button"
+        >
+          <div
+            style={
+              Object {
+                "alignItems": "center",
+                "display": "flex",
+                "height": "100%",
+                "justifyContent": "center",
+                "left": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": "100%",
+              }
+            }
+          >
+            <img
+              alt=""
+              src="player.svg"
+            />
+          </div>
+          <img
+            alt="Vidéo de présentation du service Zen"
+            src="youtube-video-thumb.jpg"
+            style={
+              Object {
+                "borderRadius": "5%",
+                "maxHeight": "35rem",
+                "maxWidth": "100%",
+                "overflow": "hidden",
+                "width": "62rem",
+              }
+            }
+          />
+        </button>
         <div>
           <div
             data-css-1xjdp6g=""

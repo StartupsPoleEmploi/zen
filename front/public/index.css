@@ -4,7 +4,8 @@ html {
   overflow-x: hidden;
 }
 body {
-  background-color: #fff;
+  /* override material-ui baseline default background */
+  background-color: #fff !important;
 }
 #gtm-frame {
   display: none;

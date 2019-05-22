@@ -1,69 +1,65 @@
 import React, { Component, Fragment } from 'react'
 
-import moment from 'moment'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Typography from '@material-ui/core/Typography'
-import VerticalAlignBottom from '@material-ui/icons/VerticalAlignBottom'
-import Print from '@material-ui/icons/Print'
-
 import MainActionButton from '../../components/Generic/MainActionButton'
-import moneyBank from '../../images/money-bank.svg'
+import sendDoc from '../../images/sendDoc.svg'
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 
 const StyledThanks = styled.div`
   margin: auto;
   text-align: center;
-  max-width: 48rem;
+  width: 62rem;
+  max-width: 100%;
 `
 
 const StyledImg = styled.img`
   max-width: 30rem;
   width: 100%;
+  margin-top: 5rem;
 `
 
-const Title = styled(Typography)`
+const Title = styled(Typography).attrs({ component: 'h1' })`
   padding: 4rem 0 6rem 0;
 `
 
 const ButtonsContainers = styled.div`
   display: flex;
   margin: auto;
+  align-items: center;
   text-align: center;
-  margin-bottom: 5rem;
-`
-const ButtonText = styled.span`
-  flex: 5;
-`
 
-const StyledDownload = styled(VerticalAlignBottom)`
-  && {
-    flex: 1;
-    color: #39679e;
-    font-size: 3rem;
+  @media (max-width: 850px) {
+    flex-direction: column;
   }
 `
 
-const StyledPrint = styled(Print)`
+const MainActionButtonStyled = styled(MainActionButton)`
   && {
     flex: 1;
-    color: #39679e;
-    font-size: 3rem;
-    margin-right: 1rem;
+    padding: 0.5rem 4rem;
+    height: 5rem;
+    border-radius: 3rem;
+
+    @media (max-width: 850px) {
+      width: 30rem;
+      margin: 1rem 0;
+      padding: 1rem;
+    }
   }
 `
 
-const actionButtonStyle = {
-  flex: 1,
-  padding: '1rem 1.5rem',
-  lineHeight: '2.2rem',
-  fontSize: '1.6rem',
-}
-
-const downloadButtonStyle = { ...actionButtonStyle, marginRight: '3rem' }
+const Complementary = styled.div`
+  background-color: #f2f2f2;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  margin-top: 5rem;
+  padding: 3rem 1rem 2rem 1rem;
+`
 
 export default class Thanks extends Component {
   constructor(props) {
@@ -100,63 +96,56 @@ export default class Thanks extends Component {
 
   render() {
     const { showPrintIframe } = this.state
-    const { activeMonth } = this.props
 
     return (
       <StyledThanks>
-        <StyledImg src={moneyBank} alt="" />
+        <StyledImg src={sendDoc} alt="" />
         {!this.props.location.search.includes('later') ? (
           <Fragment>
-            <Title variant="h6">
-              Merci, votre actualisation et l'envoi de vos documents sont
-              terminés
-              {activeMonth
-                ? ` pour le mois de ${moment(activeMonth).format('MMMM')} ! ` // eslint-disable-line no-irregular-whitespace
-                : ' '}
-              <span aria-hidden="true">👍</span>
+            <Title variant="h6" style={{ paddingBottom: '3rem' }}>
+              Merci, vos justificatifs ont été bien transmis
+              <br />
+              et seront traités dans les plus brefs délais.
             </Title>
 
+            <Typography paragraph style={{ paddingBottom: '3rem' }}>
+              Pas d'envoyer vos justificatifs sur <br />
+              <a href="https://www.pole-emploi.fr">pole-emploi.fr</a>,{' '}
+              <strong>Zen s'en charge pour vous !</strong>
+            </Typography>
+
             <ButtonsContainers>
-              <MainActionButton
-                primary={false}
+              <MainActionButtonStyled
                 href="/api/declarations/summary-file?download=true"
                 target="_blank"
                 title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
-                style={downloadButtonStyle}
               >
-                <StyledDownload />
-                <ButtonText>
-                  Télécharger
-                  <br /> ma déclaration
-                </ButtonText>
-              </MainActionButton>
-              <MainActionButton
+                Télécharger ma déclaration
+              </MainActionButtonStyled>
+
+              <Typography paragraph style={{ margin: '0 1rem' }}>
+                ou
+              </Typography>
+
+              <MainActionButtonStyled
                 primary={false}
                 onClick={this.printDeclaration}
-                style={actionButtonStyle}
               >
-                <StyledPrint />
-                <ButtonText>
-                  Imprimer
-                  <br /> ma déclaration
-                </ButtonText>
-              </MainActionButton>
+                Imprimer ma déclaration
+              </MainActionButtonStyled>
             </ButtonsContainers>
 
-            <Typography paragraph>
-              Pôle Emploi va recevoir et traiter les documents que vous nous
-              avez fait parvenir. Si vous rencontrez un problème ou si vous vous
-              posez des questions, vous pouvez joindre votre conseiller depuis
-              votre espace personnel.
-            </Typography>
-            <br />
-            <Typography paragraph>
-              Si vous souhaitez transmettre d'autres documents pour de
-              précédentes actualisations effectuées via Zen,{' '}
-              <Link to="/files">
-                cliquez ici pour revenir à la page d'envoi de documents.
-              </Link>
-            </Typography>
+            <Complementary>
+              <Typography paragraph>
+                <strong>Un problème ? Une question ?</strong>
+                <br />
+                Vous pouvez joindre votre conseiller depuis votre espace
+                personnel sur{' '}
+                <a href="https://www.pole-emploi.fr">pole-emploi.fr</a>
+                <br />
+                ou consulter notre FAQ
+              </Typography>
+            </Complementary>
 
             {showPrintIframe && (
               <iframe
@@ -185,6 +174,5 @@ export default class Thanks extends Component {
 }
 
 Thanks.propTypes = {
-  activeMonth: PropTypes.instanceOf(Date),
   location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
 }

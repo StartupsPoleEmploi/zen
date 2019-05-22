@@ -16,7 +16,8 @@ class EmployerDocument extends BaseModel {
         type: { type: ['string'] },
         employerId: { type: 'integer' },
         file: { type: ['string', 'null'] },
-        isTransmitted: { type: 'boolean ' },
+        isTransmitted: { type: 'boolean' },
+        isCleanedUp: { type: 'boolean' },
       },
     }
   }

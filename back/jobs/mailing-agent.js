@@ -1,7 +1,7 @@
 const config = require('config')
 const { job } = require('cron')
 
-require('./lib/db') // setup db connection
+require('../lib/db') // setup db connection
 
 if (
   !config.get('shouldSendCampaignEmails') &&
@@ -11,11 +11,11 @@ if (
   process.exit()
 }
 
-const sendDeclarationCampaign = require('./lib/mailings/sendDeclarationCampaign')
-const sendDeclarationReminderCampaign = require('./lib/mailings/sendDeclarationReminderCampaign')
-const sendDocsReminderCampaign = require('./lib/mailings/sendDocsReminderCampaign')
-const sendDeclarationConfirmationEmails = require('./lib/mailings/sendDeclarationConfirmationEmails')
-const sendDocumentsConfirmationEmails = require('./lib/mailings/sendDocumentsConfirmationEmails')
+const sendDeclarationCampaign = require('../lib/mailings/sendDeclarationCampaign')
+const sendDeclarationReminderCampaign = require('../lib/mailings/sendDeclarationReminderCampaign')
+const sendDocsReminderCampaign = require('../lib/mailings/sendDocsReminderCampaign')
+const sendDeclarationConfirmationEmails = require('../lib/mailings/sendDeclarationConfirmationEmails')
+const sendDocumentsConfirmationEmails = require('../lib/mailings/sendDocumentsConfirmationEmails')
 
 console.log('Starting mailing agent')
 

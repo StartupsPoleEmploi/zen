@@ -41,6 +41,8 @@ class DeclarationInfo extends Model {
   }
 
   $beforeValidate(jsonSchema, json, opt) {
+    if (!opt.old && opt.patch) return // Custom validation logic only makes sense for objects modified using instance.$query()
+
     const objectToValidate = { ...opt.old, ...json }
 
     const throwValidationError = (label) => {
@@ -93,6 +95,7 @@ class DeclarationInfo extends Model {
         endDate: { type: ['string', 'object', 'null'] },
         file: { type: ['string', 'null'] },
         isTransmitted: { type: 'boolean' },
+        isCleanedUp: { default: false, type: 'boolean' },
       },
     }
   }

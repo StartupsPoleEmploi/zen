@@ -4,11 +4,10 @@ const fr = require('date-fns/locale/fr')
 const mailjet = require('./mailjet')
 const winston = require('../log')
 const Declaration = require('../../models/Declaration')
-const getDeclarationPDF = require('../files')
+const { getDeclarationPDF } = require('../files')
 const { setDeclarationDoneProperty } = require('./manageContacts')
 
 const isProd = process.env.NODE_ENV === 'production'
-
 
 const sendDeclarationConfirmationEmail = (declaration) =>
   getDeclarationPDF(declaration).then((fileBuffer) => {

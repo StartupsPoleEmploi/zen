@@ -180,14 +180,18 @@ export class Actu extends Component {
   }
 
   onAnswer = ({ controlName, hasAnsweredYes }) => {
+    const { hasTrained: oldHasTrainedValue } = this.state
     this.setState({ [controlName]: hasAnsweredYes, formError: null })
 
     if (controlName === 'hasTrained') {
       if (hasAnsweredYes) {
         this.removeDatesOfType(types.JOB_SEARCH)
         this.setState({ isLookingForJob: true })
-      } else {
-        this.setState({ isLookingForJob: null })
+      } else if (oldHasTrainedValue) {
+        this.setState({
+          // if "hasTrained" was previously true, state.hasTrained shoud be reset to null
+          isLookingForJob: null,
+        })
       }
     }
 

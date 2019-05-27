@@ -116,7 +116,8 @@ const DeclarationSummaryDialog = ({
             {declaration.declarationMonth && (
               // FIXME this is a quickfix for the Actu page, but we should always have the month.
               <Fragment>
-                ) de{' '}
+                {' '}
+                de{' '}
                 <b>
                   {formattedDeclarationMonth(
                     declaration.declarationMonth.month,
@@ -128,7 +129,7 @@ const DeclarationSummaryDialog = ({
           </StyledDialogContentText>
 
           <DeclarationContent>
-            {employers.length ? (
+            {declaration.hasWorked && employers.length && (
               <Fragment>
                 <div>
                   <DeclarationHeader>
@@ -168,7 +169,9 @@ const DeclarationSummaryDialog = ({
                   </DeclarationValues>
                 </div>
               </Fragment>
-            ) : (
+            )}
+
+            {!declaration.hasWorked && (
               <div>
                 <DeclarationHeader>Travail</DeclarationHeader>
                 <DeclarationValues>

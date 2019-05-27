@@ -130,6 +130,7 @@ const infoSpecs = [
 
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
+const declarationType = 'declaration'
 const infoType = 'info'
 
 const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
@@ -353,7 +354,10 @@ export class Files extends Component {
       .post('/api/declarations/finish', { id: declaration.id })
       .set('CSRF-Token', this.props.token)
       .then(() => {
-        this.setState({ isSendingFiles: false })
+        this.setState({
+          isSendingFiles: false,
+          [getErrorKey({ id: declaration.id, type: declarationType })]: null,
+        })
         if (isSendingLastDeclaration) return this.props.history.push('/thanks')
         this.fetchDeclarations()
       })
@@ -365,17 +369,9 @@ export class Files extends Component {
           return this.setState({ isLoggedOut: true })
         }
 
-        this.setState((prevState) => {
-          return {
-            isSendingFiles: false,
-            declarations: prevState.declarations.map((prevDeclaration) => {
-              if (declaration.id !== prevDeclaration.id) return prevDeclaration
-              return {
-                ...declaration,
-                error,
-              }
-            }),
-          }
+        this.setState({
+          isSendingFiles: false,
+          [getErrorKey({ id: declaration.id, type: declarationType })]: error,
         })
         this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
@@ -613,7 +609,9 @@ export class Files extends Component {
             Cela permettra une meilleure gestion de votre dossier.
           </Typography>
         </StyledInfo>
-        {declaration.error && (
+        {this.state[
+          getErrorKey({ type: declarationType, id: declaration.id })
+        ] && (
           <ErrorMessage variant="body1">
             Nous sommes désolés, une erreur s'est produite lors de l'envoi des
             documents. Merci de bien vouloir réessayer.

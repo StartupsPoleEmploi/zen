@@ -17,8 +17,8 @@ import characters from '../../images/characters.svg'
 
 import { primaryBlue, secondaryBlue } from '../../constants/colors'
 
-const mobileBreakpoint = '42rem'
-const intermediaryBreakpoint = '60rem'
+const mobileBreakpoint = '672px'
+const intermediaryBreakpoint = '960px'
 
 const windowWidthElement = `
   width: 100vw;

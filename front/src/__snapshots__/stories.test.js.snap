@@ -3300,14 +3300,14 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 
 exports[`Storyshots Home default 1`] = `
 <div
-  className="sc-hmzhuo gGURvt"
+  className="sc-hmzhuo kmzdzS"
 >
   <header
     className="sc-kvZOFW owWWw"
     role="banner"
   >
     <header
-      className="sc-hqyNC dymSsP"
+      className="sc-hqyNC dBrzIu"
     >
       <div
         className="MuiTypography-root-1597 MuiTypography-h4-1612 sc-ksYbfQ fnUAgv"
@@ -3340,16 +3340,16 @@ exports[`Storyshots Home default 1`] = `
     role="main"
   >
     <section
-      className="sc-jbKcbu lgnaEv"
+      className="sc-jbKcbu dhuIiz"
     >
       <div
-        className="sc-dNLxif cOQUii"
+        className="sc-dNLxif ezhao"
       >
         <div
-          className="sc-jqCOkK ehDQuk"
+          className="sc-jqCOkK bneHPn"
         >
           <h1
-            className="MuiTypography-root-1597 MuiTypography-h4-1612 MuiTypography-paragraph-1625 sc-uJMKN dZKpUj"
+            className="MuiTypography-root-1597 MuiTypography-h4-1612 MuiTypography-paragraph-1625 sc-uJMKN ftdgtr"
             style={
               Object {
                 "fontWeight": "bold",
@@ -3373,7 +3373,7 @@ exports[`Storyshots Home default 1`] = `
             et un envoi de documents simplifiés.
           </h2>
           <a
-            className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-contained-1644 MuiButton-containedPrimary-1645 MuiButton-raised-1647 MuiButton-raisedPrimary-1648 sc-gGBfsJ gcFsIs"
+            className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-contained-1644 MuiButton-containedPrimary-1645 MuiButton-raised-1647 MuiButton-raisedPrimary-1648 sc-gGBfsJ gGQAPP"
             href="/api/login"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -3482,7 +3482,7 @@ exports[`Storyshots Home default 1`] = `
         En quelques clics seulement !
       </h2>
       <ul
-        className="sc-jwKygS dcwjTo"
+        className="sc-jwKygS pqqWk"
       >
         <li
           className="sc-btzYZH iIaMvv"
@@ -3544,7 +3544,7 @@ exports[`Storyshots Home default 1`] = `
       className="sc-fYxtnH hSLfWw"
     >
       <div
-        className="sc-hEsumM dDJJLY"
+        className="sc-hEsumM eRuqyM"
       >
         <h2
           className="sc-cIShpX fYmxwj"
@@ -3552,10 +3552,10 @@ exports[`Storyshots Home default 1`] = `
           En résumé
         </h2>
         <div
-          className="sc-kafWEX bPdmSq"
+          className="sc-kafWEX bCMKVy"
         >
           <div
-            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-iELTvK jHtTAO"
+            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-iELTvK fygIFh"
           >
             1
           </div>
@@ -3577,13 +3577,13 @@ exports[`Storyshots Home default 1`] = `
         />
       </div>
       <div
-        className="sc-hEsumM sc-ktHwxA fiWwyt"
+        className="sc-hEsumM sc-ktHwxA kNQieZ"
       >
         <div
-          className="sc-kafWEX bPdmSq"
+          className="sc-kafWEX bCMKVy"
         >
           <div
-            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-iELTvK jHtTAO"
+            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-iELTvK fygIFh"
           >
             2
           </div>
@@ -3605,13 +3605,13 @@ exports[`Storyshots Home default 1`] = `
         />
       </div>
       <div
-        className="sc-hEsumM dDJJLY"
+        className="sc-hEsumM eRuqyM"
       >
         <div
-          className="sc-kafWEX bPdmSq"
+          className="sc-kafWEX bCMKVy"
         >
           <div
-            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-iELTvK jHtTAO"
+            className="MuiTypography-root-1597 MuiTypography-h2-1610 MuiTypography-colorPrimary-1627 sc-iELTvK fygIFh"
           >
             3
           </div>
@@ -3666,7 +3666,7 @@ exports[`Storyshots Home default 1`] = `
         </b>
       </p>
       <a
-        className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-contained-1644 MuiButton-containedPrimary-1645 MuiButton-raised-1647 MuiButton-raisedPrimary-1648 sc-gGBfsJ sc-jnlKLf blMLOl"
+        className="MuiButtonBase-root-1659 MuiButton-root-1633 MuiButton-contained-1644 MuiButton-containedPrimary-1645 MuiButton-raised-1647 MuiButton-raisedPrimary-1648 sc-gGBfsJ sc-jnlKLf eCzSQY"
         href="/api/login"
         onBlur={[Function]}
         onContextMenu={[Function]}
@@ -3707,7 +3707,7 @@ exports[`Storyshots Home default 1`] = `
         Nos utilisateurs approuvent !
       </h2>
       <div
-        className="sc-elJkPf iUkbQp"
+        className="sc-elJkPf kYXavU"
       >
         <div
           className="sc-jtRfpW hGLyXA"
@@ -3808,7 +3808,7 @@ exports[`Storyshots Home default 1`] = `
 
 exports[`Storyshots Home loginFailed 1`] = `
 <div
-  className="sc-hmzhuo gGURvt"
+  className="sc-hmzhuo kmzdzS"
 >
   <div
     className="sc-frDJqD fOuxLC"
@@ -3826,7 +3826,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     role="banner"
   >
     <header
-      className="sc-hqyNC dymSsP"
+      className="sc-hqyNC dBrzIu"
     >
       <div
         className="MuiTypography-root-1669 MuiTypography-h4-1684 sc-ksYbfQ fnUAgv"
@@ -3859,16 +3859,16 @@ exports[`Storyshots Home loginFailed 1`] = `
     role="main"
   >
     <section
-      className="sc-jbKcbu lgnaEv"
+      className="sc-jbKcbu dhuIiz"
     >
       <div
-        className="sc-dNLxif cOQUii"
+        className="sc-dNLxif ezhao"
       >
         <div
-          className="sc-jqCOkK ehDQuk"
+          className="sc-jqCOkK bneHPn"
         >
           <h1
-            className="MuiTypography-root-1669 MuiTypography-h4-1684 MuiTypography-paragraph-1697 sc-uJMKN dZKpUj"
+            className="MuiTypography-root-1669 MuiTypography-h4-1684 MuiTypography-paragraph-1697 sc-uJMKN ftdgtr"
             style={
               Object {
                 "fontWeight": "bold",
@@ -3892,7 +3892,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             et un envoi de documents simplifiés.
           </h2>
           <a
-            className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-contained-1716 MuiButton-containedPrimary-1717 MuiButton-raised-1719 MuiButton-raisedPrimary-1720 sc-gGBfsJ gcFsIs"
+            className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-contained-1716 MuiButton-containedPrimary-1717 MuiButton-raised-1719 MuiButton-raisedPrimary-1720 sc-gGBfsJ gGQAPP"
             href="/api/login"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -4001,7 +4001,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         En quelques clics seulement !
       </h2>
       <ul
-        className="sc-jwKygS dcwjTo"
+        className="sc-jwKygS pqqWk"
       >
         <li
           className="sc-btzYZH iIaMvv"
@@ -4063,7 +4063,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       className="sc-fYxtnH hSLfWw"
     >
       <div
-        className="sc-hEsumM dDJJLY"
+        className="sc-hEsumM eRuqyM"
       >
         <h2
           className="sc-cIShpX fYmxwj"
@@ -4071,10 +4071,10 @@ exports[`Storyshots Home loginFailed 1`] = `
           En résumé
         </h2>
         <div
-          className="sc-kafWEX bPdmSq"
+          className="sc-kafWEX bCMKVy"
         >
           <div
-            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-iELTvK jHtTAO"
+            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-iELTvK fygIFh"
           >
             1
           </div>
@@ -4096,13 +4096,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         />
       </div>
       <div
-        className="sc-hEsumM sc-ktHwxA fiWwyt"
+        className="sc-hEsumM sc-ktHwxA kNQieZ"
       >
         <div
-          className="sc-kafWEX bPdmSq"
+          className="sc-kafWEX bCMKVy"
         >
           <div
-            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-iELTvK jHtTAO"
+            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-iELTvK fygIFh"
           >
             2
           </div>
@@ -4124,13 +4124,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         />
       </div>
       <div
-        className="sc-hEsumM dDJJLY"
+        className="sc-hEsumM eRuqyM"
       >
         <div
-          className="sc-kafWEX bPdmSq"
+          className="sc-kafWEX bCMKVy"
         >
           <div
-            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-iELTvK jHtTAO"
+            className="MuiTypography-root-1669 MuiTypography-h2-1682 MuiTypography-colorPrimary-1699 sc-iELTvK fygIFh"
           >
             3
           </div>
@@ -4185,7 +4185,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </b>
       </p>
       <a
-        className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-contained-1716 MuiButton-containedPrimary-1717 MuiButton-raised-1719 MuiButton-raisedPrimary-1720 sc-gGBfsJ sc-jnlKLf blMLOl"
+        className="MuiButtonBase-root-1731 MuiButton-root-1705 MuiButton-contained-1716 MuiButton-containedPrimary-1717 MuiButton-raised-1719 MuiButton-raisedPrimary-1720 sc-gGBfsJ sc-jnlKLf eCzSQY"
         href="/api/login"
         onBlur={[Function]}
         onContextMenu={[Function]}
@@ -4226,7 +4226,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         Nos utilisateurs approuvent !
       </h2>
       <div
-        className="sc-elJkPf iUkbQp"
+        className="sc-elJkPf kYXavU"
       >
         <div
           className="sc-jtRfpW hGLyXA"

@@ -689,14 +689,18 @@ export class Actu extends Component {
           </AlwaysVisibleContainer>
         </form>
 
-        <DeclarationDialogsHandler
-          isLoading={this.state.isValidating}
-          isOpened={this.state.isDialogOpened}
-          onCancel={this.closeDialog}
-          onConfirm={this.onSubmit}
-          consistencyErrors={this.state.consistencyErrors}
-          validationErrors={this.state.validationErrors}
-        />
+        {!this.getFormError() && (
+          // Note: only open this dialog if there is no form error (eg. the declaration can be sent)
+          <DeclarationDialogsHandler
+            isLoading={this.state.isValidating}
+            isOpened={this.state.isDialogOpened}
+            onCancel={this.closeDialog}
+            onConfirm={this.onSubmit}
+            consistencyErrors={this.state.consistencyErrors}
+            validationErrors={this.state.validationErrors}
+            declaration={this.state}
+          />
+        )}
 
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledActu>

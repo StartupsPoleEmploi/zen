@@ -77,7 +77,7 @@ const ButtonsContainer = styled.div`
 
 const DeclarationSummaryDialog = ({
   declaration,
-  employers,
+  employers = [],
   onCancel,
   onConfirm,
   ...props
@@ -103,22 +103,33 @@ const DeclarationSummaryDialog = ({
     (info) => info.type === types.RETIREMENT,
   )
 
-  const totalSalary = calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY)
+  const totalSalary = employers.length
+    ? calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY)
+    : 0
 
   return (
     <CustomDialog
       content={
         <Fragment>
-          <StyledDialogContentText id="ActuDialogContentText">
-            Voici le récapitulatif de votre actualisation pour le mois de{' '}
-            <b>
-              {formattedDeclarationMonth(declaration.declarationMonth.month)}
-            </b>
-            , est-il exact et complet ?
+          <StyledDialogContentText>
+            Voici le récapitulatif de votre actualisation pour le mois
+            {declaration.declarationMonth && (
+              // FIXME this is a quickfix for the Actu page, but we should always have the month.
+              <Fragment>
+                {' '}
+                de{' '}
+                <b>
+                  {formattedDeclarationMonth(
+                    declaration.declarationMonth.month,
+                  )}
+                </b>
+                , est-il exact et complet ?
+              </Fragment>
+            )}
           </StyledDialogContentText>
 
           <DeclarationContent>
-            {employers.length && (
+            {declaration.hasWorked && employers.length && (
               <Fragment>
                 <div>
                   <DeclarationHeader>
@@ -158,6 +169,15 @@ const DeclarationSummaryDialog = ({
                   </DeclarationValues>
                 </div>
               </Fragment>
+            )}
+
+            {!declaration.hasWorked && (
+              <div>
+                <DeclarationHeader>Travail</DeclarationHeader>
+                <DeclarationValues>
+                  Vous n'avez pas travaillé.
+                </DeclarationValues>
+              </div>
             )}
 
             {declaration.hasInternship && (
@@ -278,7 +298,7 @@ const DeclarationSummaryDialog = ({
 DeclarationSummaryDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
-  declaration: PropTypes.object,
+  declaration: PropTypes.object.isRequired,
   employers: PropTypes.arrayOf(PropTypes.object),
 }
 

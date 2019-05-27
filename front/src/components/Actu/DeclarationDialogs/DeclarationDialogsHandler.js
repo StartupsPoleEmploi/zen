@@ -69,6 +69,19 @@ class DeclarationDialogsHandler extends Component {
       )
     }
 
+    // FIXME This change is done quickly by fear that this could cause errors that
+    // bubble up to the top of the app and crash everything.
+    // If nothing alarming appears in the monitoring, this should be changed to simply
+    // throw the error.
+    if (!this.hasSentError) {
+      window.Raven.captureException(
+        new Error(
+          'DeclarationDialogsHandler is unable to create modal, this should never happen',
+        ),
+      )
+      this.hasSentError = true
+    }
+
     return null
   }
 }

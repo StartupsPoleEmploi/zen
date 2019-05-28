@@ -6,6 +6,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
+import tester from '../../images/tester.png'
+
 const StyledSignup = styled.div`
   margin: auto;
   display: flex;
@@ -42,6 +44,10 @@ const StyledButton = styled(Button).attrs({
 const StyledTextField = styled(TextField)`
   && {
     margin-bottom: 1rem;
+
+    label {
+      width: 100%;
+    }
   }
 `
 
@@ -55,6 +61,12 @@ const StyleSeparator = styled.div`
 const ClockImg = styled.img`
   margin-bottom: 2rem;
   height: 6rem;
+`
+
+const TesterImg = styled.img`
+  display: block;
+  width: 40rem;
+  margin: 8rem auto 5rem auto;
 `
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -114,20 +126,25 @@ export class Signup extends Component {
     if (!user.email && !this.state.isFinished) {
       return (
         <StyledSignup>
-          <LandingText>Je souhaite m'inscrire au prochain test</LandingText>
+          <TesterImg src={tester} alt="" />
 
-          <Typography paragraph>Bonjour,</Typography>
+          <LandingText variant="h5" component="h1">
+            Merci pour votre demande d'inscription
+            <br />
+            au service Zen de Pôle Emploi
+          </LandingText>
+
           <Typography paragraph>
-            Vous n’êtes pas encore inscrit sur la liste des testeurs de Zen.
-          </Typography>
-          <Typography paragraph>
-            Merci de nous fournir votre e-mail, afin que nous puissions vous
-            contacter pour un prochain test.
+            Pour confirmer votre demande d'inscription,
+            <br />
+            merci de renseigner l'email que vous utilisez
+            <br />
+            dans vos échanges avec Pôle Emploi
           </Typography>
 
           <Form onSubmit={this.onSubmit}>
             <StyledTextField
-              label="Adresse e-mail"
+              label="Tapez ici votre adresse e-mail"
               name="email"
               value={email}
               onChange={this.onChangeEmail}

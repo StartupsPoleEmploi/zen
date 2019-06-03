@@ -7,13 +7,26 @@ export class EuroInput extends Component {
     name: PropTypes.string.isRequired,
     inputRef: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onFocus: () => {},
+    onBlur: () => {},
   }
 
   state = { isFocused: false }
 
-  onFocus = () => this.setState({ isFocused: true })
+  onFocus = (e) => {
+    this.setState({ isFocused: true })
+    this.props.onFocus(e)
+  }
 
-  onBlur = () => this.setState({ isFocused: false })
+  onBlur = (e) => {
+    this.setState({ isFocused: false })
+    this.props.onBlur(e)
+  }
 
   onValueChange = (values) =>
     this.props.onChange({

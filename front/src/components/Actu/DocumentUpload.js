@@ -18,6 +18,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import { primaryBlue } from '../../constants/colors'
+import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import CustomColorButton from '../Generic/CustomColorButton'
 
 const StyledContainer = styled.div`
@@ -118,9 +119,33 @@ export class DocumentUpload extends Component {
     infoTooltipText: PropTypes.string,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
+    showTooltip: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    showTooltip: false,
   }
 
   static types = { employer: employerType, infos: infosType }
+
+  renderFileField(fileInput, showTooltip, id) {
+    if (!showTooltip) return fileInput
+    if (!id) throw new Error(`id is undefined`)
+
+    return (
+      <TooltipOnFocus
+        useHover
+        tooltipId={`file[${id}]`}
+        content={
+          <Typography>
+            Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx
+          </Typography>
+        }
+      >
+        {fileInput}
+      </TooltipOnFocus>
+    )
+  }
 
   submitFile = ({ target: { files } }) =>
     this.props.submitFile({
@@ -151,6 +176,8 @@ export class DocumentUpload extends Component {
       allowSkipFile,
       type,
       infoTooltipText,
+      showTooltip,
+      employerId,
     } = this.props
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
@@ -206,6 +233,16 @@ export class DocumentUpload extends Component {
         </Tooltip>
       )
     }
+
+    const uploadInput = (
+      <CustomColorButton
+        aria-describedby={`file[${id}]`}
+        component="span"
+        size="small"
+      >
+        Parcourir
+      </CustomColorButton>
+    )
 
     return (
       <StyledContainer>
@@ -281,9 +318,7 @@ export class DocumentUpload extends Component {
                         </StyledFormHelperText>
                       </Fragment>
                     )}
-                    <CustomColorButton component="span" size="small">
-                      Parcourir
-                    </CustomColorButton>
+                    {this.renderFileField(uploadInput, showTooltip, employerId)}
                   </StyledFormLabel>
                 )}
               </Container>

@@ -1,9 +1,19 @@
+import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
-import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
 
-const styles = (theme) => ({
+import { helpColor } from '../../constants/colors'
+
+const styles = () => ({
+  tooltip: {
+    background: 'white',
+    color: 'black',
+    border: `solid 2px ${helpColor}`,
+    borderRadius: 0,
+    padding: '2rem 1.5rem',
+    boxShadow: '5px 5px 20px grey',
+  },
   arrowPopper: {
     opacity: 1,
 
@@ -15,9 +25,7 @@ const styles = (theme) => ({
       height: '1em',
       '&::before': {
         borderWidth: '0 1em 1em 1em',
-        borderColor: `transparent transparent ${
-          theme.palette.grey[700]
-        } transparent`,
+        borderColor: `transparent transparent ${helpColor} transparent`,
       },
     },
     '&[x-placement*="top"] $arrowArrow': {
@@ -28,9 +36,7 @@ const styles = (theme) => ({
       height: '1em',
       '&::before': {
         borderWidth: '1em 1em 0 1em',
-        borderColor: `${
-          theme.palette.grey[700]
-        } transparent transparent transparent`,
+        borderColor: `${helpColor} transparent transparent transparent`,
       },
     },
     '&[x-placement*="right"] $arrowArrow': {
@@ -40,9 +46,7 @@ const styles = (theme) => ({
       width: '1em',
       '&::before': {
         borderWidth: '1em 1em 1em 0',
-        borderColor: `transparent ${
-          theme.palette.grey[700]
-        } transparent transparent`,
+        borderColor: `transparent ${helpColor} transparent transparent`,
       },
     },
     '&[x-placement*="left"] $arrowArrow': {
@@ -52,9 +56,7 @@ const styles = (theme) => ({
       width: '1em',
       '&::before': {
         borderWidth: '1em 0 1em 1em',
-        borderColor: `transparent transparent transparent ${
-          theme.palette.grey[700]
-        }`,
+        borderColor: `transparent transparent transparent ${helpColor}`,
       },
     },
   },
@@ -64,6 +66,8 @@ const styles = (theme) => ({
     width: '3em',
     height: '3em',
     '&::before': {
+      position: 'relative',
+      bottom: '1px',
       content: '""',
       margin: 'auto',
       display: 'block',
@@ -79,6 +83,12 @@ class TootlipOnFocus extends Component {
     children: PropTypes.node,
     classes: PropTypes.object,
     content: PropTypes.node,
+    tooltipId: PropTypes.string,
+    useHover: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    useHover: false,
   }
 
   state = {
@@ -91,14 +101,21 @@ class TootlipOnFocus extends Component {
     })
 
   render() {
-    const { children, classes, content } = this.props
+    const { children, classes, content, tooltipId, useHover } = this.props
+
+    const eventProps = {
+      disableHoverListener: !useHover,
+      disableTouchListener: true,
+      disableFocusListener: useHover,
+    }
 
     return (
       <Tooltip
-        disableHoverListener
-        disableTouchListener
-        placement="top"
+        id={tooltipId}
+        {...eventProps}
+        placement="bottom"
         ref={this.handleArrowRef}
+        aria-hidden="false"
         title={
           <Fragment>
             {content}

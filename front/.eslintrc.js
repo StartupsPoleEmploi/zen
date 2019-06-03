@@ -73,5 +73,6 @@ module.exports = {
     ],
     'no-continue': 0,
     'no-plusplus': 0,
+    'class-methods-use-this': 0,
   },
 }

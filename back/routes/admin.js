@@ -66,6 +66,7 @@ router.get('/users', (req, res, next) => {
           'lastName',
           'email',
           'postalCode',
+          'gender',
           'isAuthorized',
         ]
 

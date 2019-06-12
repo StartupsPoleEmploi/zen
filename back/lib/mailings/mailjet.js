@@ -160,24 +160,26 @@ module.exports = {
           })
       : Promise.resolve()
     ).then(() =>
+      // sends in bulk, one separate email per user
+      // not enforced here, but the limit on API 3.1 is 50 messages / call
       sendMail({
-        Messages: [
-          {
-            From: {
-              Email: 'no-reply@zen.pole-emploi.fr',
-              Name: `L'équipe Zen`,
-            },
-            To: users.map((user) => ({
+        Messages: users.map((user) => ({
+          From: {
+            Email: 'no-reply@zen.pole-emploi.fr',
+            Name: `L'équipe Zen`,
+          },
+          To: [
+            {
               Email: user.email,
               Name: `${user.firstName} ${user.lastName}`,
-            })),
-            TemplateID: 725394,
-            TemplateLanguage: true,
-            Subject: `Bienvenue sur Zen !`,
+            },
+          ],
+          TemplateID: 725394,
+          TemplateLanguage: true,
+          Subject: `Bienvenue sur Zen !`,
 
-            CustomCampaign: 'Confirmation de validation',
-          },
-        ],
+          CustomCampaign: 'Confirmation de validation',
+        })),
       }),
     ),
 

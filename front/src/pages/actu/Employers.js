@@ -89,7 +89,6 @@ const ButtonsContainer = styled.div`
 
 const ErrorMessage = styled(Typography).attrs({
   paragraph: true,
-  variant: 'body1',
 })`
   && {
     color: red;

@@ -202,7 +202,7 @@ export class Signup extends Component {
           est en cours d'enregistrement.
         </LandingText>
 
-        <Typography paragraph variant="body1" style={{ marginBottom: '5rem' }}>
+        <Typography paragraph style={{ marginBottom: '5rem' }}>
           <strong>
             Le service est en test uniquement dans les Hauts-de-France et en
             Occitanie
@@ -215,7 +215,7 @@ export class Signup extends Component {
           </strong>
         </Typography>
 
-        <Typography paragraph variant="subheading">
+        <Typography paragraph variant="subtitle1">
           Merci de l'intérêt que vous portez à Zen.
         </Typography>
 

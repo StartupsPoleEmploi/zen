@@ -14,14 +14,13 @@ const defaultProps = {
   validationErrors: [],
 }
 
-storiesOf('DeclarationDialog', module)
+storiesOf('DeclarationDialogsHandler', module)
   .addDecorator(
     host({
       align: 'center',
       width: 600,
     }),
   )
-  .add('default', () => <DeclarationDialogsHandler {...defaultProps} />)
   .add('loading', () => (
     <DeclarationDialogsHandler {...defaultProps} isLoading />
   ))

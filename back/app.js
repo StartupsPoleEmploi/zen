@@ -23,11 +23,11 @@ const userRouter = require('./routes/user')
 const declarationsRouter = require('./routes/declarations')
 const declarationMonthsRouter = require('./routes/declarationMonths')
 const employersRouter = require('./routes/employers')
-const developerRouter = require('./routes/developer')
 
 require('./lib/db') // setup db connection
 
 const isDevEnv = process.env.NODE_ENV === 'development'
+const isTestEnv = process.env.NODE_ENV === 'test'
 const isProd = process.env.NODE_ENV === 'production'
 
 if (!isDevEnv) {
@@ -75,6 +75,15 @@ app.use(
     store: new (pgConnectSimple(session))(),
   }),
 )
+
+// Setup dev and test routes before csurf token
+if (isDevEnv) {
+  app.use('/developer', require('./routes/developer')) // eslint-disable-line global-require
+}
+if (isTestEnv) {
+  app.use('/tests', require('./routes/tests')) // eslint-disable-line global-require
+}
+
 app.use(csurf())
 
 app.use((req, res, next) => {
@@ -87,10 +96,6 @@ app.use('/ping', (req, res) => res.send('pong'))
 app.use(setIsServiceUp)
 
 app.use('/status', (req, res) => res.json({ up: req.isServiceUp }))
-
-if (isDevEnv) {
-  app.use('/developer', developerRouter)
-}
 
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user) {

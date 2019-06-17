@@ -3,3 +3,6 @@ node_modules
 nginx/entrust-zen.pole-emploi.fr-key.pem
 nginx/.htpasswd
 .vscode/settings.json
+cypress/videos
+cypress/screenshots
+cypress/integration/examples

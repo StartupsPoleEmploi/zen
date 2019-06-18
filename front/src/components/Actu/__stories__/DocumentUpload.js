@@ -6,6 +6,7 @@ import { host } from 'storybook-host'
 import DocumentUpload from '../DocumentUpload'
 
 const defaultProps = {
+  id: 1,
   documentId: 1,
   label: 'Feuille maladie',
   submitFile: action('Submit file'),

@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import TooltipOnFocus from './TooltipOnFocus'
+
 const StyledFormControlLabel = styled(FormControlLabel)`
   background-color: ${({ checked }) => (checked ? '#4b4b4b' : '#f0f0f0')};
   & > span {
@@ -47,22 +49,29 @@ export class YesNoRadioGroup extends Component {
       },
     })
 
-  render() {
+  renderRadioGroup() {
     const { name, value } = this.props
+
     return (
       <RadioGroup
         row
-        aria-label="oui ou non"
         name={name}
         value={getFormValue(value)}
         onChange={this.onChange}
       >
         <FirstFormControlLabel
           value="yes"
-          control={<StyledRadio />}
+          control={
+            <StyledRadio
+              inputProps={{
+                'aria-describedby': `yes[${name}]`,
+              }}
+            />
+          }
           label="oui"
           checked={value}
         />
+
         <SecondFormControlLabel
           value="no"
           control={<StyledRadio />}
@@ -72,6 +81,18 @@ export class YesNoRadioGroup extends Component {
       </RadioGroup>
     )
   }
+
+  render() {
+    const { yesTooltipContent } = this.props
+
+    return yesTooltipContent ? (
+      <TooltipOnFocus content={yesTooltipContent}>
+        {this.renderRadioGroup()}
+      </TooltipOnFocus>
+    ) : (
+      this.renderRadioGroup()
+    )
+  }
 }
 export default YesNoRadioGroup
 
@@ -79,4 +100,5 @@ YesNoRadioGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.bool,
   onAnswer: PropTypes.func.isRequired,
+  yesTooltipContent: PropTypes.object,
 }

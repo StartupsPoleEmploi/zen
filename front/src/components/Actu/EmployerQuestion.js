@@ -11,9 +11,10 @@ import styled from 'styled-components'
 
 import EuroInput from '../Generic/EuroInput'
 import HourInput from '../Generic/HourInput'
-import Rectangle from '../Generic/Rectangle'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
+
+import info from '../../images/info.svg'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -90,27 +91,23 @@ const CancelIcon = styled(Cancel)`
 
 const TooltipText = styled(Typography)`
   && {
-    color: #fff;
-    font-size: 1.2rem;
-    line-height: 1.4rem;
+    line-height: 2rem;
   }
 `
 
 const TooltipTitle = styled(Typography)`
   && {
-    color: #fff;
     font-weight: bold;
-    padding-bottom: 0.5rem;
+    font-size: 1.6rem;
+    padding-bottom: 1.5rem;
   }
 `
 
-const RectangleStyle = {
-  width: '1.4rem',
-  height: '0.3rem',
-  borderRadius: '0.2rem',
-  marginTop: '1rem',
-  marginBottom: '1rem',
-}
+const InfoImg = styled.img`
+  width: 2.5rem;
+  float: left;
+  margin-right: 1rem;
+`
 
 export class EmployerQuestion extends Component {
   static propTypes = {
@@ -134,6 +131,16 @@ export class EmployerQuestion extends Component {
     onChange: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     activeMonth: PropTypes.instanceOf(Date).isRequired,
+  }
+
+  renderTextField(textField, tooltip) {
+    if (!tooltip) return textField
+
+    return (
+      <TooltipOnFocus tooltipId={tooltip.id} content={tooltip.content}>
+        {textField}
+      </TooltipOnFocus>
+    )
   }
 
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
@@ -164,89 +171,130 @@ export class EmployerQuestion extends Component {
       hasEndedThisMonth,
     } = this.props
 
+    const showTooltip = index === 0
+
+    // Employer
+    const employerTextField = (
+      <StyledTextField
+        id={`employerName[${index}]`}
+        label="Nom employeur"
+        name={`employerName[${index}]`}
+        value={employerName.value}
+        onChange={this.onChange}
+        onBlur={this.onChange}
+        error={!!employerName.error}
+        helperText={employerName.error}
+        inputProps={{
+          'aria-describedby': `employerNameDescription[${index}]`,
+        }}
+      />
+    )
+    const employerTooltip = (
+      <Fragment>
+        <TooltipTitle>
+          <InfoImg src={info} alt="" />
+          Information
+        </TooltipTitle>
+        <TooltipText>
+          Si vous avez plusieurs employeurs, ajoutez une ligne par employeur.
+        </TooltipText>
+      </Fragment>
+    )
+
+    // Work hours
+    const workHoursTextField = (
+      <StyledTextField
+        id={`workHours[${index}]`}
+        label="Nombre d'heures"
+        name={`workHours[${index}]`}
+        value={workHours.value}
+        onChange={this.onChange}
+        error={!!workHours.error}
+        helperText={workHours.error}
+        InputProps={{
+          inputComponent: HourInput,
+        }}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
+        inputProps={{
+          maxLength: 4,
+          'aria-describedby': `workHoursDescription[${index}]`,
+        }}
+      />
+    )
+    const workHoursTooltip = (
+      <Fragment>
+        <TooltipTitle>
+          <InfoImg src={info} alt="" />
+          Information
+        </TooltipTitle>
+        <TooltipText>Déclarez les heures réellement travaillées</TooltipText>
+      </Fragment>
+    )
+
+    // Salary
+    const salaryTextField = (
+      <StyledTextField
+        id={`salary[${index}]`}
+        label="Salaire brut €"
+        name={`salary[${index}]`}
+        value={salary.value}
+        onChange={this.onChange}
+        error={!!salary.error}
+        helperText={salary.error}
+        InputProps={{
+          inputComponent: EuroInput,
+        }}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
+        inputProps={{
+          maxLength: 10,
+          'aria-describedby': `salaryDescription[${index}]`,
+        }}
+      />
+    )
+
+    const salaryTooltip = (
+      <Fragment>
+        <TooltipTitle>
+          <InfoImg src={info} alt="" />
+          Information
+        </TooltipTitle>
+        <TooltipText>Déclarez le salaire brut pour cet employeur</TooltipText>
+      </Fragment>
+    )
+
     return (
       <StyledContainer>
         <StyledMain>
           <FieldsContainer>
-            <TooltipOnFocus
-              content={
-                <Fragment>
-                  <Rectangle style={RectangleStyle} />
-                  <TooltipTitle>Information</TooltipTitle>
-                  <TooltipText>
-                    Si vous avez plusieurs bulletins de salaire par famille car
-                    vous gardez plusieurs enfants, ajoutez une ligne par
-                    bulletin de salaire.
-                  </TooltipText>
-                </Fragment>
-              }
-            >
-              <StyledTextField
-                label="Nom employeur"
-                name={`employerName[${index}]`}
-                value={employerName.value}
-                onChange={this.onChange}
-                onBlur={this.onChange}
-                error={!!employerName.error}
-                helperText={employerName.error}
-              />
-            </TooltipOnFocus>
-            <TooltipOnFocus
-              content={
-                <Fragment>
-                  <Rectangle style={RectangleStyle} />
-                  <TooltipTitle>Information</TooltipTitle>
-                  <TooltipText>
-                    Indiquez le nombre d'heures qui figurera sur votre fiche de
-                    paie (ex: heures mensualisées + complémentaires)
-                  </TooltipText>
-                </Fragment>
-              }
-            >
-              <StyledTextField
-                label="Nombre d'heures"
-                name={`workHours[${index}]`}
-                value={workHours.value}
-                onChange={this.onChange}
-                error={!!workHours.error}
-                helperText={workHours.error}
-                InputProps={{
-                  inputComponent: HourInput,
-                }}
-                // eslint-disable-next-line react/jsx-no-duplicate-props
-                inputProps={{
-                  maxLength: 4,
-                }}
-              />
-            </TooltipOnFocus>
-            <TooltipOnFocus
-              content={
-                <Fragment>
-                  <Rectangle style={RectangleStyle} />
-                  <TooltipTitle>Information</TooltipTitle>
-                  <TooltipText>
-                    Si votre employeur vous a payé des congés, n’oubliez pas
-                    d’inclure cette somme dans le salaire déclaré
-                  </TooltipText>
-                </Fragment>
-              }
-            >
-              <StyledTextField
-                label="Salaire brut €"
-                name={`salary[${index}]`}
-                value={salary.value}
-                onChange={this.onChange}
-                error={!!salary.error}
-                helperText={salary.error}
-                InputProps={{
-                  inputComponent: EuroInput,
-                }}
-                // eslint-disable-next-line react/jsx-no-duplicate-props
-                inputProps={{
-                  maxLength: 10,
-                }}
-              />
-            </TooltipOnFocus>
+            {this.renderTextField(
+              employerTextField,
+              showTooltip
+                ? {
+                    id: `employerNameDescription[${index}]`,
+                    content: employerTooltip,
+                  }
+                : null,
+            )}
+
+            {this.renderTextField(
+              workHoursTextField,
+              showTooltip
+                ? {
+                    id: `workHoursDescription[${index}]`,
+                    content: workHoursTooltip,
+                  }
+                : null,
+            )}
+
+            {this.renderTextField(
+              salaryTextField,
+              showTooltip
+                ? {
+                    id: `salaryDescription[${index}]`,
+                    content: salaryTooltip,
+                  }
+                : null,
+            )}
           </FieldsContainer>
           <StyledFormControl>
             <StyledFormLabel>
@@ -258,6 +306,20 @@ export class EmployerQuestion extends Component {
               )}
             </StyledFormLabel>
             <YesNoRadioGroup
+              yesTooltipContent={
+                showTooltip ? (
+                  <Fragment>
+                    <TooltipTitle>
+                      <InfoImg src={info} alt="" />
+                      Information
+                    </TooltipTitle>
+                    <TooltipText>
+                      Si votre employeur vous a payé des congés, n’oubliez pas
+                      d’inclure cette somme dans le salaire brut déclaré
+                    </TooltipText>
+                  </Fragment>
+                ) : null
+              }
               name={`hasEndedThisMonth[${index}]`}
               value={hasEndedThisMonth.value}
               onAnswer={this.onChange}

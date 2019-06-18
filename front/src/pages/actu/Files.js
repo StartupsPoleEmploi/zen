@@ -411,7 +411,7 @@ export class Files extends Component {
 
     return (
       <div>
-        {sortedEmployers.map((employer) => (
+        {sortedEmployers.map((employer, index) => (
           <div key={employer.id}>
             <Typography
               variant="subtitle1"
@@ -423,6 +423,7 @@ export class Files extends Component {
               {this.renderEmployerRow({
                 employer,
                 allowSkipFile: isOldMonth,
+                showTooltip: index === 0,
               })}
             </StyledList>
           </div>
@@ -472,7 +473,7 @@ export class Files extends Component {
         />
       ))
 
-  renderEmployerRow = ({ employer, allowSkipFile }) => {
+  renderEmployerRow = ({ employer, allowSkipFile, showTooltip }) => {
     const salaryDoc = employer.documents.find(
       ({ type }) => type === salarySheetType,
     )
@@ -483,6 +484,7 @@ export class Files extends Component {
     const commonProps = {
       type: DocumentUpload.types.employer,
       submitFile: this.submitEmployerFile,
+      showTooltip,
       skipFile: (params) =>
         this.askToSkipFile(() =>
           this.submitEmployerFile({ ...params, skip: true }),

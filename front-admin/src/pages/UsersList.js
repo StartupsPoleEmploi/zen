@@ -33,6 +33,7 @@ export const UsersList = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
+      <h1>Liste d'utilisateurs</h1>
       <div>
         <FormControlLabel
           control={

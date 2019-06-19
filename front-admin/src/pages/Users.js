@@ -3,9 +3,12 @@ import React, { useState } from 'react'
 
 import UsersList from './UsersList'
 import UsersEmails from './UsersEmails'
+import UsersFilter from './UsersFilter'
 
 export const Users = () => {
-  const [showUsersList, setShowUserList] = useState(true)
+  const [showUsersPage, setShowUserPage] = useState(true)
+  const [showEmailsPage, setShowEmailsPage] = useState(false)
+  const [showFilterPage, setShowFilterPage] = useState(false)
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -13,27 +16,47 @@ export const Users = () => {
         style={{
           display: 'flex',
           justifyContent: 'space-around',
-          width: '30rem',
+          width: '50rem',
           margin: 'auto',
         }}
       >
         <Button
           variant="outlined"
-          color={showUsersList ? 'primary' : 'default'}
-          onClick={() => setShowUserList(true)}
+          color={showUsersPage ? 'primary' : 'default'}
+          onClick={() => {
+            setShowUserPage(true)
+            setShowEmailsPage(false)
+            setShowFilterPage(false)
+          }}
         >
           Liste d'utilisateurs
         </Button>
         <Button
           variant="outlined"
-          color={!showUsersList ? 'primary' : 'default'}
-          onClick={() => setShowUserList(false)}
+          color={showEmailsPage ? 'primary' : 'default'}
+          onClick={() => {
+            setShowUserPage(false)
+            setShowEmailsPage(true)
+            setShowFilterPage(false)
+          }}
         >
-          Copie d'e-mails
+          Ajout d'utilisateurs par e-mail
+        </Button>
+        <Button
+          variant="outlined"
+          color={showFilterPage ? 'primary' : 'default'}
+          onClick={() => {
+            setShowUserPage(false)
+            setShowEmailsPage(false)
+            setShowFilterPage(true)
+          }}
+        >
+          Filtre d'e-mails
         </Button>
       </div>
-      <h1>Utilisateurs</h1>
-      {showUsersList ? <UsersList /> : <UsersEmails />}
+      {showUsersPage && <UsersList />}
+      {showEmailsPage && <UsersEmails />}
+      {showFilterPage && <UsersFilter />}
     </div>
   )
 }

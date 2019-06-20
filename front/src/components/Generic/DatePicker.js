@@ -51,6 +51,7 @@ export default class DatePicker extends PureComponent {
           maxDateMessage="La date doit faire partie du mois déclaré"
           minDateMessage="La date doit faire partie du mois déclaré"
           initialFocusedDate={this.props.initialFocusedDate}
+          name={this.props.name}
         />
       </MuiPickersUtilsProvider>
     )

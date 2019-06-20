@@ -33,6 +33,7 @@ exports[`Storyshots DatePicker default 1`] = `
               className="MuiInputBase-input-1490 MuiInput-input-1475"
               disabled={false}
               mask={null}
+              name="date"
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
@@ -126,6 +127,7 @@ exports[`Storyshots DatePicker with selected date 1`] = `
               className="MuiInputBase-input-1566 MuiInput-input-1551"
               disabled={false}
               mask={null}
+              name="date"
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
@@ -201,6 +203,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
       >
         <li
           className="sc-iwsKbI fSRpex"
+          id="hasWorked"
           style={Object {}}
         >
           <div
@@ -255,7 +258,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                         checked={false}
                         className="MuiPrivateSwitchBase-input-57"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
@@ -307,7 +310,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                         checked={false}
                         className="MuiPrivateSwitchBase-input-57"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
@@ -390,6 +393,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
       >
         <li
           className="sc-iwsKbI fSRpex"
+          id="hasWorked"
           style={Object {}}
         >
           <div
@@ -444,7 +448,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                         checked={false}
                         className="MuiPrivateSwitchBase-input-221"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
@@ -496,7 +500,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                         checked={true}
                         className="MuiPrivateSwitchBase-input-221"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
@@ -579,6 +583,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
       >
         <li
           className="sc-iwsKbI fSRpex"
+          id="hasWorked"
           style={Object {}}
         >
           <div
@@ -633,7 +638,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                         checked={false}
                         className="MuiPrivateSwitchBase-input-385"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
@@ -685,7 +690,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                         checked={true}
                         className="MuiPrivateSwitchBase-input-385"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
@@ -771,6 +776,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
       >
         <li
           className="sc-iwsKbI fSRpex"
+          id="hasWorked"
           style={Object {}}
         >
           <div
@@ -825,7 +831,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                         checked={true}
                         className="MuiPrivateSwitchBase-input-303"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
@@ -877,7 +883,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                         checked={false}
                         className="MuiPrivateSwitchBase-input-303"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
@@ -963,6 +969,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
       >
         <li
           className="sc-iwsKbI fSRpex"
+          id="hasWorked"
           style={Object {}}
         >
           <div
@@ -1017,7 +1024,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                         checked={true}
                         className="MuiPrivateSwitchBase-input-139"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
@@ -1069,7 +1076,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                         checked={false}
                         className="MuiPrivateSwitchBase-input-139"
                         disabled={false}
-                        name="yesOrNo"
+                        name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"

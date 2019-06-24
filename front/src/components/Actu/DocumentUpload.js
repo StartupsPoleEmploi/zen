@@ -231,7 +231,7 @@ export class DocumentUpload extends Component {
       width: 263, // Note: width mirrors value in StyledFormLabel
     }
 
-    const showButton = canUsePDFViewer ? (
+    const documentButton = canUsePDFViewer ? (
       <Button
         variant="outlined"
         data-pdf-url={url}
@@ -298,7 +298,9 @@ export class DocumentUpload extends Component {
                 <CircularProgress />
               ) : (
                 <Container>
-                  {error ? formattedError : fileExistsOnServer && showButton}
+                  {error
+                    ? formattedError
+                    : fileExistsOnServer && documentButton}
                   {!fileExistsOnServer && !isTransmitted && (
                     <StyledFormLabel>
                       {hiddenInput}

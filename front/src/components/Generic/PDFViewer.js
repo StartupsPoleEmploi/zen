@@ -31,8 +31,8 @@ export default class PDFViewer extends Component {
     pageNumber: 1,
   }
 
-  onDocumentLoadSuccess = (document) => {
-    const { numPages } = document
+  onDocumentLoadSuccess = (doc) => {
+    const { numPages } = doc
     this.setState({
       numPages,
       pageNumber: 1,

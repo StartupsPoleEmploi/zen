@@ -1,6 +1,6 @@
 const extractFileExtension = (file) => {
   const dotIndex = file.lastIndexOf('.')
-  if (dotIndex === -1) throw Error(`No extension detected in file ${dotIndex}`)
+  if (dotIndex === -1) return ''
   return file.substring(dotIndex, file.length).toLowerCase()
 }
 

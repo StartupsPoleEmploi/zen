@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 
 const router = express.Router()
 const { transaction } = require('objection')
@@ -23,6 +24,10 @@ const EmployerDocument = require('../models/EmployerDocument')
 const ActivityLog = require('../models/ActivityLog')
 
 const { DECLARATION_STATUSES } = require('../constants')
+
+const { getPDF } = require('../lib/pdf-utils')
+
+const imgExtensions = ['.png', '.jpeg', '.jpg']
 
 const getSanitizedEmployer = ({ employer, declaration, user }) => {
   const workHours = parseFloat(employer.workHours)
@@ -191,7 +196,16 @@ router.get('/files', (req, res, next) => {
     .then((document) => {
       if (get(document, 'employer.user.id') !== req.session.user.id)
         return res.status(404).json('No such file')
-      res.sendFile(document.file, { root: uploadDestination })
+
+      const extension = path.extname(document.file)
+
+      // Not a PDF / convertible as PDF file
+      if (extension !== '.pdf' && !imgExtensions.includes(extension))
+        return res.sendFile(document.file, { root: uploadDestination })
+
+      return getPDF(document, uploadDestination).then((pdfPath) => {
+        res.sendFile(pdfPath, { root: uploadDestination })
+      })
     })
     .catch(next)
 })

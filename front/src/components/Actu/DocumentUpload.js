@@ -220,7 +220,7 @@ export class DocumentUpload extends Component {
       width: 263, // Note: width mirrors value in StyledFormLabel
     }
 
-    const showButton = canUsePDFViewer ? (
+    const documentButton = canUsePDFViewer ? (
       <Button
         variant="outlined"
         data-pdf-url={url}
@@ -291,23 +291,7 @@ export class DocumentUpload extends Component {
                 <Container>
                   {error
                     ? formattedError
-                    : fileExistsOnServer && (
-                        <Button
-                          variant="outlined"
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            justifyContent: 'space-between',
-                            whiteSpace: 'nowrap',
-                            height: 32,
-                            minHeight: 32,
-                          }}
-                        >
-                          <EyeIcon />
-                          Voir le document
-                        </Button>
-                      )}
+                    : fileExistsOnServer && documentButton}
                   {!fileExistsOnServer && !isTransmitted && (
                     <StyledFormLabel>
                       {hiddenInput}

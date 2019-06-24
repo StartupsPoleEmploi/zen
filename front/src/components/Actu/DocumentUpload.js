@@ -18,8 +18,9 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import { primaryBlue } from '../../constants'
-import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import CustomColorButton from '../Generic/CustomColorButton'
+
+import PDFViewer from '../Generic/PDFViewer'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -108,6 +109,7 @@ export class DocumentUpload extends Component {
     id: PropTypes.number,
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
+    canUsePDFViewer: PropTypes.bool,
     label: PropTypes.string.isRequired,
     caption: PropTypes.string,
     isLoading: PropTypes.bool,
@@ -119,35 +121,17 @@ export class DocumentUpload extends Component {
     infoTooltipText: PropTypes.string,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
-    showTooltip: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    showTooltip: false,
   }
 
   static types = { employer: employerType, infos: infosType }
 
-  renderFileField(fileInput, showTooltip, id) {
-    if (!showTooltip) return fileInput
-    if (!id) throw new Error(`id is undefined`)
-
-    return (
-      <TooltipOnFocus
-        useHover
-        tooltipId={`file[${id}]`}
-        content={
-          <Typography>
-            Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx
-          </Typography>
-        }
-      >
-        {fileInput}
-      </TooltipOnFocus>
-    )
+  state = {
+    showPDFViewer: false,
   }
 
-  submitFile = ({ target: { files } }) =>
+  submitFile = ({ target: { files } }) => {
+    this.setState({ showPDFViewer: false })
+
     this.props.submitFile({
       file: files[0],
       documentId: this.props.id,
@@ -155,6 +139,7 @@ export class DocumentUpload extends Component {
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
+  }
 
   skipFile = () =>
     this.props.skipFile({
@@ -164,21 +149,25 @@ export class DocumentUpload extends Component {
       employerDocType: this.props.employerDocType,
     })
 
+  togglePDFViewer = () =>
+    this.setState((state) => ({ showPDFViewer: !state.showPDFViewer }))
+
   render() {
     const {
       id,
       caption,
       error,
       fileExistsOnServer,
+      canUsePDFViewer,
       isLoading,
       isTransmitted,
       label,
       allowSkipFile,
       type,
       infoTooltipText,
-      showTooltip,
-      employerId,
     } = this.props
+
+    const { showPDFViewer } = this.state
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
 
@@ -234,99 +223,107 @@ export class DocumentUpload extends Component {
       )
     }
 
-    const uploadInput = (
-      <CustomColorButton
-        aria-describedby={`file[${id}]`}
-        component="span"
-        size="small"
+    const buttonStyle = {
+      justifyContent: 'space-between',
+      whiteSpace: 'nowrap',
+      height: 32,
+      minHeight: 32,
+      width: 263, // Note: width mirrors value in StyledFormLabel
+    }
+
+    const showButton = canUsePDFViewer ? (
+      <Button
+        variant="outlined"
+        data-pdf-url={url}
+        onClick={this.togglePDFViewer}
+        style={buttonStyle}
       >
-        Parcourir
-      </CustomColorButton>
+        <EyeIcon />
+        {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le document fourni'}
+      </Button>
+    ) : (
+      <Button
+        variant="outlined"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={buttonStyle}
+      >
+        <EyeIcon />
+        Voir le document fourni
+      </Button>
     )
 
     return (
-      <StyledContainer>
-        <StyledListItem
-          style={{
-            borderColor: fileExistsOnServer ? primaryBlue : '#df5555',
-          }}
-        >
-          <ListItemText
-            primary={
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div>
-                  <b>{label}</b>
-                  {caption && (
-                    <Fragment>
-                      <br />
-                      <Typography variant="caption">{caption}</Typography>
-                    </Fragment>
-                  )}
-                </div>
-                {infoTooltipText && (
-                  <Tooltip
-                    title={
-                      <Typography style={{ color: '#fff' }}>
-                        {infoTooltipText}
-                      </Typography>
-                    }
-                    placement="top"
-                    enterDelay={0}
-                    leaveDelay={1500}
-                    enterTouchDelay={0}
-                    leaveTouchDelay={3000}
-                  >
-                    <InfoIcon />
-                  </Tooltip>
-                )}
-              </div>
-            }
-          />
-          <FormControl>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Container>
-                {error
-                  ? formattedError
-                  : fileExistsOnServer && (
-                      <Button
-                        variant="outlined"
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          justifyContent: 'space-between',
-                          whiteSpace: 'nowrap',
-                          height: 32,
-                          minHeight: 32,
-                          width: 263, // Note: width mirrors value in StyledFormLabel
-                        }}
-                      >
-                        <EyeIcon />
-                        Voir le document fourni
-                      </Button>
-                    )}
-                {!fileExistsOnServer && !isTransmitted && (
-                  <StyledFormLabel>
-                    {hiddenInput}
-                    {!error && (
+      <Fragment>
+        <StyledContainer>
+          <StyledListItem
+            style={{
+              borderColor: fileExistsOnServer ? primaryBlue : '#df5555',
+            }}
+          >
+            <ListItemText
+              primary={
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div>
+                    <b>{label}</b>
+                    {caption && (
                       <Fragment>
-                        <Warning />
-                        <StyledFormHelperText>
-                          Document à envoyer
-                        </StyledFormHelperText>
+                        <br />
+                        <Typography variant="caption">{caption}</Typography>
                       </Fragment>
                     )}
-                    {this.renderFileField(uploadInput, showTooltip, employerId)}
-                  </StyledFormLabel>
-                )}
-              </Container>
-            )}
-          </FormControl>
-        </StyledListItem>
-        <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
-      </StyledContainer>
+                  </div>
+                  {infoTooltipText && (
+                    <Tooltip
+                      title={
+                        <Typography style={{ color: '#fff' }}>
+                          {infoTooltipText}
+                        </Typography>
+                      }
+                      placement="top"
+                      enterDelay={0}
+                      leaveDelay={1500}
+                      enterTouchDelay={0}
+                      leaveTouchDelay={3000}
+                    >
+                      <InfoIcon />
+                    </Tooltip>
+                  )}
+                </div>
+              }
+            />
+            <FormControl>
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Container>
+                  {error ? formattedError : fileExistsOnServer && showButton}
+                  {!fileExistsOnServer && !isTransmitted && (
+                    <StyledFormLabel>
+                      {hiddenInput}
+                      {!error && (
+                        <Fragment>
+                          <Warning />
+                          <StyledFormHelperText>
+                            Document à envoyer
+                          </StyledFormHelperText>
+                        </Fragment>
+                      )}
+                      <CustomColorButton component="span" size="small">
+                        Parcourir
+                      </CustomColorButton>
+                    </StyledFormLabel>
+                  )}
+                </Container>
+              )}
+            </FormControl>
+          </StyledListItem>
+          <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
+        </StyledContainer>
+
+        {showPDFViewer && <PDFViewer url={url} />}
+      </Fragment>
     )
   }
 }

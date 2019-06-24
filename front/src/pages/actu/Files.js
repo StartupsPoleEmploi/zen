@@ -19,6 +19,7 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import { secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
+import { canUsePDFViewer } from '../../lib/file'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -445,6 +446,7 @@ export class Files extends Component {
           caption={formatInfoDates(info)}
           fileExistsOnServer={!!info.file}
           submitFile={this.submitAdditionalFile}
+          canUsePDFViewer={info.file ? canUsePDFViewer(info.file) : null}
           skipFile={() =>
             this.askToSkipFile((params) =>
               this.submitAdditionalFile({ ...params, skip: true }),
@@ -485,6 +487,9 @@ export class Files extends Component {
         id={get(salaryDoc, 'id')}
         label="Bulletin de salaire"
         fileExistsOnServer={!!get(salaryDoc, 'file')}
+        canUsePDFViewer={
+          get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
+        }
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={
@@ -505,6 +510,11 @@ export class Files extends Component {
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
         fileExistsOnServer={!!get(certificateDoc, 'file')}
+        canUsePDFViewer={
+          get(certificateDoc, 'file')
+            ? canUsePDFViewer(certificateDoc.file)
+            : false
+        }
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth

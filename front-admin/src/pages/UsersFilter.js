@@ -8,17 +8,16 @@
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { chunk } from 'lodash'
 import React, { useState } from 'react'
 import superagent from 'superagent'
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-export const UsersEmails = () => {
+export const UsersFilter = () => {
   const [loading, setLoading] = useState(false)
   const [emails, setEmails] = useState('')
-  const [emailsToCheck, setEmailsToCheck] = useState([])
-  const [errors, setErrors] = useState([])
+  const [error, setError] = useState('')
+  const [filteredEmails, setFilteredEmails] = useState([])
 
   const getEmailsArray = (string) =>
     string
@@ -27,42 +26,21 @@ export const UsersEmails = () => {
       .filter((email) => email.match(EMAIL_REGEX))
 
   const authorizeUsersbByEmails = async () => {
-    if (!window.confirm(`Autoriser ces utilisateurs ?`)) {
-      return
-    }
-
-    let addedUsersNb = 0
-    const newErrors = []
-    const newEmailsToCheck = []
-
-    const allEmailsArray = getEmailsArray(emails)
-    const allEmailsArrayInChunks = chunk(allEmailsArray, 50)
+    const emailArray = getEmailsArray(emails)
+    if (emailArray.length === 0) return
 
     setLoading(true)
 
-    for (const emailsChunk of allEmailsArrayInChunks) {
-      await superagent
-        .post(`/zen-admin-api/users/authorize`, { emails: emailsChunk })
-        .then(({ body: { updatedRowsNb } }) => {
-          addedUsersNb += updatedRowsNb
-        })
-        .catch((err) => {
-          newErrors.push(err)
-          newEmailsToCheck.push(...emailsChunk)
-        })
-    }
+    await superagent
+      .post(`/zen-admin-api/users/filter`, { emails: emailArray })
+      .then(({ body }) => {
+        setFilteredEmails(body)
+      })
+      .catch((err) => {
+        setError(err)
+      })
 
     setLoading(false)
-    setEmailsToCheck(newEmailsToCheck)
-    setErrors(newErrors)
-
-    window.alert(`${addedUsersNb} utilisateurs ont été ajoutés.
-${
-  newErrors.length > 0
-    ? `Il y a eu des erreurs, merci d'en donner le détail aux développeurs`
-    : ''
-}
-    `)
   }
 
   if (loading) {
@@ -71,7 +49,7 @@ ${
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h1>Ajout d'utilisateurs par e-mail</h1>
+      <h1>Filtre d'utilisateurs</h1>
       <div style={{ margin: 'auto', width: '30rem' }}>
         <div>
           <Typography>
@@ -93,22 +71,22 @@ ${
           variant="outlined"
           style={{ marginBottom: '1rem' }}
         >
-          Autoriser les nouveaux utilisateurs
+          Valider
         </Button>
       </div>
       <div>
-        {errors.map((error, key) => (
-          <Typography key={key} style={{ color: 'red' }}>
+        {error && (
+          <Typography role="alert" style={{ color: 'red' }}>
             <b>{error.message}</b>
           </Typography>
-        ))}
-        {emailsToCheck.length > 0 && (
+        )}
+        {filteredEmails.length > 0 && (
           <Typography>
-            <b>Vérifier ces e-mails manuellement :</b>
+            <b>E-mails absents de la base de données :</b>
           </Typography>
         )}
         <ul style={{ listStyle: 'none' }}>
-          {emailsToCheck.map((email, key) => (
+          {filteredEmails.map((email, key) => (
             <li key={`${email}-${key}`}>
               <Typography>{email}</Typography>
             </li>
@@ -119,6 +97,6 @@ ${
   )
 }
 
-UsersEmails.propTypes = {}
+UsersFilter.propTypes = {}
 
-export default UsersEmails
+export default UsersFilter

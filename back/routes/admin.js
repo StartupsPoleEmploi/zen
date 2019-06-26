@@ -94,7 +94,7 @@ router.post('/users/authorize', (req, res, next) => {
     return res.status(400).json('Bad request')
   }
 
-  let query = User.query()
+  const query = User.query()
 
   const emails = req.body.emails.filter(
     (email) => !emailsToIgnore.includes(email.toLowerCase()),
@@ -107,9 +107,9 @@ router.post('/users/authorize', (req, res, next) => {
   }
 
   query.where(function() {
-    query = this.where('email', 'ilike', emails[0])
+    this.where('email', 'ilike', emails[0])
     emails.slice(1).forEach((email) => {
-      query = this.orWhere('email', 'ilike', email)
+      this.orWhere('email', 'ilike', email)
     })
   })
 
@@ -135,6 +135,34 @@ router.post('/users/authorize', (req, res, next) => {
         updatedRowsNb,
       }),
     )
+    .catch(next)
+})
+
+// get users *not* in db
+router.post('/users/filter', (req, res, next) => {
+  let emails
+  try {
+    emails = req.body.emails.map((email) => email.toLowerCase())
+  } catch (err) {
+    return next(err)
+  }
+
+  const query = User.query()
+
+  query.where(function() {
+    this.where('email', 'ilike', emails[0])
+    emails.slice(1).forEach((email) => {
+      this.orWhere('email', 'ilike', email)
+    })
+  })
+
+  return query
+    .then((usersInDb) => {
+      const usersInDbEmails = usersInDb.map(({ email }) => email.toLowerCase())
+      return res.json(
+        emails.filter((email) => !usersInDbEmails.includes(email)),
+      )
+    })
     .catch(next)
 })
 

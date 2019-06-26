@@ -3,6 +3,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+
 import File from '@material-ui/icons/Description'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -12,7 +14,7 @@ import ArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import Person from '@material-ui/icons/PersonOutline'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -21,6 +23,8 @@ import { primaryBlue } from '../constants/colors'
 
 const stepperRoutes = ['/actu', '/employers', '/files']
 const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
+
+const breakpoint = '672px'
 
 const styles = (theme) => ({
   lightTooltip: {
@@ -146,28 +150,18 @@ const ListIcon = styled(FormatListBulleted)`
   margin-right: 1rem;
 `
 
-export class Layout extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    user: PropTypes.shape({
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      email: PropTypes.string,
-      csrfToken: PropTypes.string,
-    }),
-    history: PropTypes.shape({
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
-    location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
-      .isRequired,
-    activeMonth: PropTypes.instanceOf(Date),
-    activeDeclaration: PropTypes.object,
-  }
+export const Layout = ({
+  activeMonth,
+  activeDeclaration,
+  children,
+  classes,
+  user,
+  location: { pathname },
+}) => {
+  const [isTooltipOpened, setTooltipOpened] = useState(false)
 
-  state = { isTooltipOpened: false }
-
-  getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {
+  // eslint-disable-next-line react/prop-types
+  const getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {
     if (shouldActivateLink) {
       return (
         <LiStep className={isActive ? 'Stepper__Active' : ''}>
@@ -186,140 +180,140 @@ export class Layout extends Component {
     )
   }
 
-  setTooltipClosed = () => this.setState({ isTooltipOpened: false })
+  const userCanDeclare =
+    !get(user, 'hasAlreadySentDeclaration') && get(user, 'canSendDeclaration')
 
-  toggleTooltip = () =>
-    this.setState((state) => ({ isTooltipOpened: !state.isTooltipOpened }))
+  const shouldActivateDeclarationLink =
+    !!activeMonth &&
+    (!activeDeclaration || !activeDeclaration.hasFinishedDeclaringEmployers) &&
+    userCanDeclare
 
-  render() {
-    const {
-      activeMonth,
-      activeDeclaration,
-      children,
-      classes,
-      user,
-      location: { pathname },
-    } = this.props
+  const shouldActivateEmployersLink =
+    !!activeMonth &&
+    !!activeDeclaration &&
+    !activeDeclaration.hasFinishedDeclaringEmployers &&
+    userCanDeclare
 
-    const userCanDeclare =
-      !get(user, 'hasAlreadySentDeclaration') && get(user, 'canSendDeclaration')
+  const useMobileVersion = useMediaQuery(`(max-width:${breakpoint})`) // eslint-disable-line
 
-    const shouldActivateDeclarationLink =
-      !!activeMonth &&
-      (!activeDeclaration ||
-        !activeDeclaration.hasFinishedDeclaringEmployers) &&
-      userCanDeclare
-
-    const shouldActivateEmployersLink =
-      !!activeMonth &&
-      !!activeDeclaration &&
-      !activeDeclaration.hasFinishedDeclaringEmployers &&
-      userCanDeclare
-
-    return (
-      <StyledLayout>
-        <Header>
-          {false && <AppTitle />}
-          {user && (
-            <ClickAwayListener onClickAway={this.setTooltipClosed}>
-              <Tooltip
-                classes={{ tooltip: classes.lightTooltip }}
-                disableHoverListener
-                disableFocusListener
-                disableTouchListener
-                open={this.state.isTooltipOpened}
-                placement="bottom"
-                title={
-                  <Button
-                    href="/api/login/logout"
-                    target="_self"
-                    disableRipple
-                    variant="text"
-                  >
-                    Déconnexion
-                  </Button>
-                }
-              >
-                <UserButton onClick={this.toggleTooltip} disableRipple>
-                  <PersonIcon />
-                  {user.firstName}
-                  {this.state.isTooltipOpened ? <ExpandLess /> : <ExpandMore />}
-                </UserButton>
-              </Tooltip>
-            </ClickAwayListener>
-          )}
-        </Header>
-        <Container>
-          <div>
-            <Nav>
-              <AppTitleContainer>
-                <AppTitle />
-              </AppTitleContainer>
-              <UlStepper>
-                {this.getStepperItem({
-                  label: (
-                    <Fragment>
-                      <ListIcon /> Mon actualisation{' '}
-                      {activeMonth &&
-                        (pathname === declarationRoute ||
-                        pathname === employersRoute ? (
-                          <ArrowDown />
-                        ) : (
-                          <ArrowUp />
-                        ))}
-                    </Fragment>
-                  ),
-                  link: declarationRoute,
-                  isActive:
-                    pathname === declarationRoute ||
-                    pathname === employersRoute,
-                  shouldActivateLink:
-                    shouldActivateDeclarationLink ||
-                    shouldActivateEmployersLink,
-                })}
-                {(pathname === declarationRoute ||
-                  pathname === employersRoute) && (
+  return (
+    <StyledLayout>
+      <Header>
+        {user && (
+          <ClickAwayListener onClickAway={() => setTooltipOpened(false)}>
+            <Tooltip
+              classes={{ tooltip: classes.lightTooltip }}
+              disableHoverListener
+              disableFocusListener
+              disableTouchListener
+              open={isTooltipOpened}
+              placement="bottom"
+              title={
+                <Button
+                  href="/api/login/logout"
+                  target="_self"
+                  disableRipple
+                  variant="text"
+                >
+                  Déconnexion
+                </Button>
+              }
+            >
+              <UserButton onClick={() => setTooltipOpened(true)} disableRipple>
+                <PersonIcon />
+                {user.firstName}
+                {isTooltipOpened ? <ExpandLess /> : <ExpandMore />}
+              </UserButton>
+            </Tooltip>
+          </ClickAwayListener>
+        )}
+      </Header>
+      <Container>
+        <div>
+          <Nav>
+            <AppTitleContainer>
+              <AppTitle />
+            </AppTitleContainer>
+            <UlStepper>
+              {getStepperItem({
+                label: (
                   <Fragment>
-                    {this.getStepperItem({
-                      label: (
-                        <Fragment>
-                          <Placeholder /> Ma situation
-                        </Fragment>
-                      ),
-                      link: declarationRoute,
-                      shouldActivateLink: shouldActivateDeclarationLink,
-                      isActive: pathname === declarationRoute,
-                    })}
-                    {this.getStepperItem({
-                      label: (
-                        <Fragment>
-                          <Placeholder /> Mes employeurs
-                        </Fragment>
-                      ),
-                      link: employersRoute,
-                      shouldActivateLink: shouldActivateEmployersLink,
-                      isActive: pathname === employersRoute,
-                    })}
+                    <ListIcon /> Mon actualisation
+                    {activeMonth &&
+                      (pathname === declarationRoute ||
+                      pathname === employersRoute ? (
+                        <ArrowDown />
+                      ) : (
+                        <ArrowUp />
+                      ))}
                   </Fragment>
-                )}
-                {this.getStepperItem({
-                  label: (
-                    <Fragment>
-                      <FileIcon /> Mes justificatifs
-                    </Fragment>
-                  ),
-                  link: filesRoute,
-                  shouldActivateLink: true,
-                  isActive: pathname === filesRoute,
-                })}
-              </UlStepper>
-            </Nav>
-          </div>
-          <Main>{children}</Main>
-        </Container>
-      </StyledLayout>
-    )
-  }
+                ),
+                link: declarationRoute,
+                isActive:
+                  pathname === declarationRoute || pathname === employersRoute,
+                shouldActivateLink:
+                  shouldActivateDeclarationLink || shouldActivateEmployersLink,
+              })}
+              {(pathname === declarationRoute ||
+                pathname === employersRoute) && (
+                <Fragment>
+                  {getStepperItem({
+                    label: (
+                      <Fragment>
+                        <Placeholder /> Ma situation
+                      </Fragment>
+                    ),
+                    link: declarationRoute,
+                    shouldActivateLink: shouldActivateDeclarationLink,
+                    isActive: pathname === declarationRoute,
+                  })}
+                  {getStepperItem({
+                    label: (
+                      <Fragment>
+                        <Placeholder /> Mes employeurs
+                      </Fragment>
+                    ),
+                    link: employersRoute,
+                    shouldActivateLink: shouldActivateEmployersLink,
+                    isActive: pathname === employersRoute,
+                  })}
+                </Fragment>
+              )}
+              {getStepperItem({
+                label: (
+                  <Fragment>
+                    <FileIcon /> Mes justificatifs
+                  </Fragment>
+                ),
+                link: filesRoute,
+                shouldActivateLink: true,
+                isActive: pathname === filesRoute,
+              })}
+            </UlStepper>
+          </Nav>
+        </div>
+        <Main>{children}</Main>
+      </Container>
+    </StyledLayout>
+  )
+}
+
+Layout.propTypes = {
+  children: PropTypes.node,
+  classes: PropTypes.object,
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+    csrfToken: PropTypes.string,
+  }),
+  history: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
+    .isRequired,
+  activeMonth: PropTypes.instanceOf(Date),
+  activeDeclaration: PropTypes.object,
 }
 
 export default withRouter(withStyles(styles)(Layout))

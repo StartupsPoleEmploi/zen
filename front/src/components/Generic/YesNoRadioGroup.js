@@ -7,6 +7,14 @@ import styled from 'styled-components'
 
 import TooltipOnFocus from './TooltipOnFocus'
 
+const StyledRadioGroup = styled(RadioGroup)`
+  &&{
+    & div[role=radiogroup] {
+      flex-wrap: nowrap;
+    }
+  }
+`
+
 const StyledFormControlLabel = styled(FormControlLabel)`
   background-color: ${({ checked }) => (checked ? '#4b4b4b' : '#f0f0f0')};
   & > span {
@@ -53,7 +61,7 @@ export class YesNoRadioGroup extends Component {
     const { name, value } = this.props
 
     return (
-      <RadioGroup
+      <StyledRadioGroup
         row
         name={name}
         value={getFormValue(value)}
@@ -78,7 +86,7 @@ export class YesNoRadioGroup extends Component {
           label="non"
           checked={value === false}
         />
-      </RadioGroup>
+      </StyledRadioGroup>
     )
   }
 

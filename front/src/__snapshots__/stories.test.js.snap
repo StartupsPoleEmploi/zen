@@ -14,7 +14,7 @@ exports[`Storyshots DatePicker default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-1415 sc-cSHVUG kzLuJJ"
+          className="MuiFormControl-root-1415 sc-kAzzGY hUhkRB"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
@@ -44,7 +44,7 @@ exports[`Storyshots DatePicker default 1`] = `
               value=""
             />
           </div>
-          
+
         </div>
         <div>
           <div
@@ -108,7 +108,7 @@ exports[`Storyshots DatePicker with selected date 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-1491 sc-cSHVUG kzLuJJ"
+          className="MuiFormControl-root-1491 sc-kAzzGY hUhkRB"
           onClick={[Function]}
           onKeyPress={[Function]}
         >
@@ -138,7 +138,7 @@ exports[`Storyshots DatePicker with selected date 1`] = `
               value="02/07/2018"
             />
           </div>
-          
+
         </div>
         <div>
           <div
@@ -207,10 +207,10 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
           style={Object {}}
         >
           <div
-            className="sc-gZMcBi gxJEmF"
+            className="sc-gqjmRU jzMqFE"
           >
             <p
-              className="MuiTypography-root-1 MuiTypography-body1-10 sc-gqjmRU jvManW"
+              className="MuiTypography-root-1 MuiTypography-body1-10 sc-VigVT boCPtg"
             >
               Avez-vous travaillé ?
             </p>
@@ -218,14 +218,14 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
               className="MuiFormControl-root-37"
             >
               <div
-                className="MuiFormGroup-root-41 MuiFormGroup-row-42"
+                className="MuiFormGroup-root-41 MuiFormGroup-row-42 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-43 sc-bZQynM sc-gzVnrw hyzznn"
+                  className="MuiFormControlLabel-root-43 sc-gzVnrw sc-htoDjs loVGZO"
                 >
                   <span
-                    className="MuiButtonBase-root-64 MuiIconButton-root-58 MuiPrivateSwitchBase-root-54 MuiRadio-root-49 MuiRadio-colorSecondary-53 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-64 MuiIconButton-root-58 MuiPrivateSwitchBase-root-54 MuiRadio-root-49 MuiRadio-colorSecondary-53 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -275,10 +275,10 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-43 sc-bZQynM sc-htoDjs efwAhK"
+                  className="MuiFormControlLabel-root-43 sc-gzVnrw sc-dnqmqq jrCanL"
                 >
                   <span
-                    className="MuiButtonBase-root-64 MuiIconButton-root-58 MuiPrivateSwitchBase-root-54 MuiRadio-root-49 MuiRadio-colorSecondary-53 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-64 MuiIconButton-root-58 MuiPrivateSwitchBase-root-54 MuiRadio-root-49 MuiRadio-colorSecondary-53 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -397,10 +397,10 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
           style={Object {}}
         >
           <div
-            className="sc-gZMcBi gxJEmF"
+            className="sc-gqjmRU jzMqFE"
           >
             <p
-              className="MuiTypography-root-165 MuiTypography-body1-174 sc-gqjmRU jvManW"
+              className="MuiTypography-root-165 MuiTypography-body1-174 sc-VigVT boCPtg"
             >
               Avez-vous travaillé ?
             </p>
@@ -408,14 +408,14 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
               className="MuiFormControl-root-201"
             >
               <div
-                className="MuiFormGroup-root-205 MuiFormGroup-row-206"
+                className="MuiFormGroup-root-205 MuiFormGroup-row-206 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-207 sc-bZQynM sc-gzVnrw hyzznn"
+                  className="MuiFormControlLabel-root-207 sc-gzVnrw sc-htoDjs loVGZO"
                 >
                   <span
-                    className="MuiButtonBase-root-228 MuiIconButton-root-222 MuiPrivateSwitchBase-root-218 MuiRadio-root-213 MuiRadio-colorSecondary-217 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-228 MuiIconButton-root-222 MuiPrivateSwitchBase-root-218 MuiRadio-root-213 MuiRadio-colorSecondary-217 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -465,10 +465,10 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-207 sc-bZQynM sc-htoDjs hXhOoK"
+                  className="MuiFormControlLabel-root-207 sc-gzVnrw sc-dnqmqq dXXuoR"
                 >
                   <span
-                    className="MuiButtonBase-root-228 MuiIconButton-root-222 MuiPrivateSwitchBase-root-218 MuiRadio-root-213 MuiRadio-colorSecondary-217 MuiPrivateSwitchBase-checked-219 MuiRadio-checked-214 sc-dnqmqq gRTyqV"
+                    className="MuiButtonBase-root-228 MuiIconButton-root-222 MuiPrivateSwitchBase-root-218 MuiRadio-root-213 MuiRadio-colorSecondary-217 MuiPrivateSwitchBase-checked-219 MuiRadio-checked-214 sc-iwsKbI knhzkk"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -587,10 +587,10 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
           style={Object {}}
         >
           <div
-            className="sc-gZMcBi gxJEmF"
+            className="sc-gqjmRU jzMqFE"
           >
             <p
-              className="MuiTypography-root-329 MuiTypography-body1-338 sc-gqjmRU jvManW"
+              className="MuiTypography-root-329 MuiTypography-body1-338 sc-VigVT boCPtg"
             >
               Avez-vous travaillé ?
             </p>
@@ -598,14 +598,14 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
               className="MuiFormControl-root-365"
             >
               <div
-                className="MuiFormGroup-root-369 MuiFormGroup-row-370"
+                className="MuiFormGroup-root-369 MuiFormGroup-row-370 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-371 sc-bZQynM sc-gzVnrw hyzznn"
+                  className="MuiFormControlLabel-root-371 sc-gzVnrw sc-htoDjs loVGZO"
                 >
                   <span
-                    className="MuiButtonBase-root-392 MuiIconButton-root-386 MuiPrivateSwitchBase-root-382 MuiRadio-root-377 MuiRadio-colorSecondary-381 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-392 MuiIconButton-root-386 MuiPrivateSwitchBase-root-382 MuiRadio-root-377 MuiRadio-colorSecondary-381 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -655,10 +655,10 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-371 sc-bZQynM sc-htoDjs hXhOoK"
+                  className="MuiFormControlLabel-root-371 sc-gzVnrw sc-dnqmqq dXXuoR"
                 >
                   <span
-                    className="MuiButtonBase-root-392 MuiIconButton-root-386 MuiPrivateSwitchBase-root-382 MuiRadio-root-377 MuiRadio-colorSecondary-381 MuiPrivateSwitchBase-checked-383 MuiRadio-checked-378 sc-dnqmqq gRTyqV"
+                    className="MuiButtonBase-root-392 MuiIconButton-root-386 MuiPrivateSwitchBase-root-382 MuiRadio-root-377 MuiRadio-colorSecondary-381 MuiPrivateSwitchBase-checked-383 MuiRadio-checked-378 sc-iwsKbI knhzkk"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -780,10 +780,10 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
           style={Object {}}
         >
           <div
-            className="sc-gZMcBi gxJEmF"
+            className="sc-gqjmRU jzMqFE"
           >
             <p
-              className="MuiTypography-root-247 MuiTypography-body1-256 sc-gqjmRU jvManW"
+              className="MuiTypography-root-247 MuiTypography-body1-256 sc-VigVT boCPtg"
             >
               Avez-vous travaillé ?
             </p>
@@ -791,14 +791,14 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
               className="MuiFormControl-root-283"
             >
               <div
-                className="MuiFormGroup-root-287 MuiFormGroup-row-288"
+                className="MuiFormGroup-root-287 MuiFormGroup-row-288 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-289 sc-bZQynM sc-gzVnrw jaklbF"
+                  className="MuiFormControlLabel-root-289 sc-gzVnrw sc-htoDjs fgfKys"
                 >
                   <span
-                    className="MuiButtonBase-root-310 MuiIconButton-root-304 MuiPrivateSwitchBase-root-300 MuiRadio-root-295 MuiRadio-colorSecondary-299 MuiPrivateSwitchBase-checked-301 MuiRadio-checked-296 sc-dnqmqq jKiXcq"
+                    className="MuiButtonBase-root-310 MuiIconButton-root-304 MuiPrivateSwitchBase-root-300 MuiRadio-root-295 MuiRadio-colorSecondary-299 MuiPrivateSwitchBase-checked-301 MuiRadio-checked-296 sc-iwsKbI efnEEv"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -848,10 +848,10 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-289 sc-bZQynM sc-htoDjs efwAhK"
+                  className="MuiFormControlLabel-root-289 sc-gzVnrw sc-dnqmqq jrCanL"
                 >
                   <span
-                    className="MuiButtonBase-root-310 MuiIconButton-root-304 MuiPrivateSwitchBase-root-300 MuiRadio-root-295 MuiRadio-colorSecondary-299 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-310 MuiIconButton-root-304 MuiPrivateSwitchBase-root-300 MuiRadio-root-295 MuiRadio-colorSecondary-299 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -973,10 +973,10 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
           style={Object {}}
         >
           <div
-            className="sc-gZMcBi gxJEmF"
+            className="sc-gqjmRU jzMqFE"
           >
             <p
-              className="MuiTypography-root-83 MuiTypography-body1-92 sc-gqjmRU jvManW"
+              className="MuiTypography-root-83 MuiTypography-body1-92 sc-VigVT boCPtg"
             >
               Avez-vous travaillé ?
             </p>
@@ -984,14 +984,14 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
               className="MuiFormControl-root-119"
             >
               <div
-                className="MuiFormGroup-root-123 MuiFormGroup-row-124"
+                className="MuiFormGroup-root-123 MuiFormGroup-row-124 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-125 sc-bZQynM sc-gzVnrw jaklbF"
+                  className="MuiFormControlLabel-root-125 sc-gzVnrw sc-htoDjs fgfKys"
                 >
                   <span
-                    className="MuiButtonBase-root-146 MuiIconButton-root-140 MuiPrivateSwitchBase-root-136 MuiRadio-root-131 MuiRadio-colorSecondary-135 MuiPrivateSwitchBase-checked-137 MuiRadio-checked-132 sc-dnqmqq jKiXcq"
+                    className="MuiButtonBase-root-146 MuiIconButton-root-140 MuiPrivateSwitchBase-root-136 MuiRadio-root-131 MuiRadio-colorSecondary-135 MuiPrivateSwitchBase-checked-137 MuiRadio-checked-132 sc-iwsKbI efnEEv"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -1041,10 +1041,10 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-125 sc-bZQynM sc-htoDjs efwAhK"
+                  className="MuiFormControlLabel-root-125 sc-gzVnrw sc-dnqmqq jrCanL"
                 >
                   <span
-                    className="MuiButtonBase-root-146 MuiIconButton-root-140 MuiPrivateSwitchBase-root-136 MuiRadio-root-131 MuiRadio-colorSecondary-135 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-146 MuiIconButton-root-140 MuiPrivateSwitchBase-root-136 MuiRadio-root-131 MuiRadio-colorSecondary-135 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -1158,10 +1158,10 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-cvbbAY blktBr"
+          className="sc-jWBwVP cttNjB"
         >
           <li
-            className="MuiListItem-root-411 MuiListItem-default-414 MuiListItem-gutters-419 sc-jWBwVP dmMtpx"
+            className="MuiListItem-root-411 MuiListItem-default-414 MuiListItem-gutters-419 sc-brqgnP cbFQeD"
             disabled={false}
             style={
               Object {
@@ -1195,10 +1195,10 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
               className="MuiFormControl-root-465"
             >
               <div
-                className="sc-gPEVay jnYfgf"
+                className="sc-iRbamj gOXIQQ"
               >
                 <label
-                  className="MuiFormLabel-root-469 sc-brqgnP sc-cMljjf gmiXYV"
+                  className="MuiFormLabel-root-469 sc-cMljjf sc-jAaTju gMmIml"
                 >
                   <input
                     accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
@@ -1222,7 +1222,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                     />
                   </svg>
                   <p
-                    className="MuiFormHelperText-root-485 sc-jDwBTQ hfOpaE"
+                    className="MuiFormHelperText-root-485 sc-gPEVay kVgZxQ"
                   >
                     Document à envoyer
                   </p>
@@ -1257,7 +1257,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
             </div>
           </li>
           <label
-            className="MuiFormLabel-root-469 sc-brqgnP sc-jAaTju krHAXU"
+            className="MuiFormLabel-root-469 sc-cMljjf sc-jDwBTQ ecVNbg"
           />
         </div>
         <div>
@@ -1322,10 +1322,10 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-cvbbAY blktBr"
+          className="sc-jWBwVP cttNjB"
         >
           <li
-            className="MuiListItem-root-530 MuiListItem-default-533 MuiListItem-gutters-538 sc-jWBwVP dmMtpx"
+            className="MuiListItem-root-530 MuiListItem-default-533 MuiListItem-gutters-538 sc-brqgnP cbFQeD"
             disabled={false}
             style={
               Object {
@@ -1359,10 +1359,10 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
               className="MuiFormControl-root-584"
             >
               <div
-                className="sc-gPEVay jnYfgf"
+                className="sc-iRbamj gOXIQQ"
               >
                 <label
-                  className="MuiFormLabel-root-588 sc-brqgnP sc-cMljjf gmiXYV"
+                  className="MuiFormLabel-root-588 sc-cMljjf sc-jAaTju gMmIml"
                 >
                   <input
                     accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
@@ -1386,7 +1386,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                     />
                   </svg>
                   <p
-                    className="MuiFormHelperText-root-604 sc-jDwBTQ hfOpaE"
+                    className="MuiFormHelperText-root-604 sc-gPEVay kVgZxQ"
                   >
                     Document à envoyer
                   </p>
@@ -1421,7 +1421,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
             </div>
           </li>
           <label
-            className="MuiFormLabel-root-588 sc-brqgnP sc-jAaTju krHAXU"
+            className="MuiFormLabel-root-588 sc-cMljjf sc-jDwBTQ ecVNbg"
           />
         </div>
         <div>
@@ -1486,10 +1486,10 @@ exports[`Storyshots DocumentUpload error 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-cvbbAY blktBr"
+          className="sc-jWBwVP cttNjB"
         >
           <li
-            className="MuiListItem-root-834 MuiListItem-default-837 MuiListItem-gutters-842 sc-jWBwVP dmMtpx"
+            className="MuiListItem-root-834 MuiListItem-default-837 MuiListItem-gutters-842 sc-brqgnP cbFQeD"
             disabled={false}
             style={
               Object {
@@ -1523,15 +1523,15 @@ exports[`Storyshots DocumentUpload error 1`] = `
               className="MuiFormControl-root-888"
             >
               <div
-                className="sc-gPEVay jnYfgf"
+                className="sc-iRbamj gOXIQQ"
               >
                 <span
-                  className="MuiTypography-root-852 MuiTypography-caption-862 sc-gipzik iAFArZ"
+                  className="MuiTypography-root-852 MuiTypography-caption-862 sc-csuQGl izxjQp"
                 >
                   Tout est cassé
                 </span>
                 <label
-                  className="MuiFormLabel-root-892 sc-brqgnP sc-cMljjf gmiXYV"
+                  className="MuiFormLabel-root-892 sc-cMljjf sc-jAaTju gMmIml"
                 >
                   <input
                     accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
@@ -1574,7 +1574,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
             </div>
           </li>
           <label
-            className="MuiFormLabel-root-892 sc-brqgnP sc-jAaTju krHAXU"
+            className="MuiFormLabel-root-892 sc-cMljjf sc-jDwBTQ ecVNbg"
           />
         </div>
         <div>
@@ -1639,10 +1639,10 @@ exports[`Storyshots DocumentUpload loading 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-cvbbAY blktBr"
+          className="sc-jWBwVP cttNjB"
         >
           <li
-            className="MuiListItem-root-649 MuiListItem-default-652 MuiListItem-gutters-657 sc-jWBwVP dmMtpx"
+            className="MuiListItem-root-649 MuiListItem-default-652 MuiListItem-gutters-657 sc-brqgnP cbFQeD"
             disabled={false}
             style={
               Object {
@@ -1703,7 +1703,7 @@ exports[`Storyshots DocumentUpload loading 1`] = `
             </div>
           </li>
           <label
-            className="MuiFormLabel-root-717 sc-brqgnP sc-jAaTju krHAXU"
+            className="MuiFormLabel-root-717 sc-cMljjf sc-jDwBTQ ecVNbg"
           />
         </div>
         <div>
@@ -1768,10 +1768,10 @@ exports[`Storyshots DocumentUpload with file 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-cvbbAY blktBr"
+          className="sc-jWBwVP cttNjB"
         >
           <li
-            className="MuiListItem-root-724 MuiListItem-default-727 MuiListItem-gutters-732 sc-jWBwVP dmMtpx"
+            className="MuiListItem-root-724 MuiListItem-default-727 MuiListItem-gutters-732 sc-brqgnP cbFQeD"
             disabled={false}
             style={
               Object {
@@ -1805,7 +1805,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
               className="MuiFormControl-root-778"
             >
               <div
-                className="sc-gPEVay jnYfgf"
+                className="sc-iRbamj gOXIQQ"
               >
                 <a
                   className="MuiButtonBase-root-808 MuiButton-root-782 MuiButton-outlined-790"
@@ -1840,7 +1840,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      className="MuiSvgIcon-root-811 sc-jlyJG ieTkum"
+                      className="MuiSvgIcon-root-811 sc-gipzik bpEGYu"
                       focusable="false"
                       role="presentation"
                       viewBox="0 0 24 24"
@@ -1863,7 +1863,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
             </div>
           </li>
           <label
-            className="MuiFormLabel-root-820 sc-brqgnP sc-jAaTju krHAXU"
+            className="MuiFormLabel-root-820 sc-cMljjf sc-jDwBTQ ecVNbg"
           >
             <input
               accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
@@ -1876,7 +1876,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
               type="file"
             />
             <span
-              className="MuiButtonBase-root-808 MuiButton-root-782 MuiButton-text-784 MuiButton-flat-787 MuiButton-sizeSmall-805 sc-csuQGl kdOLeO"
+              className="MuiButtonBase-root-808 MuiButton-root-782 MuiButton-text-784 MuiButton-flat-787 MuiButton-sizeSmall-805 sc-Rmtcm bQdByw"
               onBlur={[Function]}
               onContextMenu={[Function]}
               onFocus={[Function]}
@@ -1984,16 +1984,16 @@ exports[`Storyshots EmployerQuestion default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-Rmtcm kbfHgk"
+          className="sc-bRBYWo hgVZri"
         >
           <div
-            className="sc-bRBYWo ZtKyd"
+            className="sc-hzDkRC bPITKp"
           >
             <div
-              className="sc-hzDkRC fDxGUP"
+              className="sc-jhAzac kusLQV"
             >
               <div
-                className="MuiFormControl-root-936 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-936 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-951 MuiInputLabel-root-940 MuiInputLabel-formControl-945 MuiInputLabel-animated-948"
@@ -2023,7 +2023,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-936 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-936 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-951 MuiInputLabel-root-940 MuiInputLabel-formControl-945 MuiInputLabel-animated-948"
@@ -2056,7 +2056,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-936 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-936 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-951 MuiInputLabel-root-940 MuiInputLabel-formControl-945 MuiInputLabel-animated-948"
@@ -2090,26 +2090,32 @@ exports[`Storyshots EmployerQuestion default 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root-936 sc-fBuWsC iXKRUG"
+              className="MuiFormControl-root-936 sc-fMiknA ihqHoD"
             >
               <label
-                className="MuiFormLabel-root-951 sc-fMiknA dIRRXB"
+                className="MuiFormLabel-root-951 sc-dVhcbM hWEJWr"
+                style={
+                  Object {
+                    "paddingBottom": "1rem",
+                    "paddingTop": "1rem",
+                  }
+                }
               >
                 Ce contrat se
                 <br />
-                termine-t-il en 
+                termine-t-il en
                 July
-                 ?
+                 ?
               </label>
               <div
-                className="MuiFormGroup-root-988 MuiFormGroup-row-989"
+                className="MuiFormGroup-root-988 MuiFormGroup-row-989 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-990 sc-bZQynM sc-gzVnrw hyzznn"
+                  className="MuiFormControlLabel-root-990 sc-gzVnrw sc-htoDjs loVGZO"
                 >
                   <span
-                    className="MuiButtonBase-root-1011 MuiIconButton-root-1005 MuiPrivateSwitchBase-root-1001 MuiRadio-root-996 MuiRadio-colorSecondary-1000 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-1011 MuiIconButton-root-1005 MuiPrivateSwitchBase-root-1001 MuiRadio-root-996 MuiRadio-colorSecondary-1000 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -2159,10 +2165,10 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-990 sc-bZQynM sc-htoDjs efwAhK"
+                  className="MuiFormControlLabel-root-990 sc-gzVnrw sc-dnqmqq jrCanL"
                 >
                   <span
-                    className="MuiButtonBase-root-1011 MuiIconButton-root-1005 MuiPrivateSwitchBase-root-1001 MuiRadio-root-996 MuiRadio-colorSecondary-1000 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-1011 MuiIconButton-root-1005 MuiPrivateSwitchBase-root-1001 MuiRadio-root-996 MuiRadio-colorSecondary-1000 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -2214,13 +2220,14 @@ exports[`Storyshots EmployerQuestion default 1`] = `
             </div>
           </div>
           <button
-            className="sc-dVhcbM dedRGI"
+            aria-label="Supprimer"
+            className="sc-eqIVtm gQhDeX"
             onClick={[Function]}
             type="button"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1014 sc-eqIVtm hhqJmN"
+              className="MuiSvgIcon-root-1014 sc-fAjcbJ hSibCP"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -2233,17 +2240,6 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 fill="none"
               />
             </svg>
-            <span
-              className="MuiTypography-root-1023 MuiTypography-caption-1033"
-              style={
-                Object {
-                  "color": "black",
-                  "display": "block",
-                }
-              }
-            >
-              Supprimer
-            </span>
           </button>
         </div>
         <div>
@@ -2308,16 +2304,16 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-Rmtcm kbfHgk"
+          className="sc-bRBYWo hgVZri"
         >
           <div
-            className="sc-bRBYWo ZtKyd"
+            className="sc-hzDkRC bPITKp"
           >
             <div
-              className="sc-hzDkRC fDxGUP"
+              className="sc-jhAzac kusLQV"
             >
               <div
-                className="MuiFormControl-root-1066 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-1066 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-1081 MuiFormLabel-filled-1085 MuiInputLabel-root-1070 MuiInputLabel-formControl-1075 MuiInputLabel-animated-1078 MuiInputLabel-shrink-1077"
@@ -2347,7 +2343,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-1066 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-1066 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-1081 MuiFormLabel-filled-1085 MuiInputLabel-root-1070 MuiInputLabel-formControl-1075 MuiInputLabel-animated-1078 MuiInputLabel-shrink-1077"
@@ -2380,7 +2376,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-1066 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-1066 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-1081 MuiFormLabel-filled-1085 MuiInputLabel-root-1070 MuiInputLabel-formControl-1075 MuiInputLabel-animated-1078 MuiInputLabel-shrink-1077"
@@ -2414,26 +2410,32 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root-1066 sc-fBuWsC iXKRUG"
+              className="MuiFormControl-root-1066 sc-fMiknA ihqHoD"
             >
               <label
-                className="MuiFormLabel-root-1081 sc-fMiknA dIRRXB"
+                className="MuiFormLabel-root-1081 sc-dVhcbM hWEJWr"
+                style={
+                  Object {
+                    "paddingBottom": "1rem",
+                    "paddingTop": "1rem",
+                  }
+                }
               >
                 Ce contrat se
                 <br />
-                termine-t-il en 
+                termine-t-il en
                 July
-                 ?
+                 ?
               </label>
               <div
-                className="MuiFormGroup-root-1118 MuiFormGroup-row-1119"
+                className="MuiFormGroup-root-1118 MuiFormGroup-row-1119 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-1120 sc-bZQynM sc-gzVnrw jaklbF"
+                  className="MuiFormControlLabel-root-1120 sc-gzVnrw sc-htoDjs fgfKys"
                 >
                   <span
-                    className="MuiButtonBase-root-1141 MuiIconButton-root-1135 MuiPrivateSwitchBase-root-1131 MuiRadio-root-1126 MuiRadio-colorSecondary-1130 MuiPrivateSwitchBase-checked-1132 MuiRadio-checked-1127 sc-dnqmqq jKiXcq"
+                    className="MuiButtonBase-root-1141 MuiIconButton-root-1135 MuiPrivateSwitchBase-root-1131 MuiRadio-root-1126 MuiRadio-colorSecondary-1130 MuiPrivateSwitchBase-checked-1132 MuiRadio-checked-1127 sc-iwsKbI efnEEv"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -2483,10 +2485,10 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-1120 sc-bZQynM sc-htoDjs efwAhK"
+                  className="MuiFormControlLabel-root-1120 sc-gzVnrw sc-dnqmqq jrCanL"
                 >
                   <span
-                    className="MuiButtonBase-root-1141 MuiIconButton-root-1135 MuiPrivateSwitchBase-root-1131 MuiRadio-root-1126 MuiRadio-colorSecondary-1130 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-1141 MuiIconButton-root-1135 MuiPrivateSwitchBase-root-1131 MuiRadio-root-1126 MuiRadio-colorSecondary-1130 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -2538,13 +2540,14 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
             </div>
           </div>
           <button
-            className="sc-dVhcbM dedRGI"
+            aria-label="Supprimer"
+            className="sc-eqIVtm gQhDeX"
             onClick={[Function]}
             type="button"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1144 sc-eqIVtm hhqJmN"
+              className="MuiSvgIcon-root-1144 sc-fAjcbJ hSibCP"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -2557,17 +2560,6 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 fill="none"
               />
             </svg>
-            <span
-              className="MuiTypography-root-1153 MuiTypography-caption-1163"
-              style={
-                Object {
-                  "color": "black",
-                  "display": "block",
-                }
-              }
-            >
-              Supprimer
-            </span>
           </button>
         </div>
         <div>
@@ -2632,16 +2624,16 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-Rmtcm kbfHgk"
+          className="sc-bRBYWo hgVZri"
         >
           <div
-            className="sc-bRBYWo ZtKyd"
+            className="sc-hzDkRC bPITKp"
           >
             <div
-              className="sc-hzDkRC fDxGUP"
+              className="sc-jhAzac kusLQV"
             >
               <div
-                className="MuiFormControl-root-1196 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-1196 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-1211 MuiFormLabel-error-1214 MuiInputLabel-error-1203 MuiInputLabel-root-1200 MuiInputLabel-formControl-1205 MuiInputLabel-animated-1208"
@@ -2677,7 +2669,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 </p>
               </div>
               <div
-                className="MuiFormControl-root-1196 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-1196 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-1211 MuiFormLabel-error-1214 MuiInputLabel-error-1203 MuiFormLabel-filled-1215 MuiInputLabel-root-1200 MuiInputLabel-formControl-1205 MuiInputLabel-animated-1208 MuiInputLabel-shrink-1207"
@@ -2716,7 +2708,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 </p>
               </div>
               <div
-                className="MuiFormControl-root-1196 sc-jhAzac gQyidi"
+                className="MuiFormControl-root-1196 sc-fBuWsC iOcLGX"
               >
                 <label
                   className="MuiFormLabel-root-1211 MuiFormLabel-error-1214 MuiInputLabel-error-1203 MuiFormLabel-filled-1215 MuiInputLabel-root-1200 MuiInputLabel-formControl-1205 MuiInputLabel-animated-1208 MuiInputLabel-shrink-1207"
@@ -2756,16 +2748,22 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root-1196 sc-fBuWsC iXKRUG"
+              className="MuiFormControl-root-1196 sc-fMiknA ihqHoD"
             >
               <label
-                className="MuiFormLabel-root-1211 sc-fMiknA dIRRXB"
+                className="MuiFormLabel-root-1211 sc-dVhcbM hWEJWr"
+                style={
+                  Object {
+                    "paddingBottom": "1rem",
+                    "paddingTop": "1rem",
+                  }
+                }
               >
                 Ce contrat se
                 <br />
-                termine-t-il en 
+                termine-t-il en
                 July
-                 ?
+                 ?
                 <p
                   className="MuiFormHelperText-root-1248 MuiFormHelperText-error-1249"
                 >
@@ -2773,14 +2771,14 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 </p>
               </label>
               <div
-                className="MuiFormGroup-root-1256 MuiFormGroup-row-1257"
+                className="MuiFormGroup-root-1256 MuiFormGroup-row-1257 sc-bZQynM gDYBnz"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-1258 sc-bZQynM sc-gzVnrw hyzznn"
+                  className="MuiFormControlLabel-root-1258 sc-gzVnrw sc-htoDjs loVGZO"
                 >
                   <span
-                    className="MuiButtonBase-root-1279 MuiIconButton-root-1273 MuiPrivateSwitchBase-root-1269 MuiRadio-root-1264 MuiRadio-colorSecondary-1268 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-1279 MuiIconButton-root-1273 MuiPrivateSwitchBase-root-1269 MuiRadio-root-1264 MuiRadio-colorSecondary-1268 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -2830,10 +2828,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-1258 sc-bZQynM sc-htoDjs efwAhK"
+                  className="MuiFormControlLabel-root-1258 sc-gzVnrw sc-dnqmqq jrCanL"
                 >
                   <span
-                    className="MuiButtonBase-root-1279 MuiIconButton-root-1273 MuiPrivateSwitchBase-root-1269 MuiRadio-root-1264 MuiRadio-colorSecondary-1268 sc-dnqmqq iCyCOc"
+                    className="MuiButtonBase-root-1279 MuiIconButton-root-1273 MuiPrivateSwitchBase-root-1269 MuiRadio-root-1264 MuiRadio-colorSecondary-1268 sc-iwsKbI gEjSRn"
                     onBlur={[Function]}
                     onContextMenu={[Function]}
                     onFocus={[Function]}
@@ -2885,13 +2883,14 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
             </div>
           </div>
           <button
-            className="sc-dVhcbM dedRGI"
+            aria-label="Supprimer"
+            className="sc-eqIVtm gQhDeX"
             onClick={[Function]}
             type="button"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1282 sc-eqIVtm hhqJmN"
+              className="MuiSvgIcon-root-1282 sc-fAjcbJ hSibCP"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -2904,17 +2903,6 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 fill="none"
               />
             </svg>
-            <span
-              className="MuiTypography-root-1291 MuiTypography-caption-1301"
-              style={
-                Object {
-                  "color": "black",
-                  "display": "block",
-                }
-              }
-            >
-              Supprimer
-            </span>
           </button>
         </div>
         <div>
@@ -3322,17 +3310,17 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 
 exports[`Storyshots Home default 1`] = `
 <div
-  className="sc-frDJqD dcIHQW"
+  className="sc-kvZOFW bZIeuY"
 >
   <header
-    className="sc-hqyNC brQMmh"
+    className="sc-jbKcbu fbUBvv"
     role="banner"
   >
     <header
-      className="sc-jbKcbu lhuinw"
+      className="sc-dNLxif iNMBlG"
     >
       <div
-        className="MuiTypography-root-1567 MuiTypography-h4-1582 sc-hmzhuo elTOQV"
+        className="MuiTypography-root-1567 MuiTypography-h4-1582 sc-frDJqD kAnPzY"
       >
         zen
         <span
@@ -3362,16 +3350,16 @@ exports[`Storyshots Home default 1`] = `
     role="main"
   >
     <section
-      className="sc-dNLxif bUWoji"
+      className="sc-jqCOkK emtyCV"
     >
       <div
-        className="sc-jqCOkK qkHsc"
+        className="sc-uJMKN cFPXfB"
       >
         <div
-          className="sc-uJMKN cECpMK"
+          className="sc-bbmXgH bwEpqz"
         >
           <h1
-            className="MuiTypography-root-1567 MuiTypography-h4-1582 MuiTypography-paragraph-1595 sc-bbmXgH kxcHQA"
+            className="MuiTypography-root-1567 MuiTypography-h4-1582 MuiTypography-paragraph-1595 sc-gGBfsJ dnHPYj"
             style={
               Object {
                 "fontWeight": "bold",
@@ -3388,14 +3376,14 @@ exports[`Storyshots Home default 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1567 MuiTypography-h6-1584 MuiTypography-paragraph-1595 sc-gGBfsJ eaQlFN"
+            className="MuiTypography-root-1567 MuiTypography-h6-1584 MuiTypography-paragraph-1595 sc-jnlKLf jKMWma"
           >
             Zen vous propose une actualisation
             <br />
             et un envoi de documents simplifiés.
           </h2>
           <a
-            className="MuiButtonBase-root-1629 MuiButton-root-1603 MuiButton-contained-1614 MuiButton-containedPrimary-1615 MuiButton-raised-1617 MuiButton-raisedPrimary-1618 sc-jnlKLf gixFiQ"
+            className="MuiButtonBase-root-1629 MuiButton-root-1603 MuiButton-contained-1614 MuiButton-containedPrimary-1615 MuiButton-raised-1617 MuiButton-raisedPrimary-1618 sc-fYxtnH hZSPPj"
             href="/api/login"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -3422,7 +3410,7 @@ exports[`Storyshots Home default 1`] = `
           </a>
         </div>
         <button
-          className="sc-TOsTZ gDDugD"
+          className="sc-kgAjT jtjPpV"
           onClick={[Function]}
           style={
             Object {
@@ -3473,7 +3461,7 @@ exports[`Storyshots Home default 1`] = `
       </div>
     </section>
     <section
-      className="sc-tilXH jMVAVb"
+      className="sc-hEsumM epeevU"
       style={
         Object {
           "alignItems": "center",
@@ -3499,43 +3487,43 @@ exports[`Storyshots Home default 1`] = `
         }
       />
       <h2
-        className="MuiTypography-root-1567 MuiTypography-h5-1583 sc-hEsumM doXLhg"
+        className="MuiTypography-root-1567 MuiTypography-h5-1583 sc-ktHwxA bMFDWy"
       >
         En quelques clics seulement !
       </h2>
       <ul
-        className="sc-btzYZH fJugqv"
+        className="sc-lhVmIH bXbWvC"
       >
         <li
-          className="sc-lhVmIH AwoOe"
+          className="sc-bYSBpT lnpJqn"
         >
           <img
             alt=""
-            className="sc-bYSBpT jSVuBG"
+            className="sc-elJkPf gSJHTb"
             src="step1.svg"
           />
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-elJkPf rfQrC"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-jtRfpW dNrpE"
           >
             Zen additionne pour vous
             <br />
-            vos heures travaillées et totalise 
+            vos heures travaillées et totalise
             <br />
             vos revenus mensuels !
           </p>
         </li>
         <li
-          className="sc-lhVmIH AwoOe"
+          className="sc-bYSBpT lnpJqn"
         >
           <img
             alt=""
-            className="sc-bYSBpT jSVuBG"
+            className="sc-elJkPf gSJHTb"
             src="step2.svg"
           />
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-elJkPf rfQrC"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-jtRfpW dNrpE"
           >
-            Zen vous indique 
+            Zen vous indique
             <br />
             les justificatifs à transmettre selon
             <br />
@@ -3543,15 +3531,15 @@ exports[`Storyshots Home default 1`] = `
           </p>
         </li>
         <li
-          className="sc-lhVmIH AwoOe"
+          className="sc-bYSBpT lnpJqn"
         >
           <img
             alt=""
-            className="sc-bYSBpT jSVuBG"
+            className="sc-elJkPf gSJHTb"
             src="step3.svg"
           />
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-elJkPf rfQrC"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-jtRfpW dNrpE"
           >
             Accédez à un espace personnel
             <br />
@@ -3563,26 +3551,26 @@ exports[`Storyshots Home default 1`] = `
       </ul>
     </section>
     <section
-      className="sc-tilXH jMVAVb"
+      className="sc-hEsumM epeevU"
     >
       <div
-        className="sc-ktHwxA eDHBBb"
+        className="sc-cIShpX eDMGFC"
       >
         <h2
-          className="sc-kafWEX ktFRef"
+          className="sc-feJyhm kcmuAP"
         >
           En résumé
         </h2>
         <div
-          className="sc-feJyhm fWXzEY"
+          className="sc-iELTvK gJrVZs"
         >
           <div
-            className="MuiTypography-root-1567 MuiTypography-h2-1580 MuiTypography-colorPrimary-1597 sc-cmTdod kBdgbt"
+            className="MuiTypography-root-1567 MuiTypography-h2-1580 MuiTypography-colorPrimary-1597 sc-jwKygS goYkvI"
           >
             1
           </div>
           <h3
-            className="MuiTypography-root-1567 MuiTypography-h5-1583 MuiTypography-colorSecondary-1598 sc-hEsumM sc-iELTvK gUJPXx"
+            className="MuiTypography-root-1567 MuiTypography-h5-1583 MuiTypography-colorSecondary-1598 sc-ktHwxA sc-cmTdod jTVaVQ"
           >
             Je suis informé(e) tous les mois du début de l'actualisation
           </h3>
@@ -3594,23 +3582,23 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jwKygS gAHcoW"
+          className="sc-btzYZH bhBnXn"
           src="photo1.jpg"
         />
       </div>
       <div
-        className="sc-ktHwxA sc-cIShpX blMNWe"
+        className="sc-cIShpX sc-kafWEX htfEsP"
       >
         <div
-          className="sc-feJyhm fWXzEY"
+          className="sc-iELTvK gJrVZs"
         >
           <div
-            className="MuiTypography-root-1567 MuiTypography-h2-1580 MuiTypography-colorPrimary-1597 sc-cmTdod kBdgbt"
+            className="MuiTypography-root-1567 MuiTypography-h2-1580 MuiTypography-colorPrimary-1597 sc-jwKygS goYkvI"
           >
             2
           </div>
           <h3
-            className="MuiTypography-root-1567 MuiTypography-h5-1583 MuiTypography-colorSecondary-1598 sc-hEsumM sc-iELTvK gUJPXx"
+            className="MuiTypography-root-1567 MuiTypography-h5-1583 MuiTypography-colorSecondary-1598 sc-ktHwxA sc-cmTdod jTVaVQ"
           >
             Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
           </h3>
@@ -3622,23 +3610,23 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jwKygS gAHcoW"
+          className="sc-btzYZH bhBnXn"
           src="photo2.jpg"
         />
       </div>
       <div
-        className="sc-ktHwxA eDHBBb"
+        className="sc-cIShpX eDMGFC"
       >
         <div
-          className="sc-feJyhm fWXzEY"
+          className="sc-iELTvK gJrVZs"
         >
           <div
-            className="MuiTypography-root-1567 MuiTypography-h2-1580 MuiTypography-colorPrimary-1597 sc-cmTdod kBdgbt"
+            className="MuiTypography-root-1567 MuiTypography-h2-1580 MuiTypography-colorPrimary-1597 sc-jwKygS goYkvI"
           >
             3
           </div>
           <h3
-            className="MuiTypography-root-1567 MuiTypography-h5-1583 MuiTypography-colorSecondary-1598 sc-hEsumM sc-iELTvK gUJPXx"
+            className="MuiTypography-root-1567 MuiTypography-h5-1583 MuiTypography-colorSecondary-1598 sc-ktHwxA sc-cmTdod jTVaVQ"
           >
             J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
           </h3>
@@ -3650,17 +3638,17 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jwKygS gAHcoW"
+          className="sc-btzYZH bhBnXn"
           src="photo3.jpg"
         />
       </div>
     </section>
     <section
-      className="sc-dfVpRl fzNNDq"
+      className="sc-gzOgki ePjvPt"
       style={Object {}}
     >
       <h2
-        className="MuiTypography-root-1567 MuiTypography-h5-1583 sc-hEsumM doXLhg"
+        className="MuiTypography-root-1567 MuiTypography-h5-1583 sc-ktHwxA bMFDWy"
         style={
           Object {
             "color": "#fff",
@@ -3677,18 +3665,18 @@ exports[`Storyshots Home default 1`] = `
           }
         }
       >
-        Zen est un service innovant de Pôle Emploi pour faciliter 
+        Zen est un service innovant de Pôle Emploi pour faciliter
         <br />
         l'actualisation. Il est dédié aux personnes ayant plusieurs employeurs.
         <br />
         <b>
-          Ce service est actuellement disponible pour 
+          Ce service est actuellement disponible pour
           <br />
           les assistantes maternelles en Hauts-de-France.
         </b>
       </p>
       <a
-        className="MuiButtonBase-root-1629 MuiButton-root-1603 MuiButton-contained-1614 MuiButton-containedPrimary-1615 MuiButton-raised-1617 MuiButton-raisedPrimary-1618 sc-jnlKLf sc-fYxtnH fEckzN"
+        className="MuiButtonBase-root-1629 MuiButton-root-1603 MuiButton-contained-1614 MuiButton-containedPrimary-1615 MuiButton-raised-1617 MuiButton-raisedPrimary-1618 sc-fYxtnH sc-tilXH gzYaTk"
         href="/api/login"
         onBlur={[Function]}
         onContextMenu={[Function]}
@@ -3715,7 +3703,7 @@ exports[`Storyshots Home default 1`] = `
       </a>
     </section>
     <section
-      className="sc-tilXH jMVAVb"
+      className="sc-hEsumM epeevU"
       style={
         Object {
           "padding": "5rem",
@@ -3724,18 +3712,18 @@ exports[`Storyshots Home default 1`] = `
       }
     >
       <h2
-        className="MuiTypography-root-1567 MuiTypography-h5-1583 sc-hEsumM doXLhg"
+        className="MuiTypography-root-1567 MuiTypography-h5-1583 sc-ktHwxA bMFDWy"
       >
         Nos utilisateurs approuvent !
       </h2>
       <div
-        className="sc-jtRfpW hpYhFY"
+        className="sc-kTUwUJ hwyuVR"
       >
         <div
-          className="sc-kTUwUJ icfsdr"
+          className="sc-dqBHgY hLciRZ"
         >
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 MuiTypography-colorSecondary-1598 sc-dqBHgY dkTMjg"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 MuiTypography-colorSecondary-1598 sc-gxMtzJ fzYRBE"
           >
             <b>
               Déborah - Lille
@@ -3744,16 +3732,16 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-gxMtzJ kLFfvI"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-dfVpRl iTthma"
           >
             « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
           </p>
         </div>
         <div
-          className="sc-kTUwUJ icfsdr"
+          className="sc-dqBHgY hLciRZ"
         >
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 MuiTypography-colorSecondary-1598 sc-dqBHgY dkTMjg"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 MuiTypography-colorSecondary-1598 sc-gxMtzJ fzYRBE"
           >
             <b>
               Sophie - Condette
@@ -3762,16 +3750,16 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-gxMtzJ kLFfvI"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-dfVpRl iTthma"
           >
             « Plus simple vu le nombre d'employeurs. Belle innovation »
           </p>
         </div>
         <div
-          className="sc-kTUwUJ icfsdr"
+          className="sc-dqBHgY hLciRZ"
         >
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 MuiTypography-colorSecondary-1598 sc-dqBHgY dkTMjg"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 MuiTypography-colorSecondary-1598 sc-gxMtzJ fzYRBE"
           >
             <b>
               Fatima - Amiens
@@ -3780,7 +3768,7 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-gxMtzJ kLFfvI"
+            className="MuiTypography-root-1567 MuiTypography-body1-1576 sc-dfVpRl iTthma"
           >
             « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
           </p>
@@ -3789,11 +3777,11 @@ exports[`Storyshots Home default 1`] = `
     </section>
   </main>
   <footer
-    className="sc-gzOgki kqTIWj"
+    className="sc-iyvyFf gOWEEd"
     role="contentinfo"
   >
     <div
-      className="MuiTypography-root-1567 MuiTypography-h4-1582 sc-hmzhuo elTOQV"
+      className="MuiTypography-root-1567 MuiTypography-h4-1582 sc-frDJqD kAnPzY"
       style={
         Object {
           "color": "#fff",
@@ -3830,10 +3818,10 @@ exports[`Storyshots Home default 1`] = `
 
 exports[`Storyshots Home loginFailed 1`] = `
 <div
-  className="sc-frDJqD dcIHQW"
+  className="sc-kvZOFW bZIeuY"
 >
   <div
-    className="sc-kvZOFW eRglpa"
+    className="sc-hqyNC TculT"
   >
     <p
       className="MuiTypography-root-1639 MuiTypography-body1-1648"
@@ -3844,14 +3832,14 @@ exports[`Storyshots Home loginFailed 1`] = `
     </p>
   </div>
   <header
-    className="sc-hqyNC brQMmh"
+    className="sc-jbKcbu fbUBvv"
     role="banner"
   >
     <header
-      className="sc-jbKcbu lhuinw"
+      className="sc-dNLxif iNMBlG"
     >
       <div
-        className="MuiTypography-root-1639 MuiTypography-h4-1654 sc-hmzhuo elTOQV"
+        className="MuiTypography-root-1639 MuiTypography-h4-1654 sc-frDJqD kAnPzY"
       >
         zen
         <span
@@ -3881,16 +3869,16 @@ exports[`Storyshots Home loginFailed 1`] = `
     role="main"
   >
     <section
-      className="sc-dNLxif bUWoji"
+      className="sc-jqCOkK emtyCV"
     >
       <div
-        className="sc-jqCOkK qkHsc"
+        className="sc-uJMKN cFPXfB"
       >
         <div
-          className="sc-uJMKN cECpMK"
+          className="sc-bbmXgH bwEpqz"
         >
           <h1
-            className="MuiTypography-root-1639 MuiTypography-h4-1654 MuiTypography-paragraph-1667 sc-bbmXgH kxcHQA"
+            className="MuiTypography-root-1639 MuiTypography-h4-1654 MuiTypography-paragraph-1667 sc-gGBfsJ dnHPYj"
             style={
               Object {
                 "fontWeight": "bold",
@@ -3907,14 +3895,14 @@ exports[`Storyshots Home loginFailed 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1639 MuiTypography-h6-1656 MuiTypography-paragraph-1667 sc-gGBfsJ eaQlFN"
+            className="MuiTypography-root-1639 MuiTypography-h6-1656 MuiTypography-paragraph-1667 sc-jnlKLf jKMWma"
           >
             Zen vous propose une actualisation
             <br />
             et un envoi de documents simplifiés.
           </h2>
           <a
-            className="MuiButtonBase-root-1701 MuiButton-root-1675 MuiButton-contained-1686 MuiButton-containedPrimary-1687 MuiButton-raised-1689 MuiButton-raisedPrimary-1690 sc-jnlKLf gixFiQ"
+            className="MuiButtonBase-root-1701 MuiButton-root-1675 MuiButton-contained-1686 MuiButton-containedPrimary-1687 MuiButton-raised-1689 MuiButton-raisedPrimary-1690 sc-fYxtnH hZSPPj"
             href="/api/login"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -3941,7 +3929,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </a>
         </div>
         <button
-          className="sc-TOsTZ gDDugD"
+          className="sc-kgAjT jtjPpV"
           onClick={[Function]}
           style={
             Object {
@@ -3992,7 +3980,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
     </section>
     <section
-      className="sc-tilXH jMVAVb"
+      className="sc-hEsumM epeevU"
       style={
         Object {
           "alignItems": "center",
@@ -4018,43 +4006,43 @@ exports[`Storyshots Home loginFailed 1`] = `
         }
       />
       <h2
-        className="MuiTypography-root-1639 MuiTypography-h5-1655 sc-hEsumM doXLhg"
+        className="MuiTypography-root-1639 MuiTypography-h5-1655 sc-ktHwxA bMFDWy"
       >
         En quelques clics seulement !
       </h2>
       <ul
-        className="sc-btzYZH fJugqv"
+        className="sc-lhVmIH bXbWvC"
       >
         <li
-          className="sc-lhVmIH AwoOe"
+          className="sc-bYSBpT lnpJqn"
         >
           <img
             alt=""
-            className="sc-bYSBpT jSVuBG"
+            className="sc-elJkPf gSJHTb"
             src="step1.svg"
           />
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-elJkPf rfQrC"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-jtRfpW dNrpE"
           >
             Zen additionne pour vous
             <br />
-            vos heures travaillées et totalise 
+            vos heures travaillées et totalise
             <br />
             vos revenus mensuels !
           </p>
         </li>
         <li
-          className="sc-lhVmIH AwoOe"
+          className="sc-bYSBpT lnpJqn"
         >
           <img
             alt=""
-            className="sc-bYSBpT jSVuBG"
+            className="sc-elJkPf gSJHTb"
             src="step2.svg"
           />
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-elJkPf rfQrC"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-jtRfpW dNrpE"
           >
-            Zen vous indique 
+            Zen vous indique
             <br />
             les justificatifs à transmettre selon
             <br />
@@ -4062,15 +4050,15 @@ exports[`Storyshots Home loginFailed 1`] = `
           </p>
         </li>
         <li
-          className="sc-lhVmIH AwoOe"
+          className="sc-bYSBpT lnpJqn"
         >
           <img
             alt=""
-            className="sc-bYSBpT jSVuBG"
+            className="sc-elJkPf gSJHTb"
             src="step3.svg"
           />
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-elJkPf rfQrC"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-jtRfpW dNrpE"
           >
             Accédez à un espace personnel
             <br />
@@ -4082,26 +4070,26 @@ exports[`Storyshots Home loginFailed 1`] = `
       </ul>
     </section>
     <section
-      className="sc-tilXH jMVAVb"
+      className="sc-hEsumM epeevU"
     >
       <div
-        className="sc-ktHwxA eDHBBb"
+        className="sc-cIShpX eDMGFC"
       >
         <h2
-          className="sc-kafWEX ktFRef"
+          className="sc-feJyhm kcmuAP"
         >
           En résumé
         </h2>
         <div
-          className="sc-feJyhm fWXzEY"
+          className="sc-iELTvK gJrVZs"
         >
           <div
-            className="MuiTypography-root-1639 MuiTypography-h2-1652 MuiTypography-colorPrimary-1669 sc-cmTdod kBdgbt"
+            className="MuiTypography-root-1639 MuiTypography-h2-1652 MuiTypography-colorPrimary-1669 sc-jwKygS goYkvI"
           >
             1
           </div>
           <h3
-            className="MuiTypography-root-1639 MuiTypography-h5-1655 MuiTypography-colorSecondary-1670 sc-hEsumM sc-iELTvK gUJPXx"
+            className="MuiTypography-root-1639 MuiTypography-h5-1655 MuiTypography-colorSecondary-1670 sc-ktHwxA sc-cmTdod jTVaVQ"
           >
             Je suis informé(e) tous les mois du début de l'actualisation
           </h3>
@@ -4113,23 +4101,23 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jwKygS gAHcoW"
+          className="sc-btzYZH bhBnXn"
           src="photo1.jpg"
         />
       </div>
       <div
-        className="sc-ktHwxA sc-cIShpX blMNWe"
+        className="sc-cIShpX sc-kafWEX htfEsP"
       >
         <div
-          className="sc-feJyhm fWXzEY"
+          className="sc-iELTvK gJrVZs"
         >
           <div
-            className="MuiTypography-root-1639 MuiTypography-h2-1652 MuiTypography-colorPrimary-1669 sc-cmTdod kBdgbt"
+            className="MuiTypography-root-1639 MuiTypography-h2-1652 MuiTypography-colorPrimary-1669 sc-jwKygS goYkvI"
           >
             2
           </div>
           <h3
-            className="MuiTypography-root-1639 MuiTypography-h5-1655 MuiTypography-colorSecondary-1670 sc-hEsumM sc-iELTvK gUJPXx"
+            className="MuiTypography-root-1639 MuiTypography-h5-1655 MuiTypography-colorSecondary-1670 sc-ktHwxA sc-cmTdod jTVaVQ"
           >
             Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
           </h3>
@@ -4141,23 +4129,23 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jwKygS gAHcoW"
+          className="sc-btzYZH bhBnXn"
           src="photo2.jpg"
         />
       </div>
       <div
-        className="sc-ktHwxA eDHBBb"
+        className="sc-cIShpX eDMGFC"
       >
         <div
-          className="sc-feJyhm fWXzEY"
+          className="sc-iELTvK gJrVZs"
         >
           <div
-            className="MuiTypography-root-1639 MuiTypography-h2-1652 MuiTypography-colorPrimary-1669 sc-cmTdod kBdgbt"
+            className="MuiTypography-root-1639 MuiTypography-h2-1652 MuiTypography-colorPrimary-1669 sc-jwKygS goYkvI"
           >
             3
           </div>
           <h3
-            className="MuiTypography-root-1639 MuiTypography-h5-1655 MuiTypography-colorSecondary-1670 sc-hEsumM sc-iELTvK gUJPXx"
+            className="MuiTypography-root-1639 MuiTypography-h5-1655 MuiTypography-colorSecondary-1670 sc-ktHwxA sc-cmTdod jTVaVQ"
           >
             J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
           </h3>
@@ -4169,17 +4157,17 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jwKygS gAHcoW"
+          className="sc-btzYZH bhBnXn"
           src="photo3.jpg"
         />
       </div>
     </section>
     <section
-      className="sc-dfVpRl fzNNDq"
+      className="sc-gzOgki ePjvPt"
       style={Object {}}
     >
       <h2
-        className="MuiTypography-root-1639 MuiTypography-h5-1655 sc-hEsumM doXLhg"
+        className="MuiTypography-root-1639 MuiTypography-h5-1655 sc-ktHwxA bMFDWy"
         style={
           Object {
             "color": "#fff",
@@ -4196,18 +4184,18 @@ exports[`Storyshots Home loginFailed 1`] = `
           }
         }
       >
-        Zen est un service innovant de Pôle Emploi pour faciliter 
+        Zen est un service innovant de Pôle Emploi pour faciliter
         <br />
         l'actualisation. Il est dédié aux personnes ayant plusieurs employeurs.
         <br />
         <b>
-          Ce service est actuellement disponible pour 
+          Ce service est actuellement disponible pour
           <br />
           les assistantes maternelles en Hauts-de-France.
         </b>
       </p>
       <a
-        className="MuiButtonBase-root-1701 MuiButton-root-1675 MuiButton-contained-1686 MuiButton-containedPrimary-1687 MuiButton-raised-1689 MuiButton-raisedPrimary-1690 sc-jnlKLf sc-fYxtnH fEckzN"
+        className="MuiButtonBase-root-1701 MuiButton-root-1675 MuiButton-contained-1686 MuiButton-containedPrimary-1687 MuiButton-raised-1689 MuiButton-raisedPrimary-1690 sc-fYxtnH sc-tilXH gzYaTk"
         href="/api/login"
         onBlur={[Function]}
         onContextMenu={[Function]}
@@ -4234,7 +4222,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </a>
     </section>
     <section
-      className="sc-tilXH jMVAVb"
+      className="sc-hEsumM epeevU"
       style={
         Object {
           "padding": "5rem",
@@ -4243,18 +4231,18 @@ exports[`Storyshots Home loginFailed 1`] = `
       }
     >
       <h2
-        className="MuiTypography-root-1639 MuiTypography-h5-1655 sc-hEsumM doXLhg"
+        className="MuiTypography-root-1639 MuiTypography-h5-1655 sc-ktHwxA bMFDWy"
       >
         Nos utilisateurs approuvent !
       </h2>
       <div
-        className="sc-jtRfpW hpYhFY"
+        className="sc-kTUwUJ hwyuVR"
       >
         <div
-          className="sc-kTUwUJ icfsdr"
+          className="sc-dqBHgY hLciRZ"
         >
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 MuiTypography-colorSecondary-1670 sc-dqBHgY dkTMjg"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 MuiTypography-colorSecondary-1670 sc-gxMtzJ fzYRBE"
           >
             <b>
               Déborah - Lille
@@ -4263,16 +4251,16 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-gxMtzJ kLFfvI"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-dfVpRl iTthma"
           >
             « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
           </p>
         </div>
         <div
-          className="sc-kTUwUJ icfsdr"
+          className="sc-dqBHgY hLciRZ"
         >
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 MuiTypography-colorSecondary-1670 sc-dqBHgY dkTMjg"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 MuiTypography-colorSecondary-1670 sc-gxMtzJ fzYRBE"
           >
             <b>
               Sophie - Condette
@@ -4281,16 +4269,16 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-gxMtzJ kLFfvI"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-dfVpRl iTthma"
           >
             « Plus simple vu le nombre d'employeurs. Belle innovation »
           </p>
         </div>
         <div
-          className="sc-kTUwUJ icfsdr"
+          className="sc-dqBHgY hLciRZ"
         >
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 MuiTypography-colorSecondary-1670 sc-dqBHgY dkTMjg"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 MuiTypography-colorSecondary-1670 sc-gxMtzJ fzYRBE"
           >
             <b>
               Fatima - Amiens
@@ -4299,7 +4287,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-gxMtzJ kLFfvI"
+            className="MuiTypography-root-1639 MuiTypography-body1-1648 sc-dfVpRl iTthma"
           >
             « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
           </p>
@@ -4308,11 +4296,11 @@ exports[`Storyshots Home loginFailed 1`] = `
     </section>
   </main>
   <footer
-    className="sc-gzOgki kqTIWj"
+    className="sc-iyvyFf gOWEEd"
     role="contentinfo"
   >
     <div
-      className="MuiTypography-root-1639 MuiTypography-h4-1654 sc-hmzhuo elTOQV"
+      className="MuiTypography-root-1639 MuiTypography-h4-1654 sc-frDJqD kAnPzY"
       style={
         Object {
           "color": "#fff",
@@ -4503,18 +4491,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-kgAjT kIyaHj"
+          className="sc-cJSrbW fFAxca"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-cJSrbW iRfHEX"
+            className="sc-ksYbfQ RANBz"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-ksYbfQ lcUUth"
+            className="sc-hmzhuo bCchK"
           >
             Se connecter avec pôle emploi
           </span>
@@ -4581,18 +4569,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-kgAjT bQFldO"
+          className="sc-cJSrbW gvJwXe"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-cJSrbW iRfHEX"
+            className="sc-ksYbfQ RANBz"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-ksYbfQ lcUUth"
+            className="sc-hmzhuo bCchK"
           >
             Se connecter avec pôle emploi
           </span>
@@ -4659,7 +4647,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-VigVT ieFjWD"
+          className="sc-jTzLTM hJnmTo"
         >
           <p
             className="MuiTypography-root-1334 MuiTypography-body2-1342"
@@ -4667,10 +4655,10 @@ exports[`Storyshots UserJobCheck default 1`] = `
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
           <div
-            className="sc-jTzLTM exbSWw"
+            className="sc-fjdhpX doQiGI"
           >
             <button
-              className="MuiButtonBase-root-1396 MuiButton-root-1370 MuiButton-contained-1381 MuiButton-containedPrimary-1382 MuiButton-raised-1384 MuiButton-raisedPrimary-1385 MuiButton-sizeLarge-1394 sc-bxivhb sc-jzJRlG giopXU sc-ifAKCX iBcXwT"
+              className="MuiButtonBase-root-1396 MuiButton-root-1370 MuiButton-contained-1381 MuiButton-containedPrimary-1382 MuiButton-raised-1384 MuiButton-raisedPrimary-1385 MuiButton-sizeLarge-1394 sc-bxivhb sc-cSHVUG cDeIOI sc-ifAKCX iBcXwT"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4693,7 +4681,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden="true"
-                  className="MuiSvgIcon-root-1399 sc-fjdhpX iUcPUh"
+                  className="MuiSvgIcon-root-1399 sc-jzJRlG dmvBMa"
                   focusable="false"
                   role="presentation"
                   viewBox="0 0 24 24"
@@ -4775,7 +4763,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
         data-css-1v8lkxq=""
       >
         <button
-          className="sc-TOsTZ gDDugD"
+          className="sc-kgAjT jtjPpV"
           onClick={[Function]}
           style={
             Object {

@@ -72,7 +72,8 @@ const StyledList = styled(List)`
     padding: 0;
   }
   & > *:nth-child(2n) {
-    background: #e7ebf2;
+    /* primary color with 10% opacity */
+    background: rgba(0, 101, 219, 0.1);
   }
 `
 

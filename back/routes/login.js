@@ -13,26 +13,11 @@ const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionCo
 const winston = require('../lib/log')
 const { request } = require('../lib/resilientRequest')
 
-const { clientId, clientSecret, redirectUri, tokenHost, apiHost } = config
+const { clientId, redirectUri, tokenHost, apiHost } = config
 const { DECLARATION_STATUSES } = require('../constants')
+const { credentials } = require('../lib/token')
 
 const realm = '/individu'
-
-const credentials = {
-  client: {
-    id: clientId,
-    secret: clientSecret,
-  },
-  auth: {
-    tokenHost,
-    tokenPath: '/connexion/oauth2/access_token?realm=%2Findividu',
-    authorizePath: '/connexion/oauth2/authorize',
-  },
-  options: {
-    bodyFormat: 'form',
-    authorizationMethod: 'body',
-  },
-}
 
 // eslint-disable-next-line import/order
 const oauth2 = require('simple-oauth2').create(credentials)
@@ -93,6 +78,7 @@ router.get('/callback', (req, res) => {
 
       req.session.userSecret = {
         accessToken: authToken.token.access_token,
+        refreshToken: authToken.token.refresh_token,
         idToken: authToken.token.id_token,
       }
 

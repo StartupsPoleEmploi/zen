@@ -15,9 +15,10 @@ const {
   hasMissingDeclarationDocuments,
 } = require('../lib/declaration')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
+const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
 const { sendDocuments } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
-const isUserTokenValid = require('../lib/isUserTokenValid')
+const { isUserTokenValid } = require('../lib/token')
 const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
@@ -138,7 +139,7 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/', requireActiveMonth, (req, res, next) => {
+router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
   const declarationData = omit(
     {
       // prevent malicious overriding of other user declaration
@@ -450,7 +451,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
  */
 const busyDeclarations = []
 
-router.post('/finish', (req, res, next) => {
+router.post('/finish', refreshAccessToken, (req, res, next) => {
   if (!isUserTokenValid(req.user.tokenExpirationDate)) {
     return res.status(401).json('Expired token')
   }

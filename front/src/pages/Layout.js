@@ -2,6 +2,8 @@ import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
 
@@ -43,6 +45,10 @@ const StyledLayout = styled.div`
 const Header = styled.header`
   display: flex;
   justify-content: flex-end;
+
+  @media (max-width: ${breakpoint}) {
+    justify-content: space-between;
+  }
 `
 
 const UserButton = styled(Button)`
@@ -60,6 +66,12 @@ const UserButton = styled(Button)`
 
     &:hover {
       background-color: ${primaryBlue};
+    }
+
+    @media (max-width: ${breakpoint}) {
+      margin-bottom: 0;
+      padding: 1.5rem;
+      padding-left: 6rem;
     }
   }
 `
@@ -81,6 +93,15 @@ const Main = styled.main`
   flex-grow: 1;
 `
 
+const StyledTabs = styled(Tabs).attrs({ component: 'nav' })`
+  && {
+    /* Get the active tab indicator */
+    & div[role='tablist'] > span {
+      height: 0.3rem;
+    }
+  }
+`
+
 const Nav = styled.nav`
   flex-shrink: 0;
   width: 25rem;
@@ -92,6 +113,11 @@ const AppTitleContainer = styled.div`
   text-align: center;
   border-bottom: 1px #ddd solid;
   padding: 2rem;
+`
+
+const AppTitleMobileContainer = styled.div`
+  padding-left: 2rem;
+  padding-top: 0.5rem;
 `
 
 const UlStepper = styled.ul`
@@ -108,19 +134,24 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
     padding-left: 5rem;
     line-height: 4rem;
     border-left: #fff 0.5rem solid;
+    color: rgba(0, 0, 0, 0.5);
 
     &&.Stepper__Active {
       border-left: ${primaryBlue} 0.5rem solid;
+      color: #000;
+    }
+
+    &:last-child {
+      margin-top: 2rem;
     }
   }
 `
 
-const StyledLink = styled(Link)`
+const DesktopLink = styled(Link)`
   display: flex;
   align-items: center;
-  color: ${primaryBlue};
+  color: #000;
   text-decoration: none;
-  font-weight: bold;
 
   &:visited {
     color: #000;
@@ -135,7 +166,7 @@ const StyledLink = styled(Link)`
   }
 `
 
-const Placeholder = styled.span`
+const IconPlaceholder = styled.span`
   display: inline-block;
   width: 3.5rem;
 `
@@ -157,27 +188,33 @@ export const Layout = ({
   classes,
   user,
   location: { pathname },
+  history: { push },
 }) => {
   const [isTooltipOpened, setTooltipOpened] = useState(false)
+  const toggleTooltip = () => setTooltipOpened(!isTooltipOpened)
+
+  const useMobileVersion = useMediaQuery(`(max-width:${breakpoint})`)
 
   // eslint-disable-next-line react/prop-types
   const getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {
+    const liProps = {
+      className: isActive ? 'Stepper__Active' : '',
+      'aria-current': isActive ? 'page' : null,
+    }
     if (shouldActivateLink) {
       return (
-        <LiStep className={isActive ? 'Stepper__Active' : ''}>
-          <StyledLink
+        <LiStep {...liProps}>
+          <DesktopLink
             to={link}
             className={isActive ? 'Stepper__Active__Link' : ''}
           >
             {label}
-          </StyledLink>
+          </DesktopLink>
         </LiStep>
       )
     }
 
-    return (
-      <LiStep className={isActive ? 'Stepper__Active' : ''}>{label}</LiStep>
-    )
+    return <LiStep {...liProps}>{label}</LiStep>
   }
 
   const userCanDeclare =
@@ -194,11 +231,14 @@ export const Layout = ({
     !activeDeclaration.hasFinishedDeclaringEmployers &&
     userCanDeclare
 
-  const useMobileVersion = useMediaQuery(`(max-width:${breakpoint})`) // eslint-disable-line
-
   return (
     <StyledLayout>
       <Header>
+        {useMobileVersion && (
+          <AppTitleMobileContainer>
+            <AppTitle />
+          </AppTitleMobileContainer>
+        )}
         {user && (
           <ClickAwayListener onClickAway={() => setTooltipOpened(false)}>
             <Tooltip
@@ -219,7 +259,7 @@ export const Layout = ({
                 </Button>
               }
             >
-              <UserButton onClick={() => setTooltipOpened(true)} disableRipple>
+              <UserButton onClick={toggleTooltip} disableRipple>
                 <PersonIcon />
                 {user.firstName}
                 {isTooltipOpened ? <ExpandLess /> : <ExpandMore />}
@@ -228,8 +268,38 @@ export const Layout = ({
           </ClickAwayListener>
         )}
       </Header>
+
+      {useMobileVersion && (
+        <StyledTabs
+          variant="fullWidth"
+          value={pathname}
+          indicatorColor="primary"
+        >
+          <Tab
+            label="Ma situation"
+            disabled={!shouldActivateDeclarationLink}
+            value={declarationRoute}
+            onClick={() => push(declarationRoute)}
+            role="link"
+          />
+          <Tab
+            label="Mes employeurs"
+            disabled={!shouldActivateEmployersLink}
+            value={employersRoute}
+            onClick={() => push(employersRoute)}
+            role="link"
+          />
+          <Tab
+            label="Mes justificatifs"
+            value={filesRoute}
+            onClick={() => push(filesRoute)}
+            role="link"
+          />
+        </StyledTabs>
+      )}
+
       <Container>
-        <div>
+        {!useMobileVersion && (
           <Nav>
             <AppTitleContainer>
               <AppTitle />
@@ -260,7 +330,7 @@ export const Layout = ({
                   {getStepperItem({
                     label: (
                       <Fragment>
-                        <Placeholder /> Ma situation
+                        <IconPlaceholder /> Ma situation
                       </Fragment>
                     ),
                     link: declarationRoute,
@@ -270,7 +340,7 @@ export const Layout = ({
                   {getStepperItem({
                     label: (
                       <Fragment>
-                        <Placeholder /> Mes employeurs
+                        <IconPlaceholder /> Mes employeurs
                       </Fragment>
                     ),
                     link: employersRoute,
@@ -291,7 +361,7 @@ export const Layout = ({
               })}
             </UlStepper>
           </Nav>
-        </div>
+        )}
         <Main>{children}</Main>
       </Container>
     </StyledLayout>
@@ -308,6 +378,7 @@ Layout.propTypes = {
     csrfToken: PropTypes.string,
   }),
   history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string.isRequired })

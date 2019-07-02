@@ -109,7 +109,7 @@ export default class Thanks extends Component {
             </Title>
 
             <Typography paragraph style={{ paddingBottom: '3rem' }}>
-              Pas d'envoyer vos justificatifs sur <br />
+              Pas besoin d'envoyer vos justificatifs sur <br />
               <a href="https://www.pole-emploi.fr">pole-emploi.fr</a>,{' '}
               <strong>Zen s'en charge pour vous !</strong>
             </Typography>

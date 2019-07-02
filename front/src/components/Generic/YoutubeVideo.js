@@ -52,7 +52,7 @@ export class YoutubeVideo extends Component {
           <iframe
             sandbox="allow-scripts allow-same-origin allow-presentation"
             title={title}
-            src="https://www.youtube.com/embed/IjC1vgptPX0?autoplay=1"
+            src="https://www.youtube.com/embed/ubF1udHKQOM?autoplay=1&rel=0"
             frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen

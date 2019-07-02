@@ -1,4 +1,3 @@
-import '@babel/polyfill'
 import { configure } from '@storybook/react'
 
 const req = require.context('../src/', true, /__stories__\/.*.js$/)

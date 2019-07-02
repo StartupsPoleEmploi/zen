@@ -46,14 +46,21 @@ export class DeclarationQuestion extends Component {
   }
 
   render() {
-    const { children, label, value, style = {}, withChildrenOnNo } = this.props
+    const {
+      children,
+      label,
+      name,
+      value,
+      style = {},
+      withChildrenOnNo,
+    } = this.props
     return (
-      <Container style={style}>
+      <Container style={style} id={name}>
         <MainQuestionContainer>
           <QuestionLabel>{label}</QuestionLabel>
           <FormControl component="fieldset" required error>
             <YesNoRadioGroup
-              name="yesOrNo"
+              name={name}
               value={value}
               onAnswer={this.handleChange}
             />

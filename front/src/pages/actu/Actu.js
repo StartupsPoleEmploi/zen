@@ -49,6 +49,7 @@ const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`
 
 const ErrorMessage = styled(Typography).attrs({
   paragraph: true,
+  role: 'alert',
   variant: 'body1',
 })`
   && {
@@ -259,7 +260,8 @@ export class Actu extends Component {
         hasRetirement,
         hasInvalidity,
         isLookingForJob,
-      ].some(isNull)
+      ].some(isNull) ||
+      (this.props.user.gender !== USER_GENDER_MALE && isNull(hasMaternityLeave))
     ) {
       return 'Merci de répondre à toutes les questions'
     }

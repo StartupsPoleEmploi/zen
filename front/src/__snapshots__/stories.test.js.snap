@@ -254,7 +254,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                         />
                       </svg>
                       <input
-                        aria-describedby="yes[yesOrNo]"
+                        aria-describedby="yes[hasWorked]"
                         checked={false}
                         className="MuiPrivateSwitchBase-input-57"
                         disabled={false}
@@ -444,7 +444,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                         />
                       </svg>
                       <input
-                        aria-describedby="yes[yesOrNo]"
+                        aria-describedby="yes[hasWorked]"
                         checked={false}
                         className="MuiPrivateSwitchBase-input-221"
                         disabled={false}
@@ -634,7 +634,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                         />
                       </svg>
                       <input
-                        aria-describedby="yes[yesOrNo]"
+                        aria-describedby="yes[hasWorked]"
                         checked={false}
                         className="MuiPrivateSwitchBase-input-385"
                         disabled={false}
@@ -827,7 +827,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                         />
                       </svg>
                       <input
-                        aria-describedby="yes[yesOrNo]"
+                        aria-describedby="yes[hasWorked]"
                         checked={true}
                         className="MuiPrivateSwitchBase-input-303"
                         disabled={false}
@@ -1020,7 +1020,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                         />
                       </svg>
                       <input
-                        aria-describedby="yes[yesOrNo]"
+                        aria-describedby="yes[hasWorked]"
                         checked={true}
                         className="MuiPrivateSwitchBase-input-139"
                         disabled={false}

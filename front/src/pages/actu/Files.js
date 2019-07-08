@@ -18,7 +18,7 @@ import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
-import { secondaryBlue } from '../../constants/colors'
+import { secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 
 const StyledFiles = styled.div`

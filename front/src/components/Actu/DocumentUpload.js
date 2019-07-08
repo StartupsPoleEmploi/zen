@@ -17,7 +17,7 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants/colors'
+import { primaryBlue } from '../../constants'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import CustomColorButton from '../Generic/CustomColorButton'
 

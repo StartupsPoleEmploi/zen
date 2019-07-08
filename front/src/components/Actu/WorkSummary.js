@@ -5,7 +5,7 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants/colors'
+import { primaryBlue } from '../../constants'
 
 // Note : these values are duplicated in Employers
 const WORK_HOURS = 'workHours'

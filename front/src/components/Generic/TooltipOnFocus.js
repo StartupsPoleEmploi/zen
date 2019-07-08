@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import { helpColor } from '../../constants/colors'
+import { helpColor } from '../../constants'
 
 const styles = () => ({
   tooltip: {

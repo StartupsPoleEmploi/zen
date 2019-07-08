@@ -21,12 +21,10 @@ import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import AppTitle from '../components/Generic/AppTitle'
-import { primaryBlue } from '../constants/colors'
+import { primaryBlue, mobileBreakpoint } from '../constants'
 
 const stepperRoutes = ['/actu', '/employers', '/files']
 const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
-
-const breakpoint = '672px'
 
 const styles = (theme) => ({
   lightTooltip: {
@@ -46,7 +44,7 @@ const Header = styled.header`
   display: flex;
   justify-content: flex-end;
 
-  @media (max-width: ${breakpoint}) {
+  @media (max-width: ${mobileBreakpoint}) {
     justify-content: space-between;
   }
 `
@@ -68,7 +66,7 @@ const UserButton = styled(Button)`
       background-color: ${primaryBlue};
     }
 
-    @media (max-width: ${breakpoint}) {
+    @media (max-width: ${mobileBreakpoint}) {
       margin-bottom: 0;
       padding: 1.5rem;
       padding-left: 6rem;
@@ -193,7 +191,7 @@ export const Layout = ({
   const [isTooltipOpened, setTooltipOpened] = useState(false)
   const toggleTooltip = () => setTooltipOpened(!isTooltipOpened)
 
-  const useMobileVersion = useMediaQuery(`(max-width:${breakpoint})`)
+  const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
 
   // eslint-disable-next-line react/prop-types
   const getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {

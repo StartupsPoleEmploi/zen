@@ -11,8 +11,7 @@ import File from '@material-ui/icons/Description'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import FormatListBulleted from '@material-ui/icons/FormatListBulleted'
-import ArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import ArrowUp from '@material-ui/icons/KeyboardArrowUp'
+import Check from '@material-ui/icons/Check'
 import Person from '@material-ui/icons/PersonOutline'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
@@ -130,7 +129,7 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
     display: flex;
     align-items: center;
     padding-left: 5rem;
-    line-height: 4rem;
+    line-height: 3rem;
     border-left: #fff 0.5rem solid;
     color: rgba(0, 0, 0, 0.5);
 
@@ -140,7 +139,7 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
     }
 
     &:last-child {
-      margin-top: 2rem;
+      margin-top: 3rem;
     }
   }
 `
@@ -157,16 +156,12 @@ const DesktopLink = styled(Link)`
 
   &:hover {
     text-decoration: underline;
+    color: ${primaryBlue};
   }
 
   &&.Stepper__Active__Link {
     color: ${primaryBlue};
   }
-`
-
-const IconPlaceholder = styled.span`
-  display: inline-block;
-  width: 3.5rem;
 `
 
 const FileIcon = styled(File)`
@@ -177,6 +172,20 @@ const FileIcon = styled(File)`
 const ListIcon = styled(FormatListBulleted)`
   width: 2.5rem;
   margin-right: 1rem;
+`
+
+const SubLabel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const CheckIcon = styled(Check)`
+  && {
+    color: green;
+    font-size: 2rem;
+    margin-right: 0.5rem;
+  }
 `
 
 export const Layout = ({
@@ -307,18 +316,10 @@ export const Layout = ({
                 label: (
                   <Fragment>
                     <ListIcon /> Mon actualisation
-                    {activeMonth &&
-                      (pathname === declarationRoute ||
-                      pathname === employersRoute ? (
-                        <ArrowDown />
-                      ) : (
-                        <ArrowUp />
-                      ))}
                   </Fragment>
                 ),
                 link: declarationRoute,
-                isActive:
-                  pathname === declarationRoute || pathname === employersRoute,
+                isActive: false,
                 shouldActivateLink:
                   shouldActivateDeclarationLink || shouldActivateEmployersLink,
               })}
@@ -327,9 +328,14 @@ export const Layout = ({
                 <Fragment>
                   {getStepperItem({
                     label: (
-                      <Fragment>
-                        <IconPlaceholder /> Ma situation
-                      </Fragment>
+                      <SubLabel
+                        style={{
+                          paddingLeft: activeDeclaration ? '3rem' : '5.5rem',
+                        }}
+                      >
+                        {activeDeclaration && <CheckIcon />}
+                        Ma situation
+                      </SubLabel>
                     ),
                     link: declarationRoute,
                     shouldActivateLink: shouldActivateDeclarationLink,
@@ -337,9 +343,13 @@ export const Layout = ({
                   })}
                   {getStepperItem({
                     label: (
-                      <Fragment>
-                        <IconPlaceholder /> Mes employeurs
-                      </Fragment>
+                      <SubLabel
+                        style={{
+                          paddingLeft: '5.5rem',
+                        }}
+                      >
+                        Mes employeurs
+                      </SubLabel>
                     ),
                     link: employersRoute,
                     shouldActivateLink: shouldActivateEmployersLink,

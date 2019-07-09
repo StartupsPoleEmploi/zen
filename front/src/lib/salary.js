@@ -5,7 +5,7 @@ export const SALARY = 'salary'
 export const MIN_SALARY = 1
 export const MIN_WORK_HOURS = 1
 export const MAX_SALARY = 99999
-export const MAX_WORK_HOURS = 999
+export const MAX_WORK_HOURS = 1000000 // Arbitrary high value so users aren't limited
 
 export const calculateTotal = (employers, field, lowLimit, highLimit) => {
   const total = employers.reduce((prev, employer) => {

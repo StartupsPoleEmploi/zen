@@ -7,13 +7,14 @@ import styled from 'styled-components'
 
 import { primaryBlue } from '../../constants/colors'
 
-// Note : these values are duplicated in Employers
-const WORK_HOURS = 'workHours'
-const SALARY = 'salary'
-const MIN_SALARY = 1
-const MIN_WORK_HOURS = 1
-const MAX_SALARY = 99999
-const MAX_WORK_HOURS = 1000
+import {
+  WORK_HOURS,
+  SALARY,
+  MIN_SALARY,
+  MIN_WORK_HOURS,
+  MAX_SALARY,
+  MAX_WORK_HOURS,
+} from '../../lib/salary'
 
 const SummaryContainer = styled.ul`
   padding: 0;

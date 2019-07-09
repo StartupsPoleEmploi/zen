@@ -16,7 +16,6 @@ import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
-import WorkSummary from '../../components/Actu/WorkSummary'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import { secondaryBlue } from '../../constants/colors'
 import { formattedDeclarationMonth } from '../../lib/date'
@@ -574,7 +573,7 @@ export class Files extends Component {
     return (
       <FilesSection key={declaration.id}>
         <StyledTitle variant="h6" component="h1">
-          Envoi des documents du mois de {formattedMonth}
+          Justificatifs de {formattedMonth}
         </StyledTitle>
         <StyledInfo>
           <Typography
@@ -585,20 +584,13 @@ export class Files extends Component {
             }}
           >
             {declarationRemainingDocsNb > 0
-              ? `Reste ${declarationRemainingDocsNb} documents à fournir`
+              ? `Il manque encore ${declarationRemainingDocsNb} justificatif${
+                  declarationRemainingDocsNb > 1 ? 's' : ''
+                } et vous pourrez valider l'envoi`
               : 'Tous vos documents sont prêts à être envoyés'}
           </Typography>
         </StyledInfo>
         {this.renderDocumentList(declaration)}
-        <WorkSummary employers={declaration.employers} />
-        <StyledInfo>
-          <Typography variant="body1">
-            Vous pourrez envoyer vos documents à Pôle Emploi une fois qu'ils
-            seront tous là.
-            <br />
-            Cela permettra une meilleure gestion de votre dossier.
-          </Typography>
-        </StyledInfo>
         {this.state[
           getErrorKey({ type: declarationType, id: declaration.id })
         ] && (
@@ -627,10 +619,7 @@ export class Files extends Component {
             primary
             onClick={() => this.onSubmit({ declaration })}
           >
-            Envoyer {!isOldMonth && <br />}
-            {isOldMonth
-              ? `les documents de ${formattedMonth}`
-              : 'à Pôle Emploi'}
+            Envoyer <br />à Pôle Emploi
           </MainActionButton>
         </ButtonsContainer>
       </FilesSection>

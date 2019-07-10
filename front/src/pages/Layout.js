@@ -39,7 +39,7 @@ const StyledLayout = styled.div`
   margin: auto;
 `
 
-const Header = styled.header`
+const Header = styled.header.attrs({ role: 'banner' })`
   display: flex;
   justify-content: flex-end;
 
@@ -85,12 +85,12 @@ const Container = styled.div`
   width: 100%;
 `
 
-const Main = styled.main`
+const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
 `
 
-const StyledTabs = styled(Tabs).attrs({ component: 'nav' })`
+const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
   && {
     /* Get the active tab indicator */
     & div[role='tablist'] > span {
@@ -99,7 +99,7 @@ const StyledTabs = styled(Tabs).attrs({ component: 'nav' })`
   }
 `
 
-const Nav = styled.nav`
+const Nav = styled.nav.attrs({ role: 'navigation' })`
   flex-shrink: 0;
   width: 25rem;
   border-right: 1px #ddd solid;

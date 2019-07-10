@@ -14,7 +14,7 @@ router.get('/session/user', (req, res) => {
     req.session.userSecret = {}
   }
 
-  res.json(req.session.user)
+  res.json(req.session.user || {})
 })
 
 router.post('/session/user', (req, res) => {

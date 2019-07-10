@@ -37,7 +37,6 @@ const StyledMain = styled.div`
 
 const FieldsContainer = styled.div`
   flex: 1 1 20rem;
-  border-right: 1px solid #000;
 `
 
 const StyledTextField = styled(TextField)`
@@ -51,17 +50,15 @@ const StyledFormControl = styled(FormControl)`
   && {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     flex: 0 1 auto;
-    padding-left: 1.5rem;
   }
 `
 
 const StyledFormLabel = styled(FormLabel)`
   flex-shrink: 1;
-  margin-right: 3rem;
+  margin-right: 2rem;
   && {
     color: #000;
   }
@@ -297,10 +294,12 @@ export class EmployerQuestion extends Component {
             )}
           </FieldsContainer>
           <StyledFormControl>
-            <StyledFormLabel>
+            <StyledFormLabel
+              style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
+            >
               Ce contrat se
               <br />
-              termine-t-il en {moment(this.props.activeMonth).format('MMMM')} ?
+              termine-t-il en {moment(this.props.activeMonth).format('MMMM')} ?
               {hasEndedThisMonth.error && (
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
               )}
@@ -326,14 +325,12 @@ export class EmployerQuestion extends Component {
             />
           </StyledFormControl>
         </StyledMain>
-        <RemoveButton onClick={this.onRemove} type="button">
+        <RemoveButton
+          onClick={this.onRemove}
+          type="button"
+          aria-label="Supprimer"
+        >
           <CancelIcon />
-          <Typography
-            variant="caption"
-            style={{ color: 'black', display: 'block' }}
-          >
-            Supprimer
-          </Typography>
         </RemoveButton>
       </StyledContainer>
     )

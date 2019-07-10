@@ -534,7 +534,12 @@ export class Files extends Component {
         {certificateUpload}
         {certificateDoc && !salaryDoc ? (
           <Typography variant="caption">
-            <span aria-hidden>👍</span>
+            <span
+              aria-hidden
+              style={{ display: 'inline-block', paddingRight: '0.5rem' }}
+            >
+              👍
+            </span>
             Nous n'avons pas besoin de votre bulletin de salaire pour cet
             employeur, car vous nous avez déjà transmis votre attestation
           </Typography>
@@ -575,8 +580,7 @@ export class Files extends Component {
           <Typography
             variant="body1"
             style={{
-              color:
-                declarationRemainingDocsNb <= 0 ? '#df5555' : secondaryBlue,
+              color: secondaryBlue,
               paddingBottom: '2rem',
             }}
           >

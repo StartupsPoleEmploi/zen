@@ -395,14 +395,16 @@ export const Home = ({ location: { search } }) => (
             <SummaryText>
               Zen additionne pour vous
               <br />
-              vos heures travaillées et totalise <br />
+              vos heures travaillées et totalise
+              <br />
               vos revenus mensuels !
             </SummaryText>
           </SummaryLi>
           <SummaryLi>
             <SummaryImg src={step2} alt="" />
             <SummaryText>
-              Zen vous indique <br />
+              Zen vous indique
+              <br />
               les justificatifs à transmettre selon
               <br /> votre déclaration.
             </SummaryText>
@@ -472,12 +474,14 @@ export const Home = ({ location: { search } }) => (
           Rejoignez les utilisateurs de Zen&nbsp;!
         </SectionTitle>
         <Typography paragraph style={{ color: '#fff' }}>
-          Zen est un service innovant de Pôle Emploi pour faciliter <br />
+          Zen est un service innovant de Pôle Emploi pour faciliter
+          <br />
           l'actualisation. Il est dédié aux personnes ayant plusieurs
           employeurs.
           <br />
           <b>
-            Ce service est actuellement disponible pour <br />
+            Ce service est actuellement disponible pour
+            <br />
             les assistantes maternelles en Hauts-de-France.
           </b>
         </Typography>

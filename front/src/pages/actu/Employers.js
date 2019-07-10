@@ -372,13 +372,8 @@ export class Employers extends Component {
     let error = `Merci de corriger les erreurs du formulaire. `
 
     if (isFormValid) {
-      const workHoursTotal = calculateTotal(employersFormData, WORK_HOURS)
       const salaryTotal = calculateTotal(employersFormData, SALARY)
 
-      if (workHoursTotal > MAX_WORK_HOURS) {
-        error += `Vous ne pouvez pas déclarer plus de ${MAX_WORK_HOURS}h totales de travail. `
-        isFormValid = false
-      }
       if (salaryTotal > MAX_SALARY) {
         error += `Vous ne pouvez pas déclarer plus de ${MAX_SALARY}€ total de salaire. `
         isFormValid = false

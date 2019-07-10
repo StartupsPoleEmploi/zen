@@ -44,14 +44,15 @@ const generateDeclarationAsPDF = (declaration) => {
 
   const formattedDeclarationDate = format(new Date(), 'DD/MM/YYYY')
 
-  const workHours = Math.round(declaration.employers.reduce(
-    (prev, employer) => employer.workHours + prev,
-    0,
-  ))
-  const salary = Math.round(declaration.employers.reduce(
-    (prev, employer) => employer.salary + prev,
-    0,
-  ))
+  const workHours = Math.round(
+    declaration.employers.reduce(
+      (prev, employer) => employer.workHours + prev,
+      0,
+    ),
+  )
+  const salary = Math.round(
+    declaration.employers.reduce((prev, employer) => employer.salary + prev, 0),
+  )
 
   const doc = new pdf.Document({
     font: Helvetica,

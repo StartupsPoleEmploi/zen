@@ -44,7 +44,7 @@ exports[`Storyshots DatePicker default 1`] = `
               value=""
             />
           </div>
-
+          
         </div>
         <div>
           <div
@@ -138,7 +138,7 @@ exports[`Storyshots DatePicker with selected date 1`] = `
               value="02/07/2018"
             />
           </div>
-
+          
         </div>
         <div>
           <div
@@ -202,7 +202,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
         data-css-1v8lkxq=""
       >
         <li
-          className="sc-iwsKbI fSRpex"
+          className="sc-gZMcBi eruSvk"
           id="hasWorked"
           style={Object {}}
         >
@@ -392,7 +392,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
         data-css-1v8lkxq=""
       >
         <li
-          className="sc-iwsKbI fSRpex"
+          className="sc-gZMcBi eruSvk"
           id="hasWorked"
           style={Object {}}
         >
@@ -582,7 +582,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
         data-css-1v8lkxq=""
       >
         <li
-          className="sc-iwsKbI fSRpex"
+          className="sc-gZMcBi eruSvk"
           id="hasWorked"
           style={Object {}}
         >
@@ -775,7 +775,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
         data-css-1v8lkxq=""
       >
         <li
-          className="sc-iwsKbI fSRpex"
+          className="sc-gZMcBi eruSvk"
           id="hasWorked"
           style={Object {}}
         >
@@ -968,7 +968,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
         data-css-1v8lkxq=""
       >
         <li
-          className="sc-iwsKbI fSRpex"
+          className="sc-gZMcBi eruSvk"
           id="hasWorked"
           style={Object {}}
         >
@@ -2103,7 +2103,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
               >
                 Ce contrat se
                 <br />
-                termine-t-il en
+                termine-t-il en 
                 July
                  ?
               </label>
@@ -2423,7 +2423,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
               >
                 Ce contrat se
                 <br />
-                termine-t-il en
+                termine-t-il en 
                 July
                  ?
               </label>
@@ -2761,7 +2761,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
               >
                 Ce contrat se
                 <br />
-                termine-t-il en
+                termine-t-il en 
                 July
                  ?
                 <p

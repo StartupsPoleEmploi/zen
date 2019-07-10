@@ -133,7 +133,10 @@ const getJobCheckFromStore = () => {
 export class Actu extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
-    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
     user: PropTypes.shape({
       gender: PropTypes.string,
       csrfToken: PropTypes.string.isRequired,
@@ -155,12 +158,16 @@ export class Actu extends Component {
   }
 
   componentDidMount() {
+    const { declaration, user } = this.props
+    if (declaration && declaration.hasFinishedDeclaringEmployers) {
+      return this.props.history.replace('/files')
+    }
+
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
-      hasMaternityLeave:
-        this.props.user.gender === USER_GENDER_MALE ? false : null,
+      hasMaternityLeave: user.gender === USER_GENDER_MALE ? false : null,
       // Set active declaration data, prevent declaration data unrelated to this form.
-      ...pick(this.props.declaration, formFields.concat('id', 'infos')),
+      ...pick(declaration, formFields.concat('id', 'infos')),
       isLoading: false,
     })
   }

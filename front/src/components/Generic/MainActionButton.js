@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants/colors'
+import { primaryBlue } from '../../constants'
 
 const BaseButton = styled(Button).attrs({
   color: 'primary',

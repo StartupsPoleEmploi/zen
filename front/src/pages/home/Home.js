@@ -15,10 +15,12 @@ import photo2 from '../../images/photo2.jpg'
 import photo1 from '../../images/photo1.jpg'
 import characters from '../../images/characters.svg'
 
-import { primaryBlue, secondaryBlue } from '../../constants/colors'
-
-const mobileBreakpoint = '672px'
-const intermediaryBreakpoint = '960px'
+import {
+  primaryBlue,
+  secondaryBlue,
+  mobileBreakpoint,
+  intermediaryBreakpoint,
+} from '../../constants'
 
 const windowWidthElement = `
   width: 100vw;

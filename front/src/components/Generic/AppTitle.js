@@ -2,7 +2,7 @@ import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants/colors'
+import { primaryBlue } from '../../constants'
 
 const StyledTitle = styled(Typography).attrs({
   variant: 'h4',

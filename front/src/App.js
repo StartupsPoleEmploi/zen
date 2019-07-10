@@ -5,15 +5,13 @@ import { get } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { hot } from 'react-hot-loader'
-import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom'
-import styled from 'styled-components'
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import superagent from 'superagent'
 
 import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
 import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
 import PrivateRoute from './components/Generic/PrivateRoute'
-import { primaryBlue } from './constants/colors'
 import { getUser } from './lib/user'
 import Actu from './pages/actu/Actu'
 import { Employers } from './pages/actu/Employers'
@@ -23,60 +21,6 @@ import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
 import Layout from './pages/Layout'
 import Signup from './pages/other/Signup'
-
-const stepperRoutes = ['/actu', '/employers', '/files']
-const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
-
-const StyledLink = styled(Link)`
-  color: ${primaryBlue};
-  text-decoration: none;
-
-  &:visited {
-    color: ${primaryBlue};
-  }
-`
-
-const UlStepper = styled.ul`
-  display: flex;
-  flex: 1 1 auto;
-  justify-content: center;
-  list-style: none;
-  padding-left: 0;
-
-  & > * {
-    flex: 0 1 15rem;
-    text-align: center;
-    padding-top: 1rem;
-    opacity: 0.5;
-
-    &.Stepper__ContainsLink {
-      opacity: 1;
-    }
-    &.Stepper__Active {
-      font-weight: bold;
-      text-decoration: underline;
-      opacity: 1;
-    }
-
-    @media (max-width: 650px) {
-      &:not(.Stepper__Active) {
-        display: none !important;
-      }
-    }
-
-    &:not(:last-child) {
-      border-right: 0.1rem solid #f0f0f0;
-    }
-  }
-`
-
-const LiStep = styled(Typography).attrs({ component: 'li' })`
-  && {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`
 
 class App extends Component {
   static propTypes = {
@@ -243,20 +187,6 @@ class App extends Component {
     })
   }
 
-  getStepperItem = ({ label, link, shouldActivateLink, isActive }) => {
-    if (shouldActivateLink) {
-      return (
-        <LiStep className="Stepper__ContainsLink">
-          <StyledLink to={link}>{label}</StyledLink>
-        </LiStep>
-      )
-    }
-
-    return (
-      <LiStep className={isActive ? 'Stepper__Active' : ''}>{label}</LiStep>
-    )
-  }
-
   render() {
     const {
       location: { pathname },
@@ -291,53 +221,13 @@ class App extends Component {
       return (
         <Layout user={user}>
           <Typography>
-            Une erreur s'est produite, merci de réessayer ultérieurement
+            Nous sommes désolés, mais une erreur s'est produite. Merci de bien
+            vouloir recharger à nouveau cette page. Si cela se reproduit, vous
+            pouvez contacter l'équipe Zen.
           </Typography>
         </Layout>
       )
     }
-
-    const userCanDeclare =
-      !get(user, 'hasAlreadySentDeclaration') && get(user, 'canSendDeclaration')
-
-    const shouldActivateDeclarationLink =
-      !!activeMonth &&
-      (!activeDeclaration ||
-        !activeDeclaration.hasFinishedDeclaringEmployers) &&
-      pathname !== declarationRoute &&
-      userCanDeclare
-
-    const shouldActivateEmployersLink =
-      !!activeMonth &&
-      !!activeDeclaration &&
-      !activeDeclaration.hasFinishedDeclaringEmployers &&
-      pathname !== employersRoute &&
-      userCanDeclare
-
-    const shouldActivateFilesLink = pathname !== filesRoute
-
-    const stepper = stepperRoutes.includes(pathname) ? (
-      <UlStepper>
-        {this.getStepperItem({
-          label: 'Ma situation',
-          link: declarationRoute,
-          shouldActivateLink: shouldActivateDeclarationLink,
-          isActive: pathname === declarationRoute,
-        })}
-        {this.getStepperItem({
-          label: 'Mes employeurs',
-          link: employersRoute,
-          shouldActivateLink: shouldActivateEmployersLink,
-          isActive: pathname === employersRoute,
-        })}
-        {this.getStepperItem({
-          label: 'Mes documents',
-          link: filesRoute,
-          shouldActivateLink: shouldActivateFilesLink,
-          isActive: pathname === filesRoute,
-        })}
-      </UlStepper>
-    ) : null
 
     if (pathname === '/') {
       return (
@@ -350,7 +240,11 @@ class App extends Component {
 
     if (isLoadingActiveDeclaration) {
       return (
-        <Layout user={user} stepper={stepper}>
+        <Layout
+          user={user}
+          activeDeclaration={activeDeclaration}
+          activeMonth={activeMonth}
+        >
           <div style={{ margin: '5rem', textAlign: 'center' }}>
             <CircularProgress />
           </div>
@@ -359,7 +253,11 @@ class App extends Component {
     }
 
     return (
-      <Layout user={user} stepper={stepper}>
+      <Layout
+        user={user}
+        activeDeclaration={activeDeclaration}
+        activeMonth={activeMonth}
+      >
         <Switch>
           <PrivateRoute
             exact

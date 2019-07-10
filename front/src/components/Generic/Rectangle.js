@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import { primaryBlue } from '../../constants/colors'
+import { primaryBlue } from '../../constants'
 
 const Rectangle = ({ style }) => (
   <div

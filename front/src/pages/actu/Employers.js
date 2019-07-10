@@ -171,7 +171,10 @@ const calculateTotal = (employers, field) => {
 export class Employers extends Component {
   static propTypes = {
     activeMonth: PropTypes.instanceOf(Date).isRequired,
-    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
     token: PropTypes.string.isRequired,
   }
 
@@ -195,6 +198,10 @@ export class Employers extends Component {
       .then((declarations) => {
         const currentDeclaration = declarations[0]
         const previousDeclaration = declarations[1]
+
+        if (currentDeclaration.hasFinishedDeclaringEmployers) {
+          return this.props.history.replace('/files')
+        }
 
         this.setState({ currentDeclaration })
 

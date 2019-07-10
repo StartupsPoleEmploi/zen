@@ -377,7 +377,7 @@ export class Files extends Component {
       })
   }
 
-  renderDocumentList = ({ declaration, isOldMonth }) => {
+  renderDocumentList = (declaration) => {
     const neededAdditionalDocumentsSpecs = infoSpecs.filter(
       (spec) => !!declaration[spec.fieldToCheck],
     )
@@ -399,7 +399,7 @@ export class Files extends Component {
               name: neededDocumentSpecs.name,
               multiple: neededDocumentSpecs.multiple,
               declaration,
-              allowSkipFile: isOldMonth,
+              allowSkipFile: true,
             })}
           </StyledList>
         </div>
@@ -422,7 +422,7 @@ export class Files extends Component {
             <StyledList>
               {this.renderEmployerRow({
                 employer,
-                allowSkipFile: isOldMonth,
+                allowSkipFile: true,
                 showTooltip: index === 0,
               })}
             </StyledList>
@@ -433,20 +433,6 @@ export class Files extends Component {
       </div>
     )
   }
-
-  renderOlderDocumentsList = (declaration) =>
-    this.renderDocumentList({
-      declaration,
-      isOldMonth: true,
-      allowSkipFile: true,
-    })
-
-  renderCurrentDocumentsList = (declaration) =>
-    this.renderDocumentList({
-      declaration,
-      isOldMonth: false,
-      allowSkipFile: false,
-    })
 
   renderDocumentsOfType = ({ label, name, declaration, allowSkipFile }) =>
     declaration.infos
@@ -599,9 +585,7 @@ export class Files extends Component {
               : 'Tous vos documents sont prêts à être envoyés'}
           </Typography>
         </StyledInfo>
-        {isOldMonth
-          ? this.renderOlderDocumentsList(declaration)
-          : this.renderCurrentDocumentsList(declaration)}
+        {this.renderDocumentList(declaration)}
         <WorkSummary employers={declaration.employers} />
         <StyledInfo>
           <Typography variant="body1">

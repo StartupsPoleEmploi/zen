@@ -36,6 +36,7 @@ const eraseFile = (filePath) => {
 }
 
 const cleanOldFiles = () => {
+  winston.info('Starting files cleanup')
   const MONTH_DELTA = 6
   const minimumDate = subMonths(new Date(), MONTH_DELTA)
 
@@ -46,18 +47,18 @@ const cleanOldFiles = () => {
     .where('transmittedAt', '<', minimumDate) // 6 month old declarations
     .then(async (declarations) => {
       const declarationIds = []
-      const employerIds = []
+      const employerDocumentIds = []
       const infoIds = []
 
       for (const declaration of declarations) {
         for (const employer of declaration.employers) {
           try {
             await Promise.all(
-              employer.documents.map((doc) =>
-                eraseFile(`${uploadsDirectory}${doc.file}`),
-              ),
+              employer.documents.map((doc) => {
+                employerDocumentIds.push(doc.id)
+                return eraseFile(`${uploadsDirectory}${doc.file}`)
+              }),
             )
-            employerIds.push(employer.id)
             declarationIds.push(declaration.id)
           } catch (err) {
             winston.warn(err)
@@ -83,7 +84,10 @@ const cleanOldFiles = () => {
       if (declarationIds.length)
         setIsCleanedUp(uniq(declarationIds), Declaration)
       if (infoIds.length) setIsCleanedUp(infoIds, DeclarationInfo)
-      if (employerIds.length) setIsCleanedUp(employerIds, EmployerDocument)
+      if (employerDocumentIds.length)
+        setIsCleanedUp(employerDocumentIds, EmployerDocument)
+
+      winston.info('Finished files cleanup')
     })
 }
 

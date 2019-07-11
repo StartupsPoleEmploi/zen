@@ -1,14 +1,5 @@
-const { format, subMonths } = require('date-fns')
-const fr = require('date-fns/locale/fr')
-const { get } = require('lodash')
-const {
-  createCampaignDraft,
-  getCampaignTemplate,
-  scheduleCampaign,
-  setCampaignTemplate,
-  createSegment,
-  formatDateForSegmentFilter,
-} = require('./mailjet')
+const Declaration = require('../../models/Declaration')
+const DeclarationMonth = require('../../models/DeclarationMonth')
 
 const DOCS_REMINDER_CAMPAIGN_ID = 510671
 
@@ -18,49 +9,30 @@ const DOCS_REMINDER_CAMPAIGN_ID = 510671
  * If this is not respected, the date labels will be wrong.
  */
 const sendCurrentDeclarationDocsReminderCampaign = () => {
-  const lastMonth = subMonths(new Date(), 1)
-  const formattedMonthInFrench = format(lastMonth, 'MMMM YYYY', { locale: fr })
-  const dateFormatForSegments = formatDateForSegmentFilter(lastMonth)
-  const formattedNow = format(new Date(), 'DD/MM/YYYY')
+  DeclarationMonth.query()
+    .orderBy('id', 'desc')
+    .first()
+    .then((activeMonth) => {
+      // 1- Get users who start declaration but not finished
+      Declaration.query()
+        .eager('[declarationMonth, user, employers.[documents]]')
+        .where({
+          isFinished: false,
+          hasFinishedDeclaringEmployers: true,
+          monthId: activeMonth.id,
+        })
+        .then((declarations) => {
+          // Get documents list
+          declarations.forEach((declaration) => {
+            const files = declaration.employers.reduce(
+              (docs, employer) => docs.concat(employer.documents),
+              [],
+            )
 
-  return createSegment({
-    Description: `Contacts actualisés mais qui n'ont pas envoyé tous leurs documents en ${formattedMonthInFrench}`,
-    Expression: `(validation_necessaire=false) AND (declaration_effectuee_mois=${dateFormatForSegments}) AND ((document_envoye_mois!=${dateFormatForSegments}) OR (not IsProvided(document_envoye_mois)))`,
-    Name: `${formattedMonthInFrench} - Documents non envoyés, actu faite (envoi du ${formattedNow})`,
-  })
-    .then((segmentRes) => {
-      const segmentId = get(segmentRes, 'body.Data.0.ID')
-      if (!segmentId) throw new Error('No Campaign ID')
-      return createCampaignDraft({
-        Subject: 'N’oubliez pas d’envoyer vos documents',
-        Title: `Rappel documents ${format(new Date(), 'DD/MM/YYYY')}`.concat(
-          process.env.NODE_ENV !== 'production' ? ' (test)' : '',
-        ),
-        SegmentationID: segmentId,
-      })
+            console.log('files => ', files)
+          })
+        })
     })
-    .then((campaignDraftRes) => {
-      const campaignId = get(campaignDraftRes, 'body.Data.0.ID')
-      if (!campaignId) throw new Error('No Campaign ID')
-
-      return getCampaignTemplate(DOCS_REMINDER_CAMPAIGN_ID).then((result) => {
-        const { 'Html-part': html, 'Text-part': text } = get(
-          result,
-          'body.Data.0',
-          {},
-        )
-        if (!html || !text)
-          throw new Error(
-            `No HTML or text part for template ${DOCS_REMINDER_CAMPAIGN_ID}`,
-          )
-
-        return setCampaignTemplate(campaignId, {
-          'Html-part': html,
-          'Text-part': text,
-        }).then(() => scheduleCampaign(campaignId))
-      })
-    })
-    .catch((err) => console.error(err))
 }
 
 module.exports = sendCurrentDeclarationDocsReminderCampaign

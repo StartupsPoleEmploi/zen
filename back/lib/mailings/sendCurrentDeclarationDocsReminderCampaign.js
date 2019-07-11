@@ -17,7 +17,7 @@ const DOCS_REMINDER_CAMPAIGN_ID = 510671
  * the concerned declaration month. (eg. Februrary the 2nd, for example, for January declarations)
  * If this is not respected, the date labels will be wrong.
  */
-const sendDocsReminderCampaign = () => {
+const sendCurrentDeclarationDocsReminderCampaign = () => {
   const lastMonth = subMonths(new Date(), 1)
   const formattedMonthInFrench = format(lastMonth, 'MMMM YYYY', { locale: fr })
   const dateFormatForSegments = formatDateForSegmentFilter(lastMonth)
@@ -63,4 +63,4 @@ const sendDocsReminderCampaign = () => {
     .catch((err) => console.error(err))
 }
 
-module.exports = sendDocsReminderCampaign
+module.exports = sendCurrentDeclarationDocsReminderCampaign

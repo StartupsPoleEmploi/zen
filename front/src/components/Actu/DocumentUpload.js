@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Autorenew from '@material-ui/icons/Autorenew'
 import Check from '@material-ui/icons/Check'
@@ -206,10 +205,10 @@ export class DocumentUpload extends Component {
       )
     } else if (allowSkipFile) {
       sideFormLabelContent = (
-        <Tooltip
-          placement="top"
-          title={
-            <Typography style={{ color: '#fff' }}>
+        <TooltipOnFocus
+          useHover
+          content={
+            <Typography>
               Cochez cette case si vous avez transmis ce document à Pôle Emploi
               par d'autres moyens que Zen.
             </Typography>
@@ -220,7 +219,7 @@ export class DocumentUpload extends Component {
             {/* eslint-disable-next-line no-irregular-whitespace */}
             Transmis à Pôle Emploi
           </SideButton>
-        </Tooltip>
+        </TooltipOnFocus>
       )
     }
 
@@ -259,20 +258,16 @@ export class DocumentUpload extends Component {
                   )}
                 </div>
                 {infoTooltipText && (
-                  <Tooltip
-                    title={
-                      <Typography style={{ color: '#fff' }}>
-                        {infoTooltipText}
-                      </Typography>
-                    }
-                    placement="top"
+                  <TooltipOnFocus
+                    content={<Typography>{infoTooltipText}</Typography>}
+                    useHover
                     enterDelay={0}
                     leaveDelay={1500}
                     enterTouchDelay={0}
                     leaveTouchDelay={3000}
                   >
                     <InfoIcon />
-                  </Tooltip>
+                  </TooltipOnFocus>
                 )}
               </div>
             }

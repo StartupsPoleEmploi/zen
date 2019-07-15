@@ -78,7 +78,7 @@ const styles = () => ({
   },
 })
 
-class TootlipOnFocus extends Component {
+class TooltipOnFocus extends Component {
   static propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
@@ -101,7 +101,14 @@ class TootlipOnFocus extends Component {
     })
 
   render() {
-    const { children, classes, content, tooltipId, useHover } = this.props
+    const {
+      children,
+      classes,
+      content,
+      tooltipId,
+      useHover,
+      ...props
+    } = this.props
 
     const eventProps = {
       disableHoverListener: !useHover,
@@ -133,6 +140,7 @@ class TootlipOnFocus extends Component {
             },
           },
         }}
+        {...props}
       >
         {children}
       </Tooltip>
@@ -140,4 +148,4 @@ class TootlipOnFocus extends Component {
   }
 }
 
-export default withStyles(styles)(TootlipOnFocus)
+export default withStyles(styles)(TooltipOnFocus)

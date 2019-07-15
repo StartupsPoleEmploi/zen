@@ -13,6 +13,8 @@ class Declaration extends BaseModel {
   }
 
   $beforeValidate(jsonSchema, json, opt) {
+    if (!opt.old && opt.patch) return // Custom validation logic only makes sense for objects modified using instance.$query()
+
     const objectToValidate = { ...opt.old, ...json }
     const { isLookingForJob, jobSearchStopMotive } = objectToValidate
 
@@ -72,6 +74,10 @@ class Declaration extends BaseModel {
           type: 'boolean',
         },
         isDocEmailSent: {
+          default: false,
+          type: 'boolean',
+        },
+        isCleanedUp: {
           default: false,
           type: 'boolean',
         },

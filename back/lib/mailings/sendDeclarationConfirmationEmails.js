@@ -29,9 +29,7 @@ const sendDeclarationConfirmationEmail = (declaration) =>
             To: [
               {
                 Email: declaration.user.email,
-                Name: `${declaration.user.firstName} ${
-                  declaration.user.lastName
-                }`,
+                Name: `${declaration.user.firstName} ${declaration.user.lastName}`,
               },
             ],
             TemplateID: 504060,
@@ -82,14 +80,10 @@ const sendDeclarationConfirmationEmails = () => {
 
           return promise
             .then(() => sendDeclarationConfirmationEmail(declaration))
-            .then(() =>
-              declaration.$query().patch({ isEmailSent: true }),
-            )
+            .then(() => declaration.$query().patch({ isEmailSent: true }))
             .catch((err) =>
               winston.error(
-                `There was an error while sending confirmation email for declaration ${
-                  declaration.id
-                }: ${err}`,
+                `There was an error while sending confirmation email for declaration ${declaration.id}: ${err}`,
               ),
             )
         }),

@@ -220,7 +220,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     }).catch((err) => {
       winston.error(
         'Error while uploading document',
-        documentsToTransmit[key].id,
+        documentsToTransmit[key].dbDocument.id,
         err,
       )
       throw err
@@ -235,7 +235,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     }).catch((err) => {
       winston.error(
         'Error while confirming document',
-        documentsToTransmit[key].id,
+        documentsToTransmit[key].dbDocument.id,
         err,
       )
       throw err

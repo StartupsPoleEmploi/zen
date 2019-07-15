@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
@@ -61,19 +60,18 @@ const ErrorMessage = styled(Typography)`
   }
 `
 
-const OtherDocumentsContainer = styled.div`
-  background-color: #f2f2f2;
-
-  /* Overflowing background*/
-  padding: 1rem;
-  width: 100vw;
-`
-
 const FilesSection = styled.section`
   max-width: 88rem;
   width: 100%;
   margin: auto;
   padding-bottom: 4rem;
+
+  &:not(:first-child) {
+    padding-top: 4rem;
+  }
+  &:not(:last-child) {
+    border-bottom: 1px solid black;
+  }
 `
 
 const FilesDoneSection = styled(FilesSection)`
@@ -180,7 +178,6 @@ export class Files extends Component {
 
   state = {
     isLoading: true,
-    showMissingDocs: false,
     declarations: [],
     isSendingFiles: false,
     showSkipConfirmation: false,
@@ -204,8 +201,6 @@ export class Files extends Component {
         }),
       )
   }
-
-  displayMissingDocs = () => this.setState({ showMissingDocs: true })
 
   submitEmployerFile = ({
     documentId,
@@ -416,7 +411,7 @@ export class Files extends Component {
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
             >
-              <b>Documents employeur&nbsp;: {employer.employerName}</b>
+              <b>Employeur&nbsp;: {employer.employerName}</b>
             </Typography>
             <StyledList>
               {this.renderEmployerRow({
@@ -675,22 +670,7 @@ export class Files extends Component {
         ) : (
           this.renderSection(lastDeclaration)
         )}
-        {areUnfinishedDeclarations > 0 && (
-          <OtherDocumentsContainer>
-            <Typography paragraph style={{ textAlign: 'center' }}>
-              Des documents de précédents mois n'ont pas encore été transmis
-            </Typography>
-            {!this.state.showMissingDocs ? (
-              <div style={{ textAlign: 'center' }}>
-                <Button color="primary" onClick={this.displayMissingDocs}>
-                  Afficher les documents manquants
-                </Button>
-              </div>
-            ) : (
-              declarations.slice(1).map(this.renderOldSection)
-            )}
-          </OtherDocumentsContainer>
-        )}
+        {declarations.slice(1).map(this.renderOldSection)}
         <FilesDialog isOpened={this.state.isSendingFiles} />
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
         <FileTransmittedToPE

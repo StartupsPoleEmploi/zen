@@ -15,9 +15,9 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import { primaryBlue } from '../../constants'
+import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import CustomColorButton from '../Generic/CustomColorButton'
-
-import PDFViewer from '../Generic/PDFViewer'
+import DocumentDialog from '../Generic/documents/DocumentDialog'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ const SideButton = styled(Button)`
 `
 
 const employerType = 'employer'
-const infosType = 'infos'
+const infosType = 'info'
 
 export class DocumentUpload extends Component {
   static propTypes = {
@@ -104,27 +104,86 @@ export class DocumentUpload extends Component {
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
+    removePageFromFile: PropTypes.func.isRequired,
     allowSkipFile: PropTypes.bool,
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
     infoTooltipText: PropTypes.string,
+
+    declarationInfoId: PropTypes.number,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
+    showTooltip: PropTypes.bool,
   }
 
-  static types = { employer: employerType, infos: infosType }
+  static defaultProps = {
+    showTooltip: false,
+  }
+
+  static types = { employer: employerType, info: infosType }
 
   state = {
     showPDFViewer: false,
   }
 
-  submitFile = ({ target: { files } }) => {
-    this.setState({ showPDFViewer: false })
+  renderFileField(fileInput, showTooltip, id) {
+    if (!showTooltip) return fileInput
+    if (!id) throw new Error(`id is undefined`)
 
-    this.props.submitFile({
+    return (
+      <TooltipOnFocus
+        useHover
+        tooltipId={`file[${id}]`}
+        content={
+          <Typography>
+            Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx
+          </Typography>
+        }
+      >
+        {fileInput}
+      </TooltipOnFocus>
+    )
+  }
+
+  submitFile = ({ target: { files } }) => {
+    return this.props.submitFile({
       file: files[0],
       documentId: this.props.id,
       type: this.props.type,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
+  }
+
+  computePDFUrl = () => {
+    const { id, type } = this.props
+
+    // Note: if employer file is missing, there is no data, so we have to check that the id exists
+    // But for infosType, the id exists
+    if (type === employerType && !id) return null
+    else if (type === infosType && !this.props.fileExistsOnServer) return null
+
+    return type === employerType
+      ? `/api/employers/files?documentId=${id}`
+      : `/api/declarations/files?declarationInfoId=${id}`
+  }
+
+  addFile = ({ target: { files } }) => {
+    return this.props.submitFile({
+      isAddingFile: true,
+      file: files[0],
+      documentId: this.props.id,
+      type: this.props.type,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
+  }
+
+  removePage = (pageNumberToRemove) => {
+    return this.props.removePageFromFile({
+      pageNumberToRemove,
+      type: this.props.type,
+      documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
@@ -152,8 +211,9 @@ export class DocumentUpload extends Component {
       isTransmitted,
       label,
       allowSkipFile,
-      type,
       infoTooltipText,
+      showTooltip,
+      employerId,
     } = this.props
 
     const { showPDFViewer } = this.state
@@ -169,10 +229,7 @@ export class DocumentUpload extends Component {
       />
     )
 
-    const url =
-      type === employerType
-        ? `/api/employers/files?documentId=${id}`
-        : `/api/declarations/files?declarationInfoId=${id}`
+    const url = this.computePDFUrl()
 
     let sideFormLabelContent = null
     if (isTransmitted) {
@@ -243,6 +300,16 @@ export class DocumentUpload extends Component {
       </Button>
     )
 
+    const uploadInput = (
+      <CustomColorButton
+        aria-describedby={`file[${id}]`}
+        component="span"
+        size="small"
+      >
+        Parcourir
+      </CustomColorButton>
+    )
+
     return (
       <Fragment>
         <StyledContainer>
@@ -309,7 +376,17 @@ export class DocumentUpload extends Component {
           <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
         </StyledContainer>
 
-        {showPDFViewer && <PDFViewer url={url} />}
+        <DocumentDialog
+          isOpened={showPDFViewer}
+          onCancel={this.togglePDFViewer}
+          title={label}
+          addFile={this.addFile}
+          removePage={this.removePage}
+          submitFile={this.submitFile}
+          error={error}
+          pdfUrl={url}
+          fileExistsOnServer={fileExistsOnServer}
+        />
       </Fragment>
     )
   }

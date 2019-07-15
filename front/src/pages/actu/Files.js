@@ -18,6 +18,7 @@ import MainActionButton from '../../components/Generic/MainActionButton'
 import { secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 import { canUsePDFViewer } from '../../lib/file'
+import { MAX_PDF_PAGE } from '../../components/Generic/documents/DocumentDialog'
 
 const StyledFiles = styled.div`
   display: flex;
@@ -202,12 +203,36 @@ export class Files extends Component {
       )
   }
 
-  submitEmployerFile = ({
-    documentId,
-    file,
-    skip,
+  displayMissingDocs = () => this.setState({ showMissingDocs: true })
+
+  handleUploadError = ({ err, loadingKey, errorKey }) => {
+    const errorLabel =
+      err.status === 413
+        ? `Erreur : Fichier trop lourd (limite : 5000ko) ou dépassant la taille autorisée : ${MAX_PDF_PAGE} pages`
+        : err.status === 400
+        ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+        : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
+    // TODO this should be refined to not send all common errors
+    // (file too big, etc)
+    window.Raven.captureException(err)
+
+    this.setState({
+      [loadingKey]: false,
+      [errorKey]: errorLabel,
+    })
+  }
+
+  removePageFromFile = (data) => {
+    return data.type === infoType
+      ? this.removeDeclarationPageFromFile(data)
+      : this.removeEmployerPageFromFile(data)
+  }
+
+  // EMPLOYER
+  removeEmployerPageFromFile = ({
     employerId,
     employerDocType,
+    pageNumberToRemove,
   }) => {
     const loadingKey = getLoadingKey({
       id: employerId,
@@ -220,7 +245,73 @@ export class Files extends Component {
     this.setState({ [loadingKey]: true, [errorKey]: null })
 
     let request = superagent
-      .post('/api/employers/files')
+      .post(
+        `/api/employers/remove-file-page?pageNumberToRemove=${pageNumberToRemove}`,
+      )
+      .set('Content-Type', 'application/json')
+      .set('CSRF-Token', this.props.token)
+      .send({ employerId })
+      .send({ documentType: employerDocType })
+
+    return request
+      .then((res) => res.body)
+      .then((updatedEmployer) => {
+        return new Promise((resolve) => {
+          this.setState((prevState) => {
+            const updatedDeclarations = prevState.declarations.map(
+              (declaration) => ({
+                ...declaration,
+                employers: declaration.employers.map((employer) => {
+                  if (employer.id !== employerId) return employer
+                  return updatedEmployer
+                }),
+              }),
+            )
+
+            return {
+              declarations: updatedDeclarations,
+              [loadingKey]: false,
+              [errorKey]: null,
+            }
+          })
+          resolve()
+        })
+      })
+      .catch((err) => {
+        window.Raven.captureException(err)
+        this.setState({
+          [loadingKey]: false,
+          [errorKey]:
+            'Erreur lors de la suppression de la page. Merci de bien vouloir réessayer ultérieurement',
+        })
+
+        throw err
+      })
+  }
+
+  submitEmployerFile = ({
+    documentId,
+    file,
+    skip,
+    employerId,
+    employerDocType,
+    isAddingFile = false,
+  }) => {
+    const loadingKey = getLoadingKey({
+      id: employerId,
+      type: employerDocType,
+    })
+    const errorKey = getErrorKey({ id: employerId, type: employerDocType })
+
+    this.closeSkipModal()
+
+    this.setState({ [loadingKey]: true, [errorKey]: null })
+
+    let url = '/api/employers/files'
+    if (isAddingFile) url = url.concat('?add=true')
+
+    let request = superagent
+      .post(url)
       .set('CSRF-Token', this.props.token)
       .field('employerId', employerId)
       .field('documentType', employerDocType)
@@ -237,39 +328,40 @@ export class Files extends Component {
     return request
       .then((res) => res.body)
       .then((updatedEmployer) => {
-        this.setState((prevState) => {
-          const updatedDeclarations = prevState.declarations.map(
-            (declaration) => ({
-              ...declaration,
-              employers: declaration.employers.map((employer) => {
-                if (employer.id !== employerId) return employer
-                return updatedEmployer
+        return new Promise((resolve) => {
+          this.setState((prevState) => {
+            const updatedDeclarations = prevState.declarations.map(
+              (declaration) => ({
+                ...declaration,
+                employers: declaration.employers.map((employer) => {
+                  if (employer.id !== employerId) return employer
+                  return updatedEmployer
+                }),
               }),
-            }),
-          )
+            )
 
-          return {
-            declarations: updatedDeclarations,
-            [loadingKey]: false,
-            [errorKey]: null,
-          }
+            return {
+              declarations: updatedDeclarations,
+              [loadingKey]: false,
+              [errorKey]: null,
+            }
+          })
+          resolve()
         })
       })
       .catch((err) => {
-        const errorLabel =
-          err.status === 413
-            ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
-            : err.status === 400
-            ? 'Erreur : Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
-        // TODO this should be refined to not send all common errors
-        // (file too big, etc)
-        window.Raven.captureException(err)
-        this.setState({ [loadingKey]: false, [errorKey]: errorLabel })
+        this.handleUploadError({ err, loadingKey, errorKey })
+        throw err
       })
   }
 
-  submitAdditionalFile = ({ documentId, file, skip }) => {
+  // DECLARATIONS
+  submitDeclarationsFile = ({
+    documentId,
+    file,
+    skip,
+    isAddingFile = false,
+  }) => {
     const loadingKey = getLoadingKey({ id: documentId, type: infoType })
     const errorKey = getErrorKey({ id: documentId, type: infoType })
 
@@ -280,8 +372,11 @@ export class Files extends Component {
       [errorKey]: null,
     })
 
+    let url = '/api/declarations/files'
+    if (isAddingFile) url = url.concat('?add=true')
+
     let request = superagent
-      .post('/api/declarations/files')
+      .post(url)
       .set('CSRF-Token', this.props.token)
       .field('declarationInfoId', documentId)
 
@@ -294,34 +389,69 @@ export class Files extends Component {
     return request
       .then((res) => res.body)
       .then((declaration) => {
-        return this.setState((prevState) => {
-          const declarations = cloneDeep(prevState.declarations)
-          const declarationIndex = declarations.findIndex(
-            ({ id: declarationId }) => declaration.id === declarationId,
-          )
-          declarations[declarationIndex] = declaration
+        return new Promise((resolve) => {
+          this.setState((prevState) => {
+            const declarations = cloneDeep(prevState.declarations)
+            const declarationIndex = declarations.findIndex(
+              ({ id: declarationId }) => declaration.id === declarationId,
+            )
+            declarations[declarationIndex] = declaration
 
-          return {
-            declarations,
-            [loadingKey]: false,
-          }
+            return {
+              declarations,
+              [loadingKey]: false,
+            }
+          })
+          resolve()
         })
       })
       .catch((err) => {
-        const errorLabel =
-          err.status === 413
-            ? 'Erreur : Fichier trop lourd (limite : 5000ko)'
-            : err.status === 400
-            ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-            : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
-        // TODO this should be refined to not send all common errors
-        // (file too big, etc)
-        window.Raven.captureException(err)
+        this.handleUploadError({ err, loadingKey, errorKey })
+        throw err
+      })
+  }
 
-        this.setState({
-          [loadingKey]: false,
-          [errorKey]: errorLabel,
+  removeDeclarationPageFromFile = ({ documentId, pageNumberToRemove }) => {
+    const loadingKey = getLoadingKey({ id: documentId, type: infoType })
+    const errorKey = getErrorKey({ id: documentId, type: infoType })
+
+    this.closeSkipModal()
+
+    this.setState({
+      [loadingKey]: true,
+      [errorKey]: null,
+    })
+
+    let request = superagent
+      .post(
+        `/api/declarations/remove-file-page?pageNumberToRemove=${pageNumberToRemove}`,
+      )
+      .set('Content-Type', 'application/json')
+      .set('CSRF-Token', this.props.token)
+      .send({ declarationInfoId: documentId })
+
+    return request
+      .then((res) => res.body)
+      .then((declaration) => {
+        return new Promise((resolve) => {
+          this.setState((prevState) => {
+            const declarations = cloneDeep(prevState.declarations)
+            const declarationIndex = declarations.findIndex(
+              ({ id: declarationId }) => declaration.id === declarationId,
+            )
+            declarations[declarationIndex] = declaration
+
+            return {
+              declarations,
+              [loadingKey]: false,
+            }
+          })
+          resolve()
         })
+      })
+      .catch((err) => {
+        this.handleUploadError({ err, loadingKey, errorKey })
+        throw err
       })
   }
 
@@ -439,11 +569,12 @@ export class Files extends Component {
           label={label}
           caption={formatInfoDates(info)}
           fileExistsOnServer={!!info.file}
-          submitFile={this.submitAdditionalFile}
+          submitFile={this.submitDeclarationsFile}
+          removePageFromFile={this.removePageFromFile}
           canUsePDFViewer={info.file ? canUsePDFViewer(info.file) : null}
           skipFile={(params) =>
             this.askToSkipFile(() =>
-              this.submitAdditionalFile({ ...params, skip: true }),
+              this.submitDeclarationsFile({ ...params, skip: true }),
             )
           }
           allowSkipFile={allowSkipFile}
@@ -481,6 +612,7 @@ export class Files extends Component {
         id={get(salaryDoc, 'id')}
         label="Bulletin de salaire"
         fileExistsOnServer={!!get(salaryDoc, 'file')}
+        removePageFromFile={this.removePageFromFile}
         canUsePDFViewer={
           get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
         }
@@ -504,6 +636,7 @@ export class Files extends Component {
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
         fileExistsOnServer={!!get(certificateDoc, 'file')}
+        removePageFromFile={this.removePageFromFile}
         canUsePDFViewer={
           get(certificateDoc, 'file')
             ? canUsePDFViewer(certificateDoc.file)

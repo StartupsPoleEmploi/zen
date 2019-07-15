@@ -11,7 +11,8 @@ const defaultProps = {
   label: 'Feuille maladie',
   submitFile: action('Submit file'),
   skipFile: () => {},
-  type: DocumentUpload.types.infos,
+  removePageFromFile: action('Remove page from file'),
+  type: DocumentUpload.types.info,
 }
 
 storiesOf('DocumentUpload', module)

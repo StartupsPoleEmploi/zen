@@ -1,18 +1,15 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Autorenew from '@material-ui/icons/Autorenew'
 import Check from '@material-ui/icons/Check'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Info from '@material-ui/icons/InfoOutlined'
 import Eye from '@material-ui/icons/RemoveRedEye'
-import Warning from '@material-ui/icons/WarningRounded'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
@@ -46,28 +43,20 @@ const StyledListItem = styled(ListItem)`
 const BaseStyledFormLabel = styled(FormLabel)`
   && {
     display: flex;
-    background-color: #f5f5f5;
     border-radius: 1rem;
-    padding-left: 1rem;
     align-items: center;
   }
 `
 
 const StyledFormLabel = styled(BaseStyledFormLabel)`
   justify-content: flex-end;
-  width: 26.3rem;
 `
 
 const SideFormLabel = styled(BaseStyledFormLabel)`
   && {
     width: 12rem;
     background-color: transparent;
-  }
-`
-
-const StyledFormHelperText = styled(FormHelperText)`
-  && {
-    margin: 0 1.5rem;
+    padding-left: 1rem;
   }
 `
 
@@ -216,10 +205,10 @@ export class DocumentUpload extends Component {
       )
     } else if (allowSkipFile) {
       sideFormLabelContent = (
-        <Tooltip
-          placement="top"
-          title={
-            <Typography style={{ color: '#fff' }}>
+        <TooltipOnFocus
+          useHover
+          content={
+            <Typography>
               Cochez cette case si vous avez transmis ce document à Pôle Emploi
               par d'autres moyens que Zen.
             </Typography>
@@ -230,7 +219,7 @@ export class DocumentUpload extends Component {
             {/* eslint-disable-next-line no-irregular-whitespace */}
             Transmis à Pôle Emploi
           </SideButton>
-        </Tooltip>
+        </TooltipOnFocus>
       )
     }
 
@@ -253,7 +242,12 @@ export class DocumentUpload extends Component {
         >
           <ListItemText
             primary={
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
                 <div>
                   <b>{label}</b>
                   {caption && (
@@ -264,20 +258,16 @@ export class DocumentUpload extends Component {
                   )}
                 </div>
                 {infoTooltipText && (
-                  <Tooltip
-                    title={
-                      <Typography style={{ color: '#fff' }}>
-                        {infoTooltipText}
-                      </Typography>
-                    }
-                    placement="top"
+                  <TooltipOnFocus
+                    content={<Typography>{infoTooltipText}</Typography>}
+                    useHover
                     enterDelay={0}
                     leaveDelay={1500}
                     enterTouchDelay={0}
                     leaveTouchDelay={3000}
                   >
                     <InfoIcon />
-                  </Tooltip>
+                  </TooltipOnFocus>
                 )}
               </div>
             }
@@ -300,24 +290,15 @@ export class DocumentUpload extends Component {
                           whiteSpace: 'nowrap',
                           height: 32,
                           minHeight: 32,
-                          width: 263, // Note: width mirrors value in StyledFormLabel
                         }}
                       >
                         <EyeIcon />
-                        Voir le document fourni
+                        Voir le document
                       </Button>
                     )}
                 {!fileExistsOnServer && !isTransmitted && (
                   <StyledFormLabel>
                     {hiddenInput}
-                    {!error && (
-                      <Fragment>
-                        <Warning />
-                        <StyledFormHelperText>
-                          Document à envoyer
-                        </StyledFormHelperText>
-                      </Fragment>
-                    )}
                     {this.renderFileField(uploadInput, showTooltip, employerId)}
                   </StyledFormLabel>
                 )}

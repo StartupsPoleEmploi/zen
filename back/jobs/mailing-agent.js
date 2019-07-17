@@ -15,6 +15,7 @@ if (
 const sendDeclarationCampaign = require('../lib/mailings/sendDeclarationCampaign')
 const sendDeclarationReminderCampaign = require('../lib/mailings/sendDeclarationReminderCampaign')
 const sendCurrentDeclarationDocsReminders = require('../lib/mailings/sendCurrentDeclarationDocsReminders')
+const sendAllDocumentsReminder = require('../lib/mailings/sendAllDocumentsReminder')
 const sendDeclarationConfirmationEmails = require('../lib/mailings/sendDeclarationConfirmationEmails')
 const sendDocumentsConfirmationEmails = require('../lib/mailings/sendDocumentsConfirmationEmails')
 
@@ -38,6 +39,7 @@ if (config.get('shouldSendCampaignEmails')) {
     true,
     'Europe/Paris',
   )
+  job('0 0 9 20 * *', sendAllDocumentsReminder, null, true, 'Europe/Paris')
 }
 
 if (config.get('shouldSendTransactionalEmails')) {

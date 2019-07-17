@@ -20,6 +20,7 @@ class User extends BaseModel {
         email: { type: ['string', 'null'] },
         postalCode: { type: ['string', 'null'] },
         isAuthorized: { type: 'boolean' },
+        lastDocsReminderDate: { type: ['string', 'object', 'null'] },
       },
     }
   }

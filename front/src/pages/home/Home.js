@@ -484,7 +484,7 @@ export const Home = ({ location: { search } }) => (
           <b>
             Ce service est actuellement disponible pour
             <br />
-            les assistantes maternelles en Hauts-de-France.
+            les assistantes maternelles en Hauts-de-France et en Occitanie.
           </b>
         </Typography>
 

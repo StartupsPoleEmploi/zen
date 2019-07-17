@@ -175,7 +175,8 @@ export class Signup extends Component {
 
         <Typography paragraph variant="body1" style={{ marginBottom: '5rem' }}>
           <strong>
-            Le service est en test uniquement dans les Hauts de France
+            Le service est en test uniquement dans les Hauts-de-France et en
+            Occitanie
             <br />
             pour les{' '}
             <span aria-label="assistants et assistantes">

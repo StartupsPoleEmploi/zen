@@ -1,6 +1,8 @@
 const { format, setDate, subMonths } = require('date-fns')
 const fr = require('date-fns/locale/fr')
 const { get } = require('lodash')
+
+const winston = require('../log')
 const {
   createCampaignDraft,
   getTemplate,
@@ -60,7 +62,7 @@ const sendDeclarationReminderCampaign = () => {
         },
       )
     })
-    .catch((err) => console.error(err))
+    .catch((err) => winston.error(err))
 }
 
 module.exports = sendDeclarationReminderCampaign

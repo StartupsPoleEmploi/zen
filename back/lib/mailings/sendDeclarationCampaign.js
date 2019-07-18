@@ -1,6 +1,8 @@
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
 const { get } = require('lodash')
+
+const winston = require('../log')
 const {
   createCampaignDraft,
   getTemplate,
@@ -46,7 +48,7 @@ const sendDeclarationCampaign = () =>
           'Text-part': interpolatedText,
         }).then(() => scheduleCampaign(campaignId))
       })
-      .catch((err) => console.error(err))
+      .catch((err) => winston.error(err))
   })
 
 module.exports = sendDeclarationCampaign

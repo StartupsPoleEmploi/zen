@@ -14,8 +14,10 @@ if (
 
 const sendDeclarationCampaign = require('../lib/mailings/sendDeclarationCampaign')
 const sendDeclarationReminderCampaign = require('../lib/mailings/sendDeclarationReminderCampaign')
-const sendCurrentDeclarationDocsReminders = require('../lib/mailings/sendCurrentDeclarationDocsReminders')
-const sendAllDocumentsReminder = require('../lib/mailings/sendAllDocumentsReminder')
+const {
+  sendAllDocumentsReminder,
+  sendCurrentDeclarationDocsReminders,
+} = require('../lib/mailings/sendDocumentReminders')
 const sendDeclarationConfirmationEmails = require('../lib/mailings/sendDeclarationConfirmationEmails')
 const sendDocumentsConfirmationEmails = require('../lib/mailings/sendDocumentsConfirmationEmails')
 

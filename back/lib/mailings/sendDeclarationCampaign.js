@@ -3,9 +3,9 @@ const fr = require('date-fns/locale/fr')
 const { get } = require('lodash')
 const {
   createCampaignDraft,
-  getCampaignTemplate,
+  getTemplate,
   scheduleCampaign,
-  setCampaignTemplate,
+  setTemplate,
 } = require('./mailjet')
 
 const VALIDATED_USERS_SEGMENT_ID = 337
@@ -27,17 +27,8 @@ const sendDeclarationCampaign = () =>
     const campaignId = get(res, 'body.Data.0.ID')
     if (!campaignId) throw new Error('No Campaign ID')
 
-    return getCampaignTemplate(DECLARATION_CAMPAIGN_TEMPLATE)
-      .then((result) => {
-        const { 'Html-part': html, 'Text-part': text } = get(
-          result,
-          'body.Data.0',
-          {},
-        )
-        if (!html || !text)
-          throw new Error(
-            `No HTML or text part for template ${DECLARATION_CAMPAIGN_TEMPLATE}`,
-          )
+    return getTemplate(DECLARATION_CAMPAIGN_TEMPLATE)
+      .then(({ html, text }) => {
         const regexp = new RegExp('{{var:date:""}}', 'ig')
         const formattedMonth = format(new Date(), 'MMMM', { locale: fr })
 
@@ -50,7 +41,7 @@ const sendDeclarationCampaign = () =>
         const interpolatedHtml = html.replace(regexp, formattedDate)
         const interpolatedText = text.replace(regexp, formattedDate)
 
-        return setCampaignTemplate(campaignId, {
+        return setTemplate(campaignId, {
           'Html-part': interpolatedHtml,
           'Text-part': interpolatedText,
         }).then(() => scheduleCampaign(campaignId))

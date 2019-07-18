@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 const { format, subMonths, subDays } = require('date-fns')
 const fr = require('date-fns/locale/fr')
-const { chunk, get, orderBy } = require('lodash')
+const { chunk, orderBy } = require('lodash')
 
-const { getCampaignTemplate, sendMail } = require('./mailjet')
+const { getTemplate, sendMail } = require('./mailjet')
 const DeclarationMonth = require('../../models/DeclarationMonth')
 const Declaration = require('../../models/Declaration')
 const EmployerDocument = require('../../models/EmployerDocument')
@@ -82,20 +82,9 @@ const sendAllDocumentsReminders = () => {
         'declarations.isFinished': false,
         'declarations.hasFinishedDeclaringEmployers': true,
       }),
-    getCampaignTemplate(ALL_DOCS_REMINDER_TEMPLATE_ID),
+    getTemplate(ALL_DOCS_REMINDER_TEMPLATE_ID),
   ])
-    .then(async ([allUsers, campaignTemplateResult]) => {
-      const { 'Html-part': html, 'Text-part': text } = get(
-        campaignTemplateResult,
-        'body.Data.0',
-        {},
-      )
-      if (!html || !text) {
-        throw new Error(
-          `No HTML or text part for template ${ALL_DOCS_REMINDER_TEMPLATE_ID}`,
-        )
-      }
-
+    .then(async ([allUsers, { html, text }]) => {
       const userChunks = chunk(allUsers, 50)
 
       for (const users of userChunks) {
@@ -221,20 +210,9 @@ const sendCurrentDeclarationDocsReminders = () => {
               subDays(new Date(), 1),
             ).orWhereNull('Users.lastDocsReminderDate')
           }),
-        getCampaignTemplate(DOCS_REMINDER_TEMPLATE_ID),
+        getTemplate(DOCS_REMINDER_TEMPLATE_ID),
       ])
-        .then(async ([allDeclarations, campaignTemplateResult]) => {
-          const { 'Html-part': html, 'Text-part': text } = get(
-            campaignTemplateResult,
-            'body.Data.0',
-            {},
-          )
-          if (!html || !text) {
-            throw new Error(
-              `No HTML or text part for template ${DOCS_REMINDER_TEMPLATE_ID}`,
-            )
-          }
-
+        .then(async ([allDeclarations, { html, text }]) => {
           const declarationChunks = chunk(allDeclarations, 50)
 
           for (const declarations of declarationChunks) {

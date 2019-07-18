@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    (knex.schema.table('declarations', (table) => {
+    knex.schema.table('declarations', (table) => {
       table.dropColumn('isCleanedUp')
     }),
     knex.schema.table('declaration_infos', (table) => {
@@ -23,6 +23,6 @@ exports.down = function(knex, Promise) {
     }),
     knex.schema.table('employer_documents', (table) => {
       table.dropColumn('isCleanedUp')
-    })),
+    }),
   ])
 }

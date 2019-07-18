@@ -41,6 +41,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
     "node-mailjet": "^3.3.1",
+    "node-pdftk": "^2.0.3",
     "objection": "1.4.0",
     "objects-to-csv": "^1.2.1",
     "pdfjs": "^2.1.0",

@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const fs = require('fs')
 
 const router = express.Router()
 const { transaction } = require('objection')
@@ -25,9 +26,13 @@ const ActivityLog = require('../models/ActivityLog')
 
 const { DECLARATION_STATUSES } = require('../constants')
 
-const { getPDF } = require('../lib/pdf-utils')
-
-const imgExtensions = ['.png', '.jpeg', '.jpg']
+const {
+  getPDF,
+  numberOfPage,
+  removePage,
+  handleNewFileUpload,
+  IMG_EXTENSIONS,
+} = require('../lib/pdf-utils')
 
 const getSanitizedEmployer = ({ employer, declaration, user }) => {
   const workHours = parseFloat(employer.workHours)
@@ -42,6 +47,71 @@ const getSanitizedEmployer = ({ employer, declaration, user }) => {
     salary: !Number.isNaN(salary) ? salary : null,
   }
 }
+
+router.post('/remove-file-page', (req, res, next) => {
+  const { documentType: type, employerId } = req.body
+
+  if (!employerId) return res.status(400).json('Missing employerId')
+  if (!Object.values(EmployerDocument.types).includes(type)) {
+    return res.status(400).json('Missing documentType')
+  }
+
+  const fetchEmployer = () =>
+    Employer.query()
+      .eager('documents')
+      .findOne({
+        id: employerId,
+        userId: req.session.user.id,
+      })
+
+  return fetchEmployer(req, employerId)
+    .then((employer) => {
+      if (!employer) return res.status(404).json('No such employer')
+
+      const existingDocument = employer.documents.find(
+        (document) =>
+          document.type === type && path.extname(document.file) === '.pdf',
+      )
+
+      if (!existingDocument) {
+        throw new Error(
+          `Attempt to remove a page to a non-PDF file : ${
+            existingDocument.file
+          }`,
+        )
+      }
+
+      const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10)
+      if (!pageNumberToRemove || isNaN(pageNumberToRemove))
+        return res.status(400).json('No page to remove')
+
+      const pdfFilePath = `${uploadDestination}${existingDocument.file}`
+      return numberOfPage(pdfFilePath)
+        .then((pageRemaining) => {
+          if (pageRemaining === 1) {
+            // Remove last page: delete the file and delete the reference in database
+            return new Promise((resolve, reject) => {
+              fs.unlink(pdfFilePath, (deleteError) => {
+                if (deleteError) return reject(deleteError)
+                return existingDocument
+                  .$query()
+                  .del()
+                  .then(resolve)
+                  .catch(reject)
+              })
+            })
+          } else {
+            // Only remove the page
+            return removePage(pdfFilePath, pageNumberToRemove)
+          }
+        })
+        .then(fetchEmployer)
+        .then((employer) => {
+          return res.json(employer)
+        })
+    })
+    .catch(next)
+})
 
 router.post('/', requireActiveMonth, (req, res, next) => {
   const sentEmployers = req.body.employers || []
@@ -200,7 +270,7 @@ router.get('/files', (req, res, next) => {
       const extension = path.extname(document.file)
 
       // Not a PDF / convertible as PDF file
-      if (extension !== '.pdf' && !imgExtensions.includes(extension))
+      if (extension !== '.pdf' && !IMG_EXTENSIONS.includes(extension))
         return res.sendFile(document.file, { root: uploadDestination })
 
       return getPDF(document, uploadDestination).then((pdfPath) => {
@@ -234,10 +304,10 @@ router.post('/files', upload.single('document'), (req, res, next) => {
       })
 
   return fetchEmployer()
-    .then((employer) => {
+    .then(async (employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
-      const documentFileObj = skip
+      let documentFileObj = skip
         ? {
             // Used in case the user sent his file by another means.
             file: null,
@@ -250,8 +320,36 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         (document) => document.type === type,
       )
 
-      let savePromise
+      if (!skip) {
+        const isAddingFile = !!req.query.add
+        const existingDocumentIsPDF =
+          existingDocument && path.extname(existingDocument.file) === '.pdf'
 
+        if (isAddingFile && !existingDocumentIsPDF) {
+          // Couldn't happen because 'Add a page' is only available in PDFViewer
+          // So the file should already be a PDF (for how long ? FIXME ?)
+          throw new Error(
+            `Attempt to add a page to a non-PDF file : ${
+              existingDocument.file
+            }`,
+          )
+        }
+
+        try {
+          documentFileObj = await handleNewFileUpload({
+            newFilename: req.file.filename,
+            existingDocumentFile: existingDocument && existingDocument.file,
+            documentFileObj,
+            isAddingFile,
+          })
+        } catch (err) {
+          // To get the correct error message front-side,
+          // we need to ensure that the HTTP status is 413
+          return res.status(413).json(err.message)
+        }
+      }
+
+      let savePromise
       if (!existingDocument) {
         savePromise = EmployerDocument.query().insert({
           employerId: employer.id,

@@ -13,6 +13,10 @@ const winston = require('../log')
 const ALL_DOCS_REMINDER_TEMPLATE_ID = 915055
 const DOCS_REMINDER_TEMPLATE_ID = 915059
 
+const MAX_DOCUMENTS_TO_LIST = 10
+const WAIT_TIME = 3000 // wait 3 seconds between each mailjet request (trying to avoid mailjet quota error)
+const WAIT_TIME_AFTER_ERROR = 300000 // wait 5 minutes before retrying after an error
+
 const documentLabels = {
   sickLeave: 'Feuille maladie',
   internship: 'Attestation de stage',
@@ -65,6 +69,36 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
       }, []),
     )
 
+const getMessage = ({ user, html, text, subject, campaignName }) => ({
+  DeduplicateCampaign: true,
+  From: {
+    Email: 'no-reply@zen.pole-emploi.fr',
+    Name: `L'équipe Zen Pôle Emploi`,
+  },
+  To: [
+    {
+      Email: user.email,
+      Name: `${user.firstName} ${user.lastName}`,
+    },
+  ],
+  HTMLPart: html,
+  TextPart: text,
+  Subject: subject,
+  Variables: {
+    prenom: user.firstName,
+  },
+  CustomCampaign: campaignName,
+})
+
+// Save in Users table when the last reminder was saved, then wait WAIT_TIME ms
+const saveAndWait = ({ userIds }) =>
+  User.query()
+    .patch({
+      lastDocsReminderDate: new Date(),
+    })
+    .whereIn('id', userIds)
+    .then(() => wait(WAIT_TIME))
+
 const sendAllDocumentsReminders = () => {
   return Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
@@ -99,7 +133,7 @@ const sendAllDocumentsReminders = () => {
             [],
           )
 
-          const listedDocuments = documents.slice(0, 10)
+          const listedDocuments = documents.slice(0, MAX_DOCUMENTS_TO_LIST)
           const remainingDocumentsNb = documents.length - listedDocuments.length
 
           const regexpDocs = new RegExp('{{var:documents:""}}', 'ig')
@@ -130,41 +164,22 @@ const sendAllDocumentsReminders = () => {
               : 'Merci de vous connecter pour *valider* les justificatifs transmis\n',
           )
 
-          return {
-            DeduplicateCampaign: true,
-            From: {
-              Email: 'no-reply@zen.pole-emploi.fr',
-              Name: `L'équipe Zen Pôle Emploi`,
-            },
-            To: [
-              {
-                Email: user.email,
-                Name: `${user.firstName} ${user.lastName}`,
-              },
-            ],
-            HTMLPart: interpolatedHtml,
-            TextPart: interpolatedText,
-            Subject: `Votre dossier Pôle emploi n'est pas à jour`,
-            Variables: {
-              prenom: user.firstName,
-            },
-            CustomCampaign: `Rappel docs global ${getFormattedMonthAndYear(
+          return getMessage({
+            user,
+            html: interpolatedHtml,
+            text: interpolatedText,
+            subject: `Votre dossier Pôle emploi n'est pas à jour`,
+            campaignName: `Rappel docs global ${getFormattedMonthAndYear(
               new Date(),
             )}`,
-          }
+          })
         })
 
         await sendMail({
           Messages: messages,
         })
 
-        await User.query()
-          .patch({
-            lastDocsReminderDate: new Date(),
-          })
-          .whereIn('id', users.map((user) => user.id))
-
-        await wait(3000) // wait 3 seconds between each loop (trying to avoid mailjet quota error)
+        await saveAndWait({ userIds: users.map((user) => user.id) })
       }
     })
     .catch((err) => {
@@ -172,7 +187,7 @@ const sendAllDocumentsReminders = () => {
         'There was an error while sending reminder emails. The process will start again in 5 minutes.',
       )
       winston.error(err)
-      setTimeout(sendAllDocumentsReminders, 300000)
+      setTimeout(sendAllDocumentsReminders, WAIT_TIME_AFTER_ERROR)
     })
 }
 
@@ -241,44 +256,25 @@ const sendCurrentDeclarationDocsReminders = () => {
                     : 'Merci de vous connecter pour *valider* les justificatifs transmis\n',
                 )
 
-              return {
-                DeduplicateCampaign: true,
-                From: {
-                  Email: 'no-reply@zen.pole-emploi.fr',
-                  Name: `L'équipe Zen Pôle Emploi`,
-                },
-                To: [
-                  {
-                    Email: declaration.user.email,
-                    Name: `${declaration.user.firstName} ${
-                      declaration.user.lastName
-                    }`,
-                  },
-                ],
-                HTMLPart: interpolatedHtml,
-                TextPart: interpolatedText,
-                Subject:
+              return getMessage({
+                user: declaration.user,
+                html: interpolatedHtml,
+                text: interpolatedText,
+                subject:
                   documents.length > 0
                     ? 'Nous attendons vos justificatifs'
                     : `Vous n'avez pas validé vos justificatifs`,
-                Variables: {
-                  prenom: declaration.user.firstName,
-                },
-                CustomCampaign: `Rappel docs actu ${formattedMonthInFrench}`,
-              }
+                campaignName: `Rappel docs actu ${formattedMonthInFrench}`,
+              })
             })
 
             await sendMail({
               Messages: messages,
             })
 
-            await User.query()
-              .patch({
-                lastDocsReminderDate: new Date(),
-              })
-              .whereIn('id', declarations.map(({ user }) => user.id))
-
-            await wait(3000) // wait 3 seconds between each loop (trying to avoid mailjet quota error)
+            await saveAndWait({
+              userIds: declarations.map(({ user }) => user.id),
+            })
           }
         })
         .catch((err) => {
@@ -286,7 +282,7 @@ const sendCurrentDeclarationDocsReminders = () => {
             'There was an error while sending reminder emails. The process will start again in 5 minutes.',
           )
           winston.error(err)
-          setTimeout(sendCurrentDeclarationDocsReminders, 300000)
+          setTimeout(sendCurrentDeclarationDocsReminders, WAIT_TIME_AFTER_ERROR)
         })
     })
 }

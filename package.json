@@ -8,7 +8,9 @@
     "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test",
     "test:front:snapshots": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test -- -u",
     "test:back": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm  node yarn test; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f",
-    "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm node yarn test -- -u; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f"
+    "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm node yarn test -- -u; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f",
+    "database:knex-migrate": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:latest",
+    "database:knex-rollback": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:rollback"
   },
   "lint-staged": {
     "*.js": [

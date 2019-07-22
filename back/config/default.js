@@ -15,6 +15,8 @@ module.exports = {
   shouldSendTransactionalEmails:
     process.env.SEND_TRANSACTIONAL_EMAILS === 'true',
   authorizeAllUsers: process.env.AUTHORIZE_ALL_USERS === 'true',
+  // fill in local-* config file with an email if ever needed to test emails out of prod env
+  testEmail: '',
   // The following 2 values should never be activated out of local development
   // they are only listed here as an information of their existence.
   bypassDeclarationDispatch: false,

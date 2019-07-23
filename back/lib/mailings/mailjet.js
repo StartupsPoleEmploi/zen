@@ -2,6 +2,7 @@ const NodeMailjet = require('node-mailjet')
 const { addDays, format } = require('date-fns')
 const superagent = require('superagent')
 const { get } = require('lodash')
+const config = require('config')
 
 const isProd = process.env.NODE_ENV === 'production'
 const LIST_ID = isProd ? 14703 : 10129294 // id of prod list / a test list with devs
@@ -19,8 +20,12 @@ const mailjet = NodeMailjet.connect(
 const sendMail = (opts) =>
   mailjet.post('send', { version: 'v3.1' }).request({
     // Mailjet *will* send e-mails out of prod if this line is removed
-    SandboxMode: process.env.NODE_ENV !== 'production',
+    SandboxMode: !isProd,
     ...opts,
+    Messages: opts.Messages.map((message) => ({
+      ...message,
+      To: isProd ? message.To : [{ Email: config.get('testEmail') }],
+    })),
   })
 
 const manageContact = ({ email, name, properties }) =>

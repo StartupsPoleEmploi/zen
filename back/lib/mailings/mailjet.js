@@ -76,14 +76,26 @@ module.exports = {
       ...opts,
     }),
 
-  getCampaignTemplate: (id) =>
+  getTemplate: (id) =>
     mailjet
       .get('template', { version: 'v3' })
       .id(id)
       .action('detailcontent')
-      .request(),
+      .request()
+      .then((result) => {
+        const { 'Html-part': html, 'Text-part': text } = get(
+          result,
+          'body.Data.0',
+          {},
+        )
+        if (!html || !text) {
+          throw new Error(`No HTML or text part for template ${id}`)
+        }
 
-  setCampaignTemplate: (id, opts) =>
+        return { html, text }
+      }),
+
+  setTemplate: (id, opts) =>
     mailjet
       .post('campaigndraft', { version: 'v3' })
       .id(id)

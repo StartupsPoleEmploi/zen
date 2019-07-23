@@ -12,14 +12,13 @@ const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 const StyledThanks = styled.div`
   margin: auto;
   text-align: center;
-  width: 62rem;
-  max-width: 100%;
+  width: 100%;
+  max-width: 62rem;
 `
 
 const StyledImg = styled.img`
   max-width: 30rem;
-  width: 100%;
-  margin-top: 5rem;
+  width: 80%;
 `
 
 const Title = styled(Typography).attrs({ component: 'h1' })`

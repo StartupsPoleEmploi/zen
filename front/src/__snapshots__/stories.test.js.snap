@@ -3317,13 +3317,13 @@ exports[`Storyshots Home default 1`] = `
     role="main"
   >
     <section
-      className="sc-dNLxif bUWoji"
+      className="sc-dNLxif eVdXZj"
     >
       <div
         className="sc-jqCOkK qkHsc"
       >
         <div
-          className="sc-uJMKN cECpMK"
+          className="sc-uJMKN jTJrEE"
         >
           <h1
             className="MuiTypography-root-1533 MuiTypography-h4-1548 MuiTypography-paragraph-1561 sc-bbmXgH kxcHQA"
@@ -3343,14 +3343,12 @@ exports[`Storyshots Home default 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1533 MuiTypography-h6-1550 MuiTypography-paragraph-1561 sc-gGBfsJ eaQlFN"
+            className="MuiTypography-root-1533 MuiTypography-h6-1550 MuiTypography-paragraph-1561 sc-gGBfsJ kmLFEh"
           >
-            Zen vous propose une actualisation
-            <br />
-            et un envoi de documents simplifiés.
+            Zen vous propose une actualisation et un envoi de documents simplifiés.
           </h2>
           <a
-            className="MuiButtonBase-root-1595 MuiButton-root-1569 MuiButton-contained-1580 MuiButton-containedPrimary-1581 MuiButton-raised-1583 MuiButton-raisedPrimary-1584 sc-jnlKLf gixFiQ"
+            className="MuiButtonBase-root-1595 MuiButton-root-1569 MuiButton-contained-1580 MuiButton-containedPrimary-1581 MuiButton-raised-1583 MuiButton-raisedPrimary-1584 sc-jnlKLf gQRsvM"
             href="/api/login"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -3378,6 +3376,7 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <button
           className="sc-TOsTZ gDDugD"
+          id="home-video"
           onClick={[Function]}
           style={
             Object {
@@ -3456,7 +3455,7 @@ exports[`Storyshots Home default 1`] = `
       <h2
         className="MuiTypography-root-1533 MuiTypography-h5-1549 sc-hEsumM doXLhg"
       >
-        En quelques clics seulement !
+        En quelques clics !
       </h2>
       <ul
         className="sc-btzYZH fJugqv"
@@ -3611,7 +3610,7 @@ exports[`Storyshots Home default 1`] = `
       </div>
     </section>
     <section
-      className="sc-dfVpRl fzNNDq"
+      className="sc-dfVpRl hESGDk"
       style={Object {}}
     >
       <h2
@@ -3643,7 +3642,7 @@ exports[`Storyshots Home default 1`] = `
         </b>
       </p>
       <a
-        className="MuiButtonBase-root-1595 MuiButton-root-1569 MuiButton-contained-1580 MuiButton-containedPrimary-1581 MuiButton-raised-1583 MuiButton-raisedPrimary-1584 sc-jnlKLf sc-fYxtnH fEckzN"
+        className="MuiButtonBase-root-1595 MuiButton-root-1569 MuiButton-contained-1580 MuiButton-containedPrimary-1581 MuiButton-raised-1583 MuiButton-raisedPrimary-1584 sc-jnlKLf sc-fYxtnH hszizv"
         href="/api/login"
         onBlur={[Function]}
         onContextMenu={[Function]}
@@ -3836,13 +3835,13 @@ exports[`Storyshots Home loginFailed 1`] = `
     role="main"
   >
     <section
-      className="sc-dNLxif bUWoji"
+      className="sc-dNLxif eVdXZj"
     >
       <div
         className="sc-jqCOkK qkHsc"
       >
         <div
-          className="sc-uJMKN cECpMK"
+          className="sc-uJMKN jTJrEE"
         >
           <h1
             className="MuiTypography-root-1605 MuiTypography-h4-1620 MuiTypography-paragraph-1633 sc-bbmXgH kxcHQA"
@@ -3862,14 +3861,12 @@ exports[`Storyshots Home loginFailed 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1605 MuiTypography-h6-1622 MuiTypography-paragraph-1633 sc-gGBfsJ eaQlFN"
+            className="MuiTypography-root-1605 MuiTypography-h6-1622 MuiTypography-paragraph-1633 sc-gGBfsJ kmLFEh"
           >
-            Zen vous propose une actualisation
-            <br />
-            et un envoi de documents simplifiés.
+            Zen vous propose une actualisation et un envoi de documents simplifiés.
           </h2>
           <a
-            className="MuiButtonBase-root-1667 MuiButton-root-1641 MuiButton-contained-1652 MuiButton-containedPrimary-1653 MuiButton-raised-1655 MuiButton-raisedPrimary-1656 sc-jnlKLf gixFiQ"
+            className="MuiButtonBase-root-1667 MuiButton-root-1641 MuiButton-contained-1652 MuiButton-containedPrimary-1653 MuiButton-raised-1655 MuiButton-raisedPrimary-1656 sc-jnlKLf gQRsvM"
             href="/api/login"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -3897,6 +3894,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <button
           className="sc-TOsTZ gDDugD"
+          id="home-video"
           onClick={[Function]}
           style={
             Object {
@@ -3975,7 +3973,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       <h2
         className="MuiTypography-root-1605 MuiTypography-h5-1621 sc-hEsumM doXLhg"
       >
-        En quelques clics seulement !
+        En quelques clics !
       </h2>
       <ul
         className="sc-btzYZH fJugqv"
@@ -4130,7 +4128,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
     </section>
     <section
-      className="sc-dfVpRl fzNNDq"
+      className="sc-dfVpRl hESGDk"
       style={Object {}}
     >
       <h2
@@ -4162,7 +4160,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </b>
       </p>
       <a
-        className="MuiButtonBase-root-1667 MuiButton-root-1641 MuiButton-contained-1652 MuiButton-containedPrimary-1653 MuiButton-raised-1655 MuiButton-raisedPrimary-1656 sc-jnlKLf sc-fYxtnH fEckzN"
+        className="MuiButtonBase-root-1667 MuiButton-root-1641 MuiButton-contained-1652 MuiButton-containedPrimary-1653 MuiButton-raised-1655 MuiButton-raisedPrimary-1656 sc-jnlKLf sc-fYxtnH hszizv"
         href="/api/login"
         onBlur={[Function]}
         onContextMenu={[Function]}
@@ -4731,6 +4729,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
       >
         <button
           className="sc-TOsTZ gDDugD"
+          id="video"
           onClick={[Function]}
           style={
             Object {

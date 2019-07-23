@@ -11,4 +11,4 @@ storiesOf('YoutubeVideo', module)
       width: 600,
     }),
   )
-  .add('default', () => <YoutubeVideo />)
+  .add('default', () => <YoutubeVideo id="video" />)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import PropTypes from 'prop-types'
 import image from '../../images/youtube-video-thumb.jpg'
 import player from '../../images/player.svg'
 
@@ -37,6 +38,8 @@ const shadowStyle = {
 }
 
 export class YoutubeVideo extends Component {
+  static propTypes = { id: PropTypes.string.isRequired }
+
   state = {
     showVideo: false,
   }
@@ -48,7 +51,7 @@ export class YoutubeVideo extends Component {
 
     if (this.state.showVideo) {
       return (
-        <div style={{ ...style, ...shadowStyle }}>
+        <div style={{ ...style, ...shadowStyle }} id={this.props.id}>
           <iframe
             sandbox="allow-scripts allow-same-origin allow-presentation"
             title={title}
@@ -71,6 +74,7 @@ export class YoutubeVideo extends Component {
         title={`Visualiser : ${title}`}
         onClick={this.showVideo}
         style={{ ...style, ...shadowStyle }}
+        id={this.props.id}
       >
         <div
           style={{

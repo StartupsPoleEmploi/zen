@@ -8,29 +8,32 @@ import styled from 'styled-components'
 import TooltipOnFocus from './TooltipOnFocus'
 
 const StyledRadioGroup = styled(RadioGroup)`
-  &&{
-    & div[role=radiogroup] {
-      flex-wrap: nowrap;
-    }
+  && {
+    flex-wrap: nowrap;
   }
 `
 
 const StyledFormControlLabel = styled(FormControlLabel)`
-  background-color: ${({ checked }) => (checked ? '#4b4b4b' : '#f0f0f0')};
-  & > span {
-    color: ${({ checked }) => (checked ? '#fff' : 'inherit')};
+  && {
+    background-color: ${({ checked }) => (checked ? '#4b4b4b' : '#f0f0f0')};
+    & > span {
+      color: ${({ checked }) => (checked ? '#fff' : 'inherit')};
+    }
+    height: 3rem;
+    padding-right: 1rem;
+    margin: 0;
   }
-  height: 3rem;
-  padding-right: 1rem;
 `
 
 const FirstFormControlLabel = styled(StyledFormControlLabel)`
-  border-radius: 0.5rem 0 0 0.5rem;
+  && {
+    border-radius: 0.5rem 0 0 0.5rem;
+    margin-right: 0.2rem;
+  }
 `
 const SecondFormControlLabel = styled(StyledFormControlLabel)`
-  border-radius: 0 0.5rem 0.5rem 0;
   && {
-    margin-right: 0;
+    border-radius: 0 0.5rem 0.5rem 0;
   }
 `
 

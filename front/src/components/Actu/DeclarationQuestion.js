@@ -17,13 +17,19 @@ const MainQuestionContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     flex: 1;
-    flex-wrap: wrap;
   }
 `
 
 const QuestionLabel = styled(Typography)`
   && {
-    flex: 0 0 66%;
+    flex-shrink: 1;
+  }
+`
+
+const StyledFormControl = styled(FormControl)`
+  && {
+    flex-shrink: 0;
+    padding-left: 1rem;
   }
 `
 
@@ -58,13 +64,13 @@ export class DeclarationQuestion extends Component {
       <Container style={style} id={name}>
         <MainQuestionContainer>
           <QuestionLabel>{label}</QuestionLabel>
-          <FormControl component="fieldset" required error>
+          <StyledFormControl component="fieldset" required error>
             <YesNoRadioGroup
               name={name}
               value={value}
               onAnswer={this.handleChange}
             />
-          </FormControl>
+          </StyledFormControl>
         </MainQuestionContainer>
         {!isNull(value) && value === !withChildrenOnNo && children}
       </Container>

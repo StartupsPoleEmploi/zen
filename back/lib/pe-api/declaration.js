@@ -147,7 +147,9 @@ const sendDeclaration = ({ declaration, accessToken, ignoreErrors }) => {
       },
     ],
   }).catch((err) => {
-    winston.error('Error while sending declaration', declaration.id, err)
+    winston.error(
+      `Error while sending declaration ${declaration.id} (HTTP ${err.status})`,
+    )
     throw err
   })
 }

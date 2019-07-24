@@ -14,7 +14,6 @@ import {
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -505,4 +504,4 @@ export class Employers extends Component {
   }
 }
 
-export default withRouter(Employers)
+export default Employers

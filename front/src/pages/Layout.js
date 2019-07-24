@@ -88,6 +88,10 @@ const Container = styled.div`
 const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding-top: 2rem;
+  }
 `
 
 const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`

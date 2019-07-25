@@ -40,6 +40,7 @@ export class DeclarationQuestion extends Component {
     name: PropTypes.string.isRequired,
     onAnswer: PropTypes.func.isRequired,
     value: PropTypes.bool,
+    verticalLayout: PropTypes.bool,
     withChildrenOnNo: PropTypes.bool,
     style: PropTypes.object, // eslint-disable-line
   }
@@ -58,11 +59,17 @@ export class DeclarationQuestion extends Component {
       name,
       value,
       style = {},
+      verticalLayout,
       withChildrenOnNo,
     } = this.props
     return (
       <Container style={style} id={name}>
-        <MainQuestionContainer>
+        <MainQuestionContainer
+          style={{
+            flexDirection: verticalLayout ? 'column' : 'row',
+            textAlign: verticalLayout ? 'center' : 'left',
+          }}
+        >
           <QuestionLabel>{label}</QuestionLabel>
           <StyledFormControl component="fieldset" required error>
             <YesNoRadioGroup

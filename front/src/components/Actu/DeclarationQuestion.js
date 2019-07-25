@@ -6,9 +6,14 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
+import { mobileBreakpoint } from '../../constants'
 
 const Container = styled.li`
   padding: 1rem 2.4rem 1rem;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding: 1rem 2.4rem 2.5rem;
+  }
 `
 
 const MainQuestionContainer = styled.div`
@@ -17,6 +22,10 @@ const MainQuestionContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     flex: 1;
+
+    @media (max-width: ${mobileBreakpoint}) {
+      flex-direction: column;
+    }
   }
 `
 
@@ -30,6 +39,10 @@ const StyledFormControl = styled(FormControl)`
   && {
     flex-shrink: 0;
     padding-left: 1rem;
+
+    @media (max-width: ${mobileBreakpoint}) {
+      padding: 1rem 0 0 0;
+    }
   }
 `
 

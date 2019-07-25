@@ -237,7 +237,8 @@ export class DocumentUpload extends Component {
       <StyledContainer>
         <StyledListItem
           style={{
-            borderColor: fileExistsOnServer ? primaryBlue : '#df5555',
+            borderColor:
+              fileExistsOnServer || isTransmitted ? primaryBlue : '#df5555',
           }}
         >
           <ListItemText

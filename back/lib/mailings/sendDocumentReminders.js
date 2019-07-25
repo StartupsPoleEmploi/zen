@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 const { format, subMonths, subDays } = require('date-fns')
 const fr = require('date-fns/locale/fr')
-const { chunk, orderBy } = require('lodash')
+const { chunk, orderBy, uniqBy } = require('lodash')
 
 const { getTemplate, sendMail } = require('./mailjet')
 const DeclarationMonth = require('../../models/DeclarationMonth')
@@ -119,7 +119,7 @@ const sendAllDocumentsReminders = () => {
     getTemplate(ALL_DOCS_REMINDER_TEMPLATE_ID),
   ])
     .then(async ([allUsers, { html, text }]) => {
-      const userChunks = chunk(allUsers, 50)
+      const userChunks = chunk(uniqBy(allUsers, (user) => user.id), 50)
 
       for (const users of userChunks) {
         const messages = users.map((user) => {

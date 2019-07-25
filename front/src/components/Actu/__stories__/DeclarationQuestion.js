@@ -19,6 +19,9 @@ storiesOf('DeclarationQuestion', module)
     }),
   )
   .add('default', () => <DeclarationQuestion {...defaultProps} value={null} />)
+  .add('vertical layout', () => (
+    <DeclarationQuestion {...defaultProps} value={null} verticalLayout />
+  ))
   .add('yes', () => <DeclarationQuestion {...defaultProps} value />)
   .add('no', () => <DeclarationQuestion {...defaultProps} value={false} />)
   .add('with children on yes', () => (

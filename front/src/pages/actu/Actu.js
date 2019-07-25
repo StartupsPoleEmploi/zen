@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import Button from '@material-ui/core/Button'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import List from '@material-ui/core/List'
@@ -5,23 +6,24 @@ import Paper from '@material-ui/core/Paper'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Typography from '@material-ui/core/Typography'
+import withWidth from '@material-ui/core/withWidth'
 import Delete from '@material-ui/icons/DeleteOutlined'
 import { cloneDeep, get, isNull, pick, set } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { withRouter } from 'react-router'
 import store from 'store2'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
-import UserJobCheck from '../../components/Actu/UserJobCheck'
-import DatePicker from '../../components/Generic/DatePicker'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+import UserJobCheck from '../../components/Actu/UserJobCheck'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
+import DatePicker from '../../components/Generic/DatePicker'
 import MainActionButton from '../../components/Generic/MainActionButton'
+import { muiBreakpoints } from '../../constants'
 
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
@@ -142,6 +144,7 @@ export class Actu extends Component {
       csrfToken: PropTypes.string.isRequired,
     }),
     declaration: PropTypes.object,
+    width: PropTypes.string.isRequired,
   }
 
   state = {
@@ -530,6 +533,8 @@ export class Actu extends Component {
 
     const activeMonthMoment = moment(this.props.activeMonth)
 
+    const useVerticalLayoutForQuestions = this.props.width === muiBreakpoints.xs
+
     return (
       <StyledActu>
         <Title>
@@ -540,19 +545,22 @@ export class Actu extends Component {
           <StyledPaper>
             <StyledList>
               <DeclarationQuestion
-                label="Avez-vous travaillé ?"
+                verticalLayout={useVerticalLayoutForQuestions}
+                label="Avez-vous travaillé ?"
                 name="hasWorked"
                 value={this.state.hasWorked}
                 onAnswer={this.onAnswer}
               />
               <DeclarationQuestion
-                label="Avez-vous été en formation ?"
+                verticalLayout={useVerticalLayoutForQuestions}
+                label="Avez-vous été en formation ?"
                 name="hasTrained"
                 value={this.state.hasTrained}
                 onAnswer={this.onAnswer}
               />
               <DeclarationQuestion
-                label="Avez-vous été en stage ?"
+                verticalLayout={useVerticalLayoutForQuestions}
+                label="Avez-vous été en stage ?"
                 name="hasInternship"
                 value={this.state.hasInternship}
                 onAnswer={this.onAnswer}
@@ -574,11 +582,12 @@ export class Actu extends Component {
                 )}
               </DeclarationQuestion>
               <DeclarationQuestion
-                label={`Avez-vous été en arrêt maladie ${
+                verticalLayout={useVerticalLayoutForQuestions}
+                label={`Avez-vous été en arrêt maladie${
                   user.gender === USER_GENDER_MALE
-                    ? 'ou en congé paternité'
+                    ? ' ou en congé paternité'
                     : ''
-                } ?`}
+                } ?`}
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
@@ -602,7 +611,8 @@ export class Actu extends Component {
               </DeclarationQuestion>
               {user.gender !== USER_GENDER_MALE && (
                 <DeclarationQuestion
-                  label="Avez-vous été en congé maternité ?"
+                  verticalLayout={useVerticalLayoutForQuestions}
+                  label="Avez-vous été en congé maternité ?"
                   name="hasMaternityLeave"
                   value={hasMaternityLeave}
                   onAnswer={this.onAnswer}
@@ -615,6 +625,7 @@ export class Actu extends Component {
                 </DeclarationQuestion>
               )}
               <DeclarationQuestion
+                verticalLayout={useVerticalLayoutForQuestions}
                 label="Percevez-vous une nouvelle pension retraite ?"
                 name="hasRetirement"
                 value={this.state.hasRetirement}
@@ -635,7 +646,8 @@ export class Actu extends Component {
                 })}
               </DeclarationQuestion>
               <DeclarationQuestion
-                label="Percevez-vous une nouvelle pension d'invalidité de 2eme ou 3eme catégorie ?"
+                verticalLayout={useVerticalLayoutForQuestions}
+                label="Percevez-vous une nouvelle pension d'invalidité de 2eme ou 3eme catégorie ?"
                 name="hasInvalidity"
                 value={this.state.hasInvalidity}
                 onAnswer={this.onAnswer}
@@ -653,6 +665,7 @@ export class Actu extends Component {
             <StyledPaper>
               <List>
                 <DeclarationQuestion
+                  verticalLayout={useVerticalLayoutForQuestions}
                   label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
                   name="isLookingForJob"
                   value={this.state.isLookingForJob}
@@ -725,4 +738,4 @@ export class Actu extends Component {
   }
 }
 
-export default withRouter(Actu)
+export default withWidth()(Actu)

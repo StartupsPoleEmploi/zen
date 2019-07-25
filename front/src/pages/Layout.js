@@ -174,6 +174,19 @@ const FileIcon = styled(File)`
   margin-right: 1rem;
 `
 
+const CheckIcon = styled(Check)`
+  width: 2.5rem;
+  margin-right: 1rem;
+`
+
+const SmallGreenCheckIcon = styled(Check)`
+  && {
+    color: green;
+    font-size: 2rem;
+    margin-right: 0.5rem;
+  }
+`
+
 const ListIcon = styled(FormatListBulleted)`
   width: 2.5rem;
   margin-right: 1rem;
@@ -183,14 +196,6 @@ const SubLabel = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-
-const CheckIcon = styled(Check)`
-  && {
-    color: green;
-    font-size: 2rem;
-    margin-right: 0.5rem;
-  }
 `
 
 export const Layout = ({
@@ -322,7 +327,13 @@ export const Layout = ({
               {getStepperItem({
                 label: (
                   <Fragment>
-                    <ListIcon /> Mon actualisation
+                    {activeDeclaration &&
+                    activeDeclaration.hasFinishedDeclaringEmployers ? (
+                      <CheckIcon />
+                    ) : (
+                      <ListIcon />
+                    )}
+                    Mon actualisation
                   </Fragment>
                 ),
                 link: declarationRoute,
@@ -340,7 +351,7 @@ export const Layout = ({
                           paddingLeft: activeDeclaration ? '3rem' : '5.5rem',
                         }}
                       >
-                        {activeDeclaration && <CheckIcon />}
+                        {activeDeclaration && <SmallGreenCheckIcon />}
                         Ma situation
                       </SubLabel>
                     ),

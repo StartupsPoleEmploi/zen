@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
+import withWidth from '@material-ui/core/withWidth'
 import {
   isNaN as _isNaN,
   cloneDeep,
@@ -14,7 +15,6 @@ import {
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
@@ -25,14 +25,14 @@ import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDial
 import WorkSummary from '../../components/Actu/WorkSummary'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
 import MainActionButton from '../../components/Generic/MainActionButton'
-
+import { muiBreakpoints } from '../../constants'
 import {
-  WORK_HOURS,
-  SALARY,
-  MIN_SALARY,
-  MIN_WORK_HOURS,
   MAX_SALARY,
   MAX_WORK_HOURS,
+  MIN_SALARY,
+  MIN_WORK_HOURS,
+  SALARY,
+  WORK_HOURS,
 } from '../../lib/salary'
 
 const StyledEmployers = styled.div`
@@ -176,6 +176,7 @@ export class Employers extends Component {
       replace: PropTypes.func.isRequired,
     }).isRequired,
     token: PropTypes.string.isRequired,
+    width: PropTypes.string,
   }
 
   state = {
@@ -424,6 +425,7 @@ export class Employers extends Component {
       onChange={this.onChange}
       onRemove={this.onRemove}
       activeMonth={this.props.activeMonth}
+      verticalLayout={this.props.width === muiBreakpoints.xs}
     />
   )
 
@@ -505,4 +507,4 @@ export class Employers extends Component {
   }
 }
 
-export default withRouter(Employers)
+export default withWidth()(Employers)

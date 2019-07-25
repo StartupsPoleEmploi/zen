@@ -6,7 +6,6 @@ import { cloneDeep, get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
@@ -682,4 +681,4 @@ export class Files extends Component {
   }
 }
 
-export default withRouter(Files)
+export default Files

@@ -35,17 +35,6 @@ const StyledMain = styled.div`
   box-shadow: 0 0 0.5rem 0.1rem #eeeeee;
 `
 
-const FieldsContainer = styled.div`
-  flex: 1 1 20rem;
-`
-
-const StyledTextField = styled(TextField)`
-  && {
-    margin-right: 1.5rem;
-    width: 15rem;
-  }
-`
-
 const StyledFormControl = styled(FormControl)`
   && {
     display: flex;
@@ -53,16 +42,16 @@ const StyledFormControl = styled(FormControl)`
     align-items: center;
     justify-content: center;
     flex: 0 1 auto;
+    max-width: 30rem;
   }
 `
 
 const StyledFormLabel = styled(FormLabel)`
   flex-shrink: 1;
-  margin-right: 2rem;
+  margin-right: 1rem;
   && {
     color: #000;
   }
-  max-width: 20rem;
 `
 
 const RemoveButton = styled.button`
@@ -106,6 +95,13 @@ const InfoImg = styled.img`
   margin-right: 1rem;
 `
 
+const StyledTextField = styled(TextField)`
+  && {
+    width: ${(props) => (props.fullWidth ? '' : '15rem')};
+    margin-right: ${(props) => (props.fullWidth ? 'inherit' : '1rem')};
+  }
+`
+
 export class EmployerQuestion extends Component {
   static propTypes = {
     employerName: PropTypes.shape({
@@ -128,6 +124,7 @@ export class EmployerQuestion extends Component {
     onChange: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     activeMonth: PropTypes.instanceOf(Date).isRequired,
+    verticalLayout: PropTypes.bool,
   }
 
   renderTextField(textField, tooltip) {
@@ -166,6 +163,7 @@ export class EmployerQuestion extends Component {
       workHours,
       salary,
       hasEndedThisMonth,
+      verticalLayout,
     } = this.props
 
     const showTooltip = index === 0
@@ -184,6 +182,7 @@ export class EmployerQuestion extends Component {
         inputProps={{
           'aria-describedby': `employerNameDescription[${index}]`,
         }}
+        fullWidth={verticalLayout}
       />
     )
     const employerTooltip = (
@@ -216,6 +215,7 @@ export class EmployerQuestion extends Component {
           maxLength: 4,
           'aria-describedby': `workHoursDescription[${index}]`,
         }}
+        fullWidth={verticalLayout}
       />
     )
     const workHoursTooltip = (
@@ -246,6 +246,7 @@ export class EmployerQuestion extends Component {
           maxLength: 10,
           'aria-describedby': `salaryDescription[${index}]`,
         }}
+        fullWidth={verticalLayout}
       />
     )
 
@@ -262,7 +263,7 @@ export class EmployerQuestion extends Component {
     return (
       <StyledContainer>
         <StyledMain>
-          <FieldsContainer>
+          <div>
             {this.renderTextField(
               employerTextField,
               showTooltip
@@ -292,14 +293,13 @@ export class EmployerQuestion extends Component {
                   }
                 : null,
             )}
-          </FieldsContainer>
+          </div>
           <StyledFormControl>
             <StyledFormLabel
               style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
             >
-              Ce contrat se
-              <br />
-              termine-t-il en {moment(this.props.activeMonth).format('MMMM')} ?
+              Contrat terminé en {moment(this.props.activeMonth).format('MMMM')}
+              &nbsp;?
               {hasEndedThisMonth.error && (
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
               )}

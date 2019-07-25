@@ -246,10 +246,23 @@ export class Actu extends Component {
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
     this.setState({ jobSearchStopMotive, formError: null })
 
+  hasAnsweredMainQuestions = () =>
+    ![
+      this.state.hasWorked,
+      this.state.hasTrained,
+      this.state.hasInternship,
+      this.state.hasSickLeave,
+      this.state.hasRetirement,
+      this.state.hasInvalidity,
+      this.state.isLookingForJob,
+    ].some(isNull) &&
+    !(
+      this.props.user.gender !== USER_GENDER_MALE &&
+      isNull(this.state.hasMaternityLeave)
+    )
+
   getFormError = () => {
     const {
-      hasWorked,
-      hasTrained,
       hasInternship,
       infos,
       hasSickLeave,
@@ -259,18 +272,7 @@ export class Actu extends Component {
       isLookingForJob,
       jobSearchStopMotive,
     } = this.state
-    if (
-      [
-        hasWorked,
-        hasTrained,
-        hasInternship,
-        hasSickLeave,
-        hasRetirement,
-        hasInvalidity,
-        isLookingForJob,
-      ].some(isNull) ||
-      (this.props.user.gender !== USER_GENDER_MALE && isNull(hasMaternityLeave))
-    ) {
+    if (!this.hasAnsweredMainQuestions()) {
       return 'Merci de répondre à toutes les questions'
     }
 
@@ -696,6 +698,7 @@ export class Actu extends Component {
               <MainActionButton
                 primary
                 onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
+                disabled={!this.hasAnsweredMainQuestions()}
               >
                 Suivant
               </MainActionButton>

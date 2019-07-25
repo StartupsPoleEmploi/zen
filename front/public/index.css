@@ -2,6 +2,7 @@ html {
   font-size: 62.5%;
   /* 62.5% of 16px = 10px */
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 body {
   /* override material-ui baseline default background */

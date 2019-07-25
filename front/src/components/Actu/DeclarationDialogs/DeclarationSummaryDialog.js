@@ -26,7 +26,7 @@ import {
 const StyledDialogContentText = styled(DialogContentText)`
   && {
     border-bottom: solid 2px #f2f2f2;
-    padding: 0 5rem 2rem 5rem;
+    padding: 0 2rem 2rem;
     color: black;
   }
 `
@@ -112,18 +112,19 @@ const DeclarationSummaryDialog = ({
       content={
         <Fragment>
           <StyledDialogContentText>
-            Voici le récapitulatif de votre actualisation pour le mois
+            Votre actualisation
             {declaration.declarationMonth && (
               // FIXME this is a quickfix for the Actu page, but we should always have the month.
               <Fragment>
                 {' '}
-                de{' '}
+                de <br />
                 <b>
                   {formattedDeclarationMonth(
                     declaration.declarationMonth.month,
                   )}
                 </b>
-                , est-il exact et complet ?
+                <br />
+                est-elle exacte et complète ?
               </Fragment>
             )}
           </StyledDialogContentText>

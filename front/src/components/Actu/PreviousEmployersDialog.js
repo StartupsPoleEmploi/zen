@@ -48,7 +48,6 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
                 display: 'list-item',
                 textTransform: 'uppercase',
                 color: '#000',
-                padding: '1rem',
               }}
             >
               <b>{employer.employerName}</b>
@@ -67,7 +66,7 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
         <br />
         <br />
         Nous avons pré-rempli votre page employeurs avec ceux renseignés lors de
-        votre actualisation du mois précédent :
+        votre actualisation précédente&nbsp;:
       </Fragment>
     }
     titleId="PreviousEmployersDialogContentText"

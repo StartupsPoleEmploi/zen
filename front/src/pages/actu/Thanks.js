@@ -52,12 +52,9 @@ const MainActionButtonStyled = styled(MainActionButton)`
 `
 
 const Complementary = styled.div`
-  background-color: #f2f2f2;
-  position: absolute;
-  width: 100%;
-  left: 0;
   margin-top: 5rem;
   padding: 3rem 1rem 2rem 1rem;
+  border-top: 1px solid black;
 `
 
 export default class Thanks extends Component {
@@ -142,7 +139,15 @@ export default class Thanks extends Component {
                 personnel sur{' '}
                 <a href="https://www.pole-emploi.fr">pole-emploi.fr</a>
                 <br />
-                ou consulter notre FAQ
+                ou{' '}
+                <a
+                  href="https://pole-emploi.zendesk.com/hc/fr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="ouverture dans une nouvelle fenêtre"
+                >
+                  consulter notre FAQ
+                </a>
               </Typography>
             </Complementary>
 

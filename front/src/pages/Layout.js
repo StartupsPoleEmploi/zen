@@ -24,6 +24,7 @@ import { primaryBlue, mobileBreakpoint } from '../constants'
 
 const stepperRoutes = ['/actu', '/employers', '/files']
 const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
+const routesWithDisplayedNav = stepperRoutes.concat('/thanks')
 
 const styles = (theme) => ({
   lightTooltip: {
@@ -200,6 +201,8 @@ export const Layout = ({
   const [isTooltipOpened, setTooltipOpened] = useState(false)
   const toggleTooltip = () => setTooltipOpened(!isTooltipOpened)
 
+  const isNavVisible = routesWithDisplayedNav.includes(pathname)
+
   const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
 
   // eslint-disable-next-line react/prop-types
@@ -276,7 +279,7 @@ export const Layout = ({
         )}
       </Header>
 
-      {useMobileVersion && (
+      {useMobileVersion && isNavVisible && (
         <StyledTabs
           variant="fullWidth"
           value={pathname}
@@ -306,7 +309,7 @@ export const Layout = ({
       )}
 
       <Container>
-        {!useMobileVersion && (
+        {!useMobileVersion && isNavVisible && (
           <Nav>
             <AppTitleContainer>
               <AppTitle />

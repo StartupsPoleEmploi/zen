@@ -46,7 +46,6 @@ const ButtonsContainer = styled.div`
   justify-content: space-around;
   flex-wrap: wrap;
   width: 100%;
-  padding-top: 2.5rem;
   text-align: center;
   max-width: 40rem;
   margin: 0 auto;

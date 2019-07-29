@@ -474,6 +474,7 @@ export class Actu extends Component {
               maxDate={datePickerMaxDate}
               name={`infos[${key}].startDate`}
               value={declarationInfo.startDate}
+              style={{ paddingRight: '1rem' }}
             />
           )}
           {showEndDate && (
@@ -490,9 +491,15 @@ export class Actu extends Component {
             />
           )}
           {allowRemove && (
-            <Button onClick={() => this.removeDates(key)}>
-              <Delete />
-              Supprimer
+            <Button
+              onClick={() => this.removeDates(key)}
+              style={{
+                // TODO find a better fix. This i a workaround
+                // to avoid display issues on iPhone 5SE-size screens
+                minWidth: '5.6rem',
+              }}
+            >
+              <Delete aria-label="Supprimer" />
             </Button>
           )}
         </div>,

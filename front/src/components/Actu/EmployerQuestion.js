@@ -3,18 +3,17 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Cancel from '@material-ui/icons/Cancel'
+import Delete from '@material-ui/icons/DeleteOutlined'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
+import info from '../../images/info.svg'
 import EuroInput from '../Generic/EuroInput'
 import HourInput from '../Generic/HourInput'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
-
-import info from '../../images/info.svg'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -68,7 +67,7 @@ const RemoveButton = styled.button`
   }
 `
 
-const CancelIcon = styled(Cancel)`
+const DeleteIcon = styled(Delete)`
   && {
     width: 2.5rem;
     height: 2.5rem;
@@ -330,7 +329,7 @@ export class EmployerQuestion extends Component {
           type="button"
           aria-label="Supprimer"
         >
-          <CancelIcon />
+          <DeleteIcon />
         </RemoveButton>
       </StyledContainer>
     )

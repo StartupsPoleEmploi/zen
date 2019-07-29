@@ -65,6 +65,7 @@ const AddEmployersButton = styled(Button)`
   && {
     min-width: 15rem;
     margin: 0 5rem;
+    min-height: 5.5rem;
   }
 `
 

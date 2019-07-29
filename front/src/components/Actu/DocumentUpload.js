@@ -157,11 +157,7 @@ export class DocumentUpload extends Component {
       <TooltipOnFocus
         useHover
         tooltipId={`file[${id}]`}
-        content={
-          <Typography>
-            Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx
-          </Typography>
-        }
+        content="Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx"
       >
         {fileInput}
       </TooltipOnFocus>
@@ -277,12 +273,7 @@ export class DocumentUpload extends Component {
       sideFormLabelContent = (
         <TooltipOnFocus
           useHover
-          content={
-            <Typography>
-              Cochez cette case si vous avez transmis ce document à Pôle Emploi
-              par d'autres moyens que Zen.
-            </Typography>
-          }
+          content="Cochez cette case si vous avez transmis ce document à Pôle Emploi par d'autres moyens que Zen."
         >
           <SideButton onClick={this.skipFile}>
             <CheckBoxOutlineBlank />
@@ -354,7 +345,7 @@ export class DocumentUpload extends Component {
                   </div>
                   {infoTooltipText && (
                     <TooltipOnFocus
-                      content={<Typography>{infoTooltipText}</Typography>}
+                      content={infoTooltipText}
                       useHover
                       enterDelay={0}
                       leaveDelay={1500}

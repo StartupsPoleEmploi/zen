@@ -111,5 +111,5 @@ YesNoRadioGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.bool,
   onAnswer: PropTypes.func.isRequired,
-  yesTooltipContent: PropTypes.object,
+  yesTooltipContent: PropTypes.string,
 }

@@ -133,7 +133,8 @@ const getErrorKey = ({ id, type }) => `${id}-${type}-error`
 
 const getDeclarationMissingFilesNb = (declaration) => {
   const infoDocumentsRequiredNb = declaration.infos.filter(
-    ({ type, file }) => type !== 'jobSearch' && !file,
+    ({ type, file, isTransmitted }) =>
+      type !== 'jobSearch' && !file && !isTransmitted,
   ).length
 
   return (

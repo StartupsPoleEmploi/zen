@@ -438,8 +438,8 @@ export class Files extends Component {
           caption={formatInfoDates(info)}
           fileExistsOnServer={!!info.file}
           submitFile={this.submitAdditionalFile}
-          skipFile={() =>
-            this.askToSkipFile((params) =>
+          skipFile={(params) =>
+            this.askToSkipFile(() =>
               this.submitAdditionalFile({ ...params, skip: true }),
             )
           }

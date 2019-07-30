@@ -36,21 +36,6 @@ const ButtonsContainers = styled.div`
   }
 `
 
-const MainActionButtonStyled = styled(MainActionButton)`
-  && {
-    flex: 1;
-    padding: 0.5rem 4rem;
-    height: 5rem;
-    border-radius: 3rem;
-
-    @media (max-width: 850px) {
-      width: 30rem;
-      margin: 1rem 0;
-      padding: 1rem;
-    }
-  }
-`
-
 const Complementary = styled.div`
   margin-top: 5rem;
   padding: 3rem 1rem 2rem 1rem;
@@ -111,24 +96,34 @@ export default class Thanks extends Component {
             </Typography>
 
             <ButtonsContainers>
-              <MainActionButtonStyled
+              <MainActionButton
                 href="/api/declarations/summary-file?download=true"
                 target="_blank"
                 title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
+                style={{
+                  borderRadius: '3rem',
+                  minWidth: '30rem',
+                }}
+                primary
               >
                 Télécharger ma déclaration
-              </MainActionButtonStyled>
+              </MainActionButton>
 
-              <Typography paragraph style={{ margin: '0 1rem' }}>
+              <Typography paragraph style={{ margin: '1rem' }}>
                 ou
               </Typography>
 
-              <MainActionButtonStyled
+              <MainActionButton
                 primary={false}
                 onClick={this.printDeclaration}
+                style={{
+                  minWidth: '30rem',
+                  borderRadius: '3rem',
+                }}
+                variant="outlined"
               >
                 Imprimer ma déclaration
-              </MainActionButtonStyled>
+              </MainActionButton>
             </ButtonsContainers>
 
             <Complementary>

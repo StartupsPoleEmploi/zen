@@ -43,6 +43,7 @@ const StyledInfo = styled.div`
 
 const ButtonsContainer = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -714,6 +715,14 @@ export class Files extends Component {
           </ErrorMessage>
         )}
         <ButtonsContainer>
+          <MainActionButton
+            disabled={declarationRemainingDocsNb > 0}
+            primary
+            className="send-to-pe"
+            onClick={() => this.onSubmit({ declaration })}
+          >
+            Envoyer <br />à Pôle Emploi
+          </MainActionButton>
           {!isOldMonth && (
             <MainActionButton
               primary={false}
@@ -726,14 +735,6 @@ export class Files extends Component {
               et finir plus tard
             </MainActionButton>
           )}
-          <MainActionButton
-            disabled={declarationRemainingDocsNb > 0}
-            primary
-            className="send-to-pe"
-            onClick={() => this.onSubmit({ declaration })}
-          >
-            Envoyer <br />à Pôle Emploi
-          </MainActionButton>
         </ButtonsContainer>
       </FilesSection>
     )

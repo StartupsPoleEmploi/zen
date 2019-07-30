@@ -75,9 +75,9 @@ router.get('/users', (req, res, next) => {
 
         res.set(
           'Content-disposition',
-          `attachment; filename=users-${
-            isAuthorized ? 'not-' : ''
-          }authorized-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+          `attachment; filename=utilisateurs-${
+            !isAuthorized ? 'non-' : ''
+          }autorisés-${format(new Date(), 'YYYY-MM-DD')}.csv`,
         )
         res.set('Content-type', 'text/csv')
         return res.send(csv)

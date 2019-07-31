@@ -15,7 +15,7 @@ import {
   formatIntervalDates,
   formatDate,
 } from '../../../lib/date'
-import { types, JOB_SEARCH_END_MOTIVE } from '../../../pages/actu/Actu'
+import { ActuTypes as types, jobSearchEndMotive } from '../../../constants'
 import {
   MIN_SALARY,
   SALARY,
@@ -264,11 +264,11 @@ const DeclarationSummaryDialog = ({
                   <DeclarationValues>
                     Motif :{' '}
                     {declaration.jobSearchStopMotive ===
-                      JOB_SEARCH_END_MOTIVE.WORK && 'Reprise du travail'}
+                      jobSearchEndMotive.WORK && 'Reprise du travail'}
                     {declaration.jobSearchStopMotive ===
-                      JOB_SEARCH_END_MOTIVE.RETIREMENT && 'Retraite'}
+                      jobSearchEndMotive.RETIREMENT && 'Retraite'}
                     {declaration.jobSearchStopMotive ===
-                      JOB_SEARCH_END_MOTIVE.OTHER && 'Autre'}
+                      jobSearchEndMotive.OTHER && 'Autre'}
                   </DeclarationValues>
                 </Fragment>
               )}

@@ -1,0 +1,11 @@
+/back/node_modules/*
+/back/bin/*
+/back/dist/*
+/back/migrations/*
+
+/front/node_modules/*
+/front/build/*
+/front/dist/*
+/front/scripts/*
+/front/config/*
+/front/public/*

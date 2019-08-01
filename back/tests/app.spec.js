@@ -1,5 +1,5 @@
-const app = require('../app') // eslint-disable-line
 const supertest = require('supertest')
+const app = require('../app') // eslint-disable-line
 
 describe('app.js', () => {
   test('Should not let main routes be accessed without user session', () =>

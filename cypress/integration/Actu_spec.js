@@ -6,7 +6,7 @@ import {
   checkFormValues,
   pickDate,
   checkDate,
-  clickNextLink,
+  getNextLink,
 } from '../pages/Actu'
 
 const { omit } = Cypress._
@@ -60,16 +60,15 @@ describe('Declaration page', function() {
 
     describe('Form errors', () => {
       // Test all possible missing answers
-      it('should not validate if any answer is missing', () => {
+      it('should have validation button disabled if any answer is missing', () => {
         Object.keys(defaultValues).forEach((keyToOmit) => {
           const inputsToFill = omit(defaultValues, keyToOmit)
           fillFormAnswers(inputsToFill)
 
-          clickNextLink()
-
-          cy.get('p[role=alert]')
-            .contains('Merci de répondre à toutes les questions')
-            .should('be.visible')
+          // cypress yields the label inside the button, so we need to get its parent.
+          getNextLink()
+            .parent('button')
+            .should('be.disabled')
 
           cy.reload()
         })
@@ -97,7 +96,7 @@ describe('Declaration page', function() {
               .click()
           }
 
-          clickNextLink()
+          getNextLink().click()
 
           cy.get('p[role=alert]').should('be.visible')
 
@@ -111,7 +110,7 @@ describe('Declaration page', function() {
             pickDate(fieldToTest, '21')
             pickDate(fieldToTest, '20', { last: true })
 
-            clickNextLink()
+            getNextLink().click()
 
             cy.get('p[role=alert]')
               .contains('Merci de corriger')
@@ -126,12 +125,14 @@ describe('Declaration page', function() {
     describe('Valid form', () => {
       it('should validate for default declaration', () => {
         fillFormAnswers(defaultValues)
-        clickNextLink()
+        getNextLink().click()
 
         cy.url().should('contain', '/employers')
 
         // Go back to the page and check that the values in the form are there
-        cy.get('a[href="/actu"').click()
+        cy.get('a[href="/actu"')
+          .first()
+          .click()
         checkFormValues(defaultValues)
       })
 
@@ -160,12 +161,14 @@ describe('Declaration page', function() {
         pickDate('hasInvalidity', '20')
         pickDate('isLookingForJob', '20')
 
-        clickNextLink()
+        getNextLink().click()
         cy.url().should('contain', '/employers')
 
         // Go back to the page and check that the values in the form are there
         // We check these because we've had some timezone issues.
-        cy.get('a[href="/actu"').click()
+        cy.get('a[href="/actu"')
+          .first()
+          .click()
         checkFormValues(values)
         checkDate('hasInternship', '20')
         checkDate('hasInternship', '21', { last: true })
@@ -180,7 +183,7 @@ describe('Declaration page', function() {
       it(`should warn the user before transmission if they haven't worked`, () => {
         fillFormAnswers({ ...defaultValues, hasWorked: NO })
         // Open modal
-        clickNextLink()
+        getNextLink().click()
 
         // Close modal
         cy.get('div[role=dialog] button')
@@ -188,7 +191,7 @@ describe('Declaration page', function() {
           .click()
 
         // Re-open modal
-        clickNextLink()
+        getNextLink().click()
 
         cy.get('div[role=dialog] button')
           .contains('Oui, je confirme')
@@ -205,7 +208,7 @@ describe('Declaration page', function() {
 
         cy.get('#isLookingForJob').should('not.exist')
 
-        clickNextLink()
+        getNextLink().click()
         cy.url().should('contain', '/employers')
       })
 
@@ -218,7 +221,7 @@ describe('Declaration page', function() {
         fillFormAnswers(omit(defaultValues, 'hasMaternityLeave'))
         cy.get('#hasMaternityLeave').should('not.exist')
 
-        clickNextLink()
+        getNextLink().click()
         cy.url().should('contain', '/employers')
       })
     })

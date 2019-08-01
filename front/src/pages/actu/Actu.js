@@ -23,7 +23,11 @@ import UserJobCheck from '../../components/Actu/UserJobCheck'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
 import DatePicker from '../../components/Generic/DatePicker'
 import MainActionButton from '../../components/Generic/MainActionButton'
-import { muiBreakpoints } from '../../constants'
+import {
+  muiBreakpoints,
+  jobSearchEndMotive,
+  ActuTypes as types,
+} from '../../constants'
 
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
@@ -105,21 +109,6 @@ const formFields = [
   'isLookingForJob',
   'jobSearchStopMotive',
 ]
-
-export const types = {
-  INTERNSHIP: 'internship',
-  SICK_LEAVE: 'sickLeave',
-  MATERNITY_LEAVE: 'maternityLeave',
-  RETIREMENT: 'retirement',
-  INVALIDITY: 'invalidity',
-  JOB_SEARCH: 'jobSearch',
-}
-
-export const JOB_SEARCH_END_MOTIVE = {
-  WORK: 'work',
-  RETIREMENT: 'retirement',
-  OTHER: 'other',
-}
 
 const JOB_CHECK_KEY = 'canUseService'
 
@@ -685,17 +674,17 @@ export class Actu extends Component {
                     onChange={this.onJobSearchStopMotive}
                   >
                     <FormControlLabel
-                      value={JOB_SEARCH_END_MOTIVE.WORK}
+                      value={jobSearchEndMotive.WORK}
                       control={<Radio color="primary" />}
                       label="Reprise du travail"
                     />
                     <FormControlLabel
-                      value={JOB_SEARCH_END_MOTIVE.RETIREMENT}
+                      value={jobSearchEndMotive.RETIREMENT}
                       control={<Radio color="primary" />}
                       label="Retraite"
                     />
                     <FormControlLabel
-                      value={JOB_SEARCH_END_MOTIVE.OTHER}
+                      value={jobSearchEndMotive.OTHER}
                       control={<Radio color="primary" />}
                       label="Autre"
                     />

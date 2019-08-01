@@ -17,3 +17,18 @@ export const muiBreakpoints = {
   lg: 'lg',
   xl: 'xl',
 }
+
+export const ActuTypes = {
+  INTERNSHIP: 'internship',
+  SICK_LEAVE: 'sickLeave',
+  MATERNITY_LEAVE: 'maternityLeave',
+  RETIREMENT: 'retirement',
+  INVALIDITY: 'invalidity',
+  JOB_SEARCH: 'jobSearch',
+}
+
+export const jobSearchEndMotive = {
+  WORK: 'work',
+  RETIREMENT: 'retirement',
+  OTHER: 'other',
+}

@@ -79,11 +79,13 @@ router.get('/callback', (req, res) => {
 
       if (!tokenClaims.iss.startsWith(tokenHost)) throw new Error('Wrong iss')
       if (tokenClaims.aud !== clientId) throw new Error('Wrong aud')
-      if (tokenClaims.azp && tokenClaims.azp !== clientId)
+      if (tokenClaims.azp && tokenClaims.azp !== clientId) {
         throw new Error('Wrong azp')
+      }
       if (tokenClaims.realm !== realm) throw new Error('Wrong realm')
-      if (tokenClaims.nonce !== req.session.nonce)
+      if (tokenClaims.nonce !== req.session.nonce) {
         throw new Error('Wrong nonce')
+      }
 
       // https://www.emploi-store-dev.fr/portail-developpeur-cms/home/catalogue-des-api/documentation-des-api/utiliser-les-api/authorization-code-flow/securite-et-verification.html
       // TODO check access_token against at_hash here - possible code:
@@ -209,11 +211,7 @@ router.get('/logout', (req, res) => {
     if (err) Raven.captureException(err)
   })
   res.redirect(
-    `${
-      config.tokenHost
-    }/compte/deconnexion/compte/deconnexion?id_token_hint=${idToken}&redirect_uri=${
-      config.appHost
-    }`,
+    `${config.tokenHost}/compte/deconnexion/compte/deconnexion?id_token_hint=${idToken}&redirect_uri=${config.appHost}`,
   )
 })
 

@@ -243,12 +243,14 @@ class DocumentDialog extends Component {
     this.setState({ currentPage })
 
     const canUploadMoreFile = totalPageNumber < MAX_PDF_PAGE
-    if (canUploadMoreFile !== this.state.canUploadMoreFile)
+    if (canUploadMoreFile !== this.state.canUploadMoreFile) {
       this.setState({ canUploadMoreFile })
+    }
 
     const canDeletePage = totalPageNumber > 0
-    if (canDeletePage !== this.state.canDeletePage)
+    if (canDeletePage !== this.state.canDeletePage) {
       this.setState({ canDeletePage })
+    }
   }
 
   onCancel = () => {
@@ -265,8 +267,9 @@ class DocumentDialog extends Component {
     const { isRemovingOrAdded, uploadView } = this.state
     const { pdfUrl } = this.props
 
-    if (isRemovingOrAdded)
+    if (isRemovingOrAdded) {
       return <CircularProgress style={{ margin: '10rem 0' }} />
+    }
 
     if (uploadView || pdfUrl === null) {
       return (

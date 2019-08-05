@@ -1,5 +1,4 @@
 /* eslint-disable no-alert */
-/* eslint-disable no-confirm */
 
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'

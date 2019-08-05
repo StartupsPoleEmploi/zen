@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "eslint": "eslint './front/**/*.js' && eslint './back/**/*.js'",
+    "eslint:fix": "eslint --fix './front/**/*.js' && eslint --fix './back/**/*.js'",
     "test": "yarn eslint && yarn test:front && yarn test:back",
     "test:all": "yarn test:e2e && yarn test # This is useful in this order for ci as e2e will install all dependencies needed for front & back tests",
     "test:e2e": "docker-compose -p test-e2e -f docker-compose.test.yml run --rm e2e; exitcode=$?; docker-compose -p test-e2e -f docker-compose.test.yml down; exit ${exitcode}",

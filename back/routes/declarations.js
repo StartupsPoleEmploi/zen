@@ -42,19 +42,22 @@ const MAX_MONTHS_TO_FETCH = 24 // 2 years
 const eagerDeclarationString = `[declarationMonth, infos, employers.documents]`
 
 router.post('/remove-file-page', (req, res, next) => {
-  if (!req.body.declarationInfoId)
+  if (!req.body.declarationInfoId) {
     return res.status(400).json('Missing declarationInfoId')
+  }
 
   return DeclarationInfo.query()
     .eager('declaration.user')
     .findById(req.body.declarationInfoId)
     .then((declarationInfo) => {
-      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
+      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id) {
         return res.status(404).json('No such file')
+      }
 
       const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10)
-      if (!pageNumberToRemove || Number.isNaN(pageNumberToRemove))
+      if (!pageNumberToRemove || Number.isNaN(pageNumberToRemove)) {
         return res.status(400).json('No page to remove')
+      }
 
       if (
         !declarationInfo.file ||
@@ -324,8 +327,9 @@ router.get('/summary-file', requireActiveMonth, (req, res, next) => {
     .orderBy('createdAt', 'desc')
     .skipUndefined()
     .then((declaration) => {
-      if (!declaration)
+      if (!declaration) {
         return res.status(404).json('Please send declaration first')
+      }
 
       if (!declaration.hasFinishedDeclaringEmployers) {
         return res.status(403).json('Declaration not complete')
@@ -346,21 +350,24 @@ router.get('/summary-file', requireActiveMonth, (req, res, next) => {
 })
 
 router.get('/files', (req, res, next) => {
-  if (!req.query.declarationInfoId)
+  if (!req.query.declarationInfoId) {
     return res.status(400).json('Missing declarationInfoId')
+  }
 
   return DeclarationInfo.query()
     .eager('declaration.user')
     .findById(req.query.declarationInfoId)
     .then((declarationInfo) => {
-      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
+      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id) {
         return res.status(404).json('No such file')
+      }
 
       const extension = path.extname(declarationInfo.file)
 
       // Not a PDF / convertible as PDF file
-      if (extension !== '.pdf' && !IMG_EXTENSIONS.includes(extension))
+      if (extension !== '.pdf' && !IMG_EXTENSIONS.includes(extension)) {
         return res.sendFile(declarationInfo.file, { root: uploadDestination })
+      }
 
       return getPDF(declarationInfo, uploadDestination).then((pdfPath) => {
         res.sendFile(pdfPath, { root: uploadDestination })
@@ -456,8 +463,9 @@ router.post('/finish', (req, res, next) => {
     })
     .then((declaration) => {
       if (!declaration) return res.status(404).json('Declaration not found')
-      if (declaration.isFinished)
+      if (declaration.isFinished) {
         return res.status(400).json('Declaration already finished')
+      }
 
       if (
         !declaration.hasFinishedDeclaringEmployers ||

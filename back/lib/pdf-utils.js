@@ -58,10 +58,11 @@ const transformImageToPDF = (filename) => {
 
   return imagesToPdf([imgFilePath], pdfFilePath).then(() => {
     fs.unlink(imgFilePath, (deleteError) => {
-      if (deleteError)
+      if (deleteError) {
         winston.warn(
           `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
         )
+      }
     })
   })
 }
@@ -101,8 +102,9 @@ const handleNewFileUpload = async ({
     // Check if future PDF is not above to {MAX_PDF_SIZE} pages
     const additionalFileSize = await numberOfPage(additionFilePath)
     const currentFileSize = await numberOfPage(existingFilePath)
-    if (additionalFileSize + currentFileSize > MAX_PDF_SIZE)
+    if (additionalFileSize + currentFileSize > MAX_PDF_SIZE) {
       throw new Error(`PDF will exceed ${MAX_PDF_SIZE} pages`)
+    }
 
     await mergePDF(
       `${uploadDestination}${existingDocumentFile}`,
@@ -116,9 +118,9 @@ const handleNewFileUpload = async ({
   return documentFileObj
 }
 
-const removePage = (filePath, pageNumberToRemove) => {
+const removePage = (filePath, pageNumberToRemove) =>
   // Compute cat argument for pdftk :https://doc.ubuntu-fr.org/pdftk#concatenation
-  return numberOfPage(filePath).then((pageNumber) => {
+  numberOfPage(filePath).then((pageNumber) => {
     if (pageNumber === 1) throw new Error("Can't remove the only page")
 
     let cat
@@ -141,7 +143,6 @@ const removePage = (filePath, pageNumberToRemove) => {
       .cat(cat)
       .output(filePath)
   })
-}
 
 module.exports = {
   getPDF,

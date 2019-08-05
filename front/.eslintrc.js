@@ -8,7 +8,9 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
+    'arrow-body-style': [2, 'as-needed'],
     'consistent-return': 0, // Often bothering with early returns
+    curly: [2, 'multi-line'],
     'import/no-extraneous-dependencies': [
       'error',
       {

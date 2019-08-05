@@ -17,8 +17,8 @@ const setIsCleanedUp = (idSet, model) => {
     .catch(winston.warn)
 }
 
-const eraseFile = (filePath) => {
-  return new Promise((resolve, reject) => {
+const eraseFile = (filePath) =>
+  new Promise((resolve, reject) => {
     fs.access(filePath, (accessError) => {
       if (accessError) return resolve(true)
 
@@ -33,7 +33,6 @@ const eraseFile = (filePath) => {
       })
     })
   })
-}
 
 const cleanOldFiles = () => {
   winston.info('Starting files cleanup')
@@ -81,11 +80,13 @@ const cleanOldFiles = () => {
       }
 
       // Update all declarations, employer_documents & declaration_infos
-      if (declarationIds.length)
+      if (declarationIds.length) {
         setIsCleanedUp(uniq(declarationIds), Declaration)
+      }
       if (infoIds.length) setIsCleanedUp(infoIds, DeclarationInfo)
-      if (employerDocumentIds.length)
+      if (employerDocumentIds.length) {
         setIsCleanedUp(employerDocumentIds, EmployerDocument)
+      }
 
       winston.info('Finished files cleanup')
     })

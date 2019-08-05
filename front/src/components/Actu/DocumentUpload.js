@@ -74,6 +74,15 @@ const EyeIcon = styled(Eye)`
   margin-right: 2rem;
 `
 
+const ViewButton = styled(Button)`
+  && {
+    justify-content: space-between;
+    white-space: nowrap;
+    height: 3.2rem;
+    min-height: 3.2rem;
+  }
+`
+
 const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
@@ -264,37 +273,27 @@ export class DocumentUpload extends Component {
       )
     }
 
-    const buttonStyle = {
-      justifyContent: 'space-between',
-      whiteSpace: 'nowrap',
-      height: 32,
-      minHeight: 32,
-      width: 263, // Note: width mirrors value in StyledFormLabel
-    }
-
     const documentButton = canUsePDFViewer ? (
-      <Button
+      <ViewButton
         variant="outlined"
         data-pdf-url={url}
         onClick={this.togglePDFViewer}
-        style={buttonStyle}
         className="show-file"
       >
         <EyeIcon />
         {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le document fourni'}
-      </Button>
+      </ViewButton>
     ) : (
-      <Button
+      <ViewButton
         variant="outlined"
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        style={buttonStyle}
         className="show-file"
       >
         <EyeIcon />
         Voir le document fourni
-      </Button>
+      </ViewButton>
     )
 
     const uploadInput = (

@@ -17,6 +17,7 @@ import styled from 'styled-components'
 import { primaryBlue } from '../../constants'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import CustomColorButton from '../Generic/CustomColorButton'
+import DocumentDialog from '../Generic/documents/DocumentDialog'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -90,18 +91,20 @@ const SideButton = styled(Button)`
 `
 
 const employerType = 'employer'
-const infosType = 'infos'
+const infosType = 'info'
 
 export class DocumentUpload extends Component {
   static propTypes = {
     id: PropTypes.number,
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
+    canUsePDFViewer: PropTypes.bool,
     label: PropTypes.string.isRequired,
     caption: PropTypes.string,
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
+    removePageFromFile: PropTypes.func.isRequired,
     allowSkipFile: PropTypes.bool,
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
@@ -115,7 +118,11 @@ export class DocumentUpload extends Component {
     showTooltip: false,
   }
 
-  static types = { employer: employerType, infos: infosType }
+  static types = { employer: employerType, info: infosType }
+
+  state = {
+    showPDFViewer: false,
+  }
 
   renderFileField(fileInput, showTooltip, id) {
     if (!showTooltip) return fileInput
@@ -136,14 +143,49 @@ export class DocumentUpload extends Component {
     )
   }
 
-  submitFile = ({ target: { files } }) =>
-    this.props.submitFile({
+  submitFile = ({ target: { files } }) => {
+    return this.props.submitFile({
       file: files[0],
       documentId: this.props.id,
       type: this.props.type,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
+  }
+
+  computePDFUrl = () => {
+    const { id, type } = this.props
+
+    // Note: if employer file is missing, there is no data, so we have to check that the id exists
+    // But for infosType, the id exists
+    if (type === employerType && !id) return null
+    if (type === infosType && !this.props.fileExistsOnServer) return null
+
+    return type === employerType
+      ? `/api/employers/files?documentId=${id}`
+      : `/api/declarations/files?declarationInfoId=${id}`
+  }
+
+  addFile = ({ target: { files } }) => {
+    return this.props.submitFile({
+      isAddingFile: true,
+      file: files[0],
+      documentId: this.props.id,
+      type: this.props.type,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
+  }
+
+  removePage = (pageNumberToRemove) => {
+    return this.props.removePageFromFile({
+      pageNumberToRemove,
+      type: this.props.type,
+      documentId: this.props.id,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
+  }
 
   skipFile = () =>
     this.props.skipFile({
@@ -153,21 +195,26 @@ export class DocumentUpload extends Component {
       employerDocType: this.props.employerDocType,
     })
 
+  togglePDFViewer = () =>
+    this.setState((state) => ({ showPDFViewer: !state.showPDFViewer }))
+
   render() {
     const {
       id,
       caption,
       error,
       fileExistsOnServer,
+      canUsePDFViewer,
       isLoading,
       isTransmitted,
       label,
       allowSkipFile,
-      type,
       infoTooltipText,
       showTooltip,
       employerId,
     } = this.props
+
+    const { showPDFViewer } = this.state
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
 
@@ -180,10 +227,7 @@ export class DocumentUpload extends Component {
       />
     )
 
-    const url =
-      type === employerType
-        ? `/api/employers/files?documentId=${id}`
-        : `/api/declarations/files?declarationInfoId=${id}`
+    const url = this.computePDFUrl()
 
     let sideFormLabelContent = null
     if (isTransmitted) {
@@ -223,6 +267,37 @@ export class DocumentUpload extends Component {
       )
     }
 
+    const buttonStyle = {
+      justifyContent: 'space-between',
+      whiteSpace: 'nowrap',
+      height: 32,
+      minHeight: 32,
+      width: 263, // Note: width mirrors value in StyledFormLabel
+    }
+
+    const documentButton = canUsePDFViewer ? (
+      <Button
+        variant="outlined"
+        data-pdf-url={url}
+        onClick={this.togglePDFViewer}
+        style={buttonStyle}
+      >
+        <EyeIcon />
+        {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le document fourni'}
+      </Button>
+    ) : (
+      <Button
+        variant="outlined"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={buttonStyle}
+      >
+        <EyeIcon />
+        Voir le document fourni
+      </Button>
+    )
+
     const uploadInput = (
       <CustomColorButton
         aria-describedby={`file[${id}]`}
@@ -234,81 +309,83 @@ export class DocumentUpload extends Component {
     )
 
     return (
-      <StyledContainer>
-        <StyledListItem
-          style={{
-            borderColor:
-              fileExistsOnServer || isTransmitted ? primaryBlue : '#df5555',
-          }}
-        >
-          <ListItemText
-            primary={
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <div>
-                  <b>{label}</b>
-                  {caption && (
-                    <Fragment>
-                      <br />
-                      <Typography variant="caption">{caption}</Typography>
-                    </Fragment>
+      <Fragment>
+        <StyledContainer>
+          <StyledListItem
+            style={{
+              borderColor:
+                fileExistsOnServer || isTransmitted ? primaryBlue : '#df5555',
+            }}
+          >
+            <ListItemText
+              primary={
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div>
+                    <b>{label}</b>
+                    {caption && (
+                      <Fragment>
+                        <br />
+                        <Typography variant="caption">{caption}</Typography>
+                      </Fragment>
+                    )}
+                  </div>
+                  {infoTooltipText && (
+                    <TooltipOnFocus
+                      content={<Typography>{infoTooltipText}</Typography>}
+                      useHover
+                      enterDelay={0}
+                      leaveDelay={1500}
+                      enterTouchDelay={0}
+                      leaveTouchDelay={3000}
+                    >
+                      <InfoIcon />
+                    </TooltipOnFocus>
                   )}
                 </div>
-                {infoTooltipText && (
-                  <TooltipOnFocus
-                    content={<Typography>{infoTooltipText}</Typography>}
-                    useHover
-                    enterDelay={0}
-                    leaveDelay={1500}
-                    enterTouchDelay={0}
-                    leaveTouchDelay={3000}
-                  >
-                    <InfoIcon />
-                  </TooltipOnFocus>
-                )}
-              </div>
-            }
-          />
-          <FormControl>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Container>
-                {error
-                  ? formattedError
-                  : fileExistsOnServer && (
-                      <Button
-                        variant="outlined"
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          justifyContent: 'space-between',
-                          whiteSpace: 'nowrap',
-                          height: 32,
-                          minHeight: 32,
-                        }}
-                      >
-                        <EyeIcon />
-                        Voir le document
-                      </Button>
-                    )}
-                {!fileExistsOnServer && !isTransmitted && (
-                  <StyledFormLabel>
-                    {hiddenInput}
-                    {this.renderFileField(uploadInput, showTooltip, employerId)}
-                  </StyledFormLabel>
-                )}
-              </Container>
-            )}
-          </FormControl>
-        </StyledListItem>
-        <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
-      </StyledContainer>
+              }
+            />
+            <FormControl>
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Container>
+                  {error
+                    ? formattedError
+                    : fileExistsOnServer && documentButton}
+                  {!fileExistsOnServer && !isTransmitted && (
+                    <StyledFormLabel>
+                      {hiddenInput}
+                      {this.renderFileField(
+                        uploadInput,
+                        showTooltip,
+                        employerId,
+                      )}
+                    </StyledFormLabel>
+                  )}
+                </Container>
+              )}
+            </FormControl>
+          </StyledListItem>
+          <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
+        </StyledContainer>
+
+        <DocumentDialog
+          isOpened={showPDFViewer}
+          onCancel={this.togglePDFViewer}
+          title={label}
+          addFile={this.addFile}
+          removePage={this.removePage}
+          submitFile={this.submitFile}
+          error={error}
+          pdfUrl={url}
+          fileExistsOnServer={fileExistsOnServer}
+        />
+      </Fragment>
     )
   }
 }

@@ -1,4 +1,6 @@
 const express = require('express')
+const path = require('path')
+const fs = require('fs')
 
 const router = express.Router()
 const { get, pick, remove, omit } = require('lodash')
@@ -25,11 +27,74 @@ const {
   getFriendlyPDFName,
 } = require('../lib/files')
 
+const {
+  getPDF,
+  removePage,
+  numberOfPage,
+  IMG_EXTENSIONS,
+  handleNewFileUpload,
+} = require('../lib/pdf-utils')
+
 const docTypes = DeclarationInfo.types
 
 const MAX_MONTHS_TO_FETCH = 24 // 2 years
 
 const eagerDeclarationString = `[declarationMonth, infos, employers.documents]`
+
+router.post('/remove-file-page', (req, res, next) => {
+  if (!req.body.declarationInfoId)
+    return res.status(400).json('Missing declarationInfoId')
+
+  return DeclarationInfo.query()
+    .eager('declaration.user')
+    .findById(req.body.declarationInfoId)
+    .then((declarationInfo) => {
+      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
+        return res.status(404).json('No such file')
+
+      const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10)
+      if (!pageNumberToRemove || Number.isNaN(pageNumberToRemove))
+        return res.status(400).json('No page to remove')
+
+      if (
+        !declarationInfo.file ||
+        !path.extname(declarationInfo.file) === '.pdf'
+      ) {
+        throw new Error(
+          `Attempt to remove a page to a non-PDF file : ${declarationInfo.file}`,
+        )
+      }
+
+      const pdfFilePath = `${uploadDestination}${declarationInfo.file}`
+
+      return numberOfPage(pdfFilePath)
+        .then((pageRemaining) => {
+          if (pageRemaining === 1) {
+            return new Promise((resolve, reject) => {
+              fs.unlink(pdfFilePath, (deleteError) => {
+                if (deleteError) return reject(deleteError)
+                return declarationInfo
+                  .$query()
+                  .patch({ ...declarationInfo, file: null })
+                  .then(resolve)
+                  .catch(reject)
+              })
+            })
+          }
+          return removePage(pdfFilePath, pageNumberToRemove)
+        })
+        .then(() =>
+          Declaration.query()
+            .eager(eagerDeclarationString)
+            .findOne({
+              id: declarationInfo.declaration.id,
+              userId: req.session.user.id,
+            }),
+        )
+        .then((updatedDeclaration) => res.json(updatedDeclaration))
+    })
+    .catch(next)
+})
 
 router.get('/', (req, res, next) => {
   if ('last' in req.query || 'active' in req.query) {
@@ -291,7 +356,15 @@ router.get('/files', (req, res, next) => {
       if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id)
         return res.status(404).json('No such file')
 
-      res.sendFile(declarationInfo.file, { root: uploadDestination })
+      const extension = path.extname(declarationInfo.file)
+
+      // Not a PDF / convertible as PDF file
+      if (extension !== '.pdf' && !IMG_EXTENSIONS.includes(extension))
+        return res.sendFile(declarationInfo.file, { root: uploadDestination })
+
+      return getPDF(declarationInfo, uploadDestination).then((pdfPath) => {
+        res.sendFile(pdfPath, { root: uploadDestination })
+      })
     })
     .catch(next)
 })
@@ -305,7 +378,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
   return DeclarationInfo.query()
     .eager('declaration.user')
     .findById(req.body.declarationInfoId)
-    .then((declarationInfo) => {
+    .then(async (declarationInfo) => {
       if (
         !declarationInfo ||
         declarationInfo.declaration.user.id !== req.session.user.id
@@ -313,13 +386,41 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         return res.status(400).json('No such DeclarationInfo id')
       }
 
-      const documentFileObj = req.body.skip
+      let documentFileObj = req.body.skip
         ? {
             // Used in case the user sent his file by another means.
             file: null,
             isTransmitted: true,
           }
         : { file: req.file.filename }
+
+      const isAddingFile = !!req.query.add
+
+      if (!req.body.skip) {
+        const existingDocumentIsPDF =
+          declarationInfo.file && path.extname(declarationInfo.file) === '.pdf'
+
+        if (isAddingFile && !existingDocumentIsPDF) {
+          // Couldn't happen because 'Add a page' is only available in PDFViewer
+          // So the file should already be a PDF (for how long ? FIXME ?)
+          throw new Error(
+            `Attempt to add a page to a non-PDF file : ${declarationInfo.file}`,
+          )
+        }
+
+        try {
+          documentFileObj = await handleNewFileUpload({
+            newFilename: req.file.filename,
+            existingDocumentFile: declarationInfo.file,
+            documentFileObj,
+            isAddingFile,
+          })
+        } catch (err) {
+          // To get the correct error message front-side,
+          // we need to ensure that the HTTP status is 413
+          return res.status(413).json(err.message)
+        }
+      }
 
       return declarationInfo
         .$query()

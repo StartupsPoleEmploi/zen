@@ -1,5 +1,10 @@
 FROM node:10.15.0
 
+RUN apt-get update
+
+# popper-utils for pdfinfo
+RUN apt-get install -y pdftk poppler-utils=0.48.0-2+deb9u2
+
 WORKDIR /home/back
 
 CMD (which yarn || npm i -g yarn@1.15.2) && \

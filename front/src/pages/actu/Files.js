@@ -203,8 +203,6 @@ export class Files extends Component {
       )
   }
 
-  displayMissingDocs = () => this.setState({ showMissingDocs: true })
-
   handleUploadError = ({ err, loadingKey, errorKey }) => {
     const errorLabel =
       err.status === 413
@@ -254,28 +252,24 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (updatedEmployer) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const updatedDeclarations = prevState.declarations.map(
-                (declaration) => ({
-                  ...declaration,
-                  employers: declaration.employers.map((employer) => {
-                    if (employer.id !== employerId) return employer
-                    return updatedEmployer
-                  }),
-                }),
-              )
+      .then((updatedEmployer) =>
+        this.setState((prevState) => {
+          const updatedDeclarations = prevState.declarations.map(
+            (declaration) => ({
+              ...declaration,
+              employers: declaration.employers.map((employer) => {
+                if (employer.id !== employerId) return employer
+                return updatedEmployer
+              }),
+            }),
+          )
 
-              return {
-                declarations: updatedDeclarations,
-                [loadingKey]: false,
-                [errorKey]: null,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations: updatedDeclarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
+        }),
       )
       .catch((err) => {
         window.Raven.captureException(err)
@@ -327,28 +321,24 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (updatedEmployer) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const updatedDeclarations = prevState.declarations.map(
-                (declaration) => ({
-                  ...declaration,
-                  employers: declaration.employers.map((employer) => {
-                    if (employer.id !== employerId) return employer
-                    return updatedEmployer
-                  }),
-                }),
-              )
+      .then((updatedEmployer) =>
+        this.setState((prevState) => {
+          const updatedDeclarations = prevState.declarations.map(
+            (declaration) => ({
+              ...declaration,
+              employers: declaration.employers.map((employer) => {
+                if (employer.id !== employerId) return employer
+                return updatedEmployer
+              }),
+            }),
+          )
 
-              return {
-                declarations: updatedDeclarations,
-                [loadingKey]: false,
-                [errorKey]: null,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations: updatedDeclarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
+        }),
       )
       .catch((err) => {
         this.handleUploadError({ err, loadingKey, errorKey })

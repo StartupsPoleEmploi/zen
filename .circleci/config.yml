@@ -10,6 +10,10 @@ jobs:
     working_directory: ~/zen
 
     steps:
+      - run :
+          name: Upgrade max watchable files to avoid ENOSPC
+          command: sudo sysctl -w fs.inotify.max_user_watches=524288
+
       - run:
           name: Install node@10.15 (need right version for `yarn`)
           command: |

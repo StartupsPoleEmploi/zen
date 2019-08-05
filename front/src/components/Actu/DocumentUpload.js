@@ -109,8 +109,6 @@ export class DocumentUpload extends Component {
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
     infoTooltipText: PropTypes.string,
-
-    declarationInfoId: PropTypes.number,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
     showTooltip: PropTypes.bool,
@@ -161,7 +159,7 @@ export class DocumentUpload extends Component {
     // Note: if employer file is missing, there is no data, so we have to check that the id exists
     // But for infosType, the id exists
     if (type === employerType && !id) return null
-    else if (type === infosType && !this.props.fileExistsOnServer) return null
+    if (type === infosType && !this.props.fileExistsOnServer) return null
 
     return type === employerType
       ? `/api/employers/files?documentId=${id}`

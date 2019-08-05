@@ -46,7 +46,12 @@ const getPDF = (document, directory) => {
   })
 }
 
-transformImageToPDF = (filename) => {
+const numberOfPage = (filePath) =>
+  exec(`pdfinfo ${filePath} | grep Pages | sed 's/[^0-9]*//'`).then((res) =>
+    parseInt(res.stdout.replace('\n', ''), 10),
+  )
+
+const transformImageToPDF = (filename) => {
   const fileBaseName = getFileBasename(filename)
   const pdfFilePath = `${uploadDestination}${fileBaseName}.pdf`
   const imgFilePath = `${uploadDestination}${filename}`
@@ -55,13 +60,20 @@ transformImageToPDF = (filename) => {
     fs.unlink(imgFilePath, (deleteError) => {
       if (deleteError)
         winston.warn(
-          `Erreur en supprimant l'image ${filename}. Il est nécessaire de la supprimer manuellement. Erreur : ${
-            deleteError.message
-          }`,
+          `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
         )
     })
   })
 }
+
+const mergePDF = (file1, file2, output) =>
+  pdftk
+    .input({
+      A: file1,
+      B: file2,
+    })
+    .cat('A B')
+    .output(output)
 
 const handleNewFileUpload = async ({
   newFilename,
@@ -104,15 +116,6 @@ const handleNewFileUpload = async ({
   return documentFileObj
 }
 
-const mergePDF = (file1, file2, output) =>
-  pdftk
-    .input({
-      A: file1,
-      B: file2,
-    })
-    .cat('A B')
-    .output(output)
-
 const removePage = (filePath, pageNumberToRemove) => {
   // Compute cat argument for pdftk :https://doc.ubuntu-fr.org/pdftk#concatenation
   return numberOfPage(filePath).then((pageNumber) => {
@@ -139,11 +142,6 @@ const removePage = (filePath, pageNumberToRemove) => {
       .output(filePath)
   })
 }
-
-const numberOfPage = (filePath) =>
-  exec(`pdfinfo ${filePath} | grep Pages | sed 's/[^0-9]*//'`).then((res) =>
-    parseInt(res.stdout.replace('\n', '')),
-  )
 
 module.exports = {
   getPDF,

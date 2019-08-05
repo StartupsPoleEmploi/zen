@@ -53,7 +53,7 @@ router.post('/remove-file-page', (req, res, next) => {
         return res.status(404).json('No such file')
 
       const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10)
-      if (!pageNumberToRemove || isNaN(pageNumberToRemove))
+      if (!pageNumberToRemove || Number.isNaN(pageNumberToRemove))
         return res.status(400).json('No page to remove')
 
       if (
@@ -61,9 +61,7 @@ router.post('/remove-file-page', (req, res, next) => {
         !path.extname(declarationInfo.file) === '.pdf'
       ) {
         throw new Error(
-          `Attempt to remove a page to a non-PDF file : ${
-            declarationInfo.file
-          }`,
+          `Attempt to remove a page to a non-PDF file : ${declarationInfo.file}`,
         )
       }
 
@@ -82,9 +80,8 @@ router.post('/remove-file-page', (req, res, next) => {
                   .catch(reject)
               })
             })
-          } else {
-            return removePage(pdfFilePath, pageNumberToRemove)
           }
+          return removePage(pdfFilePath, pageNumberToRemove)
         })
         .then(() =>
           Declaration.query()

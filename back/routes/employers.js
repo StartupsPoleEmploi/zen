@@ -75,14 +75,12 @@ router.post('/remove-file-page', (req, res, next) => {
 
       if (!existingDocument) {
         throw new Error(
-          `Attempt to remove a page to a non-PDF file : ${
-            existingDocument.file
-          }`,
+          `Attempt to remove a page to a non-PDF file : ${existingDocument.file}`,
         )
       }
 
       const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10)
-      if (!pageNumberToRemove || isNaN(pageNumberToRemove))
+      if (!pageNumberToRemove || Number.isNaN(pageNumberToRemove))
         return res.status(400).json('No page to remove')
 
       const pdfFilePath = `${uploadDestination}${existingDocument.file}`
@@ -100,15 +98,12 @@ router.post('/remove-file-page', (req, res, next) => {
                   .catch(reject)
               })
             })
-          } else {
-            // Only remove the page
-            return removePage(pdfFilePath, pageNumberToRemove)
           }
+          // Only remove the page
+          return removePage(pdfFilePath, pageNumberToRemove)
         })
         .then(fetchEmployer)
-        .then((employer) => {
-          return res.json(employer)
-        })
+        .then((updatedEmployer) => res.json(updatedEmployer))
     })
     .catch(next)
 })
@@ -329,9 +324,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           // Couldn't happen because 'Add a page' is only available in PDFViewer
           // So the file should already be a PDF (for how long ? FIXME ?)
           throw new Error(
-            `Attempt to add a page to a non-PDF file : ${
-              existingDocument.file
-            }`,
+            `Attempt to add a page to a non-PDF file : ${existingDocument.file}`,
           )
         }
 

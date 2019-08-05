@@ -244,7 +244,7 @@ export class Files extends Component {
 
     this.setState({ [loadingKey]: true, [errorKey]: null })
 
-    let request = superagent
+    const request = superagent
       .post(
         `/api/employers/remove-file-page?pageNumberToRemove=${pageNumberToRemove}`,
       )
@@ -422,7 +422,7 @@ export class Files extends Component {
       [errorKey]: null,
     })
 
-    let request = superagent
+    const request = superagent
       .post(
         `/api/declarations/remove-file-page?pageNumberToRemove=${pageNumberToRemove}`,
       )

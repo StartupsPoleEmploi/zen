@@ -17,30 +17,27 @@ const hasMissingEmployersDocuments = (declaration) =>
     )
   })
 
-const hasMissingDeclarationDocuments = (declaration) => {
-  return (
-    (declaration.hasInternship &&
-      declaration.infos.some(
-        ({ type, file }) => type === docTypes.internship && isNull(file),
-      )) ||
-    (declaration.hasSickLeave &&
-      declaration.infos.some(
-        ({ type, file }) => type === docTypes.sickLeave && isNull(file),
-      )) ||
-    (declaration.hasMaternityLeave &&
-      declaration.infos.some(
-        ({ type, file }) => type === docTypes.maternityLeave && isNull(file),
-      )) ||
-    (declaration.hasRetirement &&
-      declaration.infos.some(
-        ({ type, file }) => type === docTypes.retirement && isNull(file),
-      )) ||
-    (declaration.hasInvalidity &&
-      declaration.infos.some(
-        ({ type, file }) => type === docTypes.invalidity && isNull(file),
-      ))
-  )
-}
+const hasMissingDeclarationDocuments = (declaration) =>
+  (declaration.hasInternship &&
+    declaration.infos.some(
+      ({ type, file }) => type === docTypes.internship && isNull(file),
+    )) ||
+  (declaration.hasSickLeave &&
+    declaration.infos.some(
+      ({ type, file }) => type === docTypes.sickLeave && isNull(file),
+    )) ||
+  (declaration.hasMaternityLeave &&
+    declaration.infos.some(
+      ({ type, file }) => type === docTypes.maternityLeave && isNull(file),
+    )) ||
+  (declaration.hasRetirement &&
+    declaration.infos.some(
+      ({ type, file }) => type === docTypes.retirement && isNull(file),
+    )) ||
+  (declaration.hasInvalidity &&
+    declaration.infos.some(
+      ({ type, file }) => type === docTypes.invalidity && isNull(file),
+    ))
 
 module.exports = {
   hasMissingEmployersDocuments,

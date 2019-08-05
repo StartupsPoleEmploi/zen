@@ -1,5 +1,4 @@
 /* eslint-disable no-alert */
-/* eslint-disable no-confirm */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-loop-func */

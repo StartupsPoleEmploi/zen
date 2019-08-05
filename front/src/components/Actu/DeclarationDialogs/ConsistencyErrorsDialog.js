@@ -11,46 +11,42 @@ const ConsistencyErrorsDialogs = ({
   onCancel,
   confirmAndIgnoreErrors,
   ...props
-}) => {
-  return (
-    <CustomDialog
-      content={
-        <Fragment>
-          <DialogContentText>
-            Notre système a détecté de possibles incohérences dans votre
-            actualisation :
-          </DialogContentText>
-          <ul style={{ padding: 0 }}>
-            {consistencyErrors.map((error) => (
-              <DialogContentText component="li" key={error}>
-                {error}
-              </DialogContentText>
-            ))}
-          </ul>
-          <DialogContentText>
-            Confirmez-vous ces informations ?
-          </DialogContentText>
-        </Fragment>
-      }
-      actions={
-        <Fragment>
-          <CustomColorButton onClick={onCancel}>
-            Je modifie ma déclaration
-          </CustomColorButton>
-          <Button
-            variant="contained"
-            onClick={confirmAndIgnoreErrors}
-            color="primary"
-            autoFocus
-          >
-            Je valide cette déclaration
-          </Button>
-        </Fragment>
-      }
-      {...props}
-    />
-  )
-}
+}) => (
+  <CustomDialog
+    content={
+      <Fragment>
+        <DialogContentText>
+          Notre système a détecté de possibles incohérences dans votre
+          actualisation :
+        </DialogContentText>
+        <ul style={{ padding: 0 }}>
+          {consistencyErrors.map((error) => (
+            <DialogContentText component="li" key={error}>
+              {error}
+            </DialogContentText>
+          ))}
+        </ul>
+        <DialogContentText>Confirmez-vous ces informations ?</DialogContentText>
+      </Fragment>
+    }
+    actions={
+      <Fragment>
+        <CustomColorButton onClick={onCancel}>
+          Je modifie ma déclaration
+        </CustomColorButton>
+        <Button
+          variant="contained"
+          onClick={confirmAndIgnoreErrors}
+          color="primary"
+          autoFocus
+        >
+          Je valide cette déclaration
+        </Button>
+      </Fragment>
+    }
+    {...props}
+  />
+)
 
 ConsistencyErrorsDialogs.propTypes = {
   onCancel: PropTypes.func.isRequired,

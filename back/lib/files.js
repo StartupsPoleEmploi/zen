@@ -29,9 +29,8 @@ const getFriendlyPDFName = (declaration) => {
   return `declaration-${declarationDate}.pdf`
 }
 
-const generatePDFPath = (declaration) => {
-  return `${uploadsDeclarationDirectory}${generatePDFName(declaration)}`
-}
+const generatePDFPath = (declaration) =>
+  `${uploadsDeclarationDirectory}${generatePDFName(declaration)}`
 
 /* Generate and save PDF from a given declaration */
 const generateDeclarationAsPDF = (declaration) => {

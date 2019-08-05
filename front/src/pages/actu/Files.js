@@ -141,8 +141,9 @@ const getDeclarationMissingFilesNb = (declaration) => {
 
   return (
     declaration.employers.reduce((prev, employer) => {
-      if (!employer.hasEndedThisMonth)
+      if (!employer.hasEndedThisMonth) {
         return prev + (employer.documents[0] ? 0 : 1)
+      }
 
       /*
           The salary sheet is optional for users which have already sent their employer certificate,
@@ -162,11 +163,10 @@ const getDeclarationMissingFilesNb = (declaration) => {
 }
 
 const formatDate = (date) => moment(date).format('DD MMMM YYYY')
-const formatInfoDates = ({ startDate, endDate }) => {
-  return !endDate
+const formatInfoDates = ({ startDate, endDate }) =>
+  !endDate
     ? `À partir du ${formatDate(startDate)}`
     : `Du ${formatDate(startDate)} au ${formatDate(endDate)}`
-}
 
 export class Files extends Component {
   static propTypes = {
@@ -222,11 +222,10 @@ export class Files extends Component {
     })
   }
 
-  removePageFromFile = (data) => {
-    return data.type === infoType
+  removePageFromFile = (data) =>
+    data.type === infoType
       ? this.removeDeclarationPageFromFile(data)
       : this.removeEmployerPageFromFile(data)
-  }
 
   // EMPLOYER
   removeEmployerPageFromFile = ({
@@ -255,28 +254,29 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then((updatedEmployer) => {
-        return new Promise((resolve) => {
-          this.setState((prevState) => {
-            const updatedDeclarations = prevState.declarations.map(
-              (declaration) => ({
-                ...declaration,
-                employers: declaration.employers.map((employer) => {
-                  if (employer.id !== employerId) return employer
-                  return updatedEmployer
+      .then(
+        (updatedEmployer) =>
+          new Promise((resolve) => {
+            this.setState((prevState) => {
+              const updatedDeclarations = prevState.declarations.map(
+                (declaration) => ({
+                  ...declaration,
+                  employers: declaration.employers.map((employer) => {
+                    if (employer.id !== employerId) return employer
+                    return updatedEmployer
+                  }),
                 }),
-              }),
-            )
+              )
 
-            return {
-              declarations: updatedDeclarations,
-              [loadingKey]: false,
-              [errorKey]: null,
-            }
-          })
-          resolve()
-        })
-      })
+              return {
+                declarations: updatedDeclarations,
+                [loadingKey]: false,
+                [errorKey]: null,
+              }
+            })
+            resolve()
+          }),
+      )
       .catch((err) => {
         window.Raven.captureException(err)
         this.setState({
@@ -327,28 +327,29 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then((updatedEmployer) => {
-        return new Promise((resolve) => {
-          this.setState((prevState) => {
-            const updatedDeclarations = prevState.declarations.map(
-              (declaration) => ({
-                ...declaration,
-                employers: declaration.employers.map((employer) => {
-                  if (employer.id !== employerId) return employer
-                  return updatedEmployer
+      .then(
+        (updatedEmployer) =>
+          new Promise((resolve) => {
+            this.setState((prevState) => {
+              const updatedDeclarations = prevState.declarations.map(
+                (declaration) => ({
+                  ...declaration,
+                  employers: declaration.employers.map((employer) => {
+                    if (employer.id !== employerId) return employer
+                    return updatedEmployer
+                  }),
                 }),
-              }),
-            )
+              )
 
-            return {
-              declarations: updatedDeclarations,
-              [loadingKey]: false,
-              [errorKey]: null,
-            }
-          })
-          resolve()
-        })
-      })
+              return {
+                declarations: updatedDeclarations,
+                [loadingKey]: false,
+                [errorKey]: null,
+              }
+            })
+            resolve()
+          }),
+      )
       .catch((err) => {
         this.handleUploadError({ err, loadingKey, errorKey })
         throw err
@@ -388,23 +389,24 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then((declaration) => {
-        return new Promise((resolve) => {
-          this.setState((prevState) => {
-            const declarations = cloneDeep(prevState.declarations)
-            const declarationIndex = declarations.findIndex(
-              ({ id: declarationId }) => declaration.id === declarationId,
-            )
-            declarations[declarationIndex] = declaration
+      .then(
+        (declaration) =>
+          new Promise((resolve) => {
+            this.setState((prevState) => {
+              const declarations = cloneDeep(prevState.declarations)
+              const declarationIndex = declarations.findIndex(
+                ({ id: declarationId }) => declaration.id === declarationId,
+              )
+              declarations[declarationIndex] = declaration
 
-            return {
-              declarations,
-              [loadingKey]: false,
-            }
-          })
-          resolve()
-        })
-      })
+              return {
+                declarations,
+                [loadingKey]: false,
+              }
+            })
+            resolve()
+          }),
+      )
       .catch((err) => {
         this.handleUploadError({ err, loadingKey, errorKey })
         throw err
@@ -432,23 +434,24 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then((declaration) => {
-        return new Promise((resolve) => {
-          this.setState((prevState) => {
-            const declarations = cloneDeep(prevState.declarations)
-            const declarationIndex = declarations.findIndex(
-              ({ id: declarationId }) => declaration.id === declarationId,
-            )
-            declarations[declarationIndex] = declaration
+      .then(
+        (declaration) =>
+          new Promise((resolve) => {
+            this.setState((prevState) => {
+              const declarations = cloneDeep(prevState.declarations)
+              const declarationIndex = declarations.findIndex(
+                ({ id: declarationId }) => declaration.id === declarationId,
+              )
+              declarations[declarationIndex] = declaration
 
-            return {
-              declarations,
-              [loadingKey]: false,
-            }
-          })
-          resolve()
-        })
-      })
+              return {
+                declarations,
+                [loadingKey]: false,
+              }
+            })
+            resolve()
+          }),
+      )
       .catch((err) => {
         this.handleUploadError({ err, loadingKey, errorKey })
         throw err

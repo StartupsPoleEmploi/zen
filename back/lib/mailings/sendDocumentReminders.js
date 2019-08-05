@@ -99,8 +99,8 @@ const saveAndWait = ({ userIds }) =>
     .whereIn('id', userIds)
     .then(() => wait(WAIT_TIME))
 
-const sendAllDocumentsReminders = () => {
-  return Promise.all([
+const sendAllDocumentsReminders = () =>
+  Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
     User.query()
       .eager('[declarations.[declarationMonth, infos, employers.documents]]')
@@ -189,7 +189,6 @@ const sendAllDocumentsReminders = () => {
       winston.error(err)
       setTimeout(sendAllDocumentsReminders, WAIT_TIME_AFTER_ERROR)
     })
-}
 
 /*
  * This script has one big requirement: That it will be run during the month after

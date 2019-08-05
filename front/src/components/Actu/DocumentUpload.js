@@ -143,15 +143,14 @@ export class DocumentUpload extends Component {
     )
   }
 
-  submitFile = ({ target: { files } }) => {
-    return this.props.submitFile({
+  submitFile = ({ target: { files } }) =>
+    this.props.submitFile({
       file: files[0],
       documentId: this.props.id,
       type: this.props.type,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
-  }
 
   computePDFUrl = () => {
     const { id, type } = this.props
@@ -166,8 +165,8 @@ export class DocumentUpload extends Component {
       : `/api/declarations/files?declarationInfoId=${id}`
   }
 
-  addFile = ({ target: { files } }) => {
-    return this.props.submitFile({
+  addFile = ({ target: { files } }) =>
+    this.props.submitFile({
       isAddingFile: true,
       file: files[0],
       documentId: this.props.id,
@@ -175,17 +174,15 @@ export class DocumentUpload extends Component {
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
-  }
 
-  removePage = (pageNumberToRemove) => {
-    return this.props.removePageFromFile({
+  removePage = (pageNumberToRemove) =>
+    this.props.removePageFromFile({
       pageNumberToRemove,
       type: this.props.type,
       documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
-  }
 
   skipFile = () =>
     this.props.skipFile({

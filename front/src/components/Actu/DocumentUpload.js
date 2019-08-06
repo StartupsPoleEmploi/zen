@@ -379,7 +379,6 @@ export class DocumentUpload extends Component {
         <DocumentDialog
           isOpened={showPDFViewer}
           onCancel={this.togglePDFViewer}
-          title={label}
           addFile={this.addFile}
           removePage={this.removePage}
           submitFile={this.submitFile}

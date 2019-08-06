@@ -278,8 +278,6 @@ export class Files extends Component {
           [errorKey]:
             'Erreur lors de la suppression de la page. Merci de bien vouloir réessayer ultérieurement',
         })
-
-        throw err
       })
   }
 
@@ -340,10 +338,7 @@ export class Files extends Component {
           }
         }),
       )
-      .catch((err) => {
-        this.handleUploadError({ err, loadingKey, errorKey })
-        throw err
-      })
+      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
   }
 
   // DECLARATIONS
@@ -379,28 +374,21 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (declaration) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const declarations = cloneDeep(prevState.declarations)
-              const declarationIndex = declarations.findIndex(
-                ({ id: declarationId }) => declaration.id === declarationId,
-              )
-              declarations[declarationIndex] = declaration
+      .then((declaration) =>
+        this.setState((prevState) => {
+          const declarations = cloneDeep(prevState.declarations)
+          const declarationIndex = declarations.findIndex(
+            ({ id: declarationId }) => declaration.id === declarationId,
+          )
+          declarations[declarationIndex] = declaration
 
-              return {
-                declarations,
-                [loadingKey]: false,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations,
+            [loadingKey]: false,
+          }
+        }),
       )
-      .catch((err) => {
-        this.handleUploadError({ err, loadingKey, errorKey })
-        throw err
-      })
+      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
   }
 
   removeDeclarationPageFromFile = ({ documentId, pageNumberToRemove }) => {
@@ -424,28 +412,21 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (declaration) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const declarations = cloneDeep(prevState.declarations)
-              const declarationIndex = declarations.findIndex(
-                ({ id: declarationId }) => declaration.id === declarationId,
-              )
-              declarations[declarationIndex] = declaration
+      .then((declaration) =>
+        this.setState((prevState) => {
+          const declarations = cloneDeep(prevState.declarations)
+          const declarationIndex = declarations.findIndex(
+            ({ id: declarationId }) => declaration.id === declarationId,
+          )
+          declarations[declarationIndex] = declaration
 
-              return {
-                declarations,
-                [loadingKey]: false,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations,
+            [loadingKey]: false,
+          }
+        }),
       )
-      .catch((err) => {
-        this.handleUploadError({ err, loadingKey, errorKey })
-        throw err
-      })
+      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
   }
 
   askToSkipFile = (onConfirm) => {

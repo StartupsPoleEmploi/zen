@@ -143,6 +143,7 @@ class DocumentDialog extends Component {
     addFile: PropTypes.func.isRequired,
     submitFile: PropTypes.func.isRequired,
     removePage: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
   }
 
   state = {
@@ -150,7 +151,6 @@ class DocumentDialog extends Component {
     showSuccessAddMessage: false,
     showSuccessRemoveMessage: false,
 
-    isRemovingOrAdded: false,
     showConfirmRemove: false,
 
     canUploadMoreFile: true,
@@ -158,21 +158,36 @@ class DocumentDialog extends Component {
 
     pageAdded: false,
     currentPage: null,
+    totalPageNumber: null,
   }
 
-  /**
-   * Only parent component know that a file has been removed/added.
+  /*
+   * Only the parent component know that a file has been removed/added.
    * So we have to update the state of the dialog from incoming props
-   * TODO: refacto => https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+   * It's also a convenient way to detect a page was added or removed. These will
+   * cause an additional render when evaluated, which is ok
+   * (one-shot reaction after user upload)
    */
-  static getDerivedStateFromProps = (props, currentState) => {
-    if (!currentState.uploadView && props.pdfUrl === null) {
-      return { ...currentState, uploadView: true }
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.isLoading && !this.props.isLoading) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      return this.setState({ uploadView: false })
     }
-    if (!props.isOpened && currentState.uploadView && props.pdfUrl !== null) {
-      return { ...currentState, uploadView: false }
+    if (this.state.totalPageNumber < prevState.totalPageNumber) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      return this.setState({
+        showSuccessRemoveMessage: true,
+        uploadView: false,
+      })
     }
-    return null
+    if (this.state.totalPageNumber > prevState.totalPageNumber) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      return this.setState({
+        showSuccessAddMessage: true,
+        pageAdded: true,
+        uploadView: false,
+      })
+    }
   }
 
   showUploadView = () =>
@@ -182,65 +197,45 @@ class DocumentDialog extends Component {
       showSuccessRemoveMessage: false,
     })
 
-  cancelUploadView = () =>
-    this.setState({ uploadView: false, isRemovingOrAdded: false })
+  cancelUploadView = () => this.setState({ uploadView: false })
 
-  addFile = (e) => {
+  addFile = ({
+    target: {
+      files: [file],
+    },
+  }) => {
     this.setState({
       showSuccessAddMessage: false,
       showSuccessRemoveMessage: false,
-      isRemovingOrAdded: true,
     })
 
     if (this.props.pdfUrl === null) {
-      return this.props
-        .submitFile(e)
-        .then(() => {
-          this.cancelUploadView()
-        })
-        .catch(() => this.cancelUploadView())
+      return this.props.submitFile(file)
     }
 
-    this.props
-      .addFile(e)
-      .then(() => {
-        this.setState({
-          showSuccessAddMessage: true,
-          pageAdded: true,
-        })
-        this.cancelUploadView()
-      })
-      .catch(() => {
-        this.cancelUploadView()
-      })
+    this.props.addFile(file)
   }
 
   confirmRemovePage = () => this.setState({ showConfirmRemove: true })
 
-  cancelRemovePage = () => this.setState({ showConfirmRemove: false })
+  cancelRemovePage = () => this.setState({ showPageRemovalConfirmation: false })
 
   removePage = () => {
-    this.cancelRemovePage()
     this.setState({
       showSuccessAddMessage: false,
       showSuccessRemoveMessage: false,
-      isRemovingOrAdded: true,
+      showConfirmRemove: false,
     })
 
-    this.props
-      .removePage(this.state.currentPage)
-      .then(() => {
-        this.setState({
-          showSuccessRemoveMessage: true,
-          isRemovingOrAdded: false,
-        })
-        this.cancelUploadView()
-      })
-      .catch(() => this.cancelUploadView())
+    this.props.removePage(this.state.currentPage)
   }
 
+  /*
+   * This is called when the underlying PDF Viewer detects a change in the number
+   * of pages, *including* at first load
+   */
   onPageNumberChange = (currentPage, totalPageNumber) => {
-    this.setState({ currentPage })
+    this.setState({ currentPage, totalPageNumber })
 
     const canUploadMoreFile = totalPageNumber < MAX_PDF_PAGE
     if (canUploadMoreFile !== this.state.canUploadMoreFile) {
@@ -264,10 +259,10 @@ class DocumentDialog extends Component {
   }
 
   renderModalContent() {
-    const { isRemovingOrAdded, uploadView } = this.state
-    const { pdfUrl } = this.props
+    const { uploadView } = this.state
+    const { isLoading, pdfUrl } = this.props
 
-    if (isRemovingOrAdded) {
+    if (isLoading) {
       return <CircularProgress style={{ margin: '10rem 0' }} />
     }
 
@@ -313,9 +308,8 @@ class DocumentDialog extends Component {
   }
 
   render() {
-    const { classes, isOpened, title, error } = this.props
+    const { classes, isOpened, isLoading, title, error } = this.props
     const {
-      isRemovingOrAdded,
       uploadView,
       showSuccessAddMessage,
       showSuccessRemoveMessage,
@@ -379,7 +373,7 @@ class DocumentDialog extends Component {
             {this.renderModalContent()}
           </DialogContentText>
 
-          {!isRemovingOrAdded && !uploadView && (
+          {!isLoading && !uploadView && (
             <StyledDialogActions>
               {canDeletePage && (
                 <ModalButton

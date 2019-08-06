@@ -152,9 +152,9 @@ export class DocumentUpload extends Component {
     )
   }
 
-  submitFile = ({ target: { files } }) =>
+  submitFile = (file) =>
     this.props.submitFile({
-      file: files[0],
+      file,
       documentId: this.props.id,
       type: this.props.type,
       employerId: this.props.employerId,
@@ -174,10 +174,10 @@ export class DocumentUpload extends Component {
       : `/api/declarations/files?declarationInfoId=${id}`
   }
 
-  addFile = ({ target: { files } }) =>
+  addFile = (file) =>
     this.props.submitFile({
       isAddingFile: true,
-      file: files[0],
+      file,
       documentId: this.props.id,
       type: this.props.type,
       employerId: this.props.employerId,
@@ -229,7 +229,11 @@ export class DocumentUpload extends Component {
         accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
         style={{ display: 'none' }}
         type="file"
-        onChange={this.submitFile}
+        onChange={({
+          target: {
+            files: [file],
+          },
+        }) => this.submitFile(file)}
       />
     )
 
@@ -382,6 +386,7 @@ export class DocumentUpload extends Component {
           error={error}
           pdfUrl={url}
           fileExistsOnServer={fileExistsOnServer}
+          isLoading={isLoading}
         />
       </Fragment>
     )

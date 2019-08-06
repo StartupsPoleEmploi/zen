@@ -22,10 +22,15 @@ const StyledDialogTitle = styled(DialogTitle)`
 const StyledDialogActions = styled(DialogActions)`
   && {
     justify-content: space-around;
-    padding-bottom: 2rem;
+    flex-wrap: wrap;
   }
 `
 
+/*
+ * This base Dialog structure is used for most of the dialogs of the app
+ * It includes thresholds with media queries to switch to full screen
+ * and reusable structure. Modify with care.
+ */
 export const CustomDialog = ({
   actions,
   content,
@@ -34,6 +39,7 @@ export const CustomDialog = ({
   isOpened,
   onCancel,
   width,
+  forceConstantHeight,
   ...rest
 }) => (
   <Dialog
@@ -41,21 +47,34 @@ export const CustomDialog = ({
     onClose={onCancel}
     aria-labelledby={titleId}
     fullScreen={width === muiBreakpoints.xs}
+    PaperProps={{
+      style: {
+        height:
+          forceConstantHeight && width !== muiBreakpoints.xs ? '90vh' : '',
+      },
+    }}
     {...rest}
   >
-    <StyledDialogTitle id={titleId}>{title}</StyledDialogTitle>
-    <StyledDialogContent>{content}</StyledDialogContent>
-    {actions && <StyledDialogActions>{actions}</StyledDialogActions>}
+    {title && <StyledDialogTitle id={titleId}>{title}</StyledDialogTitle>}
+    {content && <StyledDialogContent>{content}</StyledDialogContent>}
+    {actions && (
+      <StyledDialogActions
+        style={{ paddingBottom: width === muiBreakpoints.xs ? 0 : '2rem' }}
+      >
+        {actions}
+      </StyledDialogActions>
+    )}
   </Dialog>
 )
 
 CustomDialog.propTypes = {
   actions: PropTypes.node,
-  content: PropTypes.node.isRequired,
+  content: PropTypes.node,
   onCancel: PropTypes.func,
   isOpened: PropTypes.bool.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   titleId: PropTypes.string,
+  forceConstantHeight: PropTypes.bool,
   width: PropTypes.string,
 }
 

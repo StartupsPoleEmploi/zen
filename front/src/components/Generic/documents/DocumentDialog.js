@@ -132,6 +132,18 @@ const buttonStyle = {
   fontSize: '1.7rem',
 }
 
+const initialState = {
+  showUploadView: false,
+  showSuccessAddMessage: false,
+  showSuccessRemoveMessage: false,
+  showPageRemovalConfirmation: false,
+  canUploadMoreFile: true,
+  canDeletePage: false,
+  hasPageBeenAdded: false,
+  currentPage: null,
+  totalPageNumber: null,
+}
+
 class DocumentDialog extends Component {
   static propTypes = {
     isOpened: PropTypes.bool.isRequired,
@@ -146,20 +158,7 @@ class DocumentDialog extends Component {
     isLoading: PropTypes.bool,
   }
 
-  state = {
-    uploadView: false,
-    showSuccessAddMessage: false,
-    showSuccessRemoveMessage: false,
-
-    showConfirmRemove: false,
-
-    canUploadMoreFile: true,
-    canDeletePage: false,
-
-    pageAdded: false,
-    currentPage: null,
-    totalPageNumber: null,
-  }
+  state = initialState
 
   /*
    * Only the parent component know that a file has been removed/added.
@@ -171,33 +170,33 @@ class DocumentDialog extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.isLoading && !this.props.isLoading) {
       // eslint-disable-next-line react/no-did-update-set-state
-      return this.setState({ uploadView: false })
+      return this.setState({ showUploadView: false })
     }
     if (this.state.totalPageNumber < prevState.totalPageNumber) {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessRemoveMessage: true,
-        uploadView: false,
+        showUploadView: false,
       })
     }
     if (this.state.totalPageNumber > prevState.totalPageNumber) {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessAddMessage: true,
-        pageAdded: true,
-        uploadView: false,
+        hasPageBeenAdded: true,
+        showUploadView: false,
       })
     }
   }
 
-  showUploadView = () =>
+  doShowUploadView = () =>
     this.setState({
-      uploadView: true,
+      showUploadView: true,
       showSuccessAddMessage: false,
       showSuccessRemoveMessage: false,
     })
 
-  cancelUploadView = () => this.setState({ uploadView: false })
+  cancelUploadView = () => this.setState({ showUploadView: false })
 
   addFile = ({
     target: {
@@ -209,14 +208,15 @@ class DocumentDialog extends Component {
       showSuccessRemoveMessage: false,
     })
 
-    if (this.props.pdfUrl === null) {
+    if (!this.props.pdfUrl) {
       return this.props.submitFile(file)
     }
 
     this.props.addFile(file)
   }
 
-  confirmRemovePage = () => this.setState({ showConfirmRemove: true })
+  confirmPageRemoval = () =>
+    this.setState({ showPageRemovalConfirmation: true })
 
   cancelRemovePage = () => this.setState({ showPageRemovalConfirmation: false })
 
@@ -224,7 +224,7 @@ class DocumentDialog extends Component {
     this.setState({
       showSuccessAddMessage: false,
       showSuccessRemoveMessage: false,
-      showConfirmRemove: false,
+      showPageRemovalConfirmation: false,
     })
 
     this.props.removePage(this.state.currentPage)
@@ -249,24 +249,19 @@ class DocumentDialog extends Component {
   }
 
   onCancel = () => {
-    this.setState({
-      uploadView: false,
-      pageAdded: false,
-      showSuccessAddMessage: false,
-      showSuccessRemoveMessage: false,
-    })
+    this.setState(initialState)
     this.props.onCancel()
   }
 
   renderModalContent() {
-    const { uploadView } = this.state
+    const { showUploadView } = this.state
     const { isLoading, pdfUrl } = this.props
 
     if (isLoading) {
       return <CircularProgress style={{ margin: '10rem 0' }} />
     }
 
-    if (uploadView || pdfUrl === null) {
+    if (showUploadView || !pdfUrl) {
       return (
         <Fragment>
           {/* Can return to PDF viewer only if there is a PDF to see */}
@@ -310,13 +305,13 @@ class DocumentDialog extends Component {
   render() {
     const { classes, isOpened, isLoading, title, error } = this.props
     const {
-      uploadView,
+      showUploadView,
       showSuccessAddMessage,
       showSuccessRemoveMessage,
       canUploadMoreFile,
       canDeletePage,
-      pageAdded,
-      showConfirmRemove,
+      hasPageBeenAdded,
+      showPageRemovalConfirmation,
     } = this.state
 
     return (
@@ -373,11 +368,11 @@ class DocumentDialog extends Component {
             {this.renderModalContent()}
           </DialogContentText>
 
-          {!isLoading && !uploadView && (
+          {!isLoading && !showUploadView && (
             <StyledDialogActions>
               {canDeletePage && (
                 <ModalButton
-                  onClick={this.confirmRemovePage}
+                  onClick={this.confirmPageRemoval}
                   className="delete-page"
                 >
                   <DeleteIcon
@@ -391,7 +386,10 @@ class DocumentDialog extends Component {
                 </ModalButton>
               )}
               {canUploadMoreFile ? (
-                <ModalButton onClick={this.showUploadView} className="add-page">
+                <ModalButton
+                  onClick={this.doShowUploadView}
+                  className="add-page"
+                >
                   <AddCircleOutline
                     style={{
                       color: primaryBlue,
@@ -410,7 +408,7 @@ class DocumentDialog extends Component {
                   pages).
                 </WarningMessage>
               )}
-              {pageAdded && (
+              {hasPageBeenAdded && (
                 <MainActionButton
                   primary
                   onClick={this.onCancel}
@@ -425,7 +423,7 @@ class DocumentDialog extends Component {
 
         {/* Confirmation dialog when removing a page */}
         <Dialog
-          open={showConfirmRemove}
+          open={showPageRemovalConfirmation}
           onClose={this.cancelRemovePage}
           maxWidth="sm"
           fullWidth

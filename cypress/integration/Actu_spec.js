@@ -12,17 +12,6 @@ import {
 const { omit } = Cypress._
 
 describe('Declaration page', function() {
-  before(() => {
-    cy.clearCookies()
-
-    // This request's only use is to initialize the csurf token server-side
-    cy.request({
-      url: '/api/user',
-      method: 'GET',
-      failOnStatusCode: false,
-    })
-  })
-
   beforeEach(() => {
     // reset and seed the database prior to every test
     cy.request('POST', '/api/tests/db/reset')

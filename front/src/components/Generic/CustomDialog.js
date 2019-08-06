@@ -41,31 +41,42 @@ export const CustomDialog = ({
   width,
   forceConstantHeight,
   ...rest
-}) => (
-  <Dialog
-    open={isOpened}
-    onClose={onCancel}
-    aria-labelledby={titleId}
-    fullScreen={width === muiBreakpoints.xs}
-    PaperProps={{
-      style: {
-        height:
-          forceConstantHeight && width !== muiBreakpoints.xs ? '90vh' : '',
-      },
-    }}
-    {...rest}
-  >
-    {title && <StyledDialogTitle id={titleId}>{title}</StyledDialogTitle>}
-    {content && <StyledDialogContent>{content}</StyledDialogContent>}
-    {actions && (
-      <StyledDialogActions
-        style={{ paddingBottom: width === muiBreakpoints.xs ? 0 : '2rem' }}
-      >
-        {actions}
-      </StyledDialogActions>
-    )}
-  </Dialog>
-)
+}) => {
+  const useMobileStyling = width === muiBreakpoints.xs
+
+  return (
+    <Dialog
+      open={isOpened}
+      onClose={onCancel}
+      aria-labelledby={titleId}
+      fullScreen={useMobileStyling}
+      PaperProps={{
+        style: {
+          height: forceConstantHeight && !useMobileStyling ? '90vh' : '',
+        },
+      }}
+      {...rest}
+    >
+      {title && <StyledDialogTitle id={titleId}>{title}</StyledDialogTitle>}
+      {content && (
+        <StyledDialogContent
+          style={{
+            padding: useMobileStyling ? '1rem' : '',
+          }}
+        >
+          {content}
+        </StyledDialogContent>
+      )}
+      {actions && (
+        <StyledDialogActions
+          style={{ paddingBottom: useMobileStyling ? 0 : '2rem' }}
+        >
+          {actions}
+        </StyledDialogActions>
+      )}
+    </Dialog>
+  )
+}
 
 CustomDialog.propTypes = {
   actions: PropTypes.node,

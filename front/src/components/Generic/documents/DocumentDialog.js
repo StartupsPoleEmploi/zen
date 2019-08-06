@@ -48,12 +48,6 @@ const StyledDoneIcon = styled(DoneIcon)`
   }
 `
 
-const buttonStyle = {
-  width: 'auto',
-  height: 'auto',
-  fontSize: '1.7rem',
-}
-
 const initialState = {
   showUploadView: false,
   showSuccessAddMessage: false,
@@ -61,7 +55,6 @@ const initialState = {
   showPageRemovalConfirmation: false,
   canUploadMoreFile: true,
   canDeletePage: false,
-  hasPageBeenAdded: false,
   currentPage: null,
   totalPageNumber: null,
 }
@@ -111,7 +104,6 @@ class DocumentDialog extends Component {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessAddMessage: true,
-        hasPageBeenAdded: true,
         showUploadView: false,
       })
     }
@@ -238,7 +230,6 @@ class DocumentDialog extends Component {
       showSuccessRemoveMessage,
       canUploadMoreFile,
       canDeletePage,
-      hasPageBeenAdded,
       showPageRemovalConfirmation,
     } = this.state
 
@@ -322,16 +313,6 @@ class DocumentDialog extends Component {
                   />
                   Ajouter une nouvelle page {!canUploadMoreFile && ' (max : 5)'}
                 </Button>
-
-                {hasPageBeenAdded && (
-                  <MainActionButton
-                    primary
-                    onClick={this.onCancel}
-                    style={buttonStyle}
-                  >
-                    Valider
-                  </MainActionButton>
-                )}
               </Fragment>
             )
           }

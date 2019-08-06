@@ -122,6 +122,7 @@ export default class PDFViewer extends Component {
                 style={{ left: 0 }}
                 disabled={pageNumber <= 1}
                 onClick={this.previousPage}
+                className="previous-page"
               >
                 <ArrowBack
                   style={{ color: primaryBlue, marginRight: '.5rem' }}
@@ -129,7 +130,7 @@ export default class PDFViewer extends Component {
                 Page précédente
               </PaginationButton>
             )}
-            <Typography>
+            <Typography className="pager">
               {pageNumber}/{numPages}
             </Typography>
 
@@ -139,6 +140,7 @@ export default class PDFViewer extends Component {
                 size="small"
                 disabled={pageNumber >= numPages}
                 onClick={this.nextPage}
+                className="next-page"
               >
                 Page suivante
                 <ArrowForward

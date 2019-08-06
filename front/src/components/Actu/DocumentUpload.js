@@ -231,7 +231,7 @@ export class DocumentUpload extends Component {
       sideFormLabelContent = (
         <SideButton disabled>
           <Check />
-          Transmis à Pôle Emploi
+          Transmis à Pôle Emploi
         </SideButton>
       )
     } else if (fileExistsOnServer) {
@@ -258,7 +258,7 @@ export class DocumentUpload extends Component {
           <SideButton onClick={this.skipFile}>
             <CheckBoxOutlineBlank />
             {/* eslint-disable-next-line no-irregular-whitespace */}
-            Transmis à Pôle Emploi
+            Transmis à Pôle Emploi
           </SideButton>
         </TooltipOnFocus>
       )
@@ -278,6 +278,7 @@ export class DocumentUpload extends Component {
         data-pdf-url={url}
         onClick={this.togglePDFViewer}
         style={buttonStyle}
+        className="show-file"
       >
         <EyeIcon />
         {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le document fourni'}
@@ -289,6 +290,7 @@ export class DocumentUpload extends Component {
         target="_blank"
         rel="noopener noreferrer"
         style={buttonStyle}
+        className="show-file"
       >
         <EyeIcon />
         Voir le document fourni

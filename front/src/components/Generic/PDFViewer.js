@@ -2,65 +2,41 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { pdfjs, Document, Page } from 'react-pdf'
 import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import ArrowForward from '@material-ui/icons/ArrowForward'
-import { primaryBlue, mobileBreakpoint } from '../../constants'
+import { primaryBlue } from '../../constants'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.js`
 
 const PDFViewerContainer = styled.div`
   canvas {
-    overflow-x: auto;
-    padding: 1.5rem;
-    overflow-y: auto;
     margin: auto;
-  }
-`
-
-const StylePDFPage = styled(Page)`
-  && {
-    overflow: auto;
-    height: 55vh;
+    /* Override react-pdf default styles */
+    max-height: 70vh;
+    width: auto !important;
+    height: auto !important;
+    max-width: 90% !important;
     box-shadow: 0px 0px 20px #ccc;
-    margin: 2rem 0;
-    min-width: 45rem;
+  }
 
-    @media (max-width: ${mobileBreakpoint}) {
-      width: 100%;
-      min-width: auto;
-    }
+  /*
+   * This element is what could allow selecting and copying text from the PDF document.
+   * By hiding it, we can avoid layout problem it can cause
+   */
+  .react-pdf__Page__textContent {
+    display: none;
   }
 `
 
 const PaginationContainer = styled.div`
-  position: relative;
-  bottom: 0;
   display: flex;
-  margin: 1rem;
-  justify-content: center;
+  padding: 1rem 0;
+  justify-content: space-between;
   align-items: center;
   text-align: center;
-  @media (max-width: ${mobileBreakpoint}) {
-    flex-direction: column;
-  }
-`
-
-const PaginationButton = styled(Typography).attrs({ component: 'button' })`
-  && {
-    position: absolute;
-    border: none;
-    background: transparent;
-    font-size: 1.6rem;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-
-    @media (max-width: ${mobileBreakpoint}) {
-      position: static;
-    }
-  }
 `
 
 export default class PDFViewer extends Component {
@@ -108,46 +84,47 @@ export default class PDFViewer extends Component {
     return (
       <PDFViewerContainer>
         <Document
-          style={{ overflow: 'auto' }}
           file={this.props.url}
           onLoadSuccess={this.onDocumentLoadSuccess}
         >
-          <StylePDFPage pageNumber={pageNumber} />
+          <Page pageNumber={pageNumber} />
         </Document>
         {numPages > 1 && (
           <PaginationContainer>
-            {pageNumber > 1 && (
-              <PaginationButton
-                size="small"
-                style={{ left: 0 }}
-                disabled={pageNumber <= 1}
-                onClick={this.previousPage}
-                className="previous-page"
-              >
-                <ArrowBack
-                  style={{ color: primaryBlue, marginRight: '.5rem' }}
-                />{' '}
-                Page précédente
-              </PaginationButton>
-            )}
-            <Typography className="pager">
+            <Button
+              size="small"
+              style={{ flexBasis: '40%' }}
+              disabled={pageNumber <= 1}
+              onClick={this.previousPage}
+              className="previous-page"
+            >
+              <ArrowBack
+                style={{
+                  color: pageNumber <= 1 ? 'inherit' : primaryBlue,
+                  marginRight: '.5rem',
+                }}
+              />{' '}
+              Page précédente
+            </Button>
+            <Typography style={{ flexBasis: '20%' }}>
               {pageNumber}/{numPages}
             </Typography>
 
-            {pageNumber < numPages && (
-              <PaginationButton
-                style={{ right: 0 }}
-                size="small"
-                disabled={pageNumber >= numPages}
-                onClick={this.nextPage}
-                className="next-page"
-              >
-                Page suivante
-                <ArrowForward
-                  style={{ color: primaryBlue, marginLeft: '.5rem' }}
-                />
-              </PaginationButton>
-            )}
+            <Button
+              style={{ flexBasis: '40%' }}
+              size="small"
+              disabled={pageNumber >= numPages}
+              onClick={this.nextPage}
+              className="next-page"
+            >
+              Page suivante
+              <ArrowForward
+                style={{
+                  color: pageNumber >= numPages ? 'inherit' : primaryBlue,
+                  marginLeft: '.5rem',
+                }}
+              />
+            </Button>
           </PaginationContainer>
         )}
       </PDFViewerContainer>

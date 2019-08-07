@@ -240,6 +240,7 @@ class DocumentDialog extends Component {
           onCancel={this.onCancel}
           fullWidth
           maxWidth="md"
+          forceConstantHeight
           content={
             <Fragment>
               <TopDialogActions>

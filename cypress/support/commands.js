@@ -23,3 +23,40 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+// UTILS
+// GET from : https://stackoverflow.com/questions/47074225/how-to-test-file-inputs-with-cypress
+function hexStringToByte(str) {
+  if (!str) {
+    return new Uint8Array()
+  }
+
+  const a = []
+  for (let i = 0, len = str.length; i < len; i += 2) {
+    a.push(parseInt(str.substr(i, 2), 16))
+  }
+
+  return new Uint8Array(a)
+}
+
+Cypress.Commands.add(
+  'uploadFile',
+  (fileName, fileType, parentSelector, elIndex = 0) => {
+    cy.get(parentSelector)
+      .eq(elIndex)
+      .find('input[type=file]')
+      .then((subject) => {
+        cy.fixture(fileName, 'hex').then((fileHex) => {
+          const fileBytes = hexStringToByte(fileHex)
+          const testFile = new File([fileBytes], fileName, {
+            type: fileType,
+          })
+          const dataTransfer = new DataTransfer()
+          const el = subject[0]
+
+          dataTransfer.items.add(testFile)
+          el.files = dataTransfer.files
+        })
+      })
+  },
+)

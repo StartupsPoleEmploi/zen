@@ -382,7 +382,10 @@ class DocumentDialog extends Component {
           {!isRemovingOrAdded && !uploadView && (
             <StyledDialogActions>
               {canDeletePage && (
-                <ModalButton onClick={this.confirmRemovePage}>
+                <ModalButton
+                  onClick={this.confirmRemovePage}
+                  className="delete-page"
+                >
                   <DeleteIcon
                     style={{
                       color: primaryBlue,
@@ -394,7 +397,7 @@ class DocumentDialog extends Component {
                 </ModalButton>
               )}
               {canUploadMoreFile ? (
-                <ModalButton onClick={this.showUploadView}>
+                <ModalButton onClick={this.showUploadView} className="add-page">
                   <AddCircleOutline
                     style={{
                       color: primaryBlue,

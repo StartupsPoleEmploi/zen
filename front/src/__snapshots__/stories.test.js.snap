@@ -2002,7 +2002,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                 className="sc-jlyJG cHWroy"
               >
                 <a
-                  className="MuiButtonBase-root-907 MuiButton-root-881 MuiButton-outlined-889"
+                  className="MuiButtonBase-root-907 MuiButton-root-881 MuiButton-outlined-889 show-file"
                   href="/api/declarations/files?declarationInfoId=1"
                   onBlur={[Function]}
                   onContextMenu={[Function]}

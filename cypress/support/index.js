@@ -54,8 +54,13 @@ const waitForAppToBeReady = () => {
       return waitForAppToBeReady()
     }
   })
+
+  cy.clearCookies()
+  cy.request({
+    url: '/api/user',
+    method: 'GET',
+    failOnStatusCode: false,
+  })
 }
 
-before(() => {
-  return waitForAppToBeReady()
-})
+before(() => waitForAppToBeReady())

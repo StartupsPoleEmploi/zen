@@ -539,7 +539,7 @@ export class Files extends Component {
     return (
       <div>
         {sortedEmployers.map((employer, index) => (
-          <div key={employer.id}>
+          <div className="employer-row" key={employer.id}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
@@ -748,6 +748,7 @@ export class Files extends Component {
               primary={false}
               component={Link}
               to="/thanks?later"
+              className="save-for-later"
             >
               Enregistrer
               <br />
@@ -757,6 +758,7 @@ export class Files extends Component {
           <MainActionButton
             disabled={declarationRemainingDocsNb > 0}
             primary
+            className="send-to-pe"
             onClick={() => this.onSubmit({ declaration })}
           >
             Envoyer <br />à Pôle Emploi

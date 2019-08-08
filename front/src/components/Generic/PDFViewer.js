@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { pdfjs, Document, Page } from 'react-pdf'
-import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import ArrowForward from '@material-ui/icons/ArrowForward'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { Document, Page, pdfjs } from 'react-pdf'
+import styled from 'styled-components'
+
 import { primaryBlue } from '../../constants'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.js`
@@ -84,6 +85,7 @@ export default class PDFViewer extends Component {
     return (
       <PDFViewerContainer>
         <Document
+          loading={<CircularProgress style={{ margin: '10rem auto' }} />}
           file={this.props.url}
           onLoadSuccess={this.onDocumentLoadSuccess}
         >

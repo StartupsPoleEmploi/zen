@@ -13,6 +13,11 @@ import { primaryBlue } from '../../constants'
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.js`
 
 const PDFViewerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+
   canvas {
     margin: auto;
     /* Override react-pdf default styles */
@@ -34,8 +39,8 @@ const PDFViewerContainer = styled.div`
 
 const PaginationContainer = styled.div`
   display: flex;
-  padding: 1rem 0;
-  justify-content: space-between;
+  padding-top: 1rem;
+  justify-content: center;
   align-items: center;
   text-align: center;
 `
@@ -94,8 +99,6 @@ export default class PDFViewer extends Component {
         {numPages > 1 && (
           <PaginationContainer>
             <Button
-              size="small"
-              style={{ flexBasis: '40%' }}
               disabled={pageNumber <= 1}
               onClick={this.previousPage}
               className="previous-page"
@@ -106,20 +109,18 @@ export default class PDFViewer extends Component {
                   marginRight: '.5rem',
                 }}
               />{' '}
-              Page précédente
+              Précédente
             </Button>
-            <Typography style={{ flexBasis: '20%' }}>
+            <Typography style={{ padding: '0 2rem' }}>
               {pageNumber}/{numPages}
             </Typography>
 
             <Button
-              style={{ flexBasis: '40%' }}
-              size="small"
               disabled={pageNumber >= numPages}
               onClick={this.nextPage}
               className="next-page"
             >
-              Page suivante
+              Suivante
               <ArrowForward
                 style={{
                   color: pageNumber >= numPages ? 'inherit' : primaryBlue,

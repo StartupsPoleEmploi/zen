@@ -11,6 +11,8 @@ import { muiBreakpoints } from '../../constants'
 
 const StyledDialogContent = styled(DialogContent)`
   && {
+    display: flex;
+    flex-direction: column;
     text-align: center;
   }
 `

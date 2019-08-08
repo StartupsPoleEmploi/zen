@@ -183,10 +183,10 @@ class DocumentDialog extends Component {
 
     if (showUploadView || !pdfUrl) {
       return (
-        <Fragment>
+        <div>
           {/* Can return to PDF viewer only if there is a PDF to see */}
           {pdfUrl && (
-            <Button onClick={this.cancelUploadView}>
+            <Button onClick={this.cancelUploadView} style={{ display: 'flex' }}>
               <ArrowBackIcon
                 style={{ color: primaryBlue, marginRight: '1rem' }}
               />
@@ -213,7 +213,7 @@ class DocumentDialog extends Component {
               Parcourir
             </MainActionButton>
           </FileLabel>
-        </Fragment>
+        </div>
       )
     }
 

@@ -133,6 +133,22 @@ export class DocumentUpload extends Component {
     showPDFViewer: false,
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (
+      prevProps.isLoading &&
+      !this.props.isLoading &&
+      this.props.fileExistsOnServer &&
+      !this.props.error &&
+      !this.state.showPDFViewer
+    ) {
+      // Open the modal if a file was just updated (previously loading, now not, )
+      // TODO the whole Dialog logic should perhaps be moved to the parent component
+      // to be fully controlled without need for this
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ showPDFViewer: true })
+    }
+  }
+
   renderFileField(fileInput, showTooltip, id) {
     if (!showTooltip) return fileInput
     if (!id) throw new Error(`id is undefined`)

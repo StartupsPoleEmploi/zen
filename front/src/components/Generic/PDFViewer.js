@@ -97,7 +97,7 @@ export default class PDFViewer extends Component {
           <Page pageNumber={pageNumber} />
         </Document>
         {numPages > 1 && (
-          <PaginationContainer>
+          <PaginationContainer className="pager">
             <Button
               disabled={pageNumber <= 1}
               onClick={this.previousPage}

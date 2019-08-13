@@ -2169,7 +2169,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-gipzik cVnUyZ"
+          className="employer-question sc-gipzik cVnUyZ"
         >
           <div
             className="sc-csuQGl iFLHix"
@@ -2487,7 +2487,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-gipzik cVnUyZ"
+          className="employer-question sc-gipzik cVnUyZ"
         >
           <div
             className="sc-csuQGl iFLHix"
@@ -2805,7 +2805,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-gipzik cVnUyZ"
+          className="employer-question sc-gipzik cVnUyZ"
         >
           <div
             className="sc-csuQGl iFLHix"

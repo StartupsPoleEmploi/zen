@@ -138,7 +138,7 @@ const DeclarationSummaryDialog = ({
                     {employers.length}{' '}
                     {employers.length >= 2 ? 'employeurs' : 'employeur'}
                   </DeclarationHeader>
-                  <DeclarationUl>
+                  <DeclarationUl className="employer-declared-list">
                     {employers.map((employer, i) => {
                       const key = `${i}-${employer.employerName.value}`
                       return (
@@ -154,7 +154,7 @@ const DeclarationSummaryDialog = ({
                   <DeclarationHeader>
                     Salaire(s) brut déclaré(s)
                   </DeclarationHeader>
-                  <DeclarationValues>
+                  <DeclarationValues className="total-salary-declared">
                     {_isNaN(totalSalary) || totalSalary === 0 ? (
                       '-'
                     ) : (
@@ -256,7 +256,7 @@ const DeclarationSummaryDialog = ({
               ) : (
                 <Fragment>
                   <DeclarationValues>
-                    Non, je ne souhaite pas rester inscrit à Pole Emploi
+                    Non, je ne souhaite pas rester inscrit à Pole emploi
                   </DeclarationValues>
 
                   <DeclarationValues>

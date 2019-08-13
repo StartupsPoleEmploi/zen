@@ -72,7 +72,7 @@ const WorkSummary = ({ employers }) => {
 
   return (
     <SummaryContainer>
-      <li>
+      <li className="work-hours-total">
         <Label>Heures déclarées : </Label>
 
         <Value style={{ paddingBottom: '0.5rem' }}>
@@ -85,7 +85,7 @@ const WorkSummary = ({ employers }) => {
         </Value>
       </li>
 
-      <li>
+      <li className="salary-total">
         <Label>Salaire brut déclaré : </Label>
         <Value>
           <b>

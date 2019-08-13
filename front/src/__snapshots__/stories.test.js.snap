@@ -2038,7 +2038,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                         d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
                       />
                     </svg>
-                    Voir le document fourni
+                    Voir le justificatif
                   </span>
                   <span
                     className="MuiTouchRipple-root-923"
@@ -3555,9 +3555,9 @@ exports[`Storyshots Home default 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1695 MuiTypography-h6-1712 MuiTypography-paragraph-1723 sc-jqCOkK derrJF"
+            className="MuiTypography-root-1695 MuiTypography-h6-1712 MuiTypography-paragraph-1723 sc-jqCOkK beiIGF"
           >
-            Zen vous propose une actualisation et un envoi de documents simplifiés.
+            Zen vous propose une actualisation et un envoi de justificatifs simplifiés.
           </h2>
           <a
             className="MuiButtonBase-root-1757 MuiButton-root-1731 MuiButton-contained-1742 MuiButton-containedPrimary-1743 MuiButton-raised-1745 MuiButton-raisedPrimary-1746 sc-uJMKN gApvfe"
@@ -3721,7 +3721,7 @@ exports[`Storyshots Home default 1`] = `
           >
             Accédez à un espace personnel
             <br />
-             avec tous vos documents
+             avec tous vos justificatifs
             <br />
              transmis mois par mois.
           </p>
@@ -4073,9 +4073,9 @@ exports[`Storyshots Home loginFailed 1`] = `
             simplicité.
           </h1>
           <h2
-            className="MuiTypography-root-1767 MuiTypography-h6-1784 MuiTypography-paragraph-1795 sc-jqCOkK derrJF"
+            className="MuiTypography-root-1767 MuiTypography-h6-1784 MuiTypography-paragraph-1795 sc-jqCOkK beiIGF"
           >
-            Zen vous propose une actualisation et un envoi de documents simplifiés.
+            Zen vous propose une actualisation et un envoi de justificatifs simplifiés.
           </h2>
           <a
             className="MuiButtonBase-root-1829 MuiButton-root-1803 MuiButton-contained-1814 MuiButton-containedPrimary-1815 MuiButton-raised-1817 MuiButton-raisedPrimary-1818 sc-uJMKN gApvfe"
@@ -4239,7 +4239,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           >
             Accédez à un espace personnel
             <br />
-             avec tous vos documents
+             avec tous vos justificatifs
             <br />
              transmis mois par mois.
           </p>

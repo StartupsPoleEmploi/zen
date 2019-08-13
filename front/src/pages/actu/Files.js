@@ -620,7 +620,7 @@ export class Files extends Component {
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth
-            ? `Le document contenant votre attestation employeur doit être composé d'exactement deux pages`
+            ? `Le justificatif contenant votre attestation employeur doit être composé d'exactement deux pages`
             : null
         }
         employerDocType={employerCertificateType}
@@ -699,7 +699,7 @@ export class Files extends Component {
               ? `Il manque encore ${declarationRemainingDocsNb} justificatif${
                   declarationRemainingDocsNb > 1 ? 's' : ''
                 } et vous pourrez valider l'envoi`
-              : 'Tous vos documents sont prêts à être envoyés'}
+              : 'Tous vos justificatifs sont prêts à être envoyés'}
           </Typography>
         </StyledInfo>
         {this.renderDocumentList(declaration)}
@@ -708,7 +708,7 @@ export class Files extends Component {
         ] && (
           <ErrorMessage variant="body1">
             Nous sommes désolés, une erreur s'est produite lors de l'envoi des
-            documents. Merci de bien vouloir réessayer.
+            justificatifs. Merci de bien vouloir réessayer.
             <br />
             Si le problème se reproduit, merci de bien vouloir contacter
             l'équipe Zen.
@@ -783,7 +783,7 @@ export class Files extends Component {
       <StyledFiles>
         {lastDeclaration.isFinished ? (
           <StyledTitle variant="h6" component="h1">
-            Vous avez terminé l'envoi des documents du mois de{' '}
+            Vous avez terminé l'envoi des justificatifs du mois de{' '}
             {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
           </StyledTitle>
         ) : (

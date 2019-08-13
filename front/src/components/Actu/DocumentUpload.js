@@ -273,7 +273,7 @@ export class DocumentUpload extends Component {
       sideFormLabelContent = (
         <TooltipOnFocus
           useHover
-          content="Cochez cette case si vous avez transmis ce document à Pôle Emploi par d'autres moyens que Zen."
+          content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
         >
           <SideButton onClick={this.skipFile}>
             <CheckBoxOutlineBlank />
@@ -292,7 +292,7 @@ export class DocumentUpload extends Component {
         className="show-file"
       >
         <EyeIcon />
-        {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le document fourni'}
+        {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le justificatif'}
       </ViewButton>
     ) : (
       <ViewButton
@@ -303,7 +303,7 @@ export class DocumentUpload extends Component {
         className="show-file"
       >
         <EyeIcon />
-        Voir le document fourni
+        Voir le justificatif
       </ViewButton>
     )
 

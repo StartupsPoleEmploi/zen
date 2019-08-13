@@ -132,7 +132,7 @@ const Tagline = styled(Typography).attrs({
   paragraph: true,
 })`
   && {
-    max-width: 35rem;
+    max-width: 36rem;
     @media (max-width: ${mobileBreakpoint}) {
       margin: auto;
     }
@@ -374,7 +374,7 @@ export const Home = ({ location: { search } }) => {
                 simplicité.
               </Title>
               <Tagline>
-                Zen vous propose une actualisation et un envoi de documents
+                Zen vous propose une actualisation et un envoi de justificatifs
                 simplifiés.
               </Tagline>
               <ConnectButton>Se connecter avec Pôle Emploi</ConnectButton>
@@ -442,7 +442,7 @@ export const Home = ({ location: { search } }) => {
               <SummaryImg src={step3} alt="" />
               <SummaryText>
                 Accédez à un espace personnel
-                <br /> avec tous vos documents
+                <br /> avec tous vos justificatifs
                 <br /> transmis mois par mois.
               </SummaryText>
             </SummaryLi>

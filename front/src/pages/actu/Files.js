@@ -203,8 +203,6 @@ export class Files extends Component {
       )
   }
 
-  displayMissingDocs = () => this.setState({ showMissingDocs: true })
-
   handleUploadError = ({ err, loadingKey, errorKey }) => {
     const errorLabel =
       err.status === 413
@@ -254,28 +252,24 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (updatedEmployer) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const updatedDeclarations = prevState.declarations.map(
-                (declaration) => ({
-                  ...declaration,
-                  employers: declaration.employers.map((employer) => {
-                    if (employer.id !== employerId) return employer
-                    return updatedEmployer
-                  }),
-                }),
-              )
+      .then((updatedEmployer) =>
+        this.setState((prevState) => {
+          const updatedDeclarations = prevState.declarations.map(
+            (declaration) => ({
+              ...declaration,
+              employers: declaration.employers.map((employer) => {
+                if (employer.id !== employerId) return employer
+                return updatedEmployer
+              }),
+            }),
+          )
 
-              return {
-                declarations: updatedDeclarations,
-                [loadingKey]: false,
-                [errorKey]: null,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations: updatedDeclarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
+        }),
       )
       .catch((err) => {
         window.Raven.captureException(err)
@@ -284,8 +278,6 @@ export class Files extends Component {
           [errorKey]:
             'Erreur lors de la suppression de la page. Merci de bien vouloir réessayer ultérieurement',
         })
-
-        throw err
       })
   }
 
@@ -327,33 +319,26 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (updatedEmployer) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const updatedDeclarations = prevState.declarations.map(
-                (declaration) => ({
-                  ...declaration,
-                  employers: declaration.employers.map((employer) => {
-                    if (employer.id !== employerId) return employer
-                    return updatedEmployer
-                  }),
-                }),
-              )
+      .then((updatedEmployer) =>
+        this.setState((prevState) => {
+          const updatedDeclarations = prevState.declarations.map(
+            (declaration) => ({
+              ...declaration,
+              employers: declaration.employers.map((employer) => {
+                if (employer.id !== employerId) return employer
+                return updatedEmployer
+              }),
+            }),
+          )
 
-              return {
-                declarations: updatedDeclarations,
-                [loadingKey]: false,
-                [errorKey]: null,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations: updatedDeclarations,
+            [loadingKey]: false,
+            [errorKey]: null,
+          }
+        }),
       )
-      .catch((err) => {
-        this.handleUploadError({ err, loadingKey, errorKey })
-        throw err
-      })
+      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
   }
 
   // DECLARATIONS
@@ -389,28 +374,21 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (declaration) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const declarations = cloneDeep(prevState.declarations)
-              const declarationIndex = declarations.findIndex(
-                ({ id: declarationId }) => declaration.id === declarationId,
-              )
-              declarations[declarationIndex] = declaration
+      .then((declaration) =>
+        this.setState((prevState) => {
+          const declarations = cloneDeep(prevState.declarations)
+          const declarationIndex = declarations.findIndex(
+            ({ id: declarationId }) => declaration.id === declarationId,
+          )
+          declarations[declarationIndex] = declaration
 
-              return {
-                declarations,
-                [loadingKey]: false,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations,
+            [loadingKey]: false,
+          }
+        }),
       )
-      .catch((err) => {
-        this.handleUploadError({ err, loadingKey, errorKey })
-        throw err
-      })
+      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
   }
 
   removeDeclarationPageFromFile = ({ documentId, pageNumberToRemove }) => {
@@ -434,28 +412,21 @@ export class Files extends Component {
 
     return request
       .then((res) => res.body)
-      .then(
-        (declaration) =>
-          new Promise((resolve) => {
-            this.setState((prevState) => {
-              const declarations = cloneDeep(prevState.declarations)
-              const declarationIndex = declarations.findIndex(
-                ({ id: declarationId }) => declaration.id === declarationId,
-              )
-              declarations[declarationIndex] = declaration
+      .then((declaration) =>
+        this.setState((prevState) => {
+          const declarations = cloneDeep(prevState.declarations)
+          const declarationIndex = declarations.findIndex(
+            ({ id: declarationId }) => declaration.id === declarationId,
+          )
+          declarations[declarationIndex] = declaration
 
-              return {
-                declarations,
-                [loadingKey]: false,
-              }
-            })
-            resolve()
-          }),
+          return {
+            declarations,
+            [loadingKey]: false,
+          }
+        }),
       )
-      .catch((err) => {
-        this.handleUploadError({ err, loadingKey, errorKey })
-        throw err
-      })
+      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
   }
 
   askToSkipFile = (onConfirm) => {

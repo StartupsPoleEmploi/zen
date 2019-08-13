@@ -74,6 +74,15 @@ const EyeIcon = styled(Eye)`
   margin-right: 2rem;
 `
 
+const ViewButton = styled(Button)`
+  && {
+    justify-content: space-between;
+    white-space: nowrap;
+    height: 3.2rem;
+    min-height: 3.2rem;
+  }
+`
+
 const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
@@ -124,6 +133,22 @@ export class DocumentUpload extends Component {
     showPDFViewer: false,
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (
+      prevProps.isLoading &&
+      !this.props.isLoading &&
+      this.props.fileExistsOnServer &&
+      !this.props.error &&
+      !this.state.showPDFViewer
+    ) {
+      // Open the modal if a file was just updated (previously loading, now not, )
+      // TODO the whole Dialog logic should perhaps be moved to the parent component
+      // to be fully controlled without need for this
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ showPDFViewer: true })
+    }
+  }
+
   renderFileField(fileInput, showTooltip, id) {
     if (!showTooltip) return fileInput
     if (!id) throw new Error(`id is undefined`)
@@ -143,9 +168,9 @@ export class DocumentUpload extends Component {
     )
   }
 
-  submitFile = ({ target: { files } }) =>
+  submitFile = (file) =>
     this.props.submitFile({
-      file: files[0],
+      file,
       documentId: this.props.id,
       type: this.props.type,
       employerId: this.props.employerId,
@@ -165,10 +190,10 @@ export class DocumentUpload extends Component {
       : `/api/declarations/files?declarationInfoId=${id}`
   }
 
-  addFile = ({ target: { files } }) =>
+  addFile = (file) =>
     this.props.submitFile({
       isAddingFile: true,
-      file: files[0],
+      file,
       documentId: this.props.id,
       type: this.props.type,
       employerId: this.props.employerId,
@@ -220,7 +245,11 @@ export class DocumentUpload extends Component {
         accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
         style={{ display: 'none' }}
         type="file"
-        onChange={this.submitFile}
+        onChange={({
+          target: {
+            files: [file],
+          },
+        }) => this.submitFile(file)}
       />
     )
 
@@ -264,37 +293,27 @@ export class DocumentUpload extends Component {
       )
     }
 
-    const buttonStyle = {
-      justifyContent: 'space-between',
-      whiteSpace: 'nowrap',
-      height: 32,
-      minHeight: 32,
-      width: 263, // Note: width mirrors value in StyledFormLabel
-    }
-
     const documentButton = canUsePDFViewer ? (
-      <Button
+      <ViewButton
         variant="outlined"
         data-pdf-url={url}
         onClick={this.togglePDFViewer}
-        style={buttonStyle}
         className="show-file"
       >
         <EyeIcon />
         {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le document fourni'}
-      </Button>
+      </ViewButton>
     ) : (
-      <Button
+      <ViewButton
         variant="outlined"
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        style={buttonStyle}
         className="show-file"
       >
         <EyeIcon />
         Voir le document fourni
-      </Button>
+      </ViewButton>
     )
 
     const uploadInput = (
@@ -376,13 +395,13 @@ export class DocumentUpload extends Component {
         <DocumentDialog
           isOpened={showPDFViewer}
           onCancel={this.togglePDFViewer}
-          title={label}
           addFile={this.addFile}
           removePage={this.removePage}
           submitFile={this.submitFile}
           error={error}
           pdfUrl={url}
           fileExistsOnServer={fileExistsOnServer}
+          isLoading={isLoading}
         />
       </Fragment>
     )

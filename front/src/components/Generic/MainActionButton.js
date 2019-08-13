@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants'
-
 const BaseButton = styled(Button).attrs({
   color: 'primary',
 })`
   && {
-    padding: 1rem 3rem;
+    padding: 1rem 0.5rem;
     margin: 0 0.5rem;
     width: 17.5rem;
     height: 6.5rem;
@@ -32,16 +30,8 @@ const PrimaryButton = styled(BaseButton).attrs({
   }
 `
 
-const SecondaryButton = styled(BaseButton).attrs({
-  variant: 'outlined',
-})`
+const SecondaryButton = styled(BaseButton).attrs({})`
   && {
-    color: #000;
-    border: solid 2px ${primaryBlue};
-    &:hover,
-    &:focus {
-      border: solid 2px ${primaryBlue};
-    }
   }
 `
 
@@ -49,7 +39,9 @@ const MainActionButton = ({ children, primary = true, ...props }) =>
   primary ? (
     <PrimaryButton {...props}>{children}</PrimaryButton>
   ) : (
-    <SecondaryButton {...props}>{children}</SecondaryButton>
+    <SecondaryButton color="default" {...props}>
+      {children}
+    </SecondaryButton>
   )
 
 MainActionButton.propTypes = {

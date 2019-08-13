@@ -1,9 +1,33 @@
-import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import Close from '@material-ui/icons/Close'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import { helpColor } from '../../constants'
+import info from '../../images/info.svg'
+
+const TooltipTitle = styled(Typography)`
+  && {
+    font-weight: bold;
+    font-size: 1.6rem;
+    padding-bottom: 1.5rem;
+  }
+`
+
+const TooltipText = styled(Typography)`
+  && {
+    line-height: 2rem;
+  }
+`
+
+const InfoImg = styled.img`
+  width: 2.5rem;
+  float: left;
+  margin-right: 1rem;
+`
 
 const styles = () => ({
   tooltip: {
@@ -82,7 +106,7 @@ class TooltipOnFocus extends Component {
   static propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
-    content: PropTypes.node,
+    content: PropTypes.string,
     tooltipId: PropTypes.string,
     useHover: PropTypes.bool,
   }
@@ -124,10 +148,17 @@ class TooltipOnFocus extends Component {
         ref={this.handleArrowRef}
         aria-hidden="false"
         title={
-          <Fragment>
-            {content}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <TooltipTitle>
+                <InfoImg src={info} alt="" />
+                Information
+              </TooltipTitle>
+              <Close />
+            </div>
+            <TooltipText>{content}</TooltipText>
             <span className={classes.arrowArrow} ref={this.handleArrowRef} />
-          </Fragment>
+          </div>
         }
         classes={{ popper: classes.arrowPopper, tooltip: classes.tooltip }}
         PopperProps={{

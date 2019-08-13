@@ -65,6 +65,7 @@ const AddEmployersButton = styled(Button)`
   && {
     min-width: 15rem;
     margin: 0 5rem;
+    min-height: 5.5rem;
   }
 `
 
@@ -76,6 +77,8 @@ const LineDiv = styled.div`
 `
 const ButtonsContainer = styled.div`
   display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
   width: 100%;
@@ -101,14 +104,6 @@ const StyledAlwaysVisibleContainer = styled(AlwaysVisibleContainer)`
   && {
     @media (max-width: 550px) {
       padding: 2rem 1rem;
-    }
-  }
-`
-
-const StyledMainActionButton = styled(MainActionButton)`
-  && {
-    @media (max-width: 550px) {
-      padding: 1rem 0.5rem;
     }
   }
 `
@@ -469,19 +464,16 @@ export class Employers extends Component {
             <WorkSummary employers={employers} />
 
             <ButtonsContainer>
-              <StyledMainActionButton
-                primary={false}
-                onClick={this.saveAndRedirect}
-              >
-                Enregistrer
-                <br />
-                et finir plus tard
-              </StyledMainActionButton>
-              <StyledMainActionButton primary onClick={this.openDialog}>
+              <MainActionButton primary onClick={this.openDialog}>
                 Envoyer mon
                 <br />
                 actualisation
-              </StyledMainActionButton>
+              </MainActionButton>
+              <MainActionButton primary={false} onClick={this.saveAndRedirect}>
+                Enregistrer
+                <br />
+                et finir plus tard
+              </MainActionButton>
             </ButtonsContainer>
           </StyledAlwaysVisibleContainer>
         </Form>

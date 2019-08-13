@@ -29,15 +29,6 @@ const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
 `
 
-const StyledMainActionButton = styled(MainActionButton).attrs({
-  size: 'large',
-})`
-  && {
-    width: 20rem;
-    margin-top: 2rem;
-  }
-`
-
 // activate this if we decide we want to display the checkbox again
 const ACTIVATE_CHECKBOX_DISPLAY = false
 
@@ -65,11 +56,11 @@ export class UserJobCheck extends Component {
           Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur,
           vous ne pouvez pas effectuer votre actualisation sur Zen.
         </Typography>
-        <ButtonsContainer>
-          <StyledMainActionButton primary onClick={this.showDeclarationForm}>
+        <ButtonsContainer style={{ paddingTop: '3rem' }}>
+          <MainActionButton primary onClick={this.showDeclarationForm}>
             J'ai compris
             <StyledArrowRightAlt />
-          </StyledMainActionButton>
+          </MainActionButton>
         </ButtonsContainer>
 
         {ACTIVATE_CHECKBOX_DISPLAY && (

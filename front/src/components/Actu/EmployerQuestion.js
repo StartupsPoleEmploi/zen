@@ -2,19 +2,16 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Cancel from '@material-ui/icons/Cancel'
+import Delete from '@material-ui/icons/DeleteOutlined'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import EuroInput from '../Generic/EuroInput'
 import HourInput from '../Generic/HourInput'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
-
-import info from '../../images/info.svg'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -68,31 +65,11 @@ const RemoveButton = styled.button`
   }
 `
 
-const CancelIcon = styled(Cancel)`
+const DeleteIcon = styled(Delete)`
   && {
     width: 2.5rem;
     height: 2.5rem;
   }
-`
-
-const TooltipText = styled(Typography)`
-  && {
-    line-height: 2rem;
-  }
-`
-
-const TooltipTitle = styled(Typography)`
-  && {
-    font-weight: bold;
-    font-size: 1.6rem;
-    padding-bottom: 1.5rem;
-  }
-`
-
-const InfoImg = styled.img`
-  width: 2.5rem;
-  float: left;
-  margin-right: 1rem;
 `
 
 const StyledTextField = styled(TextField)`
@@ -185,17 +162,8 @@ export class EmployerQuestion extends Component {
         fullWidth={verticalLayout}
       />
     )
-    const employerTooltip = (
-      <Fragment>
-        <TooltipTitle>
-          <InfoImg src={info} alt="" />
-          Information
-        </TooltipTitle>
-        <TooltipText>
-          Si vous avez plusieurs employeurs, ajoutez une ligne par employeur.
-        </TooltipText>
-      </Fragment>
-    )
+    const employerTooltip =
+      'Si vous avez plusieurs employeurs, ajoutez une ligne par employeur.'
 
     // Work hours
     const workHoursTextField = (
@@ -218,15 +186,7 @@ export class EmployerQuestion extends Component {
         fullWidth={verticalLayout}
       />
     )
-    const workHoursTooltip = (
-      <Fragment>
-        <TooltipTitle>
-          <InfoImg src={info} alt="" />
-          Information
-        </TooltipTitle>
-        <TooltipText>Déclarez les heures réellement travaillées</TooltipText>
-      </Fragment>
-    )
+    const workHoursTooltip = 'Déclarez les heures réellement travaillées'
 
     // Salary
     const salaryTextField = (
@@ -250,15 +210,7 @@ export class EmployerQuestion extends Component {
       />
     )
 
-    const salaryTooltip = (
-      <Fragment>
-        <TooltipTitle>
-          <InfoImg src={info} alt="" />
-          Information
-        </TooltipTitle>
-        <TooltipText>Déclarez le salaire brut pour cet employeur</TooltipText>
-      </Fragment>
-    )
+    const salaryTooltip = 'Déclarez le salaire brut pour cet employeur'
 
     return (
       <StyledContainer>
@@ -306,18 +258,10 @@ export class EmployerQuestion extends Component {
             </StyledFormLabel>
             <YesNoRadioGroup
               yesTooltipContent={
-                showTooltip ? (
-                  <Fragment>
-                    <TooltipTitle>
-                      <InfoImg src={info} alt="" />
-                      Information
-                    </TooltipTitle>
-                    <TooltipText>
-                      Si votre employeur vous a payé des congés, n’oubliez pas
-                      d’inclure cette somme dans le salaire brut déclaré
-                    </TooltipText>
-                  </Fragment>
-                ) : null
+                showTooltip
+                  ? `Si votre employeur vous a payé des congés, n’oubliez pas
+                    d’inclure cette somme dans le salaire brut déclaré`
+                  : null
               }
               name={`hasEndedThisMonth[${index}]`}
               value={hasEndedThisMonth.value}
@@ -330,7 +274,7 @@ export class EmployerQuestion extends Component {
           type="button"
           aria-label="Supprimer"
         >
-          <CancelIcon />
+          <DeleteIcon />
         </RemoveButton>
       </StyledContainer>
     )

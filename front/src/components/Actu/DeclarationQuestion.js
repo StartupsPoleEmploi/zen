@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
 
 const Container = styled.li`
-  padding: 1rem 2.4rem 1rem;
+  padding: 1rem;
 `
 
 const MainQuestionContainer = styled.div`

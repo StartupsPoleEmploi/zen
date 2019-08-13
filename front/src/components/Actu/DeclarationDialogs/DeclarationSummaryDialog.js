@@ -69,6 +69,7 @@ const DeclarationLi = styled(DeclarationValues).attrs({
 
 const ButtonsContainer = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   width: 100%;
   max-width: 40rem;
@@ -278,9 +279,6 @@ const DeclarationSummaryDialog = ({
       }
       actions={
         <ButtonsContainer>
-          <MainActionButton primary={false} onClick={onCancel}>
-            Non, je modifie
-          </MainActionButton>
           <MainActionButton
             variant="contained"
             onClick={onConfirm}
@@ -288,6 +286,9 @@ const DeclarationSummaryDialog = ({
             autoFocus
           >
             Oui, je confirme
+          </MainActionButton>
+          <MainActionButton primary={false} onClick={onCancel}>
+            Non, je modifie
           </MainActionButton>
         </ButtonsContainer>
       }

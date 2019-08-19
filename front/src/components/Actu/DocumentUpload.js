@@ -139,7 +139,8 @@ export class DocumentUpload extends Component {
       !this.props.isLoading &&
       this.props.fileExistsOnServer &&
       !this.props.error &&
-      !this.state.showPDFViewer
+      !this.state.showPDFViewer &&
+      this.props.canUsePDFViewer
     ) {
       // Open the modal if a file was just updated (previously loading, now not, )
       // TODO the whole Dialog logic should perhaps be moved to the parent component

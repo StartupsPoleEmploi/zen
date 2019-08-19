@@ -84,16 +84,32 @@ export class Signup extends Component {
   state = {
     email: '',
     emailError: '',
+    emailConfirmation: '',
+    emailConfirmationError: '',
     isFinished: false,
     isError: false,
   }
 
   onChangeEmail = ({ target: { value: email } }) => this.setState({ email })
 
+  onChangeEmailConfirmation = ({ target: { value: email } }) =>
+    this.setState({ emailConfirmation: email })
+
   onSubmit = () => {
     if (!this.props.user.email && !EMAIL_REGEX.test(this.state.email)) {
       return this.setState({
         emailError: `Merci d'entrer une adresse e-mail valide`,
+        emailConfirmationError: '',
+      })
+    }
+
+    if (
+      !this.props.user.email &&
+      this.state.email !== this.state.emailConfirmation
+    ) {
+      return this.setState({
+        emailError: '',
+        emailConfirmationError: `Les deux adresses e-mails ne sont pas identiques`,
       })
     }
 
@@ -108,7 +124,13 @@ export class Signup extends Component {
 
   render() {
     const { user } = this.props
-    const { isError, emailError, email } = this.state
+    const {
+      isError,
+      email,
+      emailError,
+      emailConfirmation,
+      emailConfirmationError,
+    } = this.state
 
     if (isError) {
       return (
@@ -150,6 +172,15 @@ export class Signup extends Component {
               onChange={this.onChangeEmail}
               error={!!emailError}
               helperText={emailError}
+              inputProps={{ type: 'email' }}
+            />
+            <StyledTextField
+              label="Confirmez votre adresse e-mail"
+              name="email-confirmation"
+              value={emailConfirmation}
+              onChange={this.onChangeEmailConfirmation}
+              error={!!emailConfirmationError}
+              helperText={emailConfirmationError}
               inputProps={{ type: 'email' }}
             />
 

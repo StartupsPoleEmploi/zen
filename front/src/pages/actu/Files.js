@@ -2,23 +2,42 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import CheckCircle from '@material-ui/icons/CheckCircle'
-import { cloneDeep, get, noop, sortBy } from 'lodash'
+import { get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
+import {
+  fetchDeclarations as fetchDeclarationAction,
+  hideEmployerFilePreview as hideEmployerFilePreviewAction,
+  hideInfoFilePreview as hideInfoFilePreviewAction,
+  removeDeclarationInfoFilePage as removeDeclarationInfoFilePageAction,
+  removeEmployerFilePage as removeEmployerFilePageAction,
+  showEmployerFilePreview as showEmployerFilePreviewAction,
+  showInfoFilePreview as showInfoFilePreviewAction,
+  uploadDeclarationInfoFile as uploadDeclarationInfoFileAction,
+  uploadEmployerFile as uploadEmployerFileAction,
+} from '../../actions'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
+import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import { secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 import { canUsePDFViewer } from '../../lib/file'
-import { MAX_PDF_PAGE } from '../../components/Generic/documents/DocumentDialog'
+import {
+  selectPreviewedEmployerDoc,
+  selectPreviewedInfoDoc,
+  utils,
+} from '../../selectors/declarations'
+
+const { getEmployerLoadingKey, getEmployerErrorKey } = utils
 
 const StyledFiles = styled.div`
   display: flex;
@@ -169,6 +188,20 @@ const formatInfoDates = ({ startDate, endDate }) =>
     ? `À partir du ${formatDate(startDate)}`
     : `Du ${formatDate(startDate)} au ${formatDate(endDate)}`
 
+// FIXME is this a duplicate with DocumentUpload.types ?
+const employerType = 'employer'
+const infosType = 'info'
+const computeDocUrl = ({ id, type, file }) => {
+  // Note: if employer file is missing, there is no data, so we have to check that the id exists
+  // But for infosType, the id exists
+  if (type === employerType && !id) return null
+  if (type === infosType && !!file) return null
+
+  return type === employerType
+    ? `/api/employers/files?documentId=${id}`
+    : `/api/declarations/files?declarationInfoId=${id}`
+}
+
 export class Files extends Component {
   static propTypes = {
     history: PropTypes.shape({
@@ -176,259 +209,37 @@ export class Files extends Component {
       replace: PropTypes.func.isRequired,
     }).isRequired,
     token: PropTypes.string.isRequired,
+    declarations: PropTypes.arrayOf(PropTypes.object),
+    fetchDeclarations: PropTypes.func.isRequired,
+    removeDeclarationInfoFilePage: PropTypes.func.isRequired,
+    removeEmployerFilePage: PropTypes.func.isRequired,
+    uploadEmployerFile: PropTypes.func.isRequired,
+    uploadDeclarationInfoFile: PropTypes.func.isRequired,
+    hideEmployerFilePreview: PropTypes.func.isRequired,
+    hideInfoFilePreview: PropTypes.func.isRequired,
+    previewedEmployerDoc: PropTypes.object,
+    previewedInfoDoc: PropTypes.object,
+    showInfoFilePreview: PropTypes.func.isRequired,
+    showEmployerFilePreview: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   }
 
   state = {
-    isLoading: true,
-    declarations: [],
     isSendingFiles: false,
     showSkipConfirmation: false,
     skipFileCallback: noop,
     isLoggedOut: false,
+    previewModalProps: null,
   }
 
   componentDidMount() {
-    this.fetchDeclarations()
+    this.props.fetchDeclarations()
   }
 
-  fetchDeclarations = () => {
-    this.setState({ isLoading: true })
-    superagent
-      .get('/api/declarations')
-      .then((res) => res.body)
-      .then((declarations) =>
-        this.setState({
-          declarations,
-          isLoading: false,
-        }),
-      )
-  }
-
-  handleUploadError = ({ err, loadingKey, errorKey }) => {
-    const errorLabel =
-      err.status === 413
-        ? `Erreur : Fichier trop lourd (limite : 5000ko) ou dépassant la taille autorisée : ${MAX_PDF_PAGE} pages`
-        : err.status === 400
-        ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
-        : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
-    // TODO this should be refined to not send all common errors
-    // (file too big, etc)
-    window.Raven.captureException(err)
-
-    this.setState({
-      [loadingKey]: false,
-      [errorKey]: errorLabel,
-    })
-  }
-
-  removePageFromFile = (data) =>
+  removePage = (data) =>
     data.type === infoType
-      ? this.removeDeclarationPageFromFile(data)
-      : this.removeEmployerPageFromFile(data)
-
-  // EMPLOYER
-  removeEmployerPageFromFile = ({
-    employerId,
-    employerDocType,
-    pageNumberToRemove,
-  }) => {
-    const loadingKey = getLoadingKey({
-      id: employerId,
-      type: employerDocType,
-    })
-    const errorKey = getErrorKey({ id: employerId, type: employerDocType })
-
-    this.closeSkipModal()
-
-    this.setState({ [loadingKey]: true, [errorKey]: null })
-
-    const request = superagent
-      .post(
-        `/api/employers/remove-file-page?pageNumberToRemove=${pageNumberToRemove}`,
-      )
-      .set('Content-Type', 'application/json')
-      .set('CSRF-Token', this.props.token)
-      .send({ employerId })
-      .send({ documentType: employerDocType })
-
-    return request
-      .then((res) => res.body)
-      .then((updatedEmployer) =>
-        this.setState((prevState) => {
-          const updatedDeclarations = prevState.declarations.map(
-            (declaration) => ({
-              ...declaration,
-              employers: declaration.employers.map((employer) => {
-                if (employer.id !== employerId) return employer
-                return updatedEmployer
-              }),
-            }),
-          )
-
-          return {
-            declarations: updatedDeclarations,
-            [loadingKey]: false,
-            [errorKey]: null,
-          }
-        }),
-      )
-      .catch((err) => {
-        window.Raven.captureException(err)
-        this.setState({
-          [loadingKey]: false,
-          [errorKey]:
-            'Erreur lors de la suppression de la page. Merci de bien vouloir réessayer ultérieurement',
-        })
-      })
-  }
-
-  submitEmployerFile = ({
-    documentId,
-    file,
-    skip,
-    employerId,
-    employerDocType,
-    isAddingFile = false,
-  }) => {
-    const loadingKey = getLoadingKey({
-      id: employerId,
-      type: employerDocType,
-    })
-    const errorKey = getErrorKey({ id: employerId, type: employerDocType })
-
-    this.closeSkipModal()
-
-    this.setState({ [loadingKey]: true, [errorKey]: null })
-
-    let url = '/api/employers/files'
-    if (isAddingFile) url = url.concat('?add=true')
-
-    let request = superagent
-      .post(url)
-      .set('CSRF-Token', this.props.token)
-      .field('employerId', employerId)
-      .field('documentType', employerDocType)
-
-    if (documentId) {
-      request = request.field('id', documentId)
-    }
-    if (skip) {
-      request = request.field('skip', true)
-    } else {
-      request = request.attach('document', file)
-    }
-
-    return request
-      .then((res) => res.body)
-      .then((updatedEmployer) =>
-        this.setState((prevState) => {
-          const updatedDeclarations = prevState.declarations.map(
-            (declaration) => ({
-              ...declaration,
-              employers: declaration.employers.map((employer) => {
-                if (employer.id !== employerId) return employer
-                return updatedEmployer
-              }),
-            }),
-          )
-
-          return {
-            declarations: updatedDeclarations,
-            [loadingKey]: false,
-            [errorKey]: null,
-          }
-        }),
-      )
-      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
-  }
-
-  // DECLARATIONS
-  submitDeclarationsFile = ({
-    documentId,
-    file,
-    skip,
-    isAddingFile = false,
-  }) => {
-    const loadingKey = getLoadingKey({ id: documentId, type: infoType })
-    const errorKey = getErrorKey({ id: documentId, type: infoType })
-
-    this.closeSkipModal()
-
-    this.setState({
-      [loadingKey]: true,
-      [errorKey]: null,
-    })
-
-    let url = '/api/declarations/files'
-    if (isAddingFile) url = url.concat('?add=true')
-
-    let request = superagent
-      .post(url)
-      .set('CSRF-Token', this.props.token)
-      .field('declarationInfoId', documentId)
-
-    if (skip) {
-      request = request.field('skip', true)
-    } else {
-      request = request.attach('document', file)
-    }
-
-    return request
-      .then((res) => res.body)
-      .then((declaration) =>
-        this.setState((prevState) => {
-          const declarations = cloneDeep(prevState.declarations)
-          const declarationIndex = declarations.findIndex(
-            ({ id: declarationId }) => declaration.id === declarationId,
-          )
-          declarations[declarationIndex] = declaration
-
-          return {
-            declarations,
-            [loadingKey]: false,
-          }
-        }),
-      )
-      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
-  }
-
-  removeDeclarationPageFromFile = ({ documentId, pageNumberToRemove }) => {
-    const loadingKey = getLoadingKey({ id: documentId, type: infoType })
-    const errorKey = getErrorKey({ id: documentId, type: infoType })
-
-    this.closeSkipModal()
-
-    this.setState({
-      [loadingKey]: true,
-      [errorKey]: null,
-    })
-
-    const request = superagent
-      .post(
-        `/api/declarations/remove-file-page?pageNumberToRemove=${pageNumberToRemove}`,
-      )
-      .set('Content-Type', 'application/json')
-      .set('CSRF-Token', this.props.token)
-      .send({ declarationInfoId: documentId })
-
-    return request
-      .then((res) => res.body)
-      .then((declaration) =>
-        this.setState((prevState) => {
-          const declarations = cloneDeep(prevState.declarations)
-          const declarationIndex = declarations.findIndex(
-            ({ id: declarationId }) => declaration.id === declarationId,
-          )
-          declarations[declarationIndex] = declaration
-
-          return {
-            declarations,
-            [loadingKey]: false,
-          }
-        }),
-      )
-      .catch((err) => this.handleUploadError({ err, loadingKey, errorKey }))
-  }
+      ? this.props.removeDeclarationInfoFilePage(data)
+      : this.props.removeEmployerFilePage(data)
 
   askToSkipFile = (onConfirm) => {
     this.setState({
@@ -445,7 +256,7 @@ export class Files extends Component {
 
   onSubmit = ({ declaration }) => {
     const isSendingLastDeclaration =
-      declaration.id === this.state.declarations[0].id
+      declaration.id === this.props.declarations[0].id
 
     this.setState({ isSendingFiles: true })
 
@@ -458,7 +269,7 @@ export class Files extends Component {
           [getErrorKey({ id: declaration.id, type: declarationType })]: null,
         })
         if (isSendingLastDeclaration) return this.props.history.push('/thanks')
-        this.fetchDeclarations()
+        this.props.fetchDeclarations()
       })
       .catch((error) => {
         // Reporting here to get a metric of how much this happens
@@ -472,7 +283,7 @@ export class Files extends Component {
           isSendingFiles: false,
           [getErrorKey({ id: declaration.id, type: declarationType })]: error,
         })
-        this.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
+        this.props.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
       })
   }
 
@@ -541,16 +352,19 @@ export class Files extends Component {
           key={`${name}-${info.id}`}
           id={info.id}
           type={DocumentUpload.types.info}
+          url={computeDocUrl({ id: info.id, type: DocumentUpload.types.info })}
           label={label}
           caption={formatInfoDates(info)}
-          fileExistsOnServer={!!info.file}
-          submitFile={this.submitDeclarationsFile}
+          fileExistsOnServer={!!info.file && !info.isCleanedUp}
+          submitFile={this.props.uploadEmployerFile}
           removePageFromFile={this.removePageFromFile}
           canUsePDFViewer={info.file ? canUsePDFViewer(info.file) : null}
+          showPreview={this.props.showInfoFilePreview}
           skipFile={(params) =>
-            this.askToSkipFile(() =>
-              this.submitDeclarationsFile({ ...params, skip: true }),
-            )
+            this.askToSkipFile(() => {
+              this.props.uploadEmployerFile({ ...params, skip: true })
+              this.closeSkipModal()
+            })
           }
           originalFileName={info.originalFileName}
           allowSkipFile={allowSkipFile}
@@ -571,14 +385,16 @@ export class Files extends Component {
 
     const commonProps = {
       type: DocumentUpload.types.employer,
-      submitFile: this.submitEmployerFile,
+      submitFile: this.props.uploadEmployerFile,
       showTooltip,
       skipFile: (params) =>
-        this.askToSkipFile(() =>
-          this.submitEmployerFile({ ...params, skip: true }),
-        ),
+        this.askToSkipFile(() => {
+          this.props.uploadEmployerFile({ ...params, skip: true })
+          this.closeSkipModal()
+        }),
       allowSkipFile,
       employerId: employer.id,
+      showPreview: this.props.showEmployerFilePreview,
     }
 
     const salarySheetUpload = (
@@ -587,20 +403,21 @@ export class Files extends Component {
         key={`${employer.id}-${salarySheetType}`}
         id={get(salaryDoc, 'id')}
         label="Bulletin de salaire"
-        fileExistsOnServer={!!get(salaryDoc, 'file')}
-        removePageFromFile={this.removePageFromFile}
+        fileExistsOnServer={
+          !!get(salaryDoc, 'file') && !get(salaryDoc, 'isCleanedUp')
+        }
+        removePage={this.removePage}
         canUsePDFViewer={
           get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
         }
-        originalFileName={get(salaryDoc, 'originalFileName')}
+        url={computeDocUrl({
+          id: get(salaryDoc, 'id'),
+          type: DocumentUpload.types.employer,
+        })}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
-        isLoading={
-          this.state[getLoadingKey({ id: employer.id, type: salarySheetType })]
-        }
-        error={
-          this.state[getErrorKey({ id: employer.id, type: salarySheetType })]
-        }
+        isLoading={employer[getEmployerLoadingKey(salarySheetType)]}
+        error={employer[getEmployerErrorKey(salarySheetType)]}
       />
     )
 
@@ -612,14 +429,19 @@ export class Files extends Component {
         key={`${employer.id}-${employerCertificateType}`}
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
-        fileExistsOnServer={!!get(certificateDoc, 'file')}
-        removePageFromFile={this.removePageFromFile}
+        fileExistsOnServer={
+          !!get(certificateDoc, 'file') && !get(salaryDoc, 'isCleanedUp')
+        }
+        removePage={this.removePage}
         canUsePDFViewer={
           get(certificateDoc, 'file')
             ? canUsePDFViewer(certificateDoc.file)
             : false
         }
-        originalFileName={get(certificateDoc, 'originalFileName')}
+        url={computeDocUrl({
+          id: get(certificateDoc, 'id'),
+          type: DocumentUpload.types.employer,
+        })}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth
@@ -627,19 +449,8 @@ export class Files extends Component {
             : null
         }
         employerDocType={employerCertificateType}
-        isLoading={
-          this.state[
-            getLoadingKey({ id: employer.id, type: employerCertificateType })
-          ]
-        }
-        error={
-          this.state[
-            getErrorKey({
-              id: employer.id,
-              type: employerCertificateType,
-            })
-          ]
-        }
+        isLoading={employer[getEmployerLoadingKey(employerCertificateType)]}
+        error={employer[getEmployerErrorKey(employerCertificateType)]}
       />
     )
 
@@ -744,7 +555,18 @@ export class Files extends Component {
   }
 
   render() {
-    const { isLoading } = this.state
+    const {
+      declarations: allDeclarations,
+      isLoading,
+      previewedEmployerDoc,
+      previewedInfoDoc,
+      hideEmployerFilePreview,
+      hideInfoFilePreview,
+      uploadEmployerFile,
+      uploadDeclarationInfoFile,
+      removeEmployerFilePage,
+      removeDeclarationInfoFilePage,
+    } = this.props
 
     if (isLoading) {
       return (
@@ -758,15 +580,38 @@ export class Files extends Component {
     // a declaration which had been abandonned by a user at step 2
     // could theoretically be here if the user came back later.
     // We remove that possibility.
-    const declarations = this.state.declarations.filter(
+    const declarations = allDeclarations.filter(
       ({ hasFinishedDeclaringEmployers }) => hasFinishedDeclaringEmployers,
     )
 
-    const lastDeclaration = declarations[0]
+    const [lastDeclaration] = declarations
 
     const areUnfinishedDeclarations = declarations
       .slice(1)
       .some(({ isFinished }) => !isFinished)
+
+    const showEmployerPreview = !!previewedEmployerDoc
+    const showInfoDocPreview = !!previewedInfoDoc
+
+    let previewProps = {}
+    if (showEmployerPreview) {
+      previewProps = {
+        onCancel: hideEmployerFilePreview,
+        submitFile: uploadEmployerFile,
+        removePage: removeEmployerFilePage,
+        url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
+        employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
+        ...previewedEmployerDoc,
+      }
+    } else if (showInfoDocPreview) {
+      previewProps = {
+        onCancel: hideInfoFilePreview,
+        submitFile: uploadDeclarationInfoFile,
+        removePage: removeDeclarationInfoFilePage,
+        url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
+        ...previewedInfoDoc,
+      }
+    }
 
     if (
       !lastDeclaration ||
@@ -800,9 +645,30 @@ export class Files extends Component {
           onCancel={this.closeSkipModal}
           onConfirm={this.state.skipFileCallback}
         />
+        {(showEmployerPreview || showInfoDocPreview) && (
+          <DocumentDialog isOpened {...previewProps} />
+        )}
       </StyledFiles>
     )
   }
 }
 
-export default Files
+export default connect(
+  (state) => ({
+    declarations: state.declarationsReducer.declarations,
+    isLoading: state.declarationsReducer.isLoading,
+    previewedEmployerDoc: selectPreviewedEmployerDoc(state),
+    previewedInfoDoc: selectPreviewedInfoDoc(state),
+  }),
+  {
+    fetchDeclarations: fetchDeclarationAction,
+    uploadEmployerFile: uploadEmployerFileAction,
+    uploadDeclarationInfoFile: uploadDeclarationInfoFileAction,
+    removeEmployerFilePage: removeEmployerFilePageAction,
+    removeDeclarationInfoFilePage: removeDeclarationInfoFilePageAction,
+    showEmployerFilePreview: showEmployerFilePreviewAction,
+    showInfoFilePreview: showInfoFilePreviewAction,
+    hideEmployerFilePreview: hideEmployerFilePreviewAction,
+    hideInfoFilePreview: hideInfoFilePreviewAction,
+  },
+)(Files)

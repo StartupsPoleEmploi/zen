@@ -17,7 +17,6 @@ import styled from 'styled-components'
 import { primaryBlue } from '../../constants'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import CustomColorButton from '../Generic/CustomColorButton'
-import DocumentDialog from '../Generic/documents/DocumentDialog'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -114,14 +113,15 @@ export class DocumentUpload extends Component {
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
     originalFileName: PropTypes.string,
-    removePageFromFile: PropTypes.func.isRequired,
     allowSkipFile: PropTypes.bool,
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
     infoTooltipText: PropTypes.string,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
+    showPreview: PropTypes.func.isRequired,
     showTooltip: PropTypes.bool,
+    url: PropTypes.string,
   }
 
   static defaultProps = {
@@ -130,30 +130,8 @@ export class DocumentUpload extends Component {
 
   static types = { employer: employerType, info: infosType }
 
-  state = {
-    showPDFViewer: false,
-  }
-
-  componentDidUpdate = (prevProps) => {
-    if (
-      prevProps.isLoading &&
-      !this.props.isLoading &&
-      this.props.fileExistsOnServer &&
-      !this.props.error &&
-      !this.state.showPDFViewer &&
-      this.props.canUsePDFViewer
-    ) {
-      // Open the modal if a file was just updated (previously loading, now not, )
-      // TODO the whole Dialog logic should perhaps be moved to the parent component
-      // to be fully controlled without need for this
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ showPDFViewer: true })
-    }
-  }
-
   renderFileField(fileInput, showTooltip, id) {
     if (!showTooltip) return fileInput
-    if (!id) throw new Error(`id is undefined`)
 
     return (
       <TooltipOnFocus
@@ -175,37 +153,7 @@ export class DocumentUpload extends Component {
       employerDocType: this.props.employerDocType,
     })
 
-  computePDFUrl = () => {
-    const { id, type } = this.props
-
-    // Note: if employer file is missing, there is no data, so we have to check that the id exists
-    // But for infosType, the id exists
-    if (type === employerType && !id) return null
-    if (type === infosType && !this.props.fileExistsOnServer) return null
-
-    return type === employerType
-      ? `/api/employers/files?documentId=${id}`
-      : `/api/declarations/files?declarationInfoId=${id}`
-  }
-
-  addFile = (file) =>
-    this.props.submitFile({
-      isAddingFile: true,
-      file,
-      documentId: this.props.id,
-      type: this.props.type,
-      employerId: this.props.employerId,
-      employerDocType: this.props.employerDocType,
-    })
-
-  removePage = (pageNumberToRemove) =>
-    this.props.removePageFromFile({
-      pageNumberToRemove,
-      type: this.props.type,
-      documentId: this.props.id,
-      employerId: this.props.employerId,
-      employerDocType: this.props.employerDocType,
-    })
+  showPreview = () => this.props.showPreview(this.props.id)
 
   skipFile = () =>
     this.props.skipFile({
@@ -214,9 +162,6 @@ export class DocumentUpload extends Component {
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
-
-  togglePDFViewer = () =>
-    this.setState((state) => ({ showPDFViewer: !state.showPDFViewer }))
 
   render() {
     const {
@@ -233,9 +178,8 @@ export class DocumentUpload extends Component {
       infoTooltipText,
       showTooltip,
       employerId,
+      url,
     } = this.props
-
-    const { showPDFViewer } = this.state
 
     const formattedError = <ErrorTypography>{error}</ErrorTypography>
 
@@ -251,8 +195,6 @@ export class DocumentUpload extends Component {
         }) => this.submitFile(file)}
       />
     )
-
-    const url = this.computePDFUrl()
 
     let sideFormLabelContent = null
     if (isTransmitted) {
@@ -290,12 +232,11 @@ export class DocumentUpload extends Component {
     const documentButton = canUsePDFViewer ? (
       <ViewButton
         variant="outlined"
-        data-pdf-url={url}
-        onClick={this.togglePDFViewer}
+        onClick={this.showPreview}
         className="show-file"
       >
         <EyeIcon />
-        {showPDFViewer ? 'Fermer la visionneuse' : 'Voir le justificatif'}
+        Voir le justificatif
       </ViewButton>
     ) : (
       <ViewButton
@@ -385,19 +326,6 @@ export class DocumentUpload extends Component {
           </StyledListItem>
           <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
         </StyledContainer>
-
-        <DocumentDialog
-          originalFileName={originalFileName}
-          isOpened={showPDFViewer}
-          onCancel={this.togglePDFViewer}
-          addFile={this.addFile}
-          removePage={this.removePage}
-          submitFile={this.submitFile}
-          error={error}
-          pdfUrl={url}
-          fileExistsOnServer={fileExistsOnServer}
-          isLoading={isLoading}
-        />
       </Fragment>
     )
   }

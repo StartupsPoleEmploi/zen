@@ -32,3 +32,5 @@ export const jobSearchEndMotive = {
   RETIREMENT: 'retirement',
   OTHER: 'other',
 }
+
+export const MAX_PDF_PAGE = 5

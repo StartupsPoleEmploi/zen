@@ -4,10 +4,12 @@ import Typography from '@material-ui/core/Typography'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import superagent from 'superagent'
 
+import { setUser } from './actions'
 import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
 import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
@@ -29,6 +31,7 @@ class App extends Component {
     }).isRequired,
     location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
       .isRequired,
+    setUser: PropTypes.func.isRequired,
   }
 
   state = {
@@ -73,7 +76,9 @@ class App extends Component {
           return
         }
 
+        // TODO this setState must be gone at the end of the refactoring
         this.setState({ user })
+        this.props.setUser(user)
 
         window.Raven.setUserContext({
           id: user.id,
@@ -333,4 +338,12 @@ class App extends Component {
   }
 }
 
-export default hot(module)(withRouter(App))
+// TODO For now we only connect to set user in redux, but it should be fetched there too
+export default hot(module)(
+  withRouter(
+    connect(
+      null,
+      { setUser },
+    )(App),
+  ),
+)

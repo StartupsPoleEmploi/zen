@@ -56,7 +56,6 @@ const initialState = {
   showPageRemovalConfirmation: false,
   canUploadMoreFile: true,
   canDeletePage: false,
-  currentPage: null,
   totalPageNumber: null,
 }
 
@@ -65,12 +64,14 @@ class DocumentDialog extends Component {
     isOpened: PropTypes.bool.isRequired,
     error: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
-    pdfUrl: PropTypes.string,
     originalFileName: PropTypes.string,
-    addFile: PropTypes.func.isRequired,
+    url: PropTypes.string,
     submitFile: PropTypes.func.isRequired,
     removePage: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
+    id: PropTypes.number,
+    employerId: PropTypes.number,
+    employerDocType: PropTypes.string,
   }
 
   state = initialState
@@ -111,15 +112,6 @@ class DocumentDialog extends Component {
     }
   }
 
-  doShowUploadView = () =>
-    this.setState({
-      showUploadView: true,
-      showSuccessAddMessage: false,
-      showSuccessRemoveMessage: false,
-    })
-
-  cancelUploadView = () => this.setState({ showUploadView: false })
-
   addFile = ({
     target: {
       files: [file],
@@ -130,17 +122,14 @@ class DocumentDialog extends Component {
       showSuccessRemoveMessage: false,
     })
 
-    if (!this.props.pdfUrl) {
-      return this.props.submitFile(file)
-    }
-
-    this.props.addFile(file)
+    this.props.submitFile({
+      isAddingFile: !!this.props.url,
+      file,
+      documentId: this.props.id,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
   }
-
-  confirmPageRemoval = () =>
-    this.setState({ showPageRemovalConfirmation: true })
-
-  cancelRemovePage = () => this.setState({ showPageRemovalConfirmation: false })
 
   removePage = () => {
     this.setState({
@@ -148,9 +137,27 @@ class DocumentDialog extends Component {
       showSuccessRemoveMessage: false,
       showPageRemovalConfirmation: false,
     })
-
-    this.props.removePage(this.state.currentPage)
+    this.props.removePage({
+      pageNumberToRemove: this.state.currentPage,
+      documentId: this.props.id,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
   }
+
+  doShowUploadView = () =>
+    this.setState({
+      showUploadView: true,
+      showSuccessAddMessage: false,
+      showSuccessRemoveMessage: false,
+    })
+
+  cancelUploadView = () => this.setState({ showUploadView: false })
+
+  confirmPageRemoval = () =>
+    this.setState({ showPageRemovalConfirmation: true })
+
+  cancelRemovePage = () => this.setState({ showPageRemovalConfirmation: false })
 
   /*
    * This is called when the underlying PDF Viewer detects a change in the number
@@ -177,7 +184,7 @@ class DocumentDialog extends Component {
 
   renderModalContent() {
     const { showUploadView } = this.state
-    const { isLoading, pdfUrl, originalFileName } = this.props
+    const { isLoading, url, originalFileName } = this.props
 
     const loadingComponent = <CircularProgress style={{ margin: '10rem 0' }} />
 
@@ -185,11 +192,11 @@ class DocumentDialog extends Component {
       return loadingComponent
     }
 
-    if (showUploadView || !pdfUrl) {
+    if (showUploadView || !url) {
       return (
         <div>
           {/* Can return to PDF viewer only if there is a PDF to see */}
-          {pdfUrl && (
+          {url && (
             <Button onClick={this.cancelUploadView} style={{ display: 'flex' }}>
               <ArrowBackIcon
                 style={{ color: primaryBlue, marginRight: '1rem' }}
@@ -224,7 +231,7 @@ class DocumentDialog extends Component {
     return (
       <Suspense fallback={loadingComponent}>
         <PDFViewer
-          url={pdfUrl}
+          url={url}
           onPageNumberChange={this.onPageNumberChange}
           originalFileName={originalFileName}
         />

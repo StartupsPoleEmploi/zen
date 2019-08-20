@@ -6,6 +6,7 @@ const fr = require('date-fns/locale/fr')
 const Helvetica = require('pdfjs/font/Helvetica')
 const HelveticaBold = require('pdfjs/font/Helvetica-Bold')
 const { uploadsDeclarationDirectory } = require('config')
+const winston = require('../lib/log')
 
 const { cm } = pdf
 
@@ -19,6 +20,23 @@ const generatePDFName = (declaration) => {
 
   return `${declarationDate}__${declaration.userId}.pdf`
 }
+
+const eraseFile = (filePath) =>
+  new Promise((resolve, reject) => {
+    fs.access(filePath, (accessError) => {
+      if (accessError) return resolve(true)
+
+      fs.unlink(filePath, (deleteError) => {
+        if (deleteError) {
+          winston.warn(deleteError)
+          return reject(accessError)
+        }
+
+        // Return true in all case
+        resolve(true)
+      })
+    })
+  })
 
 const getFriendlyPDFName = (declaration) => {
   const declarationDate = format(
@@ -184,4 +202,5 @@ module.exports = {
   generatePDFName,
   generatePDFPath,
   getFriendlyPDFName,
+  eraseFile,
 }

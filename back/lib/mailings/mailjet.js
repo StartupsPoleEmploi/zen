@@ -43,10 +43,21 @@ const manageContact = ({ email, name, properties }) =>
 const formatDateForSegmentFilter = (date) =>
   parseInt(format(date, 'YYYYMM'), 10)
 
+// https://dev.mailjet.com/reference/email/contacts/contact-list/
+const deleteUser = (email) =>
+  mailjet
+    .post('contactslist', { version: 'v3' })
+    .id(LIST_ID)
+    .action('managecontact')
+    .request({
+      Email: email,
+      Action: 'remove',
+    })
+
 module.exports = {
   sendMail,
-
   manageContact,
+  deleteUser,
 
   changeContactEmail: ({ oldEmail, newEmail }) =>
     mailjet

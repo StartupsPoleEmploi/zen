@@ -8,11 +8,15 @@ const { uploadsDirectory: uploadDestination } = require('config')
 const { Parser } = require('json2csv')
 
 const winston = require('../lib/log')
+const { deleteUser } = require('../lib/user')
 const mailjet = require('../lib/mailings/mailjet')
+
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
+
 const DeclarationMonth = require('../models/DeclarationMonth')
 const DeclarationReview = require('../models/DeclarationReview')
+
 const User = require('../models/User')
 const Status = require('../models/Status')
 
@@ -284,5 +288,20 @@ router.post('/status', (req, res, next) =>
     })
     .catch(next),
 )
+
+router.delete('/delete-user', (req, res, next) => {
+  const { userId } = req.query
+  if (!userId) throw new Error('No user id given')
+
+  User.query()
+    .eager('[employers.documents, declarations.[infos,review]]')
+    .findById(userId)
+    .then((user) => {
+      if (!user) throw new Error('No such user id')
+      return deleteUser(user)
+    })
+    .then(() => res.send('ok'))
+    .catch(next)
+})
 
 module.exports = router

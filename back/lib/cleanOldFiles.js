@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
 const { subMonths } = require('date-fns')
-const fs = require('fs')
 const { uploadsDirectory } = require('config')
 const { uniq } = require('lodash')
 
@@ -8,6 +7,7 @@ const winston = require('../lib/log')
 const Declaration = require('../models/Declaration')
 const EmployerDocument = require('../models/EmployerDocument')
 const DeclarationInfo = require('../models/DeclarationInfo')
+const { eraseFile } = require('../lib/files')
 
 const setIsCleanedUp = (idSet, model) => {
   model
@@ -16,23 +16,6 @@ const setIsCleanedUp = (idSet, model) => {
     .whereIn('id', Array.from(idSet))
     .catch(winston.warn)
 }
-
-const eraseFile = (filePath) =>
-  new Promise((resolve, reject) => {
-    fs.access(filePath, (accessError) => {
-      if (accessError) return resolve(true)
-
-      fs.unlink(filePath, (deleteError) => {
-        if (deleteError) {
-          winston.warn(deleteError)
-          return reject(accessError)
-        }
-
-        // Return true in all case
-        resolve(true)
-      })
-    })
-  })
 
 const cleanOldFiles = () => {
   winston.info('Starting files cleanup')

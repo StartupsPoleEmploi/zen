@@ -213,7 +213,7 @@ export class EmployerQuestion extends Component {
     const salaryTooltip = 'Déclarez le salaire brut pour cet employeur'
 
     return (
-      <StyledContainer>
+      <StyledContainer className="employer-question">
         <StyledMain>
           <div>
             {this.renderTextField(

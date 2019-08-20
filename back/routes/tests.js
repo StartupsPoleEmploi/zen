@@ -177,6 +177,33 @@ router.post('/db/reset-for-files', (req, res, next) =>
     .catch(next),
 )
 
+router.post('/db/reset-for-employers', (req, res, next) =>
+  truncateDatabase()
+    .then(() =>
+      Promise.all([
+        insertUser(req.body.userOverride),
+        insertDeclarationMonth(),
+        setServiceUp(),
+      ]),
+    )
+    .then(([user, declarationMonth]) => {
+      fillSession(req, user)
+      return insertDeclaration({
+        userId: user.id,
+        declarationMonthId: declarationMonth.id,
+        declarationOverride: Object.assign(
+          {},
+          { hasFinishedDeclaringEmployers: false },
+          req.body.declarationOverride,
+        ),
+      })
+    })
+    .then(() => {
+      res.json('ok')
+    })
+    .catch(next),
+)
+
 router.post('/db/reset', (req, res, next) =>
   truncateDatabase()
     .then(() =>

@@ -25,6 +25,7 @@ module.exports = {
     'import/no-named-as-default': 0,
     'import/prefer-default-export': 0,
     'no-nested-ternary': 0,
+    'no-restricted-syntax': 0,
     'react/no-unescaped-entities': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js'] }],
     'react/require-default-props': 0,

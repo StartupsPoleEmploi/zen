@@ -105,7 +105,7 @@ export class Signup extends Component {
 
     if (
       !this.props.user.email &&
-      this.state.email !== this.state.emailConfirmation
+      this.state.email.trim() !== this.state.emailConfirmation.trim()
     ) {
       return this.setState({
         emailError: '',

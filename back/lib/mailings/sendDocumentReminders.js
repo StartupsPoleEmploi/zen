@@ -168,7 +168,7 @@ const sendAllDocumentsReminders = () =>
             user,
             html: interpolatedHtml,
             text: interpolatedText,
-            subject: `Votre dossier Pôle emploi n'est pas à jour`,
+            subject: `Votre dossier Zen Pôle emploi n'est pas à jour`,
             campaignName: `Rappel docs global ${getFormattedMonthAndYear(
               new Date(),
             )}`,

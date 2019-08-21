@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, Suspense } from 'react'
 import styled from 'styled-components'
 import { CircularProgress } from '@material-ui/core'
 import PropTypes from 'prop-types'
@@ -16,8 +16,9 @@ import MainActionButton from '../MainActionButton'
 
 import sendDoc from '../../../images/sendDoc.svg'
 import { primaryBlue } from '../../../constants'
-import PDFViewer from '../PDFViewer'
 import CustomDialog from '../CustomDialog'
+
+const PDFViewer = React.lazy(() => import('../PDFViewer'))
 
 export const MAX_PDF_PAGE = 5
 
@@ -177,8 +178,10 @@ class DocumentDialog extends Component {
     const { showUploadView } = this.state
     const { isLoading, pdfUrl } = this.props
 
+    const loadingComponent = <CircularProgress style={{ margin: '10rem 0' }} />
+
     if (isLoading) {
-      return <CircularProgress style={{ margin: '10rem 0' }} />
+      return loadingComponent
     }
 
     if (showUploadView || !pdfUrl) {
@@ -218,7 +221,9 @@ class DocumentDialog extends Component {
     }
 
     return (
-      <PDFViewer url={pdfUrl} onPageNumberChange={this.onPageNumberChange} />
+      <Suspense fallback={loadingComponent}>
+        <PDFViewer url={pdfUrl} onPageNumberChange={this.onPageNumberChange} />
+      </Suspense>
     )
   }
 

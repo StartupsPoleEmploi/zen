@@ -151,8 +151,7 @@ export class Signup extends Component {
           <TesterImg src={tester} alt="" />
 
           <LandingText variant="h5" component="h1">
-            Merci pour votre demande d'inscription
-            <br />
+            Merci pour votre demande d'inscription <br />
             au service Zen de Pôle Emploi
           </LandingText>
 
@@ -199,8 +198,7 @@ export class Signup extends Component {
             marginBottom: '5rem',
           }}
         >
-          Votre demande d'inscription
-          <br />
+          Votre demande d'inscription <br />
           est en cours d'enregistrement.
         </LandingText>
 

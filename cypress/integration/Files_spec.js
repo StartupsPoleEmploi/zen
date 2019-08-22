@@ -103,11 +103,11 @@ describe('Files page', function() {
       cy.get('div[role=dialog] .add-page').should('be.disabled')
     })
 
-    it('should return to the upload view after removing the only page', () => {
+    it('should close the modal if the only page was removed', () => {
       uploadNewFile({ file: 'pdf-1-page.pdf' })
       deletePage()
 
-      cy.contains('Veuillez choisir les fichiers').should('exist')
+      cy.get('div[role=dialog]').should('not.exist')
     })
 
     it('should allow navigation through document pages', () => {

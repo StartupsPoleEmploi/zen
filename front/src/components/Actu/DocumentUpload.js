@@ -113,6 +113,7 @@ export class DocumentUpload extends Component {
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
+    originalFileName: PropTypes.string,
     removePageFromFile: PropTypes.func.isRequired,
     allowSkipFile: PropTypes.bool,
     skipFile: PropTypes.func.isRequired,
@@ -227,6 +228,7 @@ export class DocumentUpload extends Component {
       isLoading,
       isTransmitted,
       label,
+      originalFileName,
       allowSkipFile,
       infoTooltipText,
       showTooltip,
@@ -385,6 +387,7 @@ export class DocumentUpload extends Component {
         </StyledContainer>
 
         <DocumentDialog
+          originalFileName={originalFileName}
           isOpened={showPDFViewer}
           onCancel={this.togglePDFViewer}
           addFile={this.addFile}

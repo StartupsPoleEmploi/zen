@@ -66,6 +66,7 @@ class DocumentDialog extends Component {
     error: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     pdfUrl: PropTypes.string,
+    originalFileName: PropTypes.string,
     addFile: PropTypes.func.isRequired,
     submitFile: PropTypes.func.isRequired,
     removePage: PropTypes.func.isRequired,
@@ -176,7 +177,7 @@ class DocumentDialog extends Component {
 
   renderModalContent() {
     const { showUploadView } = this.state
-    const { isLoading, pdfUrl } = this.props
+    const { isLoading, pdfUrl, originalFileName } = this.props
 
     const loadingComponent = <CircularProgress style={{ margin: '10rem 0' }} />
 
@@ -222,7 +223,11 @@ class DocumentDialog extends Component {
 
     return (
       <Suspense fallback={loadingComponent}>
-        <PDFViewer url={pdfUrl} onPageNumberChange={this.onPageNumberChange} />
+        <PDFViewer
+          url={pdfUrl}
+          onPageNumberChange={this.onPageNumberChange}
+          originalFileName={originalFileName}
+        />
       </Suspense>
     )
   }

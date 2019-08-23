@@ -49,6 +49,7 @@ export default class PDFViewer extends Component {
   static propTypes = {
     url: PropTypes.string.isRequired,
     onPageNumberChange: PropTypes.func.isRequired,
+    originalFileName: PropTypes.string,
   }
 
   state = {
@@ -85,6 +86,7 @@ export default class PDFViewer extends Component {
   nextPage = () => this.changePage(1)
 
   render() {
+    const { originalFileName } = this.props
     const { numPages, pageNumber } = this.state
 
     return (
@@ -96,6 +98,13 @@ export default class PDFViewer extends Component {
         >
           <Page pageNumber={pageNumber} />
         </Document>
+
+        {originalFileName && (
+          <Typography style={{ marginTop: '1rem' }}>
+            {originalFileName}
+          </Typography>
+        )}
+
         {numPages > 1 && (
           <PaginationContainer className="pager">
             <Button
@@ -111,6 +120,7 @@ export default class PDFViewer extends Component {
               />{' '}
               Précédente
             </Button>
+
             <Typography style={{ padding: '0 2rem' }}>
               {pageNumber}/{numPages}
             </Typography>

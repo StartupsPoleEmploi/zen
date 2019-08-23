@@ -94,6 +94,7 @@ class DeclarationInfo extends Model {
         startDate: { type: ['string', 'object', 'null'] },
         endDate: { type: ['string', 'object', 'null'] },
         file: { type: ['string', 'null'] },
+        originalFileName: { type: ['string', 'null'] },
         isTransmitted: { type: 'boolean' },
         isCleanedUp: { default: false, type: 'boolean' },
       },

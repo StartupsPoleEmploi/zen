@@ -397,9 +397,10 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         ? {
             // Used in case the user sent his file by another means.
             file: null,
+            originalFileName: null,
             isTransmitted: true,
           }
-        : { file: req.file.filename }
+        : { file: req.file.filename, originalFileName: req.file.originalname }
 
       const isAddingFile = !!req.query.add
 

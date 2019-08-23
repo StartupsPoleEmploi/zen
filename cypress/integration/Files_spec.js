@@ -45,6 +45,28 @@ describe('Files page', function() {
       showFileInModal({ employerIndex }) // check that the modal is re-openable
     })
 
+    it('should display the original filename in modal - for PDF', () => {
+      const employerIndex = 0
+      uploadNewFile({ employerIndex })
+      cy.get('p')
+        .contains('pdf-1-page.pdf')
+        .should('have.length', 1)
+    })
+    it('should display the original filename in modal - for JPG', () => {
+      const employerIndex = 0
+      uploadNewFile({ employerIndex, file: 'water.jpg' })
+      cy.get('p')
+        .contains('water.jpg')
+        .should('have.length', 1)
+    })
+    it('should display the original filename in modal- for PNG', () => {
+      const employerIndex = 0
+      uploadNewFile({ employerIndex, file: 'logo-zen-pe.png' })
+      cy.get('p')
+        .contains('logo-zen-pe.png')
+        .should('have.length', 1)
+    })
+
     it('should upload PDF file', () => {
       uploadNewFile({ file: 'pdf-1-page.pdf' })
       closeModal()

@@ -552,6 +552,7 @@ export class Files extends Component {
               this.submitDeclarationsFile({ ...params, skip: true }),
             )
           }
+          originalFileName={info.originalFileName}
           allowSkipFile={allowSkipFile}
           isTransmitted={info.isTransmitted}
           declarationInfoId={info.id}
@@ -591,6 +592,7 @@ export class Files extends Component {
         canUsePDFViewer={
           get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
         }
+        originalFileName={get(salaryDoc, 'originalFileName')}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={
@@ -617,6 +619,7 @@ export class Files extends Component {
             ? canUsePDFViewer(certificateDoc.file)
             : false
         }
+        originalFileName={get(certificateDoc, 'originalFileName')}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth

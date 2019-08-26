@@ -309,10 +309,15 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         ? {
             // Used in case the user sent his file by another means.
             file: null,
+            originalFileName: null,
             isTransmitted: true,
             type,
           }
-        : { file: req.file.filename, type }
+        : {
+            file: req.file.filename,
+            originalFileName: req.file.originalname,
+            type,
+          }
 
       const existingDocument = employer.documents.find(
         (document) => document.type === type,

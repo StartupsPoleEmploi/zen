@@ -24,6 +24,9 @@ import {
   SET_LOADING,
   SHOW_EMPLOYER_FILE_PREVIEW,
   SHOW_INFO_FILE_PREVIEW,
+  ACTIVE_DECLARATION_LOADING,
+  ACTIVE_DECLARATION_SUCCESS,
+  ACTIVE_DECLARATION_FAILURE,
 } from '../actions/actionNames'
 import { utils } from '../selectors/declarations'
 
@@ -44,6 +47,9 @@ const declarationsReducer = createReducer(
     declarationsInfos: [],
     previewedEmployerFile: null,
     previewedInfoFile: null,
+    activeDeclaration: null,
+    isActiveDeclarationLoading: false,
+    activeDeclarationError: null,
   },
   {
     [SET_LOADING]: (state) => {
@@ -130,6 +136,19 @@ const declarationsReducer = createReducer(
     },
     [SHOW_INFO_FILE_PREVIEW]: (state, { payload }) => {
       state.previewedInfoFileId = payload
+    },
+
+    [ACTIVE_DECLARATION_LOADING]: (state) => {
+      state.isActiveDeclarationLoading = true
+      state.activeDeclaration = null
+    },
+    [ACTIVE_DECLARATION_SUCCESS]: (state, { payload }) => {
+      state.isActiveDeclarationLoading = false
+      state.activeDeclaration = payload
+    },
+    [ACTIVE_DECLARATION_FAILURE]: (state, { payload }) => {
+      state.isActiveDeclarationLoading = false
+      state.activeDeclarationError = payload
     },
   },
 )

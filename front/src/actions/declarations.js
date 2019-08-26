@@ -13,15 +13,15 @@ import {
   EMPLOYER_SUCCESS,
   EMPLOYER_DOC_ERROR,
   SET_LOADING,
-  USER_SUCCESS,
+  ACTIVE_DECLARATION_LOADING,
+  ACTIVE_DECLARATION_SUCCESS,
+  ACTIVE_DECLARATION_FAILURE,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
 import { utils } from '../selectors/declarations'
 import { canUsePDFViewer } from '../lib/file'
 
 const { findEmployer, findDeclarationInfo } = utils
-
-export const setUser = (payload) => ({ type: USER_SUCCESS, payload })
 
 export const fetchDeclarations = () => (dispatch) => {
   dispatch({ type: SET_LOADING })
@@ -228,3 +228,20 @@ export const hideEmployerFilePreview = () => ({
 export const hideInfoFilePreview = () => ({
   type: HIDE_INFO_FILE_PREVIEW,
 })
+
+export const fetchActiveDeclaration = () => (dispatch) => {
+  dispatch({ type: ACTIVE_DECLARATION_LOADING })
+
+  return superagent
+    .get('/api/declarations?active')
+    .then((res) =>
+      dispatch({ type: ACTIVE_DECLARATION_SUCCESS, payload: res.body }),
+    )
+    .catch((err) => {
+      // 404 are the normal status when no declaration was made.
+      if (err.status !== 404) {
+        return dispatch({ type: ACTIVE_DECLARATION_FAILURE, payload: err })
+      }
+      return dispatch({ type: ACTIVE_DECLARATION_SUCCESS, payload: null })
+    })
+}

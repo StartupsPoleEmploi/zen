@@ -21,7 +21,7 @@ import {
   showInfoFilePreview as showInfoFilePreviewAction,
   uploadDeclarationInfoFile as uploadDeclarationInfoFileAction,
   uploadEmployerFile as uploadEmployerFileAction,
-} from '../../actions'
+} from '../../actions/declarations'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'

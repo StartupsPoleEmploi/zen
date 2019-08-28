@@ -11,9 +11,9 @@
 import { createReducer } from 'redux-starter-kit'
 
 import {
-  LOAD_STATUS_LOADING,
-  LOAD_STATUS_SUCCESS,
-  LOAD_STATUS_FAILURE,
+  FETCH_STATUS_LOADING,
+  FETCH_STATUS_SUCCESS,
+  FETCH_STATUS_FAILURE,
 } from '../actions/actionNames'
 
 export default createReducer(
@@ -22,15 +22,15 @@ export default createReducer(
     isServiceUp: null,
   },
   {
-    [LOAD_STATUS_LOADING]: (state) => {
+    [FETCH_STATUS_LOADING]: (state) => {
       state.isLoading = true
       state.isServiceUp = null
     },
-    [LOAD_STATUS_SUCCESS]: (state, { payload }) => {
+    [FETCH_STATUS_SUCCESS]: (state, { payload }) => {
       state.isLoading = false
       state.isServiceUp = payload
     },
-    [LOAD_STATUS_FAILURE]: (state, { payload }) => {
+    [FETCH_STATUS_FAILURE]: (state, { payload }) => {
       state.isLoading = false
       state.isServiceUp = payload
     },

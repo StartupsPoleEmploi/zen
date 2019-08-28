@@ -11,22 +11,22 @@
 import { createReducer } from 'redux-starter-kit'
 
 import {
-  DECLARATION_INFO_ERROR,
-  DECLARATION_INFO_LOADING,
-  DECLARATION_SUCCESS,
-  EMPLOYER_DOC_ERROR,
-  EMPLOYER_DOC_LOADING,
-  EMPLOYER_SUCCESS,
+  POST_DECLARATION_INFO_FAILURE,
+  POST_DECLARATION_INFO_LOADING,
+  FETCH_DECLARATION_SUCCESS,
+  POST_EMPLOYER_DOC_FAILURE,
+  POST_EMPLOYER_DOC_LOADING,
+  FETCH_EMPLOYER_SUCCESS,
   HIDE_EMPLOYER_FILE_PREVIEW,
   HIDE_INFO_FILE_PREVIEW,
-  LOAD_DECLARATIONS_ERROR,
-  LOAD_DECLARATIONS_SUCCESS,
-  SET_LOADING,
+  FETCH_DECLARATIONS_FAILURE,
+  FETCH_DECLARATIONS_SUCCESS,
+  FETCH_DECLARATIONS_LOADING,
   SHOW_EMPLOYER_FILE_PREVIEW,
   SHOW_INFO_FILE_PREVIEW,
-  ACTIVE_DECLARATION_LOADING,
-  ACTIVE_DECLARATION_SUCCESS,
-  ACTIVE_DECLARATION_FAILURE,
+  FETCH_ACTIVE_DECLARATION_LOADING,
+  FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+  FETCH_ACTIVE_DECLARATION_FAILURE,
 } from '../actions/actionNames'
 import { utils } from '../selectors/declarations'
 
@@ -52,24 +52,27 @@ const declarationsReducer = createReducer(
     activeDeclarationError: null,
   },
   {
-    [SET_LOADING]: (state) => {
+    [FETCH_DECLARATIONS_LOADING]: (state) => {
       state.isLoading = true
       state.error = true
     },
-    [LOAD_DECLARATIONS_SUCCESS]: (state, action) => {
+    [FETCH_DECLARATIONS_SUCCESS]: (state, action) => {
       state.declarations = action.payload
       state.isLoading = false
     },
-    [LOAD_DECLARATIONS_ERROR]: (state, action) => {
+    [FETCH_DECLARATIONS_FAILURE]: (state, action) => {
       state.error = action.payload
       state.isLoading = false
     },
-    [DECLARATION_INFO_LOADING]: ({ declarations }, { payload: { infoId } }) => {
+    [POST_DECLARATION_INFO_LOADING]: (
+      { declarations },
+      { payload: { infoId } },
+    ) => {
       const info = findDeclarationInfo({ declarations, infoId })
       info.isLoading = true
       info.error = null
     },
-    [DECLARATION_INFO_ERROR]: (
+    [POST_DECLARATION_INFO_FAILURE]: (
       { declarations },
       { payload: { infoId, err } },
     ) => {
@@ -77,14 +80,14 @@ const declarationsReducer = createReducer(
       info.error = err
       info.isLoading = false
     },
-    [DECLARATION_SUCCESS]: ({ declarations }, { payload }) => {
+    [FETCH_DECLARATION_SUCCESS]: ({ declarations }, { payload }) => {
       const index = declarations.findIndex(
         (declaration) => declaration.id === payload.declaration.id,
       )
       declarations[index] = payload.declaration
     },
 
-    [EMPLOYER_DOC_LOADING]: (
+    [POST_EMPLOYER_DOC_LOADING]: (
       { declarations },
       { payload: { documentId, employerId, employerDocType } },
     ) => {
@@ -99,7 +102,7 @@ const declarationsReducer = createReducer(
       employer[getEmployerLoadingKey(employerDocType)] = true
       employer[getEmployerErrorKey(employerDocType)] = null
     },
-    [EMPLOYER_DOC_ERROR]: (
+    [POST_EMPLOYER_DOC_FAILURE]: (
       { declarations },
       { payload: { documentId, employerId, employerDocType, err } },
     ) => {
@@ -114,7 +117,7 @@ const declarationsReducer = createReducer(
       employer[getEmployerLoadingKey(employerDocType)] = false
       employer[getEmployerErrorKey(employerDocType)] = err
     },
-    [EMPLOYER_SUCCESS]: ({ declarations }, { payload }) => {
+    [FETCH_EMPLOYER_SUCCESS]: ({ declarations }, { payload }) => {
       for (const declaration of declarations) {
         const index = declaration.employers.findIndex(
           (employer) => employer.id === payload.id,
@@ -138,15 +141,15 @@ const declarationsReducer = createReducer(
       state.previewedInfoFileId = payload
     },
 
-    [ACTIVE_DECLARATION_LOADING]: (state) => {
+    [FETCH_ACTIVE_DECLARATION_LOADING]: (state) => {
       state.isActiveDeclarationLoading = true
       state.activeDeclaration = null
     },
-    [ACTIVE_DECLARATION_SUCCESS]: (state, { payload }) => {
+    [FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS]: (state, { payload }) => {
       state.isActiveDeclarationLoading = false
       state.activeDeclaration = payload
     },
-    [ACTIVE_DECLARATION_FAILURE]: (state, { payload }) => {
+    [FETCH_ACTIVE_DECLARATION_FAILURE]: (state, { payload }) => {
       state.isActiveDeclarationLoading = false
       state.activeDeclarationError = payload
     },

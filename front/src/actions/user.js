@@ -1,8 +1,12 @@
 import superagent from 'superagent'
-import { USER_LOADING, USER_SUCCESS, USER_FAILURE } from './actionNames'
+import {
+  FETCH_USER_LOADING,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAILURE,
+} from './actionNames'
 
 export const fetchUser = () => (dispatch) => {
-  dispatch({ type: USER_LOADING })
+  dispatch({ type: FETCH_USER_LOADING })
   return superagent
     .get('/api/user')
     .then((res) => {
@@ -17,11 +21,13 @@ export const fetchUser = () => (dispatch) => {
         id: user.id,
       })
 
-      dispatch({ type: USER_SUCCESS, payload: user })
+      dispatch({ type: FETCH_USER_SUCCESS, payload: user })
     })
     .catch((err) => {
       // if not logged in, resolve with null
-      if (err.status !== 401) dispatch({ type: USER_FAILURE, payload: err })
-      dispatch({ type: USER_SUCCESS, payload: null })
+      if (err.status !== 401) {
+        return dispatch({ type: FETCH_USER_FAILURE, payload: err })
+      }
+      dispatch({ type: FETCH_USER_SUCCESS, payload: null })
     })
 }

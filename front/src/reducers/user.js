@@ -11,9 +11,9 @@
 import { createReducer } from 'redux-starter-kit'
 
 import {
-  USER_LOADING,
-  USER_SUCCESS,
-  USER_FAILURE,
+  FETCH_USER_LOADING,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAILURE,
 } from '../actions/actionNames'
 
 export default createReducer(
@@ -23,15 +23,15 @@ export default createReducer(
     err: null,
   },
   {
-    [USER_LOADING]: (state) => {
+    [FETCH_USER_LOADING]: (state) => {
       state.isLoading = true
       state.user = null
     },
-    [USER_SUCCESS]: (state, { payload }) => {
+    [FETCH_USER_SUCCESS]: (state, { payload }) => {
       state.isLoading = false
       state.user = payload
     },
-    [USER_FAILURE]: (state, { payload }) => {
+    [FETCH_USER_FAILURE]: (state, { payload }) => {
       state.isLoading = false
       state.err = payload
     },

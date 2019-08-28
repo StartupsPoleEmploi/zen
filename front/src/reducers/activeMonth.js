@@ -11,9 +11,9 @@
 import { createReducer } from 'redux-starter-kit'
 
 import {
-  LOAD_ACTIVE_MONTH_LOADING,
-  LOAD_ACTIVE_MONTH_SUCCESS,
-  LOAD_ACTIVE_MONTH_FAILURE,
+  FETCH_ACTIVE_MONTH_LOADING,
+  FETCH_ACTIVE_MONTH_SUCCESS,
+  FETCH_ACTIVE_MONTH_FAILURE,
 } from '../actions/actionNames'
 
 export default createReducer(
@@ -22,15 +22,15 @@ export default createReducer(
     isServiceUp: null,
   },
   {
-    [LOAD_ACTIVE_MONTH_LOADING]: (state) => {
+    [FETCH_ACTIVE_MONTH_LOADING]: (state) => {
       state.isLoading = true
       state.activeMonth = null
     },
-    [LOAD_ACTIVE_MONTH_SUCCESS]: (state, { payload }) => {
+    [FETCH_ACTIVE_MONTH_SUCCESS]: (state, { payload }) => {
       state.isLoading = false
       state.activeMonth = payload
     },
-    [LOAD_ACTIVE_MONTH_FAILURE]: (state, { payload }) => {
+    [FETCH_ACTIVE_MONTH_FAILURE]: (state, { payload }) => {
       state.isLoading = false
       state.activeMonth = payload
     },

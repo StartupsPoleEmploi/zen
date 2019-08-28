@@ -1,21 +1,21 @@
 import superagent from 'superagent'
 import {
-  LOAD_DECLARATIONS_SUCCESS,
-  LOAD_DECLARATIONS_ERROR,
+  FETCH_DECLARATIONS_SUCCESS,
+  FETCH_DECLARATIONS_FAILURE,
   HIDE_EMPLOYER_FILE_PREVIEW,
   SHOW_EMPLOYER_FILE_PREVIEW,
   HIDE_INFO_FILE_PREVIEW,
   SHOW_INFO_FILE_PREVIEW,
-  DECLARATION_INFO_LOADING,
-  DECLARATION_SUCCESS,
-  DECLARATION_INFO_ERROR,
-  EMPLOYER_DOC_LOADING,
-  EMPLOYER_SUCCESS,
-  EMPLOYER_DOC_ERROR,
-  SET_LOADING,
-  ACTIVE_DECLARATION_LOADING,
-  ACTIVE_DECLARATION_SUCCESS,
-  ACTIVE_DECLARATION_FAILURE,
+  POST_DECLARATION_INFO_LOADING,
+  FETCH_DECLARATION_SUCCESS,
+  POST_DECLARATION_INFO_FAILURE,
+  POST_EMPLOYER_DOC_LOADING,
+  FETCH_EMPLOYER_SUCCESS,
+  POST_EMPLOYER_DOC_FAILURE,
+  FETCH_DECLARATIONS_LOADING,
+  FETCH_ACTIVE_DECLARATION_LOADING,
+  FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+  FETCH_ACTIVE_DECLARATION_FAILURE,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
 import { utils } from '../selectors/declarations'
@@ -24,15 +24,15 @@ import { canUsePDFViewer } from '../lib/file'
 const { findEmployer, findDeclarationInfo } = utils
 
 export const fetchDeclarations = () => (dispatch) => {
-  dispatch({ type: SET_LOADING })
+  dispatch({ type: FETCH_DECLARATIONS_LOADING })
 
   return superagent
     .get('/api/declarations')
     .then((res) =>
-      dispatch({ type: LOAD_DECLARATIONS_SUCCESS, payload: res.body }),
+      dispatch({ type: FETCH_DECLARATIONS_SUCCESS, payload: res.body }),
     )
     .catch((err) => {
-      dispatch({ type: LOAD_DECLARATIONS_ERROR, payload: err })
+      dispatch({ type: FETCH_DECLARATIONS_FAILURE, payload: err })
       window.Raven.captureException(err)
     })
 }
@@ -53,7 +53,7 @@ export const uploadEmployerFile = ({
   file,
 }) => (dispatch, getState) => {
   dispatch({
-    type: EMPLOYER_DOC_LOADING,
+    type: POST_EMPLOYER_DOC_LOADING,
     payload: { documentId, employerId, employerDocType },
   })
 
@@ -77,7 +77,7 @@ export const uploadEmployerFile = ({
 
   return request
     .then((res) => {
-      dispatch({ type: EMPLOYER_SUCCESS, payload: res.body })
+      dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body })
       const employer = findEmployer({
         declarations: getState().declarationsReducer.declarations,
         employerId,
@@ -94,7 +94,7 @@ export const uploadEmployerFile = ({
     })
     .catch((err) => {
       dispatch({
-        type: EMPLOYER_DOC_ERROR,
+        type: POST_EMPLOYER_DOC_FAILURE,
         payload: {
           err: getUploadErrorMessage(err),
           documentId,
@@ -112,7 +112,7 @@ export const uploadDeclarationInfoFile = ({
   skip,
   isAddingFile,
 }) => (dispatch, getState) => {
-  dispatch({ type: DECLARATION_INFO_LOADING, payload: { documentId } })
+  dispatch({ type: POST_DECLARATION_INFO_LOADING, payload: { documentId } })
 
   let url = '/api/declarations/files'
   if (isAddingFile) url = url.concat('?add=true')
@@ -130,7 +130,7 @@ export const uploadDeclarationInfoFile = ({
 
   return request
     .then((res) => {
-      dispatch({ type: DECLARATION_SUCCESS, payload: res.body })
+      dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body })
 
       const info = findDeclarationInfo({
         declarations: getState().declarationsReducer.declarations,
@@ -145,7 +145,7 @@ export const uploadDeclarationInfoFile = ({
     })
     .catch((err) => {
       dispatch({
-        type: DECLARATION_INFO_ERROR,
+        type: POST_DECLARATION_INFO_FAILURE,
         payload: { err: getUploadErrorMessage(err), documentId },
       })
       window.Raven.captureException(err)
@@ -159,7 +159,7 @@ export const removeEmployerFilePage = ({
   pageNumberToRemove,
 }) => (dispatch, getState) => {
   dispatch({
-    type: EMPLOYER_DOC_LOADING,
+    type: POST_EMPLOYER_DOC_LOADING,
     payload: { documentId, employerId, employerDocType },
   })
 
@@ -171,10 +171,12 @@ export const removeEmployerFilePage = ({
     .set('CSRF-Token', getState().userReducer.user.csrfToken)
     .send({ employerId })
     .send({ documentType: employerDocType })
-    .then((res) => dispatch({ type: EMPLOYER_SUCCESS, payload: res.body }))
+    .then((res) =>
+      dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body }),
+    )
     .catch((err) => {
       dispatch({
-        type: EMPLOYER_DOC_ERROR,
+        type: POST_EMPLOYER_DOC_FAILURE,
         payload: {
           err:
             'Erreur lors de la suppression de la page. Merci de bien vouloir réessayer ultérieurement',
@@ -191,7 +193,7 @@ export const removeDeclarationInfoFilePage = ({
   documentId,
   pageNumberToRemove,
 }) => (dispatch, getState) => {
-  dispatch({ type: DECLARATION_INFO_LOADING, payload: { documentId } })
+  dispatch({ type: POST_DECLARATION_INFO_LOADING, payload: { documentId } })
 
   return superagent
     .post(
@@ -200,10 +202,12 @@ export const removeDeclarationInfoFilePage = ({
     .set('Content-Type', 'application/json')
     .set('CSRF-Token', getState().userReducer.user.csrfToken)
     .send({ declarationInfoId: documentId })
-    .then((res) => dispatch({ type: DECLARATION_SUCCESS, payload: res.body }))
+    .then((res) =>
+      dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body }),
+    )
     .catch((err) => {
       dispatch({
-        type: DECLARATION_INFO_ERROR,
+        type: POST_DECLARATION_INFO_FAILURE,
         payload: {
           err:
             'Erreur lors de la suppression de la page. Merci de bien vouloir réessayer ultérieurement',
@@ -230,18 +234,27 @@ export const hideInfoFilePreview = () => ({
 })
 
 export const fetchActiveDeclaration = () => (dispatch) => {
-  dispatch({ type: ACTIVE_DECLARATION_LOADING })
+  dispatch({ type: FETCH_ACTIVE_DECLARATION_LOADING })
 
   return superagent
     .get('/api/declarations?active')
     .then((res) =>
-      dispatch({ type: ACTIVE_DECLARATION_SUCCESS, payload: res.body }),
+      dispatch({
+        type: FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+        payload: res.body,
+      }),
     )
     .catch((err) => {
       // 404 are the normal status when no declaration was made.
       if (err.status !== 404) {
-        return dispatch({ type: ACTIVE_DECLARATION_FAILURE, payload: err })
+        return dispatch({
+          type: FETCH_ACTIVE_DECLARATION_FAILURE,
+          payload: err,
+        })
       }
-      return dispatch({ type: ACTIVE_DECLARATION_SUCCESS, payload: null })
+      return dispatch({
+        type: FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+        payload: null,
+      })
     })
 }

@@ -8,8 +8,13 @@ const { get, isBoolean, isInteger, isNumber, isString } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
-const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
+const {
+  hasMissingEmployersDocuments,
+  hasMissingDeclarationDocuments,
+} = require('../lib/declaration')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
+const { sendDocument } = require('../lib/pe-api/documents')
+const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
 const { isUserTokenValid } = require('../lib/token')
 const winston = require('../lib/log')
 
@@ -343,6 +348,56 @@ router.post('/files', upload.single('document'), (req, res, next) => {
       return savePromise
         .then(fetchEmployer)
         .then((savedEmployer) => res.json(savedEmployer))
+    })
+    .catch(next)
+})
+
+router.post('/files/validate', (req, res, next) => {
+  if (!isUserTokenValid(req.user.tokenExpirationDate)) {
+    return res.status(401).json('Expired token')
+  }
+
+  return EmployerDocument.query()
+    .eager('employer.[documents, declaration.[user, declarationMonth, infos]]')
+    .findOne({ id: req.body.id })
+    .then((employerDoc) => {
+      if (
+        !employerDoc ||
+        get(employerDoc, 'employer.declaration.user.id') !== req.session.user.id
+      ) {
+        return res.status(404).json('Not found')
+      }
+
+      if (employerDoc.isTransmitted) return res.json(employerDoc.employer)
+
+      return (
+        sendDocument({
+          document: employerDoc,
+          accessToken: req.session.userSecret.accessToken,
+        })
+          .then(() => {
+            const { declaration } = employerDoc.employer
+            if (
+              hasMissingEmployersDocuments(declaration) ||
+              hasMissingDeclarationDocuments(declaration)
+            ) {
+              return declaration
+            }
+
+            declaration.isFinished = true
+            return declaration.$query().upsertGraphAndFetch()
+          })
+          // FIXME this needs to change, optimal choice is probably to return declaration
+          .then(() =>
+            Employer.query()
+              .eager('documents')
+              .findOne({
+                id: employerDoc.employer.id,
+                userId: req.session.user.id,
+              }),
+          )
+          .then((updatedEmployer) => res.json(updatedEmployer))
+      )
     })
     .catch(next)
 })

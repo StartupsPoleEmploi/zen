@@ -21,21 +21,22 @@
  */
 
 const { uploadsDirectory } = require('config')
-const { format } = require('date-fns')
 const config = require('config')
 const fs = require('fs')
 const path = require('path')
 const { deburr } = require('lodash')
+const { format } = require('date-fns')
 
 const { request, checkHeadersAndWait } = require('../resilientRequest')
 const EmployerDocument = require('../../models/EmployerDocument')
 const { optimizePDF } = require('../../lib/pdf-utils')
+const DeclarationInfo = require('../../models/DeclarationInfo')
 
 const winston = require('../log')
 
 const DEFAULT_WAIT_TIME = process.env.NODE_ENV !== 'test' ? 1000 : 0
-
 const CONTEXT_CODE = '1'
+const MAX_TRIES = 3
 
 const CODES = {
   SALARY_SHEET: {
@@ -110,7 +111,36 @@ const getConfirmationUrl = (conversionId) =>
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
-const doUpload = ({ document, accessToken, previousTries = 0 }) =>
+const formatDeclarationInfoDoc = (doc) => {
+  const typeInfos = documentsToTransmitTypes.find(
+    ({ type }) => type === doc.type,
+  )
+  return {
+    filePath: `${uploadsDirectory}${doc.file}`,
+    label: typeInfos.label,
+    dbDocument: doc,
+    confirmationData: typeInfos.confirmationData,
+  }
+}
+
+const formatEmployerDoc = (doc) => ({
+  filePath: `${uploadsDirectory}${doc.file}`,
+  label: deburr(
+    `${
+      doc.type === EmployerDocument.types.employerCertificate ? 'AE' : 'BS'
+    } - ${doc.employer.employerName} - ${format(
+      doc.employer.declaration.declarationMonth.month,
+      'MM-YYYY',
+    )}`,
+  ),
+  dbDocument: doc,
+  confirmationData:
+    doc.type === EmployerDocument.types.employerCertificate
+      ? CODES.EMPLOYER_CERTIFICATE
+      : CODES.SALARY_SHEET,
+})
+
+const doUpload = ({ filePath, accessToken, previousTries = 0 }) =>
   request({
     accessToken,
     headers: [{ key: 'media', value: 'M' }], // "Mobile". "I" (Internet) crashed the documents transmission
@@ -119,8 +149,8 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
     attachments: [
       {
         name: 'fichier',
-        file: fs.createReadStream(document.filePath),
-        uploadname: `1${path.extname(document.filePath)}`,
+        file: fs.createReadStream(filePath),
+        uploadname: `1${path.extname(filePath)}`,
       },
     ],
     method: 'post',
@@ -128,7 +158,7 @@ const doUpload = ({ document, accessToken, previousTries = 0 }) =>
     if (!res.body.conversionId) {
       return checkHeadersAndWait(res.headers).then(() =>
         doUpload({
-          document,
+          filePath,
           accessToken,
           previousTries: previousTries + 1,
         }),
@@ -149,107 +179,75 @@ const doConfirm = ({ conversionId, document, accessToken }) =>
     },
   })
 
-const sendDocuments = async ({ declaration, accessToken }) => {
-  const documentsToTransmit = declaration.infos
-    .filter(({ file }) => file)
-    .map((dbDocument) => {
-      const typeInfos = documentsToTransmitTypes.find(
-        ({ type }) => type === dbDocument.type,
-      )
+const sendDocument = ({ accessToken, document, previousTries = 0 }) => {
+  let infosToSendDocument
+  if (Object.values(DeclarationInfo.types).includes(document.type)) {
+    infosToSendDocument = formatDeclarationInfoDoc(document)
+  } else if (Object.values(EmployerDocument.types).includes(document.type)) {
+    infosToSendDocument = formatEmployerDoc(document)
+  } else {
+    throw new Error('Unknown document type')
+  }
 
-      return {
-        filePath: `${uploadsDirectory}${dbDocument.file}`,
-        label: typeInfos.label,
-        dbDocument,
-        confirmationData: typeInfos.confirmationData,
-      }
-    })
-    .concat(
-      declaration.employers.reduce((prev, { employerName, documents }) => {
-        if (!documents[0] || !documents[0].file) return prev
-
-        return prev.concat(
-          documents.map((document) => ({
-            filePath: `${uploadsDirectory}${document.file}`,
-            label: `${
-              document.type === EmployerDocument.types.employerCertificate
-                ? 'AE'
-                : 'BS'
-            } - ${employerName}`,
-            dbDocument: document,
-            confirmationData:
-              document.type === EmployerDocument.types.employerCertificate
-                ? CODES.EMPLOYER_CERTIFICATE
-                : CODES.SALARY_SHEET,
-          })),
-        )
-      }, []),
+  if (config.get('bypassDocumentsDispatch')) {
+    winston.info(
+      `Simulating sending document ${infosToSendDocument.dbDocument.type} ${infosToSendDocument.dbDocument.id} to PE`,
     )
-    .map(({ label, ...rest }) => ({
-      label: deburr(
-        `${label} - ${format(declaration.declarationMonth.month, 'MM-YYYY')}`,
-      ),
-      ...rest,
-    }))
-    .filter(({ dbDocument }) => !dbDocument.isTransmitted)
 
-  for (const key in documentsToTransmit) {
-    // Temporaly fix for not optimize files
-    if (path.extname(documentsToTransmit[key].filePath) === '.pdf') {
-      try {
-        await optimizePDF(documentsToTransmit[key].filePath)
-      } catch (err) {
-        /** We log the error but we continue to - try to - upload anyway */
-        winston.error(
-          `Error while optimizing document ${documentsToTransmit[key].dbDocument.id} (ERR ${err})`,
-        )
-      }
-    }
-
-    // NEVER ACTIVATE IN PRODUCTION
-    if (config.get('bypassDocumentsDispatch')) {
-      winston.info(
-        `Simulating sending document ${documentsToTransmit[key].dbDocument.id} to PE`,
-      )
-      await documentsToTransmit[key].dbDocument
-        .$query()
-        .patch({ isTransmitted: true })
-
-      continue
-    }
-    if (key !== 0) await wait(DEFAULT_WAIT_TIME)
-
-    const {
-      body: { conversionId },
-    } = await doUpload({
-      document: documentsToTransmit[key],
-      accessToken,
-    }).catch((err) => {
-      winston.error(
-        `Error while uploading document ${documentsToTransmit[key].dbDocument.id} (HTTP ${err.status})`,
-      )
-      throw err
-    })
-
-    await wait(DEFAULT_WAIT_TIME)
-
-    await doConfirm({
-      document: documentsToTransmit[key],
-      accessToken,
-      conversionId,
-    }).catch((err) => {
-      winston.error(
-        `Error while confirming document ${documentsToTransmit[key].dbDocument.id} (HTTP ${err.status})`,
-      )
-      throw err
-    })
-
-    await documentsToTransmit[key].dbDocument
+    return infosToSendDocument.dbDocument
       .$query()
       .patch({ isTransmitted: true })
   }
+
+  let promise = Promise.resolve()
+  if (path.extname(infosToSendDocument.filePath) === '.pdf') {
+    // optimize PDF before sending them to PE
+    // TODO : Do this at upload?
+    promise = optimizePDF(infosToSendDocument.filePath).catch((err) =>
+      // if the optimization fails, log it, but continue anyway
+      winston.error(
+        `Error while optimizing document ${infosToSendDocument.dbDocument.id} (ERR ${err})`,
+      ),
+    )
+  }
+
+  return promise.then(() =>
+    doUpload({
+      filePath: infosToSendDocument.filePath,
+      accessToken,
+    })
+      .then(({ body: { conversionId } }) =>
+        wait(DEFAULT_WAIT_TIME).then(() => conversionId),
+      )
+      .then((conversionId) =>
+        doConfirm({
+          document: infosToSendDocument,
+          accessToken,
+          conversionId,
+        }),
+      )
+      .then(() =>
+        infosToSendDocument.dbDocument.$query().patch({ isTransmitted: true }),
+      )
+      .catch((err) => {
+        if (previousTries < MAX_TRIES) {
+          return wait(DEFAULT_WAIT_TIME).then(() =>
+            sendDocument({
+              accessToken,
+              document,
+              previousTries: previousTries + 1,
+            }),
+          )
+        }
+
+        winston.error(
+          `Error while uploading or confirming document ${infosToSendDocument.dbDocument.id} (call to ${err.response.request.url}) (HTTP ${err.status})`,
+        )
+        throw err
+      }),
+  )
 }
 
 module.exports = {
-  sendDocuments,
+  sendDocument,
 }

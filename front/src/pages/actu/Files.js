@@ -21,6 +21,8 @@ import {
   showInfoFilePreview as showInfoFilePreviewAction,
   uploadDeclarationInfoFile as uploadDeclarationInfoFileAction,
   uploadEmployerFile as uploadEmployerFileAction,
+  validateEmployerDoc as validateEmployerDocAction,
+  validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
 } from '../../actions/declarations'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FilesDialog from '../../components/Actu/FilesDialog'
@@ -221,6 +223,8 @@ export class Files extends Component {
     previewedInfoDoc: PropTypes.object,
     showInfoFilePreview: PropTypes.func.isRequired,
     showEmployerFilePreview: PropTypes.func.isRequired,
+    validateEmployerDoc: PropTypes.func.isRequired,
+    validateDeclarationInfoDoc: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
   }
 
@@ -566,6 +570,8 @@ export class Files extends Component {
       uploadDeclarationInfoFile,
       removeEmployerFilePage,
       removeDeclarationInfoFilePage,
+      validateEmployerDoc,
+      validateDeclarationInfoDoc,
     } = this.props
 
     if (isLoading) {
@@ -600,6 +606,7 @@ export class Files extends Component {
         onCancel: hideEmployerFilePreview,
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
+        validateDoc: validateEmployerDoc,
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,
@@ -609,6 +616,7 @@ export class Files extends Component {
         onCancel: hideInfoFilePreview,
         submitFile: uploadDeclarationInfoFile,
         removePage: removeDeclarationInfoFilePage,
+        validateDoc: validateDeclarationInfoDoc,
         url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
         ...previewedInfoDoc,
       }
@@ -672,5 +680,7 @@ export default connect(
     showInfoFilePreview: showInfoFilePreviewAction,
     hideEmployerFilePreview: hideEmployerFilePreviewAction,
     hideInfoFilePreview: hideInfoFilePreviewAction,
+    validateEmployerDoc: validateEmployerDocAction,
+    validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
   },
 )(Files)

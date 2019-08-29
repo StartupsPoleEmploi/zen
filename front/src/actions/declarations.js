@@ -262,3 +262,65 @@ export const fetchActiveDeclaration = () => (dispatch) => {
       })
     })
 }
+
+export const validateEmployerDoc = ({
+  documentId,
+  employerId,
+  employerDocType,
+}) => (dispatch, getState) => {
+  dispatch({
+    type: POST_EMPLOYER_DOC_LOADING,
+    payload: { documentId, employerId, employerDocType },
+  })
+
+  return superagent
+    .post(`/api/employers/files/validate`)
+    .set('Content-Type', 'application/json')
+    .set('CSRF-Token', getState().userReducer.user.csrfToken)
+    .send({ id: documentId })
+    .send({ documentType: employerDocType })
+    .then((res) => {
+      dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body })
+      dispatch(hideEmployerFilePreview())
+    })
+    .catch((err) => {
+      dispatch({
+        type: POST_EMPLOYER_DOC_FAILURE,
+        payload: {
+          err:
+            'Erreur lors de la validation du justificatif, merci de bien vouloir réessayer ultérieurement',
+          documentId,
+          employerId,
+          employerDocType,
+        },
+      })
+      window.Raven.captureException(err)
+    })
+}
+export const validateDeclarationInfoDoc = ({ documentId }) => (
+  dispatch,
+  getState,
+) => {
+  dispatch({ type: POST_DECLARATION_INFO_LOADING, payload: { documentId } })
+
+  return superagent
+    .post(`/api/declarations/files/validate`)
+    .set('Content-Type', 'application/json')
+    .set('CSRF-Token', getState().userReducer.user.csrfToken)
+    .send({ id: documentId })
+    .then((res) => {
+      dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body })
+      dispatch(hideInfoFilePreview())
+    })
+    .catch((err) => {
+      dispatch({
+        type: POST_DECLARATION_INFO_FAILURE,
+        payload: {
+          err:
+            'Erreur lors de la validation du justificatif, merci de bien vouloir réessayer ultérieurement',
+          documentId,
+        },
+      })
+      window.Raven.captureException(err)
+    })
+}

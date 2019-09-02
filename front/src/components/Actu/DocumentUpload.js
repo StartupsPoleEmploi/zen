@@ -5,7 +5,6 @@ import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import Check from '@material-ui/icons/Check'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Info from '@material-ui/icons/InfoOutlined'
 import Eye from '@material-ui/icons/RemoveRedEye'
@@ -60,10 +59,6 @@ const EyeIcon = styled(Eye)`
   margin-right: 2rem;
 `
 
-const CheckIcon = styled(Check)`
-  margin-right: 2rem;
-`
-
 const CheckBoxOutlineBlankIcon = styled(CheckBoxOutlineBlank)`
   margin-right: 2rem;
 `
@@ -75,8 +70,6 @@ const NoteAddIcon = styled(NoteAdd)`
 const ActionButton = styled(Button)`
   && {
     justify-content: flex-start;
-    white-space: nowrap;
-    height: 3.2rem;
     min-height: 3.2rem;
     margin-top: 0.1rem;
   }
@@ -183,12 +176,13 @@ export class DocumentUpload extends Component {
 
     const viewDocumentButton = canUsePDFViewer ? (
       <ActionButton
-        variant="outlined"
+        variant="contained"
         onClick={this.showPreview}
         className="show-file"
+        color="primary"
       >
         <EyeIcon />
-        Voir ou modifier le justificatif
+        Voir, modifier ou valider le justificatif
       </ActionButton>
     ) : (
       <ActionButton
@@ -278,16 +272,6 @@ export class DocumentUpload extends Component {
               ) : (
                 <Container>
                   {error && <ErrorTypography>{error}</ErrorTypography>}
-                  {fileExistsOnServer && !isTransmitted && (
-                    <ActionButton
-                      variant="contained"
-                      aria-describedby={`file[${id}]`}
-                      color="primary"
-                    >
-                      <CheckIcon />
-                      Valider le justificatif
-                    </ActionButton>
-                  )}
 
                   {fileExistsOnServer && !isTransmitted && viewDocumentButton}
 

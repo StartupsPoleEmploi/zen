@@ -7,9 +7,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import superagent from 'superagent'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -29,7 +27,6 @@ import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
-import MainActionButton from '../../components/Generic/MainActionButton'
 import { secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 import { canUsePDFViewer } from '../../lib/file'
@@ -60,26 +57,6 @@ const StyledTitle = styled(Typography)`
 
 const StyledInfo = styled.div`
   text-align: center;
-`
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  width: 100%;
-  text-align: center;
-  max-width: 40rem;
-  margin: 0 auto;
-`
-
-const ErrorMessage = styled(Typography)`
-  && {
-    color: red;
-    text-align: center;
-    padding-top: 1.5rem;
-  }
 `
 
 const FilesSection = styled.section`
@@ -149,11 +126,7 @@ const infoSpecs = [
 
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
-const declarationType = 'declaration'
 const infoType = 'info'
-
-const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
-const getErrorKey = ({ id, type }) => `${id}-${type}-error`
 
 const getDeclarationMissingFilesNb = (declaration) => {
   const infoDocumentsRequiredNb = declaration.infos.filter(
@@ -233,11 +206,31 @@ export class Files extends Component {
     showSkipConfirmation: false,
     skipFileCallback: noop,
     isLoggedOut: false,
-    previewModalProps: null,
   }
 
   componentDidMount() {
     this.props.fetchDeclarations()
+  }
+
+  componentDidUpdate(prevProps) {
+    // Redirect to /thanks if last declaration's last file was just validated
+    const prevDeclaration = prevProps.declarations[0]
+    const updatedDeclaration = this.props.declarations[0]
+
+    if (!prevDeclaration || !updatedDeclaration) return
+    const missingFilesOnPrevDeclaration = getDeclarationMissingFilesNb(
+      prevDeclaration,
+    )
+    const missingFilesOnUpdatedDeclaration = getDeclarationMissingFilesNb(
+      updatedDeclaration,
+    )
+
+    if (
+      missingFilesOnPrevDeclaration > 0 &&
+      missingFilesOnUpdatedDeclaration === 0
+    ) {
+      return this.props.history.push('/thanks')
+    }
   }
 
   removePage = (data) =>
@@ -257,39 +250,6 @@ export class Files extends Component {
       showSkipConfirmation: false,
       skipFileCallback: noop,
     })
-
-  onSubmit = ({ declaration }) => {
-    const isSendingLastDeclaration =
-      declaration.id === this.props.declarations[0].id
-
-    this.setState({ isSendingFiles: true })
-
-    return superagent
-      .post('/api/declarations/finish', { id: declaration.id })
-      .set('CSRF-Token', this.props.token)
-      .then(() => {
-        this.setState({
-          isSendingFiles: false,
-          [getErrorKey({ id: declaration.id, type: declarationType })]: null,
-        })
-        if (isSendingLastDeclaration) return this.props.history.push('/thanks')
-        this.props.fetchDeclarations()
-      })
-      .catch((error) => {
-        // Reporting here to get a metric of how much this happens
-        window.Raven.captureException(error)
-
-        if (error.status === 401 || error.status === 403) {
-          return this.setState({ isLoggedOut: true })
-        }
-
-        this.setState({
-          isSendingFiles: false,
-          [getErrorKey({ id: declaration.id, type: declarationType })]: error,
-        })
-        this.props.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
-      })
-  }
 
   renderDocumentList = (declaration) => {
     const neededAdditionalDocumentsSpecs = infoSpecs.filter(
@@ -374,8 +334,8 @@ export class Files extends Component {
           allowSkipFile={allowSkipFile}
           isTransmitted={info.isTransmitted}
           declarationInfoId={info.id}
-          isLoading={this.state[getLoadingKey({ id: info.id, type: infoType })]}
-          error={this.state[getErrorKey({ id: info.id, type: infoType })]}
+          isLoading={info.isLoading}
+          error={info.error}
         />
       ))
 
@@ -479,9 +439,7 @@ export class Files extends Component {
     )
   }
 
-  renderOldSection = (declaration) => this.renderSection(declaration, true)
-
-  renderSection = (declaration, isOldMonth) => {
+  renderSection = (declaration) => {
     const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
 
     const formattedMonth = formattedDeclarationMonth(
@@ -518,39 +476,6 @@ export class Files extends Component {
           </Typography>
         </StyledInfo>
         {this.renderDocumentList(declaration)}
-        {this.state[
-          getErrorKey({ type: declarationType, id: declaration.id })
-        ] && (
-          <ErrorMessage variant="body1">
-            Nous sommes désolés, une erreur s'est produite lors de l'envoi des
-            justificatifs. Merci de bien vouloir réessayer.
-            <br />
-            Si le problème se reproduit, merci de bien vouloir contacter
-            l'équipe Zen.
-          </ErrorMessage>
-        )}
-        <ButtonsContainer>
-          <MainActionButton
-            disabled={declarationRemainingDocsNb > 0}
-            primary
-            className="send-to-pe"
-            onClick={() => this.onSubmit({ declaration })}
-          >
-            Envoyer <br />à Pôle Emploi
-          </MainActionButton>
-          {!isOldMonth && (
-            <MainActionButton
-              primary={false}
-              component={Link}
-              to="/thanks?later"
-              className="save-for-later"
-            >
-              Enregistrer
-              <br />
-              et finir plus tard
-            </MainActionButton>
-          )}
-        </ButtonsContainer>
       </FilesSection>
     )
   }
@@ -643,7 +568,7 @@ export class Files extends Component {
         ) : (
           this.renderSection(lastDeclaration)
         )}
-        {declarations.slice(1).map(this.renderOldSection)}
+        {declarations.slice(1).map(this.renderSection)}
         <FilesDialog isOpened={this.state.isSendingFiles} />
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
         <FileTransmittedToPE

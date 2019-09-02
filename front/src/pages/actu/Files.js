@@ -157,14 +157,13 @@ const getErrorKey = ({ id, type }) => `${id}-${type}-error`
 
 const getDeclarationMissingFilesNb = (declaration) => {
   const infoDocumentsRequiredNb = declaration.infos.filter(
-    ({ type, file, isTransmitted }) =>
-      type !== 'jobSearch' && !file && !isTransmitted,
+    ({ type, isTransmitted }) => type !== 'jobSearch' && !isTransmitted,
   ).length
 
   return (
     declaration.employers.reduce((prev, employer) => {
       if (!employer.hasEndedThisMonth) {
-        return prev + (employer.documents[0] ? 0 : 1)
+        return prev + (get(employer, 'documents[0].isTransmitted') ? 0 : 1)
       }
 
       /*
@@ -172,10 +171,11 @@ const getDeclarationMissingFilesNb = (declaration) => {
           in which case we do not count it in the needed documents.
         */
       const hasEmployerCertificate = employer.documents.some(
-        ({ type }) => type === employerCertificateType,
+        ({ type, isTransmitted }) =>
+          type === employerCertificateType && isTransmitted,
       )
       const hasSalarySheet = employer.documents.some(
-        ({ type }) => type === salarySheetType,
+        ({ type, isTransmitted }) => type === salarySheetType && isTransmitted,
       )
 
       if (hasEmployerCertificate) return prev + 0
@@ -513,11 +513,8 @@ export class Files extends Component {
               paddingBottom: '2rem',
             }}
           >
-            {declarationRemainingDocsNb > 0
-              ? `Il manque encore ${declarationRemainingDocsNb} justificatif${
-                  declarationRemainingDocsNb > 1 ? 's' : ''
-                } et vous pourrez valider l'envoi`
-              : 'Tous vos justificatifs sont prêts à être envoyés'}
+            Vous devez encore valider {declarationRemainingDocsNb} justificatif
+            {declarationRemainingDocsNb > 1 ? 's' : ''}
           </Typography>
         </StyledInfo>
         {this.renderDocumentList(declaration)}

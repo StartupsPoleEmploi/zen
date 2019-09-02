@@ -149,7 +149,11 @@ router.get('/callback', (req, res) => {
           .findOne({ peId: userToSave.peId })
           .then((dbUser) => {
             if (dbUser) {
-              if (!!dbUser.email && dbUser.email !== userToSave.email) {
+              if (
+                !!dbUser.email &&
+                !!userToSave.email &&
+                dbUser.email !== userToSave.email
+              ) {
                 winston.info(`E-mail changed for user ${dbUser.id}`)
                 // User email has changed. Changing email in mailjet
                 // Note: We do not wait for Mailjet to answer to send data back to the user

@@ -314,7 +314,6 @@ export class Files extends Component {
           key={`${name}-${info.id}`}
           id={info.id}
           type={DocumentUpload.types.info}
-          url={computeDocUrl({ id: info.id, type: DocumentUpload.types.info })}
           label={label}
           caption={formatInfoDates(info)}
           fileExistsOnServer={!!info.file && !info.isCleanedUp}
@@ -372,10 +371,6 @@ export class Files extends Component {
         canUsePDFViewer={
           get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
         }
-        url={computeDocUrl({
-          id: get(salaryDoc, 'id'),
-          type: DocumentUpload.types.employer,
-        })}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={employer[getEmployerLoadingKey(salarySheetType)]}
@@ -400,10 +395,6 @@ export class Files extends Component {
             ? canUsePDFViewer(certificateDoc.file)
             : false
         }
-        url={computeDocUrl({
-          id: get(certificateDoc, 'id'),
-          type: DocumentUpload.types.employer,
-        })}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         infoTooltipText={
           employer.hasEndedThisMonth

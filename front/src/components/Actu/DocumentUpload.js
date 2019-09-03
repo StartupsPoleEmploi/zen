@@ -103,7 +103,6 @@ export class DocumentUpload extends Component {
     employerDocType: PropTypes.string,
     showPreview: PropTypes.func.isRequired,
     showTooltip: PropTypes.bool,
-    url: PropTypes.string,
   }
 
   static defaultProps = {
@@ -158,7 +157,6 @@ export class DocumentUpload extends Component {
       infoTooltipText,
       showTooltip,
       employerId,
-      url,
     } = this.props
 
     const hiddenInput = (
@@ -184,18 +182,7 @@ export class DocumentUpload extends Component {
         <EyeIcon />
         Voir, modifier ou valider le justificatif
       </ActionButton>
-    ) : (
-      <ActionButton
-        variant="outlined"
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="show-file"
-      >
-        <EyeIcon />
-        Voir le justificatif
-      </ActionButton>
-    )
+    ) : null
 
     const uploadInput = (
       <ActionButton

@@ -16,6 +16,7 @@ import {
   FETCH_ACTIVE_DECLARATION_LOADING,
   FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
+  SET_USER_LOGGED_OUT,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
 import { utils } from '../selectors/declarations'
@@ -294,6 +295,9 @@ export const validateEmployerDoc = ({
           employerDocType,
         },
       })
+      if (err.status === 401 || err.status === 403) {
+        return dispatch({ type: SET_USER_LOGGED_OUT })
+      }
       window.Raven.captureException(err)
     })
 }
@@ -321,6 +325,9 @@ export const validateDeclarationInfoDoc = ({ documentId }) => (
           documentId,
         },
       })
+      if (err.status === 401 || err.status === 403) {
+        return dispatch({ type: SET_USER_LOGGED_OUT })
+      }
       window.Raven.captureException(err)
     })
 }

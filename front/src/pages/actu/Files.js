@@ -23,7 +23,6 @@ import {
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
 } from '../../actions/declarations'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
-import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
@@ -199,13 +198,12 @@ export class Files extends Component {
     validateEmployerDoc: PropTypes.func.isRequired,
     validateDeclarationInfoDoc: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isUserLoggedOut: PropTypes.bool.isRequired,
   }
 
   state = {
-    isSendingFiles: false,
     showSkipConfirmation: false,
     skipFileCallback: noop,
-    isLoggedOut: false,
   }
 
   componentDidMount() {
@@ -569,8 +567,7 @@ export class Files extends Component {
           this.renderSection(lastDeclaration)
         )}
         {declarations.slice(1).map(this.renderSection)}
-        <FilesDialog isOpened={this.state.isSendingFiles} />
-        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
+        <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
         <FileTransmittedToPE
           isOpened={this.state.showSkipConfirmation}
           onCancel={this.closeSkipModal}
@@ -591,6 +588,9 @@ export default connect(
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
+    isUserLoggedOut: !!(
+      state.userReducer.user && state.userReducer.user.isLoggedOut
+    ),
   }),
   {
     fetchDeclarations: fetchDeclarationAction,

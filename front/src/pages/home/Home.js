@@ -1,11 +1,21 @@
+import React from 'react'
+import styled from 'styled-components'
+import PropTypes from 'prop-types'
+
 import Button from '@material-ui/core/Button'
 import MuiLink from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import PropTypes from 'prop-types'
-import React from 'react'
-import styled from 'styled-components'
+import EuroIcon from '@material-ui/icons/EuroSymbol'
+import FaceIcon from '@material-ui/icons/FaceOutlined'
+import PlaceIcon from '@material-ui/icons/PlaceOutlined'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import SendIcon from '@material-ui/icons/SendOutlined'
+import DescriptionIcon from '@material-ui/icons/DescriptionOutlined'
+import AccountIcon from '@material-ui/icons/AccountCircleOutlined'
 
 import AppTitle from '../../components/Generic/AppTitle'
 import YoutubeVideo from '../../components/Generic/YoutubeVideo'
@@ -15,14 +25,12 @@ import {
   primaryBlue,
   secondaryBlue,
 } from '../../constants'
+
 import characters from '../../images/characters.svg'
 import logoPEMono from '../../images/logoPE-mono.png'
 import photo1 from '../../images/photo1.jpg'
 import photo2 from '../../images/photo2.jpg'
 import photo3 from '../../images/photo3.jpg'
-import step1 from '../../images/step1.svg'
-import step2 from '../../images/step2.svg'
-import step3 from '../../images/step3.svg'
 
 const VIDEO_ID = 'home-video'
 
@@ -58,15 +66,17 @@ const Header = styled.header.attrs({ role: 'banner' })`
   ${windowWidthElement}
 `
 
-const HeaderContent = styled.header`
+const HeaderContent = styled.div`
   max-width: 144rem;
   display: flex;
   align-items: flex-end;
   margin: auto;
+  position: relative;
 
   @media (max-width: ${intermediaryBreakpoint}) {
     justify-content: center;
     align-items: center;
+    padding-top: 2rem;
   }
 `
 
@@ -146,27 +156,19 @@ const ConnectButton = styled(Button).attrs({
   role: 'link', // override material-ui default role for buttons, even if links
 })`
   && {
-    width: 40rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+
+    width: 30rem;
     max-width: 100%;
-    min-height: 6.4rem;
-    font-size: 2.2rem;
-    border-radius: 3rem;
-    margin: 1rem 0;
-
-    @media (max-width: ${mobileBreakpoint}) {
-      font-size: 1.6rem;
-    }
-  }
-`
-
-const WhiteConnectButton = styled(ConnectButton)`
-  && {
-    background-color: #fff;
-    color: #000;
-
-    &:hover {
-      background-color: #fff;
-    }
+    min-height: 5rem;
+    margin: 0;
+    border-radius: 0 0 0 10rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    line-height: 3rem;
   }
 `
 
@@ -192,11 +194,6 @@ const FlexDiv = styled.div`
 
 const FlexDivReverse = styled(FlexDiv)`
   flex-direction: row-reverse;
-`
-
-const AccessibleHiddenTitle = styled.h2`
-  position: absolute;
-  left: -999rem;
 `
 
 const StepText = styled.div`
@@ -260,14 +257,33 @@ const SummaryLi = styled.li`
   padding: 2rem;
 `
 
-const SummaryImg = styled.img`
-  display: block;
-  background: #f3f4f5;
+const SummaryImgContainer = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${primaryBlue};
   border-radius: 50%;
-  flex: 0;
-  height: auto;
-  width: 10rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  width: 7rem;
+  height: 7rem;
+`
+
+const ArrowForward = styled(ArrowForwardIcon).attrs({ color: 'primary' })`
+  && {
+    height: 4rem;
+    width: auto;
+    display: block;
+    padding: 0;
+    margin-top: 3.5rem;
+  }
+`
+
+const ArrowDownward = styled(ArrowDownwardIcon).attrs({ color: 'primary' })`
+  && {
+    padding: 0;
+    height: 4rem;
+    width: auto;
+  }
 `
 
 const SummaryText = styled(Typography)`
@@ -302,11 +318,40 @@ const TestimonyText = styled(Typography)``
 
 const FullWidthSection = styled.section`
   background-color: ${primaryBlue};
-  padding: 5rem;
+  padding: 3rem 0;
   text-align: center;
-  min-height: 25rem;
+  margin-bottom: 5rem;
 
   ${windowWidthElement}
+`
+
+const ZenIsForYouContainer = styled.div`
+  display: flex;
+  width: 50%;
+  margin: auto;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    width: 75%;
+  }
+  @media (max-width: ${mobileBreakpoint}) {
+    width: 100%;
+  }
+`
+const ZenIsForYouSubSection = styled.div`
+  padding: 3rem;
+  flex: 1;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    padding: 1rem 3rem;
+  }
+`
+
+const ZenIsForYouText = styled(Typography)`
+  && {
+    text-align: center;
+    color: white;
+    margin: auto;
+  }
 `
 
 const Footer = styled.footer`
@@ -321,8 +366,18 @@ const Footer = styled.footer`
   ${windowWidthElement}
 `
 
+const summaryImgStyle = {
+  display: 'block',
+  height: 'auto',
+  color: 'white',
+  width: '4rem',
+}
+
 export const Home = ({ location: { search } }) => {
   const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
+  const useIntermediaryVersion = useMediaQuery(
+    `(max-width:${intermediaryBreakpoint})`,
+  )
 
   return (
     <StyledHome>
@@ -350,6 +405,13 @@ export const Home = ({ location: { search } }) => {
             }}
           />
         </HeaderContent>
+
+        <ConnectButton>
+          <AccountIcon style={{ width: '4rem' }} />
+          <Typography style={{ color: 'white', paddingLeft: '0.5rem' }}>
+            Se connecter avec mes identifiants Pôle Emploi
+          </Typography>
+        </ConnectButton>
       </Header>
 
       <main role="main">
@@ -371,13 +433,15 @@ export const Home = ({ location: { search } }) => {
                 <br />
                 en toute
                 <br />
-                simplicité.
+                simplicité<span style={{ color: primaryBlue }}>.</span>
               </Title>
               <Tagline>
-                Zen vous propose une actualisation et un envoi de justificatifs
-                simplifiés.
+                Zen est un service Pôle emploi dédié aux{' '}
+                <stong>personnes ayant plusieurs employeurs.</stong>
+                <br />
+                Bénéficiez d'une actualisation et un envoi de justificatifs
+                simplifié.
               </Tagline>
-              <ConnectButton>Se connecter avec Pôle Emploi</ConnectButton>
               {useMobileVersion && (
                 <Typography style={{ padding: '1rem 0 2rem' }}>
                   <MuiLink
@@ -417,10 +481,11 @@ export const Home = ({ location: { search } }) => {
               minHeight: '15rem',
             }}
           />
-          <SectionTitle>En quelques clics&nbsp;!</SectionTitle>
           <SummaryUl>
             <SummaryLi>
-              <SummaryImg src={step1} alt="" />
+              <SummaryImgContainer>
+                <EuroIcon style={summaryImgStyle} alt="" />
+              </SummaryImgContainer>
               <SummaryText>
                 Zen additionne pour vous
                 <br />
@@ -429,8 +494,20 @@ export const Home = ({ location: { search } }) => {
                 vos revenus mensuels !
               </SummaryText>
             </SummaryLi>
+            <SummaryLi
+              aria-hidden="true"
+              style={{ padding: '0', display: 'block' }}
+            >
+              {useIntermediaryVersion ? (
+                <ArrowDownward alt="" />
+              ) : (
+                <ArrowForward alt="" />
+              )}
+            </SummaryLi>
             <SummaryLi>
-              <SummaryImg src={step2} alt="" />
+              <SummaryImgContainer>
+                <SendIcon style={summaryImgStyle} alt="" />
+              </SummaryImgContainer>
               <SummaryText>
                 Zen vous indique
                 <br />
@@ -438,8 +515,20 @@ export const Home = ({ location: { search } }) => {
                 <br /> votre déclaration.
               </SummaryText>
             </SummaryLi>
+            <SummaryLi
+              aria-hidden="true"
+              style={{ padding: '0', display: 'block' }}
+            >
+              {useIntermediaryVersion ? (
+                <ArrowDownward alt="" />
+              ) : (
+                <ArrowForward alt="" />
+              )}
+            </SummaryLi>
             <SummaryLi>
-              <SummaryImg src={step3} alt="" />
+              <SummaryImgContainer>
+                <DescriptionIcon style={summaryImgStyle} alt="" />
+              </SummaryImgContainer>
               <SummaryText>
                 Accédez à un espace personnel
                 <br /> avec tous vos justificatifs
@@ -449,9 +538,62 @@ export const Home = ({ location: { search } }) => {
           </SummaryUl>
         </Section>
 
+        <FullWidthSection>
+          <SectionTitle style={{ color: '#fff' }}>
+            Zen est pour vous si ...
+          </SectionTitle>
+          <ZenIsForYouContainer>
+            <ZenIsForYouSubSection
+              style={{
+                borderRight: 'solid 1px white',
+              }}
+            >
+              <ZenIsForYouText>
+                <FaceIcon
+                  style={{
+                    display: 'block',
+                    margin: '0 auto 2rem auto',
+                    width: '5rem',
+                    height: 'auto',
+                  }}
+                />
+                <strong>
+                  Vous êtes <br />
+                  <span aria-label="assistants ou assistantes maternels">
+                    assistant.e maternel.le
+                  </span>
+                </strong>
+                <br /> et si vous êtes{' '}
+                <span aria-label="inscrits ou inscrites">inscrit.e</span> à Pôle
+                emploi
+              </ZenIsForYouText>
+            </ZenIsForYouSubSection>
+
+            <ZenIsForYouSubSection>
+              <ZenIsForYouText>
+                <PlaceIcon
+                  style={{
+                    display: 'block',
+                    margin: '0 auto 2rem auto',
+                    width: '5rem',
+                    height: 'auto',
+                  }}
+                />
+                <strong>
+                  Vous exercez en : <br />
+                  Hauts-de-France, Occitanie, Nouvelle-Aquitaine
+                </strong>
+              </ZenIsForYouText>
+            </ZenIsForYouSubSection>
+          </ZenIsForYouContainer>
+        </FullWidthSection>
+
         <Section>
+          <SectionTitle style={{ textAlign: 'center' }}>
+            Vous êtes <span aria-label="accompagné">accompagné(e)</span> à
+            chaque étape
+          </SectionTitle>
           <FlexDiv>
-            <AccessibleHiddenTitle>En résumé</AccessibleHiddenTitle>
             <StepText>
               <StepNumber>1</StepNumber>
               <StepTitle>
@@ -497,26 +639,6 @@ export const Home = ({ location: { search } }) => {
             <SectionImg alt="" src={photo3} />
           </FlexDiv>
         </Section>
-
-        <FullWidthSection style={{}}>
-          <SectionTitle style={{ color: '#fff' }}>
-            Rejoignez les utilisateurs de Zen&nbsp;!
-          </SectionTitle>
-          <Typography paragraph style={{ color: '#fff' }}>
-            Zen est un service innovant de Pôle Emploi pour faciliter
-            <br />
-            l'actualisation. Il est dédié aux personnes ayant plusieurs
-            employeurs.
-            <br />
-            <b>
-              Ce service est actuellement disponible pour
-              <br />
-              les assistantes maternelles en Hauts-de-France et en Occitanie.
-            </b>
-          </Typography>
-
-          <WhiteConnectButton>Se connecter avec Pôle Emploi</WhiteConnectButton>
-        </FullWidthSection>
 
         <Section style={{ textAlign: 'center', padding: '5rem' }}>
           <SectionTitle>Nos utilisateurs approuvent !</SectionTitle>

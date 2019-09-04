@@ -5,6 +5,7 @@ const extractFileExtension = (file) => {
 }
 
 export const canUsePDFViewer = (fileName) => {
+  if (!fileName) return false
   const extension = extractFileExtension(fileName)
   return ['.png', '.pdf', '.jpg', '.jpeg'].includes(extension)
 }

@@ -4,15 +4,17 @@ import 'moment/locale/fr'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import moment from 'moment'
-import React, { Fragment } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
 import './lib/external/gtm'
 import './lib/external/hotjar'
 
 import { version } from '../package.json'
 import App from './App'
+import store from './store'
 import DeveloperDialog from './components/Generic/DeveloperDialog'
 
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
@@ -72,7 +74,7 @@ const theme = createMuiTheme({
 })
 
 ReactDOM.render(
-  <Fragment>
+  <Provider store={store}>
     <CssBaseline />
     <MuiThemeProvider theme={theme}>
       {/* The following modal must never be displayed out of dev mode, modify with extreme caution */
@@ -81,6 +83,6 @@ ReactDOM.render(
         <App />
       </BrowserRouter>
     </MuiThemeProvider>
-  </Fragment>,
+  </Provider>,
   document.getElementById('root'),
 )

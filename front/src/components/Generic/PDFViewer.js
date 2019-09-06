@@ -100,7 +100,7 @@ export default class PDFViewer extends Component {
         </Document>
 
         {originalFileName && (
-          <Typography style={{ marginTop: '1rem' }}>
+          <Typography style={{ marginTop: '1rem' }} className="filename">
             {originalFileName}
           </Typography>
         )}

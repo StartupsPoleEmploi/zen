@@ -131,5 +131,14 @@ describe('Files page', function() {
       deletePage()
       getPaginationText().should('contain', '13/13')
     })
+
+    it('should keep the filename after uploading new files', () => {
+      uploadNewFile({ file: 'logo-zen-pe.png' })
+      cy.get('.filename').should('contain', 'logo-zen-pe.png')
+      addNewPage({ file: 'water.jpg' })
+      cy.get('.filename').should('contain', 'logo-zen-pe.png')
+      addNewPage({ file: 'pdf-1-page.pdf' })
+      cy.get('.filename').should('contain', 'logo-zen-pe.png')
+    })
   })
 })

@@ -4,6 +4,7 @@ RUN apt-get update
 
 # popper-utils for pdfinfo
 RUN apt-get install -y pdftk poppler-utils=0.48.0-2+deb9u2
+RUN apt-get install -y ghostscript=9.26a~dfsg-0+deb9u5
 
 WORKDIR /home/back
 

@@ -29,6 +29,7 @@ const { deburr } = require('lodash')
 
 const { request, checkHeadersAndWait } = require('../resilientRequest')
 const EmployerDocument = require('../../models/EmployerDocument')
+const { optimizePDF } = require('../../lib/pdf-utils')
 
 const winston = require('../log')
 
@@ -102,14 +103,10 @@ const documentsToTransmitTypes = [
   },
 ]
 
-const uploadUrl = `${
-  config.apiHost
-}/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`
+const uploadUrl = `${config.apiHost}/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`
 
 const getConfirmationUrl = (conversionId) =>
-  `${
-    config.apiHost
-  }/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`
+  `${config.apiHost}/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
@@ -197,12 +194,22 @@ const sendDocuments = async ({ declaration, accessToken }) => {
     .filter(({ dbDocument }) => !dbDocument.isTransmitted)
 
   for (const key in documentsToTransmit) {
+    // Temporaly fix for not optimize files
+    if (path.extname(documentsToTransmit[key].filePath) === '.pdf') {
+      try {
+        await optimizePDF(documentsToTransmit[key].filePath)
+      } catch (err) {
+        /** We log the error but we continue to - try to - upload anyway */
+        winston.error(
+          `Error while optimizing document ${documentsToTransmit[key].dbDocument.id} (ERR ${err})`,
+        )
+      }
+    }
+
     // NEVER ACTIVATE IN PRODUCTION
     if (config.get('bypassDocumentsDispatch')) {
       winston.info(
-        `Simulating sending document ${
-          documentsToTransmit[key].dbDocument.id
-        } to PE`,
+        `Simulating sending document ${documentsToTransmit[key].dbDocument.id} to PE`,
       )
       await documentsToTransmit[key].dbDocument
         .$query()
@@ -219,9 +226,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       accessToken,
     }).catch((err) => {
       winston.error(
-        `Error while uploading document ${
-          documentsToTransmit[key].dbDocument.id
-        } (HTTP ${err.status})`,
+        `Error while uploading document ${documentsToTransmit[key].dbDocument.id} (HTTP ${err.status})`,
       )
       throw err
     })
@@ -234,9 +239,7 @@ const sendDocuments = async ({ declaration, accessToken }) => {
       conversionId,
     }).catch((err) => {
       winston.error(
-        `Error while confirming document ${
-          documentsToTransmit[key].dbDocument.id
-        } (HTTP ${err.status})`,
+        `Error while confirming document ${documentsToTransmit[key].dbDocument.id} (HTTP ${err.status})`,
       )
       throw err
     })

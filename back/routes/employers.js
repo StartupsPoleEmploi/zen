@@ -75,7 +75,7 @@ router.post('/remove-file-page', (req, res, next) => {
 
       if (!existingDocument) {
         throw new Error(
-          `Attempt to remove a page to a non-PDF file : ${existingDocument.file}`,
+          `Attempt to remove a page to a non-PDF file for employer ${employerId}, `,
         )
       }
 

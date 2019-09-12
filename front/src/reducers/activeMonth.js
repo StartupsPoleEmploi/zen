@@ -18,7 +18,7 @@ import {
 
 export default createReducer(
   {
-    isLoading: true,
+    isLoading: false,
     isServiceUp: null,
   },
   {

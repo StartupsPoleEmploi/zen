@@ -59,7 +59,6 @@ class App extends Component {
     Promise.all([this.props.fetchStatus(), this.props.fetchUser()])
       .then(() => {
         if (!this.props.user || !this.props.user.isAuthorized) return
-        if (!this.props.user.isAuthorized) return
 
         return Promise.all([
           this.props.fetchActiveDeclaration(),

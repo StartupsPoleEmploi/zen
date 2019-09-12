@@ -4,6 +4,11 @@ const path = require('path')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const pdftk = require('node-pdftk')
+const sharp = require('sharp')
+
+const imagemin = require('imagemin-keep-folder')
+const imageminPngquant = require('imagemin-pngquant')
+const imageminMozjpeg = require('imagemin-mozjpeg')
 
 const winston = require('../lib/log')
 const { uploadDestination } = require('../lib/upload')
@@ -12,6 +17,8 @@ pdftk.configure({ bin: 'pdftk' })
 
 const IMG_EXTENSIONS = ['.png', '.jpeg', '.jpg']
 const MAX_PDF_SIZE = 5
+const MIN_FILE_SIZE_FOR_COMPRESSION = 2.5 * 1000000 // 2.5Mb
+const MAX_IMAGE_DIMENSION = 1500 // in pixel
 
 const getFileBasename = (filename) =>
   path.basename(filename, path.extname(filename))
@@ -29,7 +36,9 @@ const getPDF = (document, directory) => {
 
     fs.access(pdfFilePath, (error) => {
       // PDF already converted ?
-      if (!error) return resolve(pdfFileName)
+      if (!error) {
+        return resolve(pdfFileName)
+      }
 
       imagesToPdf([imgFilePath], pdfFilePath)
         .then(() => document.$query().patch({ file: pdfFileName }))
@@ -51,20 +60,66 @@ const numberOfPage = (filePath) =>
     parseInt(res.stdout.replace('\n', ''), 10),
   )
 
+const optimizePDF = (pdfFilePath) => {
+  const psFilePath = pdfFilePath.replace('.pdf', '.ps')
+
+  return new Promise((resolve, reject) => {
+    fs.stat(pdfFilePath, (err, stats) => {
+      if (err) return reject(err)
+
+      // Optimize file that are only above a certain level of size
+      if (stats.size < MIN_FILE_SIZE_FOR_COMPRESSION) return resolve()
+
+      exec(
+        `pdf2ps -dSAFER -sPAPERSIZE=a4 ${pdfFilePath} ${psFilePath} && ps2pdf -dSAFER -sPAPERSIZE=a4 ${psFilePath} ${pdfFilePath} && rm ${psFilePath}`,
+      )
+        .then(resolve)
+        .catch(reject)
+    })
+  })
+}
+
+const resizeImage = (imgFilePath) =>
+  new Promise((resolve, reject) => {
+    sharp(imgFilePath)
+      .resize({ width: MAX_IMAGE_DIMENSION, withoutEnlargement: true })
+      .toBuffer((err, buffer) => {
+        // Update image with the new content
+        if (err) return reject(err)
+        fs.writeFile(imgFilePath, buffer, (wrErr) => {
+          if (wrErr) return reject(wrErr)
+          resolve()
+        })
+      })
+  })
+
+const optimizeImage = (imgFilePath) =>
+  imagemin([imgFilePath], {
+    plugins: [
+      imageminMozjpeg({ quality: 75 }),
+      imageminPngquant({
+        quality: [0.6, 0.8],
+      }),
+    ],
+  })
+
 const transformImageToPDF = (filename) => {
   const fileBaseName = getFileBasename(filename)
   const pdfFilePath = `${uploadDestination}${fileBaseName}.pdf`
   const imgFilePath = `${uploadDestination}${filename}`
 
-  return imagesToPdf([imgFilePath], pdfFilePath).then(() => {
-    fs.unlink(imgFilePath, (deleteError) => {
-      if (deleteError) {
-        winston.warn(
-          `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
-        )
-      }
+  return resizeImage(imgFilePath)
+    .then(() => optimizeImage(imgFilePath))
+    .then(() => imagesToPdf([imgFilePath], pdfFilePath))
+    .then(() => {
+      fs.unlink(imgFilePath, (deleteError) => {
+        if (deleteError) {
+          winston.warn(
+            `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
+          )
+        }
+      })
     })
-  })
 }
 
 const mergePDF = (file1, file2, output) =>
@@ -153,4 +208,5 @@ module.exports = {
   transformImageToPDF,
   handleNewFileUpload,
   IMG_EXTENSIONS,
+  optimizePDF,
 }

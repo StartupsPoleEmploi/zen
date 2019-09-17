@@ -165,12 +165,15 @@ class DocumentDialog extends Component {
 
   cancelValidateDoc = () => this.setState({ showDocValidationModal: false })
 
-  validateDoc = () =>
+  validateDoc = () => {
+    this.setState({ showDocValidationModal: false })
+
     this.props.validateDoc({
       documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
+  }
 
   /*
    * This is called when the underlying PDF Viewer detects a change in the number
@@ -397,7 +400,11 @@ class DocumentDialog extends Component {
               >
                 Non, j'annule
               </MainActionButton>
-              <MainActionButton primary onClick={this.validateDoc}>
+              <MainActionButton
+                primary
+                onClick={this.validateDoc}
+                className="confirm-validate-file"
+              >
                 Oui, je confirme
               </MainActionButton>
             </Fragment>

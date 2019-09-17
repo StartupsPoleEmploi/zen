@@ -358,7 +358,9 @@ router.post('/files/validate', (req, res, next) => {
   }
 
   return EmployerDocument.query()
-    .eager('employer.[documents, declaration.[user, declarationMonth, infos]]')
+    .eager(
+      'employer.[documents, declaration.[user, employers.[documents], declarationMonth, infos]]',
+    )
     .findOne({ id: req.body.id })
     .then((employerDoc) => {
       if (
@@ -375,18 +377,25 @@ router.post('/files/validate', (req, res, next) => {
           document: employerDoc,
           accessToken: req.session.userSecret.accessToken,
         })
-          .then(() => {
-            const { declaration } = employerDoc.employer
-            if (
-              hasMissingEmployersDocuments(declaration) ||
-              hasMissingDeclarationDocuments(declaration)
-            ) {
-              return declaration
-            }
+          .then(() =>
+            Declaration.query()
+              .eager(`[employers.documents, infos]`)
+              .findOne({
+                id: employerDoc.employer.declaration.id,
+                userId: req.session.user.id,
+              })
+              .then((declaration) => {
+                if (
+                  hasMissingEmployersDocuments(declaration) ||
+                  hasMissingDeclarationDocuments(declaration)
+                ) {
+                  return declaration
+                }
 
-            declaration.isFinished = true
-            return declaration.$query().upsertGraphAndFetch()
-          })
+                declaration.isFinished = true
+                return declaration.$query().upsertGraphAndFetch()
+              }),
+          )
           // FIXME this needs to change, optimal choice is probably to return declaration
           .then(() =>
             Employer.query()

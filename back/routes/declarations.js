@@ -460,7 +460,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
     .then((declarationInfo) => {
       if (
         !declarationInfo ||
-        get(declarationInfo, 'declaration.user.id') !== req.session.user.id
+        get(declarationInfo, 'declaration.userId') !== req.session.user.id
       ) {
         return res.status(404).json('Not found')
       }
@@ -475,7 +475,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
       })
         .then(() =>
           Declaration.query()
-            .eager('employer.documents')
+            .eager('[employers.documents, infos, declarationMonth]')
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,

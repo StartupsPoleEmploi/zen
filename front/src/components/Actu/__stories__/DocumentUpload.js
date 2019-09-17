@@ -13,6 +13,7 @@ const defaultProps = {
   skipFile: () => {},
   removePageFromFile: action('Remove page from file'),
   type: DocumentUpload.types.info,
+  showPreview: action('Show file'),
 }
 
 storiesOf('DocumentUpload', module)

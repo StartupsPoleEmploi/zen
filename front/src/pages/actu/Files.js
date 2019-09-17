@@ -356,13 +356,13 @@ export class Files extends Component {
           label={label}
           caption={formatInfoDates(info)}
           fileExistsOnServer={!!info.file && !info.isCleanedUp}
-          submitFile={this.props.uploadEmployerFile}
+          submitFile={this.props.uploadDeclarationInfoFile}
           removePageFromFile={this.removePageFromFile}
           canUsePDFViewer={info.file ? canUsePDFViewer(info.file) : null}
           showPreview={this.props.showInfoFilePreview}
           skipFile={(params) =>
             this.askToSkipFile(() => {
-              this.props.uploadEmployerFile({ ...params, skip: true })
+              this.props.uploadDeclarationInfoFile({ ...params, skip: true })
               this.closeSkipModal()
             })
           }
@@ -594,6 +594,7 @@ export class Files extends Component {
     const showInfoDocPreview = !!get(previewedInfoDoc, 'file')
 
     let previewProps = {}
+
     if (showEmployerPreview) {
       previewProps = {
         onCancel: hideEmployerFilePreview,
@@ -645,6 +646,7 @@ export class Files extends Component {
           onCancel={this.closeSkipModal}
           onConfirm={this.state.skipFileCallback}
         />
+
         {(showEmployerPreview || showInfoDocPreview) && (
           <DocumentDialog isOpened {...previewProps} />
         )}

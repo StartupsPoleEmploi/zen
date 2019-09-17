@@ -138,7 +138,7 @@ export const uploadDeclarationInfoFile = ({
       })
       if (canUsePDFViewer(info.file)) {
         dispatch({
-          type: SHOW_EMPLOYER_FILE_PREVIEW,
+          type: SHOW_INFO_FILE_PREVIEW,
           payload: info.id,
         })
       }
@@ -229,6 +229,7 @@ export const showInfoFilePreview = (id) => ({
   type: SHOW_INFO_FILE_PREVIEW,
   payload: id,
 })
+
 export const hideEmployerFilePreview = () => ({
   type: HIDE_EMPLOYER_FILE_PREVIEW,
 })

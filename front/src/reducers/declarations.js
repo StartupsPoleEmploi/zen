@@ -66,25 +66,26 @@ const declarationsReducer = createReducer(
     },
     [POST_DECLARATION_INFO_LOADING]: (
       { declarations },
-      { payload: { infoId } },
+      { payload: { documentId } },
     ) => {
-      const info = findDeclarationInfo({ declarations, infoId })
+      const info = findDeclarationInfo({ declarations, documentId })
       info.isLoading = true
       info.error = null
     },
     [POST_DECLARATION_INFO_FAILURE]: (
       { declarations },
-      { payload: { infoId, err } },
+      { payload: { documentId, err } },
     ) => {
-      const info = findDeclarationInfo({ declarations, infoId })
+      const info = findDeclarationInfo({ declarations, documentId })
       info.error = err
       info.isLoading = false
     },
-    [FETCH_DECLARATION_SUCCESS]: ({ declarations }, { payload }) => {
-      const index = declarations.findIndex(
-        (declaration) => declaration.id === payload.declaration.id,
-      )
-      declarations[index] = payload.declaration
+    [FETCH_DECLARATION_SUCCESS]: (
+      { declarations },
+      { payload: declaration },
+    ) => {
+      const index = declarations.findIndex((d) => d.id === declaration.id)
+      declarations[index] = declaration
     },
 
     [POST_EMPLOYER_DOC_LOADING]: (

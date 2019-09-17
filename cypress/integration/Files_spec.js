@@ -1,10 +1,9 @@
 import {
   addNewPage,
-  clickSendToPoleEmploi,
   closeModal,
   deletePage,
   getPaginationText,
-  getSendToPoleEmploiButton,
+  clickSendToPoleEmploiModalButton,
   goToNextPage,
   goToPrevPage,
   showFileInModal,
@@ -20,15 +19,11 @@ describe('Files page', function() {
   })
 
   it('should allow to send documents to Pole Emploi when they are all uploaded', () => {
-    getSendToPoleEmploiButton().should('be.disabled')
     uploadNewFile({ employerIndex: 0 })
-    closeModal()
-    getSendToPoleEmploiButton().should('be.disabled')
-    uploadNewFile({ employerIndex: 1 })
-    closeModal()
-    getSendToPoleEmploiButton().should('not.be.disabled')
+    clickSendToPoleEmploiModalButton()
 
-    clickSendToPoleEmploi()
+    uploadNewFile({ employerIndex: 1 })
+    clickSendToPoleEmploiModalButton()
 
     cy.url().should('contain', '/thanks')
     cy.get('h1').should(
@@ -52,6 +47,7 @@ describe('Files page', function() {
         .contains('pdf-1-page.pdf')
         .should('have.length', 1)
     })
+
     it('should display the original filename in modal - for JPG', () => {
       const employerIndex = 0
       uploadNewFile({ employerIndex, file: 'water.jpg' })
@@ -112,21 +108,17 @@ describe('Files page', function() {
 
     it('should allow navigation through document pages', () => {
       uploadNewFile({ file: 'pdf-14-pages.pdf' })
-
       getPaginationText().should('contain', '14/14')
       goToPrevPage()
       getPaginationText().should('contain', '13/14')
-
       goToPrevPage()
       getPaginationText().should('contain', '12/14')
-
       goToNextPage()
       getPaginationText().should('contain', '13/14')
     })
 
     it('should allow removing pages', () => {
       uploadNewFile({ file: 'pdf-14-pages.pdf' })
-
       getPaginationText().should('contain', '14/14')
       deletePage()
       getPaginationText().should('contain', '13/13')

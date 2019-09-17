@@ -41,11 +41,13 @@ export const goToPrevPage = () => getGoToPrevPage().click()
 
 export const closeModal = () => {
   cy.get('div[role=dialog] button')
-    .contains('Fermer la prévisualisation')
+    .contains('Fermer')
     .click()
   cy.get('div[role=dialog]').should('not.exist')
 }
 export const validateModalContent = () => {}
 
-export const getSendToPoleEmploiButton = () => cy.get('.send-to-pe')
-export const clickSendToPoleEmploi = () => getSendToPoleEmploiButton().click()
+export const clickSendToPoleEmploiModalButton = () => {
+  cy.get('div[role=dialog] .validate-file').click()
+  cy.get('.confirm-validate-file').click()
+}

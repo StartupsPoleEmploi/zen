@@ -42,7 +42,7 @@ const getUploadErrorMessage = (err) =>
   err.status === 413
     ? `Erreur : Fichier trop lourd (limite : 5000ko) ou dépassant la taille autorisée : ${MAX_PDF_PAGE} pages`
     : err.status === 400
-    ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+    ? 'Fichier invalide (accepté : .png, .jpg, .pdf)'
     : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
 
 export const uploadEmployerFile = ({

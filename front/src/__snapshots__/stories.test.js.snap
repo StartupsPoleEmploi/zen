@@ -1427,7 +1427,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                   className="MuiFormLabel-root-551 sc-hMqMXs sc-kEYyzF HWQZm"
                 >
                   <input
-                    accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+                    accept=".png, .jpg, .jpeg, .pdf"
                     onChange={[Function]}
                     style={
                       Object {
@@ -1575,7 +1575,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                   className="MuiFormLabel-root-653 sc-hMqMXs sc-kEYyzF HWQZm"
                 >
                   <input
-                    accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+                    accept=".png, .jpg, .jpeg, .pdf"
                     onChange={[Function]}
                     style={
                       Object {
@@ -1728,7 +1728,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
                   className="MuiFormLabel-root-940 sc-hMqMXs sc-kEYyzF HWQZm"
                 >
                   <input
-                    accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+                    accept=".png, .jpg, .jpeg, .pdf"
                     onChange={[Function]}
                     style={
                       Object {

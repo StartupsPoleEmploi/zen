@@ -118,7 +118,7 @@ export class DocumentUpload extends Component {
       <TooltipOnFocus
         useHover
         tooltipId={`file[${id}]`}
-        content="Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx"
+        content="Formats acceptés: .png, .jpg, .jpeg, .pdf"
       >
         {fileInput}
       </TooltipOnFocus>
@@ -161,7 +161,7 @@ export class DocumentUpload extends Component {
 
     const hiddenInput = (
       <input
-        accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+        accept=".png, .jpg, .jpeg, .pdf"
         style={{ display: 'none' }}
         type="file"
         onChange={({

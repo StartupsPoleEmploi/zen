@@ -437,7 +437,7 @@ export const Home = ({ location: { search } }) => {
               </Title>
               <Tagline>
                 Zen est un service Pôle emploi dédié aux{' '}
-                <stong>personnes ayant plusieurs employeurs.</stong>
+                <strong>personnes ayant plusieurs employeurs.</strong>
                 <br />
                 Bénéficiez d'une actualisation et un envoi de justificatifs
                 simplifié.

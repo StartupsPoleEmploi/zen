@@ -14,7 +14,7 @@ import {
   POST_EMPLOYER_DOC_FAILURE,
   FETCH_DECLARATIONS_LOADING,
   FETCH_ACTIVE_DECLARATION_LOADING,
-  FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+  FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
@@ -240,7 +240,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
     .get('/api/declarations?active')
     .then((res) =>
       dispatch({
-        type: FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
         payload: res.body,
       }),
     )
@@ -253,7 +253,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
         })
       }
       return dispatch({
-        type: FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
         payload: null,
       })
     })

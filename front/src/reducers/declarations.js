@@ -25,7 +25,7 @@ import {
   SHOW_EMPLOYER_FILE_PREVIEW,
   SHOW_INFO_FILE_PREVIEW,
   FETCH_ACTIVE_DECLARATION_LOADING,
-  FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+  FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
 } from '../actions/actionNames'
 import { utils } from '../selectors/declarations'
@@ -145,7 +145,7 @@ const declarationsReducer = createReducer(
       state.isActiveDeclarationLoading = true
       state.activeDeclaration = null
     },
-    [FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS]: (state, { payload }) => {
+    [FETCH_ACTIVE_DECLARATION_SUCCESS]: (state, { payload }) => {
       state.isActiveDeclarationLoading = false
       state.activeDeclaration = payload
     },

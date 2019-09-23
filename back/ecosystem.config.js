@@ -6,14 +6,14 @@ const config = {
       watch:
         process.env.NODE_ENV === 'development' ||
         process.env.NODE_ENV === 'test',
-      ignore_watch: ['uploads'],
+      ignore_watch: ['uploads', 'datalake'],
     },
     {
       name: 'admin',
       script: 'bin/www',
       args: '--admin',
       watch: process.env.NODE_ENV === 'development',
-      ignore_watch: ['uploads'],
+      ignore_watch: ['uploads', 'datalake'],
     },
   ],
 }

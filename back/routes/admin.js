@@ -10,6 +10,7 @@ const { Parser } = require('json2csv')
 const winston = require('../lib/log')
 const { deleteUser } = require('../lib/user')
 const mailjet = require('../lib/mailings/mailjet')
+const { EXPORT_FIELDS } = require('../lib/exportUserList')
 
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
@@ -65,17 +66,7 @@ router.get('/users', (req, res, next) => {
     .where({ isAuthorized })
     .then((users) => {
       if ('csv' in req.query) {
-        const fields = [
-          'firstName',
-          'lastName',
-          'email',
-          'postalCode',
-          'gender',
-          'isAuthorized',
-          'peId',
-        ]
-
-        const json2csvParser = new Parser({ fields })
+        const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
         const csv = json2csvParser.parse(users)
 
         res.set(

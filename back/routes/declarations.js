@@ -393,6 +393,12 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         return res.status(400).json('No such DeclarationInfo id')
       }
 
+      const isAddingFile = !!req.query.add
+
+      const originalFileName = isAddingFile
+        ? declarationInfo.originalFileName
+        : req.file.originalname
+
       let documentFileObj = req.body.skip
         ? {
             // Used in case the user sent his file by another means.
@@ -400,9 +406,10 @@ router.post('/files', upload.single('document'), (req, res, next) => {
             originalFileName: null,
             isTransmitted: true,
           }
-        : { file: req.file.filename, originalFileName: req.file.originalname }
-
-      const isAddingFile = !!req.query.add
+        : {
+            file: req.file.filename,
+            originalFileName,
+          }
 
       if (!req.body.skip) {
         const existingDocumentIsPDF =

@@ -305,6 +305,16 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     .then(async (employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
+      const isAddingFile = !!req.query.add
+
+      const existingDocument = employer.documents.find(
+        (document) => document.type === type,
+      )
+
+      const originalFileName = isAddingFile
+        ? existingDocument.originalFileName
+        : req.file.originalname
+
       let documentFileObj = skip
         ? {
             // Used in case the user sent his file by another means.
@@ -315,16 +325,11 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           }
         : {
             file: req.file.filename,
-            originalFileName: req.file.originalname,
             type,
+            originalFileName,
           }
 
-      const existingDocument = employer.documents.find(
-        (document) => document.type === type,
-      )
-
       if (!skip) {
-        const isAddingFile = !!req.query.add
         const existingDocumentIsPDF =
           existingDocument && path.extname(existingDocument.file) === '.pdf'
 

@@ -104,43 +104,72 @@ router.get('/callback', (req, res) => {
           method: 'get',
           url: `${apiHost}/partenaire/peconnect-individu/v1/userinfo`,
           accessToken: authToken.token.access_token,
-        }),
+        }).then(({ body }) => body),
         request({
           method: 'get',
           url: `${apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
           accessToken: authToken.token.access_token,
-        }),
+        })
+          .then(({ body: declarationData }) => {
+            // We only allow declarations when we have this status code
+            // (yes, it doesn't seem to make sense, but that's what the API
+            // gives us when the declaration hasn't been done yet)
+            const canSendDeclaration =
+              declarationData.statut ===
+              DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY
+            const hasAlreadySentDeclaration =
+              declarationData.statut === DECLARATION_STATUSES.SAVED
+
+            return { canSendDeclaration, hasAlreadySentDeclaration }
+          })
+          .catch((err) => {
+            // log the error but do not prevent login, however forbid the user from making declarations
+            winston.warn(
+              'Error while requesting pe actualisation api',
+              err.message,
+            )
+            Raven.captureException(err)
+            return {
+              canSendDeclaration: false,
+              hasAlreadySentDeclaration: false,
+            }
+          }),
         request({
           method: 'get',
           url: `${apiHost}/partenaire/peconnect-coordonnees/v1/coordonnees`,
           accessToken: authToken.token.access_token,
-        }),
+        })
+          .then(({ body: coordinates }) => coordinates.codePostal)
+          .catch((err) => {
+            // log the error but do not prevent login, if and only if we already know who the user is
+            // and what is postal code is
+            winston.warn(
+              'Error while requesting pe coordinates api',
+              err.message,
+            )
+            Raven.captureException(err)
+            return null
+          }),
         new Date(authToken.token.expires_at),
       ]),
     )
     .then(
       ([
-        { body: userinfo },
-        { body: declarationData },
-        { body: coordinates },
+        userinfo,
+        { canSendDeclaration, hasAlreadySentDeclaration },
+        postalCode,
         tokenExpirationDate,
       ]) => {
-        // We only allow declarations when we have this status code
-        // (yes, it doesn't seem to make sense, but that's what the API
-        // gives us when the declaration hasn't been done yet)
-        const canSendDeclaration =
-          declarationData.statut ===
-          DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY
-        const hasAlreadySentDeclaration =
-          declarationData.statut === DECLARATION_STATUSES.SAVED
-
         const userToSave = {
           peId: userinfo.sub,
           firstName: startCase(toLower(userinfo.given_name)),
           lastName: startCase(toLower(userinfo.family_name)),
           gender: userinfo.gender,
-          postalCode: coordinates.codePostal,
         }
+        if (postalCode) {
+          userToSave.postalCode = postalCode
+        }
+
         // If no email is communicated by PE, do not override email
         if (userinfo.email) {
           userToSave.email = userinfo.email
@@ -165,8 +194,14 @@ router.get('/callback', (req, res) => {
 
               return dbUser
                 .$query()
-                .update(userToSave)
+                .patch(userToSave)
                 .returning('*')
+            }
+
+            if (!userToSave.postalCode) {
+              // there was an error getting the postal code, and the user is new
+              // --> we can't let him login
+              throw new Error('Cannot login new user without postal code')
             }
 
             return User.query()

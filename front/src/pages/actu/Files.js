@@ -590,8 +590,8 @@ export class Files extends Component {
       .slice(1)
       .some(({ isFinished }) => !isFinished)
 
-    const showEmployerPreview = !!previewedEmployerDoc
-    const showInfoDocPreview = !!previewedInfoDoc
+    const showEmployerPreview = !!get(previewedEmployerDoc, 'file')
+    const showInfoDocPreview = !!get(previewedInfoDoc, 'file')
 
     let previewProps = {}
     if (showEmployerPreview) {

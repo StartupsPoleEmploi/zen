@@ -203,7 +203,10 @@ export const removeDeclarationInfoFilePage = ({
     .set('CSRF-Token', getState().userReducer.user.csrfToken)
     .send({ declarationInfoId: documentId })
     .then((res) =>
-      dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body }),
+      dispatch({
+        type: FETCH_DECLARATION_SUCCESS,
+        payload: { declaration: res.body },
+      }),
     )
     .catch((err) => {
       dispatch({

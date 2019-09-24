@@ -227,7 +227,7 @@ export class DocumentUpload extends Component {
       )
     }
 
-    const documentButton = canUsePDFViewer ? (
+    const documentButton = isTransmitted ? null : canUsePDFViewer ? (
       <ViewButton
         variant="outlined"
         onClick={this.showPreview}

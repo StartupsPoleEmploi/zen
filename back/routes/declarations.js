@@ -399,10 +399,6 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
       const isAddingFile = !!req.query.add
 
-      const originalFileName = isAddingFile
-        ? declarationInfo.originalFileName
-        : req.file.originalname
-
       let documentFileObj = req.body.skip
         ? {
             // Used in case the user sent his file by another means.
@@ -412,7 +408,9 @@ router.post('/files', upload.single('document'), (req, res, next) => {
           }
         : {
             file: req.file.filename,
-            originalFileName,
+            originalFileName: isAddingFile
+              ? declarationInfo.originalFileName
+              : req.file.originalname,
           }
 
       if (!req.body.skip) {

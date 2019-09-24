@@ -352,7 +352,6 @@ class DocumentDialog extends Component {
                 <Button
                   className="validate-file"
                   onClick={this.confirmDocValidation}
-                  disabled={!canUploadMoreFile}
                   color="primary"
                   variant="contained"
                 >

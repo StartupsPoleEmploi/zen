@@ -202,7 +202,7 @@ class DocumentDialog extends Component {
     const { showUploadView } = this.state
     const { isLoading, url, originalFileName } = this.props
 
-    const loadingComponent = <CircularProgress style={{ margin: '10rem 0' }} />
+    const loadingComponent = <CircularProgress style={{ margin: 'auto' }} />
 
     if (isLoading) {
       return loadingComponent

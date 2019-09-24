@@ -221,22 +221,21 @@ export class DocumentUpload extends Component {
                         <Typography variant="caption">{caption}</Typography>
                       </Fragment>
                     )}
-                    {fileExistsOnServer ||
-                      (isTransmitted && !fileExistsOnServer && (
-                        <Fragment>
-                          <br />
-                          <Typography
-                            variant="caption"
-                            color={isTransmitted ? '' : 'error'}
-                          >
-                            {isTransmitted
-                              ? fileExistsOnServer
-                                ? '✅ Justificatif validé et transmis'
-                                : '✅ Justificatif directement transmis à pole-emploi.fr'
-                              : '⚠️ Justificatif à valider'}
-                          </Typography>
-                        </Fragment>
-                      ))}
+                    {(fileExistsOnServer || isTransmitted) && (
+                      <Fragment>
+                        <br />
+                        <Typography
+                          variant="caption"
+                          color={isTransmitted ? '' : 'error'}
+                        >
+                          {isTransmitted
+                            ? fileExistsOnServer
+                              ? '✅ Justificatif validé et transmis'
+                              : '✅ Justificatif directement transmis à pole-emploi.fr'
+                            : '⚠️ Justificatif à valider'}
+                        </Typography>
+                      </Fragment>
+                    )}
                   </div>
                   {infoTooltipText && (
                     <TooltipOnFocus

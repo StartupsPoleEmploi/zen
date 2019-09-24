@@ -20,9 +20,9 @@ export const utils = {
     }
     return null
   },
-  findDeclarationInfo({ declarations, infoId }) {
+  findDeclarationInfo({ declarations, documentId }) {
     for (const declaration of declarations) {
-      const info = declaration.employers.find(({ id }) => id === infoId)
+      const info = declaration.infos.find(({ id }) => id === documentId)
       if (info) return info
     }
     return null
@@ -49,5 +49,6 @@ export const selectPreviewedEmployerDoc = createSelector(
 
 export const selectPreviewedInfoDoc = createSelector(
   [selectDeclarations, selectPreviewedInfoDocId],
-  (declarations, infoId) => utils.findDeclarationInfo({ declarations, infoId }),
+  (declarations, documentId) =>
+    utils.findDeclarationInfo({ declarations, documentId }),
 )

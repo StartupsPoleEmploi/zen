@@ -14,7 +14,7 @@ import {
   POST_EMPLOYER_DOC_FAILURE,
   FETCH_DECLARATIONS_LOADING,
   FETCH_ACTIVE_DECLARATION_LOADING,
-  FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+  FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
@@ -138,7 +138,7 @@ export const uploadDeclarationInfoFile = ({
       })
       if (canUsePDFViewer(info.file)) {
         dispatch({
-          type: SHOW_EMPLOYER_FILE_PREVIEW,
+          type: SHOW_INFO_FILE_PREVIEW,
           payload: info.id,
         })
       }
@@ -203,7 +203,10 @@ export const removeDeclarationInfoFilePage = ({
     .set('CSRF-Token', getState().userReducer.user.csrfToken)
     .send({ declarationInfoId: documentId })
     .then((res) =>
-      dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body }),
+      dispatch({
+        type: FETCH_DECLARATION_SUCCESS,
+        payload: { declaration: res.body },
+      }),
     )
     .catch((err) => {
       dispatch({
@@ -226,6 +229,7 @@ export const showInfoFilePreview = (id) => ({
   type: SHOW_INFO_FILE_PREVIEW,
   payload: id,
 })
+
 export const hideEmployerFilePreview = () => ({
   type: HIDE_EMPLOYER_FILE_PREVIEW,
 })
@@ -240,7 +244,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
     .get('/api/declarations?active')
     .then((res) =>
       dispatch({
-        type: FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
         payload: res.body,
       }),
     )
@@ -253,7 +257,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
         })
       }
       return dispatch({
-        type: FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
         payload: null,
       })
     })

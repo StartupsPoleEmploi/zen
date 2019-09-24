@@ -25,7 +25,7 @@ import {
   SHOW_EMPLOYER_FILE_PREVIEW,
   SHOW_INFO_FILE_PREVIEW,
   FETCH_ACTIVE_DECLARATION_LOADING,
-  FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS,
+  FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
 } from '../actions/actionNames'
 import { utils } from '../selectors/declarations'
@@ -66,25 +66,26 @@ const declarationsReducer = createReducer(
     },
     [POST_DECLARATION_INFO_LOADING]: (
       { declarations },
-      { payload: { infoId } },
+      { payload: { documentId } },
     ) => {
-      const info = findDeclarationInfo({ declarations, infoId })
+      const info = findDeclarationInfo({ declarations, documentId })
       info.isLoading = true
       info.error = null
     },
     [POST_DECLARATION_INFO_FAILURE]: (
       { declarations },
-      { payload: { infoId, err } },
+      { payload: { documentId, err } },
     ) => {
-      const info = findDeclarationInfo({ declarations, infoId })
+      const info = findDeclarationInfo({ declarations, documentId })
       info.error = err
       info.isLoading = false
     },
-    [FETCH_DECLARATION_SUCCESS]: ({ declarations }, { payload }) => {
-      const index = declarations.findIndex(
-        (declaration) => declaration.id === payload.declaration.id,
-      )
-      declarations[index] = payload.declaration
+    [FETCH_DECLARATION_SUCCESS]: (
+      { declarations },
+      { payload: declaration },
+    ) => {
+      const index = declarations.findIndex((d) => d.id === declaration.id)
+      declarations[index] = declaration
     },
 
     [POST_EMPLOYER_DOC_LOADING]: (
@@ -145,7 +146,7 @@ const declarationsReducer = createReducer(
       state.isActiveDeclarationLoading = true
       state.activeDeclaration = null
     },
-    [FETCH_ACTIVE_FETCH_DECLARATION_SUCCESS]: (state, { payload }) => {
+    [FETCH_ACTIVE_DECLARATION_SUCCESS]: (state, { payload }) => {
       state.isActiveDeclarationLoading = false
       state.activeDeclaration = payload
     },

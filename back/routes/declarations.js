@@ -50,7 +50,11 @@ router.post('/remove-file-page', (req, res, next) => {
     .eager('declaration.user')
     .findById(req.body.declarationInfoId)
     .then((declarationInfo) => {
-      if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id) {
+      if (
+        !declarationInfo ||
+        !declarationInfo.file ||
+        get(declarationInfo, 'declaration.user.id') !== req.session.user.id
+      ) {
         return res.status(404).json('No such file')
       }
 

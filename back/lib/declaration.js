@@ -20,23 +20,28 @@ const hasMissingEmployersDocuments = (declaration) =>
 const hasMissingDeclarationDocuments = (declaration) =>
   (declaration.hasInternship &&
     declaration.infos.some(
-      ({ type, file }) => type === docTypes.internship && isNull(file),
+      ({ isTransmitted, type, file }) =>
+        type === docTypes.internship && isNull(file) && !isTransmitted,
     )) ||
   (declaration.hasSickLeave &&
     declaration.infos.some(
-      ({ type, file }) => type === docTypes.sickLeave && isNull(file),
+      ({ isTransmitted, type, file }) =>
+        type === docTypes.sickLeave && isNull(file) && !isTransmitted,
     )) ||
   (declaration.hasMaternityLeave &&
     declaration.infos.some(
-      ({ type, file }) => type === docTypes.maternityLeave && isNull(file),
+      ({ isTransmitted, type, file }) =>
+        type === docTypes.maternityLeave && isNull(file) && !isTransmitted,
     )) ||
   (declaration.hasRetirement &&
     declaration.infos.some(
-      ({ type, file }) => type === docTypes.retirement && isNull(file),
+      ({ isTransmitted, type, file }) =>
+        type === docTypes.retirement && isNull(file) && !isTransmitted,
     )) ||
   (declaration.hasInvalidity &&
     declaration.infos.some(
-      ({ type, file }) => type === docTypes.invalidity && isNull(file),
+      ({ isTransmitted, type, file }) =>
+        type === docTypes.invalidity && isNull(file) && !isTransmitted,
     ))
 
 module.exports = {

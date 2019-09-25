@@ -60,8 +60,33 @@ export class YesNoRadioGroup extends Component {
       },
     })
 
-  renderRadioGroup() {
-    const { name, value } = this.props
+  render() {
+    const { name, value, yesTooltipContent } = this.props
+
+    const yesRadio = (
+      <StyledRadio
+        inputProps={{
+          'aria-describedby': `yes[${name}]`,
+        }}
+      />
+    )
+
+    const yesFormLabelAndRadio = (
+      <FirstFormControlLabel
+        value="yes"
+        control={
+          yesTooltipContent ? (
+            <TooltipOnFocus content={yesTooltipContent}>
+              {yesRadio}
+            </TooltipOnFocus>
+          ) : (
+            yesRadio
+          )
+        }
+        label="oui"
+        checked={value}
+      />
+    )
 
     return (
       <StyledRadioGroup
@@ -70,18 +95,7 @@ export class YesNoRadioGroup extends Component {
         value={getFormValue(value)}
         onChange={this.onChange}
       >
-        <FirstFormControlLabel
-          value="yes"
-          control={
-            <StyledRadio
-              inputProps={{
-                'aria-describedby': `yes[${name}]`,
-              }}
-            />
-          }
-          label="oui"
-          checked={value}
-        />
+        {yesFormLabelAndRadio}
 
         <SecondFormControlLabel
           value="no"
@@ -90,18 +104,6 @@ export class YesNoRadioGroup extends Component {
           checked={value === false}
         />
       </StyledRadioGroup>
-    )
-  }
-
-  render() {
-    const { yesTooltipContent } = this.props
-
-    return yesTooltipContent ? (
-      <TooltipOnFocus content={yesTooltipContent}>
-        {this.renderRadioGroup()}
-      </TooltipOnFocus>
-    ) : (
-      this.renderRadioGroup()
     )
   }
 }

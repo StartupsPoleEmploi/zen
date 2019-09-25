@@ -9,8 +9,7 @@ const { get, isBoolean, isInteger, isNumber, isString } = require('lodash')
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const {
-  hasMissingEmployersDocuments,
-  hasMissingDeclarationDocuments,
+  fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const { sendDocument } = require('../lib/pe-api/documents')
@@ -275,7 +274,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
   const fetchEmployer = () =>
     Employer.query()
-      .eager('documents')
+      .eager('[documents, declaration]')
       .findOne({
         id: employerId,
         userId: req.session.user.id,
@@ -347,6 +346,15 @@ router.post('/files', upload.single('document'), (req, res, next) => {
 
       return savePromise
         .then(fetchEmployer)
+        .then((savedEmployer) => {
+          if (skip) {
+            return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+              declarationId: employer.declaration.id,
+              userId: req.session.user.id,
+            }).then(() => savedEmployer)
+          }
+          return savedEmployer
+        })
         .then((savedEmployer) => res.json(savedEmployer))
     })
     .catch(next)
@@ -378,23 +386,10 @@ router.post('/files/validate', (req, res, next) => {
           accessToken: req.session.userSecret.accessToken,
         })
           .then(() =>
-            Declaration.query()
-              .eager(`[employers.documents, infos]`)
-              .findOne({
-                id: employerDoc.employer.declaration.id,
-                userId: req.session.user.id,
-              })
-              .then((declaration) => {
-                if (
-                  hasMissingEmployersDocuments(declaration) ||
-                  hasMissingDeclarationDocuments(declaration)
-                ) {
-                  return declaration
-                }
-
-                declaration.isFinished = true
-                return declaration.$query().upsertGraphAndFetch()
-              }),
+            fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+              declarationId: employerDoc.employer.declaration.id,
+              userId: req.session.user.id,
+            }),
           )
           // FIXME this needs to change, optimal choice is probably to return declaration
           .then(() =>

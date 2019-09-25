@@ -11,8 +11,7 @@ const { DECLARATION_STATUSES } = require('../constants')
 const winston = require('../lib/log')
 const { upload, uploadDestination } = require('../lib/upload')
 const {
-  hasMissingEmployersDocuments,
-  hasMissingDeclarationDocuments,
+  fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
@@ -444,6 +443,15 @@ router.post('/files', upload.single('document'), (req, res, next) => {
               userId: req.session.user.id,
             }),
         )
+        .then((updatedDeclaration) => {
+          if (req.body.skip) {
+            return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+              declarationId: updatedDeclaration.id,
+              userId: req.session.user.id,
+            }).then(() => updatedDeclaration)
+          }
+          return updatedDeclaration
+        })
         .then((updatedDeclaration) => res.json(updatedDeclaration))
     })
     .catch(next)
@@ -481,17 +489,12 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
               userId: req.session.user.id,
             }),
         )
-        .then((declaration) => {
-          if (
-            hasMissingEmployersDocuments(declaration) ||
-            hasMissingDeclarationDocuments(declaration)
-          ) {
-            return declaration
-          }
-
-          declaration.isFinished = true
-          return declaration.$query().upsertGraphAndFetch()
-        })
+        .then(() =>
+          fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+            declarationId: declarationInfo.declaration.id,
+            userId: req.session.user.id,
+          }),
+        )
         .then((declaration) => res.json(declaration))
     })
     .catch(next)

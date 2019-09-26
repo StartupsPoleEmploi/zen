@@ -150,6 +150,7 @@ export class DocumentUpload extends Component {
       label,
       showTooltip,
       employerId,
+      type,
     } = this.props
 
     const hiddenInput = (
@@ -191,89 +192,84 @@ export class DocumentUpload extends Component {
     )
 
     return (
-      <Fragment>
-        <StyledContainer>
-          <StyledListItem
-            style={{
-              borderColor: isTransmitted ? primaryBlue : '#df5555',
-            }}
-          >
-            <ListItemText
-              primary={
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div>
-                    <b>{label}</b>
-                    {caption && (
-                      <Fragment>
-                        <br />
-                        <Typography variant="caption">{caption}</Typography>
-                      </Fragment>
-                    )}
-                    {(fileExistsOnServer || isTransmitted) && (
-                      <Fragment>
-                        <br />
-                        <Typography
-                          variant="caption"
-                          color={isTransmitted ? 'default' : 'error'}
-                        >
-                          {isTransmitted
-                            ? fileExistsOnServer
-                              ? '✅ Justificatif validé et transmis'
-                              : '✅ Justificatif directement transmis à pole-emploi.fr'
-                            : '⚠️ Justificatif à valider'}
-                        </Typography>
-                      </Fragment>
-                    )}
-                  </div>
-                </div>
-              }
-            />
-            <FormControl>
-              {isLoading ? (
-                <CircularProgress />
-              ) : (
-                <Container>
-                  {error && <ErrorTypography>{error}</ErrorTypography>}
-
-                  {fileExistsOnServer && !isTransmitted && viewDocumentButton}
-
-                  {!fileExistsOnServer && !isTransmitted && (
-                    <StyledFormLabel>
-                      {hiddenInput}
-                      {this.renderFileField(
-                        uploadInput,
-                        showTooltip,
-                        employerId,
-                      )}
-                    </StyledFormLabel>
+      <StyledContainer className={`${type}-row`}>
+        <StyledListItem
+          style={{
+            borderColor: isTransmitted ? primaryBlue : '#df5555',
+          }}
+        >
+          <ListItemText
+            primary={
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <div>
+                  <b>{label}</b>
+                  {caption && (
+                    <Fragment>
+                      <br />
+                      <Typography variant="caption">{caption}</Typography>
+                    </Fragment>
                   )}
-
-                  {!isTransmitted && (
-                    <TooltipOnFocus
-                      useHover
-                      content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
-                    >
-                      <ActionButton
-                        variant="outlined"
-                        aria-describedby={`file[${id}]`}
-                        onClick={this.skipFile}
+                  {(fileExistsOnServer || isTransmitted) && (
+                    <Fragment>
+                      <br />
+                      <Typography
+                        variant="caption"
+                        color={isTransmitted ? 'default' : 'error'}
                       >
-                        <CheckBoxOutlineBlankIcon />
-                        Déjà transmis à Pôle Emploi
-                      </ActionButton>
-                    </TooltipOnFocus>
+                        {isTransmitted
+                          ? fileExistsOnServer
+                            ? '✅ Justificatif validé et transmis'
+                            : '✅ Justificatif directement transmis à pole-emploi.fr'
+                          : '⚠️ Justificatif à valider'}
+                      </Typography>
+                    </Fragment>
                   )}
-                </Container>
-              )}
-            </FormControl>
-          </StyledListItem>
-        </StyledContainer>
-      </Fragment>
+                </div>
+              </div>
+            }
+          />
+          <FormControl>
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Container>
+                {error && <ErrorTypography>{error}</ErrorTypography>}
+
+                {fileExistsOnServer && !isTransmitted && viewDocumentButton}
+
+                {!fileExistsOnServer && !isTransmitted && (
+                  <StyledFormLabel>
+                    {hiddenInput}
+                    {this.renderFileField(uploadInput, showTooltip, employerId)}
+                  </StyledFormLabel>
+                )}
+
+                {!isTransmitted && (
+                  <TooltipOnFocus
+                    useHover
+                    content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
+                  >
+                    <ActionButton
+                      variant="outlined"
+                      aria-describedby={`file[${id}]`}
+                      onClick={this.skipFile}
+                      className="already-transmitted-button"
+                    >
+                      <CheckBoxOutlineBlankIcon />
+                      Déjà transmis à Pôle Emploi
+                    </ActionButton>
+                  </TooltipOnFocus>
+                )}
+              </Container>
+            )}
+          </FormControl>
+        </StyledListItem>
+      </StyledContainer>
     )
   }
 }

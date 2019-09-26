@@ -1,5 +1,5 @@
 const express = require('express')
-const { addWeeks, subWeeks } = require('date-fns')
+const { addWeeks, endOfMonth, startOfMonth, subWeeks } = require('date-fns')
 
 const User = require('../models/User')
 const Declaration = require('../models/Declaration')
@@ -96,7 +96,7 @@ const insertDeclaration = ({
   declaration.userId = userId
   declaration.monthId = declarationMonthId
 
-  return Declaration.query().insertAndFetch(declaration)
+  return Declaration.query().upsertGraphAndFetch(declaration)
 }
 
 const insertEmployer = ({ employer, userId, declarationId }) => {
@@ -174,7 +174,17 @@ router.post('/db/reset-for-files', (req, res, next) =>
       return insertDeclaration({
         userId: user.id,
         declarationMonthId: declarationMonth.id,
-        declarationOverride: req.body.declarationOverride,
+        declarationOverride: {
+          hasSickLeave: true,
+          infos: [
+            {
+              type: 'sickLeave',
+              startDate: startOfMonth(declarationMonth.month),
+              endDate: endOfMonth(declarationMonth.month),
+            },
+          ],
+          ...req.body.declarationOverride,
+        },
       })
     })
     .then((declaration) =>

@@ -72,6 +72,7 @@ router.get('/users', (req, res, next) => {
           'postalCode',
           'gender',
           'isAuthorized',
+          'peId',
         ]
 
         const json2csvParser = new Parser({ fields })

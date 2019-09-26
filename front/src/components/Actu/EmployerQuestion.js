@@ -186,7 +186,8 @@ export class EmployerQuestion extends Component {
         fullWidth={verticalLayout}
       />
     )
-    const workHoursTooltip = 'Déclarez les heures réellement travaillées'
+    const workHoursTooltip =
+      'Indiquez les heures qui seront inscrites sur votre fiche de paie'
 
     // Salary
     const salaryTextField = (

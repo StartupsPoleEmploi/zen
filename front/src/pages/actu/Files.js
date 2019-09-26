@@ -396,11 +396,6 @@ export class Files extends Component {
             : false
         }
         isTransmitted={get(certificateDoc, 'isTransmitted')}
-        infoTooltipText={
-          employer.hasEndedThisMonth
-            ? `Le justificatif contenant votre attestation employeur doit être composé d'exactement deux pages`
-            : null
-        }
         employerDocType={employerCertificateType}
         isLoading={employer[getEmployerLoadingKey(employerCertificateType)]}
         error={employer[getEmployerErrorKey(employerCertificateType)]}

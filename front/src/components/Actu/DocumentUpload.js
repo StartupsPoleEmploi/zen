@@ -6,7 +6,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
-import Info from '@material-ui/icons/InfoOutlined'
 import Eye from '@material-ui/icons/RemoveRedEye'
 import NoteAdd from '@material-ui/icons/NoteAdd'
 import PropTypes from 'prop-types'
@@ -49,10 +48,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`
-
-const InfoIcon = styled(Info)`
-  margin-left: 0.5rem;
 `
 
 const EyeIcon = styled(Eye)`
@@ -98,7 +93,6 @@ export class DocumentUpload extends Component {
     submitFile: PropTypes.func.isRequired,
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
-    infoTooltipText: PropTypes.string,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
     showPreview: PropTypes.func.isRequired,
@@ -154,7 +148,6 @@ export class DocumentUpload extends Component {
       isLoading,
       isTransmitted,
       label,
-      infoTooltipText,
       showTooltip,
       employerId,
     } = this.props
@@ -226,7 +219,7 @@ export class DocumentUpload extends Component {
                         <br />
                         <Typography
                           variant="caption"
-                          color={isTransmitted ? '' : 'error'}
+                          color={isTransmitted ? 'default' : 'error'}
                         >
                           {isTransmitted
                             ? fileExistsOnServer
@@ -237,18 +230,6 @@ export class DocumentUpload extends Component {
                       </Fragment>
                     )}
                   </div>
-                  {infoTooltipText && (
-                    <TooltipOnFocus
-                      content={infoTooltipText}
-                      useHover
-                      enterDelay={0}
-                      leaveDelay={1500}
-                      enterTouchDelay={0}
-                      leaveTouchDelay={3000}
-                    >
-                      <InfoIcon />
-                    </TooltipOnFocus>
-                  )}
                 </div>
               }
             />

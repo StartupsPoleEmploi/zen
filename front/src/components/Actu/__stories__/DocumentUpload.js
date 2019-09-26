@@ -38,6 +38,9 @@ storiesOf('DocumentUpload', module)
   .add('with file', () => (
     <DocumentUpload {...defaultProps} fileExistsOnServer />
   ))
+  .add('with transmitted file', () => (
+    <DocumentUpload {...defaultProps} fileExistsOnServer isTransmitted />
+  ))
   .add('error', () => (
     <DocumentUpload {...defaultProps} error="Tout est cassé" />
   ))

@@ -206,7 +206,7 @@ export const removeDeclarationInfoFilePage = ({
     .then((res) =>
       dispatch({
         type: FETCH_DECLARATION_SUCCESS,
-        payload: { declaration: res.body },
+        payload: res.body,
       }),
     )
     .catch((err) => {

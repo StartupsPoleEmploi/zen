@@ -117,7 +117,10 @@ const formatDeclarationInfoDoc = (doc) => {
   )
   return {
     filePath: `${uploadsDirectory}${doc.file}`,
-    label: typeInfos.label,
+    label: `${typeInfos.label} - ${format(
+      doc.declaration.declarationMonth.month,
+      'MM-YYYY',
+    )}`,
     dbDocument: doc,
     confirmationData: typeInfos.confirmationData,
   }

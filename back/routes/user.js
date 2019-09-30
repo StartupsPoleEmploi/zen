@@ -17,7 +17,7 @@ router.get('/', refreshAccessToken, (req, res) => {
 
   const data = {
     ...req.session.user,
-    csrfToken: req.csrfToken(),
+    csrfToken: req.csrfToken && req.csrfToken(),
   }
 
   if (userTokenValid) {

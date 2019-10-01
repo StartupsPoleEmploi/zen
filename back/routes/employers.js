@@ -15,8 +15,9 @@ const {
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
+const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
-const isUserTokenValid = require('../lib/isUserTokenValid')
+const { isUserTokenValid } = require('../lib/token')
 const winston = require('../lib/log')
 
 const Declaration = require('../models/Declaration')
@@ -109,7 +110,7 @@ router.post('/remove-file-page', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/', requireActiveMonth, (req, res, next) => {
+router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
   const sentEmployers = req.body.employers || []
   if (!sentEmployers.length) return res.status(400).json('No data')
 

@@ -430,11 +430,15 @@ export class Files extends Component {
       declaration.declarationMonth.month,
     )
 
-    if (declaration.isFinished) {
+    // FIXME : if declarationRemainingDocsNb === 9, isFinished should be true
+    // however as sending employers does not for now refresh the whole declaration
+    // the object in the store main not be updated.
+    // This should be changed as the next look for this page is implemented.
+    if (declaration.isFinished || declarationRemainingDocsNb === 0) {
       return (
         <FilesDoneSection key={declaration.id}>
           <Typography variant="body1">
-            Fichiers de {formattedMonth} transmis
+            Justificatifs de {formattedMonth} transmis
           </Typography>
           {' '}
           <CheckCircle />

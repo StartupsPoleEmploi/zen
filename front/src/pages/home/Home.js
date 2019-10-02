@@ -427,12 +427,9 @@ export const Home = ({ location: { search } }) => {
                   textTransform: 'uppercase',
                 }}
               >
-                L'actualisation
-                <br />
-                Pôle emploi
-                <br />
-                en toute
-                <br />
+                L'actualisation <br />
+                Pôle emploi <br />
+                en toute <br />
                 simplicité<span style={{ color: primaryBlue }}>.</span>
               </Title>
               <Tagline>

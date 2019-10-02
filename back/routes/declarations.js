@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const router = express.Router()
-const { get, pick, remove, omit } = require('lodash')
+const { get, remove, omit } = require('lodash')
 const { transaction } = require('objection')
 const Raven = require('raven')
 
@@ -273,23 +273,11 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
         // Declaration with no employers We need to send the declaration to PE.fr
         return sendDeclaration({
           declaration: declarationData,
+          userId: req.session.user.id,
           accessToken: req.session.userSecret.accessToken,
           ignoreErrors: req.body.ignoreErrors,
         }).then(({ body }) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            // the service will answer with HTTP 200 for a bunch of errors
-            // So they need to be handled here
-            winston.warn(
-              `Declaration transmission error for user ${req.session.user.id}`,
-              pick(body, [
-                'statut',
-                'statutActu',
-                'message',
-                'erreursIncoherence',
-                'erreursValidation',
-              ]),
-            )
-
             // in case there was no docs to transmit, don't save the declaration as finished
             // so the user can send it again
             declarationData.hasFinishedDeclaringEmployers = false

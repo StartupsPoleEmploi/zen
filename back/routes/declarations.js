@@ -207,14 +207,6 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
     return res.status(400).json('Invalid declaration')
   }
 
-  if (!declarationData.hasWorked) {
-    declarationData.hasFinishedDeclaringEmployers = true
-    declarationData.transmittedAt = new Date()
-    if (!Declaration.needsDocuments(declarationData)) {
-      declarationData.isFinished = true
-    }
-  }
-
   return Declaration.query()
     .findOne({
       // if req.body.id is defined, this finds the specified declaration
@@ -262,9 +254,6 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
       if (!declarationData.hasWorked) {
         // If the user token is invalid, save the declaration data then exit.
         if (!isUserTokenValid(req.user.tokenExpirationDate)) {
-          declarationData.hasFinishedDeclaringEmployers = false
-          declarationData.isFinished = false
-          declarationData.transmittedAt = null
           return saveDeclaration().then(() =>
             res.status(401).json('Expired token'),
           )
@@ -278,11 +267,9 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           ignoreErrors: req.body.ignoreErrors,
         }).then(({ body }) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            // in case there was no docs to transmit, don't save the declaration as finished
-            // so the user can send it again
-            declarationData.hasFinishedDeclaringEmployers = false
-            declarationData.isFinished = false
-            declarationData.transmittedAt = null
+            // The declaration submittal failed for some reason
+            // (HTTP 200, but with a custom error for the user).
+            // We save what the user sent but do not validate it and give him back the error.
             return saveDeclaration().then(() =>
               // This is a custom error, we want to show a different feedback to users
               res
@@ -297,6 +284,12 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           }
 
           winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
+
+          declarationData.hasFinishedDeclaringEmployers = true
+          declarationData.transmittedAt = new Date()
+          if (!Declaration.needsDocuments(declarationData)) {
+            declarationData.isFinished = true
+          }
 
           return saveAndLogDeclaration().then(([dbDeclaration]) =>
             res.json(dbDeclaration),

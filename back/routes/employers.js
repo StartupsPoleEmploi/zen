@@ -165,9 +165,6 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           .then(() => res.status(401).json('Expired token'))
       }
 
-      declaration.hasFinishedDeclaringEmployers = true
-      declaration.transmittedAt = new Date()
-
       // Sending declaration to pe.fr
       return sendDeclaration({
         declaration,
@@ -177,9 +174,6 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
       })
         .then(({ body }) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            declaration.hasFinishedDeclaringEmployers = false
-            declaration.transmittedAt = null
-
             return declaration
               .$query()
               .upsertGraph()
@@ -200,6 +194,9 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
 
           winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
 
+          declaration.hasFinishedDeclaringEmployers = true
+          declaration.transmittedAt = new Date()
+
           return transaction(Declaration.knex(), (trx) =>
             Promise.all([
               declaration.$query(trx).upsertGraph(),
@@ -215,20 +212,16 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
             ]),
           ).then(() => res.json(declaration))
         })
-        .catch((err) => {
+        .catch((err) =>
           // If we could not save the declaration on pe.fr
           // We still save the data the user sent us
-          // but we put it as unfinished.
-          declaration.hasFinishedDeclaringEmployers = false
-          declaration.transmittedAt = null
-
-          return declaration
+          declaration
             .$query()
             .upsertGraph()
             .then(() => {
               throw err
-            })
-        })
+            }),
+        )
     })
     .catch(next)
 })

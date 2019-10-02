@@ -265,36 +265,48 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           userId: req.session.user.id,
           accessToken: req.session.userSecret.accessToken,
           ignoreErrors: req.body.ignoreErrors,
-        }).then(({ body }) => {
-          if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            // The declaration submittal failed for some reason
-            // (HTTP 200, but with a custom error for the user).
-            // We save what the user sent but do not validate it and give him back the error.
-            return saveDeclaration().then(() =>
-              // This is a custom error, we want to show a different feedback to users
-              res
-                .status(
-                  body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
-                )
-                .json({
-                  consistencyErrors: body.erreursIncoherence || [],
-                  validationErrors: Object.values(body.erreursValidation || {}),
-                }),
-            )
-          }
-
-          winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
-
-          declarationData.hasFinishedDeclaringEmployers = true
-          declarationData.transmittedAt = new Date()
-          if (!Declaration.needsDocuments(declarationData)) {
-            declarationData.isFinished = true
-          }
-
-          return saveAndLogDeclaration().then(([dbDeclaration]) =>
-            res.json(dbDeclaration),
-          )
         })
+          .then(({ body }) => {
+            if (body.statut !== DECLARATION_STATUSES.SAVED) {
+              // The declaration submittal failed for some reason
+              // (HTTP 200, but with a custom error for the user).
+              // We save what the user sent but do not validate it and give him back the error.
+              return saveDeclaration().then(() =>
+                // This is a custom error, we want to show a different feedback to users
+                res
+                  .status(
+                    body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
+                  )
+                  .json({
+                    consistencyErrors: body.erreursIncoherence || [],
+                    validationErrors: Object.values(
+                      body.erreursValidation || {},
+                    ),
+                  }),
+              )
+            }
+
+            winston.info(
+              `Sent declaration for user ${req.session.user.id} to PE`,
+            )
+
+            declarationData.hasFinishedDeclaringEmployers = true
+            declarationData.transmittedAt = new Date()
+            if (!Declaration.needsDocuments(declarationData)) {
+              declarationData.isFinished = true
+            }
+
+            return saveAndLogDeclaration().then(([dbDeclaration]) =>
+              res.json(dbDeclaration),
+            )
+          })
+          .catch((err) =>
+            // If we could not save the declaration on pe.fr
+            // We still save the data the user sent us
+            saveDeclaration().then(() => {
+              throw err
+            }),
+          )
       }
 
       return saveAndLogDeclaration().then(([dbDeclaration]) =>

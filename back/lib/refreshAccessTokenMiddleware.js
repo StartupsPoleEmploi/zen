@@ -5,6 +5,8 @@ const {
 } = require('../lib/token')
 
 const refreshAccessToken = (req, res, next) => {
+  if (!req.user || !req.user.tokenExpirationDate) return next()
+
   if (isUserTokenValid(req.user.tokenExpirationDate)) return next()
   if (!isRefreshPossible(req.user.tokenExpirationDate)) return next()
   refreshToken(req).finally(next)

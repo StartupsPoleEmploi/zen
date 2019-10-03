@@ -10,7 +10,7 @@ jobs:
     working_directory: ~/zen
 
     steps:
-      - run :
+      - run:
           name: Upgrade max watchable files to avoid ENOSPC
           command: sudo sysctl -w fs.inotify.max_user_watches=524288
 
@@ -29,7 +29,7 @@ jobs:
             echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
             echo "nvm use v10.15" >> $BASH_ENV
 
-      - run : npm i -g yarn
+      - run: npm i -g yarn
 
       - checkout
 
@@ -41,6 +41,10 @@ jobs:
             - v1-dependencies-
 
       - run: yarn
+
+      - run:
+          name: Build front for Bundle analyzer
+          command: cd front; yarn && CI=false yarn build; cd ../
 
       - save_cache:
           paths:

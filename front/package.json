@@ -144,6 +144,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "@bundle-analyzer/webpack-plugin": "^0.5.0",
     "@storybook/addon-actions": "^5.1.4",
     "@storybook/addon-knobs": "^5.1.4",
     "@storybook/addon-links": "^5.1.4",

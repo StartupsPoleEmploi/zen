@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const router = express.Router()
-const { get, pick, remove, omit } = require('lodash')
+const { get, remove, omit } = require('lodash')
 const { transaction } = require('objection')
 const Raven = require('raven')
 
@@ -207,14 +207,6 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
     return res.status(400).json('Invalid declaration')
   }
 
-  if (!declarationData.hasWorked) {
-    declarationData.hasFinishedDeclaringEmployers = true
-    declarationData.transmittedAt = new Date()
-    if (!Declaration.needsDocuments(declarationData)) {
-      declarationData.isFinished = true
-    }
-  }
-
   return Declaration.query()
     .findOne({
       // if req.body.id is defined, this finds the specified declaration
@@ -262,9 +254,6 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
       if (!declarationData.hasWorked) {
         // If the user token is invalid, save the declaration data then exit.
         if (!isUserTokenValid(req.user.tokenExpirationDate)) {
-          declarationData.hasFinishedDeclaringEmployers = false
-          declarationData.isFinished = false
-          declarationData.transmittedAt = null
           return saveDeclaration().then(() =>
             res.status(401).json('Expired token'),
           )
@@ -273,47 +262,51 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
         // Declaration with no employers We need to send the declaration to PE.fr
         return sendDeclaration({
           declaration: declarationData,
+          userId: req.session.user.id,
           accessToken: req.session.userSecret.accessToken,
           ignoreErrors: req.body.ignoreErrors,
-        }).then(({ body }) => {
-          if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            // the service will answer with HTTP 200 for a bunch of errors
-            // So they need to be handled here
-            winston.warn(
-              `Declaration transmission error for user ${req.session.user.id}`,
-              pick(body, [
-                'statut',
-                'statutActu',
-                'message',
-                'erreursIncoherence',
-                'erreursValidation',
-              ]),
-            )
-
-            // in case there was no docs to transmit, don't save the declaration as finished
-            // so the user can send it again
-            declarationData.hasFinishedDeclaringEmployers = false
-            declarationData.isFinished = false
-            declarationData.transmittedAt = null
-            return saveDeclaration().then(() =>
-              // This is a custom error, we want to show a different feedback to users
-              res
-                .status(
-                  body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
-                )
-                .json({
-                  consistencyErrors: body.erreursIncoherence || [],
-                  validationErrors: Object.values(body.erreursValidation || {}),
-                }),
-            )
-          }
-
-          winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
-
-          return saveAndLogDeclaration().then(([dbDeclaration]) =>
-            res.json(dbDeclaration),
-          )
         })
+          .then(({ body }) => {
+            if (body.statut !== DECLARATION_STATUSES.SAVED) {
+              // The declaration submittal failed for some reason
+              // (HTTP 200, but with a custom error for the user).
+              // We save what the user sent but do not validate it and give him back the error.
+              return saveDeclaration().then(() =>
+                // This is a custom error, we want to show a different feedback to users
+                res
+                  .status(
+                    body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
+                  )
+                  .json({
+                    consistencyErrors: body.erreursIncoherence || [],
+                    validationErrors: Object.values(
+                      body.erreursValidation || {},
+                    ),
+                  }),
+              )
+            }
+
+            winston.info(
+              `Sent declaration for user ${req.session.user.id} to PE`,
+            )
+
+            declarationData.hasFinishedDeclaringEmployers = true
+            declarationData.transmittedAt = new Date()
+            if (!Declaration.needsDocuments(declarationData)) {
+              declarationData.isFinished = true
+            }
+
+            return saveAndLogDeclaration().then(([dbDeclaration]) =>
+              res.json(dbDeclaration),
+            )
+          })
+          .catch((err) =>
+            // If we could not save the declaration on pe.fr
+            // We still save the data the user sent us
+            saveDeclaration().then(() => {
+              throw err
+            }),
+          )
       }
 
       return saveAndLogDeclaration().then(([dbDeclaration]) =>

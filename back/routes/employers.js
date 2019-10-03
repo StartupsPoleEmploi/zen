@@ -4,14 +4,7 @@ const fs = require('fs')
 
 const router = express.Router()
 const { transaction } = require('objection')
-const {
-  get,
-  isBoolean,
-  isInteger,
-  isNumber,
-  isString,
-  pick,
-} = require('lodash')
+const { get, isBoolean, isInteger, isNumber, isString } = require('lodash')
 
 const { upload, uploadDestination } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
@@ -172,33 +165,15 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           .then(() => res.status(401).json('Expired token'))
       }
 
-      declaration.hasFinishedDeclaringEmployers = true
-      declaration.transmittedAt = new Date()
-
       // Sending declaration to pe.fr
       return sendDeclaration({
         declaration,
+        userId: req.session.user.id,
         accessToken: req.session.userSecret.accessToken,
         ignoreErrors: req.body.ignoreErrors,
       })
         .then(({ body }) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            // the service will answer with HTTP 200 for a bunch of errors
-            // So they need to be handled here
-            winston.warn(
-              `Declaration transmission error for user ${req.session.user.id}`,
-              pick(body, [
-                'statut',
-                'statutActu',
-                'message',
-                'erreursIncoherence',
-                'erreursValidation',
-              ]),
-            )
-
-            declaration.hasFinishedDeclaringEmployers = false
-            declaration.transmittedAt = null
-
             return declaration
               .$query()
               .upsertGraph()
@@ -219,6 +194,9 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
 
           winston.info(`Sent declaration for user ${req.session.user.id} to PE`)
 
+          declaration.hasFinishedDeclaringEmployers = true
+          declaration.transmittedAt = new Date()
+
           return transaction(Declaration.knex(), (trx) =>
             Promise.all([
               declaration.$query(trx).upsertGraph(),
@@ -234,20 +212,16 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
             ]),
           ).then(() => res.json(declaration))
         })
-        .catch((err) => {
+        .catch((err) =>
           // If we could not save the declaration on pe.fr
           // We still save the data the user sent us
-          // but we put it as unfinished.
-          declaration.hasFinishedDeclaringEmployers = false
-          declaration.transmittedAt = null
-
-          return declaration
+          declaration
             .$query()
             .upsertGraph()
             .then(() => {
               throw err
-            })
-        })
+            }),
+        )
     })
     .catch(next)
 })

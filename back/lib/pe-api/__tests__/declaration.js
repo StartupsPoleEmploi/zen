@@ -177,32 +177,14 @@ const declarationWithMultipleSicknessAndInternshipDates = {
 }
 
 const accessToken = 'AZERTYUIOP'
+const userId = 1
 
 describe('PE API: sendDeclaration', () => {
-  let scope
-  let parsedBody
-  let parsedHeaders
-
   describe('API call success', () => {
-    beforeAll(() => {
-      scope = nock(config.apiHost)
-        .post(
-          '/partenaire/peconnect-actualisation/v1/actualisation',
-          (body) => {
-            parsedBody = body
-            return body
-          },
-        )
-        .reply(function() {
-          parsedHeaders = this.req.headers
-          return [200, { statut: DECLARATION_STATUSES.SAVED }]
-        })
-        .persist()
-    })
-
-    afterAll(() => scope.persist(false))
-
     it('should send formatted data for declarations', async () => {
+      let parsedBody
+      let parsedHeaders
+
       const declarations = [
         declarationWithEmployers,
         declarationWithEmployersAndHighWorkHours,
@@ -213,12 +195,27 @@ describe('PE API: sendDeclaration', () => {
         declarationWithMultipleSicknessAndInternshipDates,
       ]
 
+      const scope = nock(config.apiHost)
+        .post(
+          '/partenaire/peconnect-actualisation/v1/actualisation',
+          (body) => {
+            parsedBody = body
+            return body
+          },
+        )
+        .times(declarations.length)
+        .reply(function() {
+          parsedHeaders = this.req.headers
+          return [200, { statut: DECLARATION_STATUSES.SAVED }]
+        })
+
       for (const declaration of declarations) {
         const {
           body: { statut },
         } = await sendDeclaration({
           declaration,
           accessToken,
+          userId,
           // Arbitrary, just to set forceIncoherences to true once
           ignoreErrors: declaration.jobSearchStopMotive === 'other',
         })
@@ -226,22 +223,46 @@ describe('PE API: sendDeclaration', () => {
         expect(parsedHeaders).toMatchSnapshot()
         expect(parsedBody).toMatchSnapshot()
       }
+      scope.done()
     })
   })
 
   describe('API call failure', () => {
-    beforeEach(() =>
-      nock(config.apiHost)
+    it('should fail if there was a server error', (done) => {
+      const scope = nock(config.apiHost)
         .post('/partenaire/peconnect-actualisation/v1/actualisation')
         .reply(500, {
-          statut: 'Everything has exploded',
-        }),
-    )
-    it('should fail if there was a server error', () => {
+          statut: DECLARATION_STATUSES.TECH_ERROR,
+          message: 'Everything just exploded',
+        })
       sendDeclaration({
         declaration: declarationWithEmployers,
         accessToken,
-      }).catch((err) => expect(err).toBeDefined())
+        userId,
+      }).catch((err) => {
+        expect(err).toBeDefined()
+        scope.done()
+        done()
+      })
+    })
+
+    it('should retry multiple times if there was a status "impossible or unavailable" as an answer', (done) => {
+      const scope = nock(config.apiHost)
+        .post('/partenaire/peconnect-actualisation/v1/actualisation')
+        .times(3)
+        .reply(200, {
+          statut: DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY,
+          message: 'Actualisation non effectuée',
+        })
+      sendDeclaration({
+        declaration: declarationWithEmployers,
+        accessToken,
+        userId,
+      }).then(({ body }) => {
+        expect(body.statut === DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY)
+        scope.done()
+        done()
+      })
     })
   })
 })

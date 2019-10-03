@@ -10,8 +10,8 @@
     "test:e2e": "docker-compose -p test-e2e -f docker-compose.test.yml run --rm e2e; exitcode=$?; docker-compose -p test-e2e -f docker-compose.test.yml down; exit ${exitcode}",
     "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test",
     "test:front:snapshots": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test -- -u",
-    "test:back": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm  node yarn test; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f",
-    "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm node yarn test -- -u; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f",
+    "test:back": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm  node yarn test; exitcode=$?; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f; exit ${exitcode}",
+    "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm node yarn test -- -u; exitcode=$?; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f; exit ${exitcode}",
     "database:knex-migrate": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:latest",
     "database:knex-rollback": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:rollback"
   },

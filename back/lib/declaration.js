@@ -2,6 +2,7 @@ const { isNull } = require('lodash')
 
 const EmployerDocument = require('../models/EmployerDocument')
 const DeclarationInfo = require('../models/DeclarationInfo')
+const Declaration = require('../models/Declaration')
 
 const docTypes = DeclarationInfo.types
 
@@ -44,7 +45,30 @@ const hasMissingDeclarationDocuments = (declaration) =>
         type === docTypes.invalidity && isNull(file) && !isTransmitted,
     ))
 
+const fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated = ({
+  declarationId,
+  userId,
+}) =>
+  Declaration.query()
+    .eager(`[declarationMonth, infos, employers.documents]`)
+    .findOne({
+      id: declarationId,
+      userId,
+    })
+    .then((declaration) => {
+      if (
+        hasMissingEmployersDocuments(declaration) ||
+        hasMissingDeclarationDocuments(declaration)
+      ) {
+        return declaration
+      }
+
+      declaration.isFinished = true
+      return declaration.$query().upsertGraphAndFetch()
+    })
+
 module.exports = {
   hasMissingEmployersDocuments,
   hasMissingDeclarationDocuments,
+  fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 }

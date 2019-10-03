@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 const config = require('config')
 const nock = require('nock')
-const { sendDocuments } = require('../documents')
+const { sendDocument } = require('../documents')
 
 const $query = () => ({ patch: () => {} })
 
@@ -141,20 +141,28 @@ const declarationWithLotsOfDocuments = {
 
 const accessToken = 'AZERTYUIOP'
 
-describe('PE API: sendDocuments', () => {
+describe('PE API: sendDocument', () => {
   const conversionId = 1
   let uploadScope
   let confirmationScope
-  const parsedUploadHeadersArray = []
-  const parsedConfirmationBodyArray = []
-  const parsedConfirmationHeadersArray = []
+  let parsedUploadHeaders = null
+  let parsedConfirmationBody = null
+  let parsedConfirmationHeaders = null
+
+  const resetVariablesUsedForChecks = () => {
+    parsedUploadHeaders = null
+    parsedConfirmationBody = null
+    parsedConfirmationHeaders = null
+  }
+
+  beforeEach(resetVariablesUsedForChecks)
 
   describe('API call success', () => {
     beforeAll(() => {
       uploadScope = nock(config.apiHost)
         .post(`/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`)
         .reply(function() {
-          parsedUploadHeadersArray.push(this.req.headers)
+          parsedUploadHeaders = this.req.headers
           return [200, { conversionId }]
         })
         .persist()
@@ -163,12 +171,12 @@ describe('PE API: sendDocuments', () => {
         .post(
           `/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`,
           (body) => {
-            parsedConfirmationBodyArray.push(body)
+            parsedConfirmationBody = body
             return body
           },
         )
         .reply(function() {
-          parsedConfirmationHeadersArray.push(this.req.headers)
+          parsedConfirmationHeaders = this.req.headers
           return [200]
         })
         .persist()
@@ -179,26 +187,42 @@ describe('PE API: sendDocuments', () => {
       confirmationScope.persist(false)
     })
 
-    it('should send formatted data for declarations', async () => {
-      const declarations = [declarationWithLotsOfDocuments]
+    const performChecks = () => {
+      expect(parsedConfirmationBody).toMatchSnapshot()
+      ;[parsedUploadHeaders, parsedConfirmationHeaders].forEach((headers) => {
+        expect(headers.authorization).toContain(accessToken)
+        expect(headers.accept).toBe('application/json')
+        expect(headers.media).toBe('M')
+        expect(headers['accept-encoding']).toBe('gzip')
+      })
+      expect(parsedUploadHeaders['content-type']).toContain(
+        'multipart/form-data;',
+      )
+    }
 
-      for (const declaration of declarations) {
-        await sendDocuments({
-          declaration,
+    it('should send formatted data for documents', async () => {
+      for (const declarationInfo of declarationWithLotsOfDocuments.infos) {
+        if (declarationInfo.type === 'jobSearch') continue
+        declarationInfo.declaration = declarationWithLotsOfDocuments // shortcut for these tests.
+        await sendDocument({
+          document: declarationInfo,
           accessToken,
         })
-        expect(parsedConfirmationBodyArray).toMatchSnapshot()
-        parsedUploadHeadersArray
-          .concat(parsedConfirmationHeadersArray)
-          .forEach((headers) => {
-            expect(headers.authorization).toContain(accessToken)
-            expect(headers.accept).toBe('application/json')
-            expect(headers.media).toBe('M')
-            expect(headers['accept-encoding']).toBe('gzip')
+        performChecks()
+        resetVariablesUsedForChecks()
+      }
+
+      for (const employer of declarationWithLotsOfDocuments.employers) {
+        for (const employerDoc of employer.documents) {
+          employerDoc.employer = employer // shortcut for these tests.
+          employerDoc.employer.declaration = declarationWithLotsOfDocuments // shortcut for these tests.
+          await sendDocument({
+            document: employerDoc,
+            accessToken,
           })
-        parsedUploadHeadersArray.forEach((headers) => {
-          expect(headers['content-type']).toContain('multipart/form-data;')
-        })
+          performChecks()
+          resetVariablesUsedForChecks()
+        }
       }
     })
   })

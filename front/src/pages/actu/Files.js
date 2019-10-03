@@ -7,9 +7,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import superagent from 'superagent'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -21,13 +19,13 @@ import {
   showInfoFilePreview as showInfoFilePreviewAction,
   uploadDeclarationInfoFile as uploadDeclarationInfoFileAction,
   uploadEmployerFile as uploadEmployerFileAction,
+  validateEmployerDoc as validateEmployerDocAction,
+  validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
 } from '../../actions/declarations'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
-import FilesDialog from '../../components/Actu/FilesDialog'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
-import MainActionButton from '../../components/Generic/MainActionButton'
 import { secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 import { canUsePDFViewer } from '../../lib/file'
@@ -58,26 +56,6 @@ const StyledTitle = styled(Typography)`
 
 const StyledInfo = styled.div`
   text-align: center;
-`
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  width: 100%;
-  text-align: center;
-  max-width: 40rem;
-  margin: 0 auto;
-`
-
-const ErrorMessage = styled(Typography)`
-  && {
-    color: red;
-    text-align: center;
-    padding-top: 1.5rem;
-  }
 `
 
 const FilesSection = styled.section`
@@ -147,22 +125,17 @@ const infoSpecs = [
 
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
-const declarationType = 'declaration'
 const infoType = 'info'
-
-const getLoadingKey = ({ id, type }) => `${id}-${type}-loading`
-const getErrorKey = ({ id, type }) => `${id}-${type}-error`
 
 const getDeclarationMissingFilesNb = (declaration) => {
   const infoDocumentsRequiredNb = declaration.infos.filter(
-    ({ type, file, isTransmitted }) =>
-      type !== 'jobSearch' && !file && !isTransmitted,
+    ({ type, isTransmitted }) => type !== 'jobSearch' && !isTransmitted,
   ).length
 
   return (
     declaration.employers.reduce((prev, employer) => {
       if (!employer.hasEndedThisMonth) {
-        return prev + (employer.documents[0] ? 0 : 1)
+        return prev + (get(employer, 'documents[0].isTransmitted') ? 0 : 1)
       }
 
       /*
@@ -170,10 +143,11 @@ const getDeclarationMissingFilesNb = (declaration) => {
           in which case we do not count it in the needed documents.
         */
       const hasEmployerCertificate = employer.documents.some(
-        ({ type }) => type === employerCertificateType,
+        ({ type, isTransmitted }) =>
+          type === employerCertificateType && isTransmitted,
       )
       const hasSalarySheet = employer.documents.some(
-        ({ type }) => type === salarySheetType,
+        ({ type, isTransmitted }) => type === salarySheetType && isTransmitted,
       )
 
       if (hasEmployerCertificate) return prev + 0
@@ -221,19 +195,40 @@ export class Files extends Component {
     previewedInfoDoc: PropTypes.object,
     showInfoFilePreview: PropTypes.func.isRequired,
     showEmployerFilePreview: PropTypes.func.isRequired,
+    validateEmployerDoc: PropTypes.func.isRequired,
+    validateDeclarationInfoDoc: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isUserLoggedOut: PropTypes.bool.isRequired,
   }
 
   state = {
-    isSendingFiles: false,
     showSkipConfirmation: false,
     skipFileCallback: noop,
-    isLoggedOut: false,
-    previewModalProps: null,
   }
 
   componentDidMount() {
     this.props.fetchDeclarations()
+  }
+
+  componentDidUpdate(prevProps) {
+    // Redirect to /thanks if last declaration's last file was just validated
+    const prevDeclaration = prevProps.declarations[0]
+    const updatedDeclaration = this.props.declarations[0]
+
+    if (!prevDeclaration || !updatedDeclaration) return
+    const missingFilesOnPrevDeclaration = getDeclarationMissingFilesNb(
+      prevDeclaration,
+    )
+    const missingFilesOnUpdatedDeclaration = getDeclarationMissingFilesNb(
+      updatedDeclaration,
+    )
+
+    if (
+      missingFilesOnPrevDeclaration > 0 &&
+      missingFilesOnUpdatedDeclaration === 0
+    ) {
+      return this.props.history.push('/thanks')
+    }
   }
 
   removePage = (data) =>
@@ -253,39 +248,6 @@ export class Files extends Component {
       showSkipConfirmation: false,
       skipFileCallback: noop,
     })
-
-  onSubmit = ({ declaration }) => {
-    const isSendingLastDeclaration =
-      declaration.id === this.props.declarations[0].id
-
-    this.setState({ isSendingFiles: true })
-
-    return superagent
-      .post('/api/declarations/finish', { id: declaration.id })
-      .set('CSRF-Token', this.props.token)
-      .then(() => {
-        this.setState({
-          isSendingFiles: false,
-          [getErrorKey({ id: declaration.id, type: declarationType })]: null,
-        })
-        if (isSendingLastDeclaration) return this.props.history.push('/thanks')
-        this.props.fetchDeclarations()
-      })
-      .catch((error) => {
-        // Reporting here to get a metric of how much this happens
-        window.Raven.captureException(error)
-
-        if (error.status === 401 || error.status === 403) {
-          return this.setState({ isLoggedOut: true })
-        }
-
-        this.setState({
-          isSendingFiles: false,
-          [getErrorKey({ id: declaration.id, type: declarationType })]: error,
-        })
-        this.props.fetchDeclarations() // fetching declarations again in case something changed (eg. file was transmitted)
-      })
-  }
 
   renderDocumentList = (declaration) => {
     const neededAdditionalDocumentsSpecs = infoSpecs.filter(
@@ -322,7 +284,7 @@ export class Files extends Component {
     return (
       <div>
         {sortedEmployers.map((employer, index) => (
-          <div className="employer-row" key={employer.id}>
+          <div key={employer.id}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
@@ -352,7 +314,6 @@ export class Files extends Component {
           key={`${name}-${info.id}`}
           id={info.id}
           type={DocumentUpload.types.info}
-          url={computeDocUrl({ id: info.id, type: DocumentUpload.types.info })}
           label={label}
           caption={formatInfoDates(info)}
           fileExistsOnServer={!!info.file && !info.isCleanedUp}
@@ -370,8 +331,8 @@ export class Files extends Component {
           allowSkipFile={allowSkipFile}
           isTransmitted={info.isTransmitted}
           declarationInfoId={info.id}
-          isLoading={this.state[getLoadingKey({ id: info.id, type: infoType })]}
-          error={this.state[getErrorKey({ id: info.id, type: infoType })]}
+          isLoading={info.isLoading}
+          error={info.error}
         />
       ))
 
@@ -410,10 +371,6 @@ export class Files extends Component {
         canUsePDFViewer={
           get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
         }
-        url={computeDocUrl({
-          id: get(salaryDoc, 'id'),
-          type: DocumentUpload.types.employer,
-        })}
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={employer[getEmployerLoadingKey(salarySheetType)]}
@@ -438,16 +395,7 @@ export class Files extends Component {
             ? canUsePDFViewer(certificateDoc.file)
             : false
         }
-        url={computeDocUrl({
-          id: get(certificateDoc, 'id'),
-          type: DocumentUpload.types.employer,
-        })}
         isTransmitted={get(certificateDoc, 'isTransmitted')}
-        infoTooltipText={
-          employer.hasEndedThisMonth
-            ? `Le justificatif contenant votre attestation employeur doit être composé d'exactement deux pages`
-            : null
-        }
         employerDocType={employerCertificateType}
         isLoading={employer[getEmployerLoadingKey(employerCertificateType)]}
         error={employer[getEmployerErrorKey(employerCertificateType)]}
@@ -475,20 +423,22 @@ export class Files extends Component {
     )
   }
 
-  renderOldSection = (declaration) => this.renderSection(declaration, true)
-
-  renderSection = (declaration, isOldMonth) => {
+  renderSection = (declaration) => {
     const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
 
     const formattedMonth = formattedDeclarationMonth(
       declaration.declarationMonth.month,
     )
 
-    if (declaration.isFinished) {
+    // FIXME : if declarationRemainingDocsNb === 9, isFinished should be true
+    // however as sending employers does not for now refresh the whole declaration
+    // the object in the store main not be updated.
+    // This should be changed as the next look for this page is implemented.
+    if (declaration.isFinished || declarationRemainingDocsNb === 0) {
       return (
         <FilesDoneSection key={declaration.id}>
           <Typography variant="body1">
-            Fichiers de {formattedMonth} transmis
+            Justificatifs de {formattedMonth} transmis
           </Typography>
           {' '}
           <CheckCircle />
@@ -509,47 +459,11 @@ export class Files extends Component {
               paddingBottom: '2rem',
             }}
           >
-            {declarationRemainingDocsNb > 0
-              ? `Il manque encore ${declarationRemainingDocsNb} justificatif${
-                  declarationRemainingDocsNb > 1 ? 's' : ''
-                } et vous pourrez valider l'envoi`
-              : 'Tous vos justificatifs sont prêts à être envoyés'}
+            Vous devez encore valider {declarationRemainingDocsNb} justificatif
+            {declarationRemainingDocsNb > 1 ? 's' : ''}
           </Typography>
         </StyledInfo>
         {this.renderDocumentList(declaration)}
-        {this.state[
-          getErrorKey({ type: declarationType, id: declaration.id })
-        ] && (
-          <ErrorMessage variant="body1">
-            Nous sommes désolés, une erreur s'est produite lors de l'envoi des
-            justificatifs. Merci de bien vouloir réessayer.
-            <br />
-            Si le problème se reproduit, merci de bien vouloir contacter
-            l'équipe Zen.
-          </ErrorMessage>
-        )}
-        <ButtonsContainer>
-          <MainActionButton
-            disabled={declarationRemainingDocsNb > 0}
-            primary
-            className="send-to-pe"
-            onClick={() => this.onSubmit({ declaration })}
-          >
-            Envoyer <br />à Pôle Emploi
-          </MainActionButton>
-          {!isOldMonth && (
-            <MainActionButton
-              primary={false}
-              component={Link}
-              to="/thanks?later"
-              className="save-for-later"
-            >
-              Enregistrer
-              <br />
-              et finir plus tard
-            </MainActionButton>
-          )}
-        </ButtonsContainer>
       </FilesSection>
     )
   }
@@ -566,6 +480,8 @@ export class Files extends Component {
       uploadDeclarationInfoFile,
       removeEmployerFilePage,
       removeDeclarationInfoFilePage,
+      validateEmployerDoc,
+      validateDeclarationInfoDoc,
     } = this.props
 
     if (isLoading) {
@@ -600,6 +516,7 @@ export class Files extends Component {
         onCancel: hideEmployerFilePreview,
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
+        validateDoc: validateEmployerDoc,
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,
@@ -609,6 +526,7 @@ export class Files extends Component {
         onCancel: hideInfoFilePreview,
         submitFile: uploadDeclarationInfoFile,
         removePage: removeDeclarationInfoFilePage,
+        validateDoc: validateDeclarationInfoDoc,
         url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
         ...previewedInfoDoc,
       }
@@ -638,9 +556,8 @@ export class Files extends Component {
         ) : (
           this.renderSection(lastDeclaration)
         )}
-        {declarations.slice(1).map(this.renderOldSection)}
-        <FilesDialog isOpened={this.state.isSendingFiles} />
-        <LoginAgainDialog isOpened={this.state.isLoggedOut} />
+        {declarations.slice(1).map(this.renderSection)}
+        <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
         <FileTransmittedToPE
           isOpened={this.state.showSkipConfirmation}
           onCancel={this.closeSkipModal}
@@ -661,6 +578,9 @@ export default connect(
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
+    isUserLoggedOut: !!(
+      state.userReducer.user && state.userReducer.user.isLoggedOut
+    ),
   }),
   {
     fetchDeclarations: fetchDeclarationAction,
@@ -672,5 +592,7 @@ export default connect(
     showInfoFilePreview: showInfoFilePreviewAction,
     hideEmployerFilePreview: hideEmployerFilePreviewAction,
     hideInfoFilePreview: hideInfoFilePreviewAction,
+    validateEmployerDoc: validateEmployerDocAction,
+    validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
   },
 )(Files)

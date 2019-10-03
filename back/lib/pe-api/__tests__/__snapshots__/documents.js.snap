@@ -1,54 +1,73 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PE API: sendDocuments API call success should send formatted data for declarations 1`] = `
-Array [
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "4",
-    "codeTypeDocument": "AAT",
-    "nomDocument": "Conge Maladie - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "4",
-    "codeTypeDocument": "AAT",
-    "nomDocument": "Conge Maladie - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "5",
-    "codeTypeDocument": "NRAV",
-    "nomDocument": "Retraite - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "3",
-    "codeTypeDocument": "ASF",
-    "nomDocument": "Stage - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "3",
-    "codeTypeDocument": "ASF",
-    "nomDocument": "Stage - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "3",
-    "codeTypeDocument": "ASF",
-    "nomDocument": "Stage - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "1",
-    "codeTypeDocument": "BDS",
-    "nomDocument": "BS - Amuro Ray - 01-2019",
-  },
-  Object {
-    "codeContexte": "1",
-    "codeSituation": "1",
-    "codeTypeDocument": "AEMP",
-    "nomDocument": "AE - SMS Shoutai - 01-2019",
-  },
-]
+exports[`PE API: sendDocument API call success should send formatted data for documents 1`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "4",
+  "codeTypeDocument": "AAT",
+  "nomDocument": "Congé Maladie - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 2`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "4",
+  "codeTypeDocument": "AAT",
+  "nomDocument": "Congé Maladie - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 3`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "5",
+  "codeTypeDocument": "NRAV",
+  "nomDocument": "Retraite - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 4`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "3",
+  "codeTypeDocument": "ASF",
+  "nomDocument": "Stage - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 5`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "3",
+  "codeTypeDocument": "ASF",
+  "nomDocument": "Stage - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 6`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "3",
+  "codeTypeDocument": "ASF",
+  "nomDocument": "Stage - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 7`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "1",
+  "codeTypeDocument": "BDS",
+  "nomDocument": "BS - Amuro Ray - 01-2019",
+}
+`;
+
+exports[`PE API: sendDocument API call success should send formatted data for documents 8`] = `
+Object {
+  "codeContexte": "1",
+  "codeSituation": "1",
+  "codeTypeDocument": "AEMP",
+  "nomDocument": "AE - SMS Shoutai - 01-2019",
+}
 `;

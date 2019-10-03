@@ -84,7 +84,9 @@ if (isTestEnv) {
   app.use('/tests', require('./routes/tests')) // eslint-disable-line global-require
 }
 
-app.use(csurf())
+if (!isTestEnv) {
+  app.use(csurf())
+}
 
 app.use((req, res, next) => {
   res.header('Cache-Control', 'no-cache,no-store')

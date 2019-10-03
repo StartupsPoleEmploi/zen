@@ -16,6 +16,7 @@ import {
   FETCH_ACTIVE_DECLARATION_LOADING,
   FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
+  SET_USER_LOGGED_OUT,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
 import { utils } from '../selectors/declarations'
@@ -41,7 +42,7 @@ const getUploadErrorMessage = (err) =>
   err.status === 413
     ? `Erreur : Fichier trop lourd (limite : 5000ko) ou dépassant la taille autorisée : ${MAX_PDF_PAGE} pages`
     : err.status === 400
-    ? 'Fichier invalide (accepté : .png, .jpg, .pdf, .doc, .docx)'
+    ? 'Fichier invalide (accepté : .png, .jpg, .pdf)'
     : `Désolé, une erreur s'est produite, Merci de réessayer ultérieurement`
 
 export const uploadEmployerFile = ({
@@ -205,7 +206,7 @@ export const removeDeclarationInfoFilePage = ({
     .then((res) =>
       dispatch({
         type: FETCH_DECLARATION_SUCCESS,
-        payload: { declaration: res.body },
+        payload: res.body,
       }),
     )
     .catch((err) => {
@@ -260,5 +261,73 @@ export const fetchActiveDeclaration = () => (dispatch) => {
         type: FETCH_ACTIVE_DECLARATION_SUCCESS,
         payload: null,
       })
+    })
+}
+
+export const validateEmployerDoc = ({
+  documentId,
+  employerId,
+  employerDocType,
+}) => (dispatch, getState) => {
+  dispatch({
+    type: POST_EMPLOYER_DOC_LOADING,
+    payload: { documentId, employerId, employerDocType },
+  })
+
+  return superagent
+    .post(`/api/employers/files/validate`)
+    .set('Content-Type', 'application/json')
+    .set('CSRF-Token', getState().userReducer.user.csrfToken)
+    .send({ id: documentId })
+    .send({ documentType: employerDocType })
+    .then((res) => {
+      dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body })
+      dispatch(hideEmployerFilePreview())
+    })
+    .catch((err) => {
+      dispatch({
+        type: POST_EMPLOYER_DOC_FAILURE,
+        payload: {
+          err:
+            'Erreur lors de la validation du justificatif, merci de bien vouloir réessayer ultérieurement',
+          documentId,
+          employerId,
+          employerDocType,
+        },
+      })
+      if (err.status === 401 || err.status === 403) {
+        return dispatch({ type: SET_USER_LOGGED_OUT })
+      }
+      window.Raven.captureException(err)
+    })
+}
+export const validateDeclarationInfoDoc = ({ documentId }) => (
+  dispatch,
+  getState,
+) => {
+  dispatch({ type: POST_DECLARATION_INFO_LOADING, payload: { documentId } })
+
+  return superagent
+    .post(`/api/declarations/files/validate`)
+    .set('Content-Type', 'application/json')
+    .set('CSRF-Token', getState().userReducer.user.csrfToken)
+    .send({ id: documentId })
+    .then((res) => {
+      dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body })
+      dispatch(hideInfoFilePreview())
+    })
+    .catch((err) => {
+      dispatch({
+        type: POST_DECLARATION_INFO_FAILURE,
+        payload: {
+          err:
+            'Erreur lors de la validation du justificatif, merci de bien vouloir réessayer ultérieurement',
+          documentId,
+        },
+      })
+      if (err.status === 401 || err.status === 403) {
+        return dispatch({ type: SET_USER_LOGGED_OUT })
+      }
+      window.Raven.captureException(err)
     })
 }

@@ -13,6 +13,7 @@ const defaultProps = {
   skipFile: () => {},
   removePageFromFile: action('Remove page from file'),
   type: DocumentUpload.types.info,
+  showPreview: action('Show file'),
 }
 
 storiesOf('DocumentUpload', module)
@@ -37,6 +38,9 @@ storiesOf('DocumentUpload', module)
   .add('loading', () => <DocumentUpload {...defaultProps} isLoading />)
   .add('with file', () => (
     <DocumentUpload {...defaultProps} fileExistsOnServer />
+  ))
+  .add('with transmitted file', () => (
+    <DocumentUpload {...defaultProps} fileExistsOnServer isTransmitted />
   ))
   .add('error', () => (
     <DocumentUpload {...defaultProps} error="Tout est cassé" />

@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const router = express.Router()
-const { get, remove, omit } = require('lodash')
+const { get, omit } = require('lodash')
 const { transaction } = require('objection')
 const Raven = require('raven')
 
@@ -11,12 +11,11 @@ const { DECLARATION_STATUSES } = require('../constants')
 const winston = require('../lib/log')
 const { upload, uploadDestination } = require('../lib/upload')
 const {
-  hasMissingEmployersDocuments,
-  hasMissingDeclarationDocuments,
+  fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
-const { sendDocuments } = require('../lib/pe-api/documents')
+const { sendDocument } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const { isUserTokenValid } = require('../lib/token')
 const Declaration = require('../models/Declaration')
@@ -444,74 +443,59 @@ router.post('/files', upload.single('document'), (req, res, next) => {
               userId: req.session.user.id,
             }),
         )
+        .then((updatedDeclaration) => {
+          if (req.body.skip) {
+            return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+              declarationId: updatedDeclaration.id,
+              userId: req.session.user.id,
+            }).then(() => updatedDeclaration)
+          }
+          return updatedDeclaration
+        })
         .then((updatedDeclaration) => res.json(updatedDeclaration))
     })
     .catch(next)
 })
 
-/* This busyDeclarations is used to avoid files being sent multiple times
- * It'll be removed when we send documents as they are received.
- */
-const busyDeclarations = []
-
-router.post('/finish', refreshAccessToken, (req, res, next) => {
+router.post('/files/validate', refreshAccessToken, (req, res, next) => {
   if (!isUserTokenValid(req.user.tokenExpirationDate)) {
     return res.status(401).json('Expired token')
   }
 
-  return Declaration.query()
-    .eager(eagerDeclarationString)
-    .findOne({
-      id: req.body.id,
-      userId: req.session.user.id,
-    })
-    .then((declaration) => {
-      if (!declaration) return res.status(404).json('Declaration not found')
-      if (declaration.isFinished) {
-        return res.status(400).json('Declaration already finished')
-      }
-
+  return DeclarationInfo.query()
+    .eager(`declaration.${eagerDeclarationString}`)
+    .findOne({ id: req.body.id })
+    .then((declarationInfo) => {
       if (
-        !declaration.hasFinishedDeclaringEmployers ||
-        hasMissingEmployersDocuments(declaration) ||
-        hasMissingDeclarationDocuments(declaration)
+        !declarationInfo ||
+        get(declarationInfo, 'declaration.userId') !== req.session.user.id
       ) {
-        return res.status(400).json('Declaration not complete')
+        return res.status(404).json('Not found')
       }
 
-      if (busyDeclarations.includes(declaration.id)) {
-        return res.status(400).json('Already busy sending files')
+      if (declarationInfo.isTransmitted) {
+        return res.json(declarationInfo.declaration)
       }
-      busyDeclarations.push(declaration.id)
 
-      return sendDocuments({
-        declaration,
+      return sendDocument({
+        document: declarationInfo,
         accessToken: req.session.userSecret.accessToken,
       })
-        .then(() => {
-          winston.info(`Files sent for declaration ${declaration.id}`)
-
-          remove(busyDeclarations, (id) => id === declaration.id)
-
-          return transaction(Declaration.knex(), (trx) =>
-            Promise.all([
-              declaration
-                .$query(trx)
-                .patch({ isFinished: true })
-                .returning('*'),
-              ActivityLog.query(trx).insert({
-                userId: req.session.user.id,
-                action: ActivityLog.actions.VALIDATE_FILES,
-                metadata: JSON.stringify({ declarationId: declaration.id }),
-              }),
-            ]),
-          )
-        })
-        .then(([savedDeclaration]) => res.json(savedDeclaration))
-        .catch((err) => {
-          remove(busyDeclarations, (id) => id === declaration.id)
-          throw err
-        })
+        .then(() =>
+          Declaration.query()
+            .eager('[employers.documents, infos, declarationMonth]')
+            .findOne({
+              id: declarationInfo.declaration.id,
+              userId: req.session.user.id,
+            }),
+        )
+        .then(() =>
+          fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+            declarationId: declarationInfo.declaration.id,
+            userId: req.session.user.id,
+          }),
+        )
+        .then((declaration) => res.json(declaration))
     })
     .catch(next)
 })

@@ -54,6 +54,7 @@ const initialState = {
   showSuccessAddMessage: false,
   showSuccessRemoveMessage: false,
   showPageRemovalConfirmation: false,
+  showDocValidationModal: false,
   canUploadMoreFile: true,
   canDeletePage: false,
   totalPageNumber: null,
@@ -68,6 +69,7 @@ class DocumentDialog extends Component {
     url: PropTypes.string,
     submitFile: PropTypes.func.isRequired,
     removePage: PropTypes.func.isRequired,
+    validateDoc: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     id: PropTypes.number,
     employerId: PropTypes.number,
@@ -159,6 +161,20 @@ class DocumentDialog extends Component {
 
   cancelRemovePage = () => this.setState({ showPageRemovalConfirmation: false })
 
+  confirmDocValidation = () => this.setState({ showDocValidationModal: true })
+
+  cancelValidateDoc = () => this.setState({ showDocValidationModal: false })
+
+  validateDoc = () => {
+    this.setState({ showDocValidationModal: false })
+
+    this.props.validateDoc({
+      documentId: this.props.id,
+      employerId: this.props.employerId,
+      employerDocType: this.props.employerDocType,
+    })
+  }
+
   /*
    * This is called when the underlying PDF Viewer detects a change in the number
    * of pages, *including* at first load
@@ -186,7 +202,7 @@ class DocumentDialog extends Component {
     const { showUploadView } = this.state
     const { isLoading, url, originalFileName } = this.props
 
-    const loadingComponent = <CircularProgress style={{ margin: '10rem 0' }} />
+    const loadingComponent = <CircularProgress style={{ margin: 'auto' }} />
 
     if (isLoading) {
       return loadingComponent
@@ -248,6 +264,7 @@ class DocumentDialog extends Component {
       canUploadMoreFile,
       canDeletePage,
       showPageRemovalConfirmation,
+      showDocValidationModal,
     } = this.state
 
     return (
@@ -262,7 +279,7 @@ class DocumentDialog extends Component {
             <Fragment>
               <TopDialogActions>
                 <Button onClick={this.onCancel}>
-                  Fermer la prévisualisation
+                  Fermer
                   <CloseIcon
                     style={{
                       marginLeft: '1rem',
@@ -331,6 +348,15 @@ class DocumentDialog extends Component {
                   />
                   Ajouter une nouvelle page {!canUploadMoreFile && ' (max : 5)'}
                 </Button>
+
+                <Button
+                  className="validate-file"
+                  onClick={this.confirmDocValidation}
+                  color="primary"
+                  variant="contained"
+                >
+                  Valider ce justificatif
+                </Button>
               </Fragment>
             )
           }
@@ -353,6 +379,31 @@ class DocumentDialog extends Component {
                 Non, j'annule
               </MainActionButton>
               <MainActionButton primary onClick={this.removePage}>
+                Oui, je confirme
+              </MainActionButton>
+            </Fragment>
+          }
+        />
+
+        {/* Confirmation dialog when validating a document */}
+        <CustomDialog
+          isOpened={showDocValidationModal}
+          onClose={this.cancelRemovePage}
+          titleId="alert-dialog-title"
+          title={<span>Valider ce justificatif ?</span>}
+          actions={
+            <Fragment>
+              <MainActionButton
+                primary={false}
+                onClick={this.cancelValidateDoc}
+              >
+                Non, j'annule
+              </MainActionButton>
+              <MainActionButton
+                primary
+                onClick={this.validateDoc}
+                className="confirm-validate-file"
+              >
                 Oui, je confirme
               </MainActionButton>
             </Fragment>

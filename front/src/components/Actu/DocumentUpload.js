@@ -5,18 +5,15 @@ import FormLabel from '@material-ui/core/FormLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import Autorenew from '@material-ui/icons/Autorenew'
-import Check from '@material-ui/icons/Check'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
-import Info from '@material-ui/icons/InfoOutlined'
 import Eye from '@material-ui/icons/RemoveRedEye'
+import NoteAdd from '@material-ui/icons/NoteAdd'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import { primaryBlue } from '../../constants'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
-import CustomColorButton from '../Generic/CustomColorButton'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -40,45 +37,36 @@ const StyledListItem = styled(ListItem)`
   }
 `
 
-const BaseStyledFormLabel = styled(FormLabel)`
-  && {
-    display: flex;
-    border-radius: 1rem;
-    align-items: center;
-  }
-`
-
-const StyledFormLabel = styled(BaseStyledFormLabel)`
+const StyledFormLabel = styled(FormLabel)`
+  display: flex;
+  border-radius: 1rem;
+  align-items: center;
   justify-content: flex-end;
-`
-
-const SideFormLabel = styled(BaseStyledFormLabel)`
-  && {
-    width: 12rem;
-    background-color: transparent;
-    padding-left: 1rem;
-  }
 `
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
-`
-
-const InfoIcon = styled(Info)`
-  margin-left: 0.5rem;
+  flex-direction: column;
+  align-items: stretch;
 `
 
 const EyeIcon = styled(Eye)`
   margin-right: 2rem;
 `
 
-const ViewButton = styled(Button)`
+const CheckBoxOutlineBlankIcon = styled(CheckBoxOutlineBlank)`
+  margin-right: 2rem;
+`
+
+const NoteAddIcon = styled(NoteAdd)`
+  margin-right: 2rem;
+`
+
+const ActionButton = styled(Button)`
   && {
-    justify-content: space-between;
-    white-space: nowrap;
-    height: 3.2rem;
+    justify-content: flex-start;
     min-height: 3.2rem;
+    margin-top: 0.1rem;
   }
 `
 
@@ -86,15 +74,6 @@ const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
     padding-right: 1rem;
-  }
-`
-
-const SideButton = styled(Button)`
-  & > * {
-    flex-direction: column;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 1.1rem;
   }
 `
 
@@ -112,15 +91,12 @@ export class DocumentUpload extends Component {
     isLoading: PropTypes.bool,
     isTransmitted: PropTypes.bool,
     submitFile: PropTypes.func.isRequired,
-    allowSkipFile: PropTypes.bool,
     skipFile: PropTypes.func.isRequired,
     type: PropTypes.oneOf([employerType, infosType]),
-    infoTooltipText: PropTypes.string,
     employerId: PropTypes.number,
     employerDocType: PropTypes.string,
     showPreview: PropTypes.func.isRequired,
     showTooltip: PropTypes.bool,
-    url: PropTypes.string,
   }
 
   static defaultProps = {
@@ -136,7 +112,7 @@ export class DocumentUpload extends Component {
       <TooltipOnFocus
         useHover
         tooltipId={`file[${id}]`}
-        content="Formats acceptés: .png, .jpg, .jpeg, .pdf, .doc, .docx"
+        content="Formats acceptés: .png, .jpg, .jpeg, .pdf"
       >
         {fileInput}
       </TooltipOnFocus>
@@ -172,18 +148,14 @@ export class DocumentUpload extends Component {
       isLoading,
       isTransmitted,
       label,
-      allowSkipFile,
-      infoTooltipText,
       showTooltip,
       employerId,
-      url,
+      type,
     } = this.props
-
-    const formattedError = <ErrorTypography>{error}</ErrorTypography>
 
     const hiddenInput = (
       <input
-        accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+        accept=".png, .jpg, .jpeg, .pdf"
         style={{ display: 'none' }}
         type="file"
         onChange={({
@@ -194,137 +166,110 @@ export class DocumentUpload extends Component {
       />
     )
 
-    let sideFormLabelContent = null
-    if (isTransmitted) {
-      sideFormLabelContent = (
-        <SideButton disabled>
-          <Check />
-          Transmis à Pôle Emploi
-        </SideButton>
-      )
-    } else if (fileExistsOnServer) {
-      sideFormLabelContent = (
-        <Fragment>
-          {hiddenInput}
-          <SideButton component="span" size="small">
-            <Autorenew style={{ transform: 'rotate(-90deg)' }} />
-            Remplacer le document
-          </SideButton>
-        </Fragment>
-      )
-    } else if (allowSkipFile) {
-      sideFormLabelContent = (
-        <TooltipOnFocus
-          useHover
-          content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
-        >
-          <SideButton onClick={this.skipFile}>
-            <CheckBoxOutlineBlank />
-            {/* eslint-disable-next-line no-irregular-whitespace */}
-            Transmis à Pôle Emploi
-          </SideButton>
-        </TooltipOnFocus>
-      )
-    }
-
-    const documentButton = isTransmitted ? null : canUsePDFViewer ? (
-      <ViewButton
-        variant="outlined"
+    const viewDocumentButton = canUsePDFViewer ? (
+      <ActionButton
+        variant="contained"
         onClick={this.showPreview}
         className="show-file"
+        color="primary"
       >
         <EyeIcon />
-        Voir le justificatif
-      </ViewButton>
-    ) : (
-      <ViewButton
-        variant="outlined"
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="show-file"
-      >
-        <EyeIcon />
-        Voir le justificatif
-      </ViewButton>
-    )
+        Voir, modifier ou valider le justificatif
+      </ActionButton>
+    ) : null
 
     const uploadInput = (
-      <CustomColorButton
+      <ActionButton
         aria-describedby={`file[${id}]`}
+        variant="contained"
+        color="primary"
         component="span"
-        size="small"
+        style={{ flex: 1 }}
       >
+        <NoteAddIcon />
         Parcourir
-      </CustomColorButton>
+      </ActionButton>
     )
 
     return (
-      <Fragment>
-        <StyledContainer>
-          <StyledListItem
-            style={{
-              borderColor:
-                fileExistsOnServer || isTransmitted ? primaryBlue : '#df5555',
-            }}
-          >
-            <ListItemText
-              primary={
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div>
-                    <b>{label}</b>
-                    {caption && (
-                      <Fragment>
-                        <br />
-                        <Typography variant="caption">{caption}</Typography>
-                      </Fragment>
-                    )}
-                  </div>
-                  {infoTooltipText && (
-                    <TooltipOnFocus
-                      content={infoTooltipText}
-                      useHover
-                      enterDelay={0}
-                      leaveDelay={1500}
-                      enterTouchDelay={0}
-                      leaveTouchDelay={3000}
-                    >
-                      <InfoIcon />
-                    </TooltipOnFocus>
+      <StyledContainer className={`${type}-row`}>
+        <StyledListItem
+          style={{
+            borderColor: isTransmitted ? primaryBlue : '#df5555',
+          }}
+        >
+          <ListItemText
+            primary={
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <div>
+                  <b>{label}</b>
+                  {caption && (
+                    <Fragment>
+                      <br />
+                      <Typography variant="caption">{caption}</Typography>
+                    </Fragment>
+                  )}
+                  {(fileExistsOnServer || isTransmitted) && (
+                    <Fragment>
+                      <br />
+                      <Typography
+                        variant="caption"
+                        color={isTransmitted ? 'default' : 'error'}
+                      >
+                        {isTransmitted
+                          ? fileExistsOnServer
+                            ? '✅ Justificatif validé et transmis'
+                            : '✅ Justificatif directement transmis à pole-emploi.fr'
+                          : '⚠️ Justificatif à valider'}
+                      </Typography>
+                    </Fragment>
                   )}
                 </div>
-              }
-            />
-            <FormControl>
-              {isLoading ? (
-                <CircularProgress />
-              ) : (
-                <Container>
-                  {error
-                    ? formattedError
-                    : fileExistsOnServer && documentButton}
-                  {!fileExistsOnServer && !isTransmitted && (
-                    <StyledFormLabel>
-                      {hiddenInput}
-                      {this.renderFileField(
-                        uploadInput,
-                        showTooltip,
-                        employerId,
-                      )}
-                    </StyledFormLabel>
-                  )}
-                </Container>
-              )}
-            </FormControl>
-          </StyledListItem>
-          <SideFormLabel>{sideFormLabelContent}</SideFormLabel>
-        </StyledContainer>
-      </Fragment>
+              </div>
+            }
+          />
+          <FormControl>
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Container>
+                {error && <ErrorTypography>{error}</ErrorTypography>}
+
+                {fileExistsOnServer && !isTransmitted && viewDocumentButton}
+
+                {!fileExistsOnServer && !isTransmitted && (
+                  <StyledFormLabel>
+                    {hiddenInput}
+                    {this.renderFileField(uploadInput, showTooltip, employerId)}
+                  </StyledFormLabel>
+                )}
+
+                {!isTransmitted && (
+                  <TooltipOnFocus
+                    useHover
+                    content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
+                  >
+                    <ActionButton
+                      variant="outlined"
+                      aria-describedby={`file[${id}]`}
+                      onClick={this.skipFile}
+                      className="already-transmitted-button"
+                    >
+                      <CheckBoxOutlineBlankIcon />
+                      Déjà transmis à Pôle Emploi
+                    </ActionButton>
+                  </TooltipOnFocus>
+                )}
+              </Container>
+            )}
+          </FormControl>
+        </StyledListItem>
+      </StyledContainer>
     )
   }
 }

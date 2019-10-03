@@ -71,33 +71,6 @@ const addInactiveDeclaration = (params = {}) =>
     addBasicDeclaration({ ...params, monthId: inactiveMonth.id }),
   )
 
-const addDeclarationWithEmployers = ({ withFile = false }) =>
-  getActiveMonth().then((activeMonth) => {
-    const documents = []
-    if (withFile) {
-      documents.push({
-        type: 'salarySheet',
-        file: 'file.pdf',
-        isTransmitted: false,
-      })
-    }
-
-    return Declaration.query().insertGraphAndFetch({
-      ...declarationFormData,
-      userId: user.id,
-      employers: [
-        {
-          userId: user.id,
-          employerName: 'Paul',
-          workHours: 20,
-          salary: 200,
-          documents,
-        },
-      ],
-      monthId: activeMonth.id,
-    })
-  })
-
 const postSickLeaveDocument = () =>
   addActiveDeclaration({
     hasSickLeave: true,
@@ -219,38 +192,5 @@ describe('declarations routes', () => {
             declaration.infos.find((doc) => doc.type === 'sickLeave').file,
           ).toMatch(/\.pdf$/),
         ))
-  })
-
-  describe('POST /finish', () => {
-    test('HTTP 404 if no declaration was found', () =>
-      supertest(app)
-        .post('/finish')
-        .send({ id: IMPOSSIBLE_ID })
-        .expect(404))
-
-    test('HTTP 400 if the declaration is already finished', () =>
-      addActiveDeclaration({ isFinished: true }).then((declaration) =>
-        supertest(app)
-          .post('/finish')
-          .send({ id: declaration.id })
-          .expect(400),
-      ))
-
-    test('HTTP 400 if the declaration is incomplete', () =>
-      addActiveDeclaration({ hasFinishedDeclaringEmployers: false }).then(
-        (declaration) =>
-          supertest(app)
-            .post('/finish')
-            .send({ id: declaration.id })
-            .expect(400),
-      ))
-
-    // Add when we'll simulate sendDocuments
-    test.skip('HTTP 200 if declaration is finished', () =>
-      addDeclarationWithEmployers({ withFile: true }).then(() =>
-        supertest(app)
-          .post('/finish')
-          .expect(200),
-      ))
   })
 })

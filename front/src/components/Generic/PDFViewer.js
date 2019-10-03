@@ -29,10 +29,12 @@ const PDFViewerContainer = styled.div`
   }
 
   /*
-   * This element is what could allow selecting and copying text from the PDF document.
-   * By hiding it, we can avoid layout problem it can cause
+   * react-pdf__Page__textContent is what could allow selecting and copying text from the PDF document.
+   * By hiding it, we can avoid layout problem it can cause.
+   * Same for annotations.
    */
-  .react-pdf__Page__textContent {
+  .react-pdf__Page__textContent,
+  .react-pdf__Page__annotations {
     display: none;
   }
 `

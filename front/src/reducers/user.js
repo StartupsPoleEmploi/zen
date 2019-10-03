@@ -14,6 +14,7 @@ import {
   FETCH_USER_LOADING,
   FETCH_USER_SUCCESS,
   FETCH_USER_FAILURE,
+  SET_USER_LOGGED_OUT,
 } from '../actions/actionNames'
 
 export default createReducer(
@@ -34,6 +35,10 @@ export default createReducer(
     [FETCH_USER_FAILURE]: (state, { payload }) => {
       state.isLoading = false
       state.err = payload
+    },
+    [SET_USER_LOGGED_OUT]: (state) => {
+      if (!state.user) return
+      state.user.isLoggedOut = true
     },
   },
 )

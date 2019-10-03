@@ -1,8 +1,8 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
+import withWidth from '@material-ui/core/withWidth'
 import CheckCircle from '@material-ui/icons/CheckCircle'
-import { get, noop, sortBy } from 'lodash'
+import { capitalize, get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
@@ -19,14 +19,14 @@ import {
   showInfoFilePreview as showInfoFilePreviewAction,
   uploadDeclarationInfoFile as uploadDeclarationInfoFileAction,
   uploadEmployerFile as uploadEmployerFileAction,
-  validateEmployerDoc as validateEmployerDocAction,
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
+  validateEmployerDoc as validateEmployerDocAction,
 } from '../../actions/declarations'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
-import { secondaryBlue } from '../../constants'
+import { muiBreakpoints, secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 import { canUsePDFViewer } from '../../lib/file'
 import {
@@ -77,10 +77,16 @@ const FilesDoneSection = styled(FilesSection)`
   justify-content: center;
 `
 
-const StyledList = styled(List)`
+const StyledUl = styled.ul`
   && {
-    padding-bottom: 2rem;
+    padding: 0;
   }
+`
+
+const DocumentsGroup = styled.div`
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `
 
 const infoSpecs = [
@@ -199,6 +205,7 @@ export class Files extends Component {
     validateDeclarationInfoDoc: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isUserLoggedOut: PropTypes.bool.isRequired,
+    width: PropTypes.string,
   }
 
   state = {
@@ -258,14 +265,14 @@ export class Files extends Component {
 
     const infoDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => (
-        <div key={neededDocumentSpecs.name}>
+        <DocumentsGroup key={neededDocumentSpecs.name}>
           <Typography
             variant="subtitle1"
             style={{ textTransform: 'uppercase' }}
           >
             <b>{neededDocumentSpecs.sectionLabel}</b>
           </Typography>
-          <StyledList>
+          <StyledUl>
             {this.renderDocumentsOfType({
               label: neededDocumentSpecs.label,
               name: neededDocumentSpecs.name,
@@ -273,8 +280,8 @@ export class Files extends Component {
               declaration,
               allowSkipFile: true,
             })}
-          </StyledList>
-        </div>
+          </StyledUl>
+        </DocumentsGroup>
       ),
     )
 
@@ -284,21 +291,22 @@ export class Files extends Component {
     return (
       <div>
         {sortedEmployers.map((employer, index) => (
-          <div key={employer.id}>
+          <DocumentsGroup key={employer.id}>
             <Typography
               variant="subtitle1"
               style={{ textTransform: 'uppercase' }}
             >
               <b>Employeur&nbsp;: {employer.employerName}</b>
             </Typography>
-            <StyledList>
+            <StyledUl>
               {this.renderEmployerRow({
                 employer,
+                declaration,
                 allowSkipFile: true,
                 showTooltip: index === 0,
               })}
-            </StyledList>
-          </div>
+            </StyledUl>
+          </DocumentsGroup>
         ))}
 
         <div>{infoDocumentsNodes}</div>
@@ -333,10 +341,16 @@ export class Files extends Component {
           declarationInfoId={info.id}
           isLoading={info.isLoading}
           error={info.error}
+          useLightVersion={muiBreakpoints.xs === this.props.width}
         />
       ))
 
-  renderEmployerRow = ({ employer, allowSkipFile, showTooltip }) => {
+  renderEmployerRow = ({
+    declaration,
+    employer,
+    allowSkipFile,
+    showTooltip,
+  }) => {
     const salaryDoc = employer.documents.find(
       ({ type }) => type === salarySheetType,
     )
@@ -356,6 +370,10 @@ export class Files extends Component {
       allowSkipFile,
       employerId: employer.id,
       showPreview: this.props.showEmployerFilePreview,
+      caption: capitalize(
+        formattedDeclarationMonth(declaration.declarationMonth.month),
+      ),
+      useLightVersion: muiBreakpoints.xs === this.props.width,
     }
 
     const salarySheetUpload = (
@@ -592,4 +610,4 @@ export default connect(
     validateEmployerDoc: validateEmployerDocAction,
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
   },
-)(Files)
+)(withWidth()(Files))

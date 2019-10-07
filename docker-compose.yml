@@ -1,20 +1,20 @@
-version: "2"
+version: '2'
 services:
   nginx:
     image: nginx
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
-      - "./nginx/production.conf:/etc/nginx/conf.d/default.conf"
-      - "./nginx/.htpasswd:/etc/nginx/.htpasswd"
-      - "./nginx/dhparam.pem:/etc/nginx/ssl/dhparam.pem"
-      - "./nginx/zen.crt:/etc/nginx/ssl/zen.crt"
-      - "./nginx/entrust-zen.pole-emploi.fr-key.pem:/etc/nginx/ssl/entrust-zen.pole-emploi.fr-key.pem"
-      - "./back/extracts:/home/extracts"
-      - "./front:/home/front"
-      - "./front-admin:/home/front-admin"
+      - './nginx/production.conf:/etc/nginx/conf.d/default.conf'
+      - './nginx/.htpasswd:/etc/nginx/.htpasswd'
+      - './nginx/dhparam.pem:/etc/nginx/ssl/dhparam.pem'
+      - './nginx/zen.crt:/etc/nginx/ssl/zen.crt'
+      - './nginx/entrust-zen.pole-emploi.fr-key.pem:/etc/nginx/ssl/entrust-zen.pole-emploi.fr-key.pem'
+      - './back/extracts:/home/extracts'
+      - './front:/home/front'
+      - './front-admin:/home/front-admin'
     environment:
       - TZ=Europe/Paris
     networks:
@@ -27,15 +27,15 @@ services:
       context: .
       dockerfile: dockerfile_back
     volumes:
-      - "./back:/home/back"
+      - './back:/home/back'
     expose:
-      - "8080"
-      - "8081"
+      - '8080'
+      - '8081'
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.100
     depends_on:
-      - "db"
+      - 'db'
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - CLIENT_OAUTH_ID=${CLIENT_OAUTH_ID}
@@ -62,9 +62,9 @@ services:
       context: .
       dockerfile: dockerfile_front
     volumes:
-      - "./front:/home/front"
+      - './front:/home/front'
     expose:
-      - "3000"
+      - '3000'
     environment:
       - TZ=Europe/Paris
     networks:
@@ -77,9 +77,9 @@ services:
       context: .
       dockerfile: dockerfile_front
     volumes:
-      - "./front-admin:/home/front"
+      - './front-admin:/home/front'
     expose:
-      - "3000"
+      - '3000'
     environment:
       - TZ=Europe/Paris
     networks:

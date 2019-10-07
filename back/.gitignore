@@ -62,6 +62,7 @@ typings/
 
 # custom
 uploads
+datalake
 extracts
 config/*production*.js
 config/local*.js

@@ -1,4 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import withWidth from '@material-ui/core/withWidth'
 import CheckCircle from '@material-ui/icons/CheckCircle'
@@ -89,6 +91,15 @@ const DocumentsGroup = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `
 
+const StyledSup = styled.sup`
+  background-color: #ff6237;
+  border-radius: 50%;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: inline-block;
+  color: #fff;
+`
+
 const infoSpecs = [
   {
     name: 'sickLeave',
@@ -132,6 +143,9 @@ const infoSpecs = [
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
 const infoType = 'info'
+
+const OLD_MONTHS_TAB = 'oldMonths'
+const LAST_MONTH_TAB = 'lastMonth'
 
 const getDeclarationMissingFilesNb = (declaration) => {
   const infoDocumentsRequiredNb = declaration.infos.filter(
@@ -211,6 +225,7 @@ export class Files extends Component {
   state = {
     showSkipConfirmation: false,
     skipFileCallback: noop,
+    selectedTab: LAST_MONTH_TAB,
   }
 
   componentDidMount() {
@@ -255,6 +270,8 @@ export class Files extends Component {
       showSkipConfirmation: false,
       skipFileCallback: noop,
     })
+
+  selectTab = (event, selectedTab) => this.setState({ selectedTab })
 
   renderDocumentList = (declaration) => {
     const neededAdditionalDocumentsSpecs = infoSpecs.filter(
@@ -515,11 +532,41 @@ export class Files extends Component {
       ({ hasFinishedDeclaringEmployers }) => hasFinishedDeclaringEmployers,
     )
 
-    const [lastDeclaration] = declarations
+    const [lastDeclaration, ...oldDeclarations] = declarations
 
     const areUnfinishedDeclarations = declarations
       .slice(1)
       .some(({ isFinished }) => !isFinished)
+
+    if (
+      !lastDeclaration ||
+      (lastDeclaration.isFinished && !areUnfinishedDeclarations)
+    ) {
+      // Users have come to this page without any old documents to validate
+      return (
+        <StyledFiles>
+          <StyledTitle variant="h6" component="h1">
+            Vous n'avez pas de fichier à envoyer.
+          </StyledTitle>
+        </StyledFiles>
+      )
+    }
+
+    const lastDeclarationMissingFiles = getDeclarationMissingFilesNb(
+      lastDeclaration,
+    )
+    const oldDeclarationsMissingFiles = oldDeclarations.reduce(
+      (prev, declaration) => {
+        if (
+          !declaration.hasFinishedDeclaringEmployers ||
+          declaration.isFinished
+        ) {
+          return prev
+        }
+        return prev + getDeclarationMissingFilesNb(declaration)
+      },
+      0,
+    )
 
     const showEmployerPreview = !!get(previewedEmployerDoc, 'file')
     const showInfoDocPreview = !!get(previewedInfoDoc, 'file')
@@ -547,38 +594,68 @@ export class Files extends Component {
       }
     }
 
-    if (
-      !lastDeclaration ||
-      (lastDeclaration.isFinished && !areUnfinishedDeclarations)
-    ) {
-      // Users have come to this page without any old documents to validate
-      return (
-        <StyledFiles>
-          <StyledTitle variant="h6" component="h1">
-            Vous n'avez pas de fichier à envoyer.
-          </StyledTitle>
-        </StyledFiles>
-      )
-    }
-
     return (
       <StyledFiles>
-        {lastDeclaration.isFinished ? (
-          <StyledTitle variant="h6" component="h1">
-            Vous avez terminé l'envoi des justificatifs du mois de{' '}
-            {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
-          </StyledTitle>
-        ) : (
-          this.renderSection(lastDeclaration)
-        )}
-        {declarations.slice(1).map(this.renderSection)}
+        <Tabs
+          value={this.state.selectedTab}
+          onChange={this.selectTab}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
+          style={{ width: '100%' }}
+        >
+          <Tab
+            value={LAST_MONTH_TAB}
+            label={
+              <div style={{ color: '#000' }}>
+                {formattedDeclarationMonth(
+                  lastDeclaration.declarationMonth.month,
+                )}{' '}
+                <StyledSup>{lastDeclarationMissingFiles}</StyledSup>
+              </div>
+            }
+          />
+          <Tab
+            style={{ color: '#000' }}
+            value={OLD_MONTHS_TAB}
+            label={
+              <div style={{ color: '#000' }}>
+                Mois précédents{' '}
+                <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+              </div>
+            }
+          />
+        </Tabs>
+
+        {this.state.selectedTab === LAST_MONTH_TAB &&
+          (lastDeclaration.isFinished ? (
+            <StyledTitle variant="h6" component="h1">
+              Vous avez terminé l'envoi des justificatifs du mois de{' '}
+              {formattedDeclarationMonth(
+                lastDeclaration.declarationMonth.month,
+              )}
+            </StyledTitle>
+          ) : (
+            this.renderSection(lastDeclaration)
+          ))}
+
+        {this.state.selectedTab === OLD_MONTHS_TAB &&
+          (oldDeclarations.length > 0 ? (
+            oldDeclarations.map(this.renderSection)
+          ) : (
+            <FilesSection>
+              <StyledTitle variant="h6" component="h1">
+                Pas d'anciens justificatifs disponibles
+              </StyledTitle>
+            </FilesSection>
+          ))}
+
         <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
         <FileTransmittedToPE
           isOpened={this.state.showSkipConfirmation}
           onCancel={this.closeSkipModal}
           onConfirm={this.state.skipFileCallback}
         />
-
         {(showEmployerPreview || showInfoDocPreview) && (
           <DocumentDialog isOpened {...previewProps} />
         )}

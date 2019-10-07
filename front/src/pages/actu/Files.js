@@ -387,7 +387,7 @@ export class Files extends Component {
         id={get(certificateDoc, 'id')}
         label="Attestation employeur"
         fileExistsOnServer={
-          !!get(certificateDoc, 'file') && !get(salaryDoc, 'isCleanedUp')
+          !!get(certificateDoc, 'file') && !get(certificateDoc, 'isCleanedUp')
         }
         removePage={this.removePage}
         canUsePDFViewer={

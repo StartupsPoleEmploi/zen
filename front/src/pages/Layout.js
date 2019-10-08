@@ -295,21 +295,21 @@ export const Layout = ({
           indicatorColor="primary"
         >
           <Tab
-            label="Ma situation"
+            label="Situation"
             disabled={!shouldActivateDeclarationLink}
             value={declarationRoute}
             onClick={() => push(declarationRoute)}
             role="link"
           />
           <Tab
-            label="Mes employeurs"
+            label="Employeurs"
             disabled={!shouldActivateEmployersLink}
             value={employersRoute}
             onClick={() => push(employersRoute)}
             role="link"
           />
           <Tab
-            label="Mes justificatifs"
+            label="Justificatifs"
             value={filesRoute}
             onClick={() => push(filesRoute)}
             role="link"

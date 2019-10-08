@@ -43,6 +43,7 @@ services:
     environment:
       - NODE_ENV=test
       - TZ=Europe/Paris
+      - BUNDLE_TOKEN_ANALYZER=${BUNDLE_TOKEN_ANALYZER}
     expose:
       - "3000"
 

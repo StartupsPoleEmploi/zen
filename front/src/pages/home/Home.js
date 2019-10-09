@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import MuiLink from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import EuroIcon from '@material-ui/icons/EuroSymbol'

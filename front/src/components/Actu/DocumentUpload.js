@@ -219,7 +219,7 @@ export class DocumentUpload extends Component {
                       <br />
                       <Typography
                         variant="caption"
-                        color={isTransmitted ? 'default' : 'error'}
+                        color={isTransmitted ? 'initial' : 'error'}
                       >
                         {isTransmitted
                           ? fileExistsOnServer

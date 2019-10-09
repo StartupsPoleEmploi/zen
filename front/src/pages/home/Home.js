@@ -161,7 +161,7 @@ const ConnectButton = styled(Button).attrs({
     top: 0;
     display: flex;
 
-    width: 30rem;
+    width: 32rem;
     max-width: 100%;
     min-height: 5rem;
     margin: 0;

@@ -14,30 +14,30 @@ exports[`Storyshots DatePicker default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-1575"
+          className="MuiFormControl-root MuiTextField-root"
+          format="DD/MM/YYYY"
           onClick={[Function]}
-          onKeyPress={[Function]}
+          onKeyDown={[Function]}
         >
           <label
-            className="MuiFormLabel-root-1590 MuiInputLabel-root-1579 MuiInputLabel-formControl-1584 MuiInputLabel-animated-1587"
+            className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
             data-shrink={false}
           >
             Entrez une date
           </label>
           <div
-            className="MuiInputBase-root-1610 MuiInput-root-1597 MuiInput-underline-1601 MuiInputBase-formControl-1611 MuiInput-formControl-1598"
+            className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
             onClick={[Function]}
           >
             <input
               aria-invalid={false}
-              className="MuiInputBase-input-1620 MuiInput-input-1605"
+              className="MuiInputBase-input MuiInput-input"
               disabled={false}
-              mask={null}
               name="date"
+              onAnimationStart={[Function]}
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
-              pipe={null}
               readOnly={true}
               required={false}
               type="text"
@@ -108,30 +108,30 @@ exports[`Storyshots DatePicker with selected date 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="MuiFormControl-root-1651"
+          className="MuiFormControl-root MuiTextField-root"
+          format="DD/MM/YYYY"
           onClick={[Function]}
-          onKeyPress={[Function]}
+          onKeyDown={[Function]}
         >
           <label
-            className="MuiFormLabel-root-1666 MuiFormLabel-filled-1670 MuiInputLabel-root-1655 MuiInputLabel-formControl-1660 MuiInputLabel-animated-1663 MuiInputLabel-shrink-1662"
+            className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
             data-shrink={true}
           >
             Entrez une date
           </label>
           <div
-            className="MuiInputBase-root-1686 MuiInput-root-1673 MuiInput-underline-1677 MuiInputBase-formControl-1687 MuiInput-formControl-1674"
+            className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
             onClick={[Function]}
           >
             <input
               aria-invalid={false}
-              className="MuiInputBase-input-1696 MuiInput-input-1681"
+              className="MuiInputBase-input MuiInput-input"
               disabled={false}
-              mask={null}
               name="date"
+              onAnimationStart={[Function]}
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
-              pipe={null}
               readOnly={true}
               required={false}
               type="text"
@@ -216,24 +216,30 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
             }
           >
             <p
-              className="MuiTypography-root-1 MuiTypography-body1-10 sc-dxgOiQ hHsmSJ"
+              className="MuiTypography-root sc-dxgOiQ hHsmSJ MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root-37 sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-ckVGcZ bTOTff"
             >
               <div
-                className="MuiFormGroup-root-41 MuiFormGroup-row-42 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-43 sc-cSHVUG sc-kAzzGY lohKY"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-64 MuiIconButton-root-58 MuiPrivateSwitchBase-root-54 MuiRadio-root-49 MuiRadio-colorSecondary-53 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -243,50 +249,81 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-63"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-67"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasWorked]"
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-57"
+                        className="PrivateSwitchBase-input-51"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-64"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-65"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-76"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1 MuiTypography-body1-10 MuiFormControlLabel-label-48"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-43 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-64 MuiIconButton-root-58 MuiPrivateSwitchBase-root-54 MuiRadio-root-49 MuiRadio-colorSecondary-53 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -296,40 +333,65 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-63"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-67"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-57"
+                        className="PrivateSwitchBase-input-51"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-64"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-65"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-76"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1 MuiTypography-body1-10 MuiFormControlLabel-label-48"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -412,24 +474,30 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
             }
           >
             <p
-              className="MuiTypography-root-247 MuiTypography-body1-256 sc-dxgOiQ hHsmSJ"
+              className="MuiTypography-root sc-dxgOiQ hHsmSJ MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root-283 sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-ckVGcZ bTOTff"
             >
               <div
-                className="MuiFormGroup-root-287 MuiFormGroup-row-288 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-289 sc-cSHVUG sc-kAzzGY lohKY"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-310 MuiIconButton-root-304 MuiPrivateSwitchBase-root-300 MuiRadio-root-295 MuiRadio-colorSecondary-299 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-303 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -439,50 +507,81 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-309"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-313"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasWorked]"
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-303"
+                        className="PrivateSwitchBase-input-306"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-319"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-320"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-322"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-247 MuiTypography-body1-256 MuiFormControlLabel-label-294"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-289 sc-cSHVUG sc-chPdSV eGkKGs"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#4b4b4b",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-310 MuiIconButton-root-304 MuiPrivateSwitchBase-root-300 MuiRadio-root-295 MuiRadio-colorSecondary-299 MuiPrivateSwitchBase-checked-301 MuiRadio-checked-296 sc-kgoBCf etuspx"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-303 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-304 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -492,40 +591,65 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "#F5A623",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-309"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-313"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={true}
-                        className="MuiPrivateSwitchBase-input-303"
+                        className="PrivateSwitchBase-input-306"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-319 PrivateRadioButtonIcon-checked-321"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-320"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-322"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-247 MuiTypography-body1-256 MuiFormControlLabel-label-294"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "#fff",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -608,24 +732,30 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
             }
           >
             <p
-              className="MuiTypography-root-83 MuiTypography-body1-92 sc-dxgOiQ hHsmSJ"
+              className="MuiTypography-root sc-dxgOiQ hHsmSJ MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root-119 sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-ckVGcZ bTOTff"
             >
               <div
-                className="MuiFormGroup-root-123 MuiFormGroup-row-124 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-125 sc-cSHVUG sc-kAzzGY lohKY"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-146 MuiIconButton-root-140 MuiPrivateSwitchBase-root-136 MuiRadio-root-131 MuiRadio-colorSecondary-135 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-133 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -635,50 +765,81 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-145"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-149"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasWorked]"
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-139"
+                        className="PrivateSwitchBase-input-136"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-149"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-150"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-158"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-83 MuiTypography-body1-92 MuiFormControlLabel-label-130"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-125 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-146 MuiIconButton-root-140 MuiPrivateSwitchBase-root-136 MuiRadio-root-131 MuiRadio-colorSecondary-135 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-133 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -688,40 +849,65 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-145"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-149"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-139"
+                        className="PrivateSwitchBase-input-136"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-149"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-150"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-158"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-83 MuiTypography-body1-92 MuiFormControlLabel-label-130"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -804,24 +990,30 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
             }
           >
             <p
-              className="MuiTypography-root-411 MuiTypography-body1-420 sc-dxgOiQ hHsmSJ"
+              className="MuiTypography-root sc-dxgOiQ hHsmSJ MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root-447 sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-ckVGcZ bTOTff"
             >
               <div
-                className="MuiFormGroup-root-451 MuiFormGroup-row-452 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-453 sc-cSHVUG sc-kAzzGY lohKY"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-474 MuiIconButton-root-468 MuiPrivateSwitchBase-root-464 MuiRadio-root-459 MuiRadio-colorSecondary-463 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-473 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -831,50 +1023,81 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-473"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-477"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasWorked]"
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-467"
+                        className="PrivateSwitchBase-input-476"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-489"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-490"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-486"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-411 MuiTypography-body1-420 MuiFormControlLabel-label-458"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-453 sc-cSHVUG sc-chPdSV eGkKGs"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#4b4b4b",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-474 MuiIconButton-root-468 MuiPrivateSwitchBase-root-464 MuiRadio-root-459 MuiRadio-colorSecondary-463 MuiPrivateSwitchBase-checked-465 MuiRadio-checked-460 sc-kgoBCf etuspx"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-473 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-474 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -884,40 +1107,65 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "#F5A623",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-473"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-477"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={true}
-                        className="MuiPrivateSwitchBase-input-467"
+                        className="PrivateSwitchBase-input-476"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-489 PrivateRadioButtonIcon-checked-491"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-490"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-486"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-411 MuiTypography-body1-420 MuiFormControlLabel-label-458"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "#fff",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -1003,24 +1251,30 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
             }
           >
             <p
-              className="MuiTypography-root-329 MuiTypography-body1-338 sc-dxgOiQ hHsmSJ"
+              className="MuiTypography-root sc-dxgOiQ hHsmSJ MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root-365 sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-ckVGcZ bTOTff"
             >
               <div
-                className="MuiFormGroup-root-369 MuiFormGroup-row-370 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-371 sc-cSHVUG sc-kAzzGY dLgEcV"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#4b4b4b",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-392 MuiIconButton-root-386 MuiPrivateSwitchBase-root-382 MuiRadio-root-377 MuiRadio-colorSecondary-381 MuiPrivateSwitchBase-checked-383 MuiRadio-checked-378 sc-kgoBCf tYewn"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-388 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-389 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1030,50 +1284,81 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "#7ADF8F",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-391"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-395"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasWorked]"
                         checked={true}
-                        className="MuiPrivateSwitchBase-input-385"
+                        className="PrivateSwitchBase-input-391"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-404 PrivateRadioButtonIcon-checked-406"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-405"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-404"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-329 MuiTypography-body1-338 MuiFormControlLabel-label-376"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "#fff",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-371 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-392 MuiIconButton-root-386 MuiPrivateSwitchBase-root-382 MuiRadio-root-377 MuiRadio-colorSecondary-381 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-388 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1083,40 +1368,65 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-391"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-395"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-385"
+                        className="PrivateSwitchBase-input-391"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-404"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-405"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-404"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-329 MuiTypography-body1-338 MuiFormControlLabel-label-376"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -1202,24 +1512,30 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
             }
           >
             <p
-              className="MuiTypography-root-165 MuiTypography-body1-174 sc-dxgOiQ hHsmSJ"
+              className="MuiTypography-root sc-dxgOiQ hHsmSJ MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root-201 sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-ckVGcZ bTOTff"
             >
               <div
-                className="MuiFormGroup-root-205 MuiFormGroup-row-206 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-207 sc-cSHVUG sc-kAzzGY dLgEcV"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#4b4b4b",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-228 MuiIconButton-root-222 MuiPrivateSwitchBase-root-218 MuiRadio-root-213 MuiRadio-colorSecondary-217 MuiPrivateSwitchBase-checked-219 MuiRadio-checked-214 sc-kgoBCf tYewn"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-218 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-219 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1229,50 +1545,81 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "#7ADF8F",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-227"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-231"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasWorked]"
                         checked={true}
-                        className="MuiPrivateSwitchBase-input-221"
+                        className="PrivateSwitchBase-input-221"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-234 PrivateRadioButtonIcon-checked-236"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-235"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-240"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-165 MuiTypography-body1-174 MuiFormControlLabel-label-212"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "#fff",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-207 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-228 MuiIconButton-root-222 MuiPrivateSwitchBase-root-218 MuiRadio-root-213 MuiRadio-colorSecondary-217 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-218 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1282,40 +1629,65 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-227"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-231"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-221"
+                        className="PrivateSwitchBase-input-221"
                         disabled={false}
                         name="hasWorked"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-234"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-235"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-240"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-165 MuiTypography-body1-174 MuiFormControlLabel-label-212"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -1387,7 +1759,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
           className="info-row sc-jKJlTe jDjHSI"
         >
           <li
-            className="MuiListItem-root-493 MuiListItem-default-496 MuiListItem-gutters-501 sc-eNQAEJ hVZbrb"
+            className="MuiListItem-root sc-eNQAEJ hVZbrb MuiListItem-gutters"
             disabled={false}
             style={
               Object {
@@ -1396,10 +1768,10 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
             }
           >
             <div
-              className="MuiListItemText-root-505"
+              className="MuiListItemText-root"
             >
               <span
-                className="MuiTypography-root-511 MuiTypography-subheading-518 MuiListItemText-primary-508"
+                className="MuiTypography-root MuiListItemText-primary MuiTypography-body1"
               >
                 <div
                   style={
@@ -1418,13 +1790,13 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
               </span>
             </div>
             <div
-              className="MuiFormControl-root-547"
+              className="MuiFormControl-root"
             >
               <div
                 className="sc-kEYyzF jmGsmz"
               >
                 <label
-                  className="MuiFormLabel-root-551 sc-hMqMXs fJmtmI"
+                  className="MuiFormLabel-root sc-hMqMXs fJmtmI"
                 >
                   <input
                     accept=".png, .jpg, .jpeg, .pdf"
@@ -1438,9 +1810,10 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                   />
                   <span
                     aria-describedby="file[1]"
-                    className="MuiButtonBase-root-584 MuiButton-root-558 MuiButton-contained-569 MuiButton-containedPrimary-570 MuiButton-raised-572 MuiButton-raisedPrimary-573 sc-eHgmQL gtVyDn"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-eHgmQL gtVyDn"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1456,22 +1829,18 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                         "flex": 1,
                       }
                     }
-                    tabIndex="0"
+                    tabIndex={0}
                   >
                     <span
-                      className="MuiButton-label-559"
+                      className="MuiButton-label"
                     >
                       <svg
                         aria-hidden="true"
-                        className="MuiSvgIcon-root-587 sc-hSdWYo ennhqi"
+                        className="MuiSvgIcon-root sc-hSdWYo ennhqi"
                         focusable="false"
                         role="presentation"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          d="M0 0h24v24H0z"
-                          fill="none"
-                        />
                         <path
                           d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"
                         />
@@ -1479,18 +1848,18 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                       Parcourir
                     </span>
                     <span
-                      className="MuiTouchRipple-root-607"
+                      className="MuiTouchRipple-root"
                     />
                   </span>
                 </label>
                 <button
                   aria-describedby="file[1]"
                   aria-hidden="false"
-                  className="MuiButtonBase-root-584 MuiButton-root-558 MuiButton-outlined-566 already-transmitted-button sc-eHgmQL gtVyDn"
+                  className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlined already-transmitted-button sc-eHgmQL gtVyDn"
                   disabled={false}
                   onBlur={[Function]}
                   onClick={[Function]}
-                  onContextMenu={[Function]}
+                  onDragLeave={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
                   onKeyUp={[Function]}
@@ -1501,16 +1870,16 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                   onTouchEnd={[Function]}
                   onTouchMove={[Function]}
                   onTouchStart={[Function]}
-                  tabIndex="0"
+                  tabIndex={0}
                   title={null}
                   type="button"
                 >
                   <span
-                    className="MuiButton-label-559"
+                    className="MuiButton-label"
                   >
                     <svg
                       aria-hidden="true"
-                      className="MuiSvgIcon-root-587 sc-iAyFgw bIFXIP"
+                      className="MuiSvgIcon-root sc-iAyFgw bIFXIP"
                       focusable="false"
                       role="presentation"
                       viewBox="0 0 24 24"
@@ -1518,15 +1887,11 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
                       <path
                         d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
                       />
-                      <path
-                        d="M0 0h24v24H0z"
-                        fill="none"
-                      />
                     </svg>
                     Déjà transmis à Pôle Emploi
                   </span>
                   <span
-                    className="MuiTouchRipple-root-607"
+                    className="MuiTouchRipple-root"
                   />
                 </button>
               </div>
@@ -1598,7 +1963,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
           className="employer-row sc-jKJlTe jDjHSI"
         >
           <li
-            className="MuiListItem-root-614 MuiListItem-default-617 MuiListItem-gutters-622 sc-eNQAEJ hVZbrb"
+            className="MuiListItem-root sc-eNQAEJ hVZbrb MuiListItem-gutters"
             disabled={false}
             style={
               Object {
@@ -1607,10 +1972,10 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
             }
           >
             <div
-              className="MuiListItemText-root-626"
+              className="MuiListItemText-root"
             >
               <span
-                className="MuiTypography-root-632 MuiTypography-subheading-639 MuiListItemText-primary-629"
+                className="MuiTypography-root MuiListItemText-primary MuiTypography-body1"
               >
                 <div
                   style={
@@ -1629,13 +1994,13 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
               </span>
             </div>
             <div
-              className="MuiFormControl-root-668"
+              className="MuiFormControl-root"
             >
               <div
                 className="sc-kEYyzF jmGsmz"
               >
                 <label
-                  className="MuiFormLabel-root-672 sc-hMqMXs fJmtmI"
+                  className="MuiFormLabel-root sc-hMqMXs fJmtmI"
                 >
                   <input
                     accept=".png, .jpg, .jpeg, .pdf"
@@ -1649,9 +2014,10 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                   />
                   <span
                     aria-describedby="file[1]"
-                    className="MuiButtonBase-root-705 MuiButton-root-679 MuiButton-contained-690 MuiButton-containedPrimary-691 MuiButton-raised-693 MuiButton-raisedPrimary-694 sc-eHgmQL gtVyDn"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-eHgmQL gtVyDn"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1667,22 +2033,18 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                         "flex": 1,
                       }
                     }
-                    tabIndex="0"
+                    tabIndex={0}
                   >
                     <span
-                      className="MuiButton-label-680"
+                      className="MuiButton-label"
                     >
                       <svg
                         aria-hidden="true"
-                        className="MuiSvgIcon-root-708 sc-hSdWYo ennhqi"
+                        className="MuiSvgIcon-root sc-hSdWYo ennhqi"
                         focusable="false"
                         role="presentation"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          d="M0 0h24v24H0z"
-                          fill="none"
-                        />
                         <path
                           d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"
                         />
@@ -1690,18 +2052,18 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                       Parcourir
                     </span>
                     <span
-                      className="MuiTouchRipple-root-728"
+                      className="MuiTouchRipple-root"
                     />
                   </span>
                 </label>
                 <button
                   aria-describedby="file[1]"
                   aria-hidden="false"
-                  className="MuiButtonBase-root-705 MuiButton-root-679 MuiButton-outlined-687 already-transmitted-button sc-eHgmQL gtVyDn"
+                  className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlined already-transmitted-button sc-eHgmQL gtVyDn"
                   disabled={false}
                   onBlur={[Function]}
                   onClick={[Function]}
-                  onContextMenu={[Function]}
+                  onDragLeave={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
                   onKeyUp={[Function]}
@@ -1712,16 +2074,16 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                   onTouchEnd={[Function]}
                   onTouchMove={[Function]}
                   onTouchStart={[Function]}
-                  tabIndex="0"
+                  tabIndex={0}
                   title={null}
                   type="button"
                 >
                   <span
-                    className="MuiButton-label-680"
+                    className="MuiButton-label"
                   >
                     <svg
                       aria-hidden="true"
-                      className="MuiSvgIcon-root-708 sc-iAyFgw bIFXIP"
+                      className="MuiSvgIcon-root sc-iAyFgw bIFXIP"
                       focusable="false"
                       role="presentation"
                       viewBox="0 0 24 24"
@@ -1729,15 +2091,11 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
                       <path
                         d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
                       />
-                      <path
-                        d="M0 0h24v24H0z"
-                        fill="none"
-                      />
                     </svg>
                     Déjà transmis à Pôle Emploi
                   </span>
                   <span
-                    className="MuiTouchRipple-root-728"
+                    className="MuiTouchRipple-root"
                   />
                 </button>
               </div>
@@ -1809,7 +2167,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
           className="info-row sc-jKJlTe jDjHSI"
         >
           <li
-            className="MuiListItem-root-975 MuiListItem-default-978 MuiListItem-gutters-983 sc-eNQAEJ hVZbrb"
+            className="MuiListItem-root sc-eNQAEJ hVZbrb MuiListItem-gutters"
             disabled={false}
             style={
               Object {
@@ -1818,10 +2176,10 @@ exports[`Storyshots DocumentUpload error 1`] = `
             }
           >
             <div
-              className="MuiListItemText-root-987"
+              className="MuiListItemText-root"
             >
               <span
-                className="MuiTypography-root-993 MuiTypography-subheading-1000 MuiListItemText-primary-990"
+                className="MuiTypography-root MuiListItemText-primary MuiTypography-body1"
               >
                 <div
                   style={
@@ -1840,18 +2198,18 @@ exports[`Storyshots DocumentUpload error 1`] = `
               </span>
             </div>
             <div
-              className="MuiFormControl-root-1029"
+              className="MuiFormControl-root"
             >
               <div
                 className="sc-kEYyzF jmGsmz"
               >
                 <span
-                  className="MuiTypography-root-993 MuiTypography-caption-1003 sc-cvbbAY ZlboE"
+                  className="MuiTypography-root sc-cvbbAY ZlboE MuiTypography-caption"
                 >
                   Tout est cassé
                 </span>
                 <label
-                  className="MuiFormLabel-root-1033 sc-hMqMXs fJmtmI"
+                  className="MuiFormLabel-root sc-hMqMXs fJmtmI"
                 >
                   <input
                     accept=".png, .jpg, .jpeg, .pdf"
@@ -1865,9 +2223,10 @@ exports[`Storyshots DocumentUpload error 1`] = `
                   />
                   <span
                     aria-describedby="file[1]"
-                    className="MuiButtonBase-root-1066 MuiButton-root-1040 MuiButton-contained-1051 MuiButton-containedPrimary-1052 MuiButton-raised-1054 MuiButton-raisedPrimary-1055 sc-eHgmQL gtVyDn"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-eHgmQL gtVyDn"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -1883,22 +2242,18 @@ exports[`Storyshots DocumentUpload error 1`] = `
                         "flex": 1,
                       }
                     }
-                    tabIndex="0"
+                    tabIndex={0}
                   >
                     <span
-                      className="MuiButton-label-1041"
+                      className="MuiButton-label"
                     >
                       <svg
                         aria-hidden="true"
-                        className="MuiSvgIcon-root-1069 sc-hSdWYo ennhqi"
+                        className="MuiSvgIcon-root sc-hSdWYo ennhqi"
                         focusable="false"
                         role="presentation"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          d="M0 0h24v24H0z"
-                          fill="none"
-                        />
                         <path
                           d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"
                         />
@@ -1906,18 +2261,18 @@ exports[`Storyshots DocumentUpload error 1`] = `
                       Parcourir
                     </span>
                     <span
-                      className="MuiTouchRipple-root-1089"
+                      className="MuiTouchRipple-root"
                     />
                   </span>
                 </label>
                 <button
                   aria-describedby="file[1]"
                   aria-hidden="false"
-                  className="MuiButtonBase-root-1066 MuiButton-root-1040 MuiButton-outlined-1048 already-transmitted-button sc-eHgmQL gtVyDn"
+                  className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlined already-transmitted-button sc-eHgmQL gtVyDn"
                   disabled={false}
                   onBlur={[Function]}
                   onClick={[Function]}
-                  onContextMenu={[Function]}
+                  onDragLeave={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
                   onKeyUp={[Function]}
@@ -1928,16 +2283,16 @@ exports[`Storyshots DocumentUpload error 1`] = `
                   onTouchEnd={[Function]}
                   onTouchMove={[Function]}
                   onTouchStart={[Function]}
-                  tabIndex="0"
+                  tabIndex={0}
                   title={null}
                   type="button"
                 >
                   <span
-                    className="MuiButton-label-1041"
+                    className="MuiButton-label"
                   >
                     <svg
                       aria-hidden="true"
-                      className="MuiSvgIcon-root-1069 sc-iAyFgw bIFXIP"
+                      className="MuiSvgIcon-root sc-iAyFgw bIFXIP"
                       focusable="false"
                       role="presentation"
                       viewBox="0 0 24 24"
@@ -1945,15 +2300,11 @@ exports[`Storyshots DocumentUpload error 1`] = `
                       <path
                         d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
                       />
-                      <path
-                        d="M0 0h24v24H0z"
-                        fill="none"
-                      />
                     </svg>
                     Déjà transmis à Pôle Emploi
                   </span>
                   <span
-                    className="MuiTouchRipple-root-1089"
+                    className="MuiTouchRipple-root"
                   />
                 </button>
               </div>
@@ -2025,7 +2376,7 @@ exports[`Storyshots DocumentUpload loading 1`] = `
           className="info-row sc-jKJlTe jDjHSI"
         >
           <li
-            className="MuiListItem-root-735 MuiListItem-default-738 MuiListItem-gutters-743 sc-eNQAEJ hVZbrb"
+            className="MuiListItem-root sc-eNQAEJ hVZbrb MuiListItem-gutters"
             disabled={false}
             style={
               Object {
@@ -2034,10 +2385,10 @@ exports[`Storyshots DocumentUpload loading 1`] = `
             }
           >
             <div
-              className="MuiListItemText-root-747"
+              className="MuiListItemText-root"
             >
               <span
-                className="MuiTypography-root-753 MuiTypography-subheading-760 MuiListItemText-primary-750"
+                className="MuiTypography-root MuiListItemText-primary MuiTypography-body1"
               >
                 <div
                   style={
@@ -2056,10 +2407,10 @@ exports[`Storyshots DocumentUpload loading 1`] = `
               </span>
             </div>
             <div
-              className="MuiFormControl-root-789"
+              className="MuiFormControl-root"
             >
               <div
-                className="MuiCircularProgress-root-793 MuiCircularProgress-colorPrimary-796 MuiCircularProgress-indeterminate-795"
+                className="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
                 role="progressbar"
                 style={
                   Object {
@@ -2069,11 +2420,11 @@ exports[`Storyshots DocumentUpload loading 1`] = `
                 }
               >
                 <svg
-                  className="MuiCircularProgress-svg-798"
+                  className="MuiCircularProgress-svg"
                   viewBox="22 22 44 44"
                 >
                   <circle
-                    className="MuiCircularProgress-circle-799 MuiCircularProgress-circleIndeterminate-801"
+                    className="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
                     cx={44}
                     cy={44}
                     fill="none"
@@ -2151,7 +2502,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
           className="info-row sc-jKJlTe jDjHSI"
         >
           <li
-            className="MuiListItem-root-803 MuiListItem-default-806 MuiListItem-gutters-811 sc-eNQAEJ hVZbrb"
+            className="MuiListItem-root sc-eNQAEJ hVZbrb MuiListItem-gutters"
             disabled={false}
             style={
               Object {
@@ -2160,10 +2511,10 @@ exports[`Storyshots DocumentUpload with file 1`] = `
             }
           >
             <div
-              className="MuiListItemText-root-815"
+              className="MuiListItemText-root"
             >
               <span
-                className="MuiTypography-root-821 MuiTypography-subheading-828 MuiListItemText-primary-818"
+                className="MuiTypography-root MuiListItemText-primary MuiTypography-body1"
               >
                 <div
                   style={
@@ -2179,7 +2530,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                     </b>
                     <br />
                     <span
-                      className="MuiTypography-root-821 MuiTypography-caption-831 MuiTypography-colorError-855"
+                      className="MuiTypography-root MuiTypography-caption MuiTypography-colorError"
                     >
                       ⚠️ Justificatif à valider
                     </span>
@@ -2188,7 +2539,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
               </span>
             </div>
             <div
-              className="MuiFormControl-root-857"
+              className="MuiFormControl-root"
             >
               <div
                 className="sc-kEYyzF jmGsmz"
@@ -2196,11 +2547,11 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                 <button
                   aria-describedby="file[1]"
                   aria-hidden="false"
-                  className="MuiButtonBase-root-898 MuiButton-root-872 MuiButton-outlined-880 already-transmitted-button sc-eHgmQL gtVyDn"
+                  className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlined already-transmitted-button sc-eHgmQL gtVyDn"
                   disabled={false}
                   onBlur={[Function]}
                   onClick={[Function]}
-                  onContextMenu={[Function]}
+                  onDragLeave={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
                   onKeyUp={[Function]}
@@ -2211,16 +2562,16 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                   onTouchEnd={[Function]}
                   onTouchMove={[Function]}
                   onTouchStart={[Function]}
-                  tabIndex="0"
+                  tabIndex={0}
                   title={null}
                   type="button"
                 >
                   <span
-                    className="MuiButton-label-873"
+                    className="MuiButton-label"
                   >
                     <svg
                       aria-hidden="true"
-                      className="MuiSvgIcon-root-901 sc-iAyFgw bIFXIP"
+                      className="MuiSvgIcon-root sc-iAyFgw bIFXIP"
                       focusable="false"
                       role="presentation"
                       viewBox="0 0 24 24"
@@ -2228,15 +2579,11 @@ exports[`Storyshots DocumentUpload with file 1`] = `
                       <path
                         d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
                       />
-                      <path
-                        d="M0 0h24v24H0z"
-                        fill="none"
-                      />
                     </svg>
                     Déjà transmis à Pôle Emploi
                   </span>
                   <span
-                    className="MuiTouchRipple-root-910"
+                    className="MuiTouchRipple-root"
                   />
                 </button>
               </div>
@@ -2308,7 +2655,7 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
           className="info-row sc-jKJlTe jDjHSI"
         >
           <li
-            className="MuiListItem-root-917 MuiListItem-default-920 MuiListItem-gutters-925 sc-eNQAEJ hVZbrb"
+            className="MuiListItem-root sc-eNQAEJ hVZbrb MuiListItem-gutters"
             disabled={false}
             style={
               Object {
@@ -2317,10 +2664,10 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
             }
           >
             <div
-              className="MuiListItemText-root-929"
+              className="MuiListItemText-root"
             >
               <span
-                className="MuiTypography-root-935 MuiTypography-subheading-942 MuiListItemText-primary-932"
+                className="MuiTypography-root MuiListItemText-primary MuiTypography-body1"
               >
                 <div
                   style={
@@ -2336,7 +2683,7 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
                     </b>
                     <br />
                     <span
-                      className="MuiTypography-root-935 MuiTypography-caption-945"
+                      className="MuiTypography-root MuiTypography-caption"
                     >
                       ✅ Justificatif validé et transmis
                     </span>
@@ -2345,7 +2692,7 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
               </span>
             </div>
             <div
-              className="MuiFormControl-root-971"
+              className="MuiFormControl-root"
             >
               <div
                 className="sc-kEYyzF jmGsmz"
@@ -2422,26 +2769,27 @@ exports[`Storyshots EmployerQuestion default 1`] = `
           >
             <div>
               <div
-                className="MuiFormControl-root-1096 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1111 MuiInputLabel-root-1100 MuiInputLabel-formControl-1105 MuiInputLabel-animated-1108"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
                   data-shrink={false}
                   htmlFor="employerName[1]"
                 >
                   Nom employeur
                 </label>
                 <div
-                  className="MuiInputBase-root-1131 MuiInput-root-1118 MuiInput-underline-1122 MuiInputBase-formControl-1132 MuiInput-formControl-1119"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="employerNameDescription[1]"
                     aria-invalid={false}
-                    className="MuiInputBase-input-1141 MuiInput-input-1126"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="employerName[1]"
                     name="employerName[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -2452,27 +2800,28 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-1096 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1111 MuiInputLabel-root-1100 MuiInputLabel-formControl-1105 MuiInputLabel-animated-1108"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
                   data-shrink={false}
                   htmlFor="workHours[1]"
                 >
                   Nombre d'heures
                 </label>
                 <div
-                  className="MuiInputBase-root-1131 MuiInput-root-1118 MuiInput-underline-1122 MuiInputBase-formControl-1132 MuiInput-formControl-1119"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="workHoursDescription[1]"
                     aria-invalid={false}
-                    className="MuiInputBase-input-1141 MuiInput-input-1126"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="workHours[1]"
                     maxLength={4}
                     name="workHours[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -2485,27 +2834,28 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-1096 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1111 MuiInputLabel-root-1100 MuiInputLabel-formControl-1105 MuiInputLabel-animated-1108"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
                   data-shrink={false}
                   htmlFor="salary[1]"
                 >
                   Salaire brut €
                 </label>
                 <div
-                  className="MuiInputBase-root-1131 MuiInput-root-1118 MuiInput-underline-1122 MuiInputBase-formControl-1132 MuiInput-formControl-1119"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="salaryDescription[1]"
                     aria-invalid={false}
-                    className="MuiInputBase-input-1141 MuiInput-input-1126"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="salary[1]"
                     maxLength={10}
                     name="salary[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -2519,10 +2869,10 @@ exports[`Storyshots EmployerQuestion default 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root-1096 sc-cMljjf ejGHFf"
+              className="MuiFormControl-root sc-cMljjf ejGHFf"
             >
               <label
-                className="MuiFormLabel-root-1111 sc-jAaTju eBDEiQ"
+                className="MuiFormLabel-root sc-jAaTju eBDEiQ"
                 style={
                   Object {
                     "paddingBottom": "1rem",
@@ -2535,16 +2885,22 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                  ?
               </label>
               <div
-                className="MuiFormGroup-root-1148 MuiFormGroup-row-1149 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-1150 sc-cSHVUG sc-kAzzGY lohKY"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-1171 MuiIconButton-root-1165 MuiPrivateSwitchBase-root-1161 MuiRadio-root-1156 MuiRadio-colorSecondary-1160 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1163 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -2554,50 +2910,81 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-1170"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-1174"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-1164"
+                        className="PrivateSwitchBase-input-1166"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-1179"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1180"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-1219"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1183 MuiTypography-body1-1192 MuiFormControlLabel-label-1155"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-1150 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-1171 MuiIconButton-root-1165 MuiPrivateSwitchBase-root-1161 MuiRadio-root-1156 MuiRadio-colorSecondary-1160 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1163 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -2607,40 +2994,65 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-1170"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-1174"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-1164"
+                        className="PrivateSwitchBase-input-1166"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-1179"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1180"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-1219"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1183 MuiTypography-body1-1192 MuiFormControlLabel-label-1155"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -2654,20 +3066,14 @@ exports[`Storyshots EmployerQuestion default 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1174 sc-gPEVay ixzhnH"
+              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
               />
-              <g>
-                <path
-                  d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                />
-              </g>
             </svg>
           </button>
         </div>
@@ -2740,26 +3146,27 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
           >
             <div>
               <div
-                className="MuiFormControl-root-1226 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1241 MuiFormLabel-filled-1245 MuiInputLabel-root-1230 MuiInputLabel-formControl-1235 MuiInputLabel-animated-1238 MuiInputLabel-shrink-1237"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
                   data-shrink={true}
                   htmlFor="employerName[1]"
                 >
                   Nom employeur
                 </label>
                 <div
-                  className="MuiInputBase-root-1261 MuiInput-root-1248 MuiInput-underline-1252 MuiInputBase-formControl-1262 MuiInput-formControl-1249"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="employerNameDescription[1]"
                     aria-invalid={false}
-                    className="MuiInputBase-input-1271 MuiInput-input-1256"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="employerName[1]"
                     name="employerName[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -2770,27 +3177,28 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-1226 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1241 MuiFormLabel-filled-1245 MuiInputLabel-root-1230 MuiInputLabel-formControl-1235 MuiInputLabel-animated-1238 MuiInputLabel-shrink-1237"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
                   data-shrink={true}
                   htmlFor="workHours[1]"
                 >
                   Nombre d'heures
                 </label>
                 <div
-                  className="MuiInputBase-root-1261 MuiInput-root-1248 MuiInput-underline-1252 MuiInputBase-formControl-1262 MuiInput-formControl-1249"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="workHoursDescription[1]"
                     aria-invalid={false}
-                    className="MuiInputBase-input-1271 MuiInput-input-1256"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="workHours[1]"
                     maxLength={4}
                     name="workHours[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -2803,27 +3211,28 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 </div>
               </div>
               <div
-                className="MuiFormControl-root-1226 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1241 MuiFormLabel-filled-1245 MuiInputLabel-root-1230 MuiInputLabel-formControl-1235 MuiInputLabel-animated-1238 MuiInputLabel-shrink-1237"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
                   data-shrink={true}
                   htmlFor="salary[1]"
                 >
                   Salaire brut €
                 </label>
                 <div
-                  className="MuiInputBase-root-1261 MuiInput-root-1248 MuiInput-underline-1252 MuiInputBase-formControl-1262 MuiInput-formControl-1249"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="salaryDescription[1]"
                     aria-invalid={false}
-                    className="MuiInputBase-input-1271 MuiInput-input-1256"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="salary[1]"
                     maxLength={10}
                     name="salary[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -2837,10 +3246,10 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root-1226 sc-cMljjf ejGHFf"
+              className="MuiFormControl-root sc-cMljjf ejGHFf"
             >
               <label
-                className="MuiFormLabel-root-1241 sc-jAaTju eBDEiQ"
+                className="MuiFormLabel-root sc-jAaTju eBDEiQ"
                 style={
                   Object {
                     "paddingBottom": "1rem",
@@ -2853,16 +3262,22 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                  ?
               </label>
               <div
-                className="MuiFormGroup-root-1278 MuiFormGroup-row-1279 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-1280 sc-cSHVUG sc-kAzzGY dLgEcV"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#4b4b4b",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-1301 MuiIconButton-root-1295 MuiPrivateSwitchBase-root-1291 MuiRadio-root-1286 MuiRadio-colorSecondary-1290 MuiPrivateSwitchBase-checked-1292 MuiRadio-checked-1287 sc-kgoBCf tYewn"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1300 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-1301 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -2872,50 +3287,81 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "#7ADF8F",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-1300"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-1304"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={true}
-                        className="MuiPrivateSwitchBase-input-1294"
+                        className="PrivateSwitchBase-input-1303"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-1316 PrivateRadioButtonIcon-checked-1318"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1317"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-1349"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1313 MuiTypography-body1-1322 MuiFormControlLabel-label-1285"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "#fff",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-1280 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-1301 MuiIconButton-root-1295 MuiPrivateSwitchBase-root-1291 MuiRadio-root-1286 MuiRadio-colorSecondary-1290 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1300 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -2925,40 +3371,65 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-1300"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-1304"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-1294"
+                        className="PrivateSwitchBase-input-1303"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-1316"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1317"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-1349"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1313 MuiTypography-body1-1322 MuiFormControlLabel-label-1285"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -2972,20 +3443,14 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1304 sc-gPEVay ixzhnH"
+              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
               />
-              <g>
-                <path
-                  d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                />
-              </g>
             </svg>
           </button>
         </div>
@@ -3058,26 +3523,27 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
           >
             <div>
               <div
-                className="MuiFormControl-root-1356 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1371 MuiFormLabel-error-1374 MuiInputLabel-error-1363 MuiInputLabel-root-1360 MuiInputLabel-formControl-1365 MuiInputLabel-animated-1368"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
                   data-shrink={false}
                   htmlFor="employerName[1]"
                 >
                   Nom employeur
                 </label>
                 <div
-                  className="MuiInputBase-root-1391 MuiInput-root-1378 MuiInput-underline-1382 MuiInputBase-error-1397 MuiInput-error-1383 MuiInputBase-formControl-1392 MuiInput-formControl-1379"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="employerNameDescription[1]"
                     aria-invalid={true}
-                    className="MuiInputBase-input-1401 MuiInput-input-1386"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="employerName[1]"
                     name="employerName[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -3087,34 +3553,35 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   />
                 </div>
                 <p
-                  className="MuiFormHelperText-root-1408 MuiFormHelperText-error-1409"
+                  className="MuiFormHelperText-root Mui-error"
                   id="employerName[1]-helper-text"
                 >
                   Champ obligatoire
                 </p>
               </div>
               <div
-                className="MuiFormControl-root-1356 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1371 MuiFormLabel-error-1374 MuiInputLabel-error-1363 MuiFormLabel-filled-1375 MuiInputLabel-root-1360 MuiInputLabel-formControl-1365 MuiInputLabel-animated-1368 MuiInputLabel-shrink-1367"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
                   data-shrink={true}
                   htmlFor="workHours[1]"
                 >
                   Nombre d'heures
                 </label>
                 <div
-                  className="MuiInputBase-root-1391 MuiInput-root-1378 MuiInput-underline-1382 MuiInputBase-error-1397 MuiInput-error-1383 MuiInputBase-formControl-1392 MuiInput-formControl-1379"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="workHoursDescription[1]"
                     aria-invalid={true}
-                    className="MuiInputBase-input-1401 MuiInput-input-1386"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="workHours[1]"
                     maxLength={4}
                     name="workHours[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -3126,34 +3593,35 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   />
                 </div>
                 <p
-                  className="MuiFormHelperText-root-1408 MuiFormHelperText-error-1409 MuiFormHelperText-filled-1414"
+                  className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
                   id="workHours[1]-helper-text"
                 >
                   Entrez un nombre entier
                 </p>
               </div>
               <div
-                className="MuiFormControl-root-1356 sc-iRbamj hWwckw"
+                className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
               >
                 <label
-                  className="MuiFormLabel-root-1371 MuiFormLabel-error-1374 MuiInputLabel-error-1363 MuiFormLabel-filled-1375 MuiInputLabel-root-1360 MuiInputLabel-formControl-1365 MuiInputLabel-animated-1368 MuiInputLabel-shrink-1367"
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
                   data-shrink={true}
                   htmlFor="salary[1]"
                 >
                   Salaire brut €
                 </label>
                 <div
-                  className="MuiInputBase-root-1391 MuiInput-root-1378 MuiInput-underline-1382 MuiInputBase-error-1397 MuiInput-error-1383 MuiInputBase-formControl-1392 MuiInput-formControl-1379"
+                  className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
                   onClick={[Function]}
                 >
                   <input
                     aria-describedby="salaryDescription[1]"
                     aria-invalid={true}
-                    className="MuiInputBase-input-1401 MuiInput-input-1386"
+                    className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="salary[1]"
                     maxLength={10}
                     name="salary[1]"
+                    onAnimationStart={[Function]}
                     onBlur={[Function]}
                     onChange={[Function]}
                     onFocus={[Function]}
@@ -3165,7 +3633,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   />
                 </div>
                 <p
-                  className="MuiFormHelperText-root-1408 MuiFormHelperText-error-1409 MuiFormHelperText-filled-1414"
+                  className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
                   id="salary[1]-helper-text"
                 >
                   Entrez un nombre entier
@@ -3173,10 +3641,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root-1356 sc-cMljjf ejGHFf"
+              className="MuiFormControl-root sc-cMljjf ejGHFf"
             >
               <label
-                className="MuiFormLabel-root-1371 sc-jAaTju eBDEiQ"
+                className="MuiFormLabel-root sc-jAaTju eBDEiQ"
                 style={
                   Object {
                     "paddingBottom": "1rem",
@@ -3188,22 +3656,28 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 July
                  ?
                 <p
-                  className="MuiFormHelperText-root-1408 MuiFormHelperText-error-1409"
+                  className="MuiFormHelperText-root Mui-error"
                 >
                   Champ obligatoire
                 </p>
               </label>
               <div
-                className="MuiFormGroup-root-1416 MuiFormGroup-row-1417 sc-jzJRlG jcfNmN"
+                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root-1418 sc-cSHVUG sc-kAzzGY lohKY"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-1439 MuiIconButton-root-1433 MuiPrivateSwitchBase-root-1429 MuiRadio-root-1424 MuiRadio-colorSecondary-1428 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1445 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -3213,50 +3687,81 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-1438"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-1442"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-1432"
+                        className="PrivateSwitchBase-input-1448"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
                         type="radio"
                         value="yes"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-1461"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1462"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-1487"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1451 MuiTypography-body1-1460 MuiFormControlLabel-label-1423"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    oui
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      oui
+                    </span>
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root-1418 sc-cSHVUG sc-chPdSV biSDdS"
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
+                  style={
+                    Object {
+                      "backgroundColor": "#f0f0f0",
+                    }
+                  }
                 >
                   <span
-                    className="MuiButtonBase-root-1439 MuiIconButton-root-1433 MuiPrivateSwitchBase-root-1429 MuiRadio-root-1424 MuiRadio-colorSecondary-1428 sc-kgoBCf cnJyXt"
+                    aria-disabled={false}
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1445 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
-                    onContextMenu={[Function]}
+                    onDragLeave={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
                     onKeyUp={[Function]}
@@ -3266,40 +3771,65 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
                     onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "color": "inherit",
+                      }
+                    }
                     tabIndex={null}
                   >
                     <span
-                      className="MuiIconButton-label-1438"
+                      className="MuiIconButton-label"
                     >
-                      <svg
-                        aria-hidden="true"
-                        className="MuiSvgIcon-root-1442"
-                        focusable="false"
-                        role="presentation"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
-                        />
-                      </svg>
                       <input
                         checked={false}
-                        className="MuiPrivateSwitchBase-input-1432"
+                        className="PrivateSwitchBase-input-1448"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
                         type="radio"
                         value="no"
                       />
+                      <div
+                        className="PrivateRadioButtonIcon-root-1461"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                        </svg>
+                        <svg
+                          aria-hidden="true"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1462"
+                          focusable="false"
+                          role="presentation"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                          />
+                        </svg>
+                      </div>
                     </span>
-                    <span
-                      className="MuiTouchRipple-root-1487"
-                    />
                   </span>
                   <span
-                    className="MuiTypography-root-1451 MuiTypography-body1-1460 MuiFormControlLabel-label-1423"
+                    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    non
+                    <span
+                      style={
+                        Object {
+                          "color": "inherit",
+                        }
+                      }
+                    >
+                      non
+                    </span>
                   </span>
                 </label>
               </div>
@@ -3313,20 +3843,14 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1442 sc-gPEVay ixzhnH"
+              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
               />
-              <g>
-                <path
-                  d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                />
-              </g>
             </svg>
           </button>
         </div>
@@ -3745,7 +4269,7 @@ exports[`Storyshots Home default 1`] = `
       className="sc-gisBJw etYCsQ"
     >
       <div
-        className="MuiTypography-root-1727 MuiTypography-h4-1742 sc-dVhcbM jWCvok"
+        className="MuiTypography-root sc-dVhcbM jWCvok MuiTypography-h4"
       >
         zen
         <span
@@ -3771,10 +4295,11 @@ exports[`Storyshots Home default 1`] = `
       />
     </div>
     <a
-      className="MuiButtonBase-root-1789 MuiButton-root-1763 MuiButton-contained-1774 MuiButton-containedPrimary-1775 MuiButton-raised-1777 MuiButton-raisedPrimary-1778 sc-ksYbfQ eQauIS"
+      aria-disabled={false}
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-ksYbfQ jVaHx"
       href="/api/login"
       onBlur={[Function]}
-      onContextMenu={[Function]}
+      onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       onKeyUp={[Function]}
@@ -3785,14 +4310,14 @@ exports[`Storyshots Home default 1`] = `
       onTouchMove={[Function]}
       onTouchStart={[Function]}
       role="link"
-      tabIndex="0"
+      tabIndex={0}
     >
       <span
-        className="MuiButton-label-1764"
+        className="MuiButton-label"
       >
         <svg
           aria-hidden="true"
-          className="MuiSvgIcon-root-1792"
+          className="MuiSvgIcon-root"
           focusable="false"
           role="presentation"
           style={
@@ -3803,20 +4328,11 @@ exports[`Storyshots Home default 1`] = `
           viewBox="0 0 24 24"
         >
           <path
-            d="M0 0h24v24H0V0z"
-            fill="none"
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z"
           />
-          <g>
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83z"
-            />
-            <path
-              d="M12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z"
-            />
-          </g>
         </svg>
         <p
-          className="MuiTypography-root-1727 MuiTypography-body1-1736"
+          className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
               "color": "white",
@@ -3827,9 +4343,6 @@ exports[`Storyshots Home default 1`] = `
           Se connecter avec mes identifiants Pôle Emploi
         </p>
       </span>
-      <span
-        className="MuiTouchRipple-root-1801"
-      />
     </a>
   </header>
   <main
@@ -3845,7 +4358,7 @@ exports[`Storyshots Home default 1`] = `
           className="sc-TOsTZ hynlWS"
         >
           <h1
-            className="MuiTypography-root-1727 MuiTypography-h4-1742 MuiTypography-paragraph-1755 sc-kgAjT cXtzbw"
+            className="MuiTypography-root sc-kgAjT cXtzbw MuiTypography-h4 MuiTypography-paragraph"
             style={
               Object {
                 "fontWeight": "bold",
@@ -3871,7 +4384,7 @@ exports[`Storyshots Home default 1`] = `
             </span>
           </h1>
           <h2
-            className="MuiTypography-root-1727 MuiTypography-h6-1744 MuiTypography-paragraph-1755 sc-cJSrbW dsxlcb"
+            className="MuiTypography-root sc-cJSrbW dsxlcb MuiTypography-h6 MuiTypography-paragraph"
           >
             Zen est un service Pôle emploi dédié aux
              
@@ -3972,7 +4485,7 @@ exports[`Storyshots Home default 1`] = `
             <svg
               alt=""
               aria-hidden="true"
-              className="MuiSvgIcon-root-1792"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -3988,14 +4501,10 @@ exports[`Storyshots Home default 1`] = `
               <path
                 d="M15 18.5c-2.51 0-4.68-1.42-5.76-3.5H15v-2H8.58c-.05-.33-.08-.66-.08-1s.03-.67.08-1H15V9H9.24C10.32 6.92 12.5 5.5 15 5.5c1.61 0 3.09.59 4.23 1.57L21 5.3C19.41 3.87 17.3 3 15 3c-3.92 0-7.24 2.51-8.48 6H3v2h3.06c-.04.33-.06.66-.06 1 0 .34.02.67.06 1H3v2h3.52c1.24 3.49 4.56 6 8.48 6 2.31 0 4.41-.87 6-2.3l-1.78-1.77c-1.13.98-2.6 1.57-4.22 1.57z"
               />
-              <path
-                d="M0 0h24v24H0z"
-                fill="none"
-              />
             </svg>
           </span>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-hEsumM ezOoBr"
+            className="MuiTypography-root sc-hEsumM ezOoBr MuiTypography-body1"
           >
             Zen additionne pour vous
             <br />
@@ -4017,15 +4526,11 @@ exports[`Storyshots Home default 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root-1792 MuiSvgIcon-colorPrimary-1793 sc-fYxtnH Dnvr"
+            className="MuiSvgIcon-root sc-fYxtnH Dnvr MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
           >
-            <path
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
             <path
               d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
             />
@@ -4040,7 +4545,7 @@ exports[`Storyshots Home default 1`] = `
             <svg
               alt=""
               aria-hidden="true"
-              className="MuiSvgIcon-root-1792"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4054,16 +4559,12 @@ exports[`Storyshots Home default 1`] = `
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
-              />
-              <path
                 d="M4.01 6.03l7.51 3.22-7.52-1 .01-2.22m7.5 8.72L4 17.97v-2.22l7.51-1M2.01 3L2 10l15 2-15 2 .01 7L23 12 2.01 3z"
               />
             </svg>
           </span>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-hEsumM ezOoBr"
+            className="MuiTypography-root sc-hEsumM ezOoBr MuiTypography-body1"
           >
             Zen vous indique
             <br />
@@ -4085,15 +4586,11 @@ exports[`Storyshots Home default 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root-1792 MuiSvgIcon-colorPrimary-1793 sc-fYxtnH Dnvr"
+            className="MuiSvgIcon-root sc-fYxtnH Dnvr MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
           >
-            <path
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
             <path
               d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
             />
@@ -4108,7 +4605,7 @@ exports[`Storyshots Home default 1`] = `
             <svg
               alt=""
               aria-hidden="true"
-              className="MuiSvgIcon-root-1792"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4122,21 +4619,12 @@ exports[`Storyshots Home default 1`] = `
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"
               />
-              <g>
-                <path
-                  d="M8 16h8v2H8zM8 12h8v2H8z"
-                />
-                <path
-                  d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"
-                />
-              </g>
             </svg>
           </span>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-hEsumM ezOoBr"
+            className="MuiTypography-root sc-hEsumM ezOoBr MuiTypography-body1"
           >
             Accédez à un espace personnel
             <br />
@@ -4151,7 +4639,7 @@ exports[`Storyshots Home default 1`] = `
       className="sc-iELTvK fLWzJc"
     >
       <h2
-        className="MuiTypography-root-1727 MuiTypography-h5-1743 sc-frDJqD eMMZZz"
+        className="MuiTypography-root sc-frDJqD eMMZZz MuiTypography-h5"
         style={
           Object {
             "color": "#fff",
@@ -4172,11 +4660,11 @@ exports[`Storyshots Home default 1`] = `
           }
         >
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-btzYZH lnUhsp"
+            className="MuiTypography-root sc-btzYZH lnUhsp MuiTypography-body1"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1792"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4190,14 +4678,8 @@ exports[`Storyshots Home default 1`] = `
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M10.25 13c0 .69-.56 1.25-1.25 1.25S7.75 13.69 7.75 13s.56-1.25 1.25-1.25 1.25.56 1.25 1.25zM15 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm7 .25c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10zM10.66 4.12C12.06 6.44 14.6 8 17.5 8c.46 0 .91-.05 1.34-.12C17.44 5.56 14.9 4 12 4c-.46 0-.91.05-1.34.12zM4.42 9.47c1.71-.97 3.03-2.55 3.66-4.44C6.37 6 5.05 7.58 4.42 9.47zM20 12c0-.78-.12-1.53-.33-2.24-.7.15-1.42.24-2.17.24-3.13 0-5.92-1.44-7.76-3.69C8.69 8.87 6.6 10.88 4 11.86c.01.04 0 .09 0 .14 0 4.41 3.59 8 8 8s8-3.59 8-8z"
               />
-              <g>
-                <path
-                  d="M10.25 13c0 .69-.56 1.25-1.25 1.25S7.75 13.69 7.75 13s.56-1.25 1.25-1.25 1.25.56 1.25 1.25zM15 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm7 .25c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10zM10.66 4.12C12.06 6.44 14.6 8 17.5 8c.46 0 .91-.05 1.34-.12C17.44 5.56 14.9 4 12 4c-.46 0-.91.05-1.34.12zM4.42 9.47c1.71-.97 3.03-2.55 3.66-4.44C6.37 6 5.05 7.58 4.42 9.47zM20 12c0-.78-.12-1.53-.33-2.24-.7.15-1.42.24-2.17.24-3.13 0-5.92-1.44-7.76-3.69C8.69 8.87 6.6 10.88 4 11.86c.01.04 0 .09 0 .14 0 4.41 3.59 8 8 8s8-3.59 8-8z"
-                />
-              </g>
             </svg>
             <strong>
               Vous êtes 
@@ -4223,11 +4705,11 @@ exports[`Storyshots Home default 1`] = `
           className="sc-jwKygS uqSmK"
         >
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-btzYZH lnUhsp"
+            className="MuiTypography-root sc-btzYZH lnUhsp MuiTypography-body1"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1792"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4240,10 +4722,6 @@ exports[`Storyshots Home default 1`] = `
               }
               viewBox="0 0 24 24"
             >
-              <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
-              />
               <path
                 d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"
               />
@@ -4266,7 +4744,7 @@ exports[`Storyshots Home default 1`] = `
       className="sc-hmzhuo eRtqMp"
     >
       <h2
-        className="MuiTypography-root-1727 MuiTypography-h5-1743 sc-frDJqD eMMZZz"
+        className="MuiTypography-root sc-frDJqD eMMZZz MuiTypography-h5"
         style={
           Object {
             "textAlign": "center",
@@ -4288,17 +4766,17 @@ exports[`Storyshots Home default 1`] = `
           className="sc-jbKcbu jPIelu"
         >
           <div
-            className="MuiTypography-root-1727 MuiTypography-h2-1740 MuiTypography-colorPrimary-1757 sc-jqCOkK cMSVJZ"
+            className="MuiTypography-root sc-jqCOkK cMSVJZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             1
           </div>
           <h3
-            className="MuiTypography-root-1727 MuiTypography-h5-1743 MuiTypography-colorSecondary-1758 sc-frDJqD sc-dNLxif dlcodB"
+            className="MuiTypography-root sc-frDJqD sc-dNLxif dlcodB MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Je suis informé(e) tous les mois du début de l'actualisation
           </h3>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Recevez chaque mois un rappel par mail pour ne pas oublier que vous devez vous actualiser. Soyez Zen !
           </p>
@@ -4316,17 +4794,17 @@ exports[`Storyshots Home default 1`] = `
           className="sc-jbKcbu jPIelu"
         >
           <div
-            className="MuiTypography-root-1727 MuiTypography-h2-1740 MuiTypography-colorPrimary-1757 sc-jqCOkK cMSVJZ"
+            className="MuiTypography-root sc-jqCOkK cMSVJZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             2
           </div>
           <h3
-            className="MuiTypography-root-1727 MuiTypography-h5-1743 MuiTypography-colorSecondary-1758 sc-frDJqD sc-dNLxif dlcodB"
+            className="MuiTypography-root sc-frDJqD sc-dNLxif dlcodB MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
           </h3>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Zen m'indique les justificatifs à transmettre selon ma déclaration. Je peux mettre à jour mon dossier sur l'interface Zen en transmettant mes pièces manquantes.
           </p>
@@ -4344,17 +4822,17 @@ exports[`Storyshots Home default 1`] = `
           className="sc-jbKcbu jPIelu"
         >
           <div
-            className="MuiTypography-root-1727 MuiTypography-h2-1740 MuiTypography-colorPrimary-1757 sc-jqCOkK cMSVJZ"
+            className="MuiTypography-root sc-jqCOkK cMSVJZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             3
           </div>
           <h3
-            className="MuiTypography-root-1727 MuiTypography-h5-1743 MuiTypography-colorSecondary-1758 sc-frDJqD sc-dNLxif dlcodB"
+            className="MuiTypography-root sc-frDJqD sc-dNLxif dlcodB MuiTypography-h5 MuiTypography-colorSecondary"
           >
             J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
           </h3>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Vous pouvez imprimer ou télécharger votre déclaration sur le site de Zen ou bien la recevoir par mail après votre actualisation. C'est simple, c'est Zen !
           </p>
@@ -4376,7 +4854,7 @@ exports[`Storyshots Home default 1`] = `
       }
     >
       <h2
-        className="MuiTypography-root-1727 MuiTypography-h5-1743 sc-frDJqD eMMZZz"
+        className="MuiTypography-root sc-frDJqD eMMZZz MuiTypography-h5"
       >
         Nos utilisateurs approuvent !
       </h2>
@@ -4387,7 +4865,7 @@ exports[`Storyshots Home default 1`] = `
           className="sc-cIShpX eVsbNt"
         >
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 MuiTypography-colorSecondary-1758 sc-kafWEX hmolsA"
+            className="MuiTypography-root sc-kafWEX hmolsA MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Déborah - Lille
@@ -4396,7 +4874,7 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-feJyhm fRrBax"
+            className="MuiTypography-root sc-feJyhm fRrBax MuiTypography-body1"
           >
             « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
           </p>
@@ -4405,7 +4883,7 @@ exports[`Storyshots Home default 1`] = `
           className="sc-cIShpX eVsbNt"
         >
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 MuiTypography-colorSecondary-1758 sc-kafWEX hmolsA"
+            className="MuiTypography-root sc-kafWEX hmolsA MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Sophie - Condette
@@ -4414,7 +4892,7 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-feJyhm fRrBax"
+            className="MuiTypography-root sc-feJyhm fRrBax MuiTypography-body1"
           >
             « Plus simple vu le nombre d'employeurs. Belle innovation »
           </p>
@@ -4423,7 +4901,7 @@ exports[`Storyshots Home default 1`] = `
           className="sc-cIShpX eVsbNt"
         >
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 MuiTypography-colorSecondary-1758 sc-kafWEX hmolsA"
+            className="MuiTypography-root sc-kafWEX hmolsA MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Fatima - Amiens
@@ -4432,7 +4910,7 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1727 MuiTypography-body1-1736 sc-feJyhm fRrBax"
+            className="MuiTypography-root sc-feJyhm fRrBax MuiTypography-body1"
           >
             « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
           </p>
@@ -4445,7 +4923,7 @@ exports[`Storyshots Home default 1`] = `
     role="contentinfo"
   >
     <div
-      className="MuiTypography-root-1727 MuiTypography-h4-1742 sc-dVhcbM jWCvok"
+      className="MuiTypography-root sc-dVhcbM jWCvok MuiTypography-h4"
       style={
         Object {
           "color": "#fff",
@@ -4465,7 +4943,7 @@ exports[`Storyshots Home default 1`] = `
     </div>
     <br />
     <span
-      className="MuiTypography-root-1727 MuiTypography-caption-1737"
+      className="MuiTypography-root MuiTypography-caption"
       style={
         Object {
           "color": "#fff",
@@ -4488,7 +4966,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     className="sc-fAjcbJ jBlqLA"
   >
     <p
-      className="MuiTypography-root-1808 MuiTypography-body1-1817"
+      className="MuiTypography-root MuiTypography-body1"
     >
       <strong>
         La connexion a échoué, merci de bien vouloir réessayer ultérieurement.
@@ -4503,7 +4981,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       className="sc-gisBJw etYCsQ"
     >
       <div
-        className="MuiTypography-root-1808 MuiTypography-h4-1823 sc-dVhcbM jWCvok"
+        className="MuiTypography-root sc-dVhcbM jWCvok MuiTypography-h4"
       >
         zen
         <span
@@ -4529,10 +5007,11 @@ exports[`Storyshots Home loginFailed 1`] = `
       />
     </div>
     <a
-      className="MuiButtonBase-root-1870 MuiButton-root-1844 MuiButton-contained-1855 MuiButton-containedPrimary-1856 MuiButton-raised-1858 MuiButton-raisedPrimary-1859 sc-ksYbfQ eQauIS"
+      aria-disabled={false}
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-ksYbfQ jVaHx"
       href="/api/login"
       onBlur={[Function]}
-      onContextMenu={[Function]}
+      onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       onKeyUp={[Function]}
@@ -4543,14 +5022,14 @@ exports[`Storyshots Home loginFailed 1`] = `
       onTouchMove={[Function]}
       onTouchStart={[Function]}
       role="link"
-      tabIndex="0"
+      tabIndex={0}
     >
       <span
-        className="MuiButton-label-1845"
+        className="MuiButton-label"
       >
         <svg
           aria-hidden="true"
-          className="MuiSvgIcon-root-1873"
+          className="MuiSvgIcon-root"
           focusable="false"
           role="presentation"
           style={
@@ -4561,20 +5040,11 @@ exports[`Storyshots Home loginFailed 1`] = `
           viewBox="0 0 24 24"
         >
           <path
-            d="M0 0h24v24H0V0z"
-            fill="none"
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z"
           />
-          <g>
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83z"
-            />
-            <path
-              d="M12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z"
-            />
-          </g>
         </svg>
         <p
-          className="MuiTypography-root-1808 MuiTypography-body1-1817"
+          className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
               "color": "white",
@@ -4585,9 +5055,6 @@ exports[`Storyshots Home loginFailed 1`] = `
           Se connecter avec mes identifiants Pôle Emploi
         </p>
       </span>
-      <span
-        className="MuiTouchRipple-root-1882"
-      />
     </a>
   </header>
   <main
@@ -4603,7 +5070,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-TOsTZ hynlWS"
         >
           <h1
-            className="MuiTypography-root-1808 MuiTypography-h4-1823 MuiTypography-paragraph-1836 sc-kgAjT cXtzbw"
+            className="MuiTypography-root sc-kgAjT cXtzbw MuiTypography-h4 MuiTypography-paragraph"
             style={
               Object {
                 "fontWeight": "bold",
@@ -4629,7 +5096,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </span>
           </h1>
           <h2
-            className="MuiTypography-root-1808 MuiTypography-h6-1825 MuiTypography-paragraph-1836 sc-cJSrbW dsxlcb"
+            className="MuiTypography-root sc-cJSrbW dsxlcb MuiTypography-h6 MuiTypography-paragraph"
           >
             Zen est un service Pôle emploi dédié aux
              
@@ -4730,7 +5197,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             <svg
               alt=""
               aria-hidden="true"
-              className="MuiSvgIcon-root-1873"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4746,14 +5213,10 @@ exports[`Storyshots Home loginFailed 1`] = `
               <path
                 d="M15 18.5c-2.51 0-4.68-1.42-5.76-3.5H15v-2H8.58c-.05-.33-.08-.66-.08-1s.03-.67.08-1H15V9H9.24C10.32 6.92 12.5 5.5 15 5.5c1.61 0 3.09.59 4.23 1.57L21 5.3C19.41 3.87 17.3 3 15 3c-3.92 0-7.24 2.51-8.48 6H3v2h3.06c-.04.33-.06.66-.06 1 0 .34.02.67.06 1H3v2h3.52c1.24 3.49 4.56 6 8.48 6 2.31 0 4.41-.87 6-2.3l-1.78-1.77c-1.13.98-2.6 1.57-4.22 1.57z"
               />
-              <path
-                d="M0 0h24v24H0z"
-                fill="none"
-              />
             </svg>
           </span>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-hEsumM ezOoBr"
+            className="MuiTypography-root sc-hEsumM ezOoBr MuiTypography-body1"
           >
             Zen additionne pour vous
             <br />
@@ -4775,15 +5238,11 @@ exports[`Storyshots Home loginFailed 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root-1873 MuiSvgIcon-colorPrimary-1874 sc-fYxtnH Dnvr"
+            className="MuiSvgIcon-root sc-fYxtnH Dnvr MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
           >
-            <path
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
             <path
               d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
             />
@@ -4798,7 +5257,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             <svg
               alt=""
               aria-hidden="true"
-              className="MuiSvgIcon-root-1873"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4812,16 +5271,12 @@ exports[`Storyshots Home loginFailed 1`] = `
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
-              />
-              <path
                 d="M4.01 6.03l7.51 3.22-7.52-1 .01-2.22m7.5 8.72L4 17.97v-2.22l7.51-1M2.01 3L2 10l15 2-15 2 .01 7L23 12 2.01 3z"
               />
             </svg>
           </span>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-hEsumM ezOoBr"
+            className="MuiTypography-root sc-hEsumM ezOoBr MuiTypography-body1"
           >
             Zen vous indique
             <br />
@@ -4843,15 +5298,11 @@ exports[`Storyshots Home loginFailed 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root-1873 MuiSvgIcon-colorPrimary-1874 sc-fYxtnH Dnvr"
+            className="MuiSvgIcon-root sc-fYxtnH Dnvr MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
           >
-            <path
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
             <path
               d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
             />
@@ -4866,7 +5317,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             <svg
               alt=""
               aria-hidden="true"
-              className="MuiSvgIcon-root-1873"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4880,21 +5331,12 @@ exports[`Storyshots Home loginFailed 1`] = `
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"
               />
-              <g>
-                <path
-                  d="M8 16h8v2H8zM8 12h8v2H8z"
-                />
-                <path
-                  d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"
-                />
-              </g>
             </svg>
           </span>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-hEsumM ezOoBr"
+            className="MuiTypography-root sc-hEsumM ezOoBr MuiTypography-body1"
           >
             Accédez à un espace personnel
             <br />
@@ -4909,7 +5351,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       className="sc-iELTvK fLWzJc"
     >
       <h2
-        className="MuiTypography-root-1808 MuiTypography-h5-1824 sc-frDJqD eMMZZz"
+        className="MuiTypography-root sc-frDJqD eMMZZz MuiTypography-h5"
         style={
           Object {
             "color": "#fff",
@@ -4930,11 +5372,11 @@ exports[`Storyshots Home loginFailed 1`] = `
           }
         >
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-btzYZH lnUhsp"
+            className="MuiTypography-root sc-btzYZH lnUhsp MuiTypography-body1"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1873"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4948,14 +5390,8 @@ exports[`Storyshots Home loginFailed 1`] = `
               viewBox="0 0 24 24"
             >
               <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
+                d="M10.25 13c0 .69-.56 1.25-1.25 1.25S7.75 13.69 7.75 13s.56-1.25 1.25-1.25 1.25.56 1.25 1.25zM15 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm7 .25c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10zM10.66 4.12C12.06 6.44 14.6 8 17.5 8c.46 0 .91-.05 1.34-.12C17.44 5.56 14.9 4 12 4c-.46 0-.91.05-1.34.12zM4.42 9.47c1.71-.97 3.03-2.55 3.66-4.44C6.37 6 5.05 7.58 4.42 9.47zM20 12c0-.78-.12-1.53-.33-2.24-.7.15-1.42.24-2.17.24-3.13 0-5.92-1.44-7.76-3.69C8.69 8.87 6.6 10.88 4 11.86c.01.04 0 .09 0 .14 0 4.41 3.59 8 8 8s8-3.59 8-8z"
               />
-              <g>
-                <path
-                  d="M10.25 13c0 .69-.56 1.25-1.25 1.25S7.75 13.69 7.75 13s.56-1.25 1.25-1.25 1.25.56 1.25 1.25zM15 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm7 .25c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10zM10.66 4.12C12.06 6.44 14.6 8 17.5 8c.46 0 .91-.05 1.34-.12C17.44 5.56 14.9 4 12 4c-.46 0-.91.05-1.34.12zM4.42 9.47c1.71-.97 3.03-2.55 3.66-4.44C6.37 6 5.05 7.58 4.42 9.47zM20 12c0-.78-.12-1.53-.33-2.24-.7.15-1.42.24-2.17.24-3.13 0-5.92-1.44-7.76-3.69C8.69 8.87 6.6 10.88 4 11.86c.01.04 0 .09 0 .14 0 4.41 3.59 8 8 8s8-3.59 8-8z"
-                />
-              </g>
             </svg>
             <strong>
               Vous êtes 
@@ -4981,11 +5417,11 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-jwKygS uqSmK"
         >
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-btzYZH lnUhsp"
+            className="MuiTypography-root sc-btzYZH lnUhsp MuiTypography-body1"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root-1873"
+              className="MuiSvgIcon-root"
               focusable="false"
               role="presentation"
               style={
@@ -4998,10 +5434,6 @@ exports[`Storyshots Home loginFailed 1`] = `
               }
               viewBox="0 0 24 24"
             >
-              <path
-                d="M0 0h24v24H0V0z"
-                fill="none"
-              />
               <path
                 d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"
               />
@@ -5024,7 +5456,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       className="sc-hmzhuo eRtqMp"
     >
       <h2
-        className="MuiTypography-root-1808 MuiTypography-h5-1824 sc-frDJqD eMMZZz"
+        className="MuiTypography-root sc-frDJqD eMMZZz MuiTypography-h5"
         style={
           Object {
             "textAlign": "center",
@@ -5046,17 +5478,17 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-jbKcbu jPIelu"
         >
           <div
-            className="MuiTypography-root-1808 MuiTypography-h2-1821 MuiTypography-colorPrimary-1838 sc-jqCOkK cMSVJZ"
+            className="MuiTypography-root sc-jqCOkK cMSVJZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             1
           </div>
           <h3
-            className="MuiTypography-root-1808 MuiTypography-h5-1824 MuiTypography-colorSecondary-1839 sc-frDJqD sc-dNLxif dlcodB"
+            className="MuiTypography-root sc-frDJqD sc-dNLxif dlcodB MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Je suis informé(e) tous les mois du début de l'actualisation
           </h3>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Recevez chaque mois un rappel par mail pour ne pas oublier que vous devez vous actualiser. Soyez Zen !
           </p>
@@ -5074,17 +5506,17 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-jbKcbu jPIelu"
         >
           <div
-            className="MuiTypography-root-1808 MuiTypography-h2-1821 MuiTypography-colorPrimary-1838 sc-jqCOkK cMSVJZ"
+            className="MuiTypography-root sc-jqCOkK cMSVJZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             2
           </div>
           <h3
-            className="MuiTypography-root-1808 MuiTypography-h5-1824 MuiTypography-colorSecondary-1839 sc-frDJqD sc-dNLxif dlcodB"
+            className="MuiTypography-root sc-frDJqD sc-dNLxif dlcodB MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
           </h3>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Zen m'indique les justificatifs à transmettre selon ma déclaration. Je peux mettre à jour mon dossier sur l'interface Zen en transmettant mes pièces manquantes.
           </p>
@@ -5102,17 +5534,17 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-jbKcbu jPIelu"
         >
           <div
-            className="MuiTypography-root-1808 MuiTypography-h2-1821 MuiTypography-colorPrimary-1838 sc-jqCOkK cMSVJZ"
+            className="MuiTypography-root sc-jqCOkK cMSVJZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             3
           </div>
           <h3
-            className="MuiTypography-root-1808 MuiTypography-h5-1824 MuiTypography-colorSecondary-1839 sc-frDJqD sc-dNLxif dlcodB"
+            className="MuiTypography-root sc-frDJqD sc-dNLxif dlcodB MuiTypography-h5 MuiTypography-colorSecondary"
           >
             J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
           </h3>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Vous pouvez imprimer ou télécharger votre déclaration sur le site de Zen ou bien la recevoir par mail après votre actualisation. C'est simple, c'est Zen !
           </p>
@@ -5134,7 +5566,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       }
     >
       <h2
-        className="MuiTypography-root-1808 MuiTypography-h5-1824 sc-frDJqD eMMZZz"
+        className="MuiTypography-root sc-frDJqD eMMZZz MuiTypography-h5"
       >
         Nos utilisateurs approuvent !
       </h2>
@@ -5145,7 +5577,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-cIShpX eVsbNt"
         >
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 MuiTypography-colorSecondary-1839 sc-kafWEX hmolsA"
+            className="MuiTypography-root sc-kafWEX hmolsA MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Déborah - Lille
@@ -5154,7 +5586,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-feJyhm fRrBax"
+            className="MuiTypography-root sc-feJyhm fRrBax MuiTypography-body1"
           >
             « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
           </p>
@@ -5163,7 +5595,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-cIShpX eVsbNt"
         >
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 MuiTypography-colorSecondary-1839 sc-kafWEX hmolsA"
+            className="MuiTypography-root sc-kafWEX hmolsA MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Sophie - Condette
@@ -5172,7 +5604,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-feJyhm fRrBax"
+            className="MuiTypography-root sc-feJyhm fRrBax MuiTypography-body1"
           >
             « Plus simple vu le nombre d'employeurs. Belle innovation »
           </p>
@@ -5181,7 +5613,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           className="sc-cIShpX eVsbNt"
         >
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 MuiTypography-colorSecondary-1839 sc-kafWEX hmolsA"
+            className="MuiTypography-root sc-kafWEX hmolsA MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Fatima - Amiens
@@ -5190,7 +5622,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root-1808 MuiTypography-body1-1817 sc-feJyhm fRrBax"
+            className="MuiTypography-root sc-feJyhm fRrBax MuiTypography-body1"
           >
             « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
           </p>
@@ -5203,7 +5635,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     role="contentinfo"
   >
     <div
-      className="MuiTypography-root-1808 MuiTypography-h4-1823 sc-dVhcbM jWCvok"
+      className="MuiTypography-root sc-dVhcbM jWCvok MuiTypography-h4"
       style={
         Object {
           "color": "#fff",
@@ -5223,7 +5655,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
     <br />
     <span
-      className="MuiTypography-root-1808 MuiTypography-caption-1818"
+      className="MuiTypography-root MuiTypography-caption"
       style={
         Object {
           "color": "#fff",
@@ -5553,7 +5985,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
           className="sc-csuQGl hstdTp"
         >
           <p
-            className="MuiTypography-root-1494 MuiTypography-body2-1502"
+            className="MuiTypography-root MuiTypography-body1"
           >
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
@@ -5566,11 +5998,11 @@ exports[`Storyshots UserJobCheck default 1`] = `
             }
           >
             <button
-              className="MuiButtonBase-root-1556 MuiButton-root-1530 MuiButton-contained-1541 MuiButton-containedPrimary-1542 MuiButton-raised-1544 MuiButton-raisedPrimary-1545 sc-bxivhb sc-ifAKCX dxBYXW"
+              className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-bxivhb sc-ifAKCX dxBYXW"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
-              onContextMenu={[Function]}
+              onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
               onKeyUp={[Function]}
@@ -5580,32 +6012,25 @@ exports[`Storyshots UserJobCheck default 1`] = `
               onTouchEnd={[Function]}
               onTouchMove={[Function]}
               onTouchStart={[Function]}
-              tabIndex="0"
+              tabIndex={0}
               type="button"
             >
               <span
-                className="MuiButton-label-1531"
+                className="MuiButton-label"
               >
                 J'ai compris
                 <svg
                   aria-hidden="true"
-                  className="MuiSvgIcon-root-1559 sc-bRBYWo eJlALV"
+                  className="MuiSvgIcon-root sc-bRBYWo eJlALV"
                   focusable="false"
                   role="presentation"
                   viewBox="0 0 24 24"
                 >
                   <path
-                    d="M0 0h24v24H0z"
-                    fill="none"
-                  />
-                  <path
                     d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"
                   />
                 </svg>
               </span>
-              <span
-                className="MuiTouchRipple-root-1568"
-              />
             </button>
           </div>
         </div>

@@ -1,11 +1,11 @@
 import MomentUtils from '@date-io/moment'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
-import Keyboard from '@material-ui/icons/Keyboard'
 import { omit } from 'lodash'
-import MuiDatePicker from 'material-ui-pickers/DatePicker'
-import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider'
-import moment from 'moment'
+import {
+  DatePicker as MuiDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers'
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 
@@ -29,7 +29,7 @@ export default class DatePicker extends PureComponent {
 
   render() {
     return (
-      <MuiPickersUtilsProvider utils={MomentUtils} moment={moment} locale="fr">
+      <MuiPickersUtilsProvider utils={MomentUtils} locale="fr">
         <MuiDatePicker
           autoOk
           cancelLabel="Annuler"
@@ -37,7 +37,6 @@ export default class DatePicker extends PureComponent {
           onChange={this.handleDateChange}
           rightArrowIcon={<ChevronRight />}
           leftArrowIcon={<ChevronLeft />}
-          keyboardIcon={<Keyboard />}
           maxDateMessage="La date doit faire partie du mois déclaré"
           minDateMessage="La date doit faire partie du mois déclaré"
           {...omit(this.props, 'onSelectDate')}

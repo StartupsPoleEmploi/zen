@@ -30,6 +30,7 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
 import { muiBreakpoints, secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
+import { getDeclarationMissingFilesNb } from '../../lib/file'
 import {
   selectPreviewedEmployerDoc,
   selectPreviewedInfoDoc,
@@ -145,35 +146,6 @@ const infoType = 'info'
 
 const OLD_MONTHS_TAB = 'oldMonths'
 const LAST_MONTH_TAB = 'lastMonth'
-
-const getDeclarationMissingFilesNb = (declaration) => {
-  const infoDocumentsRequiredNb = declaration.infos.filter(
-    ({ type, isTransmitted }) => type !== 'jobSearch' && !isTransmitted,
-  ).length
-
-  return (
-    declaration.employers.reduce((prev, employer) => {
-      if (!employer.hasEndedThisMonth) {
-        return prev + (get(employer, 'documents[0].isTransmitted') ? 0 : 1)
-      }
-
-      /*
-          The salary sheet is optional for users which have already sent their employer certificate,
-          in which case we do not count it in the needed documents.
-        */
-      const hasEmployerCertificate = employer.documents.some(
-        ({ type, isTransmitted }) =>
-          type === employerCertificateType && isTransmitted,
-      )
-      const hasSalarySheet = employer.documents.some(
-        ({ type, isTransmitted }) => type === salarySheetType && isTransmitted,
-      )
-
-      if (hasEmployerCertificate) return prev + 0
-      return prev + (hasSalarySheet ? 1 : 2)
-    }, 0) + infoDocumentsRequiredNb
-  )
-}
 
 const formatDate = (date) => moment(date).format('DD MMMM YYYY')
 const formatInfoDates = ({ startDate, endDate }) =>

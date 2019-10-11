@@ -4709,29 +4709,15 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 
 exports[`Storyshots Home default 1`] = `
 <div
-  className="sc-dVhcbM cYKAHW"
+  className="sc-fAjcbJ TXxBG"
 >
   <header
-    className="sc-fAjcbJ jCJPFY"
+    className="sc-gisBJw hYEpLv"
     role="banner"
   >
     <div
-      className="sc-caSCKo bkpdoL"
+      className="sc-kjoXOD jKxJNL"
     >
-      <div
-        className="MuiTypography-root sc-fMiknA eYbpac MuiTypography-h4"
-      >
-        zen
-        <span
-          style={
-            Object {
-              "color": "#0065DB",
-            }
-          }
-        >
-          .
-        </span>
-      </div>
       <img
         alt="logo pole emploi"
         src="logoPE-mono.png"
@@ -4746,7 +4732,7 @@ exports[`Storyshots Home default 1`] = `
     </div>
     <a
       aria-disabled={false}
-      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-cJSrbW czwJym"
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-hmzhuo llwlzW"
       href="/api/login"
       onBlur={[Function]}
       onDragLeave={[Function]}
@@ -4793,22 +4779,25 @@ exports[`Storyshots Home default 1`] = `
           Se connecter avec mes identifiants Pôle Emploi
         </p>
       </span>
+      <span
+        className="MuiTouchRipple-root"
+      />
     </a>
   </header>
   <main
     role="main"
   >
     <section
-      className="sc-gisBJw bGHhbA"
+      className="sc-cHGsZl cHeMAs"
     >
       <div
-        className="sc-kjoXOD flGdts"
+        className="sc-TOsTZ cNsDoz"
       >
         <div
-          className="sc-cHGsZl byvGmP"
+          className="sc-kgAjT hmQDth"
         >
           <h1
-            className="MuiTypography-root sc-TOsTZ hKRGOK MuiTypography-h4 MuiTypography-paragraph"
+            className="MuiTypography-root sc-cJSrbW ijnfSB MuiTypography-h4 MuiTypography-paragraph"
             style={
               Object {
                 "fontWeight": "bold",
@@ -4834,7 +4823,7 @@ exports[`Storyshots Home default 1`] = `
             </span>
           </h1>
           <h2
-            className="MuiTypography-root sc-kgAjT bhDVR MuiTypography-h6 MuiTypography-paragraph"
+            className="MuiTypography-root sc-ksYbfQ cIHrMH MuiTypography-h6 MuiTypography-paragraph"
           >
             Zen est un service Pôle emploi dédié aux
              
@@ -4898,7 +4887,7 @@ exports[`Storyshots Home default 1`] = `
       </div>
     </section>
     <section
-      className="sc-ksYbfQ jHwjmi"
+      className="sc-frDJqD gCEYuZ"
       style={
         Object {
           "alignItems": "center",
@@ -4924,13 +4913,13 @@ exports[`Storyshots Home default 1`] = `
         }
       />
       <ul
-        className="sc-uJMKN RyVfe"
+        className="sc-gGBfsJ bJbJky"
       >
         <li
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
         >
           <span
-            className="sc-gGBfsJ csBMIw"
+            className="sc-fYxtnH chjslA"
           >
             <svg
               alt=""
@@ -4954,7 +4943,7 @@ exports[`Storyshots Home default 1`] = `
             </svg>
           </span>
           <p
-            className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+            className="MuiTypography-root sc-ktHwxA bwAxqg MuiTypography-body1"
           >
             Zen additionne pour vous
             <br />
@@ -4965,7 +4954,7 @@ exports[`Storyshots Home default 1`] = `
         </li>
         <li
           aria-hidden="true"
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
           style={
             Object {
               "display": "block",
@@ -4976,7 +4965,7 @@ exports[`Storyshots Home default 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+            className="MuiSvgIcon-root sc-tilXH jHqnRn MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
@@ -4987,10 +4976,10 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </li>
         <li
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
         >
           <span
-            className="sc-gGBfsJ csBMIw"
+            className="sc-fYxtnH chjslA"
           >
             <svg
               alt=""
@@ -5014,7 +5003,7 @@ exports[`Storyshots Home default 1`] = `
             </svg>
           </span>
           <p
-            className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+            className="MuiTypography-root sc-ktHwxA bwAxqg MuiTypography-body1"
           >
             Zen vous indique
             <br />
@@ -5025,7 +5014,7 @@ exports[`Storyshots Home default 1`] = `
         </li>
         <li
           aria-hidden="true"
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
           style={
             Object {
               "display": "block",
@@ -5036,7 +5025,7 @@ exports[`Storyshots Home default 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+            className="MuiSvgIcon-root sc-tilXH jHqnRn MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
@@ -5047,10 +5036,10 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </li>
         <li
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
         >
           <span
-            className="sc-gGBfsJ csBMIw"
+            className="sc-fYxtnH chjslA"
           >
             <svg
               alt=""
@@ -5074,7 +5063,7 @@ exports[`Storyshots Home default 1`] = `
             </svg>
           </span>
           <p
-            className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+            className="MuiTypography-root sc-ktHwxA bwAxqg MuiTypography-body1"
           >
             Accédez à un espace personnel
             <br />
@@ -5086,10 +5075,10 @@ exports[`Storyshots Home default 1`] = `
       </ul>
     </section>
     <section
-      className="sc-feJyhm hxezng"
+      className="sc-cmTdod hOoQlM"
     >
       <h2
-        className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+        className="MuiTypography-root sc-kvZOFW kBHoCV MuiTypography-h5"
         style={
           Object {
             "color": "#fff",
@@ -5099,13 +5088,13 @@ exports[`Storyshots Home default 1`] = `
         Zen est pour vous si ...
       </h2>
       <div
-        className="sc-iELTvK erUTl"
+        className="sc-jwKygS clvyij"
       >
         <div
-          className="sc-cmTdod fgxRog"
+          className="sc-btzYZH emAnnU"
         >
           <p
-            className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
+            className="MuiTypography-root sc-lhVmIH hOdihO MuiTypography-body1"
           >
             <svg
               aria-hidden="true"
@@ -5147,10 +5136,10 @@ exports[`Storyshots Home default 1`] = `
       </div>
     </section>
     <section
-      className="sc-ksYbfQ jHwjmi"
+      className="sc-frDJqD gCEYuZ"
     >
       <h2
-        className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+        className="MuiTypography-root sc-kvZOFW kBHoCV MuiTypography-h5"
         style={
           Object {
             "textAlign": "center",
@@ -5166,18 +5155,18 @@ exports[`Storyshots Home default 1`] = `
          à chaque étape
       </h2>
       <div
-        className="sc-frDJqD cuqWVO"
+        className="sc-hqyNC bQqDRF"
       >
         <div
-          className="sc-hqyNC lJZqR"
+          className="sc-dNLxif ijazgk"
         >
           <div
-            className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h2 MuiTypography-colorPrimary"
+            className="MuiTypography-root sc-uJMKN lnoTtZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             1
           </div>
           <h3
-            className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-kvZOFW sc-jqCOkK eGHKdq MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Je suis informé(e) tous les mois du début de l'actualisation
           </h3>
@@ -5189,23 +5178,23 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jqCOkK jmfCHm"
+          className="sc-bbmXgH bPwaxS"
           src="photo1.jpg"
         />
       </div>
       <div
-        className="sc-frDJqD sc-kvZOFW iDSvQU"
+        className="sc-hqyNC sc-jbKcbu bfCGCZ"
       >
         <div
-          className="sc-hqyNC lJZqR"
+          className="sc-dNLxif ijazgk"
         >
           <div
-            className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h2 MuiTypography-colorPrimary"
+            className="MuiTypography-root sc-uJMKN lnoTtZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             2
           </div>
           <h3
-            className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-kvZOFW sc-jqCOkK eGHKdq MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
           </h3>
@@ -5217,23 +5206,23 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jqCOkK jmfCHm"
+          className="sc-bbmXgH bPwaxS"
           src="photo2.jpg"
         />
       </div>
       <div
-        className="sc-frDJqD cuqWVO"
+        className="sc-hqyNC bQqDRF"
       >
         <div
-          className="sc-hqyNC lJZqR"
+          className="sc-dNLxif ijazgk"
         >
           <div
-            className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h2 MuiTypography-colorPrimary"
+            className="MuiTypography-root sc-uJMKN lnoTtZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             3
           </div>
           <h3
-            className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-kvZOFW sc-jqCOkK eGHKdq MuiTypography-h5 MuiTypography-colorSecondary"
           >
             J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
           </h3>
@@ -5245,13 +5234,13 @@ exports[`Storyshots Home default 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jqCOkK jmfCHm"
+          className="sc-bbmXgH bPwaxS"
           src="photo3.jpg"
         />
       </div>
     </section>
     <section
-      className="sc-ksYbfQ jHwjmi"
+      className="sc-frDJqD gCEYuZ"
       style={
         Object {
           "padding": "5rem",
@@ -5260,18 +5249,18 @@ exports[`Storyshots Home default 1`] = `
       }
     >
       <h2
-        className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+        className="MuiTypography-root sc-kvZOFW kBHoCV MuiTypography-h5"
       >
         Nos utilisateurs approuvent !
       </h2>
       <div
-        className="sc-hEsumM clAWdV"
+        className="sc-cIShpX gcNiOw"
       >
         <div
-          className="sc-ktHwxA eQuqDF"
+          className="sc-kafWEX gdgGwU"
         >
           <p
-            className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-feJyhm fXQhNC MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Déborah - Lille
@@ -5280,16 +5269,16 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+            className="MuiTypography-root sc-iELTvK fyBIax MuiTypography-body1"
           >
             « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
           </p>
         </div>
         <div
-          className="sc-ktHwxA eQuqDF"
+          className="sc-kafWEX gdgGwU"
         >
           <p
-            className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-feJyhm fXQhNC MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Sophie - Condette
@@ -5298,16 +5287,16 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+            className="MuiTypography-root sc-iELTvK fyBIax MuiTypography-body1"
           >
             « Plus simple vu le nombre d'employeurs. Belle innovation »
           </p>
         </div>
         <div
-          className="sc-ktHwxA eQuqDF"
+          className="sc-kafWEX gdgGwU"
         >
           <p
-            className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-feJyhm fXQhNC MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Fatima - Amiens
@@ -5316,7 +5305,7 @@ exports[`Storyshots Home default 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+            className="MuiTypography-root sc-iELTvK fyBIax MuiTypography-body1"
           >
             « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
           </p>
@@ -5325,28 +5314,9 @@ exports[`Storyshots Home default 1`] = `
     </section>
   </main>
   <footer
-    className="sc-btzYZH bzmCch"
+    className="sc-bYSBpT liiEJp"
     role="contentinfo"
   >
-    <div
-      className="MuiTypography-root sc-fMiknA eYbpac MuiTypography-h4"
-      style={
-        Object {
-          "color": "#fff",
-        }
-      }
-    >
-      zen
-      <span
-        style={
-          Object {
-            "color": "#0065DB",
-          }
-        }
-      >
-        .
-      </span>
-    </div>
     <br />
     <span
       className="MuiTypography-root MuiTypography-caption"
@@ -5366,10 +5336,10 @@ exports[`Storyshots Home default 1`] = `
 
 exports[`Storyshots Home loginFailed 1`] = `
 <div
-  className="sc-dVhcbM cYKAHW"
+  className="sc-fAjcbJ TXxBG"
 >
   <div
-    className="sc-eqIVtm dRNNM"
+    className="sc-caSCKo ftPeOu"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -5380,26 +5350,12 @@ exports[`Storyshots Home loginFailed 1`] = `
     </p>
   </div>
   <header
-    className="sc-fAjcbJ jCJPFY"
+    className="sc-gisBJw hYEpLv"
     role="banner"
   >
     <div
-      className="sc-caSCKo bkpdoL"
+      className="sc-kjoXOD jKxJNL"
     >
-      <div
-        className="MuiTypography-root sc-fMiknA eYbpac MuiTypography-h4"
-      >
-        zen
-        <span
-          style={
-            Object {
-              "color": "#0065DB",
-            }
-          }
-        >
-          .
-        </span>
-      </div>
       <img
         alt="logo pole emploi"
         src="logoPE-mono.png"
@@ -5414,7 +5370,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
     <a
       aria-disabled={false}
-      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-cJSrbW czwJym"
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary sc-hmzhuo llwlzW"
       href="/api/login"
       onBlur={[Function]}
       onDragLeave={[Function]}
@@ -5461,22 +5417,25 @@ exports[`Storyshots Home loginFailed 1`] = `
           Se connecter avec mes identifiants Pôle Emploi
         </p>
       </span>
+      <span
+        className="MuiTouchRipple-root"
+      />
     </a>
   </header>
   <main
     role="main"
   >
     <section
-      className="sc-gisBJw bGHhbA"
+      className="sc-cHGsZl cHeMAs"
     >
       <div
-        className="sc-kjoXOD flGdts"
+        className="sc-TOsTZ cNsDoz"
       >
         <div
-          className="sc-cHGsZl byvGmP"
+          className="sc-kgAjT hmQDth"
         >
           <h1
-            className="MuiTypography-root sc-TOsTZ hKRGOK MuiTypography-h4 MuiTypography-paragraph"
+            className="MuiTypography-root sc-cJSrbW ijnfSB MuiTypography-h4 MuiTypography-paragraph"
             style={
               Object {
                 "fontWeight": "bold",
@@ -5502,7 +5461,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </span>
           </h1>
           <h2
-            className="MuiTypography-root sc-kgAjT bhDVR MuiTypography-h6 MuiTypography-paragraph"
+            className="MuiTypography-root sc-ksYbfQ cIHrMH MuiTypography-h6 MuiTypography-paragraph"
           >
             Zen est un service Pôle emploi dédié aux
              
@@ -5566,7 +5525,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
     </section>
     <section
-      className="sc-ksYbfQ jHwjmi"
+      className="sc-frDJqD gCEYuZ"
       style={
         Object {
           "alignItems": "center",
@@ -5592,13 +5551,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         }
       />
       <ul
-        className="sc-uJMKN RyVfe"
+        className="sc-gGBfsJ bJbJky"
       >
         <li
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
         >
           <span
-            className="sc-gGBfsJ csBMIw"
+            className="sc-fYxtnH chjslA"
           >
             <svg
               alt=""
@@ -5622,7 +5581,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </svg>
           </span>
           <p
-            className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+            className="MuiTypography-root sc-ktHwxA bwAxqg MuiTypography-body1"
           >
             Zen additionne pour vous
             <br />
@@ -5633,7 +5592,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </li>
         <li
           aria-hidden="true"
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
           style={
             Object {
               "display": "block",
@@ -5644,7 +5603,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+            className="MuiSvgIcon-root sc-tilXH jHqnRn MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
@@ -5655,10 +5614,10 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </li>
         <li
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
         >
           <span
-            className="sc-gGBfsJ csBMIw"
+            className="sc-fYxtnH chjslA"
           >
             <svg
               alt=""
@@ -5682,7 +5641,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </svg>
           </span>
           <p
-            className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+            className="MuiTypography-root sc-ktHwxA bwAxqg MuiTypography-body1"
           >
             Zen vous indique
             <br />
@@ -5693,7 +5652,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </li>
         <li
           aria-hidden="true"
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
           style={
             Object {
               "display": "block",
@@ -5704,7 +5663,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           <svg
             alt=""
             aria-hidden="true"
-            className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+            className="MuiSvgIcon-root sc-tilXH jHqnRn MuiSvgIcon-colorPrimary"
             focusable="false"
             role="presentation"
             viewBox="0 0 24 24"
@@ -5715,10 +5674,10 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </li>
         <li
-          className="sc-bbmXgH bgIkbH"
+          className="sc-jnlKLf cVnrLF"
         >
           <span
-            className="sc-gGBfsJ csBMIw"
+            className="sc-fYxtnH chjslA"
           >
             <svg
               alt=""
@@ -5742,7 +5701,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </svg>
           </span>
           <p
-            className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+            className="MuiTypography-root sc-ktHwxA bwAxqg MuiTypography-body1"
           >
             Accédez à un espace personnel
             <br />
@@ -5754,10 +5713,10 @@ exports[`Storyshots Home loginFailed 1`] = `
       </ul>
     </section>
     <section
-      className="sc-feJyhm hxezng"
+      className="sc-cmTdod hOoQlM"
     >
       <h2
-        className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+        className="MuiTypography-root sc-kvZOFW kBHoCV MuiTypography-h5"
         style={
           Object {
             "color": "#fff",
@@ -5767,13 +5726,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         Zen est pour vous si ...
       </h2>
       <div
-        className="sc-iELTvK erUTl"
+        className="sc-jwKygS clvyij"
       >
         <div
-          className="sc-cmTdod fgxRog"
+          className="sc-btzYZH emAnnU"
         >
           <p
-            className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
+            className="MuiTypography-root sc-lhVmIH hOdihO MuiTypography-body1"
           >
             <svg
               aria-hidden="true"
@@ -5815,10 +5774,10 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
     </section>
     <section
-      className="sc-ksYbfQ jHwjmi"
+      className="sc-frDJqD gCEYuZ"
     >
       <h2
-        className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+        className="MuiTypography-root sc-kvZOFW kBHoCV MuiTypography-h5"
         style={
           Object {
             "textAlign": "center",
@@ -5834,18 +5793,18 @@ exports[`Storyshots Home loginFailed 1`] = `
          à chaque étape
       </h2>
       <div
-        className="sc-frDJqD cuqWVO"
+        className="sc-hqyNC bQqDRF"
       >
         <div
-          className="sc-hqyNC lJZqR"
+          className="sc-dNLxif ijazgk"
         >
           <div
-            className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h2 MuiTypography-colorPrimary"
+            className="MuiTypography-root sc-uJMKN lnoTtZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             1
           </div>
           <h3
-            className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-kvZOFW sc-jqCOkK eGHKdq MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Je suis informé(e) tous les mois du début de l'actualisation
           </h3>
@@ -5857,23 +5816,23 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jqCOkK jmfCHm"
+          className="sc-bbmXgH bPwaxS"
           src="photo1.jpg"
         />
       </div>
       <div
-        className="sc-frDJqD sc-kvZOFW iDSvQU"
+        className="sc-hqyNC sc-jbKcbu bfCGCZ"
       >
         <div
-          className="sc-hqyNC lJZqR"
+          className="sc-dNLxif ijazgk"
         >
           <div
-            className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h2 MuiTypography-colorPrimary"
+            className="MuiTypography-root sc-uJMKN lnoTtZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             2
           </div>
           <h3
-            className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-kvZOFW sc-jqCOkK eGHKdq MuiTypography-h5 MuiTypography-colorSecondary"
           >
             Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
           </h3>
@@ -5885,23 +5844,23 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jqCOkK jmfCHm"
+          className="sc-bbmXgH bPwaxS"
           src="photo2.jpg"
         />
       </div>
       <div
-        className="sc-frDJqD cuqWVO"
+        className="sc-hqyNC bQqDRF"
       >
         <div
-          className="sc-hqyNC lJZqR"
+          className="sc-dNLxif ijazgk"
         >
           <div
-            className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h2 MuiTypography-colorPrimary"
+            className="MuiTypography-root sc-uJMKN lnoTtZ MuiTypography-h2 MuiTypography-colorPrimary"
           >
             3
           </div>
           <h3
-            className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-kvZOFW sc-jqCOkK eGHKdq MuiTypography-h5 MuiTypography-colorSecondary"
           >
             J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
           </h3>
@@ -5913,13 +5872,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         </div>
         <img
           alt=""
-          className="sc-jqCOkK jmfCHm"
+          className="sc-bbmXgH bPwaxS"
           src="photo3.jpg"
         />
       </div>
     </section>
     <section
-      className="sc-ksYbfQ jHwjmi"
+      className="sc-frDJqD gCEYuZ"
       style={
         Object {
           "padding": "5rem",
@@ -5928,18 +5887,18 @@ exports[`Storyshots Home loginFailed 1`] = `
       }
     >
       <h2
-        className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+        className="MuiTypography-root sc-kvZOFW kBHoCV MuiTypography-h5"
       >
         Nos utilisateurs approuvent !
       </h2>
       <div
-        className="sc-hEsumM clAWdV"
+        className="sc-cIShpX gcNiOw"
       >
         <div
-          className="sc-ktHwxA eQuqDF"
+          className="sc-kafWEX gdgGwU"
         >
           <p
-            className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-feJyhm fXQhNC MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Déborah - Lille
@@ -5948,16 +5907,16 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+            className="MuiTypography-root sc-iELTvK fyBIax MuiTypography-body1"
           >
             « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
           </p>
         </div>
         <div
-          className="sc-ktHwxA eQuqDF"
+          className="sc-kafWEX gdgGwU"
         >
           <p
-            className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-feJyhm fXQhNC MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Sophie - Condette
@@ -5966,16 +5925,16 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+            className="MuiTypography-root sc-iELTvK fyBIax MuiTypography-body1"
           >
             « Plus simple vu le nombre d'employeurs. Belle innovation »
           </p>
         </div>
         <div
-          className="sc-ktHwxA eQuqDF"
+          className="sc-kafWEX gdgGwU"
         >
           <p
-            className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+            className="MuiTypography-root sc-feJyhm fXQhNC MuiTypography-body1 MuiTypography-colorSecondary"
           >
             <b>
               Fatima - Amiens
@@ -5984,7 +5943,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             </b>
           </p>
           <p
-            className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+            className="MuiTypography-root sc-iELTvK fyBIax MuiTypography-body1"
           >
             « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
           </p>
@@ -5993,28 +5952,9 @@ exports[`Storyshots Home loginFailed 1`] = `
     </section>
   </main>
   <footer
-    className="sc-btzYZH bzmCch"
+    className="sc-bYSBpT liiEJp"
     role="contentinfo"
   >
-    <div
-      className="MuiTypography-root sc-fMiknA eYbpac MuiTypography-h4"
-      style={
-        Object {
-          "color": "#fff",
-        }
-      }
-    >
-      zen
-      <span
-        style={
-          Object {
-            "color": "#0065DB",
-          }
-        }
-      >
-        .
-      </span>
-    </div>
     <br />
     <span
       className="MuiTypography-root MuiTypography-caption"

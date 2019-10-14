@@ -36,7 +36,7 @@ export const getSummaryModal = () => cy.get('div[role=dialog]')
 
 export const checkModalContent = ({ employerList = [], salaryTotal = 0 }) => {
   getSummaryModal()
-    .find('h6')
+    .find('h2')
     .should('have.text', "Envoi de l'actualisation")
 
   getSummaryModal()

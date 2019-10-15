@@ -8,13 +8,11 @@ import Button from '@material-ui/core/Button'
 
 import CloseIcon from '@material-ui/icons/Close'
 import DoneIcon from '@material-ui/icons/Done'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
 import Typography from '@material-ui/core/Typography'
 import MainActionButton from '../MainActionButton'
 
-import sendDoc from '../../../images/sendDoc.svg'
 import { primaryBlue } from '../../../constants'
 import CustomDialog from '../CustomDialog'
 
@@ -28,19 +26,6 @@ const TopDialogActions = styled.div`
   padding-bottom: 1rem;
 `
 
-const FileLabel = styled.label`
-  border: dashed 2px ${primaryBlue};
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  padding: 1rem 1rem 5rem 1rem;
-`
-
-const StyledImg = styled.img`
-  max-width: 50%;
-  margin: 2rem auto;
-`
-
 const StyledDoneIcon = styled(DoneIcon)`
   && {
     margin-right: 1rem;
@@ -50,7 +35,6 @@ const StyledDoneIcon = styled(DoneIcon)`
 `
 
 const initialState = {
-  showUploadView: false,
   showSuccessAddMessage: false,
   showSuccessRemoveMessage: false,
   showPageRemovalConfirmation: false,
@@ -88,10 +72,6 @@ class DocumentDialog extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (!this.props.isOpened) return
 
-    if (prevProps.isLoading && !this.props.isLoading) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      return this.setState({ showUploadView: false })
-    }
     if (
       !isNull(prevState.totalPageNumber) &&
       this.state.totalPageNumber < prevState.totalPageNumber
@@ -99,7 +79,6 @@ class DocumentDialog extends Component {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessRemoveMessage: true,
-        showUploadView: false,
       })
     }
     if (
@@ -109,7 +88,6 @@ class DocumentDialog extends Component {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessAddMessage: true,
-        showUploadView: false,
       })
     }
   }
@@ -146,15 +124,6 @@ class DocumentDialog extends Component {
       employerDocType: this.props.employerDocType,
     })
   }
-
-  doShowUploadView = () =>
-    this.setState({
-      showUploadView: true,
-      showSuccessAddMessage: false,
-      showSuccessRemoveMessage: false,
-    })
-
-  cancelUploadView = () => this.setState({ showUploadView: false })
 
   confirmPageRemoval = () =>
     this.setState({ showPageRemovalConfirmation: true })
@@ -199,49 +168,12 @@ class DocumentDialog extends Component {
   }
 
   renderModalContent() {
-    const { showUploadView } = this.state
     const { isLoading, url, originalFileName } = this.props
 
     const loadingComponent = <CircularProgress style={{ margin: 'auto' }} />
 
     if (isLoading) {
       return loadingComponent
-    }
-
-    if (showUploadView || !url) {
-      return (
-        <div>
-          {/* Can return to PDF viewer only if there is a PDF to see */}
-          {url && (
-            <Button onClick={this.cancelUploadView} style={{ display: 'flex' }}>
-              <ArrowBackIcon
-                style={{ color: primaryBlue, marginRight: '1rem' }}
-              />
-              Retour
-            </Button>
-          )}
-
-          <FileLabel>
-            <StyledImg src={sendDoc} alt="" />
-            <Typography variant="body1" style={{ padding: '1rem' }}>
-              Veuillez choisir les fichiers à ajouter depuis votre ordinateur
-            </Typography>
-            <MainActionButton
-              primary
-              component="label"
-              style={{ margin: 'auto' }}
-            >
-              <input
-                accept=".png, .jpg, .jpeg, .pdf"
-                style={{ display: 'none' }}
-                type="file"
-                onChange={this.addFile}
-              />
-              Parcourir
-            </MainActionButton>
-          </FileLabel>
-        </div>
-      )
     }
 
     return (
@@ -258,7 +190,6 @@ class DocumentDialog extends Component {
   render() {
     const { isOpened, isLoading, error } = this.props
     const {
-      showUploadView,
       showSuccessAddMessage,
       showSuccessRemoveMessage,
       canUploadMoreFile,
@@ -315,8 +246,7 @@ class DocumentDialog extends Component {
             </Fragment>
           }
           actions={
-            !isLoading &&
-            !showUploadView && (
+            !isLoading && (
               <Fragment>
                 {canDeletePage && (
                   <Button
@@ -336,9 +266,15 @@ class DocumentDialog extends Component {
 
                 <Button
                   className="add-page"
-                  onClick={this.doShowUploadView}
                   disabled={!canUploadMoreFile}
+                  component="label"
                 >
+                  <input
+                    accept=".png, .jpg, .jpeg, .pdf"
+                    style={{ display: 'none' }}
+                    type="file"
+                    onChange={this.addFile}
+                  />
                   <AddCircleOutline
                     style={{
                       color: primaryBlue,

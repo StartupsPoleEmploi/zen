@@ -125,7 +125,7 @@ describe('Files page', function() {
         it('should not allow adding pages to already big enough document', () => {
           uploadFile({ file: 'pdf-14-pages.pdf' })
           getPaginationText().should('contain', '14/14')
-          cy.get('div[role=dialog] .add-page').should('be.disabled')
+          cy.get('div[role=dialog] .add-page[aria-disabled]') // check existence of label with aria-disabled
         })
 
         it('should close the modal if the only page was removed', () => {

@@ -238,9 +238,6 @@ export class DocumentUpload extends Component {
                 <StyledFormLabel
                   style={{ width: useLightVersion ? '100%' : 'auto' }}
                 >
-                  {!useLightVersion && (
-                    <Fragment>Glissez / déposez ou&nbsp;</Fragment>
-                  )}
                   {this.renderFileField(uploadInput, showTooltip, employerId)}
                   {hiddenInput}
                 </StyledFormLabel>

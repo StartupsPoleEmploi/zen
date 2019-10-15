@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import MuiLink from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import EuroIcon from '@material-ui/icons/EuroSymbol'
@@ -161,7 +161,7 @@ const ConnectButton = styled(Button).attrs({
     top: 0;
     display: flex;
 
-    width: 30rem;
+    width: 32rem;
     max-width: 100%;
     min-height: 5rem;
     margin: 0;

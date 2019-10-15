@@ -52,7 +52,7 @@ export class UserJobCheck extends Component {
   render() {
     return (
       <StyledUserJobCheck>
-        <Typography variant="body2">
+        <Typography variant="body1">
           Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur,
           vous ne pouvez pas effectuer votre actualisation sur Zen.
         </Typography>

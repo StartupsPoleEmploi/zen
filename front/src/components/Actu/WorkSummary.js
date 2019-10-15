@@ -25,7 +25,6 @@ const SummaryContainer = styled.ul`
 
 const Label = styled(Typography).attrs({
   component: 'span',
-  variant: 'body1',
 })`
   && {
     display: inline-block;
@@ -37,7 +36,6 @@ const Label = styled(Typography).attrs({
 
 const Value = styled(Typography).attrs({
   component: 'span',
-  variant: 'body1',
 })`
   && {
     font-size: 1.5rem;

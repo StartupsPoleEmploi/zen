@@ -29,7 +29,7 @@ export const pickDate = (fieldName, value, { last } = { last: false }) => {
     [!last ? 'first' : 'last']()
     .click()
   cy.get('button')
-    .contains(value)
+    .contains(new RegExp(`\\b${value}\\b`))
     .click()
 }
 

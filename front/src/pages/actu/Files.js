@@ -437,9 +437,7 @@ export class Files extends Component {
     if (declaration.isFinished || declarationRemainingDocsNb === 0) {
       return (
         <FilesDoneSection key={declaration.id}>
-          <Typography variant="body1">
-            Justificatifs de {formattedMonth} transmis
-          </Typography>
+          <Typography>Justificatifs de {formattedMonth} transmis</Typography>
           {' '}
           <CheckCircle />
         </FilesDoneSection>
@@ -453,7 +451,6 @@ export class Files extends Component {
         </StyledTitle>
         <StyledInfo>
           <Typography
-            variant="body1"
             style={{
               color: secondaryBlue,
               paddingBottom: '2rem',

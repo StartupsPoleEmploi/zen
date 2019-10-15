@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import File from '@material-ui/icons/Description'
 import ExpandLess from '@material-ui/icons/ExpandLess'

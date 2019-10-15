@@ -7,6 +7,9 @@ import styled from 'styled-components'
 
 import TooltipOnFocus from './TooltipOnFocus'
 
+const YES = 'yes'
+const NO = 'no'
+
 const StyledRadioGroup = styled(RadioGroup)`
   && {
     flex-wrap: nowrap;
@@ -15,10 +18,6 @@ const StyledRadioGroup = styled(RadioGroup)`
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   && {
-    background-color: ${({ checked }) => (checked ? '#4b4b4b' : '#f0f0f0')};
-    & > span {
-      color: ${({ checked }) => (checked ? '#fff' : 'inherit')};
-    }
     height: 3rem;
     padding-right: 1rem;
     margin: 0;
@@ -40,8 +39,6 @@ const SecondFormControlLabel = styled(StyledFormControlLabel)`
 const StyledRadio = styled(Radio)`
   && {
     && {
-      color: ${({ value, checked }) =>
-        checked ? (value === 'yes' ? '#7ADF8F' : '#F5A623') : 'inherit'};
       svg {
         font-size: 1.5rem;
       }
@@ -49,13 +46,13 @@ const StyledRadio = styled(Radio)`
   }
 `
 
-const getFormValue = (value) => (value === null ? value : value ? 'yes' : 'no')
+const getFormValue = (value) => (value === null ? '' : value ? YES : NO)
 
 export class YesNoRadioGroup extends Component {
   onChange = (event) =>
     this.props.onAnswer({
       target: {
-        value: event.target.value === 'yes',
+        value: event.target.value === YES,
         name: this.props.name,
       },
     })
@@ -63,17 +60,23 @@ export class YesNoRadioGroup extends Component {
   render() {
     const { name, value, yesTooltipContent } = this.props
 
+    const isYesChecked = !!value
+    const isNoChecked = value === false
+
     const yesRadio = (
       <StyledRadio
         inputProps={{
           'aria-describedby': `yes[${name}]`,
+        }}
+        style={{
+          color: isYesChecked ? '#7ADF8F' : 'inherit',
         }}
       />
     )
 
     const yesFormLabelAndRadio = (
       <FirstFormControlLabel
-        value="yes"
+        value={YES}
         control={
           yesTooltipContent ? (
             <TooltipOnFocus content={yesTooltipContent}>
@@ -83,8 +86,10 @@ export class YesNoRadioGroup extends Component {
             yesRadio
           )
         }
-        label="oui"
-        checked={value}
+        label={
+          <span style={{ color: isYesChecked ? '#fff' : 'inherit' }}>oui</span>
+        }
+        style={{ backgroundColor: isYesChecked ? '#4b4b4b' : '#f0f0f0' }}
       />
     )
 
@@ -98,10 +103,18 @@ export class YesNoRadioGroup extends Component {
         {yesFormLabelAndRadio}
 
         <SecondFormControlLabel
-          value="no"
-          control={<StyledRadio />}
-          label="non"
-          checked={value === false}
+          value={NO}
+          control={
+            <StyledRadio
+              style={{
+                color: isNoChecked ? '#F5A623' : 'inherit',
+              }}
+            />
+          }
+          label={
+            <span style={{ color: isNoChecked ? '#fff' : 'inherit' }}>non</span>
+          }
+          style={{ backgroundColor: isNoChecked ? '#4b4b4b' : '#f0f0f0' }}
         />
       </StyledRadioGroup>
     )

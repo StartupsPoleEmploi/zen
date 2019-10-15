@@ -76,7 +76,6 @@ export class DocumentUpload extends Component {
     id: PropTypes.number,
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
-    canUsePDFViewer: PropTypes.bool,
     label: PropTypes.string.isRequired,
     caption: PropTypes.string,
     isLoading: PropTypes.bool,
@@ -136,7 +135,6 @@ export class DocumentUpload extends Component {
       caption,
       error,
       fileExistsOnServer,
-      canUsePDFViewer,
       isLoading,
       isTransmitted,
       label,
@@ -159,7 +157,7 @@ export class DocumentUpload extends Component {
       />
     )
 
-    const viewDocumentButton = canUsePDFViewer ? (
+    const viewDocumentButton = (
       <ActionButton
         onClick={this.showPreview}
         className="show-file"
@@ -168,7 +166,7 @@ export class DocumentUpload extends Component {
       >
         Voir, modifier ou valider
       </ActionButton>
-    ) : null
+    )
 
     const uploadInput = (
       <ActionButton

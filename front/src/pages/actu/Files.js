@@ -30,7 +30,6 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
 import { muiBreakpoints, secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
-import { canUsePDFViewer } from '../../lib/file'
 import {
   selectPreviewedEmployerDoc,
   selectPreviewedInfoDoc,
@@ -344,7 +343,6 @@ export class Files extends Component {
           fileExistsOnServer={!!info.file && !info.isCleanedUp}
           submitFile={this.props.uploadDeclarationInfoFile}
           removePageFromFile={this.removePageFromFile}
-          canUsePDFViewer={info.file ? canUsePDFViewer(info.file) : null}
           showPreview={this.props.showInfoFilePreview}
           skipFile={(params) =>
             this.askToSkipFile(() => {
@@ -403,9 +401,6 @@ export class Files extends Component {
           !!get(salaryDoc, 'file') && !get(salaryDoc, 'isCleanedUp')
         }
         removePage={this.removePage}
-        canUsePDFViewer={
-          get(salaryDoc, 'file') ? canUsePDFViewer(salaryDoc.file) : false
-        }
         isTransmitted={get(salaryDoc, 'isTransmitted')}
         employerDocType={salarySheetType}
         isLoading={employer[getEmployerLoadingKey(salarySheetType)]}
@@ -425,11 +420,6 @@ export class Files extends Component {
           !!get(certificateDoc, 'file') && !get(certificateDoc, 'isCleanedUp')
         }
         removePage={this.removePage}
-        canUsePDFViewer={
-          get(certificateDoc, 'file')
-            ? canUsePDFViewer(certificateDoc.file)
-            : false
-        }
         isTransmitted={get(certificateDoc, 'isTransmitted')}
         employerDocType={employerCertificateType}
         isLoading={employer[getEmployerLoadingKey(employerCertificateType)]}

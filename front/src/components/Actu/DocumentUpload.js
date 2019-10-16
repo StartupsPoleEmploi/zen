@@ -1,39 +1,23 @@
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
-import Eye from '@material-ui/icons/RemoveRedEye'
-import NoteAdd from '@material-ui/icons/NoteAdd'
+import Check from '@material-ui/icons/Check'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants'
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
+import { primaryBlue } from '../../constants'
 
 const StyledContainer = styled.div`
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-`
+  justify-content: space-between;
+  margin-top: 1rem;
 
-const StyledListItem = styled(ListItem)`
-  && {
-    flex: 1 1 30rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    flex-wrap: wrap;
-    border-width: 1px;
-    border-style: solid;
-    border-left-width: 0.8rem;
-    border-radius: 0.5rem;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 0 0.5rem 0.1rem #eee;
+  &:not(:last-child) {
+    padding-bottom: 2rem;
   }
 `
 
@@ -42,32 +26,39 @@ const StyledFormLabel = styled(FormLabel)`
   border-radius: 1rem;
   align-items: center;
   justify-content: flex-end;
+  flex: 1 0 auto;
+  && {
+    color: #000;
+  }
 `
 
-const Container = styled.div`
+const LabelsContainer = styled.div`
+  flex: 0 1 auto;
+  padding-right: 1rem;
+  max-width: 18rem;
+  width: 100%;
+`
+
+const ActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  flex: 1 1 auto;
 `
 
-const EyeIcon = styled(Eye)`
-  margin-right: 2rem;
+const ActionButton = styled(Button).attrs({
+  variant: 'contained',
+})`
+  && {
+    border-radius: 2rem;
+  }
 `
 
 const CheckBoxOutlineBlankIcon = styled(CheckBoxOutlineBlank)`
-  margin-right: 2rem;
+  margin-right: 1rem;
 `
 
-const NoteAddIcon = styled(NoteAdd)`
-  margin-right: 2rem;
-`
-
-const ActionButton = styled(Button)`
-  && {
-    justify-content: flex-start;
-    min-height: 3.2rem;
-    margin-top: 0.1rem;
-  }
+const CheckIcon = styled(Check)`
+  margin-right: 0.5rem;
 `
 
 const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
@@ -85,7 +76,6 @@ export class DocumentUpload extends Component {
     id: PropTypes.number,
     error: PropTypes.string,
     fileExistsOnServer: PropTypes.bool,
-    canUsePDFViewer: PropTypes.bool,
     label: PropTypes.string.isRequired,
     caption: PropTypes.string,
     isLoading: PropTypes.bool,
@@ -97,6 +87,7 @@ export class DocumentUpload extends Component {
     employerDocType: PropTypes.string,
     showPreview: PropTypes.func.isRequired,
     showTooltip: PropTypes.bool,
+    useLightVersion: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -144,13 +135,13 @@ export class DocumentUpload extends Component {
       caption,
       error,
       fileExistsOnServer,
-      canUsePDFViewer,
       isLoading,
       isTransmitted,
       label,
       showTooltip,
       employerId,
       type,
+      useLightVersion,
     } = this.props
 
     const hiddenInput = (
@@ -166,109 +157,122 @@ export class DocumentUpload extends Component {
       />
     )
 
-    const viewDocumentButton = canUsePDFViewer ? (
+    const viewDocumentButton = (
       <ActionButton
-        variant="contained"
         onClick={this.showPreview}
         className="show-file"
         color="primary"
+        fullWidth={useLightVersion}
       >
-        <EyeIcon />
-        Voir, modifier ou valider le justificatif
+        Voir, modifier ou valider
       </ActionButton>
-    ) : null
+    )
 
     const uploadInput = (
       <ActionButton
         aria-describedby={`file[${id}]`}
-        variant="contained"
         color="primary"
         component="span"
-        style={{ flex: 1 }}
+        fullWidth={useLightVersion}
       >
-        <NoteAddIcon />
         Parcourir
       </ActionButton>
     )
 
     return (
-      <StyledContainer className={`${type}-row`}>
-        <StyledListItem
-          style={{
-            borderColor: isTransmitted ? primaryBlue : '#df5555',
-          }}
-        >
-          <ListItemText
-            primary={
-              <div
+      <StyledContainer
+        style={{
+          flexDirection: useLightVersion ? 'column' : 'row',
+          alignItems: useLightVersion ? 'flex-start' : 'center',
+        }}
+        className={`${type}-row`}
+      >
+        <LabelsContainer>
+          <Typography>
+            <b>{label}</b>
+          </Typography>
+          {caption && (
+            <Typography variant="caption" component="div">
+              {caption}
+            </Typography>
+          )}
+          {fileExistsOnServer && !isTransmitted && (
+            <Typography
+              variant="caption"
+              color={isTransmitted ? 'initial' : 'error'}
+              component="div"
+            >
+              Justificatif à valider
+            </Typography>
+          )}
+        </LabelsContainer>
+
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <ActionsContainer
+              style={{
+                border: useLightVersion ? '' : `2px dotted ${primaryBlue}`,
+                alignItems: useLightVersion ? 'flex-start' : 'center',
+                padding: useLightVersion ? '1rem 0' : '1rem',
+              }}
+            >
+              {error && <ErrorTypography>{error}</ErrorTypography>}
+
+              {isTransmitted ? (
+                <ActionButton
+                  disabled
+                  style={{ backgroundColor: '#039C6D', color: 'white' }}
+                >
+                  <CheckIcon /> Envoyé
+                </ActionButton>
+              ) : !fileExistsOnServer ? (
+                <StyledFormLabel
+                  style={{ width: useLightVersion ? '100%' : 'auto' }}
+                >
+                  {this.renderFileField(uploadInput, showTooltip, employerId)}
+                  {hiddenInput}
+                </StyledFormLabel>
+              ) : (
+                viewDocumentButton
+              )}
+            </ActionsContainer>
+
+            <TooltipOnFocus
+              useHover
+              content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
+            >
+              <Button
+                aria-describedby={`file[${id}]`}
+                onClick={this.skipFile}
+                className="already-transmitted-button"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
+                  width: '100%',
+                  maxWidth: '15rem',
+                  textAlign: 'left',
+                  lineHeight: '2rem',
                 }}
+                size={useLightVersion ? 'medium' : 'small'}
+                disabled={isTransmitted}
               >
-                <div>
-                  <b>{label}</b>
-                  {caption && (
-                    <Fragment>
-                      <br />
-                      <Typography variant="caption">{caption}</Typography>
-                    </Fragment>
-                  )}
-                  {(fileExistsOnServer || isTransmitted) && (
-                    <Fragment>
-                      <br />
-                      <Typography
-                        variant="caption"
-                        color={isTransmitted ? 'initial' : 'error'}
-                      >
-                        {isTransmitted
-                          ? fileExistsOnServer
-                            ? '✅ Justificatif validé et transmis'
-                            : '✅ Justificatif directement transmis à pole-emploi.fr'
-                          : '⚠️ Justificatif à valider'}
-                      </Typography>
-                    </Fragment>
-                  )}
-                </div>
-              </div>
-            }
-          />
-          <FormControl>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Container>
-                {error && <ErrorTypography>{error}</ErrorTypography>}
-
-                {fileExistsOnServer && !isTransmitted && viewDocumentButton}
-
-                {!fileExistsOnServer && !isTransmitted && (
-                  <StyledFormLabel>
-                    {hiddenInput}
-                    {this.renderFileField(uploadInput, showTooltip, employerId)}
-                  </StyledFormLabel>
-                )}
-
                 {!isTransmitted && (
-                  <TooltipOnFocus
-                    useHover
-                    content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
-                  >
-                    <ActionButton
-                      variant="outlined"
-                      aria-describedby={`file[${id}]`}
-                      onClick={this.skipFile}
-                      className="already-transmitted-button"
-                    >
-                      <CheckBoxOutlineBlankIcon />
-                      Déjà transmis à Pôle Emploi
-                    </ActionButton>
-                  </TooltipOnFocus>
+                  <Fragment>
+                    <CheckBoxOutlineBlankIcon />
+                    Déjà transmis à Pôle Emploi
+                  </Fragment>
                 )}
-              </Container>
-            )}
-          </FormControl>
-        </StyledListItem>
+              </Button>
+            </TooltipOnFocus>
+          </div>
+        )}
       </StyledContainer>
     )
   }

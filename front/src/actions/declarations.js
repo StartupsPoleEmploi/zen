@@ -24,11 +24,18 @@ import { canUsePDFViewer } from '../lib/file'
 
 const { findEmployer, findDeclarationInfo } = utils
 
-export const fetchDeclarations = () => (dispatch) => {
+let fetchDeclarationsPromise = null
+let lastLimit = null
+export const fetchDeclarations = ({ limit } = {}) => (dispatch) => {
+  // return the same promise if the same request was done twice
+  if (fetchDeclarationsPromise && lastLimit === limit) {
+    return fetchDeclarationsPromise
+  }
+  lastLimit = limit
   dispatch({ type: FETCH_DECLARATIONS_LOADING })
 
-  return superagent
-    .get('/api/declarations')
+  fetchDeclarationsPromise = superagent
+    .get(`/api/declarations${limit ? `?limit=${limit}` : ''}`)
     .then((res) =>
       dispatch({ type: FETCH_DECLARATIONS_SUCCESS, payload: res.body }),
     )
@@ -36,6 +43,45 @@ export const fetchDeclarations = () => (dispatch) => {
       dispatch({ type: FETCH_DECLARATIONS_FAILURE, payload: err })
       window.Raven.captureException(err)
     })
+    .then(() => {
+      fetchDeclarationsPromise = null
+    })
+
+  return fetchDeclarationsPromise
+}
+
+let fetchActiveDeclarationPromise = null
+export const fetchActiveDeclaration = () => (dispatch) => {
+  // return the same promise if the same request was done twice
+  if (fetchActiveDeclarationPromise) return fetchActiveDeclarationPromise
+  dispatch({ type: FETCH_ACTIVE_DECLARATION_LOADING })
+
+  fetchActiveDeclarationPromise = superagent
+    .get('/api/declarations?active')
+    .then((res) =>
+      dispatch({
+        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
+        payload: res.body,
+      }),
+    )
+    .catch((err) => {
+      // 404 are the normal status when no declaration was made.
+      if (err.status !== 404) {
+        return dispatch({
+          type: FETCH_ACTIVE_DECLARATION_FAILURE,
+          payload: err,
+        })
+      }
+      return dispatch({
+        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
+        payload: null,
+      })
+    })
+    .then(() => {
+      fetchActiveDeclarationPromise = null
+    })
+
+  return fetchActiveDeclarationPromise
 }
 
 const getUploadErrorMessage = (err) =>
@@ -238,31 +284,17 @@ export const hideInfoFilePreview = () => ({
   type: HIDE_INFO_FILE_PREVIEW,
 })
 
-export const fetchActiveDeclaration = () => (dispatch) => {
-  dispatch({ type: FETCH_ACTIVE_DECLARATION_LOADING })
+export const postDeclaration = (formData) => (dispatch, getState) =>
+  superagent
+    .post('/api/declarations', formData)
+    .set('CSRF-Token', getState().userReducer.user.csrfToken)
+    .then((res) => res) // Not triggered without a then
 
-  return superagent
-    .get('/api/declarations?active')
-    .then((res) =>
-      dispatch({
-        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
-        payload: res.body,
-      }),
-    )
-    .catch((err) => {
-      // 404 are the normal status when no declaration was made.
-      if (err.status !== 404) {
-        return dispatch({
-          type: FETCH_ACTIVE_DECLARATION_FAILURE,
-          payload: err,
-        })
-      }
-      return dispatch({
-        type: FETCH_ACTIVE_DECLARATION_SUCCESS,
-        payload: null,
-      })
-    })
-}
+export const postEmployers = (formData) => (dispatch, getState) =>
+  superagent
+    .post('/api/employers', formData)
+    .set('CSRF-Token', getState().userReducer.user.csrfToken)
+    .then((res) => res) // Not triggered without a then
 
 export const validateEmployerDoc = ({
   documentId,

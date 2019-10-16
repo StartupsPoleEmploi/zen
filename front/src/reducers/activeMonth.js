@@ -19,7 +19,7 @@ import {
 export default createReducer(
   {
     isLoading: false,
-    isServiceUp: null,
+    activeMonth: null,
   },
   {
     [FETCH_ACTIVE_MONTH_LOADING]: (state) => {

@@ -12,10 +12,11 @@ import { cloneDeep, get, isNull, pick, set } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
 import store from 'store2'
 import styled from 'styled-components'
-import superagent from 'superagent'
 
+import { postDeclaration as postDeclarationAction } from '../../actions/declarations'
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
@@ -24,8 +25,8 @@ import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContai
 import DatePicker from '../../components/Generic/DatePicker'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import {
-  muiBreakpoints,
   jobSearchEndMotive,
+  muiBreakpoints,
   ActuTypes as types,
 } from '../../constants'
 
@@ -130,10 +131,10 @@ export class Actu extends Component {
     }).isRequired,
     user: PropTypes.shape({
       gender: PropTypes.string,
-      csrfToken: PropTypes.string.isRequired,
     }),
     declaration: PropTypes.object,
     width: PropTypes.string.isRequired,
+    postDeclaration: PropTypes.func.isRequired,
   }
 
   state = {
@@ -356,9 +357,8 @@ export class Actu extends Component {
 
     this.setState({ isValidating: true })
 
-    return superagent
-      .post('/api/declarations', { ...this.state, ignoreErrors })
-      .set('CSRF-Token', this.props.user.csrfToken)
+    return this.props
+      .postDeclaration({ ...this.state, ignoreErrors })
       .then(() =>
         this.props.history.push(this.state.hasWorked ? '/employers' : '/files'),
       )
@@ -734,4 +734,7 @@ export class Actu extends Component {
   }
 }
 
-export default withWidth()(Actu)
+export default connect(
+  null,
+  { postDeclaration: postDeclarationAction },
+)(withWidth()(Actu))

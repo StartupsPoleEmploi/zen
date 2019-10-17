@@ -27,6 +27,7 @@ const employersRouter = require('./routes/employers')
 require('./lib/db') // setup db connection
 
 const isDevEnv = process.env.NODE_ENV === 'development'
+const isQaEnv = process.env.NODE_ENV === 'qa'
 const isTestEnv = process.env.NODE_ENV === 'test'
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -77,7 +78,7 @@ app.use(
 )
 
 // Setup dev and test routes before csurf token
-if (isDevEnv) {
+if (isDevEnv || isQaEnv) {
   app.use('/developer', require('./routes/developer')) // eslint-disable-line global-require
 }
 if (isTestEnv) {

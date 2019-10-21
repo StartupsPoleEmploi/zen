@@ -53,6 +53,7 @@ class App extends Component {
     err: null,
     showDeclarationSentOnPEModal: false,
     showUnableToSendDeclarationModal: false,
+    hasFinishedInitialLoading: false,
   }
 
   componentDidMount() {
@@ -104,6 +105,9 @@ class App extends Component {
           return this.props.history.replace('/employers')
         }
       })
+      .then(() => {
+        this.setState({ hasFinishedInitialLoading: true })
+      })
   }
 
   componentDidUpdate(prevProps) {
@@ -111,6 +115,8 @@ class App extends Component {
       get(this.props.user, 'isAuthorized') &&
       this.props.location.pathname !== prevProps.location.pathname
     ) {
+      // the active declaration needs to be kept up to date as the user navigates
+      // because the layout changes a bit according to what has been done in it.
       this.props.fetchActiveDeclaration()
     }
   }
@@ -180,7 +186,11 @@ class App extends Component {
       )
     }
 
-    if (isActiveDeclarationLoading || isActiveMonthLoading) {
+    if (
+      isActiveDeclarationLoading ||
+      isActiveMonthLoading ||
+      !this.state.hasFinishedInitialLoading
+    ) {
       return (
         <Layout
           user={user}

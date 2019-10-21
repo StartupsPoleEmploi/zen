@@ -15,9 +15,13 @@ import {
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
-import superagent from 'superagent'
 
+import {
+  fetchDeclarations as fetchDeclarationsAction,
+  postEmployers as postEmployersAction,
+} from '../../actions/declarations'
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
@@ -171,6 +175,9 @@ export class Employers extends Component {
     }).isRequired,
     token: PropTypes.string.isRequired,
     width: PropTypes.string,
+    declarations: PropTypes.arrayOf(PropTypes.object),
+    fetchDeclarations: PropTypes.func.isRequired,
+    postEmployers: PropTypes.func.isRequired,
   }
 
   state = {
@@ -187,12 +194,13 @@ export class Employers extends Component {
   }
 
   componentDidMount() {
-    superagent
-      .get('/api/declarations?limit=2')
-      .then((res) => res.body)
-      .then((declarations) => {
-        const currentDeclaration = declarations[0]
-        const previousDeclaration = declarations[1]
+    this.props
+      .fetchDeclarations({ limit: 2 })
+      .then(() => {
+        const [
+          currentDeclaration,
+          previousDeclaration,
+        ] = this.props.declarations
 
         if (currentDeclaration.hasFinishedDeclaringEmployers) {
           return this.props.history.replace('/files')
@@ -287,12 +295,9 @@ export class Employers extends Component {
     }))
 
   onSave = () =>
-    superagent
-      .post('/api/employers', {
-        employers: getEmployersMapFromFormData(this.state.employers),
-      })
-      .set('CSRF-Token', this.props.token)
-      .then((res) => res) // Not triggered without a then
+    this.props.postEmployers({
+      employers: getEmployersMapFromFormData(this.state.employers),
+    })
 
   saveAndRedirect = () =>
     this.onSave().then(() => this.props.history.push('/thanks?later'))
@@ -300,13 +305,12 @@ export class Employers extends Component {
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
 
-    return superagent
-      .post('/api/employers', {
+    return this.props
+      .postEmployers({
         employers: getEmployersMapFromFormData(this.state.employers),
         isFinished: true,
         ignoreErrors,
       })
-      .set('CSRF-Token', this.props.token)
       .then(() => {
         this.hasSubmittedAndFinished = true // used to cancel cWU actions
         this.props.history.push('/files')
@@ -498,4 +502,10 @@ export class Employers extends Component {
   }
 }
 
-export default withWidth()(Employers)
+export default connect(
+  (state) => ({ declarations: state.declarationsReducer.declarations }),
+  {
+    fetchDeclarations: fetchDeclarationsAction,
+    postEmployers: postEmployersAction,
+  },
+)(withWidth()(Employers))

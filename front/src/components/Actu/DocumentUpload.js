@@ -175,7 +175,7 @@ export class DocumentUpload extends Component {
         component="span"
         fullWidth={useLightVersion}
       >
-        Parcourir
+        Transmettre
       </ActionButton>
     )
 

@@ -16,7 +16,9 @@ import {
   FETCH_ACTIVE_DECLARATION_LOADING,
   FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
+  SHOW_DECLARATION_TRANSMITTED_DIALOG,
   SET_USER_LOGGED_OUT,
+  HIDE_DECLARATION_TRANSMITTED_DIALOG,
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../constants'
 import { utils } from '../selectors/declarations'
@@ -288,13 +290,23 @@ export const postDeclaration = (formData) => (dispatch, getState) =>
   superagent
     .post('/api/declarations', formData)
     .set('CSRF-Token', getState().userReducer.user.csrfToken)
-    .then((res) => res) // Not triggered without a then
+    .then((res) => {
+      if (res.body.hasFinishedDeclaringEmployers) {
+        dispatch({ type: SHOW_DECLARATION_TRANSMITTED_DIALOG })
+      }
+      return res
+    })
 
 export const postEmployers = (formData) => (dispatch, getState) =>
   superagent
     .post('/api/employers', formData)
     .set('CSRF-Token', getState().userReducer.user.csrfToken)
-    .then((res) => res) // Not triggered without a then
+    .then((res) => {
+      if (res.body.hasFinishedDeclaringEmployers) {
+        dispatch({ type: SHOW_DECLARATION_TRANSMITTED_DIALOG })
+      }
+      return res
+    })
 
 export const validateEmployerDoc = ({
   documentId,
@@ -363,3 +375,7 @@ export const validateDeclarationInfoDoc = ({ documentId }) => (
       window.Raven.captureException(err)
     })
 }
+
+export const hideDeclarationTransmittedDialog = () => ({
+  type: HIDE_DECLARATION_TRANSMITTED_DIALOG,
+})

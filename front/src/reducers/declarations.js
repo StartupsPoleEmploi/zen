@@ -27,6 +27,8 @@ import {
   FETCH_ACTIVE_DECLARATION_LOADING,
   FETCH_ACTIVE_DECLARATION_SUCCESS,
   FETCH_ACTIVE_DECLARATION_FAILURE,
+  SHOW_DECLARATION_TRANSMITTED_DIALOG,
+  HIDE_DECLARATION_TRANSMITTED_DIALOG,
 } from '../actions/actionNames'
 import { utils } from '../selectors/declarations'
 
@@ -50,6 +52,7 @@ const declarationsReducer = createReducer(
     activeDeclaration: null,
     isActiveDeclarationLoading: false,
     activeDeclarationError: null,
+    showDeclarationTransmittedDialog: false,
   },
   {
     [FETCH_DECLARATIONS_LOADING]: (state) => {
@@ -153,6 +156,12 @@ const declarationsReducer = createReducer(
     [FETCH_ACTIVE_DECLARATION_FAILURE]: (state, { payload }) => {
       state.isActiveDeclarationLoading = false
       state.activeDeclarationError = payload
+    },
+    [SHOW_DECLARATION_TRANSMITTED_DIALOG]: (state) => {
+      state.showDeclarationTransmittedDialog = true
+    },
+    [HIDE_DECLARATION_TRANSMITTED_DIALOG]: (state) => {
+      state.showDeclarationTransmittedDialog = false
     },
   },
 )

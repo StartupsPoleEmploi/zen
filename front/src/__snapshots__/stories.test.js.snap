@@ -1812,7 +1812,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -1954,7 +1954,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2096,7 +2096,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2238,7 +2238,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2385,7 +2385,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2532,7 +2532,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -4839,10 +4839,10 @@ exports[`Storyshots Home default 1`] = `
             Zen est un service Pôle emploi dédié aux
              
             <strong>
-              personnes ayant plusieurs employeurs.
+              personnes ayant un ou plusieurs employeurs.
             </strong>
             <br />
-            Bénéficiez d'une actualisation et un envoi de justificatifs simplifié.
+            Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifié.
           </h2>
         </div>
         <button
@@ -5551,10 +5551,10 @@ exports[`Storyshots Home loginFailed 1`] = `
             Zen est un service Pôle emploi dédié aux
              
             <strong>
-              personnes ayant plusieurs employeurs.
+              personnes ayant un ou plusieurs employeurs.
             </strong>
             <br />
-            Bénéficiez d'une actualisation et un envoi de justificatifs simplifié.
+            Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifié.
           </h2>
         </div>
         <button

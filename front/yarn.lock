@@ -1175,10 +1175,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@bundle-analyzer/core@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@bundle-analyzer/core/-/core-0.5.0.tgz#4661616c0767c48d9c7382bd11fdae46b4139084"
-  integrity sha512-XrxjJ/yUAkL3a52N19CtPmFAYJir1necD1/zoga97M3Vq4GO394TR6RBCMcQnt/F2t8Wj7IM6IKF1ZYdYSxHYw==
+"@bundle-analyzer/core@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@bundle-analyzer/core/-/core-0.5.1.tgz#f993cb89e26602d0d75af73e51b06a4967191b24"
+  integrity sha512-E75rX40U6aEW+T/LgWeM2iUGeqzPcxho918KFKvK97PzKh7uRpsHWTm+3S7chQcHAGxGOH3EKdAStPV5TCK7Gg==
   dependencies:
     axios "^0.19.0"
     brotli-size "^1.0.0"
@@ -1186,12 +1186,12 @@
     gzip-size "^5.1.1"
     omit-deep "^0.3.0"
 
-"@bundle-analyzer/webpack-plugin@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@bundle-analyzer/webpack-plugin/-/webpack-plugin-0.5.0.tgz#14d6f88086f28c28834c93a62503dcda39695bcf"
-  integrity sha512-z8rfjy7LssV6uPsG0m2atE6IucQaBklV6RPvGvhC8FFRCB0c51fqIqqqC18GyzGN921MECxMdrhN3cZoHsobMA==
+"@bundle-analyzer/webpack-plugin@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@bundle-analyzer/webpack-plugin/-/webpack-plugin-0.5.1.tgz#cf8c67a2b9456f4f15a3f5af903fd3226d951008"
+  integrity sha512-eedcDsnRmjI5ECFnKsLaamxSuPKF1B31DpMNcAkY4laUH0/okFqYIbZTx/H73CcDmt4PNOtqtLUnrnojZRXamQ==
   dependencies:
-    "@bundle-analyzer/core" "^0.5.0"
+    "@bundle-analyzer/core" "^0.5.1"
 
 "@date-io/core@^1.1.0":
   version "1.1.0"
@@ -8928,9 +8928,9 @@ no-case@^2.2.0:
     lower-case "^1.1.1"
 
 node-abi@^2.7.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.11.0.tgz#b7dce18815057544a049be5ae75cd1fdc2e9ea59"
-  integrity sha512-kuy/aEg75u40v378WRllQ4ZexaXJiCvB68D2scDXclp/I4cRq6togpbOoKhmN07tns9Zldu51NNERo0wehfX9g==
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.12.0.tgz#40e9cfabdda1837863fa825e7dfa0b15686adf6f"
+  integrity sha512-VhPBXCIcvmo/5K8HPmnWJyyhvgKxnHTUMXR/XwGHV68+wrgkzST4UmQrY/XszSWA5dtnXpNp528zkcyJ/pzVcw==
   dependencies:
     semver "^5.4.1"
 

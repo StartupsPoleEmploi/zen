@@ -50,7 +50,7 @@ const fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated = ({
   userId,
 }) =>
   Declaration.query()
-    .eager(`[declarationMonth, infos, employers.documents]`)
+    .eager(`[infos, employers.documents]`)
     .findOne({
       id: declarationId,
       userId,

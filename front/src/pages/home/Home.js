@@ -10,7 +10,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import EuroIcon from '@material-ui/icons/EuroSymbol'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
-import PlaceIcon from '@material-ui/icons/PlaceOutlined'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import SendIcon from '@material-ui/icons/SendOutlined'
@@ -540,11 +539,7 @@ export const Home = ({ location: { search } }) => {
             Zen est pour vous si ...
           </SectionTitle>
           <ZenIsForYouContainer>
-            <ZenIsForYouSubSection
-              style={{
-                borderRight: 'solid 1px white',
-              }}
-            >
+            <ZenIsForYouSubSection>
               <ZenIsForYouText>
                 <FaceIcon
                   style={{
@@ -560,26 +555,9 @@ export const Home = ({ location: { search } }) => {
                     assistant.e maternel.le
                   </span>
                 </strong>
-                <br /> et si vous êtes{' '}
+                <br />
                 <span aria-label="inscrits ou inscrites">inscrit.e</span> à Pôle
                 emploi
-              </ZenIsForYouText>
-            </ZenIsForYouSubSection>
-
-            <ZenIsForYouSubSection>
-              <ZenIsForYouText>
-                <PlaceIcon
-                  style={{
-                    display: 'block',
-                    margin: '0 auto 2rem auto',
-                    width: '5rem',
-                    height: 'auto',
-                  }}
-                />
-                <strong>
-                  Vous exercez en : <br />
-                  Hauts-de-France, Occitanie, Nouvelle-Aquitaine
-                </strong>
               </ZenIsForYouText>
             </ZenIsForYouSubSection>
           </ZenIsForYouContainer>

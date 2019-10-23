@@ -10,11 +10,15 @@ import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 
 import { fetchUser as fetchUserAction } from './actions/user'
 import { fetchStatus as fetchStatusAction } from './actions/status'
-import { fetchActiveDeclaration as fetchActiveDeclarationAction } from './actions/declarations'
+import {
+  fetchActiveDeclaration as fetchActiveDeclarationAction,
+  hideDeclarationTransmittedDialog as hideDeclarationTransmittedDialogAction,
+} from './actions/declarations'
 import { fetchActiveMonth as fetchActiveMonthAction } from './actions/activeMonth'
 import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
 import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
+import DeclarationTransmittedDialog from './components/Actu/DeclarationTransmittedDialog'
 import PrivateRoute from './components/Generic/PrivateRoute'
 import Actu from './pages/actu/Actu'
 import Employers from './pages/actu/Employers'
@@ -47,6 +51,8 @@ class App extends Component {
     isActiveDeclarationLoading: PropTypes.bool,
     isActiveMonthLoading: PropTypes.bool,
     isUserLoading: PropTypes.bool,
+    showDeclarationTransmittedDialog: PropTypes.bool,
+    hideDeclarationTransmittedDialog: PropTypes.func.isRequired,
   }
 
   state = {
@@ -270,7 +276,6 @@ class App extends Component {
           <Route exact path="/loggedOut" component={LoggedOut} />
           <Route render={() => <div>404</div>} />
         </Switch>
-
         <StatusErrorDialog isOpened={!!this.state.isServiceDown} />
         <DeclarationAlreadySentDialog
           isOpened={this.state.showDeclarationSentOnPEModal}
@@ -279,6 +284,10 @@ class App extends Component {
         <UnableToDeclareDialog
           isOpened={this.state.showUnableToSendDeclarationModal}
           onCancel={this.onCloseModal}
+        />
+        <DeclarationTransmittedDialog
+          isOpened={this.props.showDeclarationTransmittedDialog}
+          onCancel={this.props.hideDeclarationTransmittedDialog}
         />
       </Layout>
     )
@@ -294,6 +303,8 @@ export default hot(module)(
         activeDeclaration: state.declarationsReducer.activeDeclaration,
         isActiveDeclarationLoading:
           state.declarationsReducer.isActiveDeclarationLoading,
+        showDeclarationTransmittedDialog:
+          state.declarationsReducer.showDeclarationTransmittedDialog,
         activeMonth: state.activeMonthReducer.activeMonth,
         isActiveMonthLoading: state.activeMonthReducer.isLoading,
         user: state.userReducer.user,
@@ -305,6 +316,7 @@ export default hot(module)(
         fetchStatus: fetchStatusAction,
         fetchActiveDeclaration: fetchActiveDeclarationAction,
         fetchActiveMonth: fetchActiveMonthAction,
+        hideDeclarationTransmittedDialog: hideDeclarationTransmittedDialogAction,
       },
     )(App),
   ),

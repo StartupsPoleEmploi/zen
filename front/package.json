@@ -12,6 +12,7 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.2.0",
+    "@bundle-analyzer/webpack-plugin": "^0.5.0",
     "@date-io/moment": "^1.1.0",
     "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
@@ -144,7 +145,6 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "@bundle-analyzer/webpack-plugin": "^0.5.0",
     "@storybook/addon-actions": "^5.1.4",
     "@storybook/addon-knobs": "^5.1.4",
     "@storybook/addon-links": "^5.1.4",

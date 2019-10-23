@@ -204,8 +204,7 @@ export class Signup extends Component {
 
         <Typography paragraph style={{ marginBottom: '5rem' }}>
           <strong>
-            Le service est en test uniquement dans les Hauts-de-France et en
-            Occitanie
+            Le service est en test uniquement
             <br />
             pour les{' '}
             <span aria-label="assistants et assistantes">

@@ -1812,7 +1812,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -1954,7 +1954,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2096,7 +2096,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2238,7 +2238,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2385,7 +2385,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2532,7 +2532,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
           <span
             className="MuiButton-label"
           >
-            Parcourir
+            Transmettre
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -4839,10 +4839,10 @@ exports[`Storyshots Home default 1`] = `
             Zen est un service Pôle emploi dédié aux
              
             <strong>
-              personnes ayant plusieurs employeurs.
+              personnes ayant un ou plusieurs employeurs.
             </strong>
             <br />
-            Bénéficiez d'une actualisation et un envoi de justificatifs simplifié.
+            Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifié.
           </h2>
         </div>
         <button
@@ -5103,11 +5103,6 @@ exports[`Storyshots Home default 1`] = `
       >
         <div
           className="sc-cmTdod fgxRog"
-          style={
-            Object {
-              "borderRight": "solid 1px white",
-            }
-          }
         >
           <p
             className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
@@ -5141,51 +5136,12 @@ exports[`Storyshots Home default 1`] = `
               </span>
             </strong>
             <br />
-             et si vous êtes
-             
             <span
               aria-label="inscrits ou inscrites"
             >
               inscrit.e
             </span>
              à Pôle emploi
-          </p>
-        </div>
-        <div
-          className="sc-cmTdod fgxRog"
-        >
-          <p
-            className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
-          >
-            <svg
-              aria-hidden="true"
-              className="MuiSvgIcon-root"
-              focusable="false"
-              role="presentation"
-              style={
-                Object {
-                  "display": "block",
-                  "height": "auto",
-                  "margin": "0 auto 2rem auto",
-                  "width": "5rem",
-                }
-              }
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"
-              />
-              <circle
-                cx="12"
-                cy="9"
-                r="2.5"
-              />
-            </svg>
-            <strong>
-              Vous exercez en : 
-              <br />
-              Hauts-de-France, Occitanie, Nouvelle-Aquitaine
-            </strong>
           </p>
         </div>
       </div>
@@ -5551,10 +5507,10 @@ exports[`Storyshots Home loginFailed 1`] = `
             Zen est un service Pôle emploi dédié aux
              
             <strong>
-              personnes ayant plusieurs employeurs.
+              personnes ayant un ou plusieurs employeurs.
             </strong>
             <br />
-            Bénéficiez d'une actualisation et un envoi de justificatifs simplifié.
+            Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifié.
           </h2>
         </div>
         <button
@@ -5815,11 +5771,6 @@ exports[`Storyshots Home loginFailed 1`] = `
       >
         <div
           className="sc-cmTdod fgxRog"
-          style={
-            Object {
-              "borderRight": "solid 1px white",
-            }
-          }
         >
           <p
             className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
@@ -5853,51 +5804,12 @@ exports[`Storyshots Home loginFailed 1`] = `
               </span>
             </strong>
             <br />
-             et si vous êtes
-             
             <span
               aria-label="inscrits ou inscrites"
             >
               inscrit.e
             </span>
              à Pôle emploi
-          </p>
-        </div>
-        <div
-          className="sc-cmTdod fgxRog"
-        >
-          <p
-            className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
-          >
-            <svg
-              aria-hidden="true"
-              className="MuiSvgIcon-root"
-              focusable="false"
-              role="presentation"
-              style={
-                Object {
-                  "display": "block",
-                  "height": "auto",
-                  "margin": "0 auto 2rem auto",
-                  "width": "5rem",
-                }
-              }
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"
-              />
-              <circle
-                cx="12"
-                cy="9"
-                r="2.5"
-              />
-            </svg>
-            <strong>
-              Vous exercez en : 
-              <br />
-              Hauts-de-France, Occitanie, Nouvelle-Aquitaine
-            </strong>
           </p>
         </div>
       </div>

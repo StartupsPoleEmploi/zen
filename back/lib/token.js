@@ -23,10 +23,12 @@ const credentials = {
 const oauth2 = require('simple-oauth2').create(credentials)
 const winston = require('../lib/log')
 
-const MAX_DELAY_FOR_REFRESH = 45 // We got 45 minutes after expiration to refresh the token
+// We can refresh the session for 45 minutes after initial login
+const MAX_DELAY_FOR_REFRESH = 45
 
-const isRefreshPossible = (tokenExpiration) =>
-  isBefore(new Date(), addMinutes(tokenExpiration, MAX_DELAY_FOR_REFRESH))
+const isRefreshPossible = (loginDate) => {
+  isBefore(new Date(), addMinutes(loginDate, MAX_DELAY_FOR_REFRESH))
+}
 
 // Check that the user token is valid (note: since we may need to do heavy operations
 // we actually consider the token as invalid a full minute before it actually is.

@@ -217,6 +217,7 @@ router.get('/callback', (req, res) => {
               canSendDeclaration,
               hasAlreadySentDeclaration,
               tokenExpirationDate,
+              loginDate: new Date(),
             }
             res.redirect('/')
           })

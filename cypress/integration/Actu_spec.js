@@ -6,7 +6,7 @@ import {
   checkFormValues,
   pickDate,
   checkDate,
-  getNextLink,
+  getNextButton,
 } from '../pages/Actu'
 
 const { omit } = Cypress._
@@ -54,10 +54,7 @@ describe('Declaration page', function() {
           const inputsToFill = omit(defaultValues, keyToOmit)
           fillFormAnswers(inputsToFill)
 
-          // cypress yields the label inside the button, so we need to get its parent.
-          getNextLink()
-            .parent('button')
-            .should('be.disabled')
+          getNextButton().should('be.disabled')
 
           cy.reload()
         })
@@ -85,7 +82,7 @@ describe('Declaration page', function() {
               .click()
           }
 
-          getNextLink().click()
+          getNextButton().click()
 
           cy.get('p[role=alert]').should('be.visible')
 
@@ -99,7 +96,7 @@ describe('Declaration page', function() {
             pickDate(fieldToTest, '21')
             pickDate(fieldToTest, '20', { last: true })
 
-            getNextLink().click()
+            getNextButton().click()
 
             cy.get('p[role=alert]')
               .contains('Merci de corriger')
@@ -114,7 +111,7 @@ describe('Declaration page', function() {
     describe('Valid form', () => {
       it('should validate for default declaration', () => {
         fillFormAnswers(defaultValues)
-        getNextLink().click()
+        getNextButton().click()
 
         cy.url().should('contain', '/employers')
 
@@ -150,7 +147,7 @@ describe('Declaration page', function() {
         pickDate('hasInvalidity', '20')
         pickDate('isLookingForJob', '20')
 
-        getNextLink().click()
+        getNextButton().click()
         cy.url().should('contain', '/employers')
 
         // Go back to the page and check that the values in the form are there
@@ -172,7 +169,7 @@ describe('Declaration page', function() {
       it(`should warn the user before transmission if they haven't worked`, () => {
         fillFormAnswers({ ...defaultValues, hasWorked: NO })
         // Open modal
-        getNextLink().click()
+        getNextButton().click()
 
         // Close modal
         cy.get('div[role=dialog] button')
@@ -180,7 +177,7 @@ describe('Declaration page', function() {
           .click()
 
         // Re-open modal
-        getNextLink().click()
+        getNextButton().click()
 
         cy.get('div[role=dialog] button')
           .contains('Oui, je confirme')
@@ -197,7 +194,7 @@ describe('Declaration page', function() {
 
         cy.get('#isLookingForJob').should('not.exist')
 
-        getNextLink().click()
+        getNextButton().click()
         cy.url().should('contain', '/employers')
       })
 
@@ -210,7 +207,7 @@ describe('Declaration page', function() {
         fillFormAnswers(omit(defaultValues, 'hasMaternityLeave'))
         cy.get('#hasMaternityLeave').should('not.exist')
 
-        getNextLink().click()
+        getNextButton().click()
         cy.url().should('contain', '/employers')
       })
     })

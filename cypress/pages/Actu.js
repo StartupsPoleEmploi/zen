@@ -42,4 +42,8 @@ export const checkDate = (fieldName, value, { last } = { last: false }) => {
     })
 }
 
-export const getNextLink = () => cy.get('button').contains('Suivant')
+export const getNextButton = () =>
+  cy
+    .get('button')
+    .contains('Suivant')
+    .parent('button')

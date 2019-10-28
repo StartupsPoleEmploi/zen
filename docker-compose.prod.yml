@@ -1,8 +1,8 @@
-version: "2"
+version: '2'
 services:
   node:
     volumes:
-      - "/mnt/datalakepe/vers_datalake/:/home/back/datalake/versDatalake"
+      - '/mnt/datalakepe/:/mnt/datalakepe/'
     environment:
       - NODE_ENV=production
 

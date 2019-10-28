@@ -30,7 +30,7 @@ import {
   SHOW_DECLARATION_TRANSMITTED_DIALOG,
   HIDE_DECLARATION_TRANSMITTED_DIALOG,
 } from '../actions/actionNames'
-import { utils } from '../selectors/declarations'
+import { utils } from '../../selectors/declarations'
 
 const {
   findEmployer,

@@ -20,9 +20,9 @@ import {
   SET_USER_LOGGED_OUT,
   HIDE_DECLARATION_TRANSMITTED_DIALOG,
 } from './actionNames'
-import { MAX_PDF_PAGE } from '../constants'
-import { utils } from '../selectors/declarations'
-import { canUsePDFViewer } from '../lib/file'
+import { MAX_PDF_PAGE } from '../../constants'
+import { utils } from '../../selectors/declarations'
+import { canUsePDFViewer } from '../../lib/file'
 
 const { findEmployer, findDeclarationInfo } = utils
 

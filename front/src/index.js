@@ -14,7 +14,7 @@ import './lib/external/hotjar'
 
 import { version } from '../package.json'
 import App from './App'
-import store from './store'
+import store from './redux/store'
 import DeveloperDialog from './components/Generic/DeveloperDialog'
 
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV

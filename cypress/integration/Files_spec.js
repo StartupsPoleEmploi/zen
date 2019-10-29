@@ -118,8 +118,9 @@ describe('Files page', function() {
         it('should not allow the user to upload any more pages than the maximum', () => {
           uploadFile({ file: 'logo-zen-pe.png' })
           addNewPage({ file: 'pdf-14-pages.pdf' })
-
-          cy.contains('Erreur : Fichier trop lourd').should('exist')
+          cy.contains('Erreur : Fichier trop lourd', { timeout: 20000 }).should(
+            'exist',
+          )
         })
 
         it('should not allow adding pages to already big enough document', () => {

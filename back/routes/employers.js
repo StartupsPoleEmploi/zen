@@ -284,11 +284,10 @@ router.post('/files', upload.single('document'), (req, res, next) => {
     .then(async (employer) => {
       if (!employer) return res.status(404).json('No such employer')
 
-      const isAddingFile = !!req.query.add
-
       const existingDocument = employer.documents.find(
         (document) => document.type === type,
       )
+      const isAddingFile = !!req.query.add && existingDocument.originalFileName
 
       let documentFileObj = skip
         ? {

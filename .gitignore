@@ -6,3 +6,7 @@ nginx/.htpasswd
 cypress/videos
 cypress/screenshots
 cypress/integration/examples
+
+.DS_Store
+
+ignore/

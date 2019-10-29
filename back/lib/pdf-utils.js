@@ -17,7 +17,6 @@ pdftk.configure({ bin: 'pdftk' })
 
 const IMG_EXTENSIONS = ['.png', '.jpeg', '.jpg']
 const MAX_PDF_SIZE = 5
-const MIN_FILE_SIZE_FOR_COMPRESSION = 2.5 * 1000000 // 2.5Mb
 const MAX_IMAGE_DIMENSION = 1500 // in pixel
 
 const getFileBasename = (filename) =>
@@ -60,23 +59,23 @@ const numberOfPage = (filePath) =>
     parseInt(res.stdout.replace('\n', ''), 10),
   )
 
-const optimizePDF = (pdfFilePath) => {
+async function optimizePDF(pdfFilePath) {
+  const tmpFilePath = pdfFilePath.replace('.pdf', '-tmp.pdf')
   const psFilePath = pdfFilePath.replace('.pdf', '.ps')
+  const stat = util.promisify(fs.stat)
 
-  return new Promise((resolve, reject) => {
-    fs.stat(pdfFilePath, (err, stats) => {
-      if (err) return reject(err)
-
-      // Optimize file that are only above a certain level of size
-      if (stats.size < MIN_FILE_SIZE_FOR_COMPRESSION) return resolve()
-
-      exec(
-        `pdf2ps -dSAFER -sPAPERSIZE=a4 ${pdfFilePath} ${psFilePath} && ps2pdf -dSAFER -sPAPERSIZE=a4 ${psFilePath} ${pdfFilePath} && rm ${psFilePath}`,
-      )
-        .then(resolve)
-        .catch(reject)
-    })
-  })
+  try {
+    const { size: oldSize } = await stat(pdfFilePath)
+    await exec(
+      `pdf2ps -dSAFER -sPAPERSIZE=a4 ${pdfFilePath} ${psFilePath} && ps2pdf -dSAFER -sPAPERSIZE=a4 ${psFilePath} ${tmpFilePath} && rm ${psFilePath}`,
+    )
+    const { size: newSize } = await stat(tmpFilePath)
+    if (oldSize > newSize) {
+      await exec(`mv ${tmpFilePath} ${pdfFilePath}`)
+    }
+  } finally {
+    await exec(`rm -rf ${tmpFilePath}`)
+  }
 }
 
 const resizeImage = (imgFilePath) =>
@@ -143,6 +142,14 @@ const handleNewFileUpload = async ({
       ...documentFileObj,
       file: `${getFileBasename(newFilename)}.pdf`,
     }
+  } else if (path.extname(newFilename) === '.pdf') {
+    const fileName = `${uploadDestination}${newFilename}`
+    await optimizePDF(fileName).catch((err) =>
+      // if the optimization fails, log it, but continue anyway
+      winston.error(`Error when optimizing document ${fileName} (ERR ${err})`, {
+        error: err,
+      }),
+    )
   }
 
   if (

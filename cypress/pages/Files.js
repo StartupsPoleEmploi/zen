@@ -64,15 +64,15 @@ export const deletePage = () => {
 
 export const getPaginationText = () => cy.get('div[role=dialog] .pager')
 
-export const getGoToPrevPage = () => cy.get('div[role=dialog] .previous-page')
-export const getGoToNextPage = () => cy.get('div[role=dialog] .next-page')
+export const getGoToPrevPage = () =>
+  cy.get('div[role=dialog] .pager .previous-page')
+export const getGoToNextPage = () =>
+  cy.get('div[role=dialog] .pager .next-page')
 export const goToNextPage = () => getGoToNextPage().click()
 export const goToPrevPage = () => getGoToPrevPage().click()
 
 export const closeModal = () => {
-  cy.get('div[role=dialog] button')
-    .contains('Fermer')
-    .click()
+  cy.get('div[role=dialog] .bt-close').click()
   cy.get('div[role=dialog]').should('not.exist')
 }
 export const validateModalContent = () => {}

@@ -1,4 +1,4 @@
-import React, { Component, Fragment, Suspense } from 'react'
+import React, { PureComponent, Fragment, Suspense } from 'react'
 import styled from 'styled-components'
 import { CircularProgress } from '@material-ui/core'
 import PropTypes from 'prop-types'
@@ -16,7 +16,7 @@ import MainActionButton from '../MainActionButton'
 import { primaryBlue } from '../../../constants'
 import CustomDialog from '../CustomDialog'
 
-const PDFViewer = React.lazy(() => import('../PDFViewer'))
+const PDFViewer = React.lazy(() => import('../PDFViewer/index'))
 
 export const MAX_PDF_PAGE = 5
 
@@ -44,7 +44,7 @@ const initialState = {
   totalPageNumber: null,
 }
 
-class DocumentDialog extends Component {
+class DocumentDialog extends PureComponent {
   static propTypes = {
     isOpened: PropTypes.bool.isRequired,
     error: PropTypes.string,
@@ -206,18 +206,16 @@ class DocumentDialog extends Component {
           fullWidth
           maxWidth="md"
           forceConstantHeight
+          header={
+            <TopDialogActions>
+              <Button onClick={this.onCancel} className="bt-close">
+                Fermer
+                <CloseIcon style={{ marginLeft: '1rem' }} />
+              </Button>
+            </TopDialogActions>
+          }
           content={
             <Fragment>
-              <TopDialogActions>
-                <Button onClick={this.onCancel}>
-                  Fermer
-                  <CloseIcon
-                    style={{
-                      marginLeft: '1rem',
-                    }}
-                  />
-                </Button>
-              </TopDialogActions>
               {(error || showSuccessAddMessage || showSuccessRemoveMessage) && (
                 <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
                   {error && (

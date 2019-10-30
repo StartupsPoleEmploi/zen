@@ -54,6 +54,9 @@ const getPDF = (document, directory) => {
   })
 }
 
+// This command will throw a promise error if the pdf is invalid
+const checkPDFValidity = (filePath) => exec(`pdfinfo ${filePath}`)
+
 const numberOfPage = (filePath) =>
   exec(`pdfinfo ${filePath} | grep Pages | sed 's/[^0-9]*//'`).then((res) =>
     parseInt(res.stdout.replace('\n', ''), 10),
@@ -216,4 +219,5 @@ module.exports = {
   handleNewFileUpload,
   IMG_EXTENSIONS,
   optimizePDF,
+  checkPDFValidity,
 }

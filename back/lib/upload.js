@@ -1,6 +1,7 @@
 const multer = require('multer')
 const path = require('path')
 const { uploadsDirectory: uploadDestination } = require('config')
+const { checkPDFValidity } = require('./pdf-utils')
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -20,10 +21,17 @@ const upload = multer({
   fileFilter(req, file, callback) {
     const extensions = /jpeg|jpg|png|pdf/i
     const mimetypes = /jpeg|jpg|png|pdf/i
-    const mimetype = mimetypes.test(file.mimetype)
-    const extname = extensions.test(path.extname(file.originalname))
+    const hasValidMimeType = mimetypes.test(file.mimetype)
+    const extension = path.extname(file.originalname)
+    const hasValidExtname = extensions.test(extension)
 
-    callback(null, mimetype && extname)
+    if (extension.includes('pdf')) {
+      return checkPDFValidity(file.path)
+        .then(() => callback(null, true))
+        .catch(callback)
+    }
+
+    callback(null, hasValidMimeType && hasValidExtname)
   },
   limits: {
     files: 1,

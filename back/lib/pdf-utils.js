@@ -10,8 +10,8 @@ const imagemin = require('imagemin-keep-folder')
 const imageminPngquant = require('imagemin-pngquant')
 const imageminMozjpeg = require('imagemin-mozjpeg')
 
+const { uploadsDirectory: uploadDestination } = require('config')
 const winston = require('../lib/log')
-const { uploadDestination } = require('../lib/upload')
 
 pdftk.configure({ bin: 'pdftk' })
 

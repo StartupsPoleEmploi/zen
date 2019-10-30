@@ -6,10 +6,11 @@ const router = express.Router()
 const { get, omit } = require('lodash')
 const { transaction } = require('objection')
 const Raven = require('raven')
+const { uploadsDirectory: uploadDestination } = require('config')
 
 const { DECLARATION_STATUSES } = require('../constants')
 const winston = require('../lib/log')
-const { upload, uploadDestination } = require('../lib/upload')
+const { upload } = require('../lib/upload')
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')

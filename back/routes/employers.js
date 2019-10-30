@@ -5,8 +5,9 @@ const fs = require('fs')
 const router = express.Router()
 const { transaction } = require('objection')
 const { get, isBoolean, isInteger, isNumber, isString } = require('lodash')
+const { uploadsDirectory: uploadDestination } = require('config')
 
-const { upload, uploadDestination } = require('../lib/upload')
+const { upload } = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,

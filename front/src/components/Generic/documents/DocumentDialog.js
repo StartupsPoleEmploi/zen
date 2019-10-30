@@ -222,7 +222,7 @@ class DocumentDialog extends Component {
                 <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
                   {error && (
                     <Typography role="alert" color="error">
-                      {error}!
+                      {error}
                     </Typography>
                   )}
 

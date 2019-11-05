@@ -1,14 +1,13 @@
-import Button from '@material-ui/core/Button'
+import React, { PureComponent } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import ArrowBack from '@material-ui/icons/ArrowBack'
-import ArrowForward from '@material-ui/icons/ArrowForward'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import styled from 'styled-components'
 
-import { primaryBlue } from '../../constants'
+import PDFSlider from './PDFSlider'
+import PDFNatigation from './PDFNatigation'
+import PDFNatigationHover from './PDFNatigationHover'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.js`
 
@@ -17,15 +16,13 @@ const PDFViewerContainer = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
+  position: relative;
 
   canvas {
     margin: auto;
     /* Override react-pdf default styles */
-    max-height: 70vh;
     width: auto !important;
     height: auto !important;
-    max-width: 90% !important;
-    box-shadow: 0px 0px 20px #ccc;
   }
 
   /*
@@ -39,15 +36,13 @@ const PDFViewerContainer = styled.div`
   }
 `
 
-const PaginationContainer = styled.div`
-  display: flex;
-  padding-top: 1rem;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+const PageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 `
 
-export default class PDFViewer extends Component {
+export default class PDFViewer extends PureComponent {
   static propTypes = {
     url: PropTypes.string.isRequired,
     onPageNumberChange: PropTypes.func.isRequired,
@@ -57,6 +52,8 @@ export default class PDFViewer extends Component {
   state = {
     numPages: null,
     pageNumber: 1,
+    scale: 1,
+    needScale: true,
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -70,6 +67,8 @@ export default class PDFViewer extends Component {
     }
   }
 
+  refPageContainer = React.createRef()
+
   onDocumentLoadSuccess = (doc) => {
     const { numPages } = doc
     this.setState({
@@ -78,70 +77,70 @@ export default class PDFViewer extends Component {
     })
   }
 
+  onDocumentRenderSuccess = () => {
+    const canvas = document.getElementsByTagName('canvas')[0]
+    if (this.state.needScale && canvas) {
+      const wPage = this.refPageContainer.current.clientWidth
+      const scale = Number(Math.max(wPage / canvas.width, 0.1).toFixed(1))
+      if (wPage < canvas.width) {
+        this.setState({ scale, needScale: false })
+      }
+    }
+  }
+
   changePage = (offset) =>
     this.setState((prevState) => ({
       pageNumber: prevState.pageNumber + offset,
+      needScale: true,
+      scale: 1,
     }))
 
   previousPage = () => this.changePage(-1)
 
   nextPage = () => this.changePage(1)
 
+  onChangeScale = (value) => this.setState({ scale: value })
+
   render() {
     const { originalFileName } = this.props
-    const { numPages, pageNumber } = this.state
+    const { numPages, pageNumber, scale } = this.state
 
     return (
       <PDFViewerContainer>
-        <Document
-          loading={<CircularProgress style={{ margin: '10rem auto' }} />}
-          file={this.props.url}
-          onLoadSuccess={this.onDocumentLoadSuccess}
-        >
-          <Page pageNumber={pageNumber} />
-        </Document>
-
         {originalFileName && (
           <Typography style={{ marginTop: '1rem' }} className="filename">
             {originalFileName}
           </Typography>
         )}
+        <PageContainer ref={this.refPageContainer}>
+          <Document
+            loading={<CircularProgress style={{ margin: '10rem auto' }} />}
+            file={this.props.url}
+            onLoadSuccess={this.onDocumentLoadSuccess}
+          >
+            <Page
+              pageNumber={pageNumber}
+              scale={scale}
+              onRenderSuccess={this.onDocumentRenderSuccess}
+            />
+          </Document>
+        </PageContainer>
 
-        {numPages > 1 && (
-          <PaginationContainer className="pager">
-            <Button
-              disabled={pageNumber <= 1}
-              onClick={this.previousPage}
-              className="previous-page"
-            >
-              <ArrowBack
-                style={{
-                  color: pageNumber <= 1 ? 'inherit' : primaryBlue,
-                  marginRight: '.5rem',
-                }}
-              />{' '}
-              Précédente
-            </Button>
+        <PDFNatigationHover
+          numPages={numPages}
+          pageNumber={pageNumber}
+          previousPage={this.previousPage}
+          nextPage={this.nextPage}
+        />
 
-            <Typography style={{ padding: '0 2rem' }}>
-              {pageNumber}/{numPages}
-            </Typography>
+        <PDFNatigation
+          numPages={numPages}
+          pageNumber={pageNumber}
+          previousPage={this.previousPage}
+          nextPage={this.nextPage}
+        />
 
-            <Button
-              disabled={pageNumber >= numPages}
-              onClick={this.nextPage}
-              className="next-page"
-            >
-              Suivante
-              <ArrowForward
-                style={{
-                  color: pageNumber >= numPages ? 'inherit' : primaryBlue,
-                  marginLeft: '.5rem',
-                }}
-              />
-            </Button>
-          </PaginationContainer>
-        )}
+        <PDFSlider onChange={this.onChangeScale} value={scale} />
       </PDFViewerContainer>
     )
   }

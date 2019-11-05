@@ -33,6 +33,7 @@ services:
       - SLACK_WEBHOOK_SU_ZEN_TECH=http://localhost
       - API_HOST=https://api-r.es-qvr.fr
       - NODE_ENV=test
+      - ZEN_ENV=test
 
   front:
     build:
@@ -42,6 +43,7 @@ services:
       - "./front:/home/front"
     environment:
       - NODE_ENV=test
+      - REACT_APP_ZEN_ENV=test
       - TZ=Europe/Paris
       - BUNDLE_TOKEN_ANALYZER=${BUNDLE_TOKEN_ANALYZER}
     expose:
@@ -69,4 +71,5 @@ services:
     environment:
       - CYPRESS_baseUrl=http://nginx
       - NODE_ENV=test
+      - REACT_APP_ZEN_ENV=test
       - TZ=Europe/Paris

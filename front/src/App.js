@@ -8,13 +8,13 @@ import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 
-import { fetchUser as fetchUserAction } from './actions/user'
-import { fetchStatus as fetchStatusAction } from './actions/status'
+import { fetchUser as fetchUserAction } from './redux/actions/user'
+import { fetchStatus as fetchStatusAction } from './redux/actions/status'
 import {
   fetchActiveDeclaration as fetchActiveDeclarationAction,
   hideDeclarationTransmittedDialog as hideDeclarationTransmittedDialogAction,
-} from './actions/declarations'
-import { fetchActiveMonth as fetchActiveMonthAction } from './actions/activeMonth'
+} from './redux/actions/declarations'
+import { fetchActiveMonth as fetchActiveMonthAction } from './redux/actions/activeMonth'
 import DeclarationAlreadySentDialog from './components/Actu/DeclarationAlreadySentDialog'
 import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'

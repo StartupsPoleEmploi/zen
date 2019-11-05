@@ -6,11 +6,14 @@ services:
   node:
     environment:
       - NODE_ENV=qa
+      - REACT_APP_ZEN_ENV=qa
 
   front:
     environment:
       - NODE_ENV=qa
+      - REACT_APP_ZEN_ENV=qa
 
   front-admin:
     environment:
       - NODE_ENV=qa
+      - REACT_APP_ZEN_ENV=qa

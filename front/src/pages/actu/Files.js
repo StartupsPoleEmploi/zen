@@ -23,7 +23,7 @@ import {
   uploadEmployerFile as uploadEmployerFileAction,
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
   validateEmployerDoc as validateEmployerDocAction,
-} from '../../actions/declarations'
+} from '../../redux/actions/declarations'
 import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'

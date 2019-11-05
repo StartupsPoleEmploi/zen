@@ -36,6 +36,7 @@ const StyledDialogActions = styled(DialogActions)`
 export const CustomDialog = ({
   actions,
   content,
+  header,
   titleId,
   title,
   isOpened,
@@ -60,6 +61,7 @@ export const CustomDialog = ({
       {...rest}
     >
       {title && <StyledDialogTitle id={titleId}>{title}</StyledDialogTitle>}
+      {header}
       {content && (
         <StyledDialogContent
           style={{
@@ -83,6 +85,7 @@ export const CustomDialog = ({
 CustomDialog.propTypes = {
   actions: PropTypes.node,
   content: PropTypes.node,
+  header: PropTypes.node,
   onCancel: PropTypes.func,
   isOpened: PropTypes.bool.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

@@ -14,7 +14,7 @@ import './lib/external/hotjar'
 
 import { version } from '../package.json'
 import App from './App'
-import store from './store'
+import store from './redux/store'
 import DeveloperDialog from './components/Generic/DeveloperDialog'
 
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
@@ -78,8 +78,8 @@ ReactDOM.render(
     <CssBaseline />
     <MuiThemeProvider theme={theme}>
       {/* The following modal must never be displayed out of dev mode, modify with extreme caution */
-      (process.env.NODE_ENV === 'development' ||
-        process.env.NODE_ENV === 'qa') && <DeveloperDialog />}
+      (process.env.REACT_APP_ZEN_ENV === 'development' ||
+        process.env.REACT_APP_ZEN_ENV === 'qa') && <DeveloperDialog />}
       <BrowserRouter>
         <App />
       </BrowserRouter>

@@ -8,14 +8,17 @@ services:
   node:
     environment:
       - NODE_ENV=development
+      - ZEN_ENV=development
 
   front:
     environment:
       - NODE_ENV=development
+      - REACT_APP_ZEN_ENV=development
 
   front-admin:
     environment:
       - NODE_ENV=development
+      - REACT_APP_ZEN_ENV=development
 
   db:
     ports:

@@ -390,7 +390,7 @@ router.post('/files', upload.single('document'), (req, res, next) => {
         return res.status(400).json('No such DeclarationInfo id')
       }
 
-      const isAddingFile = !!req.query.add
+      const isAddingFile = !!req.query.add && declarationInfo.originalFileName
 
       let documentFileObj = req.body.skip
         ? {

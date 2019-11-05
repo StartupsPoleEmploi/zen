@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 import store from 'store2'
 import styled from 'styled-components'
 
-import { postDeclaration as postDeclarationAction } from '../../actions/declarations'
+import { postDeclaration as postDeclarationAction } from '../../redux/actions/declarations'
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'

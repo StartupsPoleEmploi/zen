@@ -21,7 +21,7 @@ import styled from 'styled-components'
 import {
   fetchDeclarations as fetchDeclarationsAction,
   postEmployers as postEmployersAction,
-} from '../../actions/declarations'
+} from '../../redux/actions/declarations'
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
 import EmployerQuestion from '../../components/Actu/EmployerQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'

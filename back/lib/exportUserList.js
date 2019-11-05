@@ -6,7 +6,7 @@ const winston = require('../lib/log')
 
 const User = require('../models/User')
 
-const EXPORT_DIR = '/home/back/datalake/versDatalake/'
+const EXPORT_DIR = '/mnt/datalakepe/vers_datalake/'
 const EXPORT_FILENAME_PATH = `${EXPORT_DIR}export_utilisateur.csv`
 const EXPORT_FIELDS = [
   'firstName',

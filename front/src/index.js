@@ -78,8 +78,8 @@ ReactDOM.render(
     <CssBaseline />
     <MuiThemeProvider theme={theme}>
       {/* The following modal must never be displayed out of dev mode, modify with extreme caution */
-      (process.env.NODE_ENV === 'development' ||
-        process.env.NODE_ENV === 'qa') && <DeveloperDialog />}
+      (process.env.REACT_APP_ZEN_ENV === 'development' ||
+        process.env.REACT_APP_ZEN_ENV === 'qa') && <DeveloperDialog />}
       <BrowserRouter>
         <App />
       </BrowserRouter>

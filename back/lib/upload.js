@@ -3,7 +3,7 @@ const path = require('path')
 const { uploadsDirectory: uploadDestination } = require('config')
 const { checkPDFValidity } = require('./pdf-utils')
 
-const upload = multer({
+const uploadMiddleware = multer({
   storage: multer.diskStorage({
     destination: uploadDestination,
     filename(req, file, cb) {
@@ -25,12 +25,6 @@ const upload = multer({
     const extension = path.extname(file.originalname)
     const hasValidExtname = extensions.test(extension)
 
-    if (extension.includes('pdf')) {
-      return checkPDFValidity(file.path)
-        .then(() => callback(null, true))
-        .catch(callback)
-    }
-
     callback(null, hasValidMimeType && hasValidExtname)
   },
   limits: {
@@ -38,6 +32,18 @@ const upload = multer({
   },
 })
 
+const checkPDFValidityMiddleware = (req, res, next) => {
+  if (!req.file) return next()
+
+  if (req.file.path.endsWith('pdf')) {
+    return checkPDFValidity(req.file.path)
+      .then(() => next())
+      .catch(next)
+  }
+  next()
+}
+
 module.exports = {
-  upload,
+  uploadMiddleware,
+  checkPDFValidityMiddleware,
 }

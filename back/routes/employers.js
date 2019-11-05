@@ -7,7 +7,10 @@ const { transaction } = require('objection')
 const { get, isBoolean, isInteger, isNumber, isString } = require('lodash')
 const { uploadsDirectory: uploadDestination } = require('config')
 
-const { upload } = require('../lib/upload')
+const {
+  uploadMiddleware,
+  checkPDFValidityMiddleware,
+} = require('../lib/upload')
 const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
@@ -258,107 +261,113 @@ router.get('/files', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/files', upload.single('document'), (req, res, next) => {
-  const { documentType: type, employerId, skip } = req.body
+router.post(
+  '/files',
+  uploadMiddleware.single('document'),
+  checkPDFValidityMiddleware,
+  (req, res, next) => {
+    const { documentType: type, employerId, skip } = req.body
 
-  if (!req.file && !skip) return res.status(400).json('Missing file')
-  if (!employerId) return res.status(400).json('Missing employerId')
-  if (!Object.values(EmployerDocument.types).includes(type)) {
-    return res.status(400).json('Missing documentType')
-  }
+    if (!req.file && !skip) return res.status(400).json('Missing file')
+    if (!employerId) return res.status(400).json('Missing employerId')
+    if (!Object.values(EmployerDocument.types).includes(type)) {
+      return res.status(400).json('Missing documentType')
+    }
 
-  /*
+    /*
     2 possibilities :
     * We have an employerId >> it's a new document being added
     * We have a id >> it's a document being updated
   */
 
-  const fetchEmployer = () =>
-    Employer.query()
-      .eager('[documents, declaration]')
-      .findOne({
-        id: employerId,
-        userId: req.session.user.id,
-      })
+    const fetchEmployer = () =>
+      Employer.query()
+        .eager('[documents, declaration]')
+        .findOne({
+          id: employerId,
+          userId: req.session.user.id,
+        })
 
-  return fetchEmployer()
-    .then(async (employer) => {
-      if (!employer) return res.status(404).json('No such employer')
+    return fetchEmployer()
+      .then(async (employer) => {
+        if (!employer) return res.status(404).json('No such employer')
 
-      const existingDocument = employer.documents.find(
-        (document) => document.type === type,
-      )
-      const isAddingFile = !!req.query.add && existingDocument.originalFileName
+        const existingDocument = employer.documents.find(
+          (document) => document.type === type,
+        )
+        const isAddingFile =
+          !!req.query.add && existingDocument.originalFileName
 
-      let documentFileObj = skip
-        ? {
-            // Used in case the user sent his file by another means.
-            file: null,
-            originalFileName: null,
-            isTransmitted: true,
-            type,
+        let documentFileObj = skip
+          ? {
+              // Used in case the user sent his file by another means.
+              file: null,
+              originalFileName: null,
+              isTransmitted: true,
+              type,
+            }
+          : {
+              file: req.file.filename,
+              type,
+              originalFileName: isAddingFile
+                ? existingDocument.originalFileName
+                : req.file.originalname,
+            }
+
+        if (!skip) {
+          const existingDocumentIsPDF =
+            existingDocument && path.extname(existingDocument.file) === '.pdf'
+
+          if (isAddingFile && !existingDocumentIsPDF) {
+            // Couldn't happen because 'Add a page' is only available in PDFViewer
+            // So the file should already be a PDF (for how long ? FIXME ?)
+            throw new Error(
+              `Attempt to add a page to a non-PDF file : ${existingDocument.file}`,
+            )
           }
-        : {
-            file: req.file.filename,
-            type,
-            originalFileName: isAddingFile
-              ? existingDocument.originalFileName
-              : req.file.originalname,
+
+          try {
+            documentFileObj = await handleNewFileUpload({
+              newFilename: req.file.filename,
+              existingDocumentFile: existingDocument && existingDocument.file,
+              documentFileObj,
+              isAddingFile,
+            })
+          } catch (err) {
+            // To get the correct error message front-side,
+            // we need to ensure that the HTTP status is 413
+            return res.status(413).json(err.message)
           }
-
-      if (!skip) {
-        const existingDocumentIsPDF =
-          existingDocument && path.extname(existingDocument.file) === '.pdf'
-
-        if (isAddingFile && !existingDocumentIsPDF) {
-          // Couldn't happen because 'Add a page' is only available in PDFViewer
-          // So the file should already be a PDF (for how long ? FIXME ?)
-          throw new Error(
-            `Attempt to add a page to a non-PDF file : ${existingDocument.file}`,
-          )
         }
 
-        try {
-          documentFileObj = await handleNewFileUpload({
-            newFilename: req.file.filename,
-            existingDocumentFile: existingDocument && existingDocument.file,
-            documentFileObj,
-            isAddingFile,
+        let savePromise
+        if (!existingDocument) {
+          savePromise = EmployerDocument.query().insert({
+            employerId: employer.id,
+            ...documentFileObj,
           })
-        } catch (err) {
-          // To get the correct error message front-side,
-          // we need to ensure that the HTTP status is 413
-          return res.status(413).json(err.message)
+        } else {
+          savePromise = existingDocument.$query().patch({
+            ...documentFileObj,
+          })
         }
-      }
 
-      let savePromise
-      if (!existingDocument) {
-        savePromise = EmployerDocument.query().insert({
-          employerId: employer.id,
-          ...documentFileObj,
-        })
-      } else {
-        savePromise = existingDocument.$query().patch({
-          ...documentFileObj,
-        })
-      }
-
-      return savePromise
-        .then(fetchEmployer)
-        .then((savedEmployer) => {
-          if (skip) {
-            return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
-              declarationId: employer.declaration.id,
-              userId: req.session.user.id,
-            }).then(() => savedEmployer)
-          }
-          return savedEmployer
-        })
-        .then((savedEmployer) => res.json(savedEmployer))
-    })
-    .catch(next)
-})
+        return savePromise
+          .then(fetchEmployer)
+          .then((savedEmployer) => {
+            if (skip) {
+              return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+                declarationId: employer.declaration.id,
+                userId: req.session.user.id,
+              }).then(() => savedEmployer)
+            }
+            return savedEmployer
+          })
+          .then((savedEmployer) => res.json(savedEmployer))
+      })
+      .catch(next)
+  },
+)
 
 router.post('/files/validate', (req, res, next) => {
   if (!isUserTokenValid(req.user.tokenExpirationDate)) {

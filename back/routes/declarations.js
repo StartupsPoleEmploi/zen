@@ -10,7 +10,10 @@ const { uploadsDirectory: uploadDestination } = require('config')
 
 const { DECLARATION_STATUSES } = require('../constants')
 const winston = require('../lib/log')
-const { upload } = require('../lib/upload')
+const {
+  uploadMiddleware,
+  checkPDFValidityMiddleware,
+} = require('../lib/upload')
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
@@ -374,89 +377,95 @@ router.get('/files', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/files', upload.single('document'), (req, res, next) => {
-  if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
-  if (!req.body.declarationInfoId) {
-    return res.status(400).json('Missing declarationInfoId')
-  }
+router.post(
+  '/files',
+  uploadMiddleware.single('document'),
+  checkPDFValidityMiddleware,
+  (req, res, next) => {
+    if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
+    if (!req.body.declarationInfoId) {
+      return res.status(400).json('Missing declarationInfoId')
+    }
 
-  return DeclarationInfo.query()
-    .eager('declaration.user')
-    .findById(req.body.declarationInfoId)
-    .then(async (declarationInfo) => {
-      if (
-        !declarationInfo ||
-        declarationInfo.declaration.user.id !== req.session.user.id
-      ) {
-        return res.status(400).json('No such DeclarationInfo id')
-      }
+    return DeclarationInfo.query()
+      .eager('declaration.user')
+      .findById(req.body.declarationInfoId)
+      .then(async (declarationInfo) => {
+        if (
+          !declarationInfo ||
+          declarationInfo.declaration.user.id !== req.session.user.id
+        ) {
+          return res.status(400).json('No such DeclarationInfo id')
+        }
 
-      const isAddingFile = !!req.query.add && declarationInfo.originalFileName
+        const isAddingFile = !!req.query.add && declarationInfo.originalFileName
 
-      let documentFileObj = req.body.skip
-        ? {
-            // Used in case the user sent his file by another means.
-            file: null,
-            originalFileName: null,
-            isTransmitted: true,
+        let documentFileObj = req.body.skip
+          ? {
+              // Used in case the user sent his file by another means.
+              file: null,
+              originalFileName: null,
+              isTransmitted: true,
+            }
+          : {
+              file: req.file.filename,
+              originalFileName: isAddingFile
+                ? declarationInfo.originalFileName
+                : req.file.originalname,
+            }
+
+        if (!req.body.skip) {
+          const existingDocumentIsPDF =
+            declarationInfo.file &&
+            path.extname(declarationInfo.file) === '.pdf'
+
+          if (isAddingFile && !existingDocumentIsPDF) {
+            // Couldn't happen because 'Add a page' is only available in PDFViewer
+            // So the file should already be a PDF (for how long ? FIXME ?)
+            throw new Error(
+              `Attempt to add a page to a non-PDF file : ${declarationInfo.file}`,
+            )
           }
-        : {
-            file: req.file.filename,
-            originalFileName: isAddingFile
-              ? declarationInfo.originalFileName
-              : req.file.originalname,
+
+          try {
+            documentFileObj = await handleNewFileUpload({
+              newFilename: req.file.filename,
+              existingDocumentFile: declarationInfo.file,
+              documentFileObj,
+              isAddingFile,
+            })
+          } catch (err) {
+            // To get the correct error message front-side,
+            // we need to ensure that the HTTP status is 413
+            return res.status(413).json(err.message)
           }
+        }
 
-      if (!req.body.skip) {
-        const existingDocumentIsPDF =
-          declarationInfo.file && path.extname(declarationInfo.file) === '.pdf'
-
-        if (isAddingFile && !existingDocumentIsPDF) {
-          // Couldn't happen because 'Add a page' is only available in PDFViewer
-          // So the file should already be a PDF (for how long ? FIXME ?)
-          throw new Error(
-            `Attempt to add a page to a non-PDF file : ${declarationInfo.file}`,
+        return declarationInfo
+          .$query()
+          .patch(documentFileObj)
+          .then(() =>
+            Declaration.query()
+              .eager(eagerDeclarationString)
+              .findOne({
+                id: declarationInfo.declaration.id,
+                userId: req.session.user.id,
+              }),
           )
-        }
-
-        try {
-          documentFileObj = await handleNewFileUpload({
-            newFilename: req.file.filename,
-            existingDocumentFile: declarationInfo.file,
-            documentFileObj,
-            isAddingFile,
+          .then((updatedDeclaration) => {
+            if (req.body.skip) {
+              return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
+                declarationId: updatedDeclaration.id,
+                userId: req.session.user.id,
+              }).then(() => updatedDeclaration)
+            }
+            return updatedDeclaration
           })
-        } catch (err) {
-          // To get the correct error message front-side,
-          // we need to ensure that the HTTP status is 413
-          return res.status(413).json(err.message)
-        }
-      }
-
-      return declarationInfo
-        .$query()
-        .patch(documentFileObj)
-        .then(() =>
-          Declaration.query()
-            .eager(eagerDeclarationString)
-            .findOne({
-              id: declarationInfo.declaration.id,
-              userId: req.session.user.id,
-            }),
-        )
-        .then((updatedDeclaration) => {
-          if (req.body.skip) {
-            return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
-              declarationId: updatedDeclaration.id,
-              userId: req.session.user.id,
-            }).then(() => updatedDeclaration)
-          }
-          return updatedDeclaration
-        })
-        .then((updatedDeclaration) => res.json(updatedDeclaration))
-    })
-    .catch(next)
-})
+          .then((updatedDeclaration) => res.json(updatedDeclaration))
+      })
+      .catch(next)
+  },
+)
 
 router.post('/files/validate', refreshAccessToken, (req, res, next) => {
   if (!isUserTokenValid(req.user.tokenExpirationDate)) {

@@ -5,11 +5,14 @@ services:
       - "/mnt/datalakepe/vers_datalake/:/home/back/datalake/versDatalake"
     environment:
       - NODE_ENV=production
+      - ZEN_ENV=production
 
   front:
     environment:
       - NODE_ENV=production
+      - REACT_APP_ZEN_ENV=production
 
   front-admin:
     environment:
       - NODE_ENV=production
+      - REACT_APP_ZEN_ENV=production

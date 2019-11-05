@@ -13,7 +13,8 @@
     "test:back": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm  node yarn test; exitcode=$?; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f; exit ${exitcode}",
     "test:back:snapshots": "docker-compose -p test-back -f docker-compose.test.yml run -e NODE_CONFIG='{\"bypassDeclarationDispatch\": false, \"bypassDocumentsDispatch\": false}' --rm node yarn test -- -u; exitcode=$?; docker-compose -p test-back -f docker-compose.test.yml stop db; docker-compose -p test-back -f docker-compose.test.yml rm -f; exit ${exitcode}",
     "database:knex-migrate": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:latest",
-    "database:knex-rollback": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:rollback"
+    "database:knex-rollback": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:rollback",
+    "start:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d"
   },
   "lint-staged": {
     "*.js": [

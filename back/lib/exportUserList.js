@@ -26,7 +26,7 @@ const renameFile = (from, to) =>
     })
   })
 
-const saveUsersInCSV = async () => {
+const saveUnauthorizedUsersInCSV = async () => {
   winston.info('Starting export users')
 
   // Archive current file if exists
@@ -48,22 +48,24 @@ const saveUsersInCSV = async () => {
   fs.openSync(EXPORT_FILENAME_PATH, 'w')
 
   // Extract and save in new file
-  return User.query().then((users) => {
-    const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
-    const csvContent = json2csvParser.parse(users)
+  return User.query()
+    .where({ isAuthorized: 'false' })
+    .then((users) => {
+      const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
+      const csvContent = json2csvParser.parse(users)
 
-    fs.writeFile(EXPORT_FILENAME_PATH, csvContent, function(err) {
-      if (err) {
-        winston.error(err)
-        throw err
-      }
+      fs.writeFile(EXPORT_FILENAME_PATH, csvContent, function(err) {
+        if (err) {
+          winston.error(err)
+          throw err
+        }
 
-      winston.info('Finished export users')
+        winston.info('Finished export users')
+      })
     })
-  })
 }
 
 module.exports = {
-  saveUsersInCSV,
+  saveUnauthorizedUsersInCSV,
   EXPORT_FIELDS,
 }

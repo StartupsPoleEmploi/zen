@@ -4,7 +4,7 @@ const winston = require('../lib/log')
 require('../lib/db') // setup db connection
 
 const cleanOldFiles = require('../lib/cleanOldFiles')
-const { saveUsersInCSV } = require('../lib/exportUserList')
+const { saveUnauthorizedUsersInCSV } = require('../lib/exportUserList')
 
 winston.info('Starting utilities agent')
 
@@ -12,4 +12,4 @@ winston.info('Starting utilities agent')
 job('0 30 2 * * 1', cleanOldFiles, null, true, 'Europe/Paris')
 
 // Every day at 6:30
-job('0 30 6 * * *', saveUsersInCSV, null, true, 'Europe/Paris')
+job('0 30 6 * * *', saveUnauthorizedUsersInCSV, null, true, 'Europe/Paris')

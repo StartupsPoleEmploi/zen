@@ -84,6 +84,31 @@ router.get('/users', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/users-with-declaration', (req, res, next) =>
+  User.query()
+    .whereIn(
+      'id',
+      Declaration.query()
+        .distinct()
+        .select('userId'),
+    )
+    .then((users) => {
+      const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
+      const csv = json2csvParser.parse(users)
+
+      res.set(
+        'Content-disposition',
+        `attachment; filename=utilisateurs-avec-declaration-${format(
+          new Date(),
+          'YYYY-MM-DD',
+        )}.csv`,
+      )
+      res.set('Content-type', 'text/csv')
+      return res.send(csv)
+    })
+    .catch(next),
+)
+
 router.post('/users/authorize', (req, res, next) => {
   const useEmails = Array.isArray(req.body.emails)
   if (!useEmails) {

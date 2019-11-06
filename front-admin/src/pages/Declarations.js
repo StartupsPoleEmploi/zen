@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import superagent from 'superagent'
 import { format } from 'date-fns'
+import Button from '@material-ui/core/Button'
 import DeclarationsTable from '../components/DeclarationsTable'
 
 export const Declarations = () => {
@@ -31,6 +32,17 @@ export const Declarations = () => {
   return (
     <div style={{ textAlign: 'center' }}>
       <h1>Actualisations</h1>
+
+      <Button
+        href="/zen-admin-api/users-with-declaration"
+        variant="contained"
+        color="primary"
+        style={{ position: 'absolute', right: '30px' }}
+      >
+        Télécharger les utisateurs avec
+        <br /> au moins une actualisation
+      </Button>
+
       <select onChange={(event) => setSelectedMonthId(event.target.value)}>
         {availableMonths.map((month) => (
           <option key={month.id} value={month.id}>

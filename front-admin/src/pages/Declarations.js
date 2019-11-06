@@ -43,9 +43,9 @@ export const Declarations = () => {
       ) : (
         <Fragment>
           <p>
-            Actualisation débutée : {declarations.length}
+            Actualisations débutées : {declarations.length}
             <br />
-            Actualisation terminée:{' '}
+            Actualisations terminées :{' '}
             {
               declarations.filter(
                 ({ hasFinishedDeclaringEmployers }) =>

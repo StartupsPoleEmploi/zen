@@ -10,8 +10,8 @@ const imagemin = require('imagemin-keep-folder')
 const imageminPngquant = require('imagemin-pngquant')
 const imageminMozjpeg = require('imagemin-mozjpeg')
 
+const { uploadsDirectory: uploadDestination } = require('config')
 const winston = require('../lib/log')
-const { uploadDestination } = require('../lib/upload')
 
 pdftk.configure({ bin: 'pdftk' })
 
@@ -53,6 +53,9 @@ const getPDF = (document, directory) => {
     })
   })
 }
+
+// This command will throw a promise error if the pdf is invalid
+const checkPDFValidity = (filePath) => exec(`pdfinfo ${filePath}`)
 
 const numberOfPage = (filePath) =>
   exec(`pdfinfo ${filePath} | grep Pages | sed 's/[^0-9]*//'`).then((res) =>
@@ -216,4 +219,5 @@ module.exports = {
   handleNewFileUpload,
   IMG_EXTENSIONS,
   optimizePDF,
+  checkPDFValidity,
 }

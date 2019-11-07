@@ -2,6 +2,7 @@ const multer = require('multer')
 const path = require('path')
 const { uploadsDirectory: uploadDestination } = require('config')
 const { checkPDFValidity } = require('./pdf-utils')
+const winston = require('./log')
 
 const uploadMiddleware = multer({
   storage: multer.diskStorage({
@@ -33,14 +34,19 @@ const uploadMiddleware = multer({
 })
 
 const checkPDFValidityMiddleware = (req, res, next) => {
-  if (!req.file) return next()
+  if (!req.file || !req.file.path.endsWith('pdf')) return next()
 
-  if (req.file.path.endsWith('pdf')) {
-    return checkPDFValidity(req.file.path)
-      .then(() => next())
-      .catch(next)
-  }
-  next()
+  return checkPDFValidity(req.file.path)
+    .then(() => next())
+    .catch((err) => {
+      winston.warn(
+        `User ${req.session.user.id} sent invalid PDF, showing them an error`,
+        err,
+      )
+      res.status(422).json({
+        message: 'Invalid PDF file',
+      })
+    })
 }
 
 module.exports = {

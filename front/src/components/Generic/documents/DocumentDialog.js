@@ -220,7 +220,7 @@ class DocumentDialog extends PureComponent {
                 <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
                   {error && (
                     <Typography role="alert" color="error">
-                      {error}!
+                      {error}
                     </Typography>
                   )}
 

@@ -208,7 +208,7 @@ const sendDocument = ({ accessToken, document, previousTries = 0 }) => {
     // TODO : Do this at upload?
     promise = optimizePDF(infosToSendDocument.filePath).catch((err) =>
       // if the optimization fails, log it, but continue anyway
-      winston.error(
+      winston.debug(
         `Error while optimizing document ${infosToSendDocument.dbDocument.id} (ERR ${err})`,
       ),
     )

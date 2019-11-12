@@ -147,6 +147,12 @@ const handleNewFileUpload = async ({
     }
   } else if (path.extname(newFilename) === '.pdf') {
     const fileName = `${uploadDestination}${newFilename}`
+
+    const pdfFileSize = await numberOfPage(fileName)
+    if (pdfFileSize > MAX_PDF_SIZE) {
+      throw new Error(`PDF will exceed ${MAX_PDF_SIZE} pages`)
+    }
+
     await optimizePDF(fileName).catch((err) =>
       // if the optimization fails, log it, but continue anyway
       winston.debug(`Error when optimizing document ${fileName} (ERR ${err})`, {

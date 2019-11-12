@@ -9,7 +9,7 @@ import DoneIcon from '@material-ui/icons/Done'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { Link } from 'react-router-dom'
 
-import { fetchDeclarations as fetchDeclarationAction } from '../../actions/declarations'
+import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations'
 import { formattedDeclarationMonth, formatIntervalDates } from '../../lib/date'
 import {
   selectPreviewedEmployerDoc,

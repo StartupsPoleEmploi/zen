@@ -160,6 +160,20 @@ router.post('/db/set-empty', (req, res, next) => {
     .catch(next)
 })
 
+router.post('/db/reset-for-actu-closed', (req, res, next) => {
+  truncateDatabase()
+    .then(() =>
+      Promise.all([insertUser(req.body.userOverride), setServiceUp()]),
+    )
+    .then(([user]) => {
+      fillSession(req, user)
+    })
+    .then(() => {
+      res.json('ok')
+    })
+    .catch(next)
+})
+
 router.post('/db/reset-for-files', (req, res, next) =>
   truncateDatabase()
     .then(() =>

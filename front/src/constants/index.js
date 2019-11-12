@@ -27,6 +27,16 @@ export const ActuTypes = {
   JOB_SEARCH: 'jobSearch',
 }
 
+export const DOCUMENT_LABELS = {
+  sickLeave: 'Feuille maladie',
+  internship: 'Attestation de stage',
+  maternityLeave: 'Attestation de congé maternité',
+  retirement: 'Attestation retraite',
+  invalidity: 'Attestation invalidité',
+  employerCertificate: 'Attestation employeur',
+  salarySheet: 'Bulletin de salaire',
+}
+
 export const jobSearchEndMotive = {
   WORK: 'work',
   RETIREMENT: 'retirement',

@@ -33,16 +33,12 @@ moment.locale('fr')
 
 const theme = createMuiTheme({
   typography: {
-    useNextVariants: true, // Preparation for Material-UI v4 new variants. Can be removed after migration.
+    useNextVariants: true,
     // Tell Material-UI what's the font-size on the html element is.
     htmlFontSize: 10,
-    fontFamily: [
-      'filson-soft',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['"Open sans"', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(
+      ',',
+    ),
   },
   palette: {
     primary: {

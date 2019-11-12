@@ -19,8 +19,7 @@ describe('Declaration page', function() {
 
   describe('Entrepreneur warning', () => {
     beforeEach(() => {
-      cy.visit('/')
-      cy.url().should('contain', '/actu')
+      cy.visit('/actu')
     })
 
     it('Displays the entrepreneur warning', function() {
@@ -43,8 +42,7 @@ describe('Declaration page', function() {
           shouldAskAgain: true,
         }),
       )
-      cy.visit('/')
-      cy.url().should('contain', '/actu')
+      cy.visit('/actu')
     })
 
     describe('Form errors', () => {

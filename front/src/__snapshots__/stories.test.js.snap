@@ -2352,7 +2352,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
       }
     >
       <span
-        className="MuiTypography-root sc-eHgmQL elzdcP MuiTypography-caption"
+        className="MuiTypography-root upload-error sc-eHgmQL elzdcP MuiTypography-caption"
       >
         Tout est cassé
       </span>
@@ -2499,7 +2499,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
       }
     >
       <span
-        className="MuiTypography-root sc-eHgmQL elzdcP MuiTypography-caption"
+        className="MuiTypography-root upload-error sc-eHgmQL elzdcP MuiTypography-caption"
       >
         Tout est cassé
       </span>

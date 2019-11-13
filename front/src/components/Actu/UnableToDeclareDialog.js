@@ -2,11 +2,12 @@ import Button from '@material-ui/core/Button'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
+import { Link } from 'react-router-dom'
 
 import CustomDialog from '../Generic/CustomDialog'
 import CustomColorButton from '../Generic/CustomColorButton'
 
-const UnableToDeclareDialog = ({ onCancel, isOpened }) => (
+const UnableToDeclareDialog = ({ onCancel, isOpened, currentPath }) => (
   <CustomDialog
     content={
       <Fragment>
@@ -34,9 +35,15 @@ const UnableToDeclareDialog = ({ onCancel, isOpened }) => (
     }
     actions={
       <Fragment>
-        <CustomColorButton onClick={onCancel}>
-          Voir mes documents
-        </CustomColorButton>
+        {currentPath === '/files' ? (
+          <CustomColorButton onClick={onCancel}>
+            Voir mes documents
+          </CustomColorButton>
+        ) : (
+          <CustomColorButton to="/files" onClick={onCancel} component={Link}>
+            Voir mes documents
+          </CustomColorButton>
+        )}
         <Button
           variant="contained"
           href="/api/login/logout"
@@ -57,6 +64,7 @@ const UnableToDeclareDialog = ({ onCancel, isOpened }) => (
 UnableToDeclareDialog.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
+  currentPath: PropTypes.func.isRequired,
 }
 
 export default UnableToDeclareDialog

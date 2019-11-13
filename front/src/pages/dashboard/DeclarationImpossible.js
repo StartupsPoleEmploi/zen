@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
-import DoneIcon from '@material-ui/icons/Done'
+import CloseIcon from '@material-ui/icons/Close'
 
-const StyledDoneIcon = styled(DoneIcon)`
+const StyledCloseIcon = styled(CloseIcon)`
   && {
     margin-right: 1rem;
     vertical-align: bottom;
-    color: green;
+    color: red;
   }
 `
 
@@ -17,14 +17,28 @@ const Section = styled.div`
 `
 
 const DeclarationImpossible = () => (
-  <Section>
-    <StyledDoneIcon />
-    <div>
-      <Typography className="declaration-status">
-        <strong>Actualisation envoyée</strong>
-      </Typography>
-    </div>
-  </Section>
+  <>
+    <Section>
+      <StyledCloseIcon />
+      <div>
+        <Typography className="declaration-status">
+          <strong>Actualisation impossible</strong>
+        </Typography>
+      </div>
+    </Section>
+    <Typography style={{ marginTop: '2rem' }}>
+      Vous ne pouvez accéder à l'actualisation via Zen, car un problème
+      technique nous empêche actuellement de récupérer les informations de votre
+      statut de demandeur d'emploi.
+    </Typography>
+    <Typography style={{ marginTop: '2rem' }}>
+      Vous pouvez réessayer ultérieurement ou effectuer vos opérations sur{' '}
+      <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
+        Pole-Emploi.fr
+      </a>
+      .
+    </Typography>
+  </>
 )
 
 export default DeclarationImpossible

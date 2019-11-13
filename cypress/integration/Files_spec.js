@@ -124,16 +124,14 @@ describe('Files page', function() {
         })
 
         it('should not allow files with more than 5 pages', () => {
-          addNewPage({ file: 'pdf-14-pages.pdf' })
-          cy.contains('Erreur : Fichier trop lourd', { timeout: 30000 }).should(
-            'exist',
-          )
+          uploadFile({ file: 'pdf-14-pages.pdf', willFail: true })
+          cy.get('.upload-error').should('exist')
         })
 
         it('should not allow adding pages to already big enough document', () => {
           uploadFile({ file: 'pdf-4-pages.pdf' })
-          uploadFile({ file: 'pdf-1-pages.pdf' })
-          getPaginationText().should('contain', '14/14')
+          addNewPage({ file: 'pdf-1-page.pdf' })
+          getPaginationText().should('contain', '5/5')
           cy.get('div[role=dialog] .add-page[aria-disabled]') // check existence of label with aria-disabled
         })
 

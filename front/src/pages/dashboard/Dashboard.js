@@ -249,7 +249,7 @@ class Dashboard extends PureComponent {
       return <DeclarationImpossible />
     }
 
-    if (activeDeclaration.isFinished) {
+    if (activeDeclaration.hasFinishedDeclaringEmployers) {
       return <DeclarationFinished declaration={activeDeclaration} />
     }
 

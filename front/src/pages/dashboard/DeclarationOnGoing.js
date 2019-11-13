@@ -23,11 +23,6 @@ const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
   }
 `
 
-const computeDeclarationLevel = (declaration) => {
-  if (declaration.hasFinishedDeclaringEmployers) return 70
-  return 30
-}
-
 const DeclarationOnGoing = ({ declaration }) => (
   <div>
     <Typography
@@ -39,10 +34,7 @@ const DeclarationOnGoing = ({ declaration }) => (
 
     <FlexContainer>
       <JaugeContainer>
-        <CircleJauge
-          style={{ marginRight: '2.5rem' }}
-          percentage={computeDeclarationLevel(declaration)}
-        />
+        <CircleJauge style={{ marginRight: '2.5rem' }} percentage={50} />
       </JaugeContainer>
 
       <div>

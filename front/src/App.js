@@ -282,7 +282,7 @@ class App extends Component {
           onCancel={this.onCloseModal}
         />
         <UnableToDeclareDialog
-          currentPath={this.props.location.pathname}
+          currentPath={pathname}
           isOpened={this.state.showUnableToSendDeclarationModal}
           onCancel={this.onCloseModal}
         />

@@ -27,14 +27,13 @@ const DeclarationImpossible = () => (
       </div>
     </Section>
     <Typography style={{ marginTop: '2rem' }}>
-      Vous ne pouvez accéder à l'actualisation via Zen, car un problème
-      technique nous empêche actuellement de récupérer les informations de votre
-      statut de demandeur d'emploi.
+      Un problème technique nous empêche actuellement de récupérer les
+      informations de votre statut de demandeur d'emploi.
     </Typography>
     <Typography style={{ marginTop: '2rem' }}>
       Vous pouvez réessayer ultérieurement ou effectuer vos opérations sur{' '}
       <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
-        Pole-Emploi.fr
+        pole-emploi.fr
       </a>
       .
     </Typography>

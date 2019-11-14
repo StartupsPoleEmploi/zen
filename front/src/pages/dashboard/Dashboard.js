@@ -127,7 +127,7 @@ const Dot = styled.span`
   font-weight: bold;
 
   position: absolute;
-  left: -5px;
+  left: -6px;
   top: -20px;
 `
 

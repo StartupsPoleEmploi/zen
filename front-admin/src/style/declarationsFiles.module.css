@@ -1,0 +1,28 @@
+.alert {
+  border: solid 1px red;
+  background: #ffbac7;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+.success {
+  border: solid 1px green;
+  background: #00ff083d;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+.container {
+  flex: 1;
+  padding: 2rem;
+}
+
+.small {
+  font-size: 0.8em;
+}

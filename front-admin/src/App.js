@@ -5,12 +5,14 @@ import ActivityLog from './pages/ActivityLog'
 import Declarations from './pages/Declarations'
 import System from './pages/System'
 import Users from './pages/Users'
+import DeclarationFiles from './pages/DeclarationFiles'
 
 const PAGES = {
   ACTIVITY: 'activity',
   DECLARATIONS: 'declarations',
   SYSTEM: 'system',
   USERS: 'users',
+  FILES: 'files',
 }
 
 export const App = () => {
@@ -49,6 +51,13 @@ export const App = () => {
         </Button>
         <Button
           variant="outlined"
+          color={page === PAGES.FILES ? 'primary' : 'default'}
+          onClick={() => setShowActivity(PAGES.FILES)}
+        >
+          Fichiers PE
+        </Button>
+        <Button
+          variant="outlined"
           color={page === PAGES.SYSTEM ? 'primary' : 'default'}
           onClick={() => setShowActivity(PAGES.SYSTEM)}
         >
@@ -59,6 +68,7 @@ export const App = () => {
       {page === PAGES.ACTIVITY && <ActivityLog />}
       {page === PAGES.USERS && <Users />}
       {page === PAGES.SYSTEM && <System />}
+      {page === PAGES.FILES && <DeclarationFiles />}
     </React.Fragment>
   )
 }

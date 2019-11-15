@@ -54,8 +54,31 @@ const deleteUser = (email) =>
       Action: 'remove',
     })
 
+const updateCanMakeDeclarationStatus = ({ emails, canMakeDeclaration }) => {
+  if (canMakeDeclaration === undefined) {
+    throw new Error('No canMakeDeclaration argument')
+  }
+
+  return isProd
+    ? mailjet
+        .post('contactslist', { version: 'v3' })
+        .id(LIST_ID)
+        .action('managemanycontacts')
+        .request({
+          Action: 'addnoforce',
+          Contacts: emails.map((email) => ({
+            Email: email,
+            Properties: {
+              actualisable: false,
+            },
+          })),
+        })
+    : Promise.resolve()
+}
+
 module.exports = {
   sendMail,
+  updateCanMakeDeclarationStatus,
   manageContact,
   deleteUser,
 
@@ -162,6 +185,26 @@ module.exports = {
       })
   },
 
+  setDeclarationDoneForContacts: ({ emails, activeMonth }) =>
+    isProd
+      ? mailjet
+          .post('contactslist', { version: 'v3' })
+          .id(LIST_ID)
+          .action('managemanycontacts')
+          .request({
+            Action: 'addnoforce',
+            Contacts: emails.map((email) => ({
+              Email: email,
+              Properties: {
+                declaration_effectuee_mois: formatDateForSegmentFilter(
+                  activeMonth,
+                ),
+                document_envoye_mois: formatDateForSegmentFilter(activeMonth),
+              },
+            })),
+          })
+      : Promise.resolve(),
+
   authorizeContactsAndSendConfirmationEmails: ({ users, activeMonth }) =>
     (isProd
       ? mailjet
@@ -174,6 +217,7 @@ module.exports = {
               Email: user.email,
               Properties: {
                 validation_necessaire: false,
+                actualisable: true,
                 // If we activate users during a declaration period, we don't want to send them
                 // reminder during this period, as they may already have done their declarations
                 // using pe.fr

@@ -48,7 +48,28 @@ const checkPDFValidityMiddleware = (req, res, next) => {
     })
 }
 
+const uploadCSV = multer({
+  storage: multer.diskStorage({
+    destination: uploadDestination,
+    filename(req, file, cb) {
+      cb(null, `${Date.now()}-${file.originalname}`)
+    },
+  }),
+  fileFilter(req, file, callback) {
+    const extensions = /csv/i
+    const mimetypes = /csv/i
+    const mimetype = mimetypes.test(file.mimetype)
+    const extname = extensions.test(path.extname(file.originalname))
+    callback(null, mimetype && extname)
+  },
+  limits: {
+    files: 1,
+  },
+})
+
 module.exports = {
   uploadMiddleware,
+  uploadCSV,
+  uploadDestination,
   checkPDFValidityMiddleware,
 }

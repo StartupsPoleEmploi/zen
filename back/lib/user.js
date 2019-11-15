@@ -1,5 +1,6 @@
 const { transaction } = require('objection')
 const { uploadsDirectory: uploadDestination } = require('config')
+const { raw } = require('objection')
 
 const { eraseFile } = require('./files')
 const mailjet = require('./mailings/mailjet')
@@ -107,6 +108,28 @@ const deleteUser = (user) => {
   )
 }
 
+const extractUserMails = (minimumCreatedAt = null) => {
+  const request = User.query()
+    .select(raw('LOWER(email) as email'))
+    .where('email', '>', minimumCreatedAt)
+    .where('email', '!=', '')
+
+  if (minimumCreatedAt) request.where('createdAt', '>', minimumCreatedAt)
+
+  return request.then((users) => users.map((user) => user.email))
+}
+
+const extractCannotDeclaredUserEmails = () => {
+  const request = User.query()
+    .select(raw('LOWER(email) as email'))
+    .where('canMakeDeclaration', false)
+    .where('email', '!=', '')
+
+  return request.then((users) => users.map((user) => user.email))
+}
+
 module.exports = {
   deleteUser,
+  extractUserMails,
+  extractCannotDeclaredUserEmails,
 }

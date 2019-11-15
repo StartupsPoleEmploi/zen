@@ -27,7 +27,7 @@ const sendDeclarationReminderCampaign = () => {
 
   return createSegment({
     Description: `Contacts qui ne se sont pas actualisés en ${formattedMonthInFrench}`,
-    Expression: `(validation_necessaire=false) AND ((declaration_effectuee_mois!=${dateFormatForSegments}) OR (not IsProvided(declaration_effectuee_mois)))`,
+    Expression: `(validation_necessaire=false) AND ((actualisable=true) OR (not IsProvided(actualisable))) AND ((declaration_effectuee_mois!=${dateFormatForSegments}) OR (not IsProvided(declaration_effectuee_mois)))`,
     Name: `${formattedMonthInFrench} - Actualisation non faite (envoi du ${formattedNow})`,
   })
     .then((segmentRes) => {

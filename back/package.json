@@ -32,6 +32,7 @@
     "express": "^4.16.4",
     "express-easy-zip": "^1.1.4",
     "express-session": "^1.15.6",
+    "fast-csv": "^3.4.0",
     "helmet": "^3.15.0",
     "imagemin-keep-folder": "^5.3.2",
     "imagemin-mozjpeg": "^8.0.0",

@@ -20,6 +20,8 @@ class User extends BaseModel {
         email: { type: ['string', 'null'] },
         postalCode: { type: ['string', 'null'] },
         isAuthorized: { type: 'boolean' },
+        canMakeMonthDeclaration: { type: 'boolean' },
+        canMakeDeclaration: { type: 'boolean' },
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
       },
     }

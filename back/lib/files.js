@@ -2,6 +2,7 @@ const pdf = require('pdfjs')
 const fs = require('fs')
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
+const csv = require('fast-csv')
 
 const Helvetica = require('pdfjs/font/Helvetica')
 const HelveticaBold = require('pdfjs/font/Helvetica-Bold')
@@ -197,10 +198,23 @@ const getDeclarationPDF = (declaration) => {
   })
 }
 
+const extractCSVContent = (csvPath) => {
+  const data = []
+
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(csvPath)
+      .pipe(csv.parse({ headers: true, delimiter: '|' }))
+      .on('error', reject)
+      .on('data', (values) => data.push(values))
+      .on('end', () => resolve(data))
+  })
+}
+
 module.exports = {
   getDeclarationPDF,
   generatePDFName,
   generatePDFPath,
   getFriendlyPDFName,
+  extractCSVContent,
   eraseFile,
 }

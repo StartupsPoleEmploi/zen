@@ -3,10 +3,24 @@ const { format } = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
 const superagent = require('superagent')
-const { get, isUndefined, kebabCase } = require('lodash')
+const {
+  get,
+  isUndefined,
+  kebabCase,
+  difference,
+  intersection,
+} = require('lodash')
+const { subDays } = require('date-fns')
 const { uploadsDirectory: uploadDestination } = require('config')
 const { Parser } = require('json2csv')
+const { raw } = require('objection')
 
+const { uploadCSV } = require('../lib/upload')
+const { extractCSVContent } = require('../lib/files')
+const {
+  extractUserMails,
+  extractCannotDeclaredUserEmails,
+} = require('../lib/user')
 const winston = require('../lib/log')
 const { deleteUser } = require('../lib/user')
 const mailjet = require('../lib/mailings/mailjet')
@@ -148,7 +162,10 @@ router.post('/users/authorize', (req, res, next) => {
         .then(() =>
           User.query()
             .patch({ isAuthorized: true })
-            .whereIn('id', users.map((user) => user.id)),
+            .whereIn(
+              'id',
+              users.map((user) => user.id),
+            ),
         )
     })
     .then((updatedRowsNb = 0) =>
@@ -304,6 +321,105 @@ router.post('/status', (req, res, next) =>
       return res.json(result[0])
     })
     .catch(next),
+)
+
+router.post(
+  '/update-users-status',
+  uploadCSV.single('document'),
+  async (req, res, next) => {
+    if (!req.file) return res.status(400).json('Missing file')
+
+    try {
+      // 1 - Retrieve data
+      // CSV
+      const extractCsv = await extractCSVContent(req.file.path)
+      const csvEmails = extractCsv
+        .filter((email) => email)
+        .map((row) => row.email.toLowerCase())
+
+      // All user emails
+      const minimumDate = subDays(new Date(), 1)
+      const usersEmails = await extractUserMails(minimumDate)
+
+      // Users which have status canMakeDeclaration=false
+      const cannotDeclaredUsersEmails = await extractCannotDeclaredUserEmails()
+
+      // 2 - Handle data
+      // Compute users allowed again and update their mailjet status
+      // => Mark as not allowed in database but mark as allowed in CSV
+      const emailsAllowedAgain = intersection(
+        csvEmails,
+        cannotDeclaredUsersEmails,
+      )
+      await mailjet.updateCanMakeDeclarationStatus({
+        emails: emailsAllowedAgain,
+        canMakeDeclaration: true,
+      })
+
+      // 2.1 - Update all users in database
+      // Update users declaration in DB and in Mailjet
+      await User.query().patch({
+        canMakeMonthDeclaration: true,
+        canMakeDeclaration: true,
+      })
+      const diffEmails = difference(usersEmails, csvEmails)
+      await User.query()
+        .patch({
+          canMakeMonthDeclaration: false,
+          canMakeDeclaration: false,
+        })
+        .whereIn(raw('LOWER(email)'), diffEmails)
+
+      // 2.2 - Update property for these emails in mailjet
+      await mailjet.updateCanMakeDeclarationStatus({
+        emails: diffEmails,
+        canMakeDeclaration: false,
+      })
+    } catch (err) {
+      return next(err)
+    }
+
+    res.json('ok')
+  },
+)
+
+router.post(
+  '/update-declaration-users-status',
+  uploadCSV.single('document'),
+  async (req, res, next) => {
+    if (!req.file) return res.status(400).json('Missing file')
+
+    try {
+      // 1 - Retrieve data
+      // CSV
+      const extractCsv = await extractCSVContent(req.file.path)
+      const csvEmails = extractCsv
+        .filter((email) => email)
+        .map((row) => row.email.toLowerCase())
+
+      // All user emails
+      const minimumDate = subDays(new Date(), 1)
+      const usersEmails = await extractUserMails(minimumDate)
+
+      // 2 - Handle data
+      const diffEmails = difference(usersEmails, csvEmails)
+      // 1 - Update these users
+      await User.query()
+        .patch({ canMakeMonthDeclaration: false })
+        .whereIn(raw('LOWER(email)'), diffEmails)
+        .then(() => res.json('ok'))
+
+      // 2 - Update mailjet user property for the current declaration month
+      await mailjet.setDeclarationDoneForContacts({
+        emails: diffEmails,
+        activeMonth: req.activeMonth.month,
+      })
+    } catch (err) {
+      return next(res)
+    }
+
+    res.json('ok')
+  },
 )
 
 router.delete('/delete-user', (req, res, next) => {

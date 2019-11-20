@@ -42,8 +42,8 @@ describe('Dashboard page', function() {
     it('should display declaration on going', () => {
       getDeclarationStatus().should('have.text', DECLARATION_STATUS.ON_GOING)
     })
-    it('should display 30% as declaration completion', () => {
-      getCompletionJauge().should('have.text', '30%')
+    it('should display 50% as declaration completion', () => {
+      getCompletionJauge().should('have.text', '50%')
     })
   })
 
@@ -54,12 +54,8 @@ describe('Dashboard page', function() {
       cy.url().should('contain', '/dashboard')
     })
 
-    it('should display declaration on going', () => {
-      getDeclarationStatus().should('have.text', DECLARATION_STATUS.ON_GOING)
-    })
-
-    it('should display 70% as declaration completion', () => {
-      getCompletionJauge().should('have.text', '70%')
+    it('should display declaration is finished', () => {
+      getDeclarationStatus().should('have.text', DECLARATION_STATUS.FINISHED)
     })
 
     it('should display expected 3 files', () => {

@@ -12,6 +12,12 @@ import {
 const { omit } = Cypress._
 
 describe('Declaration page', function() {
+  // Set the day to not the current day because if you select the current date the modal will not close.
+  // you will have to click on ok
+  const currentDate = new Date().getDate()
+  const startDay = currentDate === 20 ? '19' : '20'
+  const endDay = currentDate === 21 ? '22' : '21'
+
   beforeEach(() => {
     // reset and seed the database prior to every test
     cy.request('POST', '/api/tests/db/reset')
@@ -91,8 +97,8 @@ describe('Declaration page', function() {
             // Additional check for these:
             // Errors should be displayed if the dates are given in reverse order
 
-            pickDate(fieldToTest, '21')
-            pickDate(fieldToTest, '20', { last: true })
+            pickDate(fieldToTest, endDay)
+            pickDate(fieldToTest, startDay, { last: true })
 
             getNextButton().click()
 
@@ -136,14 +142,14 @@ describe('Declaration page', function() {
           .first()
           .click()
 
-        pickDate('hasInternship', '20')
-        pickDate('hasInternship', '21', { last: true })
-        pickDate('hasSickLeave', '20')
-        pickDate('hasSickLeave', '21', { last: true })
-        pickDate('hasMaternityLeave', '20')
-        pickDate('hasRetirement', '20')
-        pickDate('hasInvalidity', '20')
-        pickDate('isLookingForJob', '20')
+        pickDate('hasInternship', startDay)
+        pickDate('hasInternship', endDay, { last: true })
+        pickDate('hasSickLeave', startDay)
+        pickDate('hasSickLeave', endDay, { last: true })
+        pickDate('hasMaternityLeave', startDay)
+        pickDate('hasRetirement', startDay)
+        pickDate('hasInvalidity', startDay)
+        pickDate('isLookingForJob', startDay)
 
         getNextButton().click()
         cy.url().should('contain', '/employers')
@@ -154,14 +160,14 @@ describe('Declaration page', function() {
           .first()
           .click()
         checkFormValues(values)
-        checkDate('hasInternship', '20')
-        checkDate('hasInternship', '21', { last: true })
-        checkDate('hasSickLeave', '20')
-        checkDate('hasSickLeave', '21', { last: true })
-        checkDate('hasMaternityLeave', '20')
-        checkDate('hasRetirement', '20')
-        checkDate('hasInvalidity', '20')
-        checkDate('isLookingForJob', '20')
+        checkDate('hasInternship', startDay)
+        checkDate('hasInternship', endDay, { last: true })
+        checkDate('hasSickLeave', startDay)
+        checkDate('hasSickLeave', endDay, { last: true })
+        checkDate('hasMaternityLeave', startDay)
+        checkDate('hasRetirement', startDay)
+        checkDate('hasInvalidity', startDay)
+        checkDate('isLookingForJob', startDay)
       })
 
       it(`should warn the user before transmission if they haven't worked`, () => {

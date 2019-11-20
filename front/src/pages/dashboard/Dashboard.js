@@ -288,10 +288,15 @@ class Dashboard extends PureComponent {
   renderFilesSection() {
     const { declarations: allDeclarations } = this.props
 
+    const onGoingDeclarations = allDeclarations.filter(
+      ({ hasFinishedDeclaringEmployers, isFinished }) =>
+        hasFinishedDeclaringEmployers && !isFinished,
+    )
+
     // Missing files list
     return (
       <div>
-        {allDeclarations.map(this.renderMonthFileSection)}
+        {onGoingDeclarations.map(this.renderMonthFileSection)}
         <MainActionButton
           to="/files"
           component={Link}

@@ -26,6 +26,7 @@ import DeclarationFinished from './DeclarationFinished'
 import DeclarationNotStarted from './DeclarationNotStarted'
 import DeclarationClosed from './DeclarationClosed'
 import DeclarationOnGoing from './DeclarationOnGoing'
+import DeclarationImpossible from './DeclarationImpossible'
 import MainActionButton from '../../components/Generic/MainActionButton'
 
 const StyledDashboard = styled.div`
@@ -126,7 +127,7 @@ const Dot = styled.span`
   font-weight: bold;
 
   position: absolute;
-  left: -5px;
+  left: -6px;
   top: -20px;
 `
 
@@ -155,6 +156,7 @@ class Dashboard extends PureComponent {
     user: PropTypes.shape({
       firstName: PropTypes.string,
       hasAlreadySentDeclaration: PropTypes.bool,
+      canSendDeclaration: PropTypes.bool,
     }),
     declaration: PropTypes.object,
     declarations: PropTypes.arrayOf(PropTypes.object),
@@ -239,11 +241,15 @@ class Dashboard extends PureComponent {
       )
     }
 
-    if (activeMonth && !activeDeclaration) {
+    if (activeMonth && !activeDeclaration && user.canSendDeclaration) {
       return <DeclarationNotStarted activeMonth={activeMonth} />
     }
 
-    if (activeDeclaration.isFinished) {
+    if (!user.canSendDeclaration) {
+      return <DeclarationImpossible />
+    }
+
+    if (activeDeclaration.hasFinishedDeclaringEmployers) {
       return <DeclarationFinished declaration={activeDeclaration} />
     }
 

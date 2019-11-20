@@ -131,6 +131,7 @@ export class Actu extends Component {
     }).isRequired,
     user: PropTypes.shape({
       gender: PropTypes.string,
+      canSendDeclaration: PropTypes.bool,
     }),
     declaration: PropTypes.object,
     width: PropTypes.string.isRequired,
@@ -154,6 +155,10 @@ export class Actu extends Component {
     const { declaration, user } = this.props
     if (declaration && declaration.hasFinishedDeclaringEmployers) {
       return this.props.history.replace('/files')
+    }
+
+    if (!user.canSendDeclaration) {
+      return this.props.history.replace('/dashboard')
     }
 
     // eslint-disable-next-line react/no-did-mount-set-state

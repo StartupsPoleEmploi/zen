@@ -21,7 +21,7 @@ const DeclarationNotStarted = () => {
     superagent
       .get('/api/declarationMonths/current-declaration-month')
       .then(({ body: { endDate } }) => {
-        setActuEndDate(moment.utc(endDate).format('DD MMMM YYYY'))
+        setActuEndDate(moment(endDate).format('DD MMMM YYYY'))
       })
   }, [])
 

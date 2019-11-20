@@ -97,8 +97,11 @@ const Container = styled.div`
 const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
-  background: ${({ addBackground }) =>
-    addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
+
+  @media (min-height: 1000px) {
+    background: ${({ addBackground }) =>
+      addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
+  }
 
   @media (max-width: ${mobileBreakpoint}) {
     padding-top: 2rem;

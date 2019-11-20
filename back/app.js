@@ -126,10 +126,12 @@ if (sentryUrl) {
   // an error middleware needs 4 arguments
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
-    winston.error('Error caught in final middleware:', err)
-    res.status(500).json({
-      sentry: res.sentry,
-    })
+    if (err.code === 'EBADCSRFTOKEN') {
+      res.status(403).json({ code: 'EBADCSRFTOKEN' })
+    } else {
+      winston.error('Error caught in final middleware:', err)
+      res.status(500).json({ sentry: res.sentry })
+    }
   })
 }
 

@@ -23,6 +23,7 @@ import {
 import { MAX_PDF_PAGE } from '../../constants'
 import { utils } from '../../selectors/declarations'
 import { canUsePDFViewer } from '../../lib/file'
+import { manageErrorCsrfToken } from '../../lib/serviceHelpers'
 
 const { findEmployer, findDeclarationInfo } = utils
 
@@ -42,6 +43,7 @@ export const fetchDeclarations = ({ limit } = {}) => (dispatch) => {
       dispatch({ type: FETCH_DECLARATIONS_SUCCESS, payload: res.body }),
     )
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({ type: FETCH_DECLARATIONS_FAILURE, payload: err })
       window.Raven.captureException(err)
     })
@@ -67,6 +69,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
       }),
     )
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       // 404 are the normal status when no declaration was made.
       if (err.status !== 404) {
         return dispatch({
@@ -144,6 +147,7 @@ export const uploadEmployerFile = ({
       }
     })
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
         type: POST_EMPLOYER_DOC_FAILURE,
         payload: {
@@ -195,6 +199,7 @@ export const uploadDeclarationInfoFile = ({
       }
     })
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
         type: POST_DECLARATION_INFO_FAILURE,
         payload: { err: getUploadErrorMessage(err), documentId },
@@ -226,6 +231,7 @@ export const removeEmployerFilePage = ({
       dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body }),
     )
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
         type: POST_EMPLOYER_DOC_FAILURE,
         payload: {
@@ -260,6 +266,7 @@ export const removeDeclarationInfoFilePage = ({
       }),
     )
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
         type: POST_DECLARATION_INFO_FAILURE,
         payload: {
@@ -298,6 +305,7 @@ export const postDeclaration = (formData) => (dispatch, getState) =>
       }
       return res
     })
+    .catch((err) => manageErrorCsrfToken(err, dispatch))
 
 export const postEmployers = (formData) => (dispatch, getState) =>
   superagent
@@ -309,6 +317,7 @@ export const postEmployers = (formData) => (dispatch, getState) =>
       }
       return res
     })
+    .catch((err) => manageErrorCsrfToken(err, dispatch))
 
 export const validateEmployerDoc = ({
   documentId,
@@ -331,6 +340,7 @@ export const validateEmployerDoc = ({
       dispatch(hideEmployerFilePreview())
     })
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
         type: POST_EMPLOYER_DOC_FAILURE,
         payload: {
@@ -363,6 +373,7 @@ export const validateDeclarationInfoDoc = ({ documentId }) => (
       dispatch(hideInfoFilePreview())
     })
     .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
         type: POST_DECLARATION_INFO_FAILURE,
         payload: {

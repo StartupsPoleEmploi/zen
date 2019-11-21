@@ -10,7 +10,7 @@ const BaseButton = styled(Button).attrs({
     padding: 1rem 0.5rem;
     margin: 0 0.5rem;
     width: 17.5rem;
-    height: 6.5rem;
+    height: 7.5rem;
   }
 `
 

@@ -1,6 +1,6 @@
 {
   "name": "zen",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "scripts": {
     "eslint": "eslint './front/**/*.js' && eslint './back/**/*.js'",

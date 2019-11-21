@@ -42,7 +42,7 @@ export const getMissingEmployerFiles = (declaration) =>
     if (hasEmployerCertificate) return prev
 
     if (hasSalarySheet) {
-      return prev.contact({
+      return prev.concat({
         name: employer.employerName,
         type: employerCertificateType,
       })

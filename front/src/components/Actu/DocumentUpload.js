@@ -225,7 +225,11 @@ export class DocumentUpload extends Component {
                 padding: useLightVersion ? '1rem 0' : '1rem',
               }}
             >
-              {error && <ErrorTypography>{error}</ErrorTypography>}
+              {error && (
+                <ErrorTypography className="upload-error">
+                  {error}
+                </ErrorTypography>
+              )}
 
               {isTransmitted ? (
                 <ActionButton

@@ -123,9 +123,15 @@ describe('Files page', function() {
           )
         })
 
+        it('should not allow files with more than 5 pages', () => {
+          uploadFile({ file: 'pdf-14-pages.pdf', willFail: true })
+          cy.get('.upload-error').should('exist')
+        })
+
         it('should not allow adding pages to already big enough document', () => {
-          uploadFile({ file: 'pdf-14-pages.pdf' })
-          getPaginationText().should('contain', '14/14')
+          uploadFile({ file: 'pdf-4-pages.pdf' })
+          addNewPage({ file: 'pdf-1-page.pdf' })
+          getPaginationText().should('contain', '5/5')
           cy.get('div[role=dialog] .add-page[aria-disabled]') // check existence of label with aria-disabled
         })
 
@@ -137,21 +143,21 @@ describe('Files page', function() {
         })
 
         it('should allow navigation through document pages', () => {
-          uploadFile({ file: 'pdf-14-pages.pdf' })
-          getPaginationText().should('contain', '14/14')
+          uploadFile({ file: 'pdf-4-pages.pdf' })
+          getPaginationText().should('contain', '4/4')
           goToPrevPage()
-          getPaginationText().should('contain', '13/14')
+          getPaginationText().should('contain', '3/4')
           goToPrevPage()
-          getPaginationText().should('contain', '12/14')
+          getPaginationText().should('contain', '2/4')
           goToNextPage()
-          getPaginationText().should('contain', '13/14')
+          getPaginationText().should('contain', '3/4')
         })
 
         it('should allow removing pages', () => {
-          uploadFile({ file: 'pdf-14-pages.pdf' })
-          getPaginationText().should('contain', '14/14')
+          uploadFile({ file: 'pdf-4-pages.pdf' })
+          getPaginationText().should('contain', '4/4')
           deletePage()
-          getPaginationText().should('contain', '13/13')
+          getPaginationText().should('contain', '3/3')
         })
 
         it('should keep the filename after uploading new files', () => {

@@ -15,6 +15,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import store from 'store2'
 import styled from 'styled-components'
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 
 import { postDeclaration as postDeclarationAction } from '../../redux/actions/declarations'
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
@@ -99,6 +100,10 @@ const AddElementButton = styled(Button).attrs({
   }
 `
 
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
+`
+
 const formFields = [
   'hasWorked',
   'hasTrained',
@@ -131,6 +136,7 @@ export class Actu extends Component {
     }).isRequired,
     user: PropTypes.shape({
       gender: PropTypes.string,
+      canSendDeclaration: PropTypes.bool,
     }),
     declaration: PropTypes.object,
     width: PropTypes.string.isRequired,
@@ -154,6 +160,10 @@ export class Actu extends Component {
     const { declaration, user } = this.props
     if (declaration && declaration.hasFinishedDeclaringEmployers) {
       return this.props.history.replace('/files')
+    }
+
+    if (!user.canSendDeclaration) {
+      return this.props.history.replace('/dashboard')
     }
 
     // eslint-disable-next-line react/no-did-mount-set-state
@@ -710,6 +720,7 @@ export class Actu extends Component {
                 disabled={!this.hasAnsweredMainQuestions()}
               >
                 Suivant
+                <StyledArrowRightAlt />
               </MainActionButton>
             </FinalButtonsContainer>
           </AlwaysVisibleContainer>

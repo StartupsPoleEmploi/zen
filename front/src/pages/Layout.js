@@ -7,12 +7,11 @@ import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import File from '@material-ui/icons/Description'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import FormatListBulleted from '@material-ui/icons/FormatListBulleted'
 import Check from '@material-ui/icons/Check'
 import Person from '@material-ui/icons/PersonOutline'
+
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Fragment, useState } from 'react'
@@ -21,9 +20,18 @@ import styled from 'styled-components'
 
 import AppTitle from '../components/Generic/AppTitle'
 import { primaryBlue, mobileBreakpoint } from '../constants'
+import file from '../images/files.svg'
+import actu from '../images/actu.svg'
+import dashboardBg from '../images/dashboard-bg.svg'
+import home from '../images/home.svg'
 
-const stepperRoutes = ['/actu', '/employers', '/files']
-const [declarationRoute, employersRoute, filesRoute] = stepperRoutes
+const stepperRoutes = ['/actu', '/employers', '/files', '/dashboard']
+const [
+  declarationRoute,
+  employersRoute,
+  filesRoute,
+  dashboardRoute,
+] = stepperRoutes
 const routesWithDisplayedNav = stepperRoutes.concat('/thanks')
 
 const styles = (theme) => ({
@@ -90,6 +98,11 @@ const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
 
+  @media (min-height: 1000px) {
+    background: ${({ addBackground }) =>
+      addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
+  }
+
   @media (max-width: ${mobileBreakpoint}) {
     padding-top: 2rem;
   }
@@ -106,6 +119,7 @@ const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
 
 const Nav = styled.nav.attrs({ role: 'navigation' })`
   flex-shrink: 0;
+  background: #fafafa;
   width: 25rem;
   border-right: 1px #ddd solid;
   height: 100vh;
@@ -127,6 +141,10 @@ const UlStepper = styled.ul`
   flex-direction: column;
   padding-left: 0;
   padding-top: 2rem;
+
+  > li {
+    margin-top: 3rem;
+  }
 `
 
 const LiStep = styled(Typography).attrs({ component: 'li' })`
@@ -141,10 +159,6 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
     &&.Stepper__Active {
       border-left: ${primaryBlue} 0.5rem solid;
       color: #000;
-    }
-
-    &:last-child {
-      margin-top: 3rem;
     }
   }
 `
@@ -169,8 +183,12 @@ const DesktopLink = styled(Link)`
   }
 `
 
-const FileIcon = styled(File)`
-  width: 2.5rem;
+const FileIcon = styled.img`
+  font-size: 1.5rem;
+  margin-right: 1rem;
+`
+const HomeIcon = styled.img`
+  font-size: 1.5rem;
   margin-right: 1rem;
 `
 
@@ -187,8 +205,8 @@ const SmallGreenCheckIcon = styled(Check)`
   }
 `
 
-const ListIcon = styled(FormatListBulleted)`
-  width: 2.5rem;
+const ListIcon = styled.img`
+  font-size: 1.5rem;
   margin-right: 1rem;
 `
 
@@ -327,11 +345,21 @@ export const Layout = ({
               {getStepperItem({
                 label: (
                   <Fragment>
+                    <HomeIcon src={home} alt="" /> Accueil
+                  </Fragment>
+                ),
+                link: dashboardRoute,
+                shouldActivateLink: true,
+                isActive: pathname === dashboardRoute,
+              })}
+              {getStepperItem({
+                label: (
+                  <Fragment>
                     {activeDeclaration &&
                     activeDeclaration.hasFinishedDeclaringEmployers ? (
                       <CheckIcon />
                     ) : (
-                      <ListIcon />
+                      <ListIcon src={actu} alt="" />
                     )}
                     Mon actualisation
                   </Fragment>
@@ -358,6 +386,7 @@ export const Layout = ({
                     link: declarationRoute,
                     shouldActivateLink: shouldActivateDeclarationLink,
                     isActive: pathname === declarationRoute,
+                    extraClass: 'level-2',
                   })}
                   {getStepperItem({
                     label: (
@@ -372,13 +401,14 @@ export const Layout = ({
                     link: employersRoute,
                     shouldActivateLink: shouldActivateEmployersLink,
                     isActive: pathname === employersRoute,
+                    extraClass: 'level-2',
                   })}
                 </Fragment>
               )}
               {getStepperItem({
                 label: (
                   <Fragment>
-                    <FileIcon /> Mes justificatifs
+                    <FileIcon src={file} alt="" /> Mes justificatifs
                   </Fragment>
                 ),
                 link: filesRoute,
@@ -388,7 +418,7 @@ export const Layout = ({
             </UlStepper>
           </Nav>
         )}
-        <Main>{children}</Main>
+        <Main addBackground={pathname === dashboardRoute}>{children}</Main>
       </Container>
     </StyledLayout>
   )

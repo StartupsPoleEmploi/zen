@@ -20,8 +20,10 @@ import StatusErrorDialog from './components/Actu/StatusErrorDialog'
 import UnableToDeclareDialog from './components/Actu/UnableToDeclareDialog'
 import DeclarationTransmittedDialog from './components/Actu/DeclarationTransmittedDialog'
 import PrivateRoute from './components/Generic/PrivateRoute'
+
 import Actu from './pages/actu/Actu'
 import Employers from './pages/actu/Employers'
+import Dashboard from './pages/dashboard/Dashboard'
 import Files from './pages/actu/Files'
 import Thanks from './pages/actu/Thanks'
 import { LoggedOut } from './pages/generic/LoggedOut'
@@ -74,7 +76,6 @@ class App extends Component {
       })
       .then(() => {
         if (!this.props.user) return
-        if (!this.props.activeMonth) return this.props.history.replace('/files')
 
         // Log and handle cases when user can't declare using Zen
         // because he's already declared his situation using PE.fr
@@ -85,7 +86,6 @@ class App extends Component {
           // User has no declaration, or it isn't already sent
           if (this.props.user.hasAlreadySentDeclaration) {
             // show modal once, and redirect to /files
-            this.props.history.replace('/files')
             this.setState({ showDeclarationSentOnPEModal: true })
             window.Raven.captureException(
               new Error('User has already sent declaration on pe.fr'),
@@ -94,7 +94,6 @@ class App extends Component {
           }
           if (!this.props.user.canSendDeclaration) {
             // something is broken, or user has no access to declarations. Show sorry modal.
-            this.props.history.replace('/files')
             window.Raven.captureException(
               new Error('Cannot get declaration data'),
             )
@@ -102,13 +101,6 @@ class App extends Component {
               showUnableToSendDeclarationModal: true,
             })
           }
-        }
-
-        if (this.props.activeDeclaration) {
-          if (this.props.activeDeclaration.hasFinishedDeclaringEmployers) {
-            return this.props.history.replace('/files')
-          }
-          return this.props.history.replace('/employers')
         }
       })
       .then(() => {
@@ -166,7 +158,7 @@ class App extends Component {
       }
       // User is logged
     } else if (pathname === '/') {
-      return <Redirect to="/actu" />
+      return <Redirect to="/dashboard" />
     }
 
     if (this.state.err) {
@@ -217,6 +209,14 @@ class App extends Component {
         activeMonth={activeMonth}
       >
         <Switch>
+          <PrivateRoute
+            exact
+            isLoggedIn={!!user}
+            path="/dashboard"
+            render={(props) => (
+              <Dashboard {...props} declaration={activeDeclaration} />
+            )}
+          />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
@@ -282,6 +282,7 @@ class App extends Component {
           onCancel={this.onCloseModal}
         />
         <UnableToDeclareDialog
+          currentPath={pathname}
           isOpened={this.state.showUnableToSendDeclarationModal}
           onCancel={this.onCloseModal}
         />

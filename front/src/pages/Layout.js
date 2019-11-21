@@ -119,6 +119,7 @@ const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
 
 const Nav = styled.nav.attrs({ role: 'navigation' })`
   flex-shrink: 0;
+  background: #fafafa;
   width: 25rem;
   border-right: 1px #ddd solid;
   height: 100vh;

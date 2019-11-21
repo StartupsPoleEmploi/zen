@@ -4,6 +4,7 @@ import AlarmOn from '@material-ui/icons/AlarmOn'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 
 import CustomDialog from '../Generic/CustomDialog'
 
@@ -12,6 +13,10 @@ const AlarmOnIcon = styled(AlarmOn)`
     width: 4rem;
     height: 4rem;
   }
+`
+
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
 `
 
 // Custom code so we get a modal with a white transparent background
@@ -74,7 +79,8 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
     onCancel={onCancel}
     actions={
       <Button onClick={onCancel} variant="contained" color="primary">
-        J'ai compris →
+        J'ai compris
+        <StyledArrowRightAlt />
       </Button>
     }
     disableEscapeKeyDown

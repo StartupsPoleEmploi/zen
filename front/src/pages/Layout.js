@@ -184,7 +184,8 @@ const DesktopLink = styled(Link)`
 
 const FileIcon = styled.img`
   font-size: 1.5rem;
-  margin-right: 1rem;
+  margin-right: 1.4rem;
+  margin-left: 0.2rem;
 `
 const HomeIcon = styled.img`
   font-size: 1.5rem;
@@ -206,7 +207,7 @@ const SmallGreenCheckIcon = styled(Check)`
 
 const ListIcon = styled.img`
   font-size: 1.5rem;
-  margin-right: 1rem;
+  margin-right: 1.1rem;
 `
 
 const SubLabel = styled.div`

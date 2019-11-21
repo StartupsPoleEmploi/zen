@@ -76,6 +76,7 @@ class App extends Component {
       })
       .then(() => {
         if (!this.props.user) return
+        if (!this.props.activeMonth) return
 
         // Log and handle cases when user can't declare using Zen
         // because he's already declared his situation using PE.fr

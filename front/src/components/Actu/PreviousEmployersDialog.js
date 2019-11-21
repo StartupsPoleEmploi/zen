@@ -4,8 +4,13 @@ import AlarmOn from '@material-ui/icons/AlarmOn'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 
 import CustomDialog from '../Generic/CustomDialog'
+
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
+`
 
 const AlarmOnIcon = styled(AlarmOn)`
   && {
@@ -17,14 +22,11 @@ const AlarmOnIcon = styled(AlarmOn)`
 // Custom code so we get a modal with a white transparent background
 // without box-shadow, aligned with the top of the page
 const StyledCustomDialog = styled(CustomDialog)`
-  & > div[class^='MuiBackdrop-root'] {
-    background-color: rgba(255, 255, 255, 0.9);
-  }
   & > div[class^='MuiDialog-container'] {
     align-items: flex-start;
-    & > div {
-      box-shadow: none;
-    }
+  }
+  div[class^='MuiDialogContent-root'] {
+    flex: inherit;
   }
 `
 
@@ -74,7 +76,8 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
     onCancel={onCancel}
     actions={
       <Button onClick={onCancel} variant="contained" color="primary">
-        J'ai compris →
+        J'ai compris
+        <StyledArrowRightAlt />
       </Button>
     }
     disableEscapeKeyDown

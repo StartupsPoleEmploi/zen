@@ -8,6 +8,10 @@ import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 
 import CustomDialog from '../Generic/CustomDialog'
 
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
+`
+
 const AlarmOnIcon = styled(AlarmOn)`
   && {
     width: 4rem;
@@ -22,14 +26,11 @@ const StyledArrowRightAlt = styled(ArrowRightAlt)`
 // Custom code so we get a modal with a white transparent background
 // without box-shadow, aligned with the top of the page
 const StyledCustomDialog = styled(CustomDialog)`
-  & > div[class^='MuiBackdrop-root'] {
-    background-color: rgba(255, 255, 255, 0.9);
-  }
   & > div[class^='MuiDialog-container'] {
     align-items: flex-start;
-    & > div {
-      box-shadow: none;
-    }
+  }
+  div[class^='MuiDialogContent-root'] {
+    flex: inherit;
   }
 `
 

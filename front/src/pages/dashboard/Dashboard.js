@@ -303,7 +303,6 @@ class Dashboard extends PureComponent {
           style={{
             width: '90%',
             margin: '3rem auto 0 auto',
-            fontSize: '1.6rem',
           }}
           primary
         >

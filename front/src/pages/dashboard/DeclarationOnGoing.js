@@ -59,7 +59,6 @@ const DeclarationOnGoing = ({ declaration }) => (
       style={{
         width: '90%',
         margin: '2rem auto 0 auto',
-        fontSize: '1.6rem',
       }}
       primary
     >

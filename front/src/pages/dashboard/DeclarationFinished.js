@@ -39,7 +39,7 @@ const UlEmployers = styled.ul`
 
 const UlFiles = styled.ul`
   border-top: solid 1px lightgray;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
   list-style: none;
   margin-top: 2rem;
   display: inline-block;
@@ -52,6 +52,7 @@ const FileLink = styled.a`
   color: black;
   &:hover {
     text-decoration: underline;
+    color: ${primaryBlue};
   }
 `
 
@@ -133,7 +134,7 @@ const DeclarationFinished = ({ declaration }) => {
       </Section>
 
       <UlFiles>
-        <Typography component="li" style={{ padding: '0 0 1rem 1.75rem' }}>
+        <Typography component="li" style={{ padding: '0 0 1rem 0' }}>
           <FileLink
             href="/api/declarations/summary-file?download=true"
             target="_blank"
@@ -146,7 +147,7 @@ const DeclarationFinished = ({ declaration }) => {
           </FileLink>
         </Typography>
 
-        <Typography component="li" style={{ padding: '0 0 1rem 1.75rem' }}>
+        <Typography component="li" style={{ padding: '0 0 1rem 0' }}>
           <FileLink href="#" onClick={printDeclaration}>
             <PrintIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
             Imprimer ma déclaration

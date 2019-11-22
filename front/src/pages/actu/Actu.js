@@ -91,6 +91,10 @@ const AddElementButtonContainer = styled.div`
   margin-bottom: -3rem;
 `
 
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
+`
+
 const AddElementButton = styled(Button).attrs({
   variant: 'outlined',
   color: 'primary',

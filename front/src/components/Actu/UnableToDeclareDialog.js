@@ -77,7 +77,7 @@ const UnableToDeclareDialog = ({ onCancel, isOpened, currentPath }) => (
 UnableToDeclareDialog.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
-  currentPath: PropTypes.func.isRequired,
+  currentPath: PropTypes.string.isRequired,
 }
 
 export default UnableToDeclareDialog

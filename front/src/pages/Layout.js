@@ -44,7 +44,6 @@ const styles = (theme) => ({
 })
 
 const StyledLayout = styled.div`
-  max-width: 128rem;
   margin: auto;
 `
 
@@ -98,9 +97,14 @@ const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
 
-  @media (min-height: 1000px) {
-    background: ${({ addBackground }) =>
-      addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
+  background: ${({ addBackground }) =>
+    addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
+
+  @media (max-height: 1000px) {
+    background: none;
+  }
+  @media (max-width: 672px) {
+    background: none;
   }
 
   @media (max-width: ${mobileBreakpoint}) {
@@ -185,7 +189,8 @@ const DesktopLink = styled(Link)`
 
 const FileIcon = styled.img`
   font-size: 1.5rem;
-  margin-right: 1rem;
+  margin-right: 1.4rem;
+  margin-left: 0.2rem;
 `
 const HomeIcon = styled.img`
   font-size: 1.5rem;
@@ -207,7 +212,7 @@ const SmallGreenCheckIcon = styled(Check)`
 
 const ListIcon = styled.img`
   font-size: 1.5rem;
-  margin-right: 1rem;
+  margin-right: 1.1rem;
 `
 
 const SubLabel = styled.div`

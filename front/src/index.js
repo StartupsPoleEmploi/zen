@@ -54,6 +54,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
+        fontSize: '1.6rem',
         textTransform: 'none',
       },
       contained: {

@@ -19,10 +19,6 @@ const AlarmOnIcon = styled(AlarmOn)`
   }
 `
 
-const StyledArrowRightAlt = styled(ArrowRightAlt)`
-  margin-left: 1rem;
-`
-
 // Custom code so we get a modal with a white transparent background
 // without box-shadow, aligned with the top of the page
 const StyledCustomDialog = styled(CustomDialog)`

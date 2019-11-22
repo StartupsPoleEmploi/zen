@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CookiePolicy() {
   const classes = useStyles()
   const [consent, setConsent] = useState(
-    localStorage.getItem('cookieConsent') === 'true' &&
-      process.env.REACT_APP_ZEN_ENV !== 'test',
+    localStorage.getItem('cookieConsent') === 'true' ||
+      process.env.REACT_APP_ZEN_ENV === 'test',
   )
   const setCookieConsent = () => {
     localStorage.setItem('cookieConsent', 'true')

@@ -44,7 +44,6 @@ const styles = (theme) => ({
 })
 
 const StyledLayout = styled.div`
-  max-width: 128rem;
   margin: auto;
 `
 

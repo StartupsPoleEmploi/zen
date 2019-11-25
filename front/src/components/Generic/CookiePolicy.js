@@ -1,42 +1,27 @@
 import React, { useState } from 'react'
-import Modal from '@material-ui/core/Modal'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
 import logo from '../../images/logoFull.svg'
 import MainActionButton from './MainActionButton'
+import CustomDialog from './CustomDialog'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: 'flex',
-    padding: theme.spacing(1),
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'rgba(0, 101, 219, 0.5)',
   },
   paper: {
-    width: 500,
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: '0.5rem',
-    padding: theme.spacing(6, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    padding: theme.spacing(3, 0),
   },
-  header: {
-    marginBottom: '3rem',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  img: {
-    height: '5.5rem',
+  titleImg: {
+    height: '6rem',
     width: 'auto',
-    display: 'block',
+  },
+  content: {
+    margin: theme.spacing(1, 0),
   },
   button: {
-    marginTop: '3rem !important',
-    fontSize: '1.6rem',
+    textTransform: 'uppercase',
   },
 }))
 
@@ -52,35 +37,34 @@ export default function CookiePolicy() {
   }
 
   return (
-    <Modal
+    <CustomDialog
       disablePortal
-      disableEnforceFocus
       disableAutoFocus
-      open={!consent}
-      aria-labelledby="server-modal-title"
-      aria-describedby="server-modal-description"
+      width={500}
+      titleId="CookiePolicyContainer"
+      isOpened={!consent}
       className={classes.modal}
-    >
-      <div className={classes.paper}>
-        <Typography align="center" className={classes.header}>
-          <img src={logo} alt="Pole emploi" className={classes.img} />
-        </Typography>
-
-        <Typography align="center">
+      paperProps={{ className: classes.paper }}
+      title={
+        <img src={logo} alt="Zen - Pôle emploi" className={classes.titleImg} />
+      }
+      content={
+        <Typography className={classes.content} align="center">
           En poursuivant votre navigation sur ce site, vous acceptez
           l'utilisation de cookies pour améliorer la qualité du service et pour
           réaliser des statistiques de visite.
         </Typography>
-
+      }
+      actions={
         <MainActionButton
           onClick={setCookieConsent}
-          title="Je m'actualise"
+          title="J'accepte"
           className={classes.button}
           primary
         >
-          J'ACCEPTE
+          J'accepte
         </MainActionButton>
-      </div>
-    </Modal>
+      }
+    />
   )
 }

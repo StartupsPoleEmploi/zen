@@ -43,6 +43,7 @@ export const CustomDialog = ({
   onCancel,
   width,
   forceConstantHeight,
+  paperProps,
   ...rest
 }) => {
   const useMobileStyling = width === muiBreakpoints.xs
@@ -57,6 +58,7 @@ export const CustomDialog = ({
         style: {
           height: forceConstantHeight && !useMobileStyling ? '90vh' : '',
         },
+        ...paperProps,
       }}
       {...rest}
     >
@@ -92,10 +94,12 @@ CustomDialog.propTypes = {
   titleId: PropTypes.string,
   forceConstantHeight: PropTypes.bool,
   width: PropTypes.string,
+  paperProps: PropTypes.shape(),
 }
 
 CustomDialog.defaultProps = {
   onCancel: () => {},
+  paperProps: {},
 }
 
 export default withWidth()(CustomDialog)

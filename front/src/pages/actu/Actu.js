@@ -104,10 +104,6 @@ const AddElementButton = styled(Button).attrs({
   }
 `
 
-const StyledArrowRightAlt = styled(ArrowRightAlt)`
-  margin-left: 1rem;
-`
-
 const formFields = [
   'hasWorked',
   'hasTrained',

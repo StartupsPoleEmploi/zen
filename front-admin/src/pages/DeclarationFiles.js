@@ -1,12 +1,45 @@
 import React, { useState } from 'react'
 import superagent from 'superagent'
-import styles from '../style/declarationsFiles.module.css'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 
 const UPDATE_USERS_STATUS_URL = '/zen-admin-api/update-users-status'
 const UPDATE_DECLARATION_USERS_STATUS_URL =
   '/zen-admin-api/update-declaration-users-status'
 
+const useStyles = makeStyles({
+  alert: {
+    border: 'solid 1px red',
+    background: '#ffbac7',
+    padding: '1rem',
+    marginBottom: '2rem',
+  },
+  success: {
+    border: 'solid 1px green',
+    background: '#00ff083d',
+    padding: '1rem',
+    marginBottom: '2rem',
+  },
+
+  center: {
+    textAlign: 'center',
+  },
+
+  flex: {
+    display: 'flex',
+  },
+  container: {
+    flex: '1',
+    padding: '2rem',
+  },
+  small: {
+    fontSize: '0.8em',
+  },
+})
+
 const DeclarationFiles = () => {
+  const classes = useStyles()
+
   const [userStatusOnGoing, setUserStatusOnGoing] = useState(false)
   const [userStatusSuccess, setUserStatusSuccess] = useState(false)
   const [userStatusError, setUserStatusError] = useState(false)
@@ -62,37 +95,37 @@ const DeclarationFiles = () => {
   }
 
   return (
-    <div className={styles.center}>
+    <div className={classes.center}>
       <h1>Fichiers demandeurs d'emploi</h1>
-      <b>
+      <Typography>
         Cette page permet permet d'uploader les fichiers renvoyés par le
         DataLake : demandeurs éligibles (non radiés) et demandeurs n'ayant pas
         réalisé leur actualisation (ni sur Zen ni sur Pe.fr) !
-      </b>
+      </Typography>
 
-      <div className={styles.flex}>
-        <div className={styles.container}>
+      <div className={classes.flex}>
+        <div className={classes.container}>
           <h2>Statut des demandeurs : radiés ou non</h2>
-          <div className={styles.alert}>
-            <p>
+          <div className={classes.alert}>
+            <Typography>
               Ce fichier réalise met à jour deux informations sur les
               utilisateurs :
-            </p>
+            </Typography>
             <ul style={{ listStyle: 'none' }}>
               <li>=> sont-ils radiés ou non ?</li>
               <li>=> sont-ils éligibles pour la prochaine actualisation ?</li>
             </ul>
-            <p>
+            <Typography>
               <strong>
                 À n'utiliser que la veille d'une actualisation (soit le 27 du
                 mois)
               </strong>
               <br />
-              <em className={styles.small}>
+              <em className={classes.small}>
                 Les utilisateurs créés lors des dernières 24h ne seront pas
                 modifiés (car potentiellement non présents dans ce fichier).
               </em>
-            </p>
+            </Typography>
           </div>
           <form
             onSubmit={submitUserStatus}
@@ -101,10 +134,10 @@ const DeclarationFiles = () => {
           >
             <div>
               {userStatusSuccess && (
-                <div className={styles.success}>Utilisateurs mis à jour</div>
+                <div className={classes.success}>Utilisateurs mis à jour</div>
               )}
               {userStatusError && (
-                <div className={styles.alert}>
+                <div className={classes.alert}>
                   Erreur lors de la mise à jour !
                 </div>
               )}
@@ -130,9 +163,9 @@ const DeclarationFiles = () => {
             />
           </form>
         </div>
-        <div className={styles.container}>
+        <div className={classes.container}>
           <h2>Statut des actualisations du mois : faite ou non</h2>
-          <p className={styles.alert}>
+          <Typography className={classes.alert}>
             Les emails présents dans ce fichier seront considérés comme n'ayant
             pas réalisé leur actualisation (ni sur Zen ni sur PE) en prévision
             des mails envoyés le 7,10 et le 14.
@@ -142,11 +175,11 @@ const DeclarationFiles = () => {
               théoriquement le 6, 10 et 14 du mois)
             </strong>
             <br />
-            <em className={styles.small}>
+            <em className={classes.small}>
               Les utilisateurs créés lors des dernières 24h ne seront pas
               modifiés (car potentiellement non présents dans ce fichier).
             </em>
-          </p>
+          </Typography>
 
           <form
             onSubmit={submitMonthDeclarationFile}
@@ -155,10 +188,10 @@ const DeclarationFiles = () => {
           >
             <div>
               {userDeclarationMonthStatusSuccess && (
-                <div className={styles.success}>Utilisateurs mis à jour</div>
+                <div className={classes.success}>Utilisateurs mis à jour</div>
               )}
               {userDeclarationMonthStatusError && (
-                <div className={styles.alert}>
+                <div className={classes.alert}>
                   Erreur lors de la mise à jour !
                 </div>
               )}

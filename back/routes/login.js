@@ -187,7 +187,7 @@ router.get('/callback', (req, res) => {
             if (!userToSave.postalCode) {
               // there was an error getting the postal code, and the user is new
               // --> we can't let him login
-              throw new Error('Cannot login new user without postal code')
+              throw new Error('Cannot register new user without postal code')
             }
 
             return User.query()

@@ -40,7 +40,7 @@ export default function CookiePolicy() {
     <CustomDialog
       disablePortal
       disableAutoFocus
-      width={500}
+      width="xl"
       titleId="CookiePolicyContainer"
       isOpened={!consent}
       className={classes.modal}

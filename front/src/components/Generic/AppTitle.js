@@ -15,7 +15,7 @@ const HomeIcon = styled.img`
 `
 
 const StyledTitle = styled(Typography).attrs({
-  variant: 'h4',
+  variant: 'h2',
   component: 'div',
 })`
   && {

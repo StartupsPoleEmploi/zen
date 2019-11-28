@@ -94,6 +94,7 @@ const TopContentTextsContainer = styled.div`
 `
 
 const Title = styled(Typography).attrs({
+  component: 'h1',
   variant: 'h1',
   paragraph: true,
 })`

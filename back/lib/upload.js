@@ -39,7 +39,7 @@ const checkPDFValidityMiddleware = (req, res, next) => {
   return checkPDFValidity(req.file.path)
     .then(() => next())
     .catch(() => {
-      winston.warn(
+      winston.debug(
         `User ${req.session.user.id} sent invalid PDF, showing them an error`,
       )
       res.status(422).json({

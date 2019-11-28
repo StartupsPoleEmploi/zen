@@ -26,6 +26,7 @@ const fs = require('fs')
 const path = require('path')
 const { deburr } = require('lodash')
 const { format } = require('date-fns')
+const Raven = require('raven')
 
 const { request, checkHeadersAndWait } = require('../resilientRequest')
 const EmployerDocument = require('../../models/EmployerDocument')
@@ -242,10 +243,10 @@ const sendDocument = ({ accessToken, document, previousTries = 0 }) => {
             }),
           )
         }
+        err.message = `Error while uploading or confirming document ${infosToSendDocument.dbDocument.id} (call to ${err.response.request.url}) (HTTP ${err.status}) => ${err.message}`
 
-        winston.error(
-          `Error while uploading or confirming document ${infosToSendDocument.dbDocument.id} (call to ${err.response.request.url}) (HTTP ${err.status})`,
-        )
+        winston.error(err.message)
+        Raven.captureException(err)
         throw err
       }),
   )

@@ -124,8 +124,7 @@ app.use('/employers', employersRouter)
 if (sentryUrl) {
   app.use(Raven.errorHandler())
   // an error middleware needs 4 arguments
-  // eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     if (err.code === 'EBADCSRFTOKEN') {
       res.status(403).json({ code: 'EBADCSRFTOKEN' })
     } else {

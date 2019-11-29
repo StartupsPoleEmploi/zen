@@ -149,6 +149,7 @@ export class Actu extends Component {
     isLoading: true,
     isDialogOpened: false,
     isValidating: false,
+    isSendingData: false,
     consistencyErrors: [],
     validationErrors: [],
     isLoggedOut: false,
@@ -365,7 +366,7 @@ export class Actu extends Component {
       return this.setState({ formError: error })
     }
 
-    this.setState({ isValidating: true })
+    this.setState({ isValidating: true, isSendingData: true })
 
     return this.props
       .postDeclaration({ ...this.state, ignoreErrors })
@@ -383,6 +384,7 @@ export class Actu extends Component {
             consistencyErrors: err.response.body.consistencyErrors,
             validationErrors: err.response.body.validationErrors,
             isValidating: false,
+            isSendingData: false,
           })
         }
 
@@ -391,13 +393,14 @@ export class Actu extends Component {
 
         if (err.status === 401 || err.status === 403) {
           this.closeDialog()
-          this.setState({ isLoggedOut: true })
+          this.setState({ isLoggedOut: true, isSendingData: false })
           return
         }
 
         // Unhandled error
         this.setState({
           formError: UNHANDLED_ERROR,
+          isSendingData: false,
         })
         this.closeDialog()
       })
@@ -525,6 +528,7 @@ export class Actu extends Component {
       hasSickLeave,
       hasInternship,
       hasMaternityLeave,
+      isSendingData,
     } = this.state
 
     const { user } = this.props
@@ -717,7 +721,7 @@ export class Actu extends Component {
               <MainActionButton
                 primary
                 onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-                disabled={!this.hasAnsweredMainQuestions()}
+                disabled={!this.hasAnsweredMainQuestions() || isSendingData}
               >
                 Suivant
                 <StyledArrowRightAlt />

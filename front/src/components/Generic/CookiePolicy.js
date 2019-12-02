@@ -16,12 +16,23 @@ const useStyles = makeStyles((theme) => ({
   titleImg: {
     height: '6rem',
     width: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      width: '86%',
+      height: 'auto',
+    },
   },
   content: {
     margin: theme.spacing(1, 0),
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1.5rem',
+    },
   },
   button: {
     textTransform: 'uppercase',
+    [theme.breakpoints.down('xs')]: {
+      height: '5.5rem !important',
+      fontSize: '1.4rem',
+    },
   },
 }))
 

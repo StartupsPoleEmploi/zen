@@ -26,7 +26,7 @@ const routesWithDisplayedNav = [
   '/thanks',
   '/cgu',
 ]
-const [actuRoute] = routesWithDisplayedNav
+const [, , , dashboardRoute] = routesWithDisplayedNav
 
 const useStyles = makeStyles((theme) => ({
   lightTooltip: {
@@ -178,7 +178,7 @@ export const Layout = ({
       {useMobileVersion && isNavVisible && NavComponent()}
       <Container>
         {!useMobileVersion && isNavVisible && NavComponent()}
-        <Main addBackground={pathname === actuRoute}>{children}</Main>
+        <Main addBackground={pathname === dashboardRoute}>{children}</Main>
       </Container>
       {useMobileVersion && isNavVisible && (
         <Link href="/cgu" style={{ padding: '20px', height: '50px' }}>

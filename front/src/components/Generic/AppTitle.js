@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import withWidth from '@material-ui/core/withWidth'
 import { useMediaQuery } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 import { primaryBlue, mobileBreakpoint } from '../../constants'
 import home from '../../images/home.svg'
@@ -28,23 +29,33 @@ const StyledTitle = styled(Typography).attrs({
 
 const HomeLink = styled(Link)`
   && {
-    color: #000;
+    color: ${(attr) => attr.zenColor || '#000'};
     text-decoration: none;
     font-family: filson-soft;
   }
 `
 
-export const AppTitle = ({ ...props }) => {
+export const AppTitle = ({ zenColor, ...props }) => {
   const showHomeIcon = useMediaQuery(`(max-width:${mobileBreakpoint})`)
 
   return (
     <StyledTitle {...props}>
-      <HomeLink to="/dashboard" title="Retourner à l'accueil du site">
+      <HomeLink
+        zenColor={zenColor}
+        to="/dashboard"
+        title="Retourner à l'accueil du site"
+      >
         {showHomeIcon && <HomeIcon src={home} alt="" />}
         zen<span style={{ color: primaryBlue }}>.</span>
       </HomeLink>
     </StyledTitle>
   )
+}
+AppTitle.propTypes = {
+  zenColor: PropTypes.string,
+}
+AppTitle.defaultProps = {
+  zenColor: '#000',
 }
 
 export default withWidth()(AppTitle)

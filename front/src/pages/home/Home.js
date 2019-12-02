@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import MuiLink from '@material-ui/core/Link'
+import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
@@ -353,7 +353,7 @@ export const Home = ({ location: { search } }) => {
             </Tagline>
             {useMobileVersion && (
               <Typography style={{ padding: '1rem 0 2rem' }}>
-                <MuiLink
+                <Link
                   href={`#${VIDEO_ID}`}
                   style={{
                     display: 'inline-flex',
@@ -361,7 +361,7 @@ export const Home = ({ location: { search } }) => {
                   }}
                 >
                   En savoir plus sur Zen <ExpandMore />
-                </MuiLink>
+                </Link>
               </Typography>
             )}
           </TopContentTextsContainer>

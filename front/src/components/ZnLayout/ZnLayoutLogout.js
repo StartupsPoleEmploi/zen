@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { makeStyles } from '@material-ui/core/styles'
-import MuiLink from '@material-ui/core/Link'
+import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -97,16 +97,16 @@ export default function ZnLayoutLogout({ children }) {
       <footer className={classes.footer} role="contentinfo">
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={2}>
-            <MuiLink
+            <Link
               href="cgu"
               style={{ color: '#fff', textDecoration: 'underline' }}
             >
               <Typography>CGU</Typography>
-            </MuiLink>
+            </Link>
           </Grid>
           <Grid item xs={8}>
             <div style={{ textAlign: 'center' }}>
-              <AppTitle style={{ color: '#fff' }} />
+              <AppTitle zenColor="#fff" />
               <br />
               <Typography
                 variant="caption"

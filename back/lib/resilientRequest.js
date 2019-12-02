@@ -48,7 +48,7 @@ const resilientRequest = ({
       throw err
     }
     // HTTP 429 Too many requests
-    return checkHeadersAndWait(err.response.headers).then(() =>
+    return checkHeadersAndWait(err.response.header).then(() =>
       resilientRequest({
         url,
         accessToken,

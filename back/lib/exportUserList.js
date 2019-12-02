@@ -5,12 +5,13 @@ const { Parser } = require('json2csv')
 const winston = require('../lib/log')
 
 const User = require('../models/User')
+const ActivityLog = require('../models/ActivityLog')
 
 const EXPORT_DIR = '/mnt/datalakepe/vers_datalake/'
 const EXPORT_UNAUTHORIZED_FILENAME_PATH = `${EXPORT_DIR}export_utilisateur.csv`
 const EXPORT_AUTHORIZED_FILENAME_PATH = `${EXPORT_DIR}export_utilisateurs_autorises.csv`
 
-const EXPORT_FIELDS = [
+const DATA_EXPORT_FIELDS = [
   'firstName',
   'lastName',
   'email',
@@ -19,6 +20,73 @@ const EXPORT_FIELDS = [
   'isAuthorized',
   'peId',
 ]
+
+const getDeclaration = (declarations, monthId) =>
+  declarations.find((d) => d.declarationMonth.id === monthId)
+
+const getValidateFileActivityLog = (logs, { id: declarationId }) =>
+  logs.find(
+    (log) =>
+      log.action === ActivityLog.actions.VALIDATE_FILES &&
+      log.metadata &&
+      log.metadata.declarationId === declarationId,
+  )
+
+const computeFields = (declarationMonths) => {
+  const months = []
+  declarationMonths.forEach((month) => {
+    const label = format(month.month, 'MM/YYYY')
+    months.push({
+      label: `${label} - Actu envoyee`,
+      value: (row, field) => {
+        if (row.declarations) {
+          const declaration = getDeclaration(row.declarations, month.id)
+
+          if (declaration) return format(declaration.transmittedAt, 'DD/MM')
+        }
+        return field.default
+      },
+      default: '',
+    })
+    months.push({
+      label: `${label} - Actu et doc envoyee`,
+      value: (row, field) => {
+        if (row.declarations) {
+          const declaration = getDeclaration(row.declarations, month.id)
+
+          if (declaration) {
+            if (!declaration.hasWorked) return 'Pas travaille'
+            if (declaration.isFinished) {
+              if (row.activityLogs) {
+                const log = getValidateFileActivityLog(
+                  row.activityLogs,
+                  declaration,
+                )
+                if (log) return format(log.createdAt, 'DD/MM')
+              }
+              // During 2 months we got a regression resulting in no VALIDATE_FILES activityLog...
+              // We use declaration.updatedAt as fallback
+              return format(declaration.updatedAt, 'DD/MM')
+            }
+          }
+        }
+        return field.default
+      },
+      default: '',
+    })
+  })
+
+  return [
+    'firstName',
+    'lastName',
+    'email',
+    'postalCode',
+    'gender',
+    'isAuthorized',
+    'peId',
+    ...months,
+  ]
+}
 
 const renameFile = (from, to) =>
   new Promise((resolve, reject) => {
@@ -51,7 +119,7 @@ const exportUsersFileInCSV = async ({ isAuthorized, filePath }) => {
   return User.query()
     .where({ isAuthorized })
     .then((users) => {
-      const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
+      const json2csvParser = new Parser({ fields: DATA_EXPORT_FIELDS })
       const csvContent = json2csvParser.parse(users)
 
       fs.writeFile(filePath, csvContent, function(err) {
@@ -84,5 +152,6 @@ const saveUnauthorizedUsersInCSV = async () => {
 module.exports = {
   saveUnauthorizedUsersInCSV,
   saveAuthorizedUsersInCSV,
-  EXPORT_FIELDS,
+  computeFields,
+  DATA_EXPORT_FIELDS,
 }

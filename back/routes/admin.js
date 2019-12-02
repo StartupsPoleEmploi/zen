@@ -10,7 +10,7 @@ const { Parser } = require('json2csv')
 const winston = require('../lib/log')
 const { deleteUser } = require('../lib/user')
 const mailjet = require('../lib/mailings/mailjet')
-const { EXPORT_FIELDS } = require('../lib/exportUserList')
+const { computeFields, DATA_EXPORT_FIELDS } = require('../lib/exportUserList')
 
 const ActivityLog = require('../models/ActivityLog')
 const Declaration = require('../models/Declaration')
@@ -59,55 +59,72 @@ router.get('/declarations', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/users', (req, res, next) => {
+router.get('/users', async (req, res, next) => {
   const isAuthorized = req.query.authorized === 'true'
 
-  return User.query()
-    .where({ isAuthorized })
-    .then((users) => {
-      if ('csv' in req.query) {
-        const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
-        const csv = json2csvParser.parse(users)
+  try {
+    const months = await DeclarationMonth.query()
+      .where('startDate', '<=', 'now')
+      .orderBy('startDate', 'DESC')
 
-        res.set(
-          'Content-disposition',
-          `attachment; filename=utilisateurs-${
-            !isAuthorized ? 'non-' : ''
-          }autorisés-${format(new Date(), 'YYYY-MM-DD')}.csv`,
-        )
-        res.set('Content-type', 'text/csv')
-        return res.send(csv)
-      }
+    const users = await User.query()
+      .eager('[declarations.[declarationMonth]]')
+      .where({ isAuthorized })
 
-      return res.json(users)
-    })
-    .catch(next)
-})
-
-router.get('/users-with-declaration', (req, res, next) =>
-  User.query()
-    .whereIn(
-      'id',
-      Declaration.query()
-        .distinct()
-        .select('userId'),
-    )
-    .then((users) => {
-      const json2csvParser = new Parser({ fields: EXPORT_FIELDS })
+    if ('csv' in req.query) {
+      const json2csvParser = new Parser({
+        fields: isAuthorized ? computeFields(months) : DATA_EXPORT_FIELDS,
+      })
       const csv = json2csvParser.parse(users)
 
       res.set(
         'Content-disposition',
-        `attachment; filename=utilisateurs-avec-declaration-${format(
-          new Date(),
-          'YYYY-MM-DD',
-        )}.csv`,
+        `attachment; filename=utilisateurs-${
+          !isAuthorized ? 'non-' : ''
+        }autorisés-${format(new Date(), 'YYYY-MM-DD')}.csv`,
       )
       res.set('Content-type', 'text/csv')
       return res.send(csv)
+    }
+    return res.json(users)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/users-with-declaration', async (req, res, next) => {
+  try {
+    const months = await DeclarationMonth.query()
+      .where('startDate', '<=', 'now')
+      .orderBy('startDate', 'DESC')
+
+    const users = await User.query()
+      .eager('[declarations.[declarationMonth]]')
+      .whereIn(
+        'id',
+        Declaration.query()
+          .distinct()
+          .select('userId'),
+      )
+
+    const json2csvParser = new Parser({
+      fields: computeFields(months),
     })
-    .catch(next),
-)
+    const csv = json2csvParser.parse(users)
+
+    res.set(
+      'Content-disposition',
+      `attachment; filename=utilisateurs-avec-declaration-${format(
+        new Date(),
+        'YYYY-MM-DD',
+      )}.csv`,
+    )
+    res.set('Content-type', 'text/csv')
+    return res.send(csv)
+  } catch (err) {
+    next(err)
+  }
+})
 
 router.post('/users/authorize', (req, res, next) => {
   const useEmails = Array.isArray(req.body.emails)
@@ -148,7 +165,10 @@ router.post('/users/authorize', (req, res, next) => {
         .then(() =>
           User.query()
             .patch({ isAuthorized: true })
-            .whereIn('id', users.map((user) => user.id)),
+            .whereIn(
+              'id',
+              users.map((user) => user.id),
+            ),
         )
     })
     .then((updatedRowsNb = 0) =>

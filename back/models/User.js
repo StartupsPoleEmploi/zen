@@ -36,6 +36,14 @@ class User extends BaseModel {
           to: 'employers.userId',
         },
       },
+      activityLogs: {
+        relation: HasManyRelation,
+        modelClass: `${__dirname}/ActivityLog`,
+        join: {
+          from: 'Users.id',
+          to: 'activity_logs.userId',
+        },
+      },
       declarations: {
         relation: HasManyRelation,
         modelClass: `${__dirname}/Declaration`,

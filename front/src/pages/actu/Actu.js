@@ -366,7 +366,7 @@ export class Actu extends Component {
       return this.setState({ formError: error })
     }
 
-    this.setState({ isValidating: true, isSendingData: true })
+    this.setState({ isValidating: true })
 
     return this.props
       .postDeclaration({ ...this.state, ignoreErrors })
@@ -384,7 +384,6 @@ export class Actu extends Component {
             consistencyErrors: err.response.body.consistencyErrors,
             validationErrors: err.response.body.validationErrors,
             isValidating: false,
-            isSendingData: false,
           })
         }
 
@@ -393,14 +392,13 @@ export class Actu extends Component {
 
         if (err.status === 401 || err.status === 403) {
           this.closeDialog()
-          this.setState({ isLoggedOut: true, isSendingData: false })
+          this.setState({ isLoggedOut: true })
           return
         }
 
         // Unhandled error
         this.setState({
           formError: UNHANDLED_ERROR,
-          isSendingData: false,
         })
         this.closeDialog()
       })
@@ -528,7 +526,7 @@ export class Actu extends Component {
       hasSickLeave,
       hasInternship,
       hasMaternityLeave,
-      isSendingData,
+      isValidating,
     } = this.state
 
     const { user } = this.props
@@ -721,7 +719,7 @@ export class Actu extends Component {
               <MainActionButton
                 primary
                 onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-                disabled={!this.hasAnsweredMainQuestions() || isSendingData}
+                disabled={!this.hasAnsweredMainQuestions() || isValidating}
               >
                 Suivant
                 <StyledArrowRightAlt />
@@ -733,7 +731,7 @@ export class Actu extends Component {
         {!this.getFormError() && (
           // Note: only open this dialog if there is no form error (eg. the declaration can be sent)
           <DeclarationDialogsHandler
-            isLoading={this.state.isValidating}
+            isLoading={isValidating}
             isOpened={this.state.isDialogOpened}
             onCancel={this.closeDialog}
             onConfirm={this.onSubmit}

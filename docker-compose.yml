@@ -87,7 +87,7 @@ services:
         ipv4_address: 172.0.0.111
 
   db:
-    image: postgres
+    image: postgres:10.4
     restart: always
     networks:
       actualisation_network:

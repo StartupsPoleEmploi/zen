@@ -38,7 +38,7 @@ const StyledDashboard = styled.div`
   }};
 `
 
-const Title = styled(Typography).attrs({ variant: 'h4', component: 'h1' })`
+const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
   && {
     margin-bottom: 2rem;
     font-weight: bold;

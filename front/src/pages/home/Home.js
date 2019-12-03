@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Button from '@material-ui/core/Button'
-import MuiLink from '@material-ui/core/Link'
+import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
@@ -14,19 +13,15 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import SendIcon from '@material-ui/icons/SendOutlined'
 import DescriptionIcon from '@material-ui/icons/DescriptionOutlined'
-import AccountIcon from '@material-ui/icons/AccountCircleOutlined'
 
-import AppTitle from '../../components/Generic/AppTitle'
 import YoutubeVideo from '../../components/Generic/YoutubeVideo'
 import {
   intermediaryBreakpoint,
   mobileBreakpoint,
   primaryBlue,
-  secondaryBlue,
 } from '../../constants'
 
 import characters from '../../images/characters.svg'
-import logoPEMono from '../../images/logoPE-mono.png'
 import photo1 from '../../images/photo1.jpg'
 import photo2 from '../../images/photo2.jpg'
 import photo3 from '../../images/photo3.jpg'
@@ -56,27 +51,6 @@ const LoginError = styled.div`
   text-align: center;
 
   ${windowWidthElement}
-`
-
-const Header = styled.header.attrs({ role: 'banner' })`
-  background-color: #f3f4f5;
-  padding: 5rem 10rem 4rem;
-
-  ${windowWidthElement}
-`
-
-const HeaderContent = styled.div`
-  max-width: 144rem;
-  display: flex;
-  align-items: flex-end;
-  margin: auto;
-  position: relative;
-
-  @media (max-width: ${intermediaryBreakpoint}) {
-    justify-content: center;
-    align-items: center;
-    padding-top: 2rem;
-  }
 `
 
 const TopContentContainer = styled.section`
@@ -120,8 +94,8 @@ const TopContentTextsContainer = styled.div`
 `
 
 const Title = styled(Typography).attrs({
-  variant: 'h3',
   component: 'h1',
+  variant: 'h1',
   paragraph: true,
 })`
   && {
@@ -145,29 +119,6 @@ const Tagline = styled(Typography).attrs({
     @media (max-width: ${mobileBreakpoint}) {
       margin: auto;
     }
-  }
-`
-
-const ConnectButton = styled(Button).attrs({
-  color: 'primary',
-  variant: 'contained',
-  href: '/api/login',
-  role: 'link', // override material-ui default role for buttons, even if links
-})`
-  && {
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-
-    width: 32rem;
-    max-width: 100%;
-    min-height: 5rem;
-    margin: 0;
-    border-radius: 0 0 0 10rem;
-    padding-left: 4rem;
-    padding-right: 4rem;
-    line-height: 3rem;
   }
 `
 
@@ -213,7 +164,7 @@ const StepTitle = styled(SectionTitle).attrs({
 })``
 
 const StepNumber = styled(Typography).attrs({
-  variant: 'h2',
+  variant: 'h1',
   component: 'div',
   color: 'primary',
 })`
@@ -353,18 +304,6 @@ const ZenIsForYouText = styled(Typography)`
   }
 `
 
-const Footer = styled.footer`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 15rem;
-  background-color: ${secondaryBlue};
-  text-align: center;
-
-  ${windowWidthElement}
-`
-
 const summaryImgStyle = {
   display: 'block',
   height: 'auto',
@@ -390,287 +329,248 @@ export const Home = ({ location: { search } }) => {
           </Typography>
         </LoginError>
       )}
-
-      <Header>
-        <HeaderContent>
-          <AppTitle />
-          <img
-            src={logoPEMono}
-            alt="logo pole emploi"
-            style={{
-              height: '3.5rem',
-              width: 'auto',
-              display: 'block',
-            }}
-          />
-        </HeaderContent>
-
-        <ConnectButton>
-          <AccountIcon style={{ width: '4rem' }} />
-          <Typography style={{ color: 'white', paddingLeft: '0.5rem' }}>
-            Se connecter avec mes identifiants Pôle Emploi
-          </Typography>
-        </ConnectButton>
-      </Header>
-
-      <main role="main">
-        <TopContentContainer>
-          <TopContent>
-            <TopContentTextsContainer>
-              <Title
-                variant="h4"
-                component="h1"
-                paragraph
-                style={{
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                }}
-              >
-                L'actualisation <br />
-                Pôle emploi <br />
-                en toute <br />
-                simplicité<span style={{ color: primaryBlue }}>.</span>
-              </Title>
-              <Tagline>
-                Zen est un service Pôle emploi dédié aux{' '}
-                <strong>personnes ayant un ou plusieurs employeurs.</strong>
-                <br />
-                Bénéficiez d'une actualisation et d'un envoi de justificatifs
-                simplifié.
-              </Tagline>
-              {useMobileVersion && (
-                <Typography style={{ padding: '1rem 0 2rem' }}>
-                  <MuiLink
-                    href={`#${VIDEO_ID}`}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    En savoir plus sur Zen <ExpandMore />
-                  </MuiLink>
-                </Typography>
-              )}
-            </TopContentTextsContainer>
-            <YoutubeVideo id={VIDEO_ID} />
-          </TopContent>
-        </TopContentContainer>
-
-        <Section
-          style={{
-            paddingBottom: '3rem',
-            display: 'flex',
-            flexDirection: 'column',
-            jusityContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <img
-            src={characters}
-            alt=""
-            style={{
-              marginTop: '-15rem',
-              marginBottom: '3rem',
-              position: 'relative',
-              maxWidth: '100%',
-              minHeight: '15rem',
-            }}
-          />
-          <SummaryUl>
-            <SummaryLi>
-              <SummaryImgContainer>
-                <EuroIcon style={summaryImgStyle} alt="" />
-              </SummaryImgContainer>
-              <SummaryText>
-                Zen additionne pour vous
-                <br />
-                vos heures travaillées et totalise
-                <br />
-                vos revenus mensuels !
-              </SummaryText>
-            </SummaryLi>
-            <SummaryLi
-              aria-hidden="true"
-              style={{ padding: '0', display: 'block' }}
+      <TopContentContainer>
+        <TopContent>
+          <TopContentTextsContainer>
+            <Title
+              paragraph
+              style={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+              }}
             >
-              {useIntermediaryVersion ? (
-                <ArrowDownward alt="" />
-              ) : (
-                <ArrowForward alt="" />
-              )}
-            </SummaryLi>
-            <SummaryLi>
-              <SummaryImgContainer>
-                <SendIcon style={summaryImgStyle} alt="" />
-              </SummaryImgContainer>
-              <SummaryText>
-                Zen vous indique
-                <br />
-                les justificatifs à transmettre selon
-                <br /> votre déclaration.
-              </SummaryText>
-            </SummaryLi>
-            <SummaryLi
-              aria-hidden="true"
-              style={{ padding: '0', display: 'block' }}
-            >
-              {useIntermediaryVersion ? (
-                <ArrowDownward alt="" />
-              ) : (
-                <ArrowForward alt="" />
-              )}
-            </SummaryLi>
-            <SummaryLi>
-              <SummaryImgContainer>
-                <DescriptionIcon style={summaryImgStyle} alt="" />
-              </SummaryImgContainer>
-              <SummaryText>
-                Accédez à un espace personnel
-                <br /> avec tous vos justificatifs
-                <br /> transmis mois par mois.
-              </SummaryText>
-            </SummaryLi>
-          </SummaryUl>
-        </Section>
-
-        <FullWidthSection>
-          <SectionTitle style={{ color: '#fff' }}>
-            Zen est pour vous si ...
-          </SectionTitle>
-          <ZenIsForYouContainer>
-            <ZenIsForYouSubSection>
-              <ZenIsForYouText>
-                <FaceIcon
+              L'actualisation <br />
+              Pôle emploi <br />
+              en toute <br />
+              simplicité<span style={{ color: primaryBlue }}>.</span>
+            </Title>
+            <Tagline>
+              Zen est un service Pôle emploi dédié aux{' '}
+              <strong>personnes ayant un ou plusieurs employeurs.</strong>
+              <br />
+              Bénéficiez d'une actualisation et d'un envoi de justificatifs
+              simplifié.
+            </Tagline>
+            {useMobileVersion && (
+              <Typography style={{ padding: '1rem 0 2rem' }}>
+                <Link
+                  href={`#${VIDEO_ID}`}
                   style={{
-                    display: 'block',
-                    margin: '0 auto 2rem auto',
-                    width: '5rem',
-                    height: 'auto',
+                    display: 'inline-flex',
+                    alignItems: 'center',
                   }}
-                />
-                <strong>
-                  Vous êtes <br />
-                  <span aria-label="assistants ou assistantes maternels">
-                    assistant.e maternel.le
-                  </span>
-                </strong>
+                >
+                  En savoir plus sur Zen <ExpandMore />
+                </Link>
+              </Typography>
+            )}
+          </TopContentTextsContainer>
+          <YoutubeVideo id={VIDEO_ID} />
+        </TopContent>
+      </TopContentContainer>
+
+      <Section
+        style={{
+          paddingBottom: '3rem',
+          display: 'flex',
+          flexDirection: 'column',
+          jusityContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <img
+          src={characters}
+          alt=""
+          style={{
+            marginTop: '-15rem',
+            marginBottom: '3rem',
+            position: 'relative',
+            maxWidth: '100%',
+            minHeight: '15rem',
+          }}
+        />
+        <SummaryUl>
+          <SummaryLi>
+            <SummaryImgContainer>
+              <EuroIcon style={summaryImgStyle} alt="" />
+            </SummaryImgContainer>
+            <SummaryText>
+              Zen additionne pour vous
+              <br />
+              vos heures travaillées et totalise
+              <br />
+              vos revenus mensuels !
+            </SummaryText>
+          </SummaryLi>
+          <SummaryLi
+            aria-hidden="true"
+            style={{ padding: '0', display: 'block' }}
+          >
+            {useIntermediaryVersion ? (
+              <ArrowDownward alt="" />
+            ) : (
+              <ArrowForward alt="" />
+            )}
+          </SummaryLi>
+          <SummaryLi>
+            <SummaryImgContainer>
+              <SendIcon style={summaryImgStyle} alt="" />
+            </SummaryImgContainer>
+            <SummaryText>
+              Zen vous indique
+              <br />
+              les justificatifs à transmettre selon
+              <br /> votre déclaration.
+            </SummaryText>
+          </SummaryLi>
+          <SummaryLi
+            aria-hidden="true"
+            style={{ padding: '0', display: 'block' }}
+          >
+            {useIntermediaryVersion ? (
+              <ArrowDownward alt="" />
+            ) : (
+              <ArrowForward alt="" />
+            )}
+          </SummaryLi>
+          <SummaryLi>
+            <SummaryImgContainer>
+              <DescriptionIcon style={summaryImgStyle} alt="" />
+            </SummaryImgContainer>
+            <SummaryText>
+              Accédez à un espace personnel
+              <br /> avec tous vos justificatifs
+              <br /> transmis mois par mois.
+            </SummaryText>
+          </SummaryLi>
+        </SummaryUl>
+      </Section>
+
+      <FullWidthSection>
+        <SectionTitle style={{ color: '#fff' }}>
+          Zen est pour vous si ...
+        </SectionTitle>
+        <ZenIsForYouContainer>
+          <ZenIsForYouSubSection>
+            <ZenIsForYouText>
+              <FaceIcon
+                style={{
+                  display: 'block',
+                  margin: '0 auto 2rem auto',
+                  width: '5rem',
+                  height: 'auto',
+                }}
+              />
+              <strong>
+                Vous êtes <br />
+                <span aria-label="assistants ou assistantes maternels">
+                  assistant.e maternel.le
+                </span>
+              </strong>
+              <br />
+              <span aria-label="inscrits ou inscrites">inscrit.e</span> à Pôle
+              emploi
+            </ZenIsForYouText>
+          </ZenIsForYouSubSection>
+        </ZenIsForYouContainer>
+      </FullWidthSection>
+
+      <Section>
+        <SectionTitle style={{ textAlign: 'center' }}>
+          Vous êtes <span aria-label="accompagné">accompagné(e)</span> à chaque
+          étape
+        </SectionTitle>
+        <FlexDiv>
+          <StepText>
+            <StepNumber>1</StepNumber>
+            <StepTitle>
+              Je suis informé(e) tous les mois du début de l'actualisation
+            </StepTitle>
+            <Typography>
+              Recevez chaque mois un rappel par mail pour ne pas oublier que
+              vous devez vous actualiser. Soyez Zen&nbsp;!
+            </Typography>
+          </StepText>
+          <SectionImg alt="" src={photo1} />
+        </FlexDiv>
+
+        <FlexDivReverse>
+          <StepText>
+            <StepNumber>2</StepNumber>
+            <StepTitle>
+              Mon dossier est à jour, je perçois le bon montant d'indemnité :
+              moins de risque de trop perçus !
+            </StepTitle>
+            <Typography>
+              Zen m'indique les justificatifs à transmettre selon ma
+              déclaration. Je peux mettre à jour mon dossier sur l'interface Zen
+              en transmettant mes pièces manquantes.
+            </Typography>
+          </StepText>
+          <SectionImg alt="" src={photo2} />
+        </FlexDivReverse>
+
+        <FlexDiv>
+          <StepText>
+            <StepNumber>3</StepNumber>
+            <StepTitle>
+              J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser
+              sur le site Pôle Emploi !
+            </StepTitle>
+            <Typography>
+              Vous pouvez imprimer ou télécharger votre déclaration sur le site
+              de Zen ou bien la recevoir par mail après votre actualisation.
+              C'est simple, c'est Zen !
+            </Typography>
+          </StepText>
+          <SectionImg alt="" src={photo3} />
+        </FlexDiv>
+      </Section>
+
+      <Section style={{ textAlign: 'center', padding: '5rem' }}>
+        <SectionTitle>Nos utilisateurs approuvent !</SectionTitle>
+        <TestimoniesContainer>
+          <TestimonyContainer>
+            <TestimonyTitle>
+              <b>
+                Déborah - Lille
                 <br />
-                <span aria-label="inscrits ou inscrites">inscrit.e</span> à Pôle
-                emploi
-              </ZenIsForYouText>
-            </ZenIsForYouSubSection>
-          </ZenIsForYouContainer>
-        </FullWidthSection>
-
-        <Section>
-          <SectionTitle style={{ textAlign: 'center' }}>
-            Vous êtes <span aria-label="accompagné">accompagné(e)</span> à
-            chaque étape
-          </SectionTitle>
-          <FlexDiv>
-            <StepText>
-              <StepNumber>1</StepNumber>
-              <StepTitle>
-                Je suis informé(e) tous les mois du début de l'actualisation
-              </StepTitle>
-              <Typography>
-                Recevez chaque mois un rappel par mail pour ne pas oublier que
-                vous devez vous actualiser. Soyez Zen&nbsp;!
-              </Typography>
-            </StepText>
-            <SectionImg alt="" src={photo1} />
-          </FlexDiv>
-
-          <FlexDivReverse>
-            <StepText>
-              <StepNumber>2</StepNumber>
-              <StepTitle>
-                Mon dossier est à jour, je perçois le bon montant d'indemnité :
-                moins de risque de trop perçus !
-              </StepTitle>
-              <Typography>
-                Zen m'indique les justificatifs à transmettre selon ma
-                déclaration. Je peux mettre à jour mon dossier sur l'interface
-                Zen en transmettant mes pièces manquantes.
-              </Typography>
-            </StepText>
-            <SectionImg alt="" src={photo2} />
-          </FlexDivReverse>
-
-          <FlexDiv>
-            <StepText>
-              <StepNumber>3</StepNumber>
-              <StepTitle>
-                J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser
-                sur le site Pôle Emploi !
-              </StepTitle>
-              <Typography>
-                Vous pouvez imprimer ou télécharger votre déclaration sur le
-                site de Zen ou bien la recevoir par mail après votre
-                actualisation. C'est simple, c'est Zen !
-              </Typography>
-            </StepText>
-            <SectionImg alt="" src={photo3} />
-          </FlexDiv>
-        </Section>
-
-        <Section style={{ textAlign: 'center', padding: '5rem' }}>
-          <SectionTitle>Nos utilisateurs approuvent !</SectionTitle>
-          <TestimoniesContainer>
-            <TestimonyContainer>
-              <TestimonyTitle>
-                <b>
-                  Déborah - Lille
-                  <br />
-                  (11/04/19)
-                </b>
-              </TestimonyTitle>
-              <TestimonyText>
-                « Merci pour ce site qui prend en compte pleinement notre métier
-                d'assistante maternelle&nbsp;»
-              </TestimonyText>
-            </TestimonyContainer>
-            <TestimonyContainer>
-              <TestimonyTitle>
-                <b>
-                  Sophie - Condette
-                  <br />
-                  (10/04/19)
-                </b>
-              </TestimonyTitle>
-              <TestimonyText>
-                « Plus simple vu le nombre d'employeurs. Belle innovation&nbsp;»
-              </TestimonyText>
-            </TestimonyContainer>
-            <TestimonyContainer>
-              <TestimonyTitle>
-                <b>
-                  Fatima - Amiens
-                  <br />
-                  (09/04/19)
-                </b>
-              </TestimonyTitle>
-              <TestimonyText>
-                « C'est plus rapide, moins prise de tête, et facile à
-                comprendre&nbsp;!&nbsp;»
-              </TestimonyText>
-            </TestimonyContainer>
-          </TestimoniesContainer>
-        </Section>
-      </main>
-
-      <Footer role="contentinfo">
-        <AppTitle style={{ color: '#fff' }} />
-        <br />
-        <Typography
-          variant="caption"
-          // 0.51 (not 0.5) is the accessibility threshold for our background color
-          style={{ color: '#fff', opacity: 0.51, letterSpacing: 1.5 }}
-        >
-          Un service propulsé par Pôle Emploi
-        </Typography>
-      </Footer>
+                (11/04/19)
+              </b>
+            </TestimonyTitle>
+            <TestimonyText>
+              « Merci pour ce site qui prend en compte pleinement notre métier
+              d'assistante maternelle&nbsp;»
+            </TestimonyText>
+          </TestimonyContainer>
+          <TestimonyContainer>
+            <TestimonyTitle>
+              <b>
+                Sophie - Condette
+                <br />
+                (10/04/19)
+              </b>
+            </TestimonyTitle>
+            <TestimonyText>
+              « Plus simple vu le nombre d'employeurs. Belle innovation&nbsp;»
+            </TestimonyText>
+          </TestimonyContainer>
+          <TestimonyContainer>
+            <TestimonyTitle>
+              <b>
+                Fatima - Amiens
+                <br />
+                (09/04/19)
+              </b>
+            </TestimonyTitle>
+            <TestimonyText>
+              « C'est plus rapide, moins prise de tête, et facile à
+              comprendre&nbsp;!&nbsp;»
+            </TestimonyText>
+          </TestimonyContainer>
+        </TestimoniesContainer>
+      </Section>
     </StyledHome>
   )
 }

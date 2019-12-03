@@ -40,6 +40,23 @@ const theme = createMuiTheme({
     fontFamily: ['"Open sans"', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(
       ',',
     ),
+    h1: {
+      fontSize: '4.5rem',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+    },
+    h2: {
+      fontSize: '3.5rem',
+      fontWeight: 'bold',
+    },
+    h3: {
+      fontSize: '3rem',
+      fontWeight: 'bold',
+    },
+    h4: {
+      fontSize: '2.5rem',
+      fontWeight: 'bold',
+    },
   },
   palette: {
     primary: {

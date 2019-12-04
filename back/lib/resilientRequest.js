@@ -13,16 +13,17 @@ const checkHeadersAndWait = (headers) => {
   superagent supplement which automatically retries requests if it got an HTTP 429
   which are sent any time a PE API has its quota (local or global) met
 */
-const resilientRequest = ({
-  accessToken,
-  headers,
-  url,
-  previousTries = 0,
-  method = 'get',
-  data,
-  fields,
-  attachments,
-}) => {
+const resilientRequest = (params = {}) => {
+  const {
+    accessToken,
+    headers,
+    url,
+    previousTries = 0,
+    method = 'get',
+    data,
+    fields,
+    attachments,
+  } = params
   const request = superagent[method](url, data)
     .set('Accept', 'application/json')
     .set('Authorization', `Bearer ${accessToken}`)
@@ -42,19 +43,14 @@ const resilientRequest = ({
     )
   }
 
-  return request.catch((err) => {
+  return request.catch(async (err) => {
     if (err.status !== 429) throw err
     if (previousTries >= MAX_RETRIES) {
       throw err
     }
     // HTTP 429 Too many requests
-    return checkHeadersAndWait(err.response.headers).then(() =>
-      resilientRequest({
-        url,
-        accessToken,
-        previousTries: previousTries + 1,
-      }),
-    )
+    await checkHeadersAndWait(err.response.headers)
+    return resilientRequest({ ...params, previousTries: previousTries + 1 })
   })
 }
 

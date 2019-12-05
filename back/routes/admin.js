@@ -63,36 +63,44 @@ router.get('/users', async (req, res, next) => {
   const isAuthorized = req.query.authorized === 'true'
 
   try {
-    const months = await DeclarationMonth.query()
-      .where('startDate', '<=', 'now')
-      .orderBy('startDate', 'DESC')
-
-    const users = await User.query()
-      .eager('[declarations.[declarationMonth]]')
-      .where({ isAuthorized })
-
-    if ('csv' in req.query) {
-      const json2csvParser = new Parser({
-        fields: isAuthorized ? computeFields(months) : DATA_EXPORT_FIELDS,
-      })
-      const csv = json2csvParser.parse(users)
-
-      res.set(
-        'Content-disposition',
-        `attachment; filename=utilisateurs-${
-          !isAuthorized ? 'non-' : ''
-        }autorisés-${format(new Date(), 'YYYY-MM-DD')}.csv`,
-      )
-      res.set('Content-type', 'text/csv')
-      return res.send(csv)
-    }
+    const users = await User.query().where({ isAuthorized })
     return res.json(users)
   } catch (err) {
     next(err)
   }
 })
 
-router.get('/users-with-declaration', async (req, res, next) => {
+router.get('/users/csv', async (req, res, next) => {
+  const isAuthorized = req.query.authorized === 'true'
+
+  try {
+    const users = await User.query()
+      .eager('[declarations.[declarationMonth], activityLogs]')
+      .where({ isAuthorized })
+
+    const months = await DeclarationMonth.query()
+      .where('startDate', '<=', 'now')
+      .orderBy('startDate', 'DESC')
+
+    const json2csvParser = new Parser({
+      fields: isAuthorized ? computeFields(months) : DATA_EXPORT_FIELDS,
+    })
+    const csv = json2csvParser.parse(users)
+
+    res.set(
+      'Content-disposition',
+      `attachment; filename=utilisateurs-${
+        !isAuthorized ? 'non-' : ''
+      }autorisés-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+    )
+    res.set('Content-type', 'text/csv')
+    return res.send(csv)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/users-with-declaration/csv', async (req, res, next) => {
   try {
     const months = await DeclarationMonth.query()
       .where('startDate', '<=', 'now')

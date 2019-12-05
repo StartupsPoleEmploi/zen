@@ -1,8 +1,10 @@
 const { isNull } = require('lodash')
+const { transaction } = require('objection')
 
 const EmployerDocument = require('../models/EmployerDocument')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const Declaration = require('../models/Declaration')
+const ActivityLog = require('../models/ActivityLog')
 
 const docTypes = DeclarationInfo.types
 
@@ -64,7 +66,19 @@ const fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated = ({
       }
 
       declaration.isFinished = true
-      return declaration.$query().upsertGraphAndFetch()
+
+      return transaction(Declaration.knex(), (trx) =>
+        Promise.all([
+          declaration.$query(trx).upsertGraphAndFetch(),
+          ActivityLog.query(trx).insert({
+            userId,
+            action: ActivityLog.actions.VALIDATE_FILES,
+            metadata: JSON.stringify({
+              declarationId,
+            }),
+          }),
+        ]).then(([newDeclaration]) => newDeclaration),
+      )
     })
 
 module.exports = {

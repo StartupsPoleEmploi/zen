@@ -109,9 +109,9 @@ function Cgu({ isLogin }) {
         <Link href="https://zen.pole-emploi.fr">
           https://zen.pole-emploi.fr
         </Link>{' '}
-        est un service de Pôle emploi dédié aux assistantes maternelles des
-        Hauts-de-France, d’Occitanie et de Nouvelle Aquitaine permettant faire
-        de façon simple :
+        est un service de Pôle emploi dédié aux assistant(e)s maternel(le)s de
+        France (hormis les régions suivantes : Bourgogne, Franche-Comté, Centre
+        Val de Loire et les DOM TOM) permettant faire de façon simple :
         <ul>
           <li>
             l’actualisation mensuelle sur la liste des demandeurs d’emploi ;
@@ -129,7 +129,7 @@ function Cgu({ isLogin }) {
         mensuels.
       </Text>
       <Text>
-        ZEN transmets tous vos justificatifs dans votre espace personnel sur
+        ZEN transmet tous vos justificatifs dans votre espace personnel sur
         pole-emploi.fr.
       </Text>
       <Text>
@@ -146,7 +146,7 @@ function Cgu({ isLogin }) {
         sur pole-emploi.fr.
       </Text>
       <Text>
-        En cas d’oubli de vos identifiant, rendez-vous sur pole-emploi.fr.
+        En cas d’oubli de vos identifiants, rendez-vous sur pole-emploi.fr.
       </Text>
       <Text>
         Veillez à la confidentialité du mot de passe ou de l’identifiant et
@@ -215,8 +215,8 @@ function Cgu({ isLogin }) {
       <Title3>Les cookies déposés sur le site</Title3>
       <Text>
         Sous réserve du choix de l’utilisateur, plusieurs cookies peuvent être
-        utilisés sur le site internet XXX. Les différentes finalités de ces
-        cookies sont décrites ci-dessous.
+        utilisés sur le site internet http://zen.pole-emploi.fr. Les différentes
+        finalités de ces cookies sont décrites ci-dessous.
       </Text>
       <Text>
         <b>

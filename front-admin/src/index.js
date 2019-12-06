@@ -1,13 +1,6 @@
-import CssBaseline from '@material-ui/core/CssBaseline'
-import React, { Fragment } from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import App from './App'
+import App from './containers/App';
 
-ReactDOM.render(
-  <Fragment>
-    <CssBaseline />
-    <App />
-  </Fragment>,
-  document.getElementById('root'),
-)
+ReactDOM.render(<App />, document.getElementById('root'));

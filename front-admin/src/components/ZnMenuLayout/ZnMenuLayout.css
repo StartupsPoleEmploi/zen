@@ -1,0 +1,20 @@
+.zn-menu-layout {
+  color: #ffffff;
+}
+
+.zn-menu-layout .logo {
+  display: flex;
+  margin: 10px;
+}
+.zn-menu-layout .logo img {
+  max-width: 100%;
+}
+
+.zn-menu-layout .footer {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  font-size: 12px;
+}

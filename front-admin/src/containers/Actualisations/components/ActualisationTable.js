@@ -89,7 +89,6 @@ export default class ActualisationTable extends React.PureComponent<Props> {
     return (
       <ZnTable
         rowKey="id"
-        indentSize={3}
         size="small"
         style={{ backgroundColor: 'white' }}
         columns={columns}

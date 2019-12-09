@@ -99,7 +99,7 @@ export default class ZnTable extends React.PureComponent<Props, State> {
 
     return (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <Table columns={this.formatColumns(columns)} {...rest} />
+      <Table pagination={{ pageSize: 15 }} columns={this.formatColumns(columns)} {...rest} />
     );
   }
 }

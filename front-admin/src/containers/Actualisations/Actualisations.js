@@ -84,5 +84,3 @@ export default function Actualisations() {
     </div>
   );
 }
-
-Actualisations.propTypes = {};

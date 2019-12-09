@@ -6,8 +6,8 @@ export const URLS: Object = {
   BASE: '/',
   DASHBOARD: '/',
   ACTUALISATIONS: '/actualisations',
-  ACTIVITES: '/activites',
-  SYSTEMES: '/systemes',
+  ACTIVITIES: '/activities',
+  SETTINGS: '/settings',
   UTILISATEURS: {
     BASE: '/utilisateurs',
     ADD: '/add',
@@ -40,8 +40,8 @@ export const MENU_ITEMS = [
   {
     name: 'Activités',
     iconName: 'robot',
-    to: URLS.ACTIVITES,
-    key: 'ACTIVITES',
+    to: URLS.ACTIVITIES,
+    key: 'ACTIVITIES',
   },
   {
     name: 'Utilisateurs',
@@ -53,7 +53,7 @@ export const MENU_ITEMS = [
   {
     name: 'Systèmes',
     iconName: 'setting',
-    to: URLS.SYSTEMES,
-    key: 'SYSTEMES',
+    to: URLS.SETTINGS,
+    key: 'SETTINGS',
   },
 ];

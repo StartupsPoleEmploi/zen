@@ -1,98 +1,15 @@
+// @flow
 import React from 'react';
-import {
-  Table, Input, Button, Icon,
-} from 'antd';
-
 import moment from 'moment';
-import PropTypes from 'prop-types';
+
+import ZnTable from '../../../components/ZnTable';
+
+type Props = {
+  declarations: Array<Object>,
+};
 
 
-export default class ActualisationTable extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchText: '',
-      searchedColumn: '',
-    };
-  }
-
-  getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys, selectedKeys, confirm, clearFilters,
-    }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type="primary"
-          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          icon="search"
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          Search
-        </Button>
-        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-          Reset
-        </Button>
-      </div>
-    ),
-
-    filterIcon: (filtered) => (
-      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-
-    onFilter: (value, record) => record[dataIndex]
-      .toString()
-      .toLowerCase()
-      .includes(value.toLowerCase()),
-
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select());
-      }
-    },
-
-    // eslint-disable-next-line react/destructuring-assignment
-    render: (text) => {
-      const { searchedColumn, searchText } = this.state;
-      if (searchedColumn === dataIndex) {
-        return (
-          <div
-            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-            searchWords={[searchText]}
-            autoEscape
-            textToHighlight={text.toString()}
-          >
-            {searchText}
-          </div>
-        );
-      }
-      return text;
-    },
-  });
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
-
-  handleReset = (clearFilters) => {
-    clearFilters();
-    this.setState({ searchText: '' });
-  };
-
+export default class ActualisationTable extends React.PureComponent<Props> {
   getStatus = (declaration) => {
     if (declaration.hasFinishedDeclaringEmployers) {
       if (declaration.isFinished) {
@@ -124,52 +41,54 @@ export default class ActualisationTable extends React.PureComponent {
         dataIndex: 'id',
         key: 'id',
         ellipsis: true,
-        sorter: (a, b) => a.id - b.id,
-        ...this.getColumnSearchProps('id'),
+        znSort: 'number',
+        znSearchable: true,
       },
       {
         title: 'Nom',
         dataIndex: 'name',
         key: 'name',
         ellipsis: true,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        ...this.getColumnSearchProps('name'),
+        znSort: 'string',
+        znSearchable: true,
       },
       {
         title: 'E-mail',
         dataIndex: 'email',
         key: 'email',
         ellipsis: true,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        ...this.getColumnSearchProps('email'),
+        znSort: 'string',
+        znSearchable: true,
       },
       {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
         ellipsis: true,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        ...this.getColumnSearchProps('status'),
+        znSort: 'string',
+        znSearchable: true,
       },
       {
         title: 'Transmis le',
         dataIndex: 'transmittedAt',
         key: 'transmittedAt',
         ellipsis: true,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        ...this.getColumnSearchProps('transmittedAt'),
+        znSort: 'string',
+        znSearchable: true,
       },
       {
         title: 'Notes',
         dataIndex: 'notes',
         key: 'notes',
         ellipsis: true,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        ...this.getColumnSearchProps('notes'),
+        znSort: 'string',
+        znSearchable: true,
       },
     ];
+
     return (
-      <Table
+      <ZnTable
+        rowKey="id"
         indentSize={3}
         size="small"
         style={{ backgroundColor: 'white' }}
@@ -179,7 +98,3 @@ export default class ActualisationTable extends React.PureComponent {
     );
   }
 }
-
-ActualisationTable.propTypes = {
-  declarations: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-};

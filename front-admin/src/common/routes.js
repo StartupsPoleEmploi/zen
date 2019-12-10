@@ -8,8 +8,8 @@ export const URLS: Object = {
   ACTUALISATIONS: '/actualisations',
   ACTIVITIES: '/activities',
   SETTINGS: '/settings',
-  UTILISATEURS: {
-    BASE: '/utilisateurs',
+  USERS: {
+    BASE: '/users',
     ADD: '/add',
     VIEW: '/view/:id',
   },
@@ -17,7 +17,7 @@ export const URLS: Object = {
 const formatUrl = (url: string, id: *) => url
   .replace(/[/]{2,10}/g, '/') // replave "//" by /
   .replace(':id', id);
-const urlsKeysAddEdit = ['UTILISATEURS'];
+const urlsKeysAddEdit = ['USERS'];
 urlsKeysAddEdit.forEach((e) => {
   URLS[e].add = () => formatUrl(`${URLS[e].BASE}/${URLS[e].ADD}`, '');
   URLS[e].edit = (id) => formatUrl(`${URLS[e].BASE}/${URLS[e].EDIT}`, id);
@@ -46,9 +46,9 @@ export const MENU_ITEMS = [
   {
     name: 'Utilisateurs',
     iconName: 'team',
-    to: URLS.UTILISATEURS.BASE,
+    to: URLS.USERS.BASE,
     key: 'users',
-    match: (pathname) => pathname.startsWith(URLS.UTILISATEURS.BASE),
+    match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
   },
   {
     name: 'Systèmes',

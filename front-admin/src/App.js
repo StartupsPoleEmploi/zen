@@ -6,9 +6,9 @@ import { createBrowserHistory } from 'history';
 import { Layout } from 'antd';
 
 import Routes from './Routes';
-import ZnMenuLayout from '../../components/ZnMenuLayout';
-import { MENU_ITEMS } from '../../common/routes';
-import imgLogo from '../../assets/images/logoFull.svg';
+import ZnMenuLayout from './components/ZnMenuLayout';
+import { MENU_ITEMS } from './common/routes';
+import imgLogo from './assets/images/logoFull.svg';
 
 const browserHistory = createBrowserHistory({
   basename: '/zen-admin',

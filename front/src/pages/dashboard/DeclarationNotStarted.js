@@ -21,7 +21,13 @@ const DeclarationNotStarted = () => {
     superagent
       .get('/api/declarationMonths/current-declaration-month')
       .then(({ body: { endDate } }) => {
-        setActuEndDate(moment(endDate).format('DD MMMM YYYY'))
+        // Note: the endDate in database is the 16th (at midnight) of the month
+        // So we need to the display the day before as last day for declaration
+        setActuEndDate(
+          moment(endDate)
+            .subtract(1, 'day')
+            .format('DD MMMM YYYY'),
+        )
       })
   }, [])
 

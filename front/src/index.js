@@ -3,7 +3,7 @@ import 'moment/locale/fr'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -31,6 +31,7 @@ if (environment !== 'development') {
 }
 
 moment.locale('fr')
+moment.tz.setDefault('Europe/Paris')
 
 const theme = createMuiTheme({
   typography: {

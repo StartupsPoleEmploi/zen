@@ -37,6 +37,7 @@
     "lodash": "^4.17.10",
     "mini-css-extract-plugin": "^0.5.0",
     "moment": "^2.22.2",
+    "moment-timezone": "^0.5.27",
     "object-assign": "4.1.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "pnp-webpack-plugin": "^1.2.1",

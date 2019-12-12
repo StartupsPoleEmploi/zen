@@ -3303,7 +3303,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="salary[1]"
-                    maxLength={15}
+                    maxLength={16}
                     name="salary[1]"
                     onAnimationStart={[Function]}
                     onBlur={[Function]}
@@ -3680,7 +3680,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="salary[1]"
-                    maxLength={15}
+                    maxLength={16}
                     name="salary[1]"
                     onAnimationStart={[Function]}
                     onBlur={[Function]}
@@ -4069,7 +4069,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     className="MuiInputBase-input MuiInput-input"
                     disabled={false}
                     id="salary[1]"
-                    maxLength={15}
+                    maxLength={16}
                     name="salary[1]"
                     onAnimationStart={[Function]}
                     onBlur={[Function]}
@@ -4366,7 +4366,7 @@ exports[`Storyshots EuroInput default 1`] = `
         data-css-1v8lkxq=""
       >
         <input
-          maxLength={15}
+          maxLength={16}
           name="euro"
           onBlur={[Function]}
           onChange={[Function]}
@@ -4438,7 +4438,7 @@ exports[`Storyshots EuroInput with big float value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
-          maxLength={15}
+          maxLength={16}
           name="euro"
           onBlur={[Function]}
           onChange={[Function]}
@@ -4510,7 +4510,7 @@ exports[`Storyshots EuroInput with big integer value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
-          maxLength={15}
+          maxLength={16}
           name="euro"
           onBlur={[Function]}
           onChange={[Function]}
@@ -4582,7 +4582,7 @@ exports[`Storyshots EuroInput with float value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
-          maxLength={15}
+          maxLength={16}
           name="euro"
           onBlur={[Function]}
           onChange={[Function]}
@@ -4654,7 +4654,7 @@ exports[`Storyshots EuroInput with integer value 1`] = `
         data-css-1v8lkxq=""
       >
         <input
-          maxLength={15}
+          maxLength={16}
           name="euro"
           onBlur={[Function]}
           onChange={[Function]}

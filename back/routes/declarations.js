@@ -26,10 +26,10 @@ const Declaration = require('../models/Declaration')
 const DeclarationInfo = require('../models/DeclarationInfo')
 const ActivityLog = require('../models/ActivityLog')
 const {
-  generatePDFPath,
-  getDeclarationPDF,
-  getFriendlyPDFName,
-} = require('../lib/files')
+  generatePdfPath,
+  getDeclarationPdf,
+  getFriendlyPdfName,
+} = require('../lib/pdfGenerators/declarationProof')
 
 const {
   getPDF,
@@ -320,7 +320,7 @@ router.get('/summary-file', requireActiveMonth, (req, res, next) => {
   const download = req.query.download === 'true'
 
   return Declaration.query()
-    .eager('[declarationMonth, user, employers]')
+    .eager('[declarationMonth, user, employers, infos]')
     .findOne({ id: req.body.id, userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .skipUndefined()
@@ -333,9 +333,9 @@ router.get('/summary-file', requireActiveMonth, (req, res, next) => {
         return res.status(403).json('Declaration not complete')
       }
 
-      return getDeclarationPDF(declaration).then(() => {
-        const pdfPath = generatePDFPath(declaration)
-        const filename = getFriendlyPDFName(declaration)
+      return getDeclarationPdf(declaration).then(() => {
+        const pdfPath = generatePdfPath(declaration)
+        const filename = getFriendlyPdfName(declaration)
 
         if (download) {
           res.download(pdfPath, filename)

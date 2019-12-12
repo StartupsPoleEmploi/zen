@@ -73,7 +73,7 @@ const getMessage = ({ user, html, text, subject, campaignName }) => ({
   DeduplicateCampaign: true,
   From: {
     Email: 'no-reply@zen.pole-emploi.fr',
-    Name: `L'équipe Zen Pôle Emploi`,
+    Name: `L'équipe Zen Pôle emploi`,
   },
   To: [
     {

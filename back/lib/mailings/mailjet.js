@@ -80,8 +80,8 @@ module.exports = {
   createCampaignDraft: (opts) =>
     mailjet.post('campaigndraft', { version: 'v3' }).request({
       Locale: 'fr_FR',
-      Sender: "L'équipe Zen Pôle Emploi",
-      SenderName: "L'équipe Zen Pôle Emploi",
+      Sender: "L'équipe Zen Pôle emploi",
+      SenderName: "L'équipe Zen Pôle emploi",
       SenderEmail: 'no-reply@zen.pole-emploi.fr',
       ContactsListID: LIST_ID,
       ...opts,

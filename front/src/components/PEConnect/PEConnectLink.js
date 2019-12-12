@@ -60,7 +60,7 @@ export const PEConnectLink = ({ useDarkVersion = false }) => (
       width="34"
       height="31"
     />
-    <PEConnectText>Se connecter avec pôle emploi</PEConnectText>
+    <PEConnectText>Se connecter avec Pôle emploi</PEConnectText>
   </StyledA>
 )
 

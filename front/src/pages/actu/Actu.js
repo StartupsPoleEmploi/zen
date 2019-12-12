@@ -674,7 +674,7 @@ export class Actu extends Component {
               <List>
                 <DeclarationQuestion
                   verticalLayout={useVerticalLayoutForQuestions}
-                  label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
+                  label="Souhaitez-vous rester inscrit à Pôle emploi ?"
                   name="isLookingForJob"
                   value={this.state.isLookingForJob}
                   onAnswer={this.onAnswer}

@@ -70,7 +70,7 @@ export default function ZnLayoutLogout({ children }) {
           <AppTitle />
           <img
             src={logoPEMono}
-            alt="logo pole emploi"
+            alt="logo Pôle emploi"
             style={{
               height: '3.5rem',
               width: 'auto',
@@ -87,7 +87,7 @@ export default function ZnLayoutLogout({ children }) {
         >
           <AccountIcon style={{ width: '4rem' }} />
           <Typography style={{ color: 'white', paddingLeft: '0.5rem' }}>
-            Se connecter avec mes identifiants Pôle Emploi
+            Se connecter avec mes identifiants Pôle emploi
           </Typography>
         </Button>
       </header>
@@ -113,7 +113,7 @@ export default function ZnLayoutLogout({ children }) {
                 // 0.51 (not 0.5) is the accessibility threshold for our background color
                 style={{ color: '#fff', opacity: 0.51, letterSpacing: 1.5 }}
               >
-                Un service propulsé par Pôle Emploi
+                Un service propulsé par Pôle emploi
               </Typography>
             </div>
           </Grid>

@@ -6,7 +6,7 @@ describe('Home page', function() {
 
   it('should have link PE connect', () => {
     cy.get('a')
-      .contains('Se connecter avec mes identifiants Pôle Emploi')
+      .contains('Se connecter avec mes identifiants Pôle emploi')
       .should('have.length', 1)
   })
 

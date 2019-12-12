@@ -252,7 +252,7 @@ export class DocumentUpload extends Component {
 
             <TooltipOnFocus
               useHover
-              content="Cochez cette case si vous avez transmis ce justificatif à Pôle Emploi par d'autres moyens que Zen."
+              content="Cochez cette case si vous avez transmis ce justificatif à Pôle emploi par d'autres moyens que Zen."
             >
               <Button
                 aria-describedby={`file[${id}]`}
@@ -270,7 +270,7 @@ export class DocumentUpload extends Component {
                 {!isTransmitted && (
                   <Fragment>
                     <CheckBoxOutlineBlankIcon />
-                    Déjà transmis à Pôle Emploi
+                    Déjà transmis à Pôle emploi
                   </Fragment>
                 )}
               </Button>

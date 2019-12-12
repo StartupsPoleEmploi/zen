@@ -516,7 +516,7 @@ export const Home = ({ location: { search } }) => {
             <StepNumber>3</StepNumber>
             <StepTitle>
               J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser
-              sur le site Pôle Emploi !
+              sur le site Pôle emploi !
             </StepTitle>
             <Typography>
               Vous pouvez imprimer ou télécharger votre déclaration sur le site

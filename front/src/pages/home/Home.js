@@ -349,7 +349,7 @@ export const Home = ({ location: { search } }) => {
               <strong>personnes ayant un ou plusieurs employeurs.</strong>
               <br />
               Bénéficiez d'une actualisation et d'un envoi de justificatifs
-              simplifié.
+              simplifiés.
             </Tagline>
             {useMobileVersion && (
               <Typography style={{ padding: '1rem 0 2rem' }}>

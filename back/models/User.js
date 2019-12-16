@@ -19,8 +19,12 @@ class User extends BaseModel {
         gender: { type: ['string', 'null'] },
         email: { type: ['string', 'null'] },
         postalCode: { type: ['string', 'null'] },
+        agencyCode: { type: ['string', 'null'] },
         isAuthorized: { type: 'boolean' },
+        // radier ou non
+        isBlocked: { default: false, type: 'boolean' },
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
+        registeredAt: { type: ['string', 'object', 'null'] },
       },
     }
   }

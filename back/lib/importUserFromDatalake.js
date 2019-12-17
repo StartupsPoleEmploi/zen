@@ -9,6 +9,7 @@ const winston = require('./log')
 const { unzipBz2, readCsv } = require('./files')
 const mailjet = require('./mailings/mailjet')
 const User = require('../models/User')
+const userCtrl = require('../controllers/userCtrl')
 
 const readdir = util.promisify(fs.readdir)
 
@@ -56,15 +57,17 @@ function $lineToUser(lineContent) {
 
   const firstName = $convertField(c_prenomcorrespondance)
   const lastName = $convertField(c_nomcorrespondance)
+  const postalCode = $convertField(c_codepostal)
   return {
     peId: $convertField(dc_ididentiteexterne),
     firstName: firstName ? startCase(toLower(firstName)) : null,
     lastName: lastName ? startCase(toLower(lastName)) : null,
     gender: $convertField(c_sexe_id) === 'F' ? 'female' : 'male',
     email: $convertField(c_adresseemail),
-    postalCode: $convertField(c_codepostal),
+    postalCode,
     isBlocked: $convertField(radie) === 'true',
     agencyCode: $convertField(c_cdeale),
+    isAuthorized: userCtrl.isPostalCodeAuthorized(postalCode),
   }
 }
 
@@ -157,7 +160,7 @@ async function importUserFromDatalake() {
         winston.info(`Still ${userToUpdate.length} user to block lines`)
         const peIdIn = userToUpdate.splice(0, 1000)
         await User.query()
-          .patch({ isBlock: true })
+          .patch({ isBlocked: true })
           .whereIn('peId', peIdIn)
       }
     }

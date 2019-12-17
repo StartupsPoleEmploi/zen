@@ -27,8 +27,8 @@ async function $getFile() {
   return `${FOLDER}/${file}`
 }
 
-function $convertField(filed) {
-  return filed === 'NULL' ? null : filed
+function $convertField(field) {
+  return field === 'NULL' ? null : field
 }
 
 function $lineToUser(lineContent) {
@@ -76,7 +76,7 @@ function $lineToUser(lineContent) {
  * @returns {Promise<User|null>} user
  */
 async function $updateUser(userFromFile) {
-  // some of user from file dont have peId, we only get user with peId
+  // some of user from file does not have peId, we only get user with peId
   if (
     !userFromFile.peId ||
     !userFromFile.firstName ||
@@ -94,7 +94,6 @@ async function $updateUser(userFromFile) {
       userFromFile.email !== userInDb.email
     if (userInDb.registeredAt && hasEmailChange) {
       // User email has changed. Changing email in mailjet
-      // Note: We do not wait for Mailjet to answer to send data back to the user
       winston.info(
         `E-mail changed for user ${userInDb.id}: old="${userInDb.email}"; new="${userFromFile.email}"`,
       )
@@ -157,7 +156,7 @@ async function importUserFromDatalake() {
       const peIds = users.map((e) => e.peId)
       const userToUpdate = peIds.filter((peId) => !peIdsFromFile.includes(peId))
       while (userToUpdate.length) {
-        winston.info(`Still ${userToUpdate.length} user to block lines`)
+        winston.info(`Still ${userToUpdate.length} user to block`)
         const peIdIn = userToUpdate.splice(0, 1000)
         await User.query()
           .patch({ isBlocked: true })

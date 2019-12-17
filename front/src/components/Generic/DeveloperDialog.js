@@ -67,6 +67,7 @@ const DeveloperDialog = () => {
   "email": "harry@pisces.com",
   "gender": "female",
   "isAuthorized": true,
+  "isBlocked": true,
   "canSendDeclaration": true,
   "hasAlreadySentDeclaration": false,
   "tokenExpirationDate": "2059-05-06T13:34:15.985Z"

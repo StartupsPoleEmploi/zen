@@ -29,7 +29,8 @@ import Thanks from './pages/actu/Thanks'
 import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
 import ZnLayout from './components/ZnLayout'
-import Signup from './pages/other/Signup'
+import NotAutorized from './pages/other/NotAutorized'
+import AddEmail from './pages/other/AddEmail'
 import Cgu from './pages/other/Cgu'
 
 class App extends Component {
@@ -154,8 +155,14 @@ class App extends Component {
       }
     } else if (!user.isAuthorized) {
       // User is logged but not authorized
-      if (pathname !== '/signup') {
-        return <Redirect to="/signup" />
+      if (pathname !== '/not-autorized') {
+        return <Redirect to="/not-autorized" />
+      }
+      // User is logged
+    } else if (!user.email) {
+      // User is logged but no email is register
+      if (pathname !== '/add-email') {
+        return <Redirect to="/add-email" />
       }
       // User is logged
     } else if (pathname === '/') {
@@ -279,8 +286,14 @@ class App extends Component {
           <PrivateRoute
             exact
             isLoggedIn={!!user}
-            path="/signup"
-            render={(props) => <Signup {...props} user={user} />}
+            path="/not-autorized"
+            component={NotAutorized}
+          />
+          <PrivateRoute
+            exact
+            isLoggedIn={!!user}
+            path="/add-email"
+            component={AddEmail}
           />
 
           <Route exact path="/loggedOut" component={LoggedOut} />

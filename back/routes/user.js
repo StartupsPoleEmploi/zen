@@ -15,8 +15,8 @@ router.get('/', refreshAccessToken, async (req, res) => {
   const dbUser = await User.query().findOne({ id: req.session.user.id })
 
   return res.json({
-    ...req.session.user,
     isBlocked: dbUser.isBlocked,
+    ...req.session.user,
     csrfToken: req.csrfToken && req.csrfToken(),
     isTokenValid: isUserTokenValid(req.session.user.tokenExpirationDate),
   })

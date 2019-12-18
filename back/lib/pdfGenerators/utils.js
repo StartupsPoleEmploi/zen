@@ -1,7 +1,5 @@
 const puppeteer = require('puppeteer')
 const { Readable } = require('stream')
-const fs = require('fs')
-const winston = require('../log')
 
 const htmlToPdf = async (html, options = {}) => {
   const browser = await puppeteer.launch({
@@ -30,22 +28,6 @@ const htmlToPdf = async (html, options = {}) => {
   return pdfBuffer
 }
 
-const eraseFile = async (filePath) =>
-  new Promise((resolve, reject) => {
-    fs.access(filePath, (accessError) => {
-      if (accessError) return resolve()
-
-      fs.unlink(filePath, (deleteError) => {
-        if (deleteError) {
-          winston.warn(deleteError)
-          return reject(accessError)
-        }
-        return resolve()
-      })
-    })
-  })
-
 module.exports = {
   htmlToPdf,
-  eraseFile,
 }

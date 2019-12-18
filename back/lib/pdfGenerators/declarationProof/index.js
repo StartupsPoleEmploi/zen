@@ -5,9 +5,7 @@ const fr = require('date-fns/locale/fr')
 const Mustache = require('mustache')
 
 const { uploadsDeclarationDirectory } = require('config')
-// const winston = require('../../log')
 const { htmlToPdf } = require('../utils')
-const { eraseFile } = require('../../files')
 
 const isProdEnv = process.env.NODE_ENV === 'prod'
 const DECLARATION_PDF_TEMPLATE = `${__dirname}/declarationPdf.mst`
@@ -34,8 +32,9 @@ const formatIntervalDates = (startDate, endDate) => {
   return `du ${startString} au ${endString}`
 }
 
-function generatePdfName({ declarationMonth, userId }) {
-  return `${format(declarationMonth.month, 'YYYY-MM')}__${userId}.pdf`
+const generatePdfName = (declaration) => {
+  const declarationDate = format(declaration.declarationMonth.month, 'YYYY-MM')
+  return `${declarationDate}__${declaration.userId}.pdf`
 }
 
 function getFriendlyPdfName({ declarationMonth: { month } }) {
@@ -47,7 +46,7 @@ const generatePdfPath = (declaration) =>
   `${uploadsDeclarationDirectory}${generatePdfName(declaration)}`
 
 const generateDeclarationAsPdf = async (declaration, pdfPath) => {
-  // Generate actualisation/ folder if exists
+  // Generate actualisation/ folder if not exists
   const folderExists = await exists(uploadsDeclarationDirectory)
   if (!folderExists) await mkDir(uploadsDeclarationDirectory)
 
@@ -105,8 +104,6 @@ const getDeclarationPdf = async (declaration) => {
 
 module.exports = {
   getDeclarationPdf,
-  generatePdfName,
   generatePdfPath,
   getFriendlyPdfName,
-  eraseFile,
 }

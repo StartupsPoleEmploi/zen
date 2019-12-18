@@ -1,14 +1,7 @@
 const fs = require('fs')
-const { format } = require('date-fns')
 const bz2 = require('unbzip2-stream')
 const readline = require('readline')
 const winston = require('../lib/log')
-
-const generatePDFName = (declaration) => {
-  const declarationDate = format(declaration.declarationMonth.month, 'YYYY-MM')
-
-  return `${declarationDate}__${declaration.userId}.pdf`
-}
 
 const eraseFile = (filePath) =>
   new Promise((resolve, reject) => {
@@ -60,7 +53,6 @@ async function readCsv(filePathCsv) {
 }
 
 module.exports = {
-  generatePDFName,
   eraseFile,
   unzipBz2,
   readCsv,

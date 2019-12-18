@@ -9,6 +9,6 @@ exports.up = async function(knex) {
 
 exports.down = async function(knex) {
   knex.schema.table('Users', function(table) {
-    table.boolean('isBlocked')
+    table.dropColumn('isBlocked')
   })
 }

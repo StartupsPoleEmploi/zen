@@ -238,26 +238,34 @@ class App extends Component {
             exact
             isLoggedIn={!!user}
             path="/actu"
-            render={(props) => (
-              <Actu
-                {...props}
-                activeMonth={activeMonth}
-                declaration={activeDeclaration}
-                user={user}
-              />
-            )}
+            render={(props) =>
+              user.isBlocked ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <Actu
+                  {...props}
+                  activeMonth={activeMonth}
+                  declaration={activeDeclaration}
+                  user={user}
+                />
+              )
+            }
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/employers"
-            render={(props) => (
-              <Employers
-                {...props}
-                activeMonth={activeMonth}
-                token={user.csrfToken}
-              />
-            )}
+            render={(props) =>
+              user.isBlocked ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <Employers
+                  {...props}
+                  activeMonth={activeMonth}
+                  token={user.csrfToken}
+                />
+              )
+            }
           />
           <PrivateRoute
             exact

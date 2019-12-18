@@ -157,6 +157,7 @@ class Dashboard extends PureComponent {
       firstName: PropTypes.string,
       hasAlreadySentDeclaration: PropTypes.bool,
       canSendDeclaration: PropTypes.bool,
+      isBlocked: PropTypes.bool,
     }),
     declaration: PropTypes.object,
     declarations: PropTypes.arrayOf(PropTypes.object),
@@ -324,16 +325,18 @@ class Dashboard extends PureComponent {
       <StyledDashboard width={width}>
         <Title width={width}>Bonjour {user.firstName}</Title>
         <StatusContainer width={width}>
-          <ActuStatus width={width}>
-            <SubTitle>
-              Actualisation
-              {activeMonthMoment && ' - '}
-              {activeMonthMoment && (
-                <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
-              )}
-            </SubTitle>
-            {this.renderActuStatus()}
-          </ActuStatus>
+          {!user.isBlocked && (
+            <ActuStatus width={width}>
+              <SubTitle>
+                Actualisation
+                {activeMonthMoment && ' - '}
+                {activeMonthMoment && (
+                  <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
+                )}
+              </SubTitle>
+              {this.renderActuStatus()}
+            </ActuStatus>
+          )}
           <FileStatus width={width}>
             <SubTitle>
               <FileIcon src={file} alt="" />

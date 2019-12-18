@@ -50,7 +50,7 @@ function $lineToUser(lineContent) {
     // [dc_lblregion] (eg => HAUTS-DE-FRANCE)
     radie, // every to false, because we only have user eligible
     // [dc_situationregardemploi_id] catégorie d'inscription (eg => SAN)
-    // [actu_faite] 'true' or 'false'; savoir si elle a fait sont actu du mois courrent
+    // [actu_faite] 'true' or 'false'; find out if she did her current month's news ("actu")
     ,
     ,
   ] = lineContent.split('|')

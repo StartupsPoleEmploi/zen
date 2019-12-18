@@ -25,7 +25,7 @@ const oauth2 = require('simple-oauth2').create(credentials)
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm,
-  scope: `application_${clientId} api_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 coordonnees api_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
+  scope: `application_${clientId} api_peconnect-individuv1 qos_silver_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 qos_gold_peconnect-coordonneesv1 coordonnees api_peconnect-actualisationv1 qos_gold_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
 }
 
 router.get('/', (req, res, next) => {

@@ -40,5 +40,8 @@ export default createReducer(
       if (!state.user) return
       state.user.isLoggedOut = true
     },
+    SET_EMAIL: (state, { payload }) => {
+      state.user.email = payload.email
+    },
   },
 )

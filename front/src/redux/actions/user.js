@@ -31,3 +31,7 @@ export const fetchUser = () => (dispatch) => {
       dispatch({ type: FETCH_USER_SUCCESS, payload: null })
     })
 }
+
+export const setEmail = (email) => (dispatch) => {
+  dispatch({ type: 'SET_EMAIL', payload: { email } })
+}

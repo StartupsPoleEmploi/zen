@@ -220,24 +220,26 @@ export const NavLogin = ({
           shouldActivateLink
           isActive={pathname === dashboardRoute}
         />
-        <StepperItem
-          label={
-            <Fragment>
-              {activeDeclaration &&
-              activeDeclaration.hasFinishedDeclaringEmployers ? (
-                <CheckIcon />
-              ) : (
-                <ListIcon src={actu} alt="" />
-              )}
-              Mon actualisation
-            </Fragment>
-          }
-          link={declarationRoute}
-          shouldActivateLink={
-            shouldActivateDeclarationLink || shouldActivateEmployersLink
-          }
-          isActive={false}
-        />
+        {!user.isBlocked && (
+          <StepperItem
+            label={
+              <Fragment>
+                {activeDeclaration &&
+                activeDeclaration.hasFinishedDeclaringEmployers ? (
+                  <CheckIcon />
+                ) : (
+                  <ListIcon src={actu} alt="" />
+                )}
+                Mon actualisation
+              </Fragment>
+            }
+            link={declarationRoute}
+            shouldActivateLink={
+              shouldActivateDeclarationLink || shouldActivateEmployersLink
+            }
+            isActive={false}
+          />
+        )}
         {(pathname === declarationRoute || pathname === employersRoute) && (
           <Fragment>
             <StepperItem
@@ -297,6 +299,7 @@ NavLogin.propTypes = {
     lastName: PropTypes.string,
     email: PropTypes.string,
     csrfToken: PropTypes.string,
+    isBlocked: PropTypes.bool,
   }),
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

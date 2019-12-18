@@ -1874,7 +1874,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2016,7 +2016,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2158,7 +2158,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2300,7 +2300,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2447,7 +2447,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2594,7 +2594,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2820,7 +2820,7 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2948,7 +2948,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        Déjà transmis à Pôle Emploi
+        Déjà transmis à Pôle emploi
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -4755,7 +4755,7 @@ exports[`Storyshots Home default 1`] = `
             personnes ayant un ou plusieurs employeurs.
           </strong>
           <br />
-          Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifié.
+          Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifiés.
         </h2>
       </div>
       <button
@@ -5148,7 +5148,7 @@ exports[`Storyshots Home default 1`] = `
         <h3
           className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
         >
-          J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
+          J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
         <p
           className="MuiTypography-root MuiTypography-body1"
@@ -5298,7 +5298,7 @@ exports[`Storyshots Home loginFailed 1`] = `
             personnes ayant un ou plusieurs employeurs.
           </strong>
           <br />
-          Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifié.
+          Bénéficiez d'une actualisation et d'un envoi de justificatifs simplifiés.
         </h2>
       </div>
       <button
@@ -5691,7 +5691,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <h3
           className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
         >
-          J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle Emploi !
+          J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
         <p
           className="MuiTypography-root MuiTypography-body1"
@@ -5951,7 +5951,7 @@ exports[`Storyshots PEConnectLink dark 1`] = `
           <span
             className="sc-dVhcbM cCMGqG"
           >
-            Se connecter avec pôle emploi
+            Se connecter avec Pôle emploi
           </span>
         </a>
         <div>
@@ -6029,7 +6029,7 @@ exports[`Storyshots PEConnectLink light 1`] = `
           <span
             className="sc-dVhcbM cCMGqG"
           >
-            Se connecter avec pôle emploi
+            Se connecter avec Pôle emploi
           </span>
         </a>
         <div>

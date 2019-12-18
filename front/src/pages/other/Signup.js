@@ -152,7 +152,7 @@ export class Signup extends Component {
 
           <LandingText variant="h5" component="h1">
             Merci pour votre demande d'inscription <br />
-            au service Zen de Pôle Emploi
+            au service Zen de Pôle emploi
           </LandingText>
 
           <Typography paragraph>
@@ -160,7 +160,7 @@ export class Signup extends Component {
             <br />
             merci de renseigner l'email que vous utilisez
             <br />
-            dans vos échanges avec Pôle Emploi
+            dans vos échanges avec Pôle emploi
           </Typography>
 
           <Form onSubmit={this.onSubmit}>

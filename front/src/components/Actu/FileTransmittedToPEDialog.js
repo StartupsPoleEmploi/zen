@@ -10,7 +10,7 @@ const FileTransmittedToPE = ({ isOpened, onCancel, onConfirm }) => (
   <CustomDialog
     content={
       <DialogContentText>
-        Avez-vous déjà transmis ce fichier à Pôle Emploi via un autre moyen que
+        Avez-vous déjà transmis ce fichier à Pôle emploi via un autre moyen que
         Zen&nbsp;?
       </DialogContentText>
     }

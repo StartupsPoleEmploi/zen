@@ -256,7 +256,7 @@ const DeclarationSummaryDialog = ({
               ) : (
                 <Fragment>
                   <DeclarationValues>
-                    Non, je ne souhaite pas rester inscrit à Pole emploi
+                    Non, je ne souhaite pas rester inscrit à Pôle emploi
                   </DeclarationValues>
 
                   <DeclarationValues>

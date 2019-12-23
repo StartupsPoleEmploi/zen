@@ -14,7 +14,7 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
           Vous avez déjà envoyé votre actualisation ce mois-ci en passant
           directement par{' '}
           <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
-            Pole-Emploi.fr
+            Pole-emploi.fr
           </a>
           .
         </DialogContentText>
@@ -42,7 +42,7 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
           target="_self"
           color="primary"
         >
-          J'accède à Pole-Emploi.fr
+          J'accède à Pole-emploi.fr
         </Button>
       </Fragment>
     }

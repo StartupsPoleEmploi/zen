@@ -14,7 +14,7 @@ const StatusErrorDialog = ({ isOpened }) => (
         </DialogContentText>
         <DialogContentText style={{ marginBottom: '1rem' }}>
           En cas d'urgence, vous pouvez effectuer vos opérations sur
-          Pole-Emploi.fr
+          Pole-emploi.fr
         </DialogContentText>
         <DialogContentText style={{ marginBottom: '1rem' }}>
           N'hésitez pas à nous contacter si vous avez besoin d'assistance. Nous

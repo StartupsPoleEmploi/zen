@@ -74,7 +74,7 @@ export const UsersList = () => {
         />
         <br />
         <Button
-          href={`/zen-admin-api/users?csv&authorized=${
+          href={`/zen-admin-api/users/csv?authorized=${
             showAuthorizedUsers ? 'true' : 'false'
           }`}
           variant="contained"

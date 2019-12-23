@@ -28,8 +28,11 @@ const DECLARATION_ALT_STATUSES = {
 // documents context in which we send declaration files
 const DECLARATION_CONTEXT_ID = '1'
 
+const REALM = '/individu'
+
 module.exports = {
   DECLARATION_STATUSES,
   DECLARATION_ALT_STATUSES,
   DECLARATION_CONTEXT_ID,
+  REALM,
 }

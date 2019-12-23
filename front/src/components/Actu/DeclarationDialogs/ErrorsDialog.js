@@ -23,7 +23,7 @@ const ErrorsDialog = ({ validationErrors, onCancel, ...props }) => (
         </ul>
         <DialogContentText>
           Zen n'est pas en mesure de prendre en charge votre déclaration.
-          Veuillez la modifier, ou l'effectuer sur Pole-Emploi.fr
+          Veuillez la modifier, ou l'effectuer sur Pole-emploi.fr
         </DialogContentText>
       </Fragment>
     }

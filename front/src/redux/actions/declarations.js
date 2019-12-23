@@ -305,7 +305,10 @@ export const postDeclaration = (formData) => (dispatch, getState) =>
       }
       return res
     })
-    .catch((err) => manageErrorCsrfToken(err, dispatch))
+    .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
+      throw err
+    })
 
 export const postEmployers = (formData) => (dispatch, getState) =>
   superagent
@@ -317,7 +320,10 @@ export const postEmployers = (formData) => (dispatch, getState) =>
       }
       return res
     })
-    .catch((err) => manageErrorCsrfToken(err, dispatch))
+    .catch((err) => {
+      if (manageErrorCsrfToken(err, dispatch)) return
+      throw err
+    })
 
 export const validateEmployerDoc = ({
   documentId,

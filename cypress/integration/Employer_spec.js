@@ -161,7 +161,7 @@ describe('Employers page', function() {
       checkEmployerLineValues({
         employerName: 'John Doe',
         workHours: '',
-        salary: '300,00€',
+        salary: '300,00€ bruts',
       })
     })
     it('should limit work hours input length to 3 numbers', () => {
@@ -174,7 +174,7 @@ describe('Employers page', function() {
       checkEmployerLineValues({
         employerName: 'John Doe',
         workHours: '111h',
-        salary: '300,00€',
+        salary: '300,00€ bruts',
       })
     })
 

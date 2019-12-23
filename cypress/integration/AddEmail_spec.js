@@ -1,11 +1,11 @@
-import { fillForm, validateForm } from '../pages/SignUp'
+import { fillForm, validateForm } from '../pages/AddEmail'
 
-describe('SignUp page', function() {
+describe('AddEmail page', function() {
   beforeEach(() => {
-    cy.request('POST', '/api/tests/db/reset-for-signup?authorizeUser=false', {
+    cy.request('POST', '/api/tests/db/reset-for-signup?authorizeUser=true', {
       userOverride: { email: '' },
     })
-    cy.visit('/signup')
+    cy.visit('/add-email')
 
     cy.get('h1')
       .contains("Merci pour votre demande d'inscription")
@@ -45,18 +45,6 @@ describe('SignUp page', function() {
 
     cy.get('p')
       .contains('Les deux adresses e-mails ne sont pas identiques')
-      .should('have.length', 1)
-  })
-
-  it('should display thank you after filling correctly the form', () => {
-    fillForm({
-      mail: 'example@mail.fr',
-      mailConfirmation: 'example@mail.fr',
-    })
-    validateForm()
-
-    cy.get('h1')
-      .contains("Votre demande d'inscription")
       .should('have.length', 1)
   })
 })

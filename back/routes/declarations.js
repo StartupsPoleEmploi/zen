@@ -147,7 +147,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
-  const declarationData = omit(
+  let declarationData = omit(
     {
       // prevent malicious overriding of other user declaration
       ...req.body,
@@ -221,7 +221,7 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
       monthId: req.activeMonth.id,
     })
     .skipUndefined()
-    .then((declaration) => {
+    .then(async (declaration) => {
       const saveDeclaration = (trx) =>
         Declaration.query(trx).upsertGraphAndFetch(declarationData)
 
@@ -262,6 +262,8 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           )
         }
 
+        // We save what the user sent but do not validate in case of an error occured.
+        declarationData = await saveDeclaration()
         // Declaration with no employers We need to send the declaration to PE.fr
         return sendDeclaration({
           declaration: declarationData,
@@ -273,20 +275,15 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
             if (body.statut !== DECLARATION_STATUSES.SAVED) {
               // The declaration submittal failed for some reason
               // (HTTP 200, but with a custom error for the user).
-              // We save what the user sent but do not validate it and give him back the error.
-              return saveDeclaration().then(() =>
-                // This is a custom error, we want to show a different feedback to users
-                res
-                  .status(
-                    body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
-                  )
-                  .json({
-                    consistencyErrors: body.erreursIncoherence || [],
-                    validationErrors: Object.values(
-                      body.erreursValidation || {},
-                    ),
-                  }),
-              )
+              // This is a custom error, we want to show a different feedback to users
+              return res
+                .status(
+                  body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
+                )
+                .json({
+                  consistencyErrors: body.erreursIncoherence || [],
+                  validationErrors: Object.values(body.erreursValidation || {}),
+                })
             }
 
             winston.info(

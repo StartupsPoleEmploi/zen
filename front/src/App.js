@@ -3,7 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
@@ -28,8 +28,10 @@ import Files from './pages/actu/Files'
 import Thanks from './pages/actu/Thanks'
 import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
-import Layout from './pages/Layout'
-import Signup from './pages/other/Signup'
+import ZnLayout from './components/ZnLayout'
+import NotAutorized from './pages/other/NotAutorized'
+import AddEmail from './pages/other/AddEmail'
+import Cgu from './pages/other/Cgu'
 
 class App extends Component {
   static propTypes = {
@@ -146,16 +148,21 @@ class App extends Component {
     } = this.props
 
     if (isUserLoading || isServiceStatusLoading) return null
-
     if (!user) {
       // User isn't logged
-      if (pathname !== '/') {
+      if (pathname !== '/' && !pathname.startsWith('/cgu')) {
         return <Redirect to="/" />
       }
     } else if (!user.isAuthorized) {
       // User is logged but not authorized
-      if (pathname !== '/signup') {
-        return <Redirect to="/signup" />
+      if (pathname !== '/not-autorized') {
+        return <Redirect to="/not-autorized" />
+      }
+      // User is logged
+    } else if (!user.email) {
+      // User is logged but no email is register
+      if (pathname !== '/add-email') {
+        return <Redirect to="/add-email" />
       }
       // User is logged
     } else if (pathname === '/') {
@@ -164,24 +171,33 @@ class App extends Component {
 
     if (this.state.err) {
       return (
-        <Layout user={user}>
+        <ZnLayout
+          user={user}
+          activeMonth={activeMonth}
+          activeDeclaration={activeDeclaration}
+        >
           <Typography>
             Nous sommes désolés, mais une erreur s'est produite. Merci de bien
             vouloir recharger à nouveau cette page. Si cela se reproduit, vous
             pouvez contacter l'équipe Zen.
           </Typography>
-        </Layout>
+        </ZnLayout>
       )
     }
 
-    if (pathname === '/') {
+    if (!user) {
       return (
-        <Fragment>
+        <ZnLayout
+          user={user}
+          activeMonth={activeMonth}
+          activeDeclaration={activeDeclaration}
+        >
           <Route exact path="/" component={Home} />
+          <Route path="/cgu" component={Cgu} />
           {!status.isLoading && (
             <StatusErrorDialog isOpened={!status.isServiceUp} />
           )}
-        </Fragment>
+        </ZnLayout>
       )
     }
 
@@ -191,23 +207,23 @@ class App extends Component {
       !this.state.hasFinishedInitialLoading
     ) {
       return (
-        <Layout
+        <ZnLayout
           user={user}
-          activeDeclaration={activeDeclaration}
           activeMonth={activeMonth}
+          activeDeclaration={activeDeclaration}
         >
           <div style={{ margin: '5rem', textAlign: 'center' }}>
             <CircularProgress />
           </div>
-        </Layout>
+        </ZnLayout>
       )
     }
 
     return (
-      <Layout
+      <ZnLayout
         user={user}
-        activeDeclaration={activeDeclaration}
         activeMonth={activeMonth}
+        activeDeclaration={activeDeclaration}
       >
         <Switch>
           <PrivateRoute
@@ -222,26 +238,34 @@ class App extends Component {
             exact
             isLoggedIn={!!user}
             path="/actu"
-            render={(props) => (
-              <Actu
-                {...props}
-                activeMonth={activeMonth}
-                declaration={activeDeclaration}
-                user={user}
-              />
-            )}
+            render={(props) =>
+              user.isBlocked ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <Actu
+                  {...props}
+                  activeMonth={activeMonth}
+                  declaration={activeDeclaration}
+                  user={user}
+                />
+              )
+            }
           />
           <PrivateRoute
             exact
             isLoggedIn={!!user}
             path="/employers"
-            render={(props) => (
-              <Employers
-                {...props}
-                activeMonth={activeMonth}
-                token={user.csrfToken}
-              />
-            )}
+            render={(props) =>
+              user.isBlocked ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <Employers
+                  {...props}
+                  activeMonth={activeMonth}
+                  token={user.csrfToken}
+                />
+              )
+            }
           />
           <PrivateRoute
             exact
@@ -270,11 +294,18 @@ class App extends Component {
           <PrivateRoute
             exact
             isLoggedIn={!!user}
-            path="/signup"
-            render={(props) => <Signup {...props} user={user} />}
+            path="/not-autorized"
+            component={NotAutorized}
+          />
+          <PrivateRoute
+            exact
+            isLoggedIn={!!user}
+            path="/add-email"
+            component={AddEmail}
           />
 
           <Route exact path="/loggedOut" component={LoggedOut} />
+          <Route path="/cgu" component={Cgu} />
           <Route render={() => <div>404</div>} />
         </Switch>
         <StatusErrorDialog isOpened={!!this.state.isServiceDown} />
@@ -291,7 +322,7 @@ class App extends Component {
           isOpened={this.props.showDeclarationTransmittedDialog}
           onCancel={this.props.hideDeclarationTransmittedDialog}
         />
-      </Layout>
+      </ZnLayout>
     )
   }
 }

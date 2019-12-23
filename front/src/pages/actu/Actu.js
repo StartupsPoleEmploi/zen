@@ -91,6 +91,10 @@ const AddElementButtonContainer = styled.div`
   margin-bottom: -3rem;
 `
 
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
+`
+
 const AddElementButton = styled(Button).attrs({
   variant: 'outlined',
   color: 'primary',
@@ -98,10 +102,6 @@ const AddElementButton = styled(Button).attrs({
   && {
     background: #fff;
   }
-`
-
-const StyledArrowRightAlt = styled(ArrowRightAlt)`
-  margin-left: 1rem;
 `
 
 const formFields = [
@@ -149,6 +149,7 @@ export class Actu extends Component {
     isLoading: true,
     isDialogOpened: false,
     isValidating: false,
+    isSendingData: false,
     consistencyErrors: [],
     validationErrors: [],
     isLoggedOut: false,
@@ -525,6 +526,7 @@ export class Actu extends Component {
       hasSickLeave,
       hasInternship,
       hasMaternityLeave,
+      isValidating,
     } = this.state
 
     const { user } = this.props
@@ -672,7 +674,7 @@ export class Actu extends Component {
               <List>
                 <DeclarationQuestion
                   verticalLayout={useVerticalLayoutForQuestions}
-                  label="Souhaitez-vous rester inscrit à Pôle Emploi ?"
+                  label="Souhaitez-vous rester inscrit à Pôle emploi ?"
                   name="isLookingForJob"
                   value={this.state.isLookingForJob}
                   onAnswer={this.onAnswer}
@@ -717,7 +719,7 @@ export class Actu extends Component {
               <MainActionButton
                 primary
                 onClick={this.state.hasWorked ? this.onSubmit : this.openDialog}
-                disabled={!this.hasAnsweredMainQuestions()}
+                disabled={!this.hasAnsweredMainQuestions() || isValidating}
               >
                 Suivant
                 <StyledArrowRightAlt />
@@ -729,7 +731,7 @@ export class Actu extends Component {
         {!this.getFormError() && (
           // Note: only open this dialog if there is no form error (eg. the declaration can be sent)
           <DeclarationDialogsHandler
-            isLoading={this.state.isValidating}
+            isLoading={isValidating}
             isOpened={this.state.isDialogOpened}
             onCancel={this.closeDialog}
             onConfirm={this.onSubmit}

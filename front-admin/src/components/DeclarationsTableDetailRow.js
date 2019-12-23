@@ -156,7 +156,7 @@ const DeclarationsTableDetailRow = ({ row: declaration }) => {
           .join(', ')}
       </p>
       <p>
-        Souhaite rester inscrit à Pôle Emploi:{' '}
+        Souhaite rester inscrit à Pôle emploi:{' '}
         {declaration.isLookingForJob ? 'Oui' : 'Non'}
       </p>
       <p>Employeurs:</p>

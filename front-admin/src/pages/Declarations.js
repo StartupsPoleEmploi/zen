@@ -34,7 +34,7 @@ export const Declarations = () => {
       <h1>Actualisations</h1>
 
       <Button
-        href="/zen-admin-api/users-with-declaration"
+        href="/zen-admin-api/users-with-declaration/csv"
         variant="contained"
         color="primary"
         style={{ position: 'absolute', right: '30px' }}

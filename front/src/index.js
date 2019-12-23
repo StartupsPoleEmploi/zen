@@ -16,6 +16,7 @@ import { version } from '../package.json'
 import App from './App'
 import store from './redux/store'
 import DeveloperDialog from './components/Generic/DeveloperDialog'
+import CookiePolicy from './components/Generic/CookiePolicy'
 
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
 
@@ -40,6 +41,23 @@ const theme = createMuiTheme({
     fontFamily: ['"Open sans"', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(
       ',',
     ),
+    h1: {
+      fontSize: '4.5rem',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+    },
+    h2: {
+      fontSize: '3.5rem',
+      fontWeight: 'bold',
+    },
+    h3: {
+      fontSize: '3rem',
+      fontWeight: 'bold',
+    },
+    h4: {
+      fontSize: '2.5rem',
+      fontWeight: 'bold',
+    },
   },
   palette: {
     primary: {
@@ -55,6 +73,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
+        fontSize: '1.6rem',
         textTransform: 'none',
       },
       contained: {
@@ -81,6 +100,7 @@ ReactDOM.render(
         <App />
       </BrowserRouter>
     </MuiThemeProvider>
+    <CookiePolicy />
   </Provider>,
   document.getElementById('root'),
 )

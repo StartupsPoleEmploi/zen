@@ -19,8 +19,13 @@ class User extends BaseModel {
         gender: { type: ['string', 'null'] },
         email: { type: ['string', 'null'] },
         postalCode: { type: ['string', 'null'] },
+        agencyCode: { type: ['string', 'null'] },
+        situationRegardEmploiId: { type: ['string', 'null'] }, // eg: SAN
         isAuthorized: { type: 'boolean' },
+        // radié ou non
+        isBlocked: { default: false, type: 'boolean' },
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
+        registeredAt: { type: ['string', 'object', 'null'] },
       },
     }
   }
@@ -34,6 +39,14 @@ class User extends BaseModel {
         join: {
           from: 'Users.id',
           to: 'employers.userId',
+        },
+      },
+      activityLogs: {
+        relation: HasManyRelation,
+        modelClass: `${__dirname}/ActivityLog`,
+        join: {
+          from: 'Users.id',
+          to: 'activity_logs.userId',
         },
       },
       declarations: {

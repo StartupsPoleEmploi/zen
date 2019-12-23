@@ -38,7 +38,7 @@ const StyledDashboard = styled.div`
   }};
 `
 
-const Title = styled(Typography).attrs({ variant: 'h4', component: 'h1' })`
+const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
   && {
     margin-bottom: 2rem;
     font-weight: bold;
@@ -157,6 +157,7 @@ class Dashboard extends PureComponent {
       firstName: PropTypes.string,
       hasAlreadySentDeclaration: PropTypes.bool,
       canSendDeclaration: PropTypes.bool,
+      isBlocked: PropTypes.bool,
     }),
     declaration: PropTypes.object,
     declarations: PropTypes.arrayOf(PropTypes.object),
@@ -303,7 +304,6 @@ class Dashboard extends PureComponent {
           style={{
             width: '90%',
             margin: '3rem auto 0 auto',
-            fontSize: '1.6rem',
           }}
           primary
         >
@@ -325,16 +325,18 @@ class Dashboard extends PureComponent {
       <StyledDashboard width={width}>
         <Title width={width}>Bonjour {user.firstName}</Title>
         <StatusContainer width={width}>
-          <ActuStatus width={width}>
-            <SubTitle>
-              Actualisation
-              {activeMonthMoment && ' - '}
-              {activeMonthMoment && (
-                <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
-              )}
-            </SubTitle>
-            {this.renderActuStatus()}
-          </ActuStatus>
+          {!user.isBlocked && (
+            <ActuStatus width={width}>
+              <SubTitle>
+                Actualisation
+                {activeMonthMoment && ' - '}
+                {activeMonthMoment && (
+                  <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
+                )}
+              </SubTitle>
+              {this.renderActuStatus()}
+            </ActuStatus>
+          )}
           <FileStatus width={width}>
             <SubTitle>
               <FileIcon src={file} alt="" />

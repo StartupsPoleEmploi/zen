@@ -11,13 +11,16 @@ const User = require('../models/User')
 
 const router = express.Router()
 
-router.get('/', refreshAccessToken, (req, res) =>
-  res.json({
+router.get('/', refreshAccessToken, async (req, res) => {
+  const dbUser = await User.query().findOne({ id: req.session.user.id })
+
+  return res.json({
+    isBlocked: dbUser.isBlocked,
     ...req.session.user,
     csrfToken: req.csrfToken && req.csrfToken(),
     isTokenValid: isUserTokenValid(req.session.user.tokenExpirationDate),
-  }),
-)
+  })
+})
 
 router.patch('/', (req, res, next) => {
   // This is only intended to let an user add his email,

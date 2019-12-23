@@ -49,15 +49,15 @@ function $lineToUser(lineContent) {
     // [dc_lbldepartement] (eg => PAS-DE-CALAIS)
     // [dc_lblregion] (eg => HAUTS-DE-FRANCE)
     radie, // every to false, because we only have user eligible
-    // [dc_situationregardemploi_id] catégorie d'inscription (eg => SAN)
+    dc_situationregardemploi_id, // [dc_situationregardemploi_id] catégorie d'inscription (eg => SAN)
     // [actu_faite] 'true' or 'false'; find out if she did her current month's news ("actu")
-    ,
     ,
   ] = lineContent.split('|')
 
   const firstName = $convertField(c_prenomcorrespondance)
   const lastName = $convertField(c_nomcorrespondance)
   const postalCode = $convertField(c_codepostal)
+  const situationRegardEmploiId = $convertField(dc_situationregardemploi_id)
   return {
     peId: $convertField(dc_ididentiteexterne),
     firstName: firstName ? startCase(toLower(firstName)) : null,
@@ -67,7 +67,8 @@ function $lineToUser(lineContent) {
     postalCode,
     isBlocked: $convertField(radie) === 'true',
     agencyCode: $convertField(c_cdeale),
-    isAuthorized: userCtrl.isPostalCodeAuthorized(postalCode),
+    situationRegardEmploiId,
+    isAuthorized: userCtrl.isAuthorized(postalCode, situationRegardEmploiId),
   }
 }
 
@@ -166,6 +167,8 @@ async function importUserFromDatalake() {
   } catch (error) {
     winston.error(`[ImportUserFromDatalake] ${error}`, error)
   }
+
+  winston.info('[ImportUserFromDatalake] END')
 }
 
 module.exports = {

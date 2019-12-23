@@ -110,10 +110,26 @@ async function getPostalCode(authToken) {
 
 /**
  * @desc test if the postalCode is authorized to use ZEN
+ * @param {string} postalCode
  * @returns {boolean}
  */
-function isPostalCodeAuthorized(postalCode) {
-  return DEPARTMENTS_AUTORIZED.some((dep) => postalCode.startsWith(dep))
+function $isPostalCodeAuthorized(postalCode) {
+  return (
+    postalCode &&
+    DEPARTMENTS_AUTORIZED.some((dep) => postalCode.startsWith(dep))
+  )
+}
+
+/**
+ * @desc test if user is authorized
+ * @param {string} postalCode
+ * @param {string} situationRegardEmploiId
+ * @returns {boolean}
+ */
+function isAuthorized(postalCode, situationRegardEmploiId) {
+  return (
+    $isPostalCodeAuthorized(postalCode) && situationRegardEmploiId === 'SAN'
+  )
 }
 
 module.exports = {
@@ -121,5 +137,5 @@ module.exports = {
   getAuthToken,
   getActualisationStatus,
   getPostalCode,
-  isPostalCodeAuthorized,
+  isAuthorized,
 }

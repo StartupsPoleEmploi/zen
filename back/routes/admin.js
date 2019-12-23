@@ -63,7 +63,9 @@ router.get('/users', async (req, res, next) => {
   const isAuthorized = req.query.authorized === 'true'
 
   try {
-    const users = await User.query().where({ isAuthorized })
+    const users = await User.query()
+      .where({ isAuthorized })
+      .whereNotNull('registeredAt')
     return res.json(users)
   } catch (err) {
     next(err)
@@ -77,6 +79,7 @@ router.get('/users/csv', async (req, res, next) => {
     const users = await User.query()
       .eager('[declarations.[declarationMonth], activityLogs]')
       .where({ isAuthorized })
+      .whereNotNull('registeredAt')
 
     const months = await DeclarationMonth.query()
       .where('startDate', '<=', 'now')
@@ -108,6 +111,7 @@ router.get('/users-with-declaration/csv', async (req, res, next) => {
 
     const users = await User.query()
       .eager('[declarations.[declarationMonth]]')
+      .whereNotNull('registeredAt')
       .whereIn(
         'id',
         Declaration.query()
@@ -140,7 +144,7 @@ router.post('/users/authorize', (req, res, next) => {
     return res.status(400).json('Bad request')
   }
 
-  const query = User.query()
+  const query = User.query().whereNotNull('registeredAt')
 
   const emails = req.body.emails.filter(
     (email) => !emailsToIgnore.includes(email.toLowerCase()),
@@ -173,10 +177,7 @@ router.post('/users/authorize', (req, res, next) => {
         .then(() =>
           User.query()
             .patch({ isAuthorized: true })
-            .whereIn(
-              'id',
-              users.map((user) => user.id),
-            ),
+            .whereIn('id', users.map((user) => user.id)),
         )
     })
     .then((updatedRowsNb = 0) =>
@@ -196,7 +197,7 @@ router.post('/users/filter', (req, res, next) => {
     return next(err)
   }
 
-  const query = User.query()
+  const query = User.query().whereNotNull('registeredAt')
 
   query.where(function() {
     this.where('email', 'ilike', emails[0])

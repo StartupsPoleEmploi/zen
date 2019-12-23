@@ -47,7 +47,8 @@ export class EuroInput extends Component {
         getInputRef={inputRef}
         thousandSeparator=" "
         decimalSeparator=","
-        suffix="€"
+        suffix="€ bruts"
+        maxLength={16}
         allowNegative={false}
         decimalScale={2}
         // Used to avoid displaying ".00" on first input

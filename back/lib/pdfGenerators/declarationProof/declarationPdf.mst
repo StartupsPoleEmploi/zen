@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Déclaration</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #content {
+        font-family: 'Open sans', 'Helvetica Neue', 'Arial', 'sans-serif';
+        width: 600px;
+        margin: 50px auto 0 auto;
+        font-size: 16px;
+      }
+      .bold {
+        font-weight: bold;
+      }
+      hr {
+        border: solid 1px #ececec;
+        margin-top: 25px;
+      }
+
+      /* TITLES */
+      .header {
+        width: 320px;
+        margin: auto;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h1 {
+        width: 400px;
+        font-weight: normal;
+        font-size: 20px;
+        text-align: center;
+        margin: auto;
+        padding-bottom: 30px;
+      }
+      h2 {
+        color: #1e2c59;
+        font-weight: normal;
+        position: relative;
+        margin: 15px 0 10px 0;
+      }
+      h2 .title {
+        padding-left: 20px;
+      }
+      .dot {
+        position: absolute;
+        top: -10px;
+
+        font-family: serif;
+        font-size: 35px;
+        font-weight: bold;
+        color: #0065db;
+      }
+      .flex {
+        display: flex;
+        margin-top: 25px;
+      }
+      .flex > span { margin-left: 15px; }
+      .flex img {
+        width: 15px;
+      }
+      .flex img.big {
+        width: 30px;
+      }
+      .section > div {
+        padding-left: 20px;
+      }
+
+      /* LIST */
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      ul li {
+        font-weight: bold;
+      }
+      ul > li:before {
+        content: '-';
+        padding-right: 10px;
+      }
+
+      /* FOOTER */
+      a {
+        color: black;
+        text-decoration: underline;
+        font-weight: bold;
+      }
+      .small {
+        font-size: 0.8em;
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div class="header">
+        <img
+          src="{{ baseUrl }}/zen-logo.png"
+          alt=""
+        />
+      </div>
+
+      <h1>
+        Justificatif de déclaration de situation pour le mois de
+        <strong>{{ dateMonth }}</strong>
+      </h1>
+
+      <div>
+        <div class="flex">
+          <img
+            class="big"
+            src="{{ baseUrl }}/check.png"
+            alt=""
+          />
+          <span>
+            Votre déclaration mensuelle -
+            <strong>{{ dateMonth }}</strong> - a bien été
+            <strong>validée</strong> le {{ declarationDate }} à
+            {{ declarationTime }} depuis Internet.
+          </span>
+        </p>
+      </div>
+      <hr />
+
+      <div class="section">
+        <h2>
+          <span class="dot">.</span>
+          <span class="title">VOTRE INSCRIPTION</span>
+        </h2>
+        <div>
+          <p>
+            Vous avez déclaré
+            <strong>
+              {{^isLookingForJob}}ne pas{{/isLookingForJob}} souhaiter le
+              maintien de votre inscription comme demandeur d’emploi
+            </strong>
+          </p>
+          {{^isLookingForJob}}
+          <p>Reprise d’une activité le {{ dateEndLookingForJob }}</p>
+          {{/isLookingForJob}}
+        </div>
+      </div>
+      <hr />
+
+      <div class="section">
+        <h2>
+          <span class="dot">.</span>
+          <span class="title">VOS ACTIVITÉS</span>
+        </h2>
+        <div>
+          <p>
+            Vous avez déclaré
+            <strong>
+              {{^hasWorked}}ne pas{{/hasWorked}} avoir travaillé ou exercé des
+              activités non salariées
+            </strong>
+          </p>
+          {{#hasWorked}}
+          <p>
+            Vous avez travaillé <strong>{{ workHours }}</strong> heures pour un
+            montant de
+            <strong>{{ salary }}€</strong>
+          </p>
+          {{/hasWorked}}
+        </div>
+      </div>
+      <hr />
+
+      {{#specialSituations.length}}
+      <div class="section">
+        <h2>
+          <span class="dot">.</span>
+          <span class="title">SITUATION PARTICULIÈRE</span>
+        </h2>
+        <div>
+          <p>Vous avez déclaré :</p>
+          <ul>
+            {{#specialSituations}}
+            <li>{{.}}</li>
+            {{/specialSituations}}
+          </ul>
+        </div>
+      </div>
+      {{/specialSituations.length}}
+
+      <div>
+        <p class="flex">
+          <img src="{{ baseUrl }}/warn.png" alt="" />
+          <span>
+            Si vous n’avez pas encore envoyé vos justificatifs (attestations
+            employeur, bulletins de paie), n’oubliez pas de vous reconnecter sur
+            le site de Zen
+            <a href="www.zen.pole-emploi.fr">www.zen.pole-emploi.fr</a> pour
+            finaliser votre dossier
+          </span>
+        </p>
+      </div>
+
+      <p class="small" style="margin-top: 30px">
+        Les données à caractère personnel collectées font l’objet d’un
+        traitement informatique destiné à votre inscription comme demandeur
+        d’emploi, à l’étude de vos droits aux allocations de chômage, à la
+        définition et au suivi de votre projet personnalisé d’accès à l’emploi,
+        à la réalisation de statistiques et au pilotage des activités de Pôle
+        emploi. Ces données sont mises à disposition : des services de l’État,
+        des collectivités territoriales, des partenaires et des prestataires de
+        Pôle emploi, des organismes d’orientation et de formation, concourant à
+        votre reclassement et à votre recherche d’emploi, soit dans un dossier
+        dématérialisé dénommé dossier unique du demandeur d’emploi (DUDE) soit
+        par convention de transfert de données. Pour les bénéficiaires du RSA,
+        les données relatives à l’inscription comme demandeur d’emploi sont
+        communiquées au président au conseil départemental à des fins de suivi
+        et de contrôle des droits et devoirs. Vous disposez d’un droit d’accès
+        et de rectification aux données vous concernant auprès de votre agence
+        Pôle emploi en application de la loi du 6 janvier 1978 modifiée,
+        relative aux fichiers à l’informatique et aux libertés. Votre demande
+        peut etre effectuée sur place ou par courrier en justifiant de votre
+        identité. Le droit d’opposition ne s’applique pas à la collecte des
+        données obligatoires
+      </p>
+    </div>
+  </body>
+</html>

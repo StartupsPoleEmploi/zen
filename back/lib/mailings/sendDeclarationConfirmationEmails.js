@@ -4,13 +4,13 @@ const fr = require('date-fns/locale/fr')
 const mailjet = require('./mailjet')
 const winston = require('../log')
 const Declaration = require('../../models/Declaration')
-const { getDeclarationPDF } = require('../files')
+const { getDeclarationPdf } = require('../pdfGenerators/declarationProof')
 const { setDeclarationDoneProperty } = require('./manageContacts')
 
 const isProd = process.env.NODE_ENV === 'production'
 
 const sendDeclarationConfirmationEmail = (declaration) =>
-  getDeclarationPDF(declaration).then((fileBuffer) => {
+  getDeclarationPdf(declaration).then((fileBuffer) => {
     const base64File = fileBuffer.toString('base64')
 
     const declarationMonth = new Date(declaration.declarationMonth.month)

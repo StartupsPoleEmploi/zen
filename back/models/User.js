@@ -20,6 +20,7 @@ class User extends BaseModel {
         email: { type: ['string', 'null'] },
         postalCode: { type: ['string', 'null'] },
         agencyCode: { type: ['string', 'null'] },
+        situationRegardEmploiId: { type: ['string', 'null'] }, // eg: SAN
         isAuthorized: { type: 'boolean' },
         // radié ou non
         isBlocked: { default: false, type: 'boolean' },

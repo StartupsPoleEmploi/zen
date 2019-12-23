@@ -49,15 +49,15 @@ function $lineToUser(lineContent) {
     // [dc_lbldepartement] (eg => PAS-DE-CALAIS)
     // [dc_lblregion] (eg => HAUTS-DE-FRANCE)
     radie, // every to false, because we only have user eligible
-    // [dc_situationregardemploi_id] catégorie d'inscription (eg => SAN)
+    dc_situationregardemploi_id, // [dc_situationregardemploi_id] catégorie d'inscription (eg => SAN)
     // [actu_faite] 'true' or 'false'; find out if she did her current month's news ("actu")
-    ,
     ,
   ] = lineContent.split('|')
 
   const firstName = $convertField(c_prenomcorrespondance)
   const lastName = $convertField(c_nomcorrespondance)
   const postalCode = $convertField(c_codepostal)
+  const situationRegardEmploiId = $convertField(dc_situationregardemploi_id)
   return {
     peId: $convertField(dc_ididentiteexterne),
     firstName: firstName ? startCase(toLower(firstName)) : null,
@@ -67,7 +67,8 @@ function $lineToUser(lineContent) {
     postalCode,
     isBlocked: $convertField(radie) === 'true',
     agencyCode: $convertField(c_cdeale),
-    isAuthorized: userCtrl.isPostalCodeAuthorized(postalCode),
+    situationRegardEmploiId,
+    isAuthorized: userCtrl.isAuthorized(postalCode, situationRegardEmploiId),
   }
 }
 
@@ -119,7 +120,6 @@ async function $updateUser(userFromFile) {
 async function importUserFromDatalake() {
   winston.info('[ImportUserFromDatalake] START')
   try {
-    const startTime = new Date()
     const filePath = await $getFile()
     const filePathCsv = await unzipBz2(filePath)
     const dataToManage = await readCsv(filePathCsv)
@@ -128,14 +128,14 @@ async function importUserFromDatalake() {
 
     // manage all line
     winston.info('[ImportUserFromDatalake] Update users ...')
-    const peIdsFromFile = []
+    const peIdsFromFile = {}
     while (dataToManage.length) {
       winston.info(`Still ${dataToManage.length} lines`)
       const dataLines = dataToManage.splice(0, 1000)
       await Promise.all(
         dataLines.map(async (dataLine, idx) => {
           const userFromFile = $lineToUser(dataLine)
-          if (userFromFile.peId) peIdsFromFile.push(userFromFile.peId)
+          if (userFromFile.peId) peIdsFromFile[userFromFile.peId] = true
           await $updateUser(userFromFile).catch((err) => {
             winston.error(
               `[ImportUserFromDatalake] "${err}" to line (${dataLine})`,
@@ -148,24 +148,25 @@ async function importUserFromDatalake() {
 
     // The file from datalake contain only user not block. So block all user not in file
     winston.info('[ImportUserFromDatalake] Block users ...')
-    if (peIdsFromFile.length) {
-      // the where clause is here to optimise performences, get only user that has not been insert/updated by updateUser
-      const users = await User.query()
-        .where('updatedAt', '<', startTime)
-        .column('peId')
-      const peIds = users.map((e) => e.peId)
-      const userToUpdate = peIds.filter((peId) => !peIdsFromFile.includes(peId))
-      while (userToUpdate.length) {
-        winston.info(`Still ${userToUpdate.length} user to block`)
-        const peIdIn = userToUpdate.splice(0, 1000)
-        await User.query()
-          .patch({ isBlocked: true })
-          .whereIn('peId', peIdIn)
-      }
+    const peIds = (await User.query()
+      .where('isBlocked', '=', false)
+      .column('peId')).map((e) => e.peId)
+    const userToUpdate = peIds.filter((peId) => !peIdsFromFile[peId])
+    winston.info(
+      `[ImportUserFromDatalake] ${userToUpdate.length} Users to block ...`,
+    )
+    while (userToUpdate.length) {
+      winston.info(`Still ${userToUpdate.length} user to block`)
+      const peIdIn = userToUpdate.splice(0, 1000)
+      await User.query()
+        .patch({ isBlocked: true })
+        .whereIn('peId', peIdIn)
     }
   } catch (error) {
     winston.error(`[ImportUserFromDatalake] ${error}`, error)
   }
+
+  winston.info('[ImportUserFromDatalake] END')
 }
 
 module.exports = {

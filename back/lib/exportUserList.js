@@ -8,8 +8,11 @@ const User = require('../models/User')
 const ActivityLog = require('../models/ActivityLog')
 
 const EXPORT_DIR = '/mnt/datalakepe/vers_datalake/'
-const EXPORT_UNAUTHORIZED_FILENAME_PATH = `${EXPORT_DIR}export_utilisateur.csv`
-const EXPORT_AUTHORIZED_FILENAME_PATH = `${EXPORT_DIR}export_utilisateurs_autorises.csv`
+const EXPORT_UNAUTHORIZED_FILE_NAME = `export_utilisateur.csv`
+const EXPORT_UNAUTHORIZED_FILE_PATH = `${EXPORT_DIR}${EXPORT_UNAUTHORIZED_FILE_NAME}`
+
+const EXPORT_AUTHORIZED_FILE_NAME = `export_utilisateurs_autorises.csv`
+const EXPORT_AUTHORIZED_FILE_PATH = `${EXPORT_DIR}${EXPORT_AUTHORIZED_FILE_NAME}`
 
 const DATA_EXPORT_FIELDS = [
   'firstName',
@@ -96,7 +99,7 @@ const renameFile = (from, to) =>
     })
   })
 
-const exportUsersFileInCSV = async ({ isAuthorized, filePath }) => {
+const exportUsersFileInCSV = async ({ isAuthorized, filePath, fileName }) => {
   // Archive current file if exists
   if (fs.existsSync(filePath)) {
     const yesterdayDate = format(subDays(new Date(), 1), 'YYYY-MM-DD')
@@ -104,7 +107,7 @@ const exportUsersFileInCSV = async ({ isAuthorized, filePath }) => {
     try {
       await renameFile(
         `${filePath}`,
-        `${EXPORT_DIR}${yesterdayDate}-${filePath}`,
+        `${EXPORT_DIR}${yesterdayDate}-${fileName}`,
       )
     } catch (err) {
       winston.error(err)
@@ -118,6 +121,7 @@ const exportUsersFileInCSV = async ({ isAuthorized, filePath }) => {
   // Extract and save in new file
   return User.query()
     .where({ isAuthorized })
+    .whereNotNull('registeredAt')
     .then((users) => {
       const json2csvParser = new Parser({ fields: DATA_EXPORT_FIELDS })
       const csvContent = json2csvParser.parse(users)
@@ -135,7 +139,8 @@ const saveAuthorizedUsersInCSV = async () => {
   winston.info('Starting export authorized users')
   await exportUsersFileInCSV({
     isAuthorized: true,
-    filePath: EXPORT_AUTHORIZED_FILENAME_PATH,
+    filePath: EXPORT_AUTHORIZED_FILE_PATH,
+    fileName: EXPORT_AUTHORIZED_FILE_NAME,
   })
   winston.info('Finished export authorized users')
 }
@@ -144,7 +149,8 @@ const saveUnauthorizedUsersInCSV = async () => {
   winston.info('Starting export unauthorized users')
   await exportUsersFileInCSV({
     isAuthorized: false,
-    filePath: EXPORT_UNAUTHORIZED_FILENAME_PATH,
+    filePath: EXPORT_UNAUTHORIZED_FILE_PATH,
+    fileName: EXPORT_UNAUTHORIZED_FILE_NAME,
   })
   winston.info('Finished export unauthorized users')
 }

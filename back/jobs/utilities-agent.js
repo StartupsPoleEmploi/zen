@@ -22,7 +22,8 @@ job('0 30 6 * * *', saveUnauthorizedUsersInCSV, null, true, 'Europe/Paris')
 job('0 35 6 * * *', saveAuthorizedUsersInCSV, null, true, 'Europe/Paris')
 
 // Every day at 6:45
-job('0 45 6 * * *', importUserFromDatalake, null, true, 'Europe/Paris')
+// FIXME: there is an hour diff between container time and server time, so we need to add an extra hour in your CRON
+job('0 45 7 * * *', importUserFromDatalake, null, true, 'Europe/Paris')
 
 // Every day at 9, 18
 job('0 0 9,18 * * *', postDeclarationStatusToSlack, null, true, 'Europe/Paris')

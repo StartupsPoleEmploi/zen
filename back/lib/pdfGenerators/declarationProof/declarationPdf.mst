@@ -111,6 +111,9 @@
       </h1>
 
       <div>
+        <h3>
+          {{ user.firstName }} {{ user.lastName }} <small>({{ user.email }})</small>
+        </h3>
         <div class="flex">
           <img
             class="big"

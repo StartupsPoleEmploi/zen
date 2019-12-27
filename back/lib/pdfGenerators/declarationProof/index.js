@@ -55,6 +55,11 @@ const generateDeclarationAsPdf = async (declaration, pdfPath) => {
   if (!folderExists) await mkDir(uploadsDeclarationDirectory)
 
   const data = {
+    user: {
+      email: declaration.user.email.toLowerCase(),
+      firstName: declaration.user.firstName,
+      lastName: declaration.user.lastName.toUpperCase(),
+    },
     baseUrl: isProdEnv
       ? 'http://zen.pole-emploi.fr'
       : 'http://zen.beta.pole-emploi.fr',

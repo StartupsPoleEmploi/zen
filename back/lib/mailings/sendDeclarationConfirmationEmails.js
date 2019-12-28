@@ -63,7 +63,7 @@ const sendDeclarationConfirmationEmails = () => {
   isSendingEmails = true
 
   return Declaration.query()
-    .eager('[declarationMonth, user, employers]')
+    .eager('[declarationMonth, user, employers, infos]')
     .where({ hasFinishedDeclaringEmployers: true, isEmailSent: false })
     .then((declarations) =>
       Promise.all(

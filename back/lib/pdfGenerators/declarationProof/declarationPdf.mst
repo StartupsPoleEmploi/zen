@@ -12,7 +12,7 @@
         font-family: 'Open sans', 'Helvetica Neue', 'Arial', 'sans-serif';
         width: 600px;
         margin: 50px auto 0 auto;
-        font-size: 16px;
+        font-size: 14px;
       }
       .bold {
         font-weight: bold;
@@ -32,7 +32,7 @@
       h1 {
         width: 400px;
         font-weight: normal;
-        font-size: 20px;
+        font-size: 18px;
         text-align: center;
         margin: auto;
         padding-bottom: 30px;
@@ -42,6 +42,7 @@
         font-weight: normal;
         position: relative;
         margin: 15px 0 10px 0;
+        font-size: 20px;
       }
       h2 .title {
         padding-left: 20px;
@@ -51,7 +52,7 @@
         top: -10px;
 
         font-family: serif;
-        font-size: 35px;
+        font-size: 33px;
         font-weight: bold;
         color: #0065db;
       }
@@ -62,9 +63,12 @@
       .flex > span { margin-left: 15px; }
       .flex img {
         width: 15px;
+        height: 15px;
+        margin-top: 5px;
       }
       .flex img.big {
         width: 30px;
+        height: 30px;
       }
       .section > div {
         padding-left: 20px;
@@ -91,7 +95,7 @@
         font-weight: bold;
       }
       .small {
-        font-size: 0.8em;
+        font-size: 0.75em;
         color: gray;
       }
     </style>
@@ -100,7 +104,7 @@
     <div id="content">
       <div class="header">
         <img
-          src="{{ baseUrl }}/zen-logo.png"
+          src="{{ baseUrl }}/zen-logo.png"
           alt=""
         />
       </div>
@@ -111,10 +115,13 @@
       </h1>
 
       <div>
+        <h3>
+          {{ user.firstName }} {{ user.lastName }} <small>({{ user.email }})</small>
+        </h3>
         <div class="flex">
           <img
             class="big"
-            src="{{ baseUrl }}/check.png"
+            src="{{ baseUrl }}/check.png"
             alt=""
           />
           <span>
@@ -190,7 +197,7 @@
 
       <div>
         <p class="flex">
-          <img src="{{ baseUrl }}/warn.png" alt="" />
+          <img src="{{ baseUrl }}/warn.png" alt="" />
           <span>
             Si vous n’avez pas encore envoyé vos justificatifs (attestations
             employeur, bulletins de paie), n’oubliez pas de vous reconnecter sur

@@ -1,8 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 // @flow
 import React from 'react';
 import moment from 'moment';
 
 import ZnTable from '../../../components/ZnTable';
+import ActualisationRowExpanded from './ActualisationRowExpanded';
 
 type Props = {
   declarations: Array<Object>,
@@ -93,6 +95,7 @@ export default class ActualisationTable extends React.PureComponent<Props> {
         style={{ backgroundColor: 'white' }}
         columns={columns}
         dataSource={data}
+        expandedRowRender={(record) => <ActualisationRowExpanded {...record} />}
       />
     );
   }

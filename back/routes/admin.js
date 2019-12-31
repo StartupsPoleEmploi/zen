@@ -53,7 +53,7 @@ router.get('/declarations', (req, res, next) => {
   }
 
   Declaration.query()
-    .eager('[user, employers, review, infos]')
+    .eager('[user, review]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
     .catch(next)

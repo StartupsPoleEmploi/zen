@@ -2,16 +2,44 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
+import { Button, Icon } from 'antd';
 
 import ZnTable from '../../../components/ZnTable';
-import DeclarationRowExpanded from './DeclarationRowExpanded';
+import { URLS } from '../../../common/routes';
+
 
 type Props = {
   declarations: Array<Object>,
+  history: Object,
 };
+class DeclarationTable extends React.PureComponent<Props> {
+  constructor(props) {
+    super(props);
+    const { history } = this.props;
+    this.COLUMNS = [
+      { title: 'Id', dataIndex: 'id', znSort: 'number' },
+      { title: 'Nom', dataIndex: 'name' },
+      { title: 'E-mail', dataIndex: 'email' },
+      { title: 'Status', dataIndex: 'status' },
+      { title: 'Transmis le', dataIndex: 'transmittedAt' },
+      { title: 'Notes', dataIndex: 'notes' },
+      {
+        title: 'Action',
+        dataIndex: 'operation',
+        fixed: 'right',
+        width: 100,
+        znSort: false,
+        znSearchable: false,
+        render: (text, record) => (
+          <Button onClick={() => history.push(URLS.DECLARATIONS.view(record.id))} target="_blank">
+            <Icon type="eye" style={{ color: 'blue' }} />
+          </Button>
+        ),
+      },
+    ];
+  }
 
-
-export default class DeclarationTable extends React.PureComponent<Props> {
   getStatus = (declaration) => {
     if (declaration.hasFinishedDeclaringEmployers) {
       if (declaration.isFinished) {
@@ -37,66 +65,17 @@ export default class DeclarationTable extends React.PureComponent<Props> {
       notes: (declaration.review && declaration.review.notes) || '',
     }));
 
-    const columns = [
-      {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-        ellipsis: true,
-        znSort: 'number',
-        znSearchable: true,
-      },
-      {
-        title: 'Nom',
-        dataIndex: 'name',
-        key: 'name',
-        ellipsis: true,
-        znSort: 'string',
-        znSearchable: true,
-      },
-      {
-        title: 'E-mail',
-        dataIndex: 'email',
-        key: 'email',
-        ellipsis: true,
-        znSort: 'string',
-        znSearchable: true,
-      },
-      {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        ellipsis: true,
-        znSort: 'string',
-        znSearchable: true,
-      },
-      {
-        title: 'Transmis le',
-        dataIndex: 'transmittedAt',
-        key: 'transmittedAt',
-        ellipsis: true,
-        znSort: 'string',
-        znSearchable: true,
-      },
-      {
-        title: 'Notes',
-        dataIndex: 'notes',
-        key: 'notes',
-        ellipsis: true,
-        znSort: 'string',
-        znSearchable: true,
-      },
-    ];
 
     return (
       <ZnTable
         rowKey="id"
         size="small"
         style={{ backgroundColor: 'white' }}
-        columns={columns}
+        columns={this.COLUMNS}
         dataSource={data}
-        expandedRowRender={(record) => <DeclarationRowExpanded {...record} />}
       />
     );
   }
 }
+
+export default withRouter(DeclarationTable);

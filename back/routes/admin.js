@@ -361,4 +361,15 @@ router.get('/users/:id', (req, res, next) => {
     .catch(next);
 })
 
+router.get('/declarations/:id', (req, res, next) => {
+  Declaration.query()
+    .eager('[user, employers.documents, review, infos, declarationMonth]')
+    .findById(req.params.id)
+    .then((declaration) => {
+      if (!declaration) return  res.send(404, 'Declaration not found');
+      return res.json(declaration);
+    })
+    .catch(next)
+})
+
 module.exports = router

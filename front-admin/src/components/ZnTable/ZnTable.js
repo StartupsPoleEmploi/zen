@@ -77,7 +77,7 @@ export default class ZnTable extends React.PureComponent<Props, State> {
   formatColumns(columns) {
     return columns.map((c) => {
       const newCol = {
-        ellipsis: true,
+        ellipsis: false,
         title: c.dataIndex,
         key: c.dataIndex,
         znSearchable: true,

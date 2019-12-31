@@ -63,7 +63,7 @@ export default function Declarations() {
             <Row gutter={16}>
               <Col xl={8} sm={24}>
                 <h2>
-                  {`Débutées : ${declarations.length}`}
+                  {`Total : ${declarations.length}`}
                 </h2>
               </Col>
               <Col xl={8} sm={24}>

@@ -5,19 +5,21 @@
 export const URLS: Object = {
   BASE: '/',
   DASHBOARD: '/',
-  DECLARATIONS: '/declarations',
+  DECLARATIONS: {
+    BASE: '/declarations',
+    VIEW: '/declarations/view/:id',
+  },
   ACTIVITIES: '/activities',
   SETTINGS: '/settings',
   USERS: {
     BASE: '/users',
-    ADD: '/users/add',
     VIEW: '/users/view/:id',
   },
 };
 const formatUrl = (url: string, id: *) => url
   .replace(/[/]{2,10}/g, '/') // replave "//" by /
   .replace(':id', id);
-const urlsKeysAddEdit = ['USERS'];
+const urlsKeysAddEdit = ['USERS', 'DECLARATIONS'];
 urlsKeysAddEdit.forEach((e) => {
   URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '');
   URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id);
@@ -34,8 +36,9 @@ export const MENU_ITEMS = [
   {
     name: 'Declarations',
     iconName: 'shop',
-    to: URLS.DECLARATIONS,
+    to: URLS.DECLARATIONS.BASE,
     key: 'DECLARATIONS',
+    match: (pathname) => pathname.startsWith(URLS.DECLARATIONS.BASE),
   },
   {
     name: 'Activités',

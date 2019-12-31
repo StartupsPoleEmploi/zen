@@ -17,7 +17,7 @@ const browserHistory = createBrowserHistory({
 export default function App() {
   return (
     <Router history={browserHistory}>
-      <Layout style={{ height: '100vh' }}>
+      <Layout style={{ height: '100vh', minWidth: '1024px', overflowX: 'auto' }}>
         <Layout.Sider width={240} trigger={null}>
           <ZnMenuLayout
             links={MENU_ITEMS}

@@ -1,39 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import superagent from 'superagent';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import {
-  Button, Icon, Row, Col,
+  Button, Icon, Row, Col, Select,
 } from 'antd';
 
+import { useDeclarations } from '../../common/contexts/declarationsCtx';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
 import DeclarationTable from './components/DeclarationTable';
 
 
 export default function Declarations() {
-  const [availableMonths, setAvailableMonths] = useState([]);
-  const [selectedMonthId, setSelectedMonthId] = useState(null);
-  const [declarations, setDeclarations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    availableMonths,
+    selectedMonthId,
+    declarations,
+    isLoading,
+    // function
+    setSelectedMonthId,
+    init,
+  } = useDeclarations();
 
   useEffect(() => {
-    superagent.get('/zen-admin-api/declarationsMonths').then(({ body }) => {
-      setAvailableMonths(body);
-      setSelectedMonthId(body[0].id);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!selectedMonthId) return;
-    setIsLoading(true);
-
-    superagent
-      .get(`/zen-admin-api/declarations?monthId=${selectedMonthId}`)
-      .then(({ body }) => {
-        setDeclarations(body);
-        setIsLoading(false);
-      });
-  }, [selectedMonthId]);
+    init();
+  }, [init]);
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -48,13 +38,13 @@ export default function Declarations() {
           </Button>
         </Row>
         <div>
-          <select onChange={(event) => setSelectedMonthId(event.target.value)}>
+          <Select style={{ width: '150px' }} value={selectedMonthId} onChange={setSelectedMonthId}>
             {availableMonths.map((month) => (
-              <option key={month.id} value={month.id}>
-                {moment(month.month).format('MMMM YYYY')}
-              </option>
+              <Select.Option key={month.id} value={month.id}>
+                {moment(month.month).format('MMM YYYY')}
+              </Select.Option>
             ))}
-          </select>
+          </Select>
         </div>
         {isLoading ? (
           <p>Loading…</p>

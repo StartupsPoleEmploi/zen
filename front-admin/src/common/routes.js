@@ -10,8 +10,8 @@ export const URLS: Object = {
   SETTINGS: '/settings',
   USERS: {
     BASE: '/users',
-    ADD: '/add',
-    VIEW: '/view/:id',
+    ADD: '/users/add',
+    VIEW: '/users/view/:id',
   },
 };
 const formatUrl = (url: string, id: *) => url
@@ -19,9 +19,9 @@ const formatUrl = (url: string, id: *) => url
   .replace(':id', id);
 const urlsKeysAddEdit = ['USERS'];
 urlsKeysAddEdit.forEach((e) => {
-  URLS[e].add = () => formatUrl(`${URLS[e].BASE}/${URLS[e].ADD}`, '');
-  URLS[e].edit = (id) => formatUrl(`${URLS[e].BASE}/${URLS[e].EDIT}`, id);
-  URLS[e].view = (id) => formatUrl(`${URLS[e].BASE}/${URLS[e].VIEW}`, id);
+  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '');
+  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id);
+  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id);
 });
 
 export const MENU_ITEMS = [

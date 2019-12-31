@@ -6,10 +6,13 @@ import {
 } from 'antd';
 import superagent from 'superagent';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 import ZnTable from '../../components/ZnTable';
+import { URLS } from '../../common/routes';
 
 export default function UsersList() {
+  const history = useHistory();
   const [users, setUsers] = useState([]);
   const [showAuthorizedUsers, setAuthorizedUsers] = useState(false);
 
@@ -67,6 +70,9 @@ export default function UsersList() {
             </Button>
           </Row>
         )}
+        onRow={(record) => ({
+          onClick: () => history.push(URLS.USERS.view(record.id)),
+        })}
       />
     </div>
   );

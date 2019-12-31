@@ -8,6 +8,7 @@ import { URLS } from './common/routes';
 import ActivityLogs from './containers/ActivityLogs';
 import Actualisations from './containers/Actualisations';
 import Settings from './containers/Settings';
+import User from './containers/User';
 import Users from './containers/Users';
 
 
@@ -17,6 +18,7 @@ const Routes = () => (
     <Route path={URLS.ACTIVITIES} exact component={ActivityLogs} />
     <Route path={URLS.SETTINGS} exact component={Settings} />
     <Route path={URLS.USERS.BASE} exact component={Users} />
+    <Route path={URLS.USERS.VIEW} exact component={User} />
 
     <Redirect to="/dashboard" />
   </Switch>

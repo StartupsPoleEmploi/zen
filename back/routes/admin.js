@@ -350,4 +350,15 @@ router.delete('/delete-user', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/users/:id', (req, res, next) => {
+  User.query()
+    .eager('[activityLogs, declarations.[infos, review, employers.documents]]')
+    .findById(req.params.id)
+    .then((user) => {
+      if (!user) return  res.send(404, 'User not found');
+      return res.json(user);
+    })
+    .catch(next);
+})
+
 module.exports = router

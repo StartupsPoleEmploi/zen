@@ -7,10 +7,10 @@ import {
 
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
-import ActualisationTable from './components/ActualisationTable';
+import DeclarationTable from './components/DeclarationTable';
 
 
-export default function Actualisations() {
+export default function Declarations() {
   const [availableMonths, setAvailableMonths] = useState([]);
   const [selectedMonthId, setSelectedMonthId] = useState(null);
   const [declarations, setDeclarations] = useState([]);
@@ -37,14 +37,14 @@ export default function Actualisations() {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <ZnHeader title="Actualisations" />
+      <ZnHeader title="Declarations" />
 
       <ZnContent>
         <Row type="flex" justify="end">
           <Button href="/zen-admin-api/users-with-declaration/csv">
             <Icon type="download" />
             {' '}
-            Utisateurs avec au moins une actualisation
+            Utisateurs avec au moins une declaration
           </Button>
         </Row>
         <div>
@@ -77,7 +77,7 @@ export default function Actualisations() {
                 </h2>
               </Col>
             </Row>
-            <ActualisationTable declarations={declarations} />
+            <DeclarationTable declarations={declarations} />
           </>
         )}
       </ZnContent>

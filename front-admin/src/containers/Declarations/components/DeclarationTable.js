@@ -4,14 +4,14 @@ import React from 'react';
 import moment from 'moment';
 
 import ZnTable from '../../../components/ZnTable';
-import ActualisationRowExpanded from './ActualisationRowExpanded';
+import DeclarationRowExpanded from './DeclarationRowExpanded';
 
 type Props = {
   declarations: Array<Object>,
 };
 
 
-export default class ActualisationTable extends React.PureComponent<Props> {
+export default class DeclarationTable extends React.PureComponent<Props> {
   getStatus = (declaration) => {
     if (declaration.hasFinishedDeclaringEmployers) {
       if (declaration.isFinished) {
@@ -95,7 +95,7 @@ export default class ActualisationTable extends React.PureComponent<Props> {
         style={{ backgroundColor: 'white' }}
         columns={columns}
         dataSource={data}
-        expandedRowRender={(record) => <ActualisationRowExpanded {...record} />}
+        expandedRowRender={(record) => <DeclarationRowExpanded {...record} />}
       />
     );
   }

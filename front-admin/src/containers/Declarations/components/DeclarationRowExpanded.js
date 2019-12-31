@@ -74,7 +74,7 @@ type Props = {
  * (the declaration sent as props is never updated, which is a bad design,
  * but quick and ok for this admin's temporary interface)
  */
-export default function ActualisationRowExpanded(declaration: Props) {
+export default function DeclarationRowExpanded(declaration: Props) {
   const [isVerified, setIsVerified] = useState(
     (declaration.review && declaration.review.isVerified) || false,
   );

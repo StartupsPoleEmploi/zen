@@ -5,7 +5,7 @@
 export const URLS: Object = {
   BASE: '/',
   DASHBOARD: '/',
-  ACTUALISATIONS: '/actualisations',
+  DECLARATIONS: '/declarations',
   ACTIVITIES: '/activities',
   SETTINGS: '/settings',
   USERS: {
@@ -32,10 +32,10 @@ export const MENU_ITEMS = [
     key: 'DASHBOARD',
   },
   {
-    name: 'Actualisations',
+    name: 'Declarations',
     iconName: 'shop',
-    to: URLS.ACTUALISATIONS,
-    key: 'ACTUALISATIONS',
+    to: URLS.DECLARATIONS,
+    key: 'DECLARATIONS',
   },
   {
     name: 'Activités',

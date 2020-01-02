@@ -26,10 +26,11 @@ export default function User({ match }: Props) {
 
   return (
     <div>
-      <ZnHeader title="Utilisateurs" />
+      <ZnHeader title={`Utilisateurs ${userId}`} />
       <ZnContent>
         {user ? (
           <>
+            <h2 style={{ textAlign: 'center' }}>{`${user.firstName} ${user.lastName}`}</h2>
             <UserInfos user={user} />
             <UserDeclarations declarations={user.declarations} />
             <UserActivityLogs activityLogs={user.activityLogs} />

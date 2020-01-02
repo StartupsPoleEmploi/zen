@@ -14,7 +14,7 @@ import { URLS } from '../../common/routes';
 export default function UsersList() {
   const history = useHistory();
   const [users, setUsers] = useState([]);
-  const [showAuthorizedUsers, setAuthorizedUsers] = useState(false);
+  const [showAuthorizedUsers, setAuthorizedUsers] = useState(true);
 
   const fetchUsers = () => superagent
     .get(`/zen-admin-api/users?authorized=${showAuthorizedUsers ? 'true' : 'false'}`)
@@ -30,7 +30,8 @@ export default function UsersList() {
   const data = users.map((user) => ({
     ...user,
     isAuthorized: user.isAuthorized ? 'oui' : 'non',
-    createdAt: moment(user.createdAt).format('DD/MM/YYYY'),
+    registeredAt: moment(user.createdAt).format('YYYY/MM/DD'),
+    createdAt: moment(user.createdAt).format('YYYY/MM/DD'),
   }));
 
   const columns = [
@@ -40,9 +41,30 @@ export default function UsersList() {
     { dataIndex: 'email', title: 'E-mail' },
     { dataIndex: 'postalCode', title: 'Code postal' },
     {
-      dataIndex: 'isAuthorized', title: 'Autorisé', znSort: null, znSearchable: null,
+      dataIndex: 'isAuthorized',
+      title: 'Autorisé',
+      znSort: null,
+      znSearchable: null,
+      filters: [
+        { text: 'Oui', value: 'oui' },
+        { text: 'Non', value: 'non' },
+      ],
+      onFilter: (value, record) => record.isAuthorized === value,
     },
-    { dataIndex: 'createdAt', title: 'Inscrit le' },
+    { dataIndex: 'registeredAt', title: 'Inscrit le' },
+    {
+      title: 'Action',
+      dataIndex: 'operation',
+      fixed: 'right',
+      width: 100,
+      znSort: false,
+      znSearchable: false,
+      render: (text, record) => (
+        <Button onClick={() => history.push(URLS.USERS.view(record.id))} target="_blank">
+          <Icon type="eye" style={{ color: 'blue' }} />
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -51,10 +73,9 @@ export default function UsersList() {
 
       <div>
         <Form.Item label={`Utilisateurs ${showAuthorizedUsers ? '' : ' non '} autorisés`}>
-          <Switch onChange={setAuthorizedUsers} />
+          <Switch defaultChecked={showAuthorizedUsers} onChange={setAuthorizedUsers} />
         </Form.Item>
       </div>
-      <div />
       <ZnTable
         rowKey="id"
         size="small"
@@ -70,9 +91,6 @@ export default function UsersList() {
             </Button>
           </Row>
         )}
-        onRow={(record) => ({
-          onClick: () => history.push(URLS.USERS.view(record.id)),
-        })}
       />
     </div>
   );

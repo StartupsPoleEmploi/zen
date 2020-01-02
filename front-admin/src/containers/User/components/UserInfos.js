@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { Card } from 'antd';
 
 const LABELS = {
   firstName: 'Prenom',
@@ -22,22 +23,25 @@ type Props = {
 }
 
 export default function UserInfos({ user }: Props) {
+  const data = {
+    ...user,
+    isAuthorized: user.isAuthorized ? 'oui' : 'non',
+    isBlocked: user.isBlocked ? 'oui' : 'non',
+  };
   return (
-    <div>
-      <ul>
-        {Object.entries(user)
+    <Card title="Informatrions" style={{ marginBottom: '20px' }}>
+      <table border="1">
+        {Object.entries(data)
           .filter(([, val]) => typeof val !== 'object' && !Array.isArray(val))
           .map(([key, val]) => (
-            <li>
-              <b>
-                {LABELS[key] || key}
-:
-              </b>
-              {' '}
-              {val}
-            </li>
+            <tr>
+              <td>
+                <b>{`${LABELS[key] || key}: `}</b>
+              </td>
+              <td>{val}</td>
+            </tr>
           ))}
-      </ul>
-    </div>
+      </table>
+    </Card>
   );
 }

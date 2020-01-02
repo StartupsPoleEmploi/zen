@@ -53,7 +53,7 @@ router.get('/declarations', (req, res, next) => {
   }
 
   Declaration.query()
-    .eager('[user, employers, review, infos]')
+    .eager('[user, review]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
     .catch(next)
@@ -347,6 +347,28 @@ router.delete('/delete-user', (req, res, next) => {
       return deleteUser(user)
     })
     .then(() => res.send('ok'))
+    .catch(next)
+})
+
+router.get('/users/:id', (req, res, next) => {
+  User.query()
+    .eager('[activityLogs, declarations.[infos, review, employers.documents]]')
+    .findById(req.params.id)
+    .then((user) => {
+      if (!user) return  res.send(404, 'User not found');
+      return res.json(user);
+    })
+    .catch(next);
+})
+
+router.get('/declarations/:id', (req, res, next) => {
+  Declaration.query()
+    .eager('[user, employers.documents, review, infos, declarationMonth]')
+    .findById(req.params.id)
+    .then((declaration) => {
+      if (!declaration) return  res.send(404, 'Declaration not found');
+      return res.json(declaration);
+    })
     .catch(next)
 })
 

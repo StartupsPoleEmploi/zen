@@ -1,0 +1,11 @@
+.zn-header {
+  height: 69px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zn-header h1 {
+  margin: 0;
+  padding: 0;
+}

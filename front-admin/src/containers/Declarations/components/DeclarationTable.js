@@ -21,7 +21,17 @@ class DeclarationTable extends React.PureComponent<Props> {
       { title: 'Id', dataIndex: 'id', znSort: 'number' },
       { title: 'Nom', dataIndex: 'name' },
       { title: 'E-mail', dataIndex: 'email' },
-      { title: 'Status', dataIndex: 'status' },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        znSearchable: null,
+        filters: [
+          { text: 'Actu et documents envoyés', value: 'Actu et documents envoyés' },
+          { text: 'Actu envoyée', value: 'Actu envoyée' },
+          { text: 'Actu non terminée', value: 'Actu non terminée' },
+        ],
+        onFilter: (value, record) => record.status === value,
+      },
       { title: 'Transmis le', dataIndex: 'transmittedAt' },
       { title: 'Notes', dataIndex: 'notes' },
       {

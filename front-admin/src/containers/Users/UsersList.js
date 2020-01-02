@@ -1,29 +1,21 @@
 /* eslint-disable no-alert */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Button, Switch, Form, Icon, Row,
 } from 'antd';
-import superagent from 'superagent';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
 import ZnTable from '../../components/ZnTable';
 import { URLS } from '../../common/routes';
+import { useUsers } from '../../common/contexts/usersCtx';
 
 export default function UsersList() {
   const history = useHistory();
-  const [users, setUsers] = useState([]);
-  const [showAuthorizedUsers, setAuthorizedUsers] = useState(true);
-
-  const fetchUsers = () => superagent
-    .get(`/zen-admin-api/users?authorized=${showAuthorizedUsers ? 'true' : 'false'}`)
-    .then(({ body }) => setUsers(body));
-
-  useEffect(() => {
-    fetchUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showAuthorizedUsers]);
+  const {
+    users, showAuthorizedUsers, setAuthorizedUsers, isLoading,
+  } = useUsers();
 
   if (users.length === 0) return null;
 
@@ -82,6 +74,7 @@ export default function UsersList() {
         style={{ backgroundColor: 'white' }}
         columns={columns}
         dataSource={data}
+        loading={isLoading}
         title={() => (
           <Row type="flex" justify="end">
             <Button type="primary" href={`/zen-admin-api/users/csv?authorized=${showAuthorizedUsers ? 'true' : 'false'}`}>

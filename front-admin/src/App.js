@@ -10,6 +10,7 @@ import ZnMenuLayout from './components/ZnMenuLayout';
 import { MENU_ITEMS } from './common/routes';
 import imgLogo from './assets/images/logoFull.svg';
 import { DeclarationsProvider } from './common/contexts/declarationsCtx';
+import { UsersProvider } from './common/contexts/usersCtx';
 
 const browserHistory = createBrowserHistory({
   basename: '/zen-admin',
@@ -27,7 +28,9 @@ export default function App() {
         </Layout.Sider>
         <Layout>
           <DeclarationsProvider>
-            <Routes />
+            <UsersProvider>
+              <Routes />
+            </UsersProvider>
           </DeclarationsProvider>
         </Layout>
       </Layout>

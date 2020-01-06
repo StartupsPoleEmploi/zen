@@ -41,7 +41,7 @@ export default function UserDeclarations({ declarations = [] }: Props) {
     { dataIndex: 'id', znSort: 'number' },
     { dataIndex: 'month', title: 'Moin', defaultSortOrder: 'descend' },
     { dataIndex: 'isFinished', title: 'isFinished', znSort: 'string' },
-    { dataIndex: 'createdAt', title: 'Inscrit le' },
+    { dataIndex: 'createdAt', title: 'Débuté le' },
     { dataIndex: 'updatedAt', title: 'Mise à jour le' },
     {
       title: 'Action',

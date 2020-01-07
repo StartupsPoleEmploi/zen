@@ -54,10 +54,24 @@ const deleteUser = (email) =>
       Action: 'remove',
     })
 
+// https://github.com/mailjet/api-documentation/blob/master/guides/_exclusionlist.md
+const setExcludedUserFromCampaigns = (email, toExclude) =>
+  mailjet
+    .put('contact', { version: 'v3' })
+    .id(email)
+    .request({
+      IsExcludedFromCampaigns: toExclude ? "true" : "false",
+    }).catch((error) => {
+      // Not Modified 
+      if (error.statusCode === 304) return true; 
+      throw error;
+    })
+
 module.exports = {
   sendMail,
   manageContact,
   deleteUser,
+  setExcludedUserFromCampaigns,
 
   changeContactEmail: ({ oldEmail, newEmail }) =>
     mailjet

@@ -10,6 +10,9 @@ const { unzipBz2, readCsv } = require('./files')
 const mailjet = require('./mailings/mailjet')
 const User = require('../models/User')
 const userCtrl = require('../controllers/userCtrl')
+const {
+  setExcludedUserFromCampaigns,
+} = require('./mailings/mailjet')
 
 const readdir = util.promisify(fs.readdir)
 
@@ -72,6 +75,33 @@ function $lineToUser(lineContent) {
   }
 }
 
+async function $excludedUserIntoMailjet(email, id, isBlocked) {
+  const strExclude = isBlocked ? 'EXCLUDE' : 'INCLUDE';
+  winston.info(`The user ${email} (${id}) is now ${strExclude} to campaigns`)
+  await setExcludedUserFromCampaigns(email, isBlocked);
+}
+
+async function $updateUserIntoMailjet(userInDb, userFromFile) {
+  const isUserRegistered = !!userInDb.registeredAt;
+
+  // if User email has changed. Changing email in mailjet
+  const hasEmailChange = !!userFromFile.email && !!userInDb.email && userFromFile.email !== userInDb.email;
+  if (isUserRegistered && hasEmailChange) {
+    winston.info(
+      `E-mail changed for user ${userInDb.id}: old="${userInDb.email}"; new="${userFromFile.email}"`,
+    )
+    await mailjet.changeContactEmail({
+      oldEmail: userInDb.email,
+      newEmail: userFromFile.email,
+    })
+  }
+
+  // update Excluded User
+  if (isUserRegistered && !!userFromFile.email && userFromFile.isBlocked !== userInDb.isBlocked) {
+    await $excludedUserIntoMailjet(userInDb.email, userInDb.id, userFromFile.isBlocked);
+  }
+}
+
 /**
  * @param {Object} userFromFile result of lineToUser
  * @returns {Promise<User|null>} user
@@ -89,20 +119,7 @@ async function $updateUser(userFromFile) {
 
   const userInDb = await User.query().findOne({ peId: userFromFile.peId })
   if (userInDb) {
-    const hasEmailChange =
-      !!userFromFile.email &&
-      !!userInDb.email &&
-      userFromFile.email !== userInDb.email
-    if (userInDb.registeredAt && hasEmailChange) {
-      // User email has changed. Changing email in mailjet
-      winston.info(
-        `E-mail changed for user ${userInDb.id}: old="${userInDb.email}"; new="${userFromFile.email}"`,
-      )
-      await mailjet.changeContactEmail({
-        oldEmail: userInDb.email,
-        newEmail: userFromFile.email,
-      })
-    }
+    await $updateUserIntoMailjet(userInDb, userFromFile)
     // If no email is communicated by PE, do not override email
     userFromFile.email = userFromFile.email || userInDb.email
 
@@ -148,19 +165,26 @@ async function importUserFromDatalake() {
 
     // The file from datalake contain only user not block. So block all user not in file
     winston.info('[ImportUserFromDatalake] Block users ...')
-    const peIds = (await User.query()
+    const users = await User.query()
       .where('isBlocked', '=', false)
-      .column('peId')).map((e) => e.peId)
-    const userToUpdate = peIds.filter((peId) => !peIdsFromFile[peId])
-    winston.info(
-      `[ImportUserFromDatalake] ${userToUpdate.length} Users to block ...`,
-    )
+      .column('peId', 'email', 'id', 'registeredAt');
+    const userToUpdate = users.filter(({peId}) => !peIdsFromFile[peId])
+    winston.info(`[ImportUserFromDatalake] ${userToUpdate.length} Users to block ...`)
     while (userToUpdate.length) {
       winston.info(`Still ${userToUpdate.length} user to block`)
-      const peIdIn = userToUpdate.splice(0, 1000)
+      const userIn = userToUpdate.splice(0, 100);
       await User.query()
         .patch({ isBlocked: true })
-        .whereIn('peId', peIdIn)
+        .whereIn('peId', userIn.map((e) => e.peId))
+      // update into mailjet
+      await Promise.all(
+        userIn.filter(e => !!e.registeredAt)
+        .map((e) => 
+          $excludedUserIntoMailjet(e.email, e.id, true).catch(error => {
+            winston.error(`[ImportUserFromDatalake] excludedUserIntoMailjet: ${error}`, error)
+          })
+        ),
+      )
     }
   } catch (error) {
     winston.error(`[ImportUserFromDatalake] ${error}`, error)

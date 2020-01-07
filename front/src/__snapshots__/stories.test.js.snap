@@ -5045,8 +5045,8 @@ exports[`Storyshots Home default 1`] = `
             />
           </svg>
           <strong>
-            Vous êtes 
-            <br />
+            Vous êtes
+             
             <span
               aria-label="assistants ou assistantes maternels"
             >
@@ -5060,6 +5060,12 @@ exports[`Storyshots Home default 1`] = `
             inscrit.e
           </span>
            à Pôle emploi
+          <br />
+          Exerçant une activité en France,
+          <br />
+          excepté en Bourgogne-Franche-Comté, Centre-Val de Loire
+          <br />
+          et dans les DOM-TOM
         </p>
       </div>
     </div>
@@ -5588,8 +5594,8 @@ exports[`Storyshots Home loginFailed 1`] = `
             />
           </svg>
           <strong>
-            Vous êtes 
-            <br />
+            Vous êtes
+             
             <span
               aria-label="assistants ou assistantes maternels"
             >
@@ -5603,6 +5609,12 @@ exports[`Storyshots Home loginFailed 1`] = `
             inscrit.e
           </span>
            à Pôle emploi
+          <br />
+          Exerçant une activité en France,
+          <br />
+          excepté en Bourgogne-Franche-Comté, Centre-Val de Loire
+          <br />
+          et dans les DOM-TOM
         </p>
       </div>
     </div>

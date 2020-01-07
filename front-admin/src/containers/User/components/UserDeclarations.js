@@ -32,8 +32,8 @@ export default function UserDeclarations({ declarations = [] }: Props) {
   const data = declarations.map((declaration) => ({
     ...declaration,
     isFinished: declaration.isFinished ? 'oui' : 'non',
-    createdAt: moment(declaration.createdAt).format('DD/MM/YYYY'),
-    updatedAt: moment(declaration.updatedAt).format('DD/MM/YYYY'),
+    createdAt: moment(declaration.createdAt).format('YYYY/MM/DD HH:mm:ss'),
+    updatedAt: moment(declaration.updatedAt).format('YYYY/MM/DD HH:mm:ss'),
     month: `${formatDate(availableMonths, declaration.monthId)} (${declaration.monthId})`,
   }));
 

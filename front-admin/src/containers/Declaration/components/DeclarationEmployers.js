@@ -26,7 +26,7 @@ const COLUMNS_DOCS = [
   { title: 'Type', dataIndex: 'type', ...defaultVal },
   { title: 'Nom du fichier', dataIndex: 'originalFileName', ...defaultVal },
   { title: 'Transmi', dataIndex: 'isTransmitted', ...defaultVal },
-  { title: 'Nétoyé', dataIndex: 'isCleanedUp', ...defaultVal },
+  { title: 'Nettoyé', dataIndex: 'isCleanedUp', ...defaultVal },
   { title: 'Créé le', dataIndex: 'createdAt', ...defaultVal },
   { title: 'Modifié le', dataIndex: 'updatedAt', ...defaultVal },
   { title: 'Fichier', dataIndex: 'file', ...defaultVal },

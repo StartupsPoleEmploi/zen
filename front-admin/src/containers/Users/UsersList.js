@@ -22,8 +22,8 @@ export default function UsersList() {
   const data = users.map((user) => ({
     ...user,
     isAuthorized: user.isAuthorized ? 'oui' : 'non',
-    registeredAt: moment(user.createdAt).format('YYYY/MM/DD'),
-    createdAt: moment(user.createdAt).format('YYYY/MM/DD'),
+    registeredAt: moment(user.createdAt).format('YYYY/MM/DD HH:mm:ss'),
+    createdAt: moment(user.createdAt).format('YYYY/MM/DD HH:mm:ss'),
   }));
 
   const columns = [

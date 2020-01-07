@@ -3,6 +3,8 @@
 import React from 'react';
 import { Card } from 'antd';
 
+import { getAgenceName } from '../../../common/agencesInfos';
+
 const LABELS = {
   firstName: 'Prenom',
   lastName: 'Nom',
@@ -27,9 +29,10 @@ export default function UserInfos({ user }: Props) {
     ...user,
     isAuthorized: user.isAuthorized ? 'oui' : 'non',
     isBlocked: user.isBlocked ? 'oui' : 'non',
+    agencyCode: getAgenceName(user.agencyCode),
   };
   return (
-    <Card title="Informatrions" style={{ marginBottom: '20px' }}>
+    <Card title="Information" style={{ marginBottom: '20px' }}>
       <table border="1">
         {Object.entries(data)
           .filter(([, val]) => typeof val !== 'object' && !Array.isArray(val))

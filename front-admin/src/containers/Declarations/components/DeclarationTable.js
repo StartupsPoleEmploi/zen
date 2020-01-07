@@ -69,7 +69,7 @@ class DeclarationTable extends React.PureComponent<Props> {
       status: this.getStatus(declaration),
       transmittedAt:
         declaration.transmittedAt
-        && moment(declaration.transmittedAt).format('DD/MM/YYYY'),
+        && moment(declaration.transmittedAt).format('YYYY/MM/DD HH:mm:ss'),
       verified:
         declaration.review && declaration.review.isVerified ? 'oui' : 'non',
       notes: (declaration.review && declaration.review.notes) || '',

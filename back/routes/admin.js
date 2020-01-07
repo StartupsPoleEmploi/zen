@@ -103,41 +103,6 @@ router.get('/users/csv', async (req, res, next) => {
   }
 })
 
-router.get('/users-with-declaration/csv', async (req, res, next) => {
-  try {
-    const months = await DeclarationMonth.query()
-      .where('startDate', '<=', 'now')
-      .orderBy('startDate', 'DESC')
-
-    const users = await User.query()
-      .eager('[declarations.[declarationMonth]]')
-      .whereNotNull('registeredAt')
-      .whereIn(
-        'id',
-        Declaration.query()
-          .distinct()
-          .select('userId'),
-      )
-
-    const json2csvParser = new Parser({
-      fields: computeFields(months),
-    })
-    const csv = json2csvParser.parse(users)
-
-    res.set(
-      'Content-disposition',
-      `attachment; filename=utilisateurs-avec-declaration-${format(
-        new Date(),
-        'YYYY-MM-DD',
-      )}.csv`,
-    )
-    res.set('Content-type', 'text/csv')
-    return res.send(csv)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.post('/users/authorize', (req, res, next) => {
   const useEmails = Array.isArray(req.body.emails)
   if (!useEmails) {

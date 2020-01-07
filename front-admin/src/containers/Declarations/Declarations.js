@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import {
-  Button, Icon, Row, Col, Select,
-} from 'antd';
+import { Row, Col, Select } from 'antd';
 
 import { useDeclarations } from '../../common/contexts/declarationsCtx';
 import ZnContent from '../../components/ZnContent';
@@ -30,13 +28,6 @@ export default function Declarations() {
       <ZnHeader title="Declarations" />
 
       <ZnContent>
-        <Row type="flex" justify="end">
-          <Button href="/zen-admin-api/users-with-declaration/csv">
-            <Icon type="download" />
-            {' '}
-            Utisateurs avec au moins une declaration
-          </Button>
-        </Row>
         <div>
           <Select style={{ width: '150px' }} value={selectedMonthId} onChange={setSelectedMonthId}>
             {availableMonths.map((month) => (

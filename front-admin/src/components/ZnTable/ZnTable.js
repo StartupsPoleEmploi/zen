@@ -7,18 +7,37 @@ import {
 
 type Props = {
   columns: Array<{ znSearchable: boolean, znSort: 'string' | 'number' }>,
+  dataSource: Array<Object>,
 };
 
-const State = {
-  searchText: String,
-  searchedColumn: String,
+type State = {
+  totalRowFilter: Number,
+  filters: any,
 };
 
 export default class ZnTable extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.searchInput = null;
+    this.state = {
+      totalRowFilter: props.dataSource.length,
+      dataSource: props.dataSource,
+    };
   }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.dataSource !== state.dataSource) {
+      return {
+        totalRowFilter: props.dataSource.length,
+        dataSource: props.dataSource,
+      };
+    }
+    return null;
+  }
+
+  handleTableChange = (pagination, filters, sorter, extra) => {
+    this.setState({ totalRowFilter: extra.currentDataSource.length });
+  };
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -102,11 +121,26 @@ export default class ZnTable extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { columns, ...rest } = this.props;
+    const { columns, dataSource, ...rest } = this.props;
+    const { totalRowFilter } = this.state;
+    const hasFilter = totalRowFilter !== dataSource.length;
 
     return (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <Table pagination={{ pageSize: 15 }} columns={this.formatColumns(columns)} {...rest} />
+      <Table
+        pagination={{ pageSize: 15 }}
+        columns={this.formatColumns(columns)}
+        dataSource={dataSource}
+        onChange={this.handleTableChange}
+        footer={() => (
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            {hasFilter
+              ? <b>{`Total search: ${totalRowFilter} of ${dataSource.length}`}</b>
+              : <b>{`Total: ${dataSource.length} `}</b>}
+          </div>
+        )}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...rest}
+      />
     );
   }
 }

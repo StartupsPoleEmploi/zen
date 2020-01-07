@@ -45,7 +45,7 @@ const COLUMNS = [
   { title: 'Du', dataIndex: 'startDate', ...defaultVal },
   { title: 'Au', dataIndex: 'endDate', ...defaultVal },
   { title: 'Transmi', dataIndex: 'isTransmitted', ...defaultVal },
-  { title: 'Nétoyé', dataIndex: 'isCleanedUp', ...defaultVal },
+  { title: 'Nettoyé', dataIndex: 'isCleanedUp', ...defaultVal },
   { title: 'Fichier', dataIndex: 'file', ...defaultVal },
 ];
 

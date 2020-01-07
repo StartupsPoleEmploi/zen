@@ -14,7 +14,7 @@ export default function UserActivityLogs({ activityLogs = [] }: Props) {
   const data = activityLogs.map((activityLog) => ({
     ...activityLog,
     metadata: JSON.stringify(activityLog.metadata || {}),
-    createdAt: moment(activityLog.createdAt).format('YYYY/MM/DD hh:mm:ss'),
+    createdAt: moment(activityLog.createdAt).format('YYYY/MM/DD HH:mm:ss'),
   }));
 
   const columns = [

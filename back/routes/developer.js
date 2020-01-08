@@ -28,7 +28,7 @@ router.get('/session/user', (req, res) => {
     Ex: http://localhost/api/developer/fake-auth?connectedAs=6687&to=%2Ffiles
 */
 router.get('/fake-auth', async (req, res) => {
-  if (req.query.connectedAs && !req.session.user) {
+  if (req.query.connectedAs) {
     const connectedAsId = Number(req.query.connectedAs)
 
     if (!Number.isNaN(connectedAsId)) {
@@ -36,6 +36,8 @@ router.get('/fake-auth', async (req, res) => {
 
       if (currentId !== connectedAsId) {
         const user = await User.query().findById(connectedAsId)
+        if (!user) return res.send(`User with id ${connectedAsId} not found`)
+
         const { id, firstName, lastName, email, gender } = user
 
         req.session.user = {

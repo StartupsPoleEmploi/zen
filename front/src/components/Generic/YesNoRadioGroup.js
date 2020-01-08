@@ -79,7 +79,7 @@ export class YesNoRadioGroup extends Component {
         value={YES}
         control={
           yesTooltipContent ? (
-            <TooltipOnFocus content={yesTooltipContent}>
+            <TooltipOnFocus useHover content={yesTooltipContent}>
               {yesRadio}
             </TooltipOnFocus>
           ) : (

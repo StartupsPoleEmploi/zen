@@ -35,8 +35,12 @@ const styles = () => ({
     color: 'black',
     border: `solid 2px ${helpColor}`,
     borderRadius: 0,
+    position: 'relative',
+    top: '10px',
+    left: '-3px',
     padding: '2rem 1.5rem',
     boxShadow: '5px 5px 20px grey',
+    margin: 0,
   },
   arrowPopper: {
     opacity: 1,
@@ -103,20 +107,11 @@ const styles = () => ({
 })
 
 class TooltipOnFocus extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    content: PropTypes.string,
-    tooltipId: PropTypes.string,
-    useHover: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    useHover: false,
-  }
-
-  state = {
-    arrowRef: null,
+  constructor(props) {
+    super(props)
+    this.state = {
+      arrowRef: null,
+    }
   }
 
   handleArrowRef = (arrowRef) =>
@@ -145,7 +140,6 @@ class TooltipOnFocus extends Component {
         id={tooltipId}
         {...eventProps}
         placement="bottom"
-        ref={this.handleArrowRef}
         aria-hidden="false"
         title={
           <div>
@@ -177,6 +171,18 @@ class TooltipOnFocus extends Component {
       </Tooltip>
     )
   }
+}
+
+TooltipOnFocus.defaultProps = {
+  useHover: false,
+}
+
+TooltipOnFocus.propTypes = {
+  children: PropTypes.node,
+  classes: PropTypes.object,
+  content: PropTypes.string,
+  tooltipId: PropTypes.string,
+  useHover: PropTypes.bool,
 }
 
 export default withStyles(styles)(TooltipOnFocus)

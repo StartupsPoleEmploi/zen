@@ -3219,102 +3219,120 @@ exports[`Storyshots EmployerQuestion default 1`] = `
           >
             <div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-                  data-shrink={false}
-                  htmlFor="employerName[1]"
-                >
-                  Nom employeur
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="employerNameDescription[1]"
-                    aria-invalid={false}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="employerName[1]"
-                    name="employerName[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    required={false}
-                    type="text"
-                    value={null}
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                    data-shrink={false}
+                    htmlFor="employerName[1]"
+                  >
+                    <div>
+                      Nombre d'heures
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="employerNameDescription[1]"
+                      aria-invalid={false}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="employerName[1]"
+                      name="employerName[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      required={false}
+                      type="text"
+                      value={null}
+                    />
+                  </div>
                 </div>
               </div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-                  data-shrink={false}
-                  htmlFor="workHours[1]"
-                >
-                  Nombre d'heures
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="workHoursDescription[1]"
-                    aria-invalid={false}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="workHours[1]"
-                    maxLength={4}
-                    name="workHours[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseUp={[Function]}
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                    data-shrink={false}
+                    htmlFor="workHours[1]"
+                  >
+                    <div>
+                      Nombre d'heures
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="workHoursDescription[1]"
+                      aria-invalid={false}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="workHours[1]"
+                      maxLength={4}
+                      name="workHours[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseUp={[Function]}
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-                  data-shrink={false}
-                  htmlFor="salary[1]"
-                >
-                  Salaire brut €
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="salaryDescription[1]"
-                    aria-invalid={false}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="salary[1]"
-                    maxLength={16}
-                    name="salary[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseUp={[Function]}
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                    data-shrink={false}
+                    htmlFor="salary[1]"
+                  >
+                    <div>
+                      Salaire brut €
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="salaryDescription[1]"
+                      aria-invalid={false}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="salary[1]"
+                      maxLength={16}
+                      name="salary[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseUp={[Function]}
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -3516,7 +3534,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root sc-jDwBTQ dJLnrA"
+              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -3596,102 +3614,120 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
           >
             <div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
-                  data-shrink={true}
-                  htmlFor="employerName[1]"
-                >
-                  Nom employeur
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="employerNameDescription[1]"
-                    aria-invalid={false}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="employerName[1]"
-                    name="employerName[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    required={false}
-                    type="text"
-                    value="Paul"
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+                    data-shrink={true}
+                    htmlFor="employerName[1]"
+                  >
+                    <div>
+                      Nombre d'heures
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="employerNameDescription[1]"
+                      aria-invalid={false}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="employerName[1]"
+                      name="employerName[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      required={false}
+                      type="text"
+                      value="Paul"
+                    />
+                  </div>
                 </div>
               </div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
-                  data-shrink={true}
-                  htmlFor="workHours[1]"
-                >
-                  Nombre d'heures
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="workHoursDescription[1]"
-                    aria-invalid={false}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="workHours[1]"
-                    maxLength={4}
-                    name="workHours[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseUp={[Function]}
-                    required={false}
-                    type="text"
-                    value="20h"
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+                    data-shrink={true}
+                    htmlFor="workHours[1]"
+                  >
+                    <div>
+                      Nombre d'heures
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="workHoursDescription[1]"
+                      aria-invalid={false}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="workHours[1]"
+                      maxLength={4}
+                      name="workHours[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseUp={[Function]}
+                      required={false}
+                      type="text"
+                      value="20h"
+                    />
+                  </div>
                 </div>
               </div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
-                  data-shrink={true}
-                  htmlFor="salary[1]"
-                >
-                  Salaire brut €
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="salaryDescription[1]"
-                    aria-invalid={false}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="salary[1]"
-                    maxLength={16}
-                    name="salary[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseUp={[Function]}
-                    required={false}
-                    type="text"
-                    value="200,00€ bruts"
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+                    data-shrink={true}
+                    htmlFor="salary[1]"
+                  >
+                    <div>
+                      Salaire brut €
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="salaryDescription[1]"
+                      aria-invalid={false}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="salary[1]"
+                      maxLength={16}
+                      name="salary[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseUp={[Function]}
+                      required={false}
+                      type="text"
+                      value="200,00€ bruts"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -3893,7 +3929,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root sc-jDwBTQ dJLnrA"
+              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -3973,121 +4009,139 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
           >
             <div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
-                  data-shrink={false}
-                  htmlFor="employerName[1]"
-                >
-                  Nom employeur
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="employerNameDescription[1]"
-                    aria-invalid={true}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="employerName[1]"
-                    name="employerName[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
+                    data-shrink={false}
+                    htmlFor="employerName[1]"
+                  >
+                    <div>
+                      Nombre d'heures
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="employerNameDescription[1]"
+                      aria-invalid={true}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="employerName[1]"
+                      name="employerName[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                  <p
+                    className="MuiFormHelperText-root Mui-error"
+                    id="employerName[1]-helper-text"
+                  >
+                    Champ obligatoire
+                  </p>
                 </div>
-                <p
-                  className="MuiFormHelperText-root Mui-error"
-                  id="employerName[1]-helper-text"
-                >
-                  Champ obligatoire
-                </p>
               </div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
-                  data-shrink={true}
-                  htmlFor="workHours[1]"
-                >
-                  Nombre d'heures
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="workHoursDescription[1]"
-                    aria-invalid={true}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="workHours[1]"
-                    maxLength={4}
-                    name="workHours[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseUp={[Function]}
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
+                    data-shrink={true}
+                    htmlFor="workHours[1]"
+                  >
+                    <div>
+                      Nombre d'heures
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="workHoursDescription[1]"
+                      aria-invalid={true}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="workHours[1]"
+                      maxLength={4}
+                      name="workHours[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseUp={[Function]}
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                  <p
+                    className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
+                    id="workHours[1]-helper-text"
+                  >
+                    Entrez un nombre entier
+                  </p>
                 </div>
-                <p
-                  className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
-                  id="workHours[1]-helper-text"
-                >
-                  Entrez un nombre entier
-                </p>
               </div>
               <div
-                className="MuiFormControl-root MuiTextField-root sc-gPEVay cLgZfm"
+                className="sc-jDwBTQ bxUydo"
               >
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
-                  data-shrink={true}
-                  htmlFor="salary[1]"
-                >
-                  Salaire brut €
-                </label>
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
-                  onClick={[Function]}
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
-                  <input
-                    aria-describedby="salaryDescription[1]"
-                    aria-invalid={true}
-                    className="MuiInputBase-input MuiInput-input"
-                    disabled={false}
-                    id="salary[1]"
-                    maxLength={16}
-                    name="salary[1]"
-                    onAnimationStart={[Function]}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseUp={[Function]}
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
+                    data-shrink={true}
+                    htmlFor="salary[1]"
+                  >
+                    <div>
+                      Salaire brut €
+                    </div>
+                  </label>
+                  <div
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline Mui-error Mui-error MuiInputBase-formControl MuiInput-formControl"
+                    onClick={[Function]}
+                  >
+                    <input
+                      aria-describedby="salaryDescription[1]"
+                      aria-invalid={true}
+                      className="MuiInputBase-input MuiInput-input"
+                      disabled={false}
+                      id="salary[1]"
+                      maxLength={16}
+                      name="salary[1]"
+                      onAnimationStart={[Function]}
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseUp={[Function]}
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                  <p
+                    className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
+                    id="salary[1]-helper-text"
+                  >
+                    Entrez un nombre entier
+                  </p>
                 </div>
-                <p
-                  className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
-                  id="salary[1]-helper-text"
-                >
-                  Entrez un nombre entier
-                </p>
               </div>
             </div>
             <div
@@ -4293,7 +4347,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root sc-jDwBTQ dJLnrA"
+              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -4714,19 +4768,19 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 
 exports[`Storyshots Home default 1`] = `
 <div
-  className="sc-eqIVtm jKKXUE"
+  className="sc-caSCKo eWrkLT"
 >
   <section
-    className="sc-caSCKo eXOwPM"
+    className="sc-kjoXOD eDCrpP"
   >
     <div
-      className="sc-gisBJw dwFzBU"
+      className="sc-cHGsZl dpEyru"
     >
       <div
-        className="sc-kjoXOD gqzHZx"
+        className="sc-TOsTZ hynlWS"
       >
         <h1
-          className="MuiTypography-root sc-cHGsZl bgRtIi MuiTypography-h1 MuiTypography-paragraph"
+          className="MuiTypography-root sc-kgAjT cXtzbw MuiTypography-h1 MuiTypography-paragraph"
           style={
             Object {
               "fontWeight": "bold",
@@ -4752,7 +4806,7 @@ exports[`Storyshots Home default 1`] = `
           </span>
         </h1>
         <h2
-          className="MuiTypography-root sc-TOsTZ edwGMl MuiTypography-h6 MuiTypography-paragraph"
+          className="MuiTypography-root sc-cJSrbW dsxlcb MuiTypography-h6 MuiTypography-paragraph"
         >
           Zen est un service Pôle emploi dédié aux
            
@@ -4764,7 +4818,7 @@ exports[`Storyshots Home default 1`] = `
         </h2>
       </div>
       <button
-        className="sc-jhAzac leCxKz"
+        className="sc-fMiknA kKucei"
         id="home-video"
         onClick={[Function]}
         style={
@@ -4816,7 +4870,7 @@ exports[`Storyshots Home default 1`] = `
     </div>
   </section>
   <section
-    className="sc-kgAjT cuzzPp"
+    className="sc-ksYbfQ jHwjmi"
     style={
       Object {
         "alignItems": "center",
@@ -4842,13 +4896,13 @@ exports[`Storyshots Home default 1`] = `
       }
     />
     <ul
-      className="sc-dNLxif hZhJgR"
+      className="sc-uJMKN RyVfe"
     >
       <li
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
       >
         <span
-          className="sc-uJMKN AJxdw"
+          className="sc-gGBfsJ csBMIw"
         >
           <svg
             alt=""
@@ -4872,7 +4926,7 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jnlKLf cDZOeY MuiTypography-body1"
+          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
         >
           Zen additionne pour vous
           <br />
@@ -4883,7 +4937,7 @@ exports[`Storyshots Home default 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
         style={
           Object {
             "display": "block",
@@ -4894,7 +4948,7 @@ exports[`Storyshots Home default 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-bbmXgH igQMGQ MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -4905,10 +4959,10 @@ exports[`Storyshots Home default 1`] = `
         </svg>
       </li>
       <li
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
       >
         <span
-          className="sc-uJMKN AJxdw"
+          className="sc-gGBfsJ csBMIw"
         >
           <svg
             alt=""
@@ -4932,7 +4986,7 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jnlKLf cDZOeY MuiTypography-body1"
+          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
         >
           Zen vous indique
           <br />
@@ -4943,7 +4997,7 @@ exports[`Storyshots Home default 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
         style={
           Object {
             "display": "block",
@@ -4954,7 +5008,7 @@ exports[`Storyshots Home default 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-bbmXgH igQMGQ MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -4965,10 +5019,10 @@ exports[`Storyshots Home default 1`] = `
         </svg>
       </li>
       <li
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
       >
         <span
-          className="sc-uJMKN AJxdw"
+          className="sc-gGBfsJ csBMIw"
         >
           <svg
             alt=""
@@ -4992,7 +5046,7 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jnlKLf cDZOeY MuiTypography-body1"
+          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
         >
           Accédez à un espace personnel
           <br />
@@ -5004,10 +5058,10 @@ exports[`Storyshots Home default 1`] = `
     </ul>
   </section>
   <section
-    className="sc-cIShpX bwViwn"
+    className="sc-feJyhm hxezng"
   >
     <h2
-      className="MuiTypography-root sc-cJSrbW fkkkdd MuiTypography-h5"
+      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
       style={
         Object {
           "color": "#fff",
@@ -5017,13 +5071,13 @@ exports[`Storyshots Home default 1`] = `
       Zen est pour vous si ...
     </h2>
     <div
-      className="sc-kafWEX fUwUGk"
+      className="sc-iELTvK erUTl"
     >
       <div
-        className="sc-feJyhm gtghPt"
+        className="sc-cmTdod fgxRog"
       >
         <p
-          className="MuiTypography-root sc-iELTvK gctpYp MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
         >
           <svg
             aria-hidden="true"
@@ -5071,10 +5125,10 @@ exports[`Storyshots Home default 1`] = `
     </div>
   </section>
   <section
-    className="sc-kgAjT cuzzPp"
+    className="sc-ksYbfQ jHwjmi"
   >
     <h2
-      className="MuiTypography-root sc-cJSrbW fkkkdd MuiTypography-h5"
+      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
       style={
         Object {
           "textAlign": "center",
@@ -5090,18 +5144,18 @@ exports[`Storyshots Home default 1`] = `
        à chaque étape
     </h2>
     <div
-      className="sc-ksYbfQ eqPeYv"
+      className="sc-frDJqD cuqWVO"
     >
       <div
-        className="sc-frDJqD dEwmlD"
+        className="sc-hqyNC lJZqR"
       >
         <div
-          className="MuiTypography-root sc-hqyNC hIGvlf MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
         >
           1
         </div>
         <h3
-          className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Je suis informé(e) tous les mois du début de l'actualisation
         </h3>
@@ -5113,23 +5167,23 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jbKcbu hWMvjC"
+        className="sc-jqCOkK jmfCHm"
         src="photo1.jpg"
       />
     </div>
     <div
-      className="sc-ksYbfQ sc-hmzhuo kmxptA"
+      className="sc-frDJqD sc-kvZOFW iDSvQU"
     >
       <div
-        className="sc-frDJqD dEwmlD"
+        className="sc-hqyNC lJZqR"
       >
         <div
-          className="MuiTypography-root sc-hqyNC hIGvlf MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
         >
           2
         </div>
         <h3
-          className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
         </h3>
@@ -5141,23 +5195,23 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jbKcbu hWMvjC"
+        className="sc-jqCOkK jmfCHm"
         src="photo2.jpg"
       />
     </div>
     <div
-      className="sc-ksYbfQ eqPeYv"
+      className="sc-frDJqD cuqWVO"
     >
       <div
-        className="sc-frDJqD dEwmlD"
+        className="sc-hqyNC lJZqR"
       >
         <div
-          className="MuiTypography-root sc-hqyNC hIGvlf MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
         >
           3
         </div>
         <h3
-          className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
         >
           J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
@@ -5169,13 +5223,13 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jbKcbu hWMvjC"
+        className="sc-jqCOkK jmfCHm"
         src="photo3.jpg"
       />
     </div>
   </section>
   <section
-    className="sc-kgAjT cuzzPp"
+    className="sc-ksYbfQ jHwjmi"
     style={
       Object {
         "padding": "5rem",
@@ -5184,18 +5238,18 @@ exports[`Storyshots Home default 1`] = `
     }
   >
     <h2
-      className="MuiTypography-root sc-cJSrbW fkkkdd MuiTypography-h5"
+      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
     >
       Nos utilisateurs approuvent !
     </h2>
     <div
-      className="sc-fYxtnH ilrNIo"
+      className="sc-hEsumM clAWdV"
     >
       <div
-        className="sc-tilXH cOMxET"
+        className="sc-ktHwxA eQuqDF"
       >
         <p
-          className="MuiTypography-root sc-hEsumM gbCrFS MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Déborah - Lille
@@ -5204,16 +5258,16 @@ exports[`Storyshots Home default 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-ktHwxA bwPBzM MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
         >
           « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
         </p>
       </div>
       <div
-        className="sc-tilXH cOMxET"
+        className="sc-ktHwxA eQuqDF"
       >
         <p
-          className="MuiTypography-root sc-hEsumM gbCrFS MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Sophie - Condette
@@ -5222,16 +5276,16 @@ exports[`Storyshots Home default 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-ktHwxA bwPBzM MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
         >
           « Plus simple vu le nombre d'employeurs. Belle innovation »
         </p>
       </div>
       <div
-        className="sc-tilXH cOMxET"
+        className="sc-ktHwxA eQuqDF"
       >
         <p
-          className="MuiTypography-root sc-hEsumM gbCrFS MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Fatima - Amiens
@@ -5240,7 +5294,7 @@ exports[`Storyshots Home default 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-ktHwxA bwPBzM MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
         >
           « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
         </p>
@@ -5252,10 +5306,10 @@ exports[`Storyshots Home default 1`] = `
 
 exports[`Storyshots Home loginFailed 1`] = `
 <div
-  className="sc-eqIVtm jKKXUE"
+  className="sc-caSCKo eWrkLT"
 >
   <div
-    className="sc-fAjcbJ jBlqLA"
+    className="sc-gisBJw knJsjc"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -5266,16 +5320,16 @@ exports[`Storyshots Home loginFailed 1`] = `
     </p>
   </div>
   <section
-    className="sc-caSCKo eXOwPM"
+    className="sc-kjoXOD eDCrpP"
   >
     <div
-      className="sc-gisBJw dwFzBU"
+      className="sc-cHGsZl dpEyru"
     >
       <div
-        className="sc-kjoXOD gqzHZx"
+        className="sc-TOsTZ hynlWS"
       >
         <h1
-          className="MuiTypography-root sc-cHGsZl bgRtIi MuiTypography-h1 MuiTypography-paragraph"
+          className="MuiTypography-root sc-kgAjT cXtzbw MuiTypography-h1 MuiTypography-paragraph"
           style={
             Object {
               "fontWeight": "bold",
@@ -5301,7 +5355,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </span>
         </h1>
         <h2
-          className="MuiTypography-root sc-TOsTZ edwGMl MuiTypography-h6 MuiTypography-paragraph"
+          className="MuiTypography-root sc-cJSrbW dsxlcb MuiTypography-h6 MuiTypography-paragraph"
         >
           Zen est un service Pôle emploi dédié aux
            
@@ -5313,7 +5367,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </h2>
       </div>
       <button
-        className="sc-jhAzac leCxKz"
+        className="sc-fMiknA kKucei"
         id="home-video"
         onClick={[Function]}
         style={
@@ -5365,7 +5419,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
   </section>
   <section
-    className="sc-kgAjT cuzzPp"
+    className="sc-ksYbfQ jHwjmi"
     style={
       Object {
         "alignItems": "center",
@@ -5391,13 +5445,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       }
     />
     <ul
-      className="sc-dNLxif hZhJgR"
+      className="sc-uJMKN RyVfe"
     >
       <li
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
       >
         <span
-          className="sc-uJMKN AJxdw"
+          className="sc-gGBfsJ csBMIw"
         >
           <svg
             alt=""
@@ -5421,7 +5475,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jnlKLf cDZOeY MuiTypography-body1"
+          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
         >
           Zen additionne pour vous
           <br />
@@ -5432,7 +5486,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
         style={
           Object {
             "display": "block",
@@ -5443,7 +5497,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-bbmXgH igQMGQ MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -5454,10 +5508,10 @@ exports[`Storyshots Home loginFailed 1`] = `
         </svg>
       </li>
       <li
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
       >
         <span
-          className="sc-uJMKN AJxdw"
+          className="sc-gGBfsJ csBMIw"
         >
           <svg
             alt=""
@@ -5481,7 +5535,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jnlKLf cDZOeY MuiTypography-body1"
+          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
         >
           Zen vous indique
           <br />
@@ -5492,7 +5546,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
         style={
           Object {
             "display": "block",
@@ -5503,7 +5557,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-bbmXgH igQMGQ MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -5514,10 +5568,10 @@ exports[`Storyshots Home loginFailed 1`] = `
         </svg>
       </li>
       <li
-        className="sc-jqCOkK gHOJwn"
+        className="sc-bbmXgH bgIkbH"
       >
         <span
-          className="sc-uJMKN AJxdw"
+          className="sc-gGBfsJ csBMIw"
         >
           <svg
             alt=""
@@ -5541,7 +5595,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jnlKLf cDZOeY MuiTypography-body1"
+          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
         >
           Accédez à un espace personnel
           <br />
@@ -5553,10 +5607,10 @@ exports[`Storyshots Home loginFailed 1`] = `
     </ul>
   </section>
   <section
-    className="sc-cIShpX bwViwn"
+    className="sc-feJyhm hxezng"
   >
     <h2
-      className="MuiTypography-root sc-cJSrbW fkkkdd MuiTypography-h5"
+      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
       style={
         Object {
           "color": "#fff",
@@ -5566,13 +5620,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       Zen est pour vous si ...
     </h2>
     <div
-      className="sc-kafWEX fUwUGk"
+      className="sc-iELTvK erUTl"
     >
       <div
-        className="sc-feJyhm gtghPt"
+        className="sc-cmTdod fgxRog"
       >
         <p
-          className="MuiTypography-root sc-iELTvK gctpYp MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
         >
           <svg
             aria-hidden="true"
@@ -5620,10 +5674,10 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
   </section>
   <section
-    className="sc-kgAjT cuzzPp"
+    className="sc-ksYbfQ jHwjmi"
   >
     <h2
-      className="MuiTypography-root sc-cJSrbW fkkkdd MuiTypography-h5"
+      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
       style={
         Object {
           "textAlign": "center",
@@ -5639,18 +5693,18 @@ exports[`Storyshots Home loginFailed 1`] = `
        à chaque étape
     </h2>
     <div
-      className="sc-ksYbfQ eqPeYv"
+      className="sc-frDJqD cuqWVO"
     >
       <div
-        className="sc-frDJqD dEwmlD"
+        className="sc-hqyNC lJZqR"
       >
         <div
-          className="MuiTypography-root sc-hqyNC hIGvlf MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
         >
           1
         </div>
         <h3
-          className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Je suis informé(e) tous les mois du début de l'actualisation
         </h3>
@@ -5662,23 +5716,23 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jbKcbu hWMvjC"
+        className="sc-jqCOkK jmfCHm"
         src="photo1.jpg"
       />
     </div>
     <div
-      className="sc-ksYbfQ sc-hmzhuo kmxptA"
+      className="sc-frDJqD sc-kvZOFW iDSvQU"
     >
       <div
-        className="sc-frDJqD dEwmlD"
+        className="sc-hqyNC lJZqR"
       >
         <div
-          className="MuiTypography-root sc-hqyNC hIGvlf MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
         >
           2
         </div>
         <h3
-          className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
         </h3>
@@ -5690,23 +5744,23 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jbKcbu hWMvjC"
+        className="sc-jqCOkK jmfCHm"
         src="photo2.jpg"
       />
     </div>
     <div
-      className="sc-ksYbfQ eqPeYv"
+      className="sc-frDJqD cuqWVO"
     >
       <div
-        className="sc-frDJqD dEwmlD"
+        className="sc-hqyNC lJZqR"
       >
         <div
-          className="MuiTypography-root sc-hqyNC hIGvlf MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
         >
           3
         </div>
         <h3
-          className="MuiTypography-root sc-cJSrbW sc-kvZOFW kBHoCV MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
         >
           J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
@@ -5718,13 +5772,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jbKcbu hWMvjC"
+        className="sc-jqCOkK jmfCHm"
         src="photo3.jpg"
       />
     </div>
   </section>
   <section
-    className="sc-kgAjT cuzzPp"
+    className="sc-ksYbfQ jHwjmi"
     style={
       Object {
         "padding": "5rem",
@@ -5733,18 +5787,18 @@ exports[`Storyshots Home loginFailed 1`] = `
     }
   >
     <h2
-      className="MuiTypography-root sc-cJSrbW fkkkdd MuiTypography-h5"
+      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
     >
       Nos utilisateurs approuvent !
     </h2>
     <div
-      className="sc-fYxtnH ilrNIo"
+      className="sc-hEsumM clAWdV"
     >
       <div
-        className="sc-tilXH cOMxET"
+        className="sc-ktHwxA eQuqDF"
       >
         <p
-          className="MuiTypography-root sc-hEsumM gbCrFS MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Déborah - Lille
@@ -5753,16 +5807,16 @@ exports[`Storyshots Home loginFailed 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-ktHwxA bwPBzM MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
         >
           « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
         </p>
       </div>
       <div
-        className="sc-tilXH cOMxET"
+        className="sc-ktHwxA eQuqDF"
       >
         <p
-          className="MuiTypography-root sc-hEsumM gbCrFS MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Sophie - Condette
@@ -5771,16 +5825,16 @@ exports[`Storyshots Home loginFailed 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-ktHwxA bwPBzM MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
         >
           « Plus simple vu le nombre d'employeurs. Belle innovation »
         </p>
       </div>
       <div
-        className="sc-tilXH cOMxET"
+        className="sc-ktHwxA eQuqDF"
       >
         <p
-          className="MuiTypography-root sc-hEsumM gbCrFS MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Fatima - Amiens
@@ -5789,7 +5843,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-ktHwxA bwPBzM MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
         >
           « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
         </p>
@@ -5955,18 +6009,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-fBuWsC kCTyxu"
+          className="sc-dVhcbM cXEqzP"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fMiknA kRhoQq"
+            className="sc-eqIVtm cGQxJX"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-dVhcbM cCMGqG"
+            className="sc-fAjcbJ fpfQc"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -6033,18 +6087,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-1v8lkxq=""
       >
         <a
-          className="sc-fBuWsC fMZVJX"
+          className="sc-dVhcbM bMObGm"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fMiknA kRhoQq"
+            className="sc-eqIVtm cGQxJX"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-dVhcbM cCMGqG"
+            className="sc-fAjcbJ fpfQc"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -6111,7 +6165,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-1v8lkxq=""
       >
         <div
-          className="sc-Rmtcm fBnskI"
+          className="sc-hzDkRC dppXPs"
         >
           <p
             className="MuiTypography-root MuiTypography-body1"
@@ -6119,7 +6173,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
           <div
-            className="sc-bRBYWo ffoThu"
+            className="sc-jhAzac fGaSpH"
             style={
               Object {
                 "paddingTop": "3rem",
@@ -6150,7 +6204,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden="true"
-                  className="MuiSvgIcon-root sc-hzDkRC ftbvyC"
+                  className="MuiSvgIcon-root sc-fBuWsC cwfsEu"
                   focusable="false"
                   role="presentation"
                   viewBox="0 0 24 24"
@@ -6225,7 +6279,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
         data-css-1v8lkxq=""
       >
         <button
-          className="sc-jhAzac leCxKz"
+          className="sc-fMiknA kKucei"
           id="video"
           onClick={[Function]}
           style={

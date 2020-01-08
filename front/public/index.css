@@ -12,3 +12,14 @@ body {
   display: none;
   visibility: hidden;
 }
+
+/*
+  Make tooltip only visible when label is focused
+  (Too difficult to do it with material-ui)
+*/
+.MuiFormControl-root .MuiInputLabel-root img {
+  display: none;
+}
+.MuiFormControl-root .MuiInputLabel-root.Mui-focused img {
+  display: inline;
+}

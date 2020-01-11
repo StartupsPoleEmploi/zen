@@ -32,7 +32,7 @@ const sendDeclarationConfirmationEmail = (declaration) =>
                 Name: `${declaration.user.firstName} ${declaration.user.lastName}`,
               },
             ],
-            TemplateID: 504060,
+            TemplateID: 1063091,
             TemplateLanguage: true,
             Subject: `Votre déclaration de situation de ${formattedDeclarationMonth} a été enregistrée`,
             Variables: {

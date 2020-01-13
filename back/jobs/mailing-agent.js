@@ -19,6 +19,7 @@ const {
   sendCurrentDeclarationDocsReminders,
 } = require('../lib/mailings/sendDocumentReminders')
 const sendDeclarationConfirmationEmails = require('../lib/mailings/sendDeclarationConfirmationEmails')
+const sendCurrentDeclarationNotFinish = require('../lib/mailings/sendCurrentDeclarationNotFinish')
 
 winston.info('Starting mailing agent')
 
@@ -47,6 +48,13 @@ if (config.get('shouldSendTransactionalEmails')) {
   job(
     '0 * * * * *',
     sendDeclarationConfirmationEmails,
+    null,
+    true,
+    'Europe/Paris',
+  )
+  job(
+    '0 0 9 7,14 * *',
+    sendCurrentDeclarationNotFinish,
     null,
     true,
     'Europe/Paris',

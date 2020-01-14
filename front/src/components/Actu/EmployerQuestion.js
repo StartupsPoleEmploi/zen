@@ -87,8 +87,9 @@ const StyledTextField = styled(TextField)`
 const InfoImg = styled.img`
   width: 2rem;
   position: absolute;
-  margin-left: 5px;
+  margin-left: 3px;
   cursor: pointer;
+  z-index: 2;
 `
 
 export class EmployerQuestion extends PureComponent {
@@ -115,7 +116,7 @@ export class EmployerQuestion extends PureComponent {
     <div>
       {label}
       {showTooltip && (
-        <TooltipOnFocus tooltipId={id} useHover content={content}>
+        <TooltipOnFocus tooltipId={id} content={content}>
           <InfoImg src={warn} alt="Informations" />
         </TooltipOnFocus>
       )}
@@ -225,12 +226,8 @@ export class EmployerQuestion extends PureComponent {
               )}
             </StyledFormLabel>
             <YesNoRadioGroup
-              yesTooltipContent={
-                showTooltip
-                  ? `Si votre employeur vous a payé des congés, n’oubliez pas
-                    d’inclure cette somme dans le salaire brut déclaré`
-                  : null
-              }
+              yesTooltipContent={`Si votre employeur vous a payé des congés, n’oubliez pas
+                    d’inclure cette somme dans le salaire brut déclaré`}
               name={`hasEndedThisMonth[${index}]`}
               value={hasEndedThisMonth.value}
               onAnswer={this.onChange}

@@ -1,7 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import Close from '@material-ui/icons/Close'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
@@ -120,27 +120,14 @@ class TooltipOnFocus extends Component {
     })
 
   render() {
-    const {
-      children,
-      classes,
-      content,
-      tooltipId,
-      useHover,
-      ...props
-    } = this.props
-
-    const eventProps = {
-      disableHoverListener: !useHover,
-      disableTouchListener: true,
-      disableFocusListener: useHover,
-    }
+    const { children, classes, content, tooltipId, ...props } = this.props
 
     return (
       <Tooltip
         id={tooltipId}
-        {...eventProps}
         placement="bottom"
         aria-hidden="false"
+        enterTouchDelay={0}
         title={
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -148,7 +135,6 @@ class TooltipOnFocus extends Component {
                 <InfoImg src={info} alt="" />
                 Information
               </TooltipTitle>
-              <Close />
             </div>
             <TooltipText>{content}</TooltipText>
             <span className={classes.arrowArrow} ref={this.handleArrowRef} />
@@ -173,16 +159,11 @@ class TooltipOnFocus extends Component {
   }
 }
 
-TooltipOnFocus.defaultProps = {
-  useHover: false,
-}
-
 TooltipOnFocus.propTypes = {
   children: PropTypes.node,
   classes: PropTypes.object,
   content: PropTypes.string,
   tooltipId: PropTypes.string,
-  useHover: PropTypes.bool,
 }
 
 export default withStyles(styles)(TooltipOnFocus)

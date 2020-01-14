@@ -3365,8 +3365,10 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                   }
                 >
                   <span
+                    aria-describedby={null}
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1596 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    aria-hidden="false"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1607 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3374,6 +3376,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     onKeyUp={[Function]}
                     onMouseDown={[Function]}
                     onMouseLeave={[Function]}
+                    onMouseOver={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
@@ -3384,6 +3387,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                       }
                     }
                     tabIndex={null}
+                    title={null}
                   >
                     <span
                       className="MuiIconButton-label"
@@ -3391,7 +3395,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={false}
-                        className="PrivateSwitchBase-input-1599"
+                        className="PrivateSwitchBase-input-1610"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3399,7 +3403,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         value="yes"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1612"
+                        className="PrivateRadioButtonIcon-root-1623"
                       >
                         <svg
                           aria-hidden="true"
@@ -3414,7 +3418,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1613"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1624"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3425,6 +3429,9 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         </svg>
                       </div>
                     </span>
+                    <span
+                      className="MuiTouchRipple-root"
+                    />
                   </span>
                   <span
                     className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
@@ -3450,7 +3457,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1596 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1607 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3474,7 +3481,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     >
                       <input
                         checked={false}
-                        className="PrivateSwitchBase-input-1599"
+                        className="PrivateSwitchBase-input-1610"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3482,7 +3489,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         value="no"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1612"
+                        className="PrivateRadioButtonIcon-root-1623"
                       >
                         <svg
                           aria-hidden="true"
@@ -3497,7 +3504,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1613"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1624"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3508,6 +3515,9 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         </svg>
                       </div>
                     </span>
+                    <span
+                      className="MuiTouchRipple-root"
+                    />
                   </span>
                   <span
                     className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
@@ -3620,8 +3630,8 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                   className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
                   <label
-                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
-                    data-shrink={true}
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                    data-shrink={false}
                     htmlFor="employerName[1]"
                   >
                     <div>
@@ -3657,8 +3667,8 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                   className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
                   <label
-                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
-                    data-shrink={true}
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                    data-shrink={false}
                     htmlFor="workHours[1]"
                   >
                     <div>
@@ -3697,8 +3707,8 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                   className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
                   <label
-                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
-                    data-shrink={true}
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                    data-shrink={false}
                     htmlFor="salary[1]"
                   >
                     <div>
@@ -3760,8 +3770,10 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                   }
                 >
                   <span
+                    aria-describedby={null}
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1733 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-1734 Mui-checked MuiIconButton-colorSecondary"
+                    aria-hidden="false"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1755 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-1756 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3769,6 +3781,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     onKeyUp={[Function]}
                     onMouseDown={[Function]}
                     onMouseLeave={[Function]}
+                    onMouseOver={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
@@ -3779,6 +3792,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                       }
                     }
                     tabIndex={null}
+                    title={null}
                   >
                     <span
                       className="MuiIconButton-label"
@@ -3786,7 +3800,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={true}
-                        className="PrivateSwitchBase-input-1736"
+                        className="PrivateSwitchBase-input-1758"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3794,7 +3808,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         value="yes"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1749 PrivateRadioButtonIcon-checked-1751"
+                        className="PrivateRadioButtonIcon-root-1771 PrivateRadioButtonIcon-checked-1773"
                       >
                         <svg
                           aria-hidden="true"
@@ -3809,7 +3823,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1750"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1772"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3820,6 +3834,9 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         </svg>
                       </div>
                     </span>
+                    <span
+                      className="MuiTouchRipple-root"
+                    />
                   </span>
                   <span
                     className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
@@ -3845,7 +3862,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1733 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1755 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3869,7 +3886,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     >
                       <input
                         checked={false}
-                        className="PrivateSwitchBase-input-1736"
+                        className="PrivateSwitchBase-input-1758"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3877,7 +3894,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         value="no"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1749"
+                        className="PrivateRadioButtonIcon-root-1771"
                       >
                         <svg
                           aria-hidden="true"
@@ -3892,7 +3909,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1750"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1772"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3903,6 +3920,9 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         </svg>
                       </div>
                     </span>
+                    <span
+                      className="MuiTouchRipple-root"
+                    />
                   </span>
                   <span
                     className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
@@ -4058,8 +4078,8 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
                   <label
-                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
-                    data-shrink={true}
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
+                    data-shrink={false}
                     htmlFor="workHours[1]"
                   >
                     <div>
@@ -4090,7 +4110,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     />
                   </div>
                   <p
-                    className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
+                    className="MuiFormHelperText-root Mui-error"
                     id="workHours[1]-helper-text"
                   >
                     Entrez un nombre entier
@@ -4104,8 +4124,8 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
                 >
                   <label
-                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-error Mui-error MuiFormLabel-filled"
-                    data-shrink={true}
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
+                    data-shrink={false}
                     htmlFor="salary[1]"
                   >
                     <div>
@@ -4136,7 +4156,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     />
                   </div>
                   <p
-                    className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled"
+                    className="MuiFormHelperText-root Mui-error"
                     id="salary[1]-helper-text"
                   >
                     Entrez un nombre entier
@@ -4178,8 +4198,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   }
                 >
                   <span
+                    aria-describedby={null}
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1878 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    aria-hidden="false"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1911 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -4187,6 +4209,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     onKeyUp={[Function]}
                     onMouseDown={[Function]}
                     onMouseLeave={[Function]}
+                    onMouseOver={[Function]}
                     onMouseUp={[Function]}
                     onTouchEnd={[Function]}
                     onTouchMove={[Function]}
@@ -4197,6 +4220,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                       }
                     }
                     tabIndex={null}
+                    title={null}
                   >
                     <span
                       className="MuiIconButton-label"
@@ -4204,7 +4228,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={false}
-                        className="PrivateSwitchBase-input-1881"
+                        className="PrivateSwitchBase-input-1914"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -4212,7 +4236,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         value="yes"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1894"
+                        className="PrivateRadioButtonIcon-root-1927"
                       >
                         <svg
                           aria-hidden="true"
@@ -4227,7 +4251,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1895"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1928"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -4238,6 +4262,9 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         </svg>
                       </div>
                     </span>
+                    <span
+                      className="MuiTouchRipple-root"
+                    />
                   </span>
                   <span
                     className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
@@ -4263,7 +4290,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1878 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1911 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -4287,7 +4314,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     >
                       <input
                         checked={false}
-                        className="PrivateSwitchBase-input-1881"
+                        className="PrivateSwitchBase-input-1914"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -4295,7 +4322,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         value="no"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1894"
+                        className="PrivateRadioButtonIcon-root-1927"
                       >
                         <svg
                           aria-hidden="true"
@@ -4310,7 +4337,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1895"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1928"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -4321,6 +4348,9 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         </svg>
                       </div>
                     </span>
+                    <span
+                      className="MuiTouchRipple-root"
+                    />
                   </span>
                   <span
                     className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"

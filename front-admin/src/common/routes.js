@@ -15,17 +15,16 @@ export const URLS: Object = {
     BASE: '/users',
     VIEW: '/users/view/:id',
   },
-}
-const formatUrl = (url: string, id: *) =>
-  url
-    .replace(/[/]{2,10}/g, '/') // replave "//" by /
-    .replace(':id', id)
-const urlsKeysAddEdit = ['USERS', 'DECLARATIONS']
+};
+const formatUrl = (url: string, id: *) => url
+  .replace(/[/]{2,10}/g, '/') // replave "//" by /
+  .replace(':id', id);
+const urlsKeysAddEdit = ['USERS', 'DECLARATIONS'];
 urlsKeysAddEdit.forEach((e) => {
-  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '')
-  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id)
-  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id)
-})
+  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '');
+  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id);
+  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id);
+});
 
 export const MENU_ITEMS = [
   {
@@ -60,4 +59,4 @@ export const MENU_ITEMS = [
     to: URLS.SETTINGS,
     key: 'SETTINGS',
   },
-]
+];

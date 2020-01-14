@@ -154,6 +154,7 @@ class App extends Component {
           user={user}
           activeMonth={activeMonth}
           activeDeclaration={activeDeclaration}
+          isFilesServiceUp={false}
         >
           <Typography>
             Nous sommes désolés, mais une erreur s'est produite. Merci de bien
@@ -188,6 +189,7 @@ class App extends Component {
       return (
         <ZnLayout
           user={user}
+          isFilesServiceUp={status.isFilesServiceUp}
           activeMonth={activeMonth}
           activeDeclaration={activeDeclaration}
         >
@@ -201,6 +203,7 @@ class App extends Component {
     return (
       <ZnLayout
         user={user}
+        isFilesServiceUp={status.isFilesServiceUp}
         activeMonth={activeMonth}
         activeDeclaration={activeDeclaration}
       >
@@ -324,6 +327,7 @@ App.propTypes = {
   activeDeclaration: PropTypes.object,
   status: PropTypes.shape({
     isServiceUp: PropTypes.bool,
+    isFilesServiceUp: PropTypes.bool,
     isLoading: PropTypes.bool,
   }),
   isServiceStatusLoading: PropTypes.bool,

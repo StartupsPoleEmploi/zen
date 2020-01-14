@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from 'react'
-import superagent from 'superagent'
-import { Switch, Form } from 'antd'
+import React, { useState, useEffect } from 'react';
+import superagent from 'superagent';
+import { Switch, Form } from 'antd';
 
-import ZnContent from '../../components/ZnContent'
-import ZnHeader from '../../components/ZnHeader'
+import ZnContent from '../../components/ZnContent';
+import ZnHeader from '../../components/ZnHeader';
 
 export default function Settings() {
-  const [isGlobalActivated, setIsGlobalActivated] = useState(null)
-  const [isFilesActivated, setIsFilesActivated] = useState(null)
+  const [isGlobalActivated, setIsGlobalActivated] = useState(null);
+  const [isFilesActivated, setIsFilesActivated] = useState(null);
 
   useEffect(() => {
     superagent.get('/api/status').then(({ body }) => {
-      setIsGlobalActivated(body.global.up)
-      setIsFilesActivated(body.files.up)
-    })
-  }, [])
+      setIsGlobalActivated(body.global.up);
+      setIsFilesActivated(body.files.up);
+    });
+  }, []);
 
   const updateGlobalStatus = () => {
     superagent
       .post('/zen-admin-api/status-global', { up: !isGlobalActivated })
-      .then(({ body }) => setIsGlobalActivated(body.up))
-  }
+      .then(({ body }) => setIsGlobalActivated(body.up));
+  };
 
   const updateFilesStatus = () => {
     superagent
       .post('/zen-admin-api/status-files', { up: !isFilesActivated })
-      .then(({ body }) => setIsFilesActivated(body.isFilesServiceUp))
-  }
+      .then(({ body }) => setIsFilesActivated(body.isFilesServiceUp));
+  };
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -78,5 +78,5 @@ export default function Settings() {
         )}
       </ZnContent>
     </div>
-  )
+  );
 }

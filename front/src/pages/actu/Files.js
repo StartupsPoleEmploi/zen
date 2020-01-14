@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
@@ -7,7 +8,7 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
 import { capitalize, get, noop, sortBy } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -168,35 +169,13 @@ const computeDocUrl = ({ id, type, file }) => {
 }
 
 export class Files extends Component {
-  static propTypes = {
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
-    token: PropTypes.string.isRequired,
-    declarations: PropTypes.arrayOf(PropTypes.object),
-    fetchDeclarations: PropTypes.func.isRequired,
-    removeDeclarationInfoFilePage: PropTypes.func.isRequired,
-    removeEmployerFilePage: PropTypes.func.isRequired,
-    uploadEmployerFile: PropTypes.func.isRequired,
-    uploadDeclarationInfoFile: PropTypes.func.isRequired,
-    hideEmployerFilePreview: PropTypes.func.isRequired,
-    hideInfoFilePreview: PropTypes.func.isRequired,
-    previewedEmployerDoc: PropTypes.object,
-    previewedInfoDoc: PropTypes.object,
-    showInfoFilePreview: PropTypes.func.isRequired,
-    showEmployerFilePreview: PropTypes.func.isRequired,
-    validateEmployerDoc: PropTypes.func.isRequired,
-    validateDeclarationInfoDoc: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isUserLoggedOut: PropTypes.bool.isRequired,
-    width: PropTypes.string,
-  }
-
-  state = {
-    showSkipConfirmation: false,
-    skipFileCallback: noop,
-    selectedTab: LAST_MONTH_TAB,
+  constructor(props) {
+    super(props)
+    this.state = {
+      showSkipConfirmation: false,
+      skipFileCallback: noop,
+      selectedTab: LAST_MONTH_TAB,
+    }
   }
 
   componentDidMount() {
@@ -400,7 +379,7 @@ export class Files extends Component {
     )
 
     return (
-      <Fragment>
+      <>
         {certificateUpload}
         {certificateDoc && !salaryDoc ? (
           <Typography variant="caption">
@@ -416,7 +395,7 @@ export class Files extends Component {
         ) : (
           salarySheetUpload
         )}
-      </Fragment>
+      </>
     )
   }
 
@@ -453,8 +432,8 @@ export class Files extends Component {
               paddingBottom: '2rem',
             }}
           >
-            Vous devez encore valider {declarationRemainingDocsNb} justificatif
-            {declarationRemainingDocsNb > 1 ? 's' : ''}
+            Vous avez encore {declarationRemainingDocsNb} justificatif
+            {declarationRemainingDocsNb > 1 ? 's' : ''} à envoyer
           </Typography>
         </StyledInfo>
         {this.renderDocumentList(declaration)}
@@ -624,6 +603,31 @@ export class Files extends Component {
       </StyledFiles>
     )
   }
+}
+
+Files.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  token: PropTypes.string.isRequired,
+  declarations: PropTypes.arrayOf(PropTypes.object),
+  fetchDeclarations: PropTypes.func.isRequired,
+  removeDeclarationInfoFilePage: PropTypes.func.isRequired,
+  removeEmployerFilePage: PropTypes.func.isRequired,
+  uploadEmployerFile: PropTypes.func.isRequired,
+  uploadDeclarationInfoFile: PropTypes.func.isRequired,
+  hideEmployerFilePreview: PropTypes.func.isRequired,
+  hideInfoFilePreview: PropTypes.func.isRequired,
+  previewedEmployerDoc: PropTypes.object,
+  previewedInfoDoc: PropTypes.object,
+  showInfoFilePreview: PropTypes.func.isRequired,
+  showEmployerFilePreview: PropTypes.func.isRequired,
+  validateEmployerDoc: PropTypes.func.isRequired,
+  validateDeclarationInfoDoc: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isUserLoggedOut: PropTypes.bool.isRequired,
+  width: PropTypes.string,
 }
 
 export default connect(

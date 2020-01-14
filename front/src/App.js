@@ -1,4 +1,5 @@
 /* eslint-disable react/no-did-update-set-state */
+/* eslint-disable  react/jsx-props-no-spreading */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import { get } from 'lodash'
@@ -34,36 +35,14 @@ import AddEmail from './pages/other/AddEmail'
 import Cgu from './pages/other/Cgu'
 
 class App extends Component {
-  static propTypes = {
-    history: PropTypes.shape({
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
-    location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
-      .isRequired,
-    fetchUser: PropTypes.func.isRequired,
-    fetchStatus: PropTypes.func.isRequired,
-    fetchActiveDeclaration: PropTypes.func.isRequired,
-    fetchActiveMonth: PropTypes.func.isRequired,
-    user: PropTypes.object,
-    activeMonth: PropTypes.object,
-    activeDeclaration: PropTypes.object,
-    status: PropTypes.shape({
-      isServiceUp: PropTypes.bool,
-      isLoading: PropTypes.bool,
-    }),
-    isServiceStatusLoading: PropTypes.bool,
-    isActiveDeclarationLoading: PropTypes.bool,
-    isActiveMonthLoading: PropTypes.bool,
-    isUserLoading: PropTypes.bool,
-    showDeclarationTransmittedDialog: PropTypes.bool,
-    hideDeclarationTransmittedDialog: PropTypes.func.isRequired,
-  }
-
-  state = {
-    err: null,
-    showDeclarationSentOnPEModal: false,
-    showUnableToSendDeclarationModal: false,
-    hasFinishedInitialLoading: false,
+  constructor(props) {
+    super(props)
+    this.state = {
+      err: null,
+      showDeclarationSentOnPEModal: false,
+      showUnableToSendDeclarationModal: false,
+      hasFinishedInitialLoading: false,
+    }
   }
 
   componentDidMount() {
@@ -322,9 +301,37 @@ class App extends Component {
           isOpened={this.props.showDeclarationTransmittedDialog}
           onCancel={this.props.hideDeclarationTransmittedDialog}
         />
+        {!status.isLoading && (
+          <StatusErrorDialog isOpened={!status.isServiceUp} />
+        )}
       </ZnLayout>
     )
   }
+}
+
+App.propTypes = {
+  history: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
+    .isRequired,
+  fetchUser: PropTypes.func.isRequired,
+  fetchStatus: PropTypes.func.isRequired,
+  fetchActiveDeclaration: PropTypes.func.isRequired,
+  fetchActiveMonth: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  activeMonth: PropTypes.object,
+  activeDeclaration: PropTypes.object,
+  status: PropTypes.shape({
+    isServiceUp: PropTypes.bool,
+    isLoading: PropTypes.bool,
+  }),
+  isServiceStatusLoading: PropTypes.bool,
+  isActiveDeclarationLoading: PropTypes.bool,
+  isActiveMonthLoading: PropTypes.bool,
+  isUserLoading: PropTypes.bool,
+  showDeclarationTransmittedDialog: PropTypes.bool,
+  hideDeclarationTransmittedDialog: PropTypes.func.isRequired,
 }
 
 export default hot(module)(

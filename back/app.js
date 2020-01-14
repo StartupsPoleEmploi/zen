@@ -98,7 +98,12 @@ app.use('/ping', (req, res) => res.send('pong'))
 
 app.use(setIsServiceUp)
 
-app.use('/status', (req, res) => res.json({ up: req.isServiceUp }))
+app.use('/status', (req, res) =>
+  res.json({
+    global: { up: req.isServiceUp },
+    files: { up: req.isFilesServiceUp },
+  }),
+)
 
 app.use((req, res, next) => {
   if (!req.path.startsWith('/login') && !req.session.user) {

@@ -8,10 +8,11 @@ class Status extends BaseModel {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['up'],
+      required: ['up', 'isFilesServiceUp'],
 
       properties: {
         up: { type: 'boolean' },
+        isFilesServiceUp: { type: 'boolean' },
       },
     }
   }

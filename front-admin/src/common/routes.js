@@ -15,26 +15,27 @@ export const URLS: Object = {
     BASE: '/users',
     VIEW: '/users/view/:id',
   },
-};
-const formatUrl = (url: string, id: *) => url
-  .replace(/[/]{2,10}/g, '/') // replave "//" by /
-  .replace(':id', id);
-const urlsKeysAddEdit = ['USERS', 'DECLARATIONS'];
+}
+const formatUrl = (url: string, id: *) =>
+  url
+    .replace(/[/]{2,10}/g, '/') // replave "//" by /
+    .replace(':id', id)
+const urlsKeysAddEdit = ['USERS', 'DECLARATIONS']
 urlsKeysAddEdit.forEach((e) => {
-  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '');
-  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id);
-  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id);
-});
+  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '')
+  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id)
+  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id)
+})
 
 export const MENU_ITEMS = [
   {
-    name: 'Dashbord',
+    name: 'Tableau de bord',
     iconName: 'appstore',
     to: URLS.DASHBOARD,
     key: 'DASHBOARD',
   },
   {
-    name: 'Declarations',
+    name: 'Déclarations',
     iconName: 'shop',
     to: URLS.DECLARATIONS.BASE,
     key: 'DECLARATIONS',
@@ -54,9 +55,9 @@ export const MENU_ITEMS = [
     match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
   },
   {
-    name: 'Systèmes',
+    name: 'Système',
     iconName: 'setting',
     to: URLS.SETTINGS,
     key: 'SETTINGS',
   },
-];
+]

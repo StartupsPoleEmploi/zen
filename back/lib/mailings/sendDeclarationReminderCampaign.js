@@ -19,6 +19,7 @@ async function $getUserWithoutDeclaration(declarationMonth) {
     .whereNotNull('Users.registeredAt')
     .andWhere('Users.isBlocked', '=', false)
     .andWhere('Users.isAuthorized', '=', true)
+    .andWhere('Users.isActuDone', '=', false)
     .whereNotIn('id', declarations.map(d => d.userId))
 }
 

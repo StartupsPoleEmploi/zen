@@ -19,7 +19,7 @@ async function $sendDeclarationOfUser(user) {
         Variables: {
           prenom: user.firstName,
         },
-        CustomCampaign: "Declaration non fini",
+        CustomCampaign: "Déclaration non finie",
       },
     ],
   });
@@ -33,11 +33,11 @@ async function $getCurrentMonth() {
 }
 
 async function sendCurrentDeclarationNotFinish() {
-  const currenMonth = await $getCurrentMonth();
-  if (!currenMonth) throw new Error('[sendDeclarationNotFinish] No active month')
+  const currentMonth = await $getCurrentMonth();
+  if (!currentMonth) throw new Error('[sendDeclarationNotFinish] No active month')
 
   const declarations = await Declaration.query().eager('[user]')
-    .where({ hasFinishedDeclaringEmployers: false, monthId: currenMonth.id });
+    .where({ hasFinishedDeclaringEmployers: false, monthId: currentMonth.id });
   await Promise.all(
     declarations.map((declaration) => $sendDeclarationOfUser(declaration.user)
         .catch((err) => {

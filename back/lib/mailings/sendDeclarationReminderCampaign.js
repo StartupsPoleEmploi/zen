@@ -27,25 +27,29 @@ async function $getUserWithoutDeclaration(declarationMonth) {
  * Send email to users that has not start declaration of the current month into zen.
  */
 async function sendDeclarationReminderCampaign() {
-  const currenMonth = await $getCurrentMonth();
-  if (!currenMonth) throw new Error('[sendDeclarationReminderCampaign] No active month');
+  const currentMonth = await $getCurrentMonth();
+  if (!currentMonth) throw new Error('[sendDeclarationReminderCampaign] No active month');
 
-  let users = await $getUserWithoutDeclaration(currenMonth);
-  users = users.slice(0, 3);
-  await mailjet.sendMail({
-    Messages: users.map(user => ({
-      From: { Email: 'no-reply@zen.pole-emploi.fr', Name: `L'équipe Zen` },
-      To: [{ Email: user.email, Name: `${user.firstName} ${user.lastName}` }],
-      TemplateID: 502257,
-      TemplateLanguage: true,
-      Subject: 'Avez-vous pensé à vous actualiser ?',
-      Variables: {
-        prenom: user.firstName,
-      },
-    })),
-  }).catch((err) => {
-    winston.error(`There was an error while sending email "RAPPEL_ACTU" : ${err}`);
-  });
+  const allUsers = await $getUserWithoutDeclaration(currentMonth);
+  while (allUsers.length) {
+    const users = allUsers.splice(0, 50)
+    // eslint-disable-next-line no-await-in-loop
+    await mailjet.sendMail({
+      Messages: users.map(user => ({
+        From: { Email: 'no-reply@zen.pole-emploi.fr', Name: `L'équipe Zen` },
+        To: [{ Email: user.email, Name: `${user.firstName} ${user.lastName}` }],
+        TemplateID: 502257,
+        TemplateLanguage: true,
+        Subject: 'Avez-vous pensé à vous actualiser ?',
+        Variables: {
+          prenom: user.firstName,
+        },
+      })),
+    }).catch((err) => {
+      winston.error(`There was an error while sending email "RAPPEL_ACTU" : ${err}`);
+    });
+  }
+  
 }
 
 module.exports = sendDeclarationReminderCampaign;

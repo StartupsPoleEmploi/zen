@@ -53,7 +53,7 @@ if (config.get('shouldSendTransactionalEmails')) {
     'Europe/Paris',
   )
   job(
-    '0 0 9 7,14 * *',
+    '0 0 9 6,14 * *',
     sendCurrentDeclarationNotFinish,
     null,
     true,

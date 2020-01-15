@@ -50,7 +50,7 @@ function $lineToUser(lineContent) {
     // [dc_lblregion] (eg => HAUTS-DE-FRANCE)
     radie, // every to false, because we only have user eligible
     dc_situationregardemploi_id, // [dc_situationregardemploi_id] catégorie d'inscription (eg => SAN)
-    actu_faite, // [actu_faite] 'true' or 'false'; find out if she did her current month's news ("actu")
+    actu_faite, // [actu_faite] 'true' or 'false'; find out if the user did his current month's news ("actu")
   ] = lineContent.split('|')
 
   const firstName = $convertField(c_prenomcorrespondance)

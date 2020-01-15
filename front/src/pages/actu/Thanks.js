@@ -170,7 +170,7 @@ export default class Thanks extends Component {
             <Typography paragraph style={{ fontSize: '1.7rem' }} >
               N’oubliez pas de revenir avant le 15 pour valider votre actualisation.
               <br/>
-              Un email de rappel vous sera envoyé.
+              Un e-mail de rappel vous sera envoyé.
             </Typography>
           </Fragment>
         )}

@@ -17,7 +17,7 @@ const COLUMNS_EMPLOYERS = [
   { title: 'Id', dataIndex: 'id', ...defaultVal },
   { title: 'Nom employeur', dataIndex: 'employerName', ...defaultVal },
   { title: 'Salaire', dataIndex: 'salary', ...defaultVal },
-  { title: 'Transmit terminé', dataIndex: 'hasEndedThisMonth', ...defaultVal },
+  { title: 'Contrat terminé', dataIndex: 'hasEndedThisMonth', ...defaultVal },
   { title: 'Créé le', dataIndex: 'createdAt', ...defaultVal },
   { title: 'Modifié le', dataIndex: 'updatedAt', ...defaultVal },
 ];

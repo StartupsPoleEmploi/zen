@@ -11,7 +11,7 @@ async function fetchUsers(showAuthorizedUsers) {
 const UsersContext = React.createContext();
 
 export function UsersProvider(props) {
-  const [isLoading, _setIsLoading] = useState([]);
+  const [isLoading, _setIsLoading] = useState(false);
   const [users, _setUsers] = useState([]);
   const [showAuthorizedUsers, setAuthorizedUsers] = useState(true);
 

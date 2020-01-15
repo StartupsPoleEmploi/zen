@@ -144,7 +144,7 @@ export class EmployerQuestion extends PureComponent {
                 id={`employerName[${index}]`}
                 label={this.renderLabel({
                   id: `employerName[${index}]`,
-                  label: "Nombre d'heures",
+                  label: "Nom employeur",
                   content:
                     'Si vous avez plusieurs employeurs, cliquez sur "Ajouter un employeur"',
                   showTooltip,

@@ -3230,7 +3230,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     htmlFor="employerName[1]"
                   >
                     <div>
-                      Nombre d'heures
+                      Nom employeur
                     </div>
                   </label>
                   <div
@@ -3635,7 +3635,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     htmlFor="employerName[1]"
                   >
                     <div>
-                      Nombre d'heures
+                      Nom employeur
                     </div>
                   </label>
                   <div
@@ -4040,7 +4040,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     htmlFor="employerName[1]"
                   >
                     <div>
-                      Nombre d'heures
+                      Nom employeur
                     </div>
                   </label>
                   <div

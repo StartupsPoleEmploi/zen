@@ -9,6 +9,12 @@ module.exports = {
   },
   rules: {
     'arrow-body-style': [2, 'as-needed'],
+
+    'react/jsx-props-no-spreading': 0,
+    'react/static-property-placement': 0,
+    'react/state-in-constructor': 0,
+    'react/jsx-fragments': 0,
+
     'consistent-return': 0, // Often bothering with early returns
     curly: [2, 'multi-line'],
     'import/no-extraneous-dependencies': [

@@ -22,6 +22,7 @@ export default function UsersList() {
   const data = users.map((user) => ({
     ...user,
     isAuthorized: user.isAuthorized ? 'oui' : 'non',
+    isActuDone: user.isActuDone ? 'oui' : 'non',
     registeredAt: moment(user.createdAt).format('YYYY/MM/DD HH:mm:ss'),
     createdAt: moment(user.createdAt).format('YYYY/MM/DD HH:mm:ss'),
   }));
@@ -42,6 +43,17 @@ export default function UsersList() {
         { text: 'Non', value: 'non' },
       ],
       onFilter: (value, record) => record.isAuthorized === value,
+    },
+    {
+      dataIndex: 'isActuDone',
+      title: 'ActuFait (PeDump)',
+      znSort: null,
+      znSearchable: null,
+      filters: [
+        { text: 'Oui', value: 'oui' },
+        { text: 'Non', value: 'non' },
+      ],
+      onFilter: (value, record) => record.isActuDone === value,
     },
     { dataIndex: 'registeredAt', title: 'Inscrit le' },
     {

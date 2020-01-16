@@ -4,6 +4,7 @@ import React from 'react';
 import { Card } from 'antd';
 
 import { getAgenceName } from '../../../common/agencesInfos';
+import IconBoolean from '../../../components/IconBoolean';
 
 const LABELS = {
   firstName: 'Prenom',
@@ -18,6 +19,7 @@ const LABELS = {
   isBlocked: 'Radié',
   agencyCode: 'Code agence',
   situationRegardEmploiId: 'Situation regard emploi',
+  isActuDone: 'ActuFait (PeDump)',
 };
 
 type Props = {
@@ -27,23 +29,27 @@ type Props = {
 export default function UserInfos({ user }: Props) {
   const data = {
     ...user,
-    isAuthorized: user.isAuthorized ? 'oui' : 'non',
-    isBlocked: user.isBlocked ? 'oui' : 'non',
+    isAuthorized: <IconBoolean val={user.isAuthorized} />,
+    isBlocked: <IconBoolean val={user.isBlocked} />,
+    isActuDone: <IconBoolean val={user.isActuDone} />,
     agencyCode: getAgenceName(user.agencyCode),
   };
+  const iconsKeys = ['isAuthorized', 'isBlocked', 'isActuDone'];
   return (
     <Card title="Information" style={{ marginBottom: '20px' }}>
       <table border="1">
-        {Object.entries(data)
-          .filter(([, val]) => typeof val !== 'object' && !Array.isArray(val))
-          .map(([key, val]) => (
-            <tr>
-              <td>
-                <b>{`${LABELS[key] || key}: `}</b>
-              </td>
-              <td>{val}</td>
-            </tr>
-          ))}
+        <tbody>
+          {Object.entries(data)
+            .filter(([key, val]) => iconsKeys.includes(key) || (typeof val !== 'object' && !Array.isArray(val)))
+            .map(([key, val]) => (
+              <tr key={key}>
+                <td>
+                  <b>{`${LABELS[key] || key}: `}</b>
+                </td>
+                <td>{val}</td>
+              </tr>
+            ))}
+        </tbody>
       </table>
     </Card>
   );

@@ -8,6 +8,8 @@ const { request } = require('../lib/resilientRequest')
 const { DECLARATION_STATUSES, REALM } = require('../constants')
 const DEPARTMENTS_AUTORIZED = require('../constants/departmentsAutorized')
 const { credentials } = require('../lib/token')
+const Declaration = require('../models/Declaration')
+const User = require('../models/User')
 // eslint-disable-next-line import/order
 const oauth2 = require('simple-oauth2').create(credentials)
 
@@ -132,10 +134,28 @@ function isAuthorized(postalCode, situationRegardEmploiId) {
   )
 }
 
+/**
+ * @desc get user that as not start declaration of the month
+ * @param {string} declarationMonthId
+ * @returns {Promise<User[]>}
+ */
+async function getUsersWithoutDeclaration(declarationMonthId) {
+  const declarations = await Declaration.query()
+    .where('monthId', '=', declarationMonthId)
+    .column('userId');
+  return User.query()
+    .whereNotNull('Users.registeredAt')
+    .andWhere('Users.isBlocked', '=', false)
+    .andWhere('Users.isAuthorized', '=', true)
+    .andWhere('Users.isActuDone', '=', false)
+    .whereNotIn('id', declarations.map(d => d.userId))
+}
+
 module.exports = {
   getUserinfo,
   getAuthToken,
   getActualisationStatus,
   getPostalCode,
   isAuthorized,
+  getUsersWithoutDeclaration,
 }

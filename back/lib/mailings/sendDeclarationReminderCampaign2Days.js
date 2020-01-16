@@ -6,9 +6,9 @@ const userCtrl = require('../../controllers/userCtrl')
 /**
  * Send email to users that has not start declaration of the current month into zen.
  */
-async function sendDeclarationReminderCampaign() {
+async function sendDeclarationReminderCampaign2Days() {
   const currentMonth = await monthCtrl.getCurrentMonth();
-  if (!currentMonth) throw new Error('[sendDeclarationReminderCampaign] No active month');
+  if (!currentMonth) throw new Error('[sendDeclarationReminderCampaign2Days] No active month');
 
   const allUsers = await userCtrl.getUsersWithoutDeclaration(currentMonth.id);
   while (allUsers.length) {
@@ -18,18 +18,18 @@ async function sendDeclarationReminderCampaign() {
       Messages: users.map(user => ({
         From: { Email: 'no-reply@zen.pole-emploi.fr', Name: `L'équipe Zen` },
         To: [{ Email: user.email, Name: `${user.firstName} ${user.lastName}` }],
-        TemplateID: 502257,
+        TemplateID: 1107170,
         TemplateLanguage: true,
-        Subject: 'Avez-vous pensé à vous actualiser ?',
+        Subject: 'Plus que 2 jours pour vous actualiser !',
         Variables: {
           prenom: user.firstName,
         },
       })),
     }).catch((err) => {
-      winston.error(`There was an error while sending email "RAPPEL_ACTU" : ${err}`);
+      winston.error(`There was an error while sending email "RAPPEL_ACTU_2J" : ${err}`);
     });
   }
   
 }
 
-module.exports = sendDeclarationReminderCampaign;
+module.exports = sendDeclarationReminderCampaign2Days;

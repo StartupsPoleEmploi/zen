@@ -14,6 +14,7 @@ if (
 
 const sendDeclarationCampaign = require('../lib/mailings/sendDeclarationCampaign')
 const sendDeclarationReminderCampaign = require('../lib/mailings/sendDeclarationReminderCampaign')
+const sendDeclarationReminderCampaign2Days = require('../lib/mailings/sendDeclarationReminderCampaign2Days')
 const {
   sendAllDocumentsReminders,
   sendCurrentDeclarationDocsReminders,
@@ -27,8 +28,15 @@ if (config.get('shouldSendCampaignEmails')) {
   // When these two first jobs run, a campaign is created and only sent the day after
   job('0 0 9 27 * *', sendDeclarationCampaign, null, true, 'Europe/Paris')
   job(
-    '0 0 9 7,11,15 * *',
+    '0 0 9 7,11 * *',
     sendDeclarationReminderCampaign,
+    null,
+    true,
+    'Europe/Paris',
+  )
+  job(
+    '0 0 9 14 * *',
+    sendDeclarationReminderCampaign2Days,
     null,
     true,
     'Europe/Paris',

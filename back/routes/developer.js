@@ -4,6 +4,7 @@
 
 const express = require('express')
 const User = require('../models/User')
+const DeclarationMonth = require('../models/DeclarationMonth')
 
 const router = express.Router()
 
@@ -60,6 +61,25 @@ router.get('/fake-auth', async (req, res) => {
 
 router.post('/session/user', (req, res) => {
   req.session.user = req.body
+  res.json('ok')
+})
+
+router.get('/current-month', (req, res) =>
+  DeclarationMonth.query()
+    .where('startDate', '<=', 'now')
+    .orderBy('startDate', 'DESC')
+    .first()
+    .then((month) => {
+      if (!month) throw new Error('Current month not found.')
+      return res.json(month)
+    }),
+)
+
+router.post('/current-month', async (req, res) => {
+  const { id, endDate } = req.body;
+  await DeclarationMonth.query()
+    .findById(id)
+    .patch({ endDate });
   res.json('ok')
 })
 

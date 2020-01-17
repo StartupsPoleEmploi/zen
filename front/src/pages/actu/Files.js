@@ -12,6 +12,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
+import StatusFilesError from '../../components/Actu/StatusFilesError'
+
 import {
   fetchDeclarations as fetchDeclarationAction,
   hideEmployerFilePreview as hideEmployerFilePreviewAction,
@@ -454,6 +456,7 @@ export class Files extends Component {
       removeEmployerFilePage,
       removeDeclarationInfoFilePage,
       validateEmployerDoc,
+      isFilesServiceUp,
       validateDeclarationInfoDoc,
     } = this.props
 
@@ -461,6 +464,14 @@ export class Files extends Component {
       return (
         <StyledFiles>
           <CircularProgress />
+        </StyledFiles>
+      )
+    }
+
+    if (!isFilesServiceUp) {
+      return (
+        <StyledFiles>
+          <StatusFilesError />
         </StyledFiles>
       )
     }
@@ -627,6 +638,7 @@ Files.propTypes = {
   validateDeclarationInfoDoc: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   isUserLoggedOut: PropTypes.bool.isRequired,
+  isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
 }
 
@@ -636,6 +648,7 @@ export default connect(
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
+    isFilesServiceUp: state.statusReducer.isFilesServiceUp,
     isUserLoggedOut: !!(
       state.userReducer.user && state.userReducer.user.isLoggedOut
     ),

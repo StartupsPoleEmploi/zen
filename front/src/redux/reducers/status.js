@@ -25,14 +25,17 @@ export default createReducer(
     [FETCH_STATUS_LOADING]: (state) => {
       state.isLoading = true
       state.isServiceUp = null
+      state.isFilesServiceUp = null
     },
     [FETCH_STATUS_SUCCESS]: (state, { payload }) => {
       state.isLoading = false
-      state.isServiceUp = payload
+      state.isServiceUp = payload.serviceUp
+      state.isFilesServiceUp = payload.filesUp
     },
     [FETCH_STATUS_FAILURE]: (state, { payload }) => {
       state.isLoading = false
       state.isServiceUp = payload
+      state.isFilesServiceUp = payload
     },
   },
 )

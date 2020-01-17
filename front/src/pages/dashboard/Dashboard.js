@@ -28,6 +28,7 @@ import DeclarationClosed from './DeclarationClosed'
 import DeclarationOnGoing from './DeclarationOnGoing'
 import DeclarationImpossible from './DeclarationImpossible'
 import MainActionButton from '../../components/Generic/MainActionButton'
+import StatusFilesError from '../../components/Actu/StatusFilesError'
 
 const StyledDashboard = styled.div`
   margin: 0 auto;
@@ -86,6 +87,10 @@ const FileStatus = styled(ActuStatus)`
   }
 `
 
+const Opacity = styled.div`
+  opacity: ${({ isFilesServiceUp }) => (isFilesServiceUp ? 1 : 0.4)};
+`
+
 const Upper = styled.span`
   text-transform: uppercase;
 `
@@ -97,6 +102,12 @@ const RemainingFiles = styled.div`
   border-left: solid 1px #d4e2f3;
   padding-left: 3rem;
   position: relative;
+`
+
+const ErrorContainer = styled.div`
+  border-top: solid 1px #ff622a;
+  padding-top: 2rem;
+  margin-top: 3rem;
 `
 
 const MonthName = styled(Typography).attrs({ component: 'h3' })`
@@ -150,20 +161,6 @@ const StyledSup = styled.sup`
 `
 
 class Dashboard extends PureComponent {
-  static propTypes = {
-    activeMonth: PropTypes.instanceOf(Date).isRequired,
-    fetchDeclarations: PropTypes.func.isRequired,
-    user: PropTypes.shape({
-      firstName: PropTypes.string,
-      hasAlreadySentDeclaration: PropTypes.bool,
-      canSendDeclaration: PropTypes.bool,
-      isBlocked: PropTypes.bool,
-    }),
-    declaration: PropTypes.object,
-    declarations: PropTypes.arrayOf(PropTypes.object),
-    width: PropTypes.string.isRequired,
-  }
-
   componentDidMount() {
     this.props.fetchDeclarations()
   }
@@ -287,7 +284,7 @@ class Dashboard extends PureComponent {
   }
 
   renderFilesSection() {
-    const { declarations: allDeclarations } = this.props
+    const { declarations: allDeclarations, isFilesServiceUp } = this.props
 
     const onGoingDeclarations = allDeclarations.filter(
       ({ hasFinishedDeclaringEmployers, isFinished }) =>
@@ -301,6 +298,7 @@ class Dashboard extends PureComponent {
         <MainActionButton
           to="/files"
           component={Link}
+          disabled={!isFilesServiceUp}
           style={{
             width: '90%',
             margin: '3rem auto 0 auto',
@@ -315,7 +313,7 @@ class Dashboard extends PureComponent {
   }
 
   render() {
-    const { user, width, activeMonth } = this.props
+    const { user, width, activeMonth, isFilesServiceUp } = this.props
 
     const activeMonthMoment = activeMonth ? moment(activeMonth) : null
 
@@ -338,24 +336,47 @@ class Dashboard extends PureComponent {
             </ActuStatus>
           )}
           <FileStatus width={width}>
-            <SubTitle>
-              <FileIcon src={file} alt="" />
-              {computeMissingFiles !== 0 && (
-                <StyledSup>{computeMissingFiles}</StyledSup>
-              )}
-              Justificatifs manquants sur Zen
-            </SubTitle>
+            <Opacity isFilesServiceUp={isFilesServiceUp}>
+              <SubTitle>
+                <FileIcon src={file} alt="" />
+                {computeMissingFiles !== 0 && (
+                  <StyledSup>{computeMissingFiles}</StyledSup>
+                )}
+                Justificatifs manquants sur Zen
+              </SubTitle>
 
-            {computeMissingFiles === 0 ? (
-              <Typography>Vous n'avez pas de fichier à envoyer.</Typography>
-            ) : (
-              this.renderFilesSection()
+              {computeMissingFiles === 0 ? (
+                <Typography>Vous n'avez pas de fichier à envoyer.</Typography>
+              ) : (
+                this.renderFilesSection()
+              )}
+            </Opacity>
+
+            {!isFilesServiceUp && (
+              <ErrorContainer>
+                <StatusFilesError hideDashboardLink />
+              </ErrorContainer>
             )}
           </FileStatus>
         </StatusContainer>
       </StyledDashboard>
     )
   }
+}
+
+Dashboard.propTypes = {
+  activeMonth: PropTypes.instanceOf(Date).isRequired,
+  fetchDeclarations: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    hasAlreadySentDeclaration: PropTypes.bool,
+    canSendDeclaration: PropTypes.bool,
+    isBlocked: PropTypes.bool,
+  }),
+  isFilesServiceUp: PropTypes.bool,
+  declaration: PropTypes.object,
+  declarations: PropTypes.arrayOf(PropTypes.object),
+  width: PropTypes.string.isRequired,
 }
 
 export default connect(
@@ -366,6 +387,7 @@ export default connect(
     previewedInfoDoc: selectPreviewedInfoDoc(state),
     activeMonth: state.activeMonthReducer.activeMonth,
     user: state.userReducer.user,
+    isFilesServiceUp: state.statusReducer.isFilesServiceUp,
   }),
   {
     fetchDeclarations: fetchDeclarationAction,

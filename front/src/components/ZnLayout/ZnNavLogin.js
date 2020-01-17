@@ -1,6 +1,6 @@
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -156,6 +156,7 @@ export const NavLogin = ({
   activeMonth,
   activeDeclaration,
   user,
+  isFilesServiceUp,
   location: { pathname },
   history: { push },
 }) => {
@@ -197,6 +198,7 @@ export const NavLogin = ({
         <Tab
           label="Justificatifs"
           value={filesRoute}
+          disabled={!isFilesServiceUp}
           onClick={() => push(filesRoute)}
           role="link"
         />
@@ -212,9 +214,9 @@ export const NavLogin = ({
       <UlStepper>
         <StepperItem
           label={
-            <Fragment>
+            <>
               <HomeIcon src={home} alt="" /> Accueil
-            </Fragment>
+            </>
           }
           link={dashboardRoute}
           shouldActivateLink
@@ -223,7 +225,7 @@ export const NavLogin = ({
         {!user.isBlocked && (
           <StepperItem
             label={
-              <Fragment>
+              <>
                 {activeDeclaration &&
                 activeDeclaration.hasFinishedDeclaringEmployers ? (
                   <CheckIcon />
@@ -231,7 +233,7 @@ export const NavLogin = ({
                   <ListIcon src={actu} alt="" />
                 )}
                 Mon actualisation
-              </Fragment>
+              </>
             }
             link={declarationRoute}
             shouldActivateLink={
@@ -241,7 +243,7 @@ export const NavLogin = ({
           />
         )}
         {(pathname === declarationRoute || pathname === employersRoute) && (
-          <Fragment>
+          <>
             <StepperItem
               label={
                 <SubLabel
@@ -267,25 +269,24 @@ export const NavLogin = ({
               shouldActivateLink={shouldActivateEmployersLink}
               isActive={pathname === employersRoute}
             />
-          </Fragment>
+          </>
         )}
 
         <StepperItem
           label={
-            <Fragment>
+            <>
               <FileIcon src={file} alt="" /> Mes justificatifs
-            </Fragment>
+            </>
           }
           link={filesRoute}
-          shouldActivateLink
-          isActive={pathname === filesRoute}
+          shouldActivateLink={isFilesServiceUp}
+          isActive={pathname === filesRoute && isFilesServiceUp}
         />
       </UlStepper>
       <UlStepper style={{ position: 'absolute', bottom: '0px' }}>
         <StepperItem
           label="CGU"
           link={cguRoute}
-          shouldActivateLink
           isActive={pathname.startsWith(cguRoute)}
         />
       </UlStepper>
@@ -301,6 +302,7 @@ NavLogin.propTypes = {
     csrfToken: PropTypes.string,
     isBlocked: PropTypes.bool,
   }),
+  isFilesServiceUp: PropTypes.bool,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -308,6 +310,10 @@ NavLogin.propTypes = {
     .isRequired,
   activeMonth: PropTypes.instanceOf(Date),
   activeDeclaration: PropTypes.object,
+}
+
+NavLogin.defaultProps = {
+  isFilesServiceUp: false,
 }
 
 export default withRouter(NavLogin)

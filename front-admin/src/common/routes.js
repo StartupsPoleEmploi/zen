@@ -28,13 +28,13 @@ urlsKeysAddEdit.forEach((e) => {
 
 export const MENU_ITEMS = [
   {
-    name: 'Dashbord',
+    name: 'Tableau de bord',
     iconName: 'appstore',
     to: URLS.DASHBOARD,
     key: 'DASHBOARD',
   },
   {
-    name: 'Declarations',
+    name: 'Déclarations',
     iconName: 'shop',
     to: URLS.DECLARATIONS.BASE,
     key: 'DECLARATIONS',
@@ -54,7 +54,7 @@ export const MENU_ITEMS = [
     match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
   },
   {
-    name: 'Systèmes',
+    name: 'Système',
     iconName: 'setting',
     to: URLS.SETTINGS,
     key: 'SETTINGS',

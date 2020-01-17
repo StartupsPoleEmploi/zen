@@ -35,6 +35,8 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js'] }],
     'react/require-default-props': 0,
+    'react/jsx-props-no-spreading': 0,
+
     'react/forbid-prop-types': 0, // Instead of activating this rule, flow or TS
     'react/sort-comp': [
       2,

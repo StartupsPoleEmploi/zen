@@ -19,6 +19,8 @@ const defaultFemaleUser = {
   gender: 'female',
   postalCode: '59160',
   peId: 'acbdefghi',
+  needOnBoarding: false,
+  registeredAt: '2019-04-16',
 }
 
 const defaultDeclaration = {

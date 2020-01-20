@@ -10,3 +10,4 @@ cypress/integration/examples
 .DS_Store
 
 ignore/
+front-admin-old/

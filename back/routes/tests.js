@@ -235,11 +235,10 @@ router.post('/db/reset-for-employers', (req, res, next) =>
       return insertDeclaration({
         userId: user.id,
         declarationMonthId: declarationMonth.id,
-        declarationOverride: Object.assign(
-          {},
-          { hasFinishedDeclaringEmployers: false },
-          req.body.declarationOverride,
-        ),
+        declarationOverride: {
+          hasFinishedDeclaringEmployers: false,
+          ...req.body.declarationOverride,
+        },
       })
     })
     .then(() => {

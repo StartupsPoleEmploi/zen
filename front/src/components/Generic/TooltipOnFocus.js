@@ -1,7 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import Close from '@material-ui/icons/Close'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
@@ -35,8 +35,12 @@ const styles = () => ({
     color: 'black',
     border: `solid 2px ${helpColor}`,
     borderRadius: 0,
+    position: 'relative',
+    top: '10px',
+    left: '-3px',
     padding: '2rem 1.5rem',
     boxShadow: '5px 5px 20px grey',
+    margin: 0,
   },
   arrowPopper: {
     opacity: 1,
@@ -103,20 +107,11 @@ const styles = () => ({
 })
 
 class TooltipOnFocus extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    content: PropTypes.string,
-    tooltipId: PropTypes.string,
-    useHover: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    useHover: false,
-  }
-
-  state = {
-    arrowRef: null,
+  constructor(props) {
+    super(props)
+    this.state = {
+      arrowRef: null,
+    }
   }
 
   handleArrowRef = (arrowRef) =>
@@ -125,28 +120,14 @@ class TooltipOnFocus extends Component {
     })
 
   render() {
-    const {
-      children,
-      classes,
-      content,
-      tooltipId,
-      useHover,
-      ...props
-    } = this.props
-
-    const eventProps = {
-      disableHoverListener: !useHover,
-      disableTouchListener: true,
-      disableFocusListener: useHover,
-    }
+    const { children, classes, content, tooltipId, ...props } = this.props
 
     return (
       <Tooltip
         id={tooltipId}
-        {...eventProps}
         placement="bottom"
-        ref={this.handleArrowRef}
         aria-hidden="false"
+        enterTouchDelay={0}
         title={
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -154,7 +135,6 @@ class TooltipOnFocus extends Component {
                 <InfoImg src={info} alt="" />
                 Information
               </TooltipTitle>
-              <Close />
             </div>
             <TooltipText>{content}</TooltipText>
             <span className={classes.arrowArrow} ref={this.handleArrowRef} />
@@ -177,6 +157,13 @@ class TooltipOnFocus extends Component {
       </Tooltip>
     )
   }
+}
+
+TooltipOnFocus.propTypes = {
+  children: PropTypes.node,
+  classes: PropTypes.object,
+  content: PropTypes.string,
+  tooltipId: PropTypes.string,
 }
 
 export default withStyles(styles)(TooltipOnFocus)

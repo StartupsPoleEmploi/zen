@@ -463,7 +463,7 @@ export const Home = ({ location: { search } }) => {
                 }}
               />
               <strong>
-                Vous êtes <br />
+                Vous êtes{' '}
                 <span aria-label="assistants ou assistantes maternels">
                   assistant.e maternel.le
                 </span>
@@ -471,6 +471,12 @@ export const Home = ({ location: { search } }) => {
               <br />
               <span aria-label="inscrits ou inscrites">inscrit.e</span> à Pôle
               emploi
+              <br />
+              Exerçant une activité en France,
+              <br />
+              excepté en Bourgogne-Franche-Comté, Centre-Val de Loire
+              <br />
+              et dans les DOM-TOM
             </ZenIsForYouText>
           </ZenIsForYouSubSection>
         </ZenIsForYouContainer>

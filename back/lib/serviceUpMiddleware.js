@@ -1,28 +1,33 @@
 const { subMinutes } = require('date-fns')
 const Status = require('../models/Status')
 
-let value = null
+let serviceUp = null
+let filesServiceUp = null
 let valueStoreDate = new Date(0)
 
 // Only request isServiceUp once every 1 minute.
 // set it in req.isServiceUp
 const setIsServiceUp = (req, res, next) => {
   if (valueStoreDate > subMinutes(new Date(), 1)) {
-    req.isServiceUp = value
+    req.isServiceUp = serviceUp
+    req.isFilesServiceUp = filesServiceUp
     return next()
   }
 
   return Status.query()
     .first()
     .then((status) => {
-      value = status.up
+      serviceUp = status.up
+      filesServiceUp = status.isFilesServiceUp
       valueStoreDate = new Date()
 
       req.isServiceUp = status.up
+      req.isFilesServiceUp = status.isFilesServiceUp
       next()
     })
     .catch(() => {
       req.isServiceUp = false
+      req.isFilesServiceUp = false
       next()
     })
 }

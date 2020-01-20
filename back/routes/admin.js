@@ -53,7 +53,7 @@ router.get('/declarations', (req, res, next) => {
   }
 
   Declaration.query()
-    .eager('[user, employers, review, infos]')
+    .eager('[user, review]')
     .where({ monthId: req.query.monthId })
     .then((declarations) => res.json(declarations))
     .catch(next)
@@ -103,41 +103,6 @@ router.get('/users/csv', async (req, res, next) => {
   }
 })
 
-router.get('/users-with-declaration/csv', async (req, res, next) => {
-  try {
-    const months = await DeclarationMonth.query()
-      .where('startDate', '<=', 'now')
-      .orderBy('startDate', 'DESC')
-
-    const users = await User.query()
-      .eager('[declarations.[declarationMonth]]')
-      .whereNotNull('registeredAt')
-      .whereIn(
-        'id',
-        Declaration.query()
-          .distinct()
-          .select('userId'),
-      )
-
-    const json2csvParser = new Parser({
-      fields: computeFields(months),
-    })
-    const csv = json2csvParser.parse(users)
-
-    res.set(
-      'Content-disposition',
-      `attachment; filename=utilisateurs-avec-declaration-${format(
-        new Date(),
-        'YYYY-MM-DD',
-      )}.csv`,
-    )
-    res.set('Content-type', 'text/csv')
-    return res.send(csv)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.post('/users/authorize', (req, res, next) => {
   const useEmails = Array.isArray(req.body.emails)
   if (!useEmails) {
@@ -177,7 +142,10 @@ router.post('/users/authorize', (req, res, next) => {
         .then(() =>
           User.query()
             .patch({ isAuthorized: true })
-            .whereIn('id', users.map((user) => user.id)),
+            .whereIn(
+              'id',
+              users.map((user) => user.id),
+            ),
         )
     })
     .then((updatedRowsNb = 0) =>
@@ -314,14 +282,35 @@ router.get('/declarations/:declarationId/files', (req, res) => {
     })
 })
 
-router.post('/status', (req, res, next) =>
+router.post('/status-global', (req, res, next) =>
   Status.query()
-    .update({ up: req.body.up })
+    .patch({ up: req.body.up })
     .returning('*')
     .then((result) => {
-      const message = `Following action in administration interface, Zen is now *${
-        req.body.up ? '' : 'de'
-      }activated*`
+      const message = `Suite à une action effectué dans l'interface d'administration, Zen est maintenant *${
+        req.body.up ? 'activé' : 'désactivé'
+      }*`
+
+      // No return for this promise : Slack being up or not should prevent us from sending back a 200
+      superagent
+        .post(process.env.SLACK_WEBHOOK_SU_ZEN, {
+          text: message,
+        })
+        .catch((err) => winston.warn('Error sending message to Slack', err))
+
+      return res.json(result[0])
+    })
+    .catch(next),
+)
+
+router.post('/status-files', (req, res, next) =>
+  Status.query()
+    .patch({ isFilesServiceUp: req.body.up })
+    .returning('*')
+    .then((result) => {
+      const message = `Suite à une action effectué dans l'interface d'administration, l'envoi de justificatifs est *${
+        req.body.up ? 'activé' : 'désactivé'
+      }*`
 
       // No return for this promise : Slack being up or not should prevent us from sending back a 200
       superagent
@@ -347,6 +336,28 @@ router.delete('/delete-user', (req, res, next) => {
       return deleteUser(user)
     })
     .then(() => res.send('ok'))
+    .catch(next)
+})
+
+router.get('/users/:id', (req, res, next) => {
+  User.query()
+    .eager('[activityLogs, declarations.[infos, review, employers.documents]]')
+    .findById(req.params.id)
+    .then((user) => {
+      if (!user) return res.send(404, 'User not found')
+      return res.json(user)
+    })
+    .catch(next)
+})
+
+router.get('/declarations/:id', (req, res, next) => {
+  Declaration.query()
+    .eager('[user, employers.documents, review, infos, declarationMonth]')
+    .findById(req.params.id)
+    .then((declaration) => {
+      if (!declaration) return res.send(404, 'Declaration not found')
+      return res.json(declaration)
+    })
     .catch(next)
 })
 

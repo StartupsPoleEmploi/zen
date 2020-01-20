@@ -5,13 +5,14 @@ import TextField from '@material-ui/core/TextField'
 import Delete from '@material-ui/icons/DeleteOutlined'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
 import EuroInput from '../Generic/EuroInput'
 import HourInput from '../Generic/HourInput'
-import TooltipOnFocus from '../Generic/TooltipOnFocus'
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
+import TooltipOnFocus from '../Generic/TooltipOnFocus'
+import warn from '../../images/warn.png'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -65,6 +66,10 @@ const RemoveButton = styled.button`
   }
 `
 
+const EmployerQuestionContainer = styled.div`
+  display: inline-flex;
+`
+
 const DeleteIcon = styled(Delete)`
   && {
     width: 2.5rem;
@@ -79,41 +84,15 @@ const StyledTextField = styled(TextField)`
   }
 `
 
-export class EmployerQuestion extends Component {
-  static propTypes = {
-    employerName: PropTypes.shape({
-      value: PropTypes.string,
-      error: PropTypes.string,
-    }).isRequired,
-    workHours: PropTypes.shape({
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      error: PropTypes.string,
-    }).isRequired,
-    salary: PropTypes.shape({
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      error: PropTypes.string,
-    }).isRequired,
-    hasEndedThisMonth: PropTypes.shape({
-      value: PropTypes.bool,
-      error: PropTypes.string,
-    }),
-    index: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    activeMonth: PropTypes.instanceOf(Date).isRequired,
-    verticalLayout: PropTypes.bool,
-  }
+const InfoImg = styled.img`
+  width: 2rem;
+  position: absolute;
+  margin-left: 3px;
+  cursor: pointer;
+  z-index: 2;
+`
 
-  renderTextField(textField, tooltip) {
-    if (!tooltip) return textField
-
-    return (
-      <TooltipOnFocus tooltipId={tooltip.id} content={tooltip.content}>
-        {textField}
-      </TooltipOnFocus>
-    )
-  }
-
+export class EmployerQuestion extends PureComponent {
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
     let value = _value
     if (type === 'blur' && fieldName.startsWith('employerName')) {
@@ -133,6 +112,17 @@ export class EmployerQuestion extends Component {
 
   onRemove = () => this.props.onRemove(this.props.index)
 
+  renderLabel = ({ id, label, content, showTooltip }) => (
+    <div>
+      {label}
+      {showTooltip && (
+        <TooltipOnFocus tooltipId={id} content={content}>
+          <InfoImg src={warn} alt="Informations" />
+        </TooltipOnFocus>
+      )}
+    </div>
+  )
+
   render() {
     const {
       employerName,
@@ -145,107 +135,85 @@ export class EmployerQuestion extends Component {
 
     const showTooltip = index === 0
 
-    // Employer
-    const employerTextField = (
-      <StyledTextField
-        id={`employerName[${index}]`}
-        label="Nom employeur"
-        name={`employerName[${index}]`}
-        value={employerName.value}
-        onChange={this.onChange}
-        onBlur={this.onChange}
-        error={!!employerName.error}
-        helperText={employerName.error}
-        inputProps={{
-          'aria-describedby': `employerNameDescription[${index}]`,
-        }}
-        fullWidth={verticalLayout}
-      />
-    )
-    const employerTooltip =
-      'Si vous avez plusieurs employeurs, ajoutez une ligne par employeur.'
-
-    // Work hours
-    const workHoursTextField = (
-      <StyledTextField
-        id={`workHours[${index}]`}
-        label="Nombre d'heures"
-        name={`workHours[${index}]`}
-        value={workHours.value}
-        onChange={this.onChange}
-        error={!!workHours.error}
-        helperText={workHours.error}
-        InputProps={{
-          inputComponent: HourInput,
-        }}
-        // eslint-disable-next-line react/jsx-no-duplicate-props
-        inputProps={{
-          maxLength: 4,
-          'aria-describedby': `workHoursDescription[${index}]`,
-        }}
-        fullWidth={verticalLayout}
-      />
-    )
-    const workHoursTooltip =
-      'Indiquez les heures qui seront inscrites sur votre fiche de paie'
-
-    // Salary
-    const salaryTextField = (
-      <StyledTextField
-        id={`salary[${index}]`}
-        label="Salaire brut €"
-        name={`salary[${index}]`}
-        value={salary.value}
-        onChange={this.onChange}
-        error={!!salary.error}
-        helperText={salary.error}
-        InputProps={{
-          inputComponent: EuroInput,
-        }}
-        // eslint-disable-next-line react/jsx-no-duplicate-props
-        inputProps={{
-          maxLength: 10,
-          'aria-describedby': `salaryDescription[${index}]`,
-        }}
-        fullWidth={verticalLayout}
-      />
-    )
-
-    const salaryTooltip = 'Déclarez le salaire brut pour cet employeur'
-
     return (
       <StyledContainer className="employer-question">
         <StyledMain>
           <div>
-            {this.renderTextField(
-              employerTextField,
-              showTooltip
-                ? {
-                    id: `employerNameDescription[${index}]`,
-                    content: employerTooltip,
-                  }
-                : null,
-            )}
+            <EmployerQuestionContainer>
+              <StyledTextField
+                id={`employerName[${index}]`}
+                label={this.renderLabel({
+                  id: `employerName[${index}]`,
+                  label: "Nom employeur",
+                  content:
+                    'Si vous avez plusieurs employeurs, cliquez sur "Ajouter un employeur"',
+                  showTooltip,
+                })}
+                name={`employerName[${index}]`}
+                value={employerName.value}
+                onChange={this.onChange}
+                onBlur={this.onChange}
+                error={!!employerName.error}
+                helperText={employerName.error}
+                inputProps={{
+                  'aria-describedby': `employerNameDescription[${index}]`,
+                }}
+                fullWidth={verticalLayout}
+              />
+            </EmployerQuestionContainer>
 
-            {this.renderTextField(
-              workHoursTextField,
-              showTooltip
-                ? {
-                    id: `workHoursDescription[${index}]`,
-                    content: workHoursTooltip,
-                  }
-                : null,
-            )}
+            <EmployerQuestionContainer>
+              <StyledTextField
+                id={`workHours[${index}]`}
+                label={this.renderLabel({
+                  id: `workHours[${index}]`,
+                  label: "Nombre d'heures",
+                  content:
+                    'Indiquez les heures qui seront inscrites sur votre fiche de paie',
+                  showTooltip,
+                })}
+                name={`workHours[${index}]`}
+                value={workHours.value}
+                onChange={this.onChange}
+                error={!!workHours.error}
+                helperText={workHours.error}
+                InputProps={{
+                  inputComponent: HourInput,
+                }}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                inputProps={{
+                  maxLength: 4,
+                  'aria-describedby': `workHoursDescription[${index}]`,
+                }}
+                fullWidth={verticalLayout}
+              />
+            </EmployerQuestionContainer>
 
-            {this.renderTextField(
-              salaryTextField,
-              showTooltip
-                ? {
-                    id: `salaryDescription[${index}]`,
-                    content: salaryTooltip,
-                  }
-                : null,
-            )}
+            <EmployerQuestionContainer>
+              <StyledTextField
+                id={`salary[${index}]`}
+                label={this.renderLabel({
+                  id: `salary[${index}]`,
+                  label: 'Salaire brut €',
+                  content: 'Déclarez le salaire brut pour cet employeur',
+                  showTooltip,
+                })}
+                name={`salary[${index}]`}
+                value={salary.value}
+                onChange={this.onChange}
+                error={!!salary.error}
+                helperText={salary.error}
+                InputProps={{
+                  inputComponent: EuroInput,
+                }}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                inputProps={{
+                  maxLength: 10,
+                  'aria-describedby': `salaryDescription[${index}]`,
+                }}
+                fullWidth={verticalLayout}
+              />
+            </EmployerQuestionContainer>
           </div>
           <StyledFormControl>
             <StyledFormLabel
@@ -258,12 +226,8 @@ export class EmployerQuestion extends Component {
               )}
             </StyledFormLabel>
             <YesNoRadioGroup
-              yesTooltipContent={
-                showTooltip
-                  ? `Si votre employeur vous a payé des congés, n’oubliez pas
-                    d’inclure cette somme dans le salaire brut déclaré`
-                  : null
-              }
+              yesTooltipContent={`Si votre employeur vous a payé des congés, n’oubliez pas
+                    d’inclure cette somme dans le salaire brut déclaré`}
               name={`hasEndedThisMonth[${index}]`}
               value={hasEndedThisMonth.value}
               onAnswer={this.onChange}
@@ -280,6 +244,30 @@ export class EmployerQuestion extends Component {
       </StyledContainer>
     )
   }
+}
+
+EmployerQuestion.propTypes = {
+  employerName: PropTypes.shape({
+    value: PropTypes.string,
+    error: PropTypes.string,
+  }).isRequired,
+  workHours: PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    error: PropTypes.string,
+  }).isRequired,
+  salary: PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    error: PropTypes.string,
+  }).isRequired,
+  hasEndedThisMonth: PropTypes.shape({
+    value: PropTypes.bool,
+    error: PropTypes.string,
+  }),
+  index: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  activeMonth: PropTypes.instanceOf(Date).isRequired,
+  verticalLayout: PropTypes.bool,
 }
 
 export default EmployerQuestion

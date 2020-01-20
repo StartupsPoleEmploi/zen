@@ -7,6 +7,7 @@ import ZnLayoutLogout from './ZnLayoutLogout'
 export const ZnLayout = ({
   activeMonth,
   activeDeclaration,
+  isFilesServiceUp,
   children,
   user,
 }) => {
@@ -16,6 +17,7 @@ export const ZnLayout = ({
 
   return (
     <ZnLayoutLogin
+      isFilesServiceUp={isFilesServiceUp}
       activeMonth={activeMonth}
       activeDeclaration={activeDeclaration}
       user={user}
@@ -30,6 +32,7 @@ ZnLayout.propTypes = {
   user: PropTypes.shape({
     firstName: PropTypes.string,
   }),
+  isFilesServiceUp: PropTypes.bool,
   activeMonth: PropTypes.instanceOf(Date),
   activeDeclaration: PropTypes.object,
 }

@@ -1,66 +1,39 @@
-import Button from '@material-ui/core/Button'
-import React, { useState } from 'react'
+// @flow
 
-import ActivityLog from './pages/ActivityLog'
-import Declarations from './pages/Declarations'
-import System from './pages/System'
-import Users from './pages/Users'
+import React from 'react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Layout } from 'antd';
 
-const PAGES = {
-  ACTIVITY: 'activity',
-  DECLARATIONS: 'declarations',
-  SYSTEM: 'system',
-  USERS: 'users',
-}
+import Routes from './Routes';
+import ZnMenuLayout from './components/ZnMenuLayout';
+import { MENU_ITEMS } from './common/routes';
+import imgLogo from './assets/images/logoFull.svg';
+import { DeclarationsProvider } from './common/contexts/declarationsCtx';
+import { UsersProvider } from './common/contexts/usersCtx';
 
-export const App = () => {
-  const [page, setShowActivity] = useState(PAGES.DECLARATIONS)
+const browserHistory = createBrowserHistory({
+  basename: '/zen-admin',
+});
+
+export default function App() {
   return (
-    <React.Fragment>
-      <div
-        style={{
-          textAlign: 'center',
-          display: 'flex',
-          justifyContent: 'space-around',
-          width: '40rem',
-          margin: '1rem auto',
-        }}
-      >
-        <Button
-          variant="outlined"
-          color={page === PAGES.DECLARATIONS ? 'primary' : 'default'}
-          onClick={() => setShowActivity(PAGES.DECLARATIONS)}
-        >
-          Actualisations
-        </Button>
-        <Button
-          variant="outlined"
-          color={page === PAGES.ACTIVITY ? 'primary' : 'default'}
-          onClick={() => setShowActivity(PAGES.ACTIVITY)}
-        >
-          Activité
-        </Button>
-        <Button
-          variant="outlined"
-          color={page === PAGES.USERS ? 'primary' : 'default'}
-          onClick={() => setShowActivity(PAGES.USERS)}
-        >
-          Utilisateurs
-        </Button>
-        <Button
-          variant="outlined"
-          color={page === PAGES.SYSTEM ? 'primary' : 'default'}
-          onClick={() => setShowActivity(PAGES.SYSTEM)}
-        >
-          Système
-        </Button>
-      </div>
-      {page === PAGES.DECLARATIONS && <Declarations />}
-      {page === PAGES.ACTIVITY && <ActivityLog />}
-      {page === PAGES.USERS && <Users />}
-      {page === PAGES.SYSTEM && <System />}
-    </React.Fragment>
-  )
+    <Router history={browserHistory}>
+      <Layout style={{ height: '100vh', minWidth: '1024px', overflowX: 'auto' }}>
+        <Layout.Sider width={240} trigger={null}>
+          <ZnMenuLayout
+            links={MENU_ITEMS}
+            logo={imgLogo}
+          />
+        </Layout.Sider>
+        <Layout>
+          <DeclarationsProvider>
+            <UsersProvider>
+              <Routes />
+            </UsersProvider>
+          </DeclarationsProvider>
+        </Layout>
+      </Layout>
+    </Router>
+  );
 }
-
-export default App

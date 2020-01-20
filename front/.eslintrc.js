@@ -9,6 +9,12 @@ module.exports = {
   },
   rules: {
     'arrow-body-style': [2, 'as-needed'],
+
+    'react/jsx-props-no-spreading': 0,
+    'react/static-property-placement': 0,
+    'react/state-in-constructor': 0,
+    'react/jsx-fragments': 0,
+
     'consistent-return': 0, // Often bothering with early returns
     curly: [2, 'multi-line'],
     'import/no-extraneous-dependencies': [
@@ -29,6 +35,8 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js'] }],
     'react/require-default-props': 0,
+    'react/jsx-props-no-spreading': 0,
+
     'react/forbid-prop-types': 0, // Instead of activating this rule, flow or TS
     'react/sort-comp': [
       2,

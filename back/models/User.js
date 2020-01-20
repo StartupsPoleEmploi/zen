@@ -24,6 +24,10 @@ class User extends BaseModel {
         isAuthorized: { type: 'boolean' },
         // radié ou non
         isBlocked: { default: false, type: 'boolean' },
+        // know if the user as done the actu this month
+        // this field come from PeDump and has 1 day late 
+        // So this data is not reliable
+        isActuDone: { default: false, type: 'boolean' },
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
         registeredAt: { type: ['string', 'object', 'null'] },
       },

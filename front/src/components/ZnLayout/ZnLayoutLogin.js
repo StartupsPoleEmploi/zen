@@ -114,6 +114,7 @@ const AppTitleMobileContainer = styled.div`
 export const Layout = ({
   activeMonth,
   activeDeclaration,
+  isFilesServiceUp,
   children,
   user,
   location: { pathname },
@@ -130,6 +131,7 @@ export const Layout = ({
   const NavComponent = () => (
     <ZnNavLogin
       user={user}
+      isFilesServiceUp={isFilesServiceUp}
       history={{ push }}
       location={{ pathname }}
       activeMonth={activeMonth}
@@ -198,6 +200,7 @@ Layout.propTypes = {
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
+  isFilesServiceUp: PropTypes.func.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
     .isRequired,
   activeMonth: PropTypes.instanceOf(Date),

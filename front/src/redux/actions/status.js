@@ -10,7 +10,13 @@ export const fetchStatus = () => (dispatch) => {
   return superagent
     .get('/api/status')
     .then((res) =>
-      dispatch({ type: FETCH_STATUS_SUCCESS, payload: !!res.body.up }),
+      dispatch({
+        type: FETCH_STATUS_SUCCESS,
+        payload: {
+          serviceUp: !!res.body.global.up,
+          filesUp: !!res.body.files.up,
+        },
+      }),
     )
     .catch((err) => dispatch({ type: FETCH_STATUS_FAILURE, payload: err }))
 }

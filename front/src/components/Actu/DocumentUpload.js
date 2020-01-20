@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Check from '@material-ui/icons/Check'
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
@@ -72,28 +72,6 @@ const employerType = 'employer'
 const infosType = 'info'
 
 export class DocumentUpload extends Component {
-  static propTypes = {
-    id: PropTypes.number,
-    error: PropTypes.string,
-    fileExistsOnServer: PropTypes.bool,
-    label: PropTypes.string.isRequired,
-    caption: PropTypes.string,
-    isLoading: PropTypes.bool,
-    isTransmitted: PropTypes.bool,
-    submitFile: PropTypes.func.isRequired,
-    skipFile: PropTypes.func.isRequired,
-    type: PropTypes.oneOf([employerType, infosType]),
-    employerId: PropTypes.number,
-    employerDocType: PropTypes.string,
-    showPreview: PropTypes.func.isRequired,
-    showTooltip: PropTypes.bool,
-    useLightVersion: PropTypes.bool.isRequired,
-  }
-
-  static defaultProps = {
-    showTooltip: false,
-  }
-
   static types = { employer: employerType, info: infosType }
 
   renderFileField(fileInput, showTooltip, id) {
@@ -101,7 +79,6 @@ export class DocumentUpload extends Component {
 
     return (
       <TooltipOnFocus
-        useHover
         tooltipId={`file[${id}]`}
         content="Formats acceptés: .png, .jpg, .jpeg, .pdf"
       >
@@ -250,10 +227,7 @@ export class DocumentUpload extends Component {
               )}
             </ActionsContainer>
 
-            <TooltipOnFocus
-              useHover
-              content="Cochez cette case si vous avez transmis ce justificatif à Pôle emploi par d'autres moyens que Zen."
-            >
+            <TooltipOnFocus content="Cochez cette case si vous avez transmis ce justificatif à Pôle emploi par d'autres moyens que Zen.">
               <Button
                 aria-describedby={`file[${id}]`}
                 onClick={this.skipFile}
@@ -268,10 +242,10 @@ export class DocumentUpload extends Component {
                 disabled={isTransmitted}
               >
                 {!isTransmitted && (
-                  <Fragment>
+                  <>
                     <CheckBoxOutlineBlankIcon />
                     Déjà transmis à Pôle emploi
-                  </Fragment>
+                  </>
                 )}
               </Button>
             </TooltipOnFocus>
@@ -280,6 +254,28 @@ export class DocumentUpload extends Component {
       </StyledContainer>
     )
   }
+}
+
+DocumentUpload.propTypes = {
+  id: PropTypes.number,
+  error: PropTypes.string,
+  fileExistsOnServer: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  caption: PropTypes.string,
+  isLoading: PropTypes.bool,
+  isTransmitted: PropTypes.bool,
+  submitFile: PropTypes.func.isRequired,
+  skipFile: PropTypes.func.isRequired,
+  type: PropTypes.oneOf([employerType, infosType]),
+  employerId: PropTypes.number,
+  employerDocType: PropTypes.string,
+  showPreview: PropTypes.func.isRequired,
+  showTooltip: PropTypes.bool,
+  useLightVersion: PropTypes.bool.isRequired,
+}
+
+DocumentUpload.defaultProps = {
+  showTooltip: false,
 }
 
 export default DocumentUpload

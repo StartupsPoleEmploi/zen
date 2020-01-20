@@ -11,8 +11,12 @@ services:
     environment:
       - NODE_ENV=production
       - REACT_APP_ZEN_ENV=production
+      - NPM_CONFIG_PRODUCTION=false
+      - YARN_PRODUCTION=false
 
   front-admin:
     environment:
       - NODE_ENV=production
       - REACT_APP_ZEN_ENV=production
+      - NPM_CONFIG_PRODUCTION=false
+      - YARN_PRODUCTION=false

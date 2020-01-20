@@ -43,5 +43,8 @@ export default createReducer(
     SET_EMAIL: (state, { payload }) => {
       state.user.email = payload.email
     },
+    SET_NO_NEED_ON_BOARDING: (state) => {
+      state.user.needOnBoarding = false
+    },
   },
 )

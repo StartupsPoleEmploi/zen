@@ -13,10 +13,12 @@ const DEFAULT_STR = `{
   "gender": "female",
   "isAuthorized": true,
   "isBlocked": false,
+  "needOnBoarding": false,
+  "registeredAt": "2019-05-06",
   "canSendDeclaration": true,
   "hasAlreadySentDeclaration": false,
   "tokenExpirationDate": "2059-05-06T13:34:15.985Z"
-}`;
+}`
 
 export default function DialogUser() {
   const [csrfToken, setCsrfToken] = useState(null)
@@ -67,7 +69,12 @@ export default function DialogUser() {
         inputProps={{ style: { fontFamily: 'monospace' } }}
       />
 
-      <Button variant="contained" onClick={submit} color="primary" style={{marginTop: '2rem'}}>
+      <Button
+        variant="contained"
+        onClick={submit}
+        color="primary"
+        style={{ marginTop: '2rem' }}
+      >
         Mettre à jour req.session.user
       </Button>
     </Fragment>

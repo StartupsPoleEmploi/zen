@@ -49,7 +49,7 @@ export default function DeclarationDetails({ declaration }: Props) {
               <td><IconBoolean val={declaration.hasMaternityLeave} /></td>
             </tr>
             <tr>
-              <td><b>Avoir percus une nouvelle pension retraite ?</b></td>
+              <td><b>Avoir percu une nouvelle pension retraite ?</b></td>
               <td><IconBoolean val={declaration.hasRetirement} /></td>
             </tr>
             <tr>
@@ -67,15 +67,15 @@ export default function DeclarationDetails({ declaration }: Props) {
               <td><IconBoolean val={declaration.isLookingForJob} /></td>
             </tr>
             <tr>
-              <td><b>Avoir fini de le formulaire de declaration d'employer ?</b></td>
+              <td><b>Avoir fini le formulaire de declaration d'employer ?</b></td>
               <td><IconBoolean val={declaration.hasFinishedDeclaringEmployers} /></td>
             </tr>
             <tr>
-              <td><b>Transmit le</b></td>
+              <td><b>Transmis le</b></td>
               <td>{declaration.transmittedAt}</td>
             </tr>
             <tr>
-              <td><b>Créer le</b></td>
+              <td><b>Créé le</b></td>
               <td>{declaration.createdAt}</td>
             </tr>
             <tr>

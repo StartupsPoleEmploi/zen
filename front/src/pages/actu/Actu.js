@@ -747,7 +747,6 @@ export class Actu extends Component {
   }
 }
 
-export default connect(
-  null,
-  { postDeclaration: postDeclarationAction },
-)(withWidth()(Actu))
+export default connect(null, { postDeclaration: postDeclarationAction })(
+  withWidth()(Actu),
+)

@@ -138,6 +138,11 @@ class App extends Component {
         return <Redirect to="/not-autorized" />
       }
       // User is logged
+    } else if (user.needOnBoarding) {
+      // The OnBoarding will asked for the email
+      if (pathname !== '/dashboard') {
+        return <Redirect to="/dashboard" />
+      }
     } else if (!user.email) {
       // User is logged but no email is register
       if (pathname !== '/add-email') {

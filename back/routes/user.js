@@ -16,10 +16,36 @@ router.get('/', refreshAccessToken, async (req, res) => {
 
   return res.json({
     isBlocked: dbUser.isBlocked,
+    needOnBoarding: dbUser.needOnBoarding,
+    registeredAt: dbUser.registeredAt,
     ...req.session.user,
     csrfToken: req.csrfToken && req.csrfToken(),
     isTokenValid: isUserTokenValid(req.session.user.tokenExpirationDate),
   })
+})
+
+// Set needOnBoarding to false
+router.post('/disable-need-on-boarding', (req, res, next) => {
+  if (!req.session.user || !req.session.user.id) {
+    return res.status(401).json('Unauthorized')
+  }
+
+  return User.query()
+    .findOne({ id: req.session.user.id })
+    .then((user) => {
+      if (!user) throw new Error('No such user')
+
+      return user
+        .$query()
+        .patch({
+          needOnBoarding: false,
+        })
+        .then(() => {
+          req.session.user.needOnBoarding = false
+          return res.json(req.session.user)
+        })
+    })
+    .catch(next)
 })
 
 router.patch('/', (req, res, next) => {

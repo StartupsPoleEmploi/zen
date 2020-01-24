@@ -35,3 +35,7 @@ export const fetchUser = () => (dispatch) => {
 export const setEmail = (email) => (dispatch) => {
   dispatch({ type: 'SET_EMAIL', payload: { email } })
 }
+
+export const setNoNeedOnBoarding = () => (dispatch) => {
+  dispatch({ type: 'SET_NO_NEED_ON_BOARDING' })
+}

@@ -200,7 +200,7 @@ Layout.propTypes = {
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
-  isFilesServiceUp: PropTypes.func.isRequired,
+  isFilesServiceUp: PropTypes.bool.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
     .isRequired,
   activeMonth: PropTypes.instanceOf(Date),

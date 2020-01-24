@@ -29,6 +29,7 @@ import DeclarationOnGoing from './DeclarationOnGoing'
 import DeclarationImpossible from './DeclarationImpossible'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import StatusFilesError from '../../components/Actu/StatusFilesError'
+import OnBoarding from './onBoarding/OnBoarding'
 
 const StyledDashboard = styled.div`
   margin: 0 auto;
@@ -319,6 +320,16 @@ class Dashboard extends PureComponent {
 
     const computeMissingFiles = this.getMissingFilesNb()
 
+    if (user.needOnBoarding) {
+      // Show "thank you" to only relative new users
+      return (
+        <OnBoarding
+          showEmail={!user.email}
+          showThankYou={user.registeredAt > '2020-01-16'}
+        />
+      )
+    }
+
     return (
       <StyledDashboard width={width}>
         <Title width={width}>Bonjour {user.firstName}</Title>
@@ -372,6 +383,9 @@ Dashboard.propTypes = {
     hasAlreadySentDeclaration: PropTypes.bool,
     canSendDeclaration: PropTypes.bool,
     isBlocked: PropTypes.bool,
+    email: PropTypes.string,
+    needOnBoarding: PropTypes.bool,
+    registeredAt: PropTypes.instanceOf(Date),
   }),
   isFilesServiceUp: PropTypes.bool,
   declaration: PropTypes.object,

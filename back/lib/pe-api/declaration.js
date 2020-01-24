@@ -142,20 +142,17 @@ const sendDeclaration = ({
     return Promise.resolve({ body: { statut: 0 } })
   }
 
+  const dataToSend = {
+    ...convertDeclarationToAPIFormat(declaration),
+    forceIncoherence: ignoreErrors ? 1 : 0,
+  }
+
   return request({
     method: 'post',
     url: `${config.apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
-    data: {
-      ...convertDeclarationToAPIFormat(declaration),
-      forceIncoherence: ignoreErrors ? 1 : 0,
-    },
+    data: dataToSend,
     accessToken,
-    headers: [
-      {
-        key: 'media',
-        value: 'I',
-      },
-    ],
+    headers: [ { key: 'media', value: 'I' } ],
   })
     .then(({ body }) => {
       if (body.statut !== DECLARATION_STATUSES.SAVED) {
@@ -194,7 +191,7 @@ const sendDeclaration = ({
           )
         }
 
-        winston.warn(message, dataToLog)
+        winston.warn(message, { dataSent: dataToSend, error: dataToLog })
       }
 
       return { body }
@@ -202,6 +199,10 @@ const sendDeclaration = ({
     .catch((err) => {
       winston.error(
         `Error while sending declaration ${declaration.id} (HTTP ${err.status})`,
+        {
+          error: err,
+          data: { dataSent: dataToSend, userId, declaration },
+        }
       )
       throw err
     })

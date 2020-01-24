@@ -84,6 +84,7 @@ const sendDeclarationConfirmationEmails = () => {
             .catch((err) =>
               winston.error(
                 `There was an error while sending confirmation email for declaration ${declaration.id}: ${err}`,
+                { error: err, data: declaration }
               ),
             )
         }),

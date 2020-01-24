@@ -15,11 +15,11 @@ const { REALM } = require('../constants')
 // eslint-disable-next-line import/order
 const oauth2 = require('simple-oauth2').create(credentials)
 
-const { clientId, redirectUri } = config
+const { peConnectScope, redirectUri } = config
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm: REALM,
-  scope: `application_${clientId} api_peconnect-individuv1 qos_silver_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 qos_gold_peconnect-coordonneesv1 coordonnees api_peconnect-actualisationv1 qos_gold_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
+  scope: peConnectScope
 }
 
 router.get('/', (req, res, next) => {

@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "config": "^2.0.2",
-    "connect-pg-simple": "^5.0.0",
+    "connect-pg-simple": "^6.0.1",
     "cookie-parser": "~1.4.4",
     "cron": "^1.7.2",
     "csurf": "^1.10.0",
@@ -39,7 +39,7 @@
     "images-to-pdf": "^1.0.3",
     "json2csv": "^4.5.4",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.15.2",
+    "knex": "^0.19.5",
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
@@ -57,13 +57,13 @@
     "sharp": "^0.23.4",
     "simple-oauth2": "^2.5.2",
     "slack": "^11.0.1",
-    "slack-winston": "0.0.9",
+    "slack-winston": "^0.0.9",
     "superagent": "^3.8.3",
     "unbzip2-stream": "^1.3.3",
     "winston": "^2.4.4"
   },
   "devDependencies": {
-    "jest": "^23.6.0",
+    "jest": "^25.1.0",
     "knex-cleaner": "^1.3.0",
     "nock": "^10.0.6",
     "supertest": "^3.4.2"

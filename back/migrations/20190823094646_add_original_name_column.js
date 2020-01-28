@@ -1,5 +1,5 @@
 /* eslint-disable */
-exports.up = function(knex, Promise) {
+exports.up = function(knex) {
   return Promise.all([
     knex.schema.table('declaration_infos', (table) => {
       table.string('originalFileName')
@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
   ])
 }
 
-exports.down = function(knex, Promise) {
+exports.down = function(knex) {
   return Promise.all([
     knex.schema.table('declaration_infos', (table) => {
       table.dropColumn('originalFileName')

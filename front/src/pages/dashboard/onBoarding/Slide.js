@@ -5,11 +5,19 @@ import PropTypes from 'prop-types'
 import { Typography } from '@material-ui/core'
 
 import { H2 } from '../../../components/Generic/Titles'
-import { intermediaryBreakpoint, primaryBlue } from '../../../constants'
+import {
+  intermediaryBreakpoint,
+  primaryBlue,
+  mobileBreakpoint,
+} from '../../../constants'
+import arrow from '../../../images/onBoarding/arrow.svg'
 
 const Left = styled.div`
   padding: 2rem;
   text-align: center;
+  @media (max-width: ${mobileBreakpoint}) {
+    padding: 0;
+  }
 `
 const Right = styled.div`
   display: flex;
@@ -68,17 +76,36 @@ const SlideContainer = styled.div`
     flex-direction: column-reverse;
     padding: 5rem 4rem;
   }
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding: 5rem 2rem;
+  }
 `
 
-function Slide({ leftText, img, badgeNumber, h2Content, list = [] }) {
+function Slide({
+  leftText,
+  img,
+  badgeNumber,
+  h2Content,
+  arrowStyle,
+  list = [],
+}) {
   return (
     <SlideContainer>
       <Left>
         {leftText ? (
-          <Figure>
-            <img src={img} alt="" />
-            <Typography component="figcaption">{leftText}</Typography>
-          </Figure>
+          <>
+            <Figure>
+              <img src={img} alt="" />
+              <Typography
+                component="figcaption"
+                style={{ position: 'relative' }}
+              >
+                {arrowStyle && <img src={arrow} style={arrowStyle} alt="" />}
+                {leftText}
+              </Typography>
+            </Figure>
+          </>
         ) : (
           <img src={img} alt="" />
         )}
@@ -123,6 +150,7 @@ Slide.propTypes = {
   leftText: PropTypes.string,
   badgeNumber: PropTypes.string,
   h2Content: PropTypes.object.isRequired,
+  arrowStyle: PropTypes.object.isRequired,
   list: PropTypes.array.isRequired,
 }
 

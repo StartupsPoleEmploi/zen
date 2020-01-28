@@ -6,6 +6,7 @@ import { Typography } from '@material-ui/core'
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 import superagent from 'superagent'
 import ArrowBack from '@material-ui/icons/ArrowBack'
+import withWidth from '@material-ui/core/withWidth'
 
 import step1 from '../../../images/onBoarding/step1.gif'
 import step2 from '../../../images/onBoarding/step2.gif'
@@ -23,7 +24,7 @@ import { primaryBlue } from '../../../constants'
 import { EmailForm } from './EmailForm'
 
 const StyledOnBoarding = styled.div`
-  max-width: 90rem;
+  max-width: ${({ width }) => (width === 'xs' ? '100%' : '90rem')};
   margin: 0 auto;
 `
 
@@ -42,6 +43,7 @@ const Container = styled.div`
   background: white;
 `
 const ActionBar = styled.div`
+  padding: ${({ width }) => (width === 'xs' ? '2rem 0' : '2rem')};
   padding: 2rem;
   height: 9rem;
   position: relative;
@@ -52,8 +54,26 @@ const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
 `
 
+const A = styled.a`
+  color: ${primaryBlue};
+`
+
+const leftArrowStyle = {
+  position: 'absolute',
+  left: '0',
+  top: '-90px',
+  transform: 'rotateY(180deg)',
+}
+
+const rightArrowStyle = {
+  position: 'absolute',
+  right: '-15px',
+  top: '-100px',
+}
+
 function OnBoarding({
   csrfToken,
+  width,
   showThankYou = false,
   showEmail = false,
   setNoNeedOnBoarding,
@@ -81,7 +101,7 @@ function OnBoarding({
   }
 
   return (
-    <StyledOnBoarding>
+    <StyledOnBoarding width={width}>
       {showThankYou && (
         <Thanks>Merci pour votre demande d'utilisation de Zen</Thanks>
       )}
@@ -103,6 +123,7 @@ function OnBoarding({
           <Slide
             leftText="Votre déclaration par employeur"
             badgeNumber="1"
+            arrowStyle={rightArrowStyle}
             h2Content={
               <>
                 Service d'actualisation pour les{' '}
@@ -129,8 +150,14 @@ function OnBoarding({
 
         {currentStep === 2 && (
           <Slide
-            leftText="Un e-mail indique le début de l'actualisation"
+            leftText={
+              <>
+                Un e-mail indique
+                <br /> le début de l'actualisation
+              </>
+            }
             badgeNumber="2"
+            arrowStyle={leftArrowStyle}
             h2Content={
               <>N'attendez pas vos justificatifs pour vous actualiser</>
             }
@@ -151,8 +178,16 @@ function OnBoarding({
 
         {currentStep === 3 && (
           <Slide
-            leftText="Téléchargez et/ou imprimez votre déclaration d'actualisation depuis votre tableau de bord"
+            leftText={
+              <>
+                Téléchargez et/ou imprimez
+                <br /> votre déclaration d'actualisation
+                <br />
+                depuis votre tableau de bord
+              </>
+            }
             badgeNumber="3"
+            arrowStyle={{ ...rightArrowStyle, right: '-5px', top: '-60px' }}
             h2Content={<>Zen vous confirme que l'actualisation est validée</>}
             img={step3}
             list={[
@@ -170,8 +205,14 @@ function OnBoarding({
 
         {currentStep === 4 && (
           <Slide
-            leftText="Gérez vos justificatifs depuis votre tableau de bord"
+            leftText={
+              <>
+                Gérez vos justificatifs
+                <br /> depuis votre tableau de bord
+              </>
+            }
             badgeNumber="4"
+            arrowStyle={{ ...leftArrowStyle, left: '30px', top: '-110px' }}
             h2Content={<>Zen vous indique les justificatifs manquants</>}
             img={step4}
             list={[
@@ -194,8 +235,14 @@ function OnBoarding({
 
         {currentStep === 5 && (
           <Slide
-            leftText="Zen transmet instantanément vos informations à Pôle emploi"
+            leftText={
+              <>
+                Zen transmet instantanément
+                <br /> vos informations à Pôle emploi
+              </>
+            }
             badgeNumber="5"
+            arrowStyle={leftArrowStyle}
             h2Content={<>L'actualisation Zen suffit</>}
             img={step5}
             list={[
@@ -208,20 +255,20 @@ function OnBoarding({
               <>
                 Vous n'êtes pas obligé de vous actualiser sur Zen. Vous pouvez
                 continuer à faire votre actualisation sur{' '}
-                <a href="https://pole-emploi.fr">pole-emploi.fr</a>
+                <A href="https://pole-emploi.fr">pole-emploi.fr</A>
               </>,
             ]}
           />
         )}
 
-        <ActionBar>
+        <ActionBar width={width}>
           {currentStep === NUMBER_OF_STEP && (
             <MainActionButton
               primary={false}
               onClick={startAgain}
               style={{
                 position: 'absolute',
-                left: '3rem',
+                left: width === 'xs' ? '1rem' : '3rem',
                 height: '5rem',
                 width: 'auto',
                 padding: '0 2rem',
@@ -233,15 +280,17 @@ function OnBoarding({
             </MainActionButton>
           )}
 
-          <StepCounter
-            goToStep={goToStep}
-            itemNumber={NUMBER_OF_STEP}
-            currentStep={currentStep}
-          />
+          {width !== 'xs' && (
+            <StepCounter
+              goToStep={goToStep}
+              itemNumber={NUMBER_OF_STEP}
+              currentStep={currentStep}
+            />
+          )}
           <MainActionButton
             style={{
               position: 'absolute',
-              right: '3rem',
+              right: width === 'xs' ? '1rem' : '3rem',
               height: '5rem',
               width: 'auto',
               padding: '0 2rem',
@@ -263,6 +312,7 @@ OnBoarding.propTypes = {
   setNoNeedOnBoarding: PropTypes.func.isRequired,
   showThankYou: PropTypes.bool,
   showEmail: PropTypes.bool,
+  width: PropTypes.string.isRequired,
 }
 
 export default connect(
@@ -270,4 +320,4 @@ export default connect(
     csrfToken: state.userReducer.user.csrfToken,
   }),
   { setNoNeedOnBoarding: setNoNeedOnBoardingAction },
-)(OnBoarding)
+)(withWidth()(OnBoarding))

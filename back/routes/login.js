@@ -10,6 +10,7 @@ const User = require('../models/User')
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 const winston = require('../lib/log')
 const { credentials } = require('../lib/token')
+const mailjet = require('../lib/mailings/mailjet')
 const userCtrl = require('../controllers/userCtrl')
 const { REALM } = require('../constants')
 // eslint-disable-next-line import/order
@@ -85,7 +86,12 @@ router.get('/callback', async (req, res) => {
         // first login, need to set registerAt
         if (config.get('shouldSendTransactionalEmails') && dbUser.email) {
           // Note: We do not wait for Mailjet to answer to send data back to the user
-          sendSubscriptionConfirmation(dbUser).catch(Raven.captureException)
+          mailjet.addUser(dbUser).then(() => {
+            if (dbUser.isAuthorized) return sendSubscriptionConfirmation(dbUser);
+          }).catch((e) => {
+            winston.error('[Login] error when add user to mailjet and send it the confirmation email', e);
+          })
+          
         }
         dbUser = await dbUser
           .$query()

@@ -156,7 +156,7 @@ async function importUserFromDatalake() {
           await $updateUser(userFromFile).catch((err) => {
             winston.error(
               `[ImportUserFromDatalake] "${err}" to line (${dataLine})`,
-              { error: err, filePathCsv, idx, dataLine },
+              { error: err, filePathCsv, idx, dataLine, userFromFile },
             )
           })
         }),

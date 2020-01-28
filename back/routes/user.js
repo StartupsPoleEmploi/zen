@@ -1,9 +1,10 @@
 const express = require('express')
-const Raven = require('raven')
 const config = require('config')
 
 const { isUserTokenValid } = require('../lib/token')
 const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
+const mailjet = require('../lib/mailings/mailjet')
+const winston = require('../lib/log')
 
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 
@@ -68,9 +69,11 @@ router.patch('/', (req, res, next) => {
     .then((user) => {
       if (config.get('shouldSendTransactionalEmails')) {
         // Note: We do not wait for Mailjet to answer to send data back to the user
-        sendSubscriptionConfirmation(user).catch((e) =>
-          Raven.captureException(e),
-        )
+        mailjet.addUser(user).then(() => {
+          if (user.isAuthorized) return sendSubscriptionConfirmation(user);
+        }).catch((e) => {
+          winston.error('[AddEmail] error when add user to mailjet and send it the confirmation email', e);
+        })
       }
       req.session.user.email = user.email
       res.json(req.session.user)

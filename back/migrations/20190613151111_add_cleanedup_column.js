@@ -1,5 +1,5 @@
 /* eslint-disable */
-exports.up = function(knex, Promise) {
+exports.up = function(knex) {
   return Promise.all([
     knex.schema.table('declarations', (table) => {
       table.boolean('isCleanedUp').defaultTo(false)
@@ -13,7 +13,7 @@ exports.up = function(knex, Promise) {
   ])
 }
 
-exports.down = function(knex, Promise) {
+exports.down = function(knex) {
   return Promise.all([
     knex.schema.table('declarations', (table) => {
       table.dropColumn('isCleanedUp')

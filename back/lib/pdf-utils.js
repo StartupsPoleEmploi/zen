@@ -4,11 +4,6 @@ const path = require('path')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const pdftk = require('node-pdftk')
-const sharp = require('sharp')
-
-const imagemin = require('imagemin-keep-folder')
-const imageminPngquant = require('imagemin-pngquant')
-const imageminMozjpeg = require('imagemin-mozjpeg')
 
 const { uploadsDirectory: uploadDestination } = require('config')
 const winston = require('../lib/log')
@@ -17,7 +12,6 @@ pdftk.configure({ bin: 'pdftk' })
 
 const IMG_EXTENSIONS = ['.png', '.jpeg', '.jpg']
 const MAX_PDF_SIZE = 5
-const MAX_IMAGE_DIMENSION = 1500 // in pixel
 
 const getFileBasename = (filename) =>
   path.basename(filename, path.extname(filename))
@@ -81,47 +75,20 @@ async function optimizePDF(pdfFilePath) {
   }
 }
 
-const resizeImage = (imgFilePath) =>
-  new Promise((resolve, reject) => {
-    sharp(imgFilePath)
-      .resize({ width: MAX_IMAGE_DIMENSION, withoutEnlargement: true })
-      .toBuffer((err, buffer) => {
-        // Update image with the new content
-        if (err) return reject(err)
-        fs.writeFile(imgFilePath, buffer, (wrErr) => {
-          if (wrErr) return reject(wrErr)
-          resolve()
-        })
-      })
-  })
-
-const optimizeImage = (imgFilePath) =>
-  imagemin([imgFilePath], {
-    plugins: [
-      imageminMozjpeg({ quality: 75 }),
-      imageminPngquant({
-        quality: [0.6, 0.8],
-      }),
-    ],
-  })
-
 const transformImageToPDF = (filename) => {
   const fileBaseName = getFileBasename(filename)
   const pdfFilePath = `${uploadDestination}${fileBaseName}.pdf`
   const imgFilePath = `${uploadDestination}${filename}`
 
-  return resizeImage(imgFilePath)
-    .then(() => optimizeImage(imgFilePath))
-    .then(() => imagesToPdf([imgFilePath], pdfFilePath))
-    .then(() => {
-      fs.unlink(imgFilePath, (deleteError) => {
-        if (deleteError) {
-          winston.warn(
-            `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
-          )
-        }
-      })
+  return imagesToPdf([imgFilePath], pdfFilePath).then(() => {
+    fs.unlink(imgFilePath, (deleteError) => {
+      if (deleteError) {
+        winston.warn(
+          `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
+        )
+      }
     })
+  })
 }
 
 const mergePDF = (file1, file2, output) =>

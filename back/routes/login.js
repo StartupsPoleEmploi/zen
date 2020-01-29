@@ -68,6 +68,7 @@ router.get('/callback', async (req, res) => {
       // user is not in the DB, so the user is not acceptable (is not asking to "Asmat")
       // PS: we take all "Asmat" from datalake (view code on file /lib/importUserFromDatalake.js)
       // so we only insert the user into the DB and not Authorize him
+      // NOTE: the user is not add to mailjet and doesn't receive any message
       const userToSave = {
         ...pick(userinfo, ['peId', 'email', 'firstName', 'lastName', 'gender']),
         postalCode: await userCtrl.getPostalCode(authToken),

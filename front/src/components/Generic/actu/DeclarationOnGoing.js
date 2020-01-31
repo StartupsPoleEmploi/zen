@@ -6,8 +6,8 @@ import { Typography } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { Link } from 'react-router-dom'
 
-import MainActionButton from '../../components/Generic/MainActionButton'
-import CircleJauge from './CircleJauge'
+import MainActionButton from '../MainActionButton'
+import CircleJauge from '../../../pages/dashboard/CircleJauge'
 
 const FlexContainer = styled.div`
   display: flex;

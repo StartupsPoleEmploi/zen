@@ -6,7 +6,7 @@ import DoneIcon from '@material-ui/icons/Done'
 import PrintIcon from '@material-ui/icons/Print'
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 
-import { primaryBlue } from '../../constants'
+import { primaryBlue } from '../../../constants'
 
 const sectionColor = '#1e2c59'
 

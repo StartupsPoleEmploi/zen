@@ -254,6 +254,7 @@ class App extends Component {
               )
             }
           />
+
           <PrivateRoute
             exact
             isLoggedIn={!!user}
@@ -263,6 +264,7 @@ class App extends Component {
                 {...props}
                 activeMonth={activeMonth}
                 token={user.csrfToken}
+                declaration={activeDeclaration}
               />
             )}
           />

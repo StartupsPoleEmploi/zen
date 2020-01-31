@@ -83,3 +83,6 @@ export const clickSendToPoleEmploiModalButton = () => {
   cy.get('div[role=dialog] .validate-file').click()
   cy.get('.confirm-validate-file').click()
 }
+
+export const getDeclarationStatus = () => cy.get(`.declaration-status`)
+export const getCompletionJauge = () => cy.get(`.declaration-completion`)

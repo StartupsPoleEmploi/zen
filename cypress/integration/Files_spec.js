@@ -12,7 +12,35 @@ import {
   uploadNewDeclarationInfoFile,
   skipEmployerFile,
   skipDeclarationInfoFile,
+  getDeclarationStatus,
+  getCompletionJauge,
 } from '../pages/Files'
+
+import { DECLARATION_STATUS } from '../pages/Dashboard'
+
+describe('Files page - Declaration not started', function() {
+  beforeEach(() => {
+    cy.request('POST', '/api/tests/db/reset')
+    cy.visit('/files')
+  })
+
+  it('should display declaration not started', () => {
+    getDeclarationStatus().should('have.text', DECLARATION_STATUS.NOT_STARTED)
+  })
+})
+describe('Files page - Declaration started but employers not finished', function() {
+  beforeEach(() => {
+    cy.request('POST', '/api/tests/db/reset-for-employers')
+    cy.visit('/files')
+  })
+
+  it('should display declaration on going', () => {
+    getDeclarationStatus().should('have.text', DECLARATION_STATUS.ON_GOING)
+  })
+  it('should display 50% as declaration completion', () => {
+    getCompletionJauge().should('have.text', '50%')
+  })
+})
 
 describe('Files page', function() {
   beforeEach(() => {
@@ -63,7 +91,7 @@ describe('Files page', function() {
         uploadFile: uploadNewDeclarationInfoFile,
         showFileInModal: showDeclarationInfoFileInModal,
       },
-      /* eslint-disable-next-line array-callback-return */
+      // eslint-disable-next-line array-callback-return
     ].map(({ label, uploadFile, showFileInModal }) => {
       describe(label, () => {
         it('should open the modal once a document is uploaded', () => {

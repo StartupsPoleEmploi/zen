@@ -107,7 +107,10 @@ async function $updateUserIntoMailjet(userInDb, userFromFile) {
 
   // update Excluded User
   if (isUserRegistered && !!userFromFile.email && userFromFile.isBlocked !== userInDb.isBlocked) {
-    await $excludedUserIntoMailjet(userInDb, userFromFile.isBlocked);
+    await $excludedUserIntoMailjet({
+      ...userInDb,
+      email: userFromFile.email || userInDb.email,
+    }, userFromFile.isBlocked);
   }
 }
 
@@ -187,7 +190,7 @@ async function importUserFromDatalake() {
         .whereIn('peId', userIn.map((e) => e.peId))
       // update into mailjet
       await Promise.all(
-        userIn.filter(e => !!e.registeredAt)
+        userIn.filter(e => !!e.registeredAt && !!e.email)
         .map((e) => 
           $excludedUserIntoMailjet(e, e.id, true).catch(error => {
             winston.error(`[ImportUserFromDatalake] excludedUserIntoMailjet: ${error}`, error)

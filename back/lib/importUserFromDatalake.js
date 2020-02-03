@@ -13,6 +13,7 @@ const userCtrl = require('../controllers/userCtrl')
 const {
   setExcludedUserFromCampaigns,
 } = require('./mailings/mailjet')
+const sendSubscriptionConfirmation = require('./mailings/sendSubscriptionConfirmation')
 
 const readdir = util.promisify(fs.readdir)
 
@@ -75,10 +76,18 @@ function $lineToUser(lineContent) {
   }
 }
 
-async function $excludedUserIntoMailjet(email, id, isBlocked) {
+async function $excludedUserIntoMailjet(user, isBlocked) {
   const strExclude = isBlocked ? 'EXCLUDE' : 'INCLUDE';
-  winston.info(`The user ${email} (${id}) is now ${strExclude} to campaigns`)
-  await setExcludedUserFromCampaigns(email, isBlocked);
+  winston.info(`The user ${user.email} (${user.id}) is now ${strExclude} to campaigns`)
+  const userInMaijet = await mailjet.getUser(user.email);
+  if (!userInMaijet) {
+    // the user has been register by the website and at this time it was not in our database
+    // so any email was sent to him
+    // see code on /routes/login.js "// NOTE: the user is not add to mailjet and doesn't receive any message"
+    await mailjet.addUser(user);
+    await sendSubscriptionConfirmation(user);
+  }
+  await setExcludedUserFromCampaigns(user.email, isBlocked);
 }
 
 async function $updateUserIntoMailjet(userInDb, userFromFile) {
@@ -98,7 +107,7 @@ async function $updateUserIntoMailjet(userInDb, userFromFile) {
 
   // update Excluded User
   if (isUserRegistered && !!userFromFile.email && userFromFile.isBlocked !== userInDb.isBlocked) {
-    await $excludedUserIntoMailjet(userInDb.email, userInDb.id, userFromFile.isBlocked);
+    await $excludedUserIntoMailjet(userInDb, userFromFile.isBlocked);
   }
 }
 
@@ -156,7 +165,7 @@ async function importUserFromDatalake() {
           await $updateUser(userFromFile).catch((err) => {
             winston.error(
               `[ImportUserFromDatalake] "${err}" to line (${dataLine})`,
-              { error: err, filePathCsv, idx, dataLine },
+              { error: err, filePathCsv, idx, dataLine, userFromFile },
             )
           })
         }),
@@ -167,7 +176,7 @@ async function importUserFromDatalake() {
     winston.info('[ImportUserFromDatalake] Block users ...')
     const users = await User.query()
       .where('isBlocked', '=', false)
-      .column('peId', 'email', 'id', 'registeredAt');
+      .column('peId', 'email', 'id', 'registeredAt', 'firstName', 'lastName');
     const userToUpdate = users.filter(({peId}) => !peIdsFromFile[peId])
     winston.info(`[ImportUserFromDatalake] ${userToUpdate.length} Users to block ...`)
     while (userToUpdate.length) {
@@ -180,7 +189,7 @@ async function importUserFromDatalake() {
       await Promise.all(
         userIn.filter(e => !!e.registeredAt)
         .map((e) => 
-          $excludedUserIntoMailjet(e.email, e.id, true).catch(error => {
+          $excludedUserIntoMailjet(e, e.id, true).catch(error => {
             winston.error(`[ImportUserFromDatalake] excludedUserIntoMailjet: ${error}`, error)
           })
         ),

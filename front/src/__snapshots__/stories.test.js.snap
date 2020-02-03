@@ -3749,7 +3749,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                       onMouseUp={[Function]}
                       required={false}
                       type="text"
-                      value="200,00€ bruts"
+                      value="200,00€ brut"
                     />
                   </div>
                 </div>
@@ -4550,7 +4550,7 @@ exports[`Storyshots EuroInput with big float value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="10 200,40€ bruts"
+          value="10 200,40€ brut"
         />
         <div>
           <div
@@ -4622,7 +4622,7 @@ exports[`Storyshots EuroInput with big integer value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="10 000,00€ bruts"
+          value="10 000,00€ brut"
         />
         <div>
           <div
@@ -4694,7 +4694,7 @@ exports[`Storyshots EuroInput with float value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="1,20€ bruts"
+          value="1,20€ brut"
         />
         <div>
           <div
@@ -4766,7 +4766,7 @@ exports[`Storyshots EuroInput with integer value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="1,00€ bruts"
+          value="1,00€ brut"
         />
         <div>
           <div

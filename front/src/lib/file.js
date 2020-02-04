@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import { readAndCompressImage } from 'browser-image-resizer'
 
 const salarySheetType = 'salarySheet'
 const employerCertificateType = 'employerCertificate'
@@ -80,4 +81,25 @@ export const getDeclarationMissingFilesNb = (declaration) => {
       return prev + (hasSalarySheet ? 1 : 2)
     }, 0) + infoDocumentsRequiredNb
   )
+}
+
+export function isImage(file) {
+  if (!file.type) return false
+  return file.type.startsWith('image/')
+}
+
+export async function optimizeImage(file) {
+  try {
+    const blob = await readAndCompressImage(file, {
+      quality: 0.8,
+      maxWidth: 1500,
+      maxHeight: 1500,
+      mimeType: 'image/jpeg',
+    })
+    return new File([blob], file.name, { type: 'image/jpeg' })
+  } catch (err) {
+    // Optimization failed...
+    // We will continue with the unoptimized file
+    return file
+  }
 }

@@ -22,7 +22,7 @@ import {
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../../constants'
 import { utils } from '../../selectors/declarations'
-import { canUsePDFViewer } from '../../lib/file'
+import { canUsePDFViewer, optimizeImage, isImage } from '../../lib/file'
 import { manageErrorCsrfToken } from '../../lib/serviceHelpers'
 
 const { findEmployer, findDeclarationInfo } = utils
@@ -105,7 +105,7 @@ export const uploadEmployerFile = ({
   isAddingFile,
   skip,
   file,
-}) => (dispatch, getState) => {
+}) => async (dispatch, getState) => {
   dispatch({
     type: POST_EMPLOYER_DOC_LOADING,
     payload: { documentId, employerId, employerDocType },
@@ -126,7 +126,8 @@ export const uploadEmployerFile = ({
   if (skip) {
     request = request.field('skip', true)
   } else {
-    request = request.attach('document', file)
+    const fileToSubmit = isImage(file) ? await optimizeImage(file) : file
+    request = request.attach('document', fileToSubmit)
   }
 
   return request
@@ -166,7 +167,7 @@ export const uploadDeclarationInfoFile = ({
   file,
   skip,
   isAddingFile,
-}) => (dispatch, getState) => {
+}) => async (dispatch, getState) => {
   dispatch({ type: POST_DECLARATION_INFO_LOADING, payload: { documentId } })
 
   let url = '/api/declarations/files'
@@ -180,7 +181,8 @@ export const uploadDeclarationInfoFile = ({
   if (skip) {
     request = request.field('skip', true)
   } else {
-    request = request.attach('document', file)
+    const fileToSubmit = isImage(file) ? await optimizeImage(file) : file
+    request = request.attach('document', fileToSubmit)
   }
 
   return request

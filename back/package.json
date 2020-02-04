@@ -54,7 +54,7 @@
     "pm2": "^3.5.2",
     "puppeteer": "^2.0.0",
     "raven": "^2.6.4",
-    "sharp": "^0.23.4",
+    "sharp": "^0.24.0",
     "simple-oauth2": "^2.5.2",
     "slack": "^11.0.1",
     "slack-winston": "^0.0.9",

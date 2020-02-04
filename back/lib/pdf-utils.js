@@ -4,6 +4,11 @@ const path = require('path')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const pdftk = require('node-pdftk')
+const sharp = require('sharp')
+
+const imagemin = require('imagemin-keep-folder')
+const imageminPngquant = require('imagemin-pngquant')
+const imageminMozjpeg = require('imagemin-mozjpeg')
 
 const { uploadsDirectory: uploadDestination } = require('config')
 const winston = require('../lib/log')
@@ -12,6 +17,11 @@ pdftk.configure({ bin: 'pdftk' })
 
 const IMG_EXTENSIONS = ['.png', '.jpeg', '.jpg']
 const MAX_PDF_SIZE = 5
+const MAX_IMAGE_DIMENSION = 1500 // in pixel
+const MIN_IMAGE_SIZE_FOR_OPTIMISATION = 1000000
+
+const unlink = util.promisify(fs.unlink)
+const stat = util.promisify(fs.stat)
 
 const getFileBasename = (filename) =>
   path.basename(filename, path.extname(filename))
@@ -59,7 +69,6 @@ const numberOfPage = (filePath) =>
 async function optimizePDF(pdfFilePath) {
   const tmpFilePath = pdfFilePath.replace('.pdf', '-tmp.pdf')
   const psFilePath = pdfFilePath.replace('.pdf', '.ps')
-  const stat = util.promisify(fs.stat)
 
   try {
     const { size: oldSize } = await stat(pdfFilePath)
@@ -75,20 +84,48 @@ async function optimizePDF(pdfFilePath) {
   }
 }
 
-const transformImageToPDF = (filename) => {
+const resizeImage = (imgFilePath) =>
+  new Promise((resolve, reject) => {
+    sharp(imgFilePath)
+      .resize({ width: MAX_IMAGE_DIMENSION, withoutEnlargement: true })
+      .toBuffer((err, buffer) => {
+        // Update image with the new content
+        if (err) return reject(err)
+        fs.writeFile(imgFilePath, buffer, (wrErr) => {
+          if (wrErr) return reject(wrErr)
+          resolve()
+        })
+      })
+  })
+
+const optimizeImage = (imgFilePath) =>
+  imagemin([imgFilePath], {
+    plugins: [
+      imageminMozjpeg({ quality: 75 }),
+      imageminPngquant({
+        quality: [0.6, 0.8],
+      }),
+    ],
+  })
+
+const transformImageToPDF = async (filename) => {
   const fileBaseName = getFileBasename(filename)
   const pdfFilePath = `${uploadDestination}${fileBaseName}.pdf`
   const imgFilePath = `${uploadDestination}${filename}`
 
-  return imagesToPdf([imgFilePath], pdfFilePath).then(() => {
-    fs.unlink(imgFilePath, (deleteError) => {
-      if (deleteError) {
-        winston.warn(
-          `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
-        )
-      }
-    })
-  })
+  try {
+    const { size } = await stat(imgFilePath)
+
+    if (size > MIN_IMAGE_SIZE_FOR_OPTIMISATION) {
+      await resizeImage(imgFilePath)
+      await optimizeImage(imgFilePath)
+    }
+
+    await imagesToPdf([imgFilePath], pdfFilePath)
+    await unlink(imgFilePath)
+  } catch (err) {
+    winston.warn(`Erreur en supprimant l'image ${filename} : ${err.message}`)
+  }
 }
 
 const mergePDF = (file1, file2, output) =>

@@ -6,19 +6,19 @@ export const DECLARATION_STATUS = {
 }
 
 export function getDeclarationStatus() {
-  cy.get(`.declaration-status`)
+  return cy.get(`.declaration-status`)
 }
 
 export function getMissingInfoFiles() {
-  cy.get(`.missing-info-file`)
+  return cy.get(`.missing-info-file`)
 }
 export function getMissingEmployerFiles() {
-  cy.get(`.missing-employer-file`)
+  return cy.get(`.missing-employer-file`)
 }
 export function getAllMissingFiles() {
-  cy.get(`.missing-info-file, .missing-employer-file`)
+  return cy.get(`.missing-info-file, .missing-employer-file`)
 }
 
 export function getCompletionJauge() {
-  cy.get(`.declaration-completion`)
+  return cy.get(`.declaration-completion`)
 }

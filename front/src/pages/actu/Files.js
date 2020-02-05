@@ -14,6 +14,7 @@ import styled from 'styled-components'
 
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
+import { H1 } from '../../components/Generic/Titles'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -428,10 +429,10 @@ export class Files extends Component {
 
     // Not in declaration time => last actu done is used
     return lastDeclaration.isFinished ? (
-      <StyledTitle variant="h6" component="h1" style={{ marginTop: '3rem' }}>
+      <H1 style={{ marginTop: '3rem', fontSize: '2rem' }}>
         Vous avez terminé l'envoi des justificatifs du mois de{' '}
         {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
-      </StyledTitle>
+      </H1>
     ) : (
       this.renderSection(lastDeclaration)
     )
@@ -523,6 +524,12 @@ export class Files extends Component {
       ({ hasFinishedDeclaringEmployers }) => hasFinishedDeclaringEmployers,
     )
 
+    /**
+      The code above needs some explanations :
+
+      By default, we used the last declaration done (if exists) and consider all the other declarations as the old declarations.
+      But on a declaration period, we consider the current declaration as the last declaration (which could be null if the declaration is not started).
+    */
     let lastDeclaration = declarations[0]
     if (
       activeMonth &&

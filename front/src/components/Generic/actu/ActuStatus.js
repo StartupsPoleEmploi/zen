@@ -13,7 +13,7 @@ import DeclarationOnGoing from './DeclarationOnGoing'
 import DeclarationImpossible from './DeclarationImpossible'
 
 const StyledActuStatus = styled.div`
-  width: 90%;
+  width: 100%;
   padding: 3rem 2rem 3rem 0;
   margin: ${({ width }) => (['xs', 'sm'].includes(width) ? 'auto' : null)};
   padding: ${({ width }) =>

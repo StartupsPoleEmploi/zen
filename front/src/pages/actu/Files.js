@@ -107,7 +107,9 @@ const StyledSup = styled.sup`
 
 const ActuStatusContainer = styled.div`
   max-width: 50rem;
-  margin: auto;
+  margin: ${({ centered }) => (centered ? 'auto' : 'unset')};
+  align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)}
+  padding-left: ${({ width }) => (width !== 'xs' ? '5rem' : null)}
 `
 
 const infoSpecs = [
@@ -416,7 +418,7 @@ export class Files extends Component {
       (!lastDeclaration || !lastDeclaration.hasFinishedDeclaringEmployers)
     ) {
       return (
-        <ActuStatusContainer>
+        <ActuStatusContainer centered={false} width={this.props.width}>
           <ActuStatus
             activeMonth={activeMonth}
             user={user}
@@ -429,7 +431,14 @@ export class Files extends Component {
 
     // Not in declaration time => last actu done is used
     return lastDeclaration.isFinished ? (
-      <H1 style={{ marginTop: '3rem', fontSize: '2rem' }}>
+      <H1
+        style={{
+          marginTop: '3rem',
+          fontSize: '2rem',
+          paddingLeft: this.props.width !== 'xs' ? '2rem' : null,
+          alignSelf: this.props.width !== 'xs' ? 'flex-start' : null,
+        }}
+      >
         Vous avez terminé l'envoi des justificatifs du mois de{' '}
         {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
       </H1>
@@ -660,7 +669,16 @@ export class Files extends Component {
             oldDeclarations.map(this.renderSection)
           ) : (
             <FilesSection>
-              <StyledTitle variant="h6" component="h1">
+              <StyledTitle
+                variant="h6"
+                component="h1"
+                style={
+                  this.props.width !== 'xs' && {
+                    textAlign: 'right',
+                    paddingRight: '2rem',
+                  }
+                }
+              >
                 Pas d'anciens justificatifs disponibles
               </StyledTitle>
             </FilesSection>

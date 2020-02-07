@@ -5,11 +5,20 @@ export const DECLARATION_STATUS = {
   ON_GOING: 'Actualisation en cours',
 }
 
-export const getDeclarationStatus = () => cy.get(`.declaration-status`)
+export function getDeclarationStatus() {
+  return cy.get(`.declaration-status`)
+}
 
-export const getMissingInfoFiles = () => cy.get(`.missing-info-file`)
-export const getMissingEmployerFiles = () => cy.get(`.missing-employer-file`)
-export const getAllMissingFiles = () =>
-  cy.get(`.missing-info-file, .missing-employer-file`)
+export function getMissingInfoFiles() {
+  return cy.get(`.missing-info-file`)
+}
+export function getMissingEmployerFiles() {
+  return cy.get(`.missing-employer-file`)
+}
+export function getAllMissingFiles() {
+  return cy.get(`.missing-info-file, .missing-employer-file`)
+}
 
-export const getCompletionJauge = () => cy.get(`.declaration-completion`)
+export function getCompletionJauge() {
+  return cy.get(`.declaration-completion`)
+}

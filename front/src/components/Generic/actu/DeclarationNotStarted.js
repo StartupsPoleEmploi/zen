@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import superagent from 'superagent'
 import moment from 'moment'
 
-import MainActionButton from '../../components/Generic/MainActionButton'
+import MainActionButton from '../MainActionButton'
 
 const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
   && {

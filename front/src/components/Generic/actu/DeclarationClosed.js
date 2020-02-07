@@ -6,7 +6,7 @@ import superagent from 'superagent'
 import moment from 'moment'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import { primaryBlue } from '../../constants'
+import { primaryBlue } from '../../../constants'
 
 const sectionColor = '#1e2c59'
 

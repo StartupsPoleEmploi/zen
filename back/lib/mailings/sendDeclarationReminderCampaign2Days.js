@@ -12,7 +12,7 @@ async function sendDeclarationReminderCampaign2Days() {
 
   const allUsers = await userCtrl.getUsersWithoutDeclaration(currentMonth.id);
   while (allUsers.length) {
-    const users = allUsers.splice(0, 50)
+    const users = allUsers.splice(0, 50).filter(e => !!e.email);
     // eslint-disable-next-line no-await-in-loop
     await mailjet.sendMail({
       Messages: users.map(user => ({
@@ -29,7 +29,6 @@ async function sendDeclarationReminderCampaign2Days() {
       winston.error(`There was an error while sending email "RAPPEL_ACTU_2J" : ${err}`);
     });
   }
-  
 }
 
 module.exports = sendDeclarationReminderCampaign2Days;

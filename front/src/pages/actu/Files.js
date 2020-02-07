@@ -424,7 +424,7 @@ export class Files extends Component {
 
     return (
       <FilesSection key={declaration.id}>
-        <StyledTitle variant="h6" component="h1">
+        <StyledTitle variant="h6" component="h1" style={{ fontWeight: 'bold' }}>
           Justificatifs de {formattedMonth}
         </StyledTitle>
         <StyledInfo>

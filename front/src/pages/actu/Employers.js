@@ -47,8 +47,11 @@ const StyledEmployers = styled.div`
 `
 
 const Title = styled(Typography)`
-  text-align: center;
-  padding-bottom: 1.5rem;
+  && {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    font-weight: bold;
+  }
 `
 
 const Form = styled.form`
@@ -70,6 +73,7 @@ const AddEmployersButton = styled(Button)`
     min-width: 15rem;
     margin: 0 5rem;
     min-height: 5.5rem;
+    color: black;
   }
 `
 

@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import TooltipOnFocus from './TooltipOnFocus'
+import { primaryBlue } from '../../constants'
 
 const YES = 'yes'
 const NO = 'no'
@@ -19,7 +20,7 @@ const StyledRadioGroup = styled(RadioGroup)`
 const StyledFormControlLabel = styled(FormControlLabel)`
   && {
     height: 3rem;
-    padding-right: 1rem;
+    padding-right: 1.5rem;
     margin: 0;
   }
 `
@@ -27,7 +28,8 @@ const StyledFormControlLabel = styled(FormControlLabel)`
 const FirstFormControlLabel = styled(StyledFormControlLabel)`
   && {
     border-radius: 0.5rem 0 0 0.5rem;
-    margin-right: 0.2rem;
+    margin-right: 0.3rem;
+    border-right: solid 1px black;
   }
 `
 const SecondFormControlLabel = styled(StyledFormControlLabel)`
@@ -38,6 +40,7 @@ const SecondFormControlLabel = styled(StyledFormControlLabel)`
 
 const StyledRadio = styled(Radio)`
   && {
+    color: #000000;
     && {
       svg {
         font-size: 1.5rem;
@@ -65,11 +68,11 @@ export class YesNoRadioGroup extends Component {
 
     const yesRadio = (
       <StyledRadio
+        style={{
+          color: isYesChecked ? primaryBlue : null,
+        }}
         inputProps={{
           'aria-describedby': `yes[${name}]`,
-        }}
-        style={{
-          color: isYesChecked ? '#7ADF8F' : 'inherit',
         }}
       />
     )
@@ -87,9 +90,15 @@ export class YesNoRadioGroup extends Component {
           )
         }
         label={
-          <span style={{ color: isYesChecked ? '#fff' : 'inherit' }}>oui</span>
+          <span
+            style={{
+              color: '##000000de',
+              fontWeight: isYesChecked ? 'bold' : null,
+            }}
+          >
+            oui
+          </span>
         }
-        style={{ backgroundColor: isYesChecked ? '#4b4b4b' : '#f0f0f0' }}
       />
     )
 
@@ -107,14 +116,20 @@ export class YesNoRadioGroup extends Component {
           control={
             <StyledRadio
               style={{
-                color: isNoChecked ? '#F5A623' : 'inherit',
+                color: isNoChecked ? primaryBlue : null,
               }}
             />
           }
           label={
-            <span style={{ color: isNoChecked ? '#fff' : 'inherit' }}>non</span>
+            <span
+              style={{
+                color: '##000000de',
+                fontWeight: isNoChecked ? 'bold' : null,
+              }}
+            >
+              non
+            </span>
           }
-          style={{ backgroundColor: isNoChecked ? '#4b4b4b' : '#f0f0f0' }}
         />
       </StyledRadioGroup>
     )

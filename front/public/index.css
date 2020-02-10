@@ -13,6 +13,14 @@ body {
   visibility: hidden;
 }
 
+/* Overlay for employer demo tooltips */
+.intro-overlay {
+  z-index: 1002;
+}
+
+.intro-overlay-bg {
+  background: white;
+}
 /*
   Make tooltip only visible when label is focused
   (Too difficult to do it with material-ui)

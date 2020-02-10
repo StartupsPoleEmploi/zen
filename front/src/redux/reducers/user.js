@@ -46,5 +46,8 @@ export default createReducer(
     SET_NO_NEED_ON_BOARDING: (state) => {
       state.user.needOnBoarding = false
     },
+    SET_NO_NEED_EMPLOYER_ON_BOARDING: (state) => {
+      state.user.needEmployerOnBoarding = false
+    },
   },
 )

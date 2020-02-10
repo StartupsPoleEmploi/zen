@@ -5,6 +5,8 @@ import React, { Fragment, useEffect, useState } from 'react'
 import superagent from 'superagent'
 import moment from 'moment'
 
+import catchMaintenance from '../../../lib/catchMaintenance'
+
 export default function DialogUser() {
   const [loading, setLoading] = useState(true)
   const [currentMonth, setCurrentMonth] = useState(null)
@@ -16,6 +18,7 @@ export default function DialogUser() {
       superagent
         .post('/api/developer/current-month', { id: currentMonth.id, endDate })
         .then(() => window.location.reload(true))
+        .catch(catchMaintenance)
         .catch((err) => setError(`Erreur serveur : ${err}`))
     } catch (err) {
       return setError(`Le JSON est invalide : ${err}`)
@@ -28,6 +31,7 @@ export default function DialogUser() {
       setEndDate(body.endDate)
       setLoading(false)
     })
+    .catch(catchMaintenance)
   }, [])
 
   return (

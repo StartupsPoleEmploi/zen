@@ -1,4 +1,6 @@
 import superagent from 'superagent'
+
+import catchMaintenance from '../../lib/catchMaintenance'
 import {
   FETCH_USER_LOADING,
   FETCH_USER_SUCCESS,
@@ -23,6 +25,7 @@ export const fetchUser = () => (dispatch) => {
 
       dispatch({ type: FETCH_USER_SUCCESS, payload: user })
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       // if not logged in, resolve with null
       if (err.status !== 401) {

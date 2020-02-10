@@ -21,6 +21,7 @@ import Slide from './Slide'
 
 import { setNoNeedOnBoarding as setNoNeedOnBoardingAction } from '../../../redux/actions/user'
 import { primaryBlue } from '../../../constants'
+import catchMaintenance from '../../../lib/catchMaintenance'
 import { EmailForm } from './EmailForm'
 
 const StyledOnBoarding = styled.div`
@@ -89,6 +90,7 @@ function OnBoarding({
         .post('/api/user/disable-need-on-boarding')
         .set('CSRF-Token', csrfToken)
         .then(() => setNoNeedOnBoarding())
+        .catch(catchMaintenance)
     }
     setCurrentStep(currentStep + 1)
   }

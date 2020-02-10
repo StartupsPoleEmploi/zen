@@ -7,6 +7,7 @@ import superagent from 'superagent'
 import moment from 'moment'
 
 import MainActionButton from '../MainActionButton'
+import catchMaintenance from '../../../lib/catchMaintenance'
 
 const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
   && {
@@ -29,6 +30,7 @@ const DeclarationNotStarted = () => {
             .format('DD MMMM YYYY'),
         )
       })
+      .catch(catchMaintenance)
   }, [])
 
   return (

@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 
 import { setEmail } from '../../../redux/actions/user'
 import MainActionButton from '../../../components/Generic/MainActionButton'
+import catchMaintenance from '../../../lib/catchMaintenance'
 
 const StyledEmailForm = styled.div`
   margin: auto;
@@ -91,6 +92,7 @@ export class EmailForm extends PureComponent {
         this.setState({ isSuccess: true, isError: false })
         setEmail(this.state.email.trim())
       })
+      .catch(catchMaintenance)
       .catch(() => this.setState({ isError: true }))
   }
 

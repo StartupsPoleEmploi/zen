@@ -15,10 +15,8 @@ WORKDIR /home/back
 CMD (which yarn || npm i -g yarn@1.15.2) && \
     if [ "$NODE_ENV" = "production" ] || [ "$NODE_ENV" = "qa" ]; then \
         yarn install --production && \
-        yarn run knex migrate:latest && \
-        yarn run production:api; \
+        yarn run production:cron; \
     else \
         yarn install && \
-        yarn run knex migrate:latest && \
-        yarn start:api; \
+        yarn start:cron; \
     fi

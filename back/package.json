@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "production": "pm2 start --no-daemon ecosystem.config.js",
-    "start": "pm2 start --no-daemon ecosystem.config.js",
+    "production:api": "pm2-runtime start pm2Api.config.js",
+    "production:cron": "pm2-runtime start pm2Cron.config.js",
+    "start:api": "pm2 start --no-daemon pm2Api.config.js",
+    "start:cron": "pm2 start --no-daemon pm2Cron.config.js",
     "knex": "knex",
     "test": "jest --runInBand --forceExit"
   },

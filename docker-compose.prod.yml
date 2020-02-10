@@ -20,3 +20,40 @@ services:
       - REACT_APP_ZEN_ENV=production
       - NPM_CONFIG_PRODUCTION=false
       - YARN_PRODUCTION=false
+
+  cron:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: dockerfile_cron
+    volumes:
+      - './back:/home/back'
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.101
+    depends_on:
+      - 'db'
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=${DATABASE_URL}
+      - CLIENT_OAUTH_ID=${CLIENT_OAUTH_ID}
+      - CLIENT_OAUTH_SECRET=${CLIENT_OAUTH_SECRET}
+      - API_HOST=${API_HOST}
+      - TOKEN_HOST=${TOKEN_HOST}
+      - APP_HOST=${APP_HOST}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - AUTH_REDIRECT_URI=${AUTH_REDIRECT_URI}
+      - SENTRY_ENV=${SENTRY_ENV}
+      - SENTRY_URL=${SENTRY_URL}
+      - EMAIL_KEY=${EMAIL_KEY}
+      - EMAIL_KEY_SECRET=${EMAIL_KEY_SECRET}
+      - TZ=Europe/Paris
+      - SLACK_WEBHOOK_SU_ZEN=${SLACK_WEBHOOK_SU_ZEN}
+      - SLACK_WEBHOOK_SU_ZEN_TECH=${SLACK_WEBHOOK_SU_ZEN_TECH}
+      - SEND_CAMPAIGN_EMAILS=${SEND_CAMPAIGN_EMAILS}
+      - SEND_TRANSACTIONAL_EMAILS=${SEND_TRANSACTIONAL_EMAILS}
+      - AUTHORIZE_ALL_USERS=${AUTHORIZE_ALL_USERS}
+      - NODE_ENV=production
+      - REACT_APP_ZEN_ENV=production
+      - NPM_CONFIG_PRODUCTION=false
+      - YARN_PRODUCTION=false

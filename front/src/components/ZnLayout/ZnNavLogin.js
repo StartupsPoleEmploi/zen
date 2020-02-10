@@ -141,6 +141,7 @@ const StepperItem = ({ label, link, shouldActivateLink, isActive }) => {
       <LiStep {...liProps}>
         <DesktopLink
           to={link}
+          style={{ fontWeight: isActive ? 'bold' : null }}
           className={isActive ? 'Stepper__Active__Link' : ''}
         >
           {label}
@@ -292,6 +293,7 @@ export const NavLogin = ({
         <StepperItem
           label="CGU"
           link={cguRoute}
+          shouldActivateLink
           isActive={pathname.startsWith(cguRoute)}
         />
       </UlStepper>

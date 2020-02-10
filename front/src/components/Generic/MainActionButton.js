@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import { primaryBlue } from '../../constants'
 
 const BaseButton = styled(Button).attrs({
   color: 'primary',
@@ -32,6 +33,10 @@ const PrimaryButton = styled(BaseButton).attrs({
 
 const SecondaryButton = styled(BaseButton).attrs({})`
   && {
+    color: black;
+    &:hover {
+      color: ${primaryBlue};
+    }
   }
 `
 

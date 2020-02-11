@@ -246,11 +246,7 @@ class App extends Component {
               user.isBlocked ? (
                 <Redirect to="/dashboard" />
               ) : (
-                <Employers
-                  {...props}
-                  activeMonth={activeMonth}
-                  token={user.csrfToken}
-                />
+                <Employers {...props} user={user} activeMonth={activeMonth} />
               )
             }
           />

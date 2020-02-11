@@ -29,6 +29,7 @@ class User extends BaseModel {
         // So this data is not reliable
         isActuDone: { default: false, type: 'boolean' },
         needOnBoarding: { default: true, type: 'boolean' },
+        needEmployerOnBoarding: { default: true, type: 'boolean' },
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
         registeredAt: { type: ['string', 'object', 'null'] },
       },

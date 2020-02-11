@@ -5,7 +5,8 @@ import { primaryBlue } from '../../../constants'
 
 const Dot = styled.span`
   font-size: 8rem;
-  color: ${({ selected }) => (selected ? primaryBlue : '#cde0f8')};
+  color: ${({ selected, selectedColor, notSelectedColor }) =>
+    selected ? selectedColor : notSelectedColor};
   font-family: auto;
   line-height: 0;
 `
@@ -28,7 +29,13 @@ const Li = styled.li`
   display: inline-block;
 `
 
-function StepCounter({ itemNumber, currentStep, goToStep }) {
+function StepCounter({
+  itemNumber,
+  currentStep,
+  goToStep,
+  selectedColor = primaryBlue,
+  notSelectedColor = '#cde0f8',
+}) {
   function updateStep(e) {
     goToStep(+e.currentTarget.getAttribute('data-step'))
   }
@@ -45,7 +52,13 @@ function StepCounter({ itemNumber, currentStep, goToStep }) {
           title={`Aller à l'étape ${i + 1}`}
           data-step={i}
         >
-          <Dot selected={isCurrent}>.</Dot>
+          <Dot
+            selected={isCurrent}
+            selectedColor={selectedColor}
+            notSelectedColor={notSelectedColor}
+          >
+            .
+          </Dot>
         </Button>
       </Li>,
     )
@@ -58,6 +71,8 @@ StepCounter.propTypes = {
   itemNumber: PropTypes.number.isRequired,
   currentStep: PropTypes.number.isRequired,
   goToStep: PropTypes.func.isRequired,
+  selectedColor: PropTypes.string,
+  notSelectedColor: PropTypes.string,
 }
 
 export default StepCounter

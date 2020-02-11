@@ -3176,7 +3176,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-employer"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3215,7 +3215,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-work-hours"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3257,7 +3257,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-salary"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3297,7 +3297,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root sc-brqgnP inKFnP"
+              className="MuiFormControl-root sc-brqgnP inKFnP root-contract"
             >
               <label
                 className="MuiFormLabel-root sc-cMljjf bRmdGn"
@@ -3579,7 +3579,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-employer"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3618,7 +3618,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-work-hours"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3660,7 +3660,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-salary"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3700,7 +3700,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root sc-brqgnP inKFnP"
+              className="MuiFormControl-root sc-brqgnP inKFnP root-contract"
             >
               <label
                 className="MuiFormLabel-root sc-cMljjf bRmdGn"
@@ -3982,7 +3982,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-employer"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
@@ -4027,7 +4027,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-work-hours"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
@@ -4075,7 +4075,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 className="sc-jDwBTQ bxUydo"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw"
+                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-salary"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
@@ -4121,7 +4121,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root sc-brqgnP inKFnP"
+              className="MuiFormControl-root sc-brqgnP inKFnP root-contract"
             >
               <label
                 className="MuiFormLabel-root sc-cMljjf bRmdGn"

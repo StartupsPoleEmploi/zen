@@ -39,3 +39,7 @@ export const setEmail = (email) => (dispatch) => {
 export const setNoNeedOnBoarding = () => (dispatch) => {
   dispatch({ type: 'SET_NO_NEED_ON_BOARDING' })
 }
+
+export const setNoNeedEmployerOnBoarding = () => (dispatch) => {
+  dispatch({ type: 'SET_NO_NEED_EMPLOYER_ON_BOARDING' })
+}

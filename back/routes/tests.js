@@ -20,6 +20,7 @@ const defaultFemaleUser = {
   postalCode: '59160',
   peId: 'acbdefghi',
   needOnBoarding: false,
+  needEmployerOnBoarding: false,
   registeredAt: '2019-04-16',
 }
 

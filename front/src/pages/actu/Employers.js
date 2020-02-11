@@ -17,6 +17,7 @@ import { PropTypes } from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import superagent from 'superagent'
 
 import {
   fetchDeclarations as fetchDeclarationsAction,
@@ -38,6 +39,8 @@ import {
   SALARY,
   WORK_HOURS,
 } from '../../lib/salary'
+import { setNoNeedEmployerOnBoarding as setNoNeedEmployerOnBoardingAction } from '../../redux/actions/user'
+import EmployerOnBoarding from './EmployerOnBoarding/EmployerOnBoarding'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -177,11 +180,15 @@ export class Employers extends Component {
       push: PropTypes.func.isRequired,
       replace: PropTypes.func.isRequired,
     }).isRequired,
-    token: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      needEmployerOnBoarding: PropTypes.bool.isRequired,
+      csrfToken: PropTypes.string.isRequired,
+    }),
     width: PropTypes.string,
     declarations: PropTypes.arrayOf(PropTypes.object),
     fetchDeclarations: PropTypes.func.isRequired,
     postEmployers: PropTypes.func.isRequired,
+    setNoNeedEmployerOnBoarding: PropTypes.func.isRequired,
   }
 
   state = {
@@ -416,6 +423,12 @@ export class Employers extends Component {
     })
   }
 
+  onEmployerOnBoardingEnd = () =>
+    superagent
+      .post('/api/user/disable-need-employer-on-boarding')
+      .set('CSRF-Token', this.props.user.csrfToken)
+      .then(() => this.props.setNoNeedEmployerOnBoarding())
+
   closePreviousEmployersModal = () =>
     this.setState({ showPreviousEmployersModal: false })
 
@@ -447,6 +460,10 @@ export class Employers extends Component {
           Pour quels employeurs avez-vous travaillé en{' '}
           {moment(this.props.activeMonth).format('MMMM YYYY')} ?
         </Title>
+
+        {this.props.user.needEmployerOnBoarding && (
+          <EmployerOnBoarding onFinish={this.onEmployerOnBoardingEnd} />
+        )}
         <Form>
           {employers.map(this.renderEmployerQuestion)}
 
@@ -507,9 +524,12 @@ export class Employers extends Component {
 }
 
 export default connect(
-  (state) => ({ declarations: state.declarationsReducer.declarations }),
+  (state) => ({
+    declarations: state.declarationsReducer.declarations,
+  }),
   {
     fetchDeclarations: fetchDeclarationsAction,
     postEmployers: postEmployersAction,
+    setNoNeedEmployerOnBoarding: setNoNeedEmployerOnBoardingAction,
   },
 )(withWidth()(Employers))

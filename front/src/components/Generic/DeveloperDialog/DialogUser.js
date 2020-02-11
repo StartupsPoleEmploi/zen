@@ -14,6 +14,7 @@ const DEFAULT_STR = `{
   "isAuthorized": true,
   "isBlocked": false,
   "needOnBoarding": false,
+  "needEmployerOnBoarding": false,
   "registeredAt": "2019-05-06",
   "canSendDeclaration": true,
   "hasAlreadySentDeclaration": false,

@@ -11,10 +11,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Check from '@material-ui/icons/Check'
 
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
-import { H1 } from '../../components/Generic/Titles'
+import { H2 } from '../../components/Generic/Titles'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -43,6 +44,14 @@ import {
 } from '../../selectors/declarations'
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils
+
+const CheckIcon = styled(Check)`
+  && {
+    margin-right: 1rem;
+    color: green;
+    vertical-align: sub;
+  }
+`
 
 const StyledFiles = styled.div`
   display: flex;
@@ -110,6 +119,22 @@ const ActuStatusContainer = styled.div`
   margin: ${({ centered }) => (centered ? 'auto' : 'unset')};
   align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)}
   padding-left: ${({ width }) => (width !== 'xs' ? '5rem' : null)}
+`
+
+const Upper = styled.span`
+  text-transform: uppercase;
+`
+
+const StyledH2 = styled(H2)`
+  && {
+    margin-top: 8rem;
+    margin-bottom: 4rem;
+    font-size: 1.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: solid 1px lightgray;
+    display: inline-block;
+    align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)};
+  }
 `
 
 const infoSpecs = [
@@ -418,7 +443,11 @@ export class Files extends Component {
       (!lastDeclaration || !lastDeclaration.hasFinishedDeclaringEmployers)
     ) {
       return (
-        <ActuStatusContainer centered={false} width={this.props.width}>
+        <ActuStatusContainer
+          centered={false}
+          width={this.props.width}
+          style={{ marginTop: '5rem' }}
+        >
           <ActuStatus
             activeMonth={activeMonth}
             user={user}
@@ -431,17 +460,20 @@ export class Files extends Component {
 
     // Not in declaration time => last actu done is used
     return lastDeclaration.isFinished ? (
-      <H1
+      <ActuStatusContainer
         style={{
-          marginTop: '3rem',
-          fontSize: '2rem',
           paddingLeft: this.props.width !== 'xs' ? '2rem' : null,
-          alignSelf: this.props.width !== 'xs' ? 'flex-start' : null,
         }}
       >
-        Vous avez terminé l'envoi des justificatifs du mois de{' '}
-        {formattedDeclarationMonth(lastDeclaration.declarationMonth.month)}
-      </H1>
+        <StyledH2 width={this.props.width}>
+          Actualisation -{' '}
+          <Upper>{moment(lastDeclaration).format('MMMM YYYY')}</Upper>
+        </StyledH2>
+        <Typography style={{ fontWeight: 'bold', fontSize: '1.8rem' }}>
+          <CheckIcon />
+          <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
+        </Typography>
+      </ActuStatusContainer>
     ) : (
       this.renderSection(lastDeclaration)
     )

@@ -142,7 +142,7 @@ export class EmployerQuestion extends PureComponent {
             <EmployerQuestionContainer>
               <StyledTextField
                 id={`employerName[${index}]`}
-                classes={{ root: 'root-employer' }}
+                className="root-employer"
                 label={this.renderLabel({
                   id: `employerName[${index}]`,
                   label: 'Nom employeur',
@@ -166,7 +166,7 @@ export class EmployerQuestion extends PureComponent {
             <EmployerQuestionContainer>
               <StyledTextField
                 id={`workHours[${index}]`}
-                classes={{ root: 'root-work-hours' }}
+                className="root-work-hours"
                 label={this.renderLabel({
                   id: `workHours[${index}]`,
                   label: "Nombre d'heures",
@@ -194,7 +194,7 @@ export class EmployerQuestion extends PureComponent {
             <EmployerQuestionContainer>
               <StyledTextField
                 id={`salary[${index}]`}
-                classes={{ root: 'root-salary' }}
+                className="root-salary"
                 label={this.renderLabel({
                   id: `salary[${index}]`,
                   label: 'Salaire brut €',

@@ -41,6 +41,10 @@ const Slide = styled.div`
   z-index: 1001;
   max-width: 35rem;
   box-shadow: 0 0 0.5rem 0.1rem #a7a7a7;
+
+  @media (max-width: 672px) {
+    left: 2rem;
+  }
 `
 
 const Title = styled.div`
@@ -100,10 +104,9 @@ function TooltipsDemo({ onFinish, slides }) {
     const { selector } = slide
 
     const current = document.querySelector('.intro-overlay')
-
     const node = document.querySelector(selector)
+
     if (node) {
-      node.classList.add('intro-overlay')
       node.classList.add('intro-overlay')
       if (current) current.classList.remove('intro-overlay-bg')
 
@@ -114,7 +117,7 @@ function TooltipsDemo({ onFinish, slides }) {
     }
 
     setTimeout(() => {
-      node.classList.add('intro-overlay-bg')
+      if (node) node.classList.add('intro-overlay-bg')
       if (current) current.classList.remove('intro-overlay')
     }, 200)
 
@@ -124,7 +127,22 @@ function TooltipsDemo({ onFinish, slides }) {
   // Handle when window resize
   useLayoutEffect(() => {
     function updateOverlayCoordinates() {
-      const current = document.querySelector('.intro-overlay')
+      let current = document.querySelector('.intro-overlay')
+      if (!current) {
+        /*
+          When basculing from mobile view to desktop (or contrary),
+          we lose the 'intro-overlay' and 'intro-overlay-bg' classes
+          due to the complete app redraw by React.
+          So we re-use the selector to get it
+        */
+        const { selector } = slides[currentSlide]
+        current = document.querySelector(selector)
+        if (!current) return
+
+        current.classList.add('intro-overlay')
+        current.classList.add('intro-overlay-bg')
+      }
+
       setTop(current.offsetTop - OVERLAY_PADDING / 2)
       setLeft(current.offsetLeft - OVERLAY_PADDING / 2)
       setWidth(current.offsetWidth + OVERLAY_PADDING)

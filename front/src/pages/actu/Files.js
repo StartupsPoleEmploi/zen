@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Check from '@material-ui/icons/Check'
 
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
@@ -43,6 +44,14 @@ import {
 } from '../../selectors/declarations'
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils
+
+const CheckIcon = styled(Check)`
+  && {
+    margin-right: 1rem;
+    color: green;
+    vertical-align: sub;
+  }
+`
 
 const StyledFiles = styled.div`
   display: flex;
@@ -461,6 +470,7 @@ export class Files extends Component {
           <Upper>{moment(lastDeclaration).format('MMMM YYYY')}</Upper>
         </StyledH2>
         <Typography style={{ fontWeight: 'bold', fontSize: '1.8rem' }}>
+          <CheckIcon />
           <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
         </Typography>
       </ActuStatusContainer>

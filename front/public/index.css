@@ -25,3 +25,6 @@ body {
 .MuiFormControl-root .MuiInputLabel-shrink img {
   margin-left: 6px;
 }
+.MuiBackdrop-root {
+  background-color: rgba(238, 238, 238, 0.8) !important;
+￼}

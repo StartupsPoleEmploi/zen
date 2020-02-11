@@ -230,16 +230,11 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -253,7 +248,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -305,7 +300,8 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -314,16 +310,11 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -337,7 +328,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -388,7 +379,8 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -488,16 +480,11 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -511,7 +498,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -563,7 +550,8 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -572,16 +560,11 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#4b4b4b",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-274 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-274 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -595,7 +578,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "#F5A623",
+                        "color": "#0065DB",
                       }
                     }
                     tabIndex={null}
@@ -646,7 +629,8 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "#fff",
+                          "color": "##000000de",
+                          "fontWeight": "bold",
                         }
                       }
                     >
@@ -746,16 +730,11 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -769,7 +748,7 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -821,7 +800,8 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -830,16 +810,11 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -853,7 +828,7 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -904,7 +879,8 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -1004,16 +980,11 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1027,7 +998,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -1079,7 +1050,8 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -1088,16 +1060,11 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#4b4b4b",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-424 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-424 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1111,7 +1078,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "#F5A623",
+                        "color": "#0065DB",
                       }
                     }
                     tabIndex={null}
@@ -1162,7 +1129,8 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "#fff",
+                          "color": "##000000de",
+                          "fontWeight": "bold",
                         }
                       }
                     >
@@ -1265,16 +1233,11 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#4b4b4b",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-349 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-349 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1288,7 +1251,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "#7ADF8F",
+                        "color": "#0065DB",
                       }
                     }
                     tabIndex={null}
@@ -1340,7 +1303,8 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "#fff",
+                          "color": "##000000de",
+                          "fontWeight": "bold",
                         }
                       }
                     >
@@ -1349,16 +1313,11 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1372,7 +1331,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -1423,7 +1382,8 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -1526,16 +1486,11 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#4b4b4b",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-199 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-199 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1549,7 +1504,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "#7ADF8F",
+                        "color": "#0065DB",
                       }
                     }
                     tabIndex={null}
@@ -1601,7 +1556,8 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "#fff",
+                          "color": "##000000de",
+                          "fontWeight": "bold",
                         }
                       }
                     >
@@ -1610,16 +1566,11 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1633,7 +1584,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -1684,7 +1635,8 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -3365,18 +3317,13 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-describedby={null}
                     aria-disabled={false}
                     aria-hidden="false"
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1599 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1599 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3391,7 +3338,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -3447,7 +3394,8 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -3456,16 +3404,11 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1599 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1599 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3479,7 +3422,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -3533,7 +3476,8 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -3776,18 +3720,13 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#4b4b4b",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-describedby={null}
                     aria-disabled={false}
                     aria-hidden="false"
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1753 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ PrivateSwitchBase-checked-1754 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1753 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-1754 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3802,7 +3741,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "#7ADF8F",
+                        "color": "#0065DB",
                       }
                     }
                     tabIndex={null}
@@ -3858,7 +3797,8 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "#fff",
+                          "color": "##000000de",
+                          "fontWeight": "bold",
                         }
                       }
                     >
@@ -3867,16 +3807,11 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1753 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1753 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3890,7 +3825,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -3944,7 +3879,8 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -4210,18 +4146,13 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY hgdlvk"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
                 >
                   <span
                     aria-describedby={null}
                     aria-disabled={false}
                     aria-hidden="false"
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1915 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1915 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -4236,7 +4167,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -4292,7 +4223,8 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >
@@ -4301,16 +4233,11 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV HbHem"
-                  style={
-                    Object {
-                      "backgroundColor": "#f0f0f0",
-                    }
-                  }
+                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1915 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf hukdlZ MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1915 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -4324,7 +4251,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     onTouchStart={[Function]}
                     style={
                       Object {
-                        "color": "inherit",
+                        "color": null,
                       }
                     }
                     tabIndex={null}
@@ -4378,7 +4305,8 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     <span
                       style={
                         Object {
-                          "color": "inherit",
+                          "color": "##000000de",
+                          "fontWeight": null,
                         }
                       }
                     >

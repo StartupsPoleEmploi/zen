@@ -1,4 +1,4 @@
-version: '3'
+version: '2.4'
 services:
   node:
     volumes:
@@ -26,6 +26,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile_cron
+    cpus: '4.0'
+    mem_limit: 8G
     volumes:
       - './back:/home/back'
     networks:

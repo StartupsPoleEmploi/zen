@@ -6,7 +6,6 @@
     "production:api": "pm2-runtime start pm2Api.config.js",
     "production:cron": "pm2-runtime start pm2Cron.config.js",
     "start:api": "pm2 start --no-daemon pm2Api.config.js",
-    "start:cron": "pm2 start --no-daemon pm2Cron.config.js",
     "knex": "knex",
     "test": "jest --runInBand --forceExit"
   },

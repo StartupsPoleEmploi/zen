@@ -15,7 +15,7 @@ body {
 
 /* Overlay for employer demo tooltips */
 .intro-overlay {
-  z-index: 1002;
+  z-index: 1000002;
 }
 
 .intro-overlay-bg {

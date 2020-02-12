@@ -29,7 +29,7 @@ const Background = styled.div`
   right: 0;
   background: #dcdcdc;
   opacity: 0.8;
-  z-index: 999;
+  z-index: 999999;
 `
 
 const Slide = styled.div`
@@ -38,12 +38,13 @@ const Slide = styled.div`
   left: 25rem;
   padding: 2rem 2rem 3rem 2rem;
   background: white;
-  z-index: 1001;
+  z-index: 1000001;
   max-width: 35rem;
   box-shadow: 0 0 0.5rem 0.1rem #a7a7a7;
 
   @media (max-width: 672px) {
-    left: 2rem;
+    left: 1rem;
+    bottom: 2rem;
   }
 `
 
@@ -76,13 +77,13 @@ const ActionsContainer = styled.div`
 const WhiteOverlay = styled.div`
   background: white;
   position: absolute;
-  z-index: 999;
+  z-index: 999999;
   transition: all 0.25s;
 `
 const TransparentOverlay = styled.div`
   background: transparent;
   position: absolute;
-  z-index: 1004;
+  z-index: 1000004;
   transition: all 0.25s;
   box-shadow: 0 0 0.5rem 0.1rem gray;
 `
@@ -98,7 +99,14 @@ function TooltipsDemo({ onFinish, slides }) {
 
   // In order to make the component more independant and maintenable, we use raw JavaScript
   useEffect(() => {
-    if (currentSlide > slides.length - 1) return
+    if (currentSlide > slides.length - 1) {
+      const current = document.querySelector('.intro-overlay')
+      if (current) {
+        current.classList.remove('intro-overlay')
+        current.classList.remove('intro-overlay-bg')
+      }
+      return
+    }
 
     const slide = slides[currentSlide]
     const { selector } = slide

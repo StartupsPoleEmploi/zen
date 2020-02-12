@@ -3,6 +3,7 @@
 export const primaryBlue = '#0065DB'
 export const secondaryBlue = '#262C65'
 export const helpColor = '#791A8B'
+export const darkBlue = '#1e2c59'
 
 /* Sizes */
 export const mobileBreakpoint = '672px'

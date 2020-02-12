@@ -1,3 +1,4 @@
+import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import FormLabel from '@material-ui/core/FormLabel'
@@ -5,11 +6,11 @@ import Typography from '@material-ui/core/Typography'
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
 import Check from '@material-ui/icons/Check'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import styled from 'styled-components'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
-import { primaryBlue } from '../../constants'
+import { helpColor, darkBlue, primaryBlue } from '../../constants'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -34,27 +35,28 @@ const StyledFormLabel = styled(FormLabel)`
 
 const LabelsContainer = styled.div`
   flex: 0 1 auto;
-  padding-right: 1rem;
+  padding-right: 3rem;
   max-width: 18rem;
-  width: 100%;
 `
 
 const ActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
 `
 
 const ActionButton = styled(Button).attrs({
   variant: 'contained',
 })`
   && {
-    border-radius: 2rem;
+    border-radius: 9rem;
+    padding: 1rem 3rem;
   }
 `
 
 const CheckBoxOutlineBlankIcon = styled(CheckBoxOutlineBlank)`
+  color: ${primaryBlue};
   margin-right: 1rem;
+  vertical-align: sub;
 `
 
 const CheckIcon = styled(Check)`
@@ -65,6 +67,37 @@ const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
     padding-right: 1rem;
+  }
+`
+
+const Upper = styled.span`
+  text-transform: uppercase;
+`
+
+const Or = styled(Typography)`
+  && {
+    font-weight: bold;
+    width: 5rem;
+    text-align: center;
+    align-self: center;
+  }
+`
+
+const InfoImg = styled(InfoOutlinedIcon)`
+  && {
+    color: ${helpColor};
+    vertical-align: sub;
+    margin-left: 0.5rem;
+  }
+`
+const DocumentZone = styled.div`
+  display: flex;
+  flex: 3;
+  justify-content: space-around;
+  width: 100%;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
   }
 `
 
@@ -139,7 +172,6 @@ export class DocumentUpload extends Component {
         onClick={this.showPreview}
         className="show-file"
         color="primary"
-        fullWidth={useLightVersion}
       >
         Voir, modifier ou valider
       </ActionButton>
@@ -150,9 +182,8 @@ export class DocumentUpload extends Component {
         aria-describedby={`file[${id}]`}
         color="primary"
         component="span"
-        fullWidth={useLightVersion}
       >
-        Transmettre
+        Transmettre à Pôle emploi
       </ActionButton>
     )
 
@@ -169,7 +200,11 @@ export class DocumentUpload extends Component {
             <b>{label}</b>
           </Typography>
           {caption && (
-            <Typography variant="caption" component="div">
+            <Typography
+              variant="caption"
+              component="div"
+              style={{ fontSize: '1.6rem', color: darkBlue }}
+            >
               {caption}
             </Typography>
           )}
@@ -187,18 +222,11 @@ export class DocumentUpload extends Component {
         {isLoading ? (
           <CircularProgress />
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              flex: 1,
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
-          >
+          <DocumentZone>
             <ActionsContainer
               style={{
-                border: useLightVersion ? '' : `2px dotted ${primaryBlue}`,
                 alignItems: useLightVersion ? 'flex-start' : 'center',
+                alignSelf: 'center',
                 padding: useLightVersion ? '1rem 0' : '1rem',
               }}
             >
@@ -217,7 +245,10 @@ export class DocumentUpload extends Component {
                 </ActionButton>
               ) : !fileExistsOnServer ? (
                 <StyledFormLabel
-                  style={{ width: useLightVersion ? '100%' : 'auto' }}
+                  style={{
+                    width: useLightVersion ? '100%' : 'auto',
+                    textAlign: 'center',
+                  }}
                 >
                   {this.renderFileField(uploadInput, showTooltip, employerId)}
                   {hiddenInput}
@@ -227,29 +258,35 @@ export class DocumentUpload extends Component {
               )}
             </ActionsContainer>
 
-            <TooltipOnFocus content="Cochez cette case si vous avez transmis ce justificatif à Pôle emploi par d'autres moyens que Zen.">
-              <Button
-                aria-describedby={`file[${id}]`}
-                onClick={this.skipFile}
-                className="already-transmitted-button"
-                style={{
-                  width: '100%',
-                  maxWidth: '15rem',
-                  textAlign: 'left',
-                  lineHeight: '2rem',
-                }}
-                size={useLightVersion ? 'medium' : 'small'}
-                disabled={isTransmitted}
-              >
-                {!isTransmitted && (
+            {!isTransmitted && (
+              <>
+                <Or>OU</Or>
+                <Button
+                  aria-describedby={`file[${id}]`}
+                  onClick={this.skipFile}
+                  className="already-transmitted-button"
+                  style={{
+                    textAlign: 'left',
+                    lineHeight: '2rem',
+                  }}
+                  size={useLightVersion ? 'medium' : 'small'}
+                  disabled={isTransmitted}
+                >
                   <>
-                    <CheckBoxOutlineBlankIcon />
-                    Déjà transmis à Pôle emploi
+                    <Typography style={{ fontWeight: 'bold', display: 'flex' }}>
+                      <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
+                      <div>
+                        Pôle emploi <Upper>a déjà ce justificatif</Upper>
+                        <TooltipOnFocus content="Cochez cette case si vous avez transmis ce justificatif à Pôle emploi par d'autres moyens que Zen.">
+                          <InfoImg />
+                        </TooltipOnFocus>
+                      </div>
+                    </Typography>
                   </>
-                )}
-              </Button>
-            </TooltipOnFocus>
-          </div>
+                </Button>
+              </>
+            )}
+          </DocumentZone>
         )}
       </StyledContainer>
     )

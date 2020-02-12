@@ -1707,7 +1707,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -1718,21 +1718,14 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "flex-start",
-          "border": "",
+          "alignSelf": "center",
           "padding": "1rem 0",
         }
       }
@@ -1741,6 +1734,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
         className="MuiFormLabel-root sc-eNQAEJ kQUfQT"
         style={
           Object {
+            "textAlign": "center",
             "width": "100%",
           }
         }
@@ -1748,7 +1742,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
         <span
           aria-describedby="file[1]"
           aria-disabled={false}
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc MuiButton-containedPrimary MuiButton-fullWidth"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed MuiButton-containedPrimary"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -1766,7 +1760,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
           <span
             className="MuiButton-label"
           >
-            Transmettre
+            Transmettre à Pôle emploi
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -1784,9 +1778,13 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
         />
       </label>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button"
       disabled={false}
       onBlur={[Function]}
@@ -1797,7 +1795,6 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -1805,30 +1802,68 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -1849,7 +1884,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -1860,21 +1895,14 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "center",
-          "border": "2px dotted #0065DB",
+          "alignSelf": "center",
           "padding": "1rem",
         }
       }
@@ -1883,6 +1911,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
         className="MuiFormLabel-root sc-eNQAEJ kQUfQT"
         style={
           Object {
+            "textAlign": "center",
             "width": "auto",
           }
         }
@@ -1890,7 +1919,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
         <span
           aria-describedby="file[1]"
           aria-disabled={false}
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc MuiButton-containedPrimary"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed MuiButton-containedPrimary"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -1908,7 +1937,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
           <span
             className="MuiButton-label"
           >
-            Transmettre
+            Transmettre à Pôle emploi
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -1926,9 +1955,13 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
         />
       </label>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button MuiButton-textSizeSmall MuiButton-sizeSmall"
       disabled={false}
       onBlur={[Function]}
@@ -1939,7 +1972,6 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -1947,30 +1979,68 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -1991,7 +2061,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2002,21 +2072,14 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "flex-start",
-          "border": "",
+          "alignSelf": "center",
           "padding": "1rem 0",
         }
       }
@@ -2025,6 +2088,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
         className="MuiFormLabel-root sc-eNQAEJ kQUfQT"
         style={
           Object {
+            "textAlign": "center",
             "width": "100%",
           }
         }
@@ -2032,7 +2096,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
         <span
           aria-describedby="file[1]"
           aria-disabled={false}
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc MuiButton-containedPrimary MuiButton-fullWidth"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed MuiButton-containedPrimary"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -2050,7 +2114,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
           <span
             className="MuiButton-label"
           >
-            Transmettre
+            Transmettre à Pôle emploi
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2068,9 +2132,13 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
         />
       </label>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button"
       disabled={false}
       onBlur={[Function]}
@@ -2081,7 +2149,6 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -2089,30 +2156,68 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2133,7 +2238,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2144,21 +2249,14 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "center",
-          "border": "2px dotted #0065DB",
+          "alignSelf": "center",
           "padding": "1rem",
         }
       }
@@ -2167,6 +2265,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
         className="MuiFormLabel-root sc-eNQAEJ kQUfQT"
         style={
           Object {
+            "textAlign": "center",
             "width": "auto",
           }
         }
@@ -2174,7 +2273,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
         <span
           aria-describedby="file[1]"
           aria-disabled={false}
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc MuiButton-containedPrimary"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed MuiButton-containedPrimary"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -2192,7 +2291,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
           <span
             className="MuiButton-label"
           >
-            Transmettre
+            Transmettre à Pôle emploi
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2210,9 +2309,13 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
         />
       </label>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button MuiButton-textSizeSmall MuiButton-sizeSmall"
       disabled={false}
       onBlur={[Function]}
@@ -2223,7 +2326,6 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -2231,30 +2333,68 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2275,7 +2415,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2286,21 +2426,14 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "flex-start",
-          "border": "",
+          "alignSelf": "center",
           "padding": "1rem 0",
         }
       }
@@ -2314,6 +2447,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
         className="MuiFormLabel-root sc-eNQAEJ kQUfQT"
         style={
           Object {
+            "textAlign": "center",
             "width": "100%",
           }
         }
@@ -2321,7 +2455,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
         <span
           aria-describedby="file[1]"
           aria-disabled={false}
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc MuiButton-containedPrimary MuiButton-fullWidth"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed MuiButton-containedPrimary"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -2339,7 +2473,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
           <span
             className="MuiButton-label"
           >
-            Transmettre
+            Transmettre à Pôle emploi
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2357,9 +2491,13 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
         />
       </label>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button"
       disabled={false}
       onBlur={[Function]}
@@ -2370,7 +2508,6 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -2378,30 +2515,68 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2422,7 +2597,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2433,21 +2608,14 @@ exports[`Storyshots DocumentUpload error 1`] = `
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "center",
-          "border": "2px dotted #0065DB",
+          "alignSelf": "center",
           "padding": "1rem",
         }
       }
@@ -2461,6 +2629,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
         className="MuiFormLabel-root sc-eNQAEJ kQUfQT"
         style={
           Object {
+            "textAlign": "center",
             "width": "auto",
           }
         }
@@ -2468,7 +2637,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
         <span
           aria-describedby="file[1]"
           aria-disabled={false}
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc MuiButton-containedPrimary"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed MuiButton-containedPrimary"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -2486,7 +2655,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
           <span
             className="MuiButton-label"
           >
-            Transmettre
+            Transmettre à Pôle emploi
           </span>
           <span
             className="MuiTouchRipple-root"
@@ -2504,9 +2673,13 @@ exports[`Storyshots DocumentUpload error 1`] = `
         />
       </label>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button MuiButton-textSizeSmall MuiButton-sizeSmall"
       disabled={false}
       onBlur={[Function]}
@@ -2517,7 +2690,6 @@ exports[`Storyshots DocumentUpload error 1`] = `
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -2525,30 +2697,68 @@ exports[`Storyshots DocumentUpload error 1`] = `
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2569,7 +2779,7 @@ exports[`Storyshots DocumentUpload loading (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2618,7 +2828,7 @@ exports[`Storyshots DocumentUpload loading 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2667,7 +2877,7 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2683,27 +2893,20 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
     </div>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "flex-start",
-          "border": "",
+          "alignSelf": "center",
           "padding": "1rem 0",
         }
       }
     >
       <button
-        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc show-file MuiButton-containedPrimary MuiButton-fullWidth"
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed show-file MuiButton-containedPrimary"
         disabled={false}
         onBlur={[Function]}
         onClick={[Function]}
@@ -2730,9 +2933,13 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
         />
       </button>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button"
       disabled={false}
       onBlur={[Function]}
@@ -2743,7 +2950,6 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -2751,30 +2957,68 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2795,7 +3039,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2811,27 +3055,20 @@ exports[`Storyshots DocumentUpload with file 1`] = `
     </div>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "center",
-          "border": "2px dotted #0065DB",
+          "alignSelf": "center",
           "padding": "1rem",
         }
       }
     >
       <button
-        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc show-file MuiButton-containedPrimary"
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed show-file MuiButton-containedPrimary"
         disabled={false}
         onBlur={[Function]}
         onClick={[Function]}
@@ -2858,9 +3095,13 @@ exports[`Storyshots DocumentUpload with file 1`] = `
         />
       </button>
     </div>
+    <p
+      className="MuiTypography-root sc-jWBwVP bIHzHy MuiTypography-body1"
+    >
+      OU
+    </p>
     <button
       aria-describedby="file[1]"
-      aria-hidden="false"
       className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button MuiButton-textSizeSmall MuiButton-sizeSmall"
       disabled={false}
       onBlur={[Function]}
@@ -2871,7 +3112,6 @@ exports[`Storyshots DocumentUpload with file 1`] = `
       onKeyUp={[Function]}
       onMouseDown={[Function]}
       onMouseLeave={[Function]}
-      onMouseOver={[Function]}
       onMouseUp={[Function]}
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
@@ -2879,30 +3119,68 @@ exports[`Storyshots DocumentUpload with file 1`] = `
       style={
         Object {
           "lineHeight": "2rem",
-          "maxWidth": "15rem",
           "textAlign": "left",
-          "width": "100%",
         }
       }
       tabIndex={0}
-      title={null}
       type="button"
     >
       <span
         className="MuiButton-label"
       >
-        <svg
-          aria-hidden="true"
-          className="MuiSvgIcon-root sc-iAyFgw iKiAsw"
-          focusable="false"
-          role="presentation"
-          viewBox="0 0 24 24"
+        <p
+          className="MuiTypography-root MuiTypography-body1"
+          style={
+            Object {
+              "display": "flex",
+              "fontWeight": "bold",
+            }
+          }
         >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Déjà transmis à Pôle emploi
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root sc-iAyFgw dwWggC"
+            focusable="false"
+            role="presentation"
+            style={
+              Object {
+                "width": "3rem",
+              }
+            }
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+          <div>
+            Pôle emploi 
+            <span
+              className="sc-cvbbAY bWJQPb"
+            >
+              a déjà ce justificatif
+            </span>
+            <svg
+              aria-describedby={null}
+              aria-hidden="false"
+              className="MuiSvgIcon-root sc-brqgnP grqIJY"
+              focusable="false"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+              onTouchEnd={[Function]}
+              onTouchStart={[Function]}
+              role="presentation"
+              title={null}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              />
+            </svg>
+          </div>
+        </p>
       </span>
       <span
         className="MuiTouchRipple-root"
@@ -2923,7 +3201,7 @@ exports[`Storyshots DocumentUpload with transmitted file (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2934,27 +3212,20 @@ exports[`Storyshots DocumentUpload with transmitted file (light version) 1`] = `
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "flex-start",
-          "border": "",
+          "alignSelf": "center",
           "padding": "1rem 0",
         }
       }
     >
       <button
-        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc Mui-disabled Mui-disabled"
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed Mui-disabled Mui-disabled"
         disabled={true}
         onBlur={[Function]}
         onDragLeave={[Function]}
@@ -2994,40 +3265,6 @@ exports[`Storyshots DocumentUpload with transmitted file (light version) 1`] = `
         </span>
       </button>
     </div>
-    <button
-      aria-describedby="file[1]"
-      aria-hidden="false"
-      className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button Mui-disabled Mui-disabled"
-      disabled={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onDragLeave={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      onKeyUp={[Function]}
-      onMouseDown={[Function]}
-      onMouseLeave={[Function]}
-      onMouseOver={[Function]}
-      onMouseUp={[Function]}
-      onTouchEnd={[Function]}
-      onTouchMove={[Function]}
-      onTouchStart={[Function]}
-      style={
-        Object {
-          "lineHeight": "2rem",
-          "maxWidth": "15rem",
-          "textAlign": "left",
-          "width": "100%",
-        }
-      }
-      tabIndex={-1}
-      title={null}
-      type="button"
-    >
-      <span
-        className="MuiButton-label"
-      />
-    </button>
   </div>
 </div>
 `;
@@ -3043,7 +3280,7 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs gUKHFw"
+    className="sc-hMqMXs bcjXuG"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -3054,27 +3291,20 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
     </p>
   </div>
   <div
-    style={
-      Object {
-        "display": "flex",
-        "flex": 1,
-        "justifyContent": "space-between",
-        "width": "100%",
-      }
-    }
+    className="sc-cMljjf hphbGq"
   >
     <div
-      className="sc-kEYyzF ljXtDx"
+      className="sc-kEYyzF koCczG"
       style={
         Object {
           "alignItems": "center",
-          "border": "2px dotted #0065DB",
+          "alignSelf": "center",
           "padding": "1rem",
         }
       }
     >
       <button
-        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU hzJhoc Mui-disabled Mui-disabled"
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-kkGfuU csYhed Mui-disabled Mui-disabled"
         disabled={true}
         onBlur={[Function]}
         onDragLeave={[Function]}
@@ -3114,40 +3344,6 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
         </span>
       </button>
     </div>
-    <button
-      aria-describedby="file[1]"
-      aria-hidden="false"
-      className="MuiButtonBase-root MuiButton-root MuiButton-text already-transmitted-button MuiButton-textSizeSmall MuiButton-sizeSmall Mui-disabled Mui-disabled"
-      disabled={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onDragLeave={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      onKeyUp={[Function]}
-      onMouseDown={[Function]}
-      onMouseLeave={[Function]}
-      onMouseOver={[Function]}
-      onMouseUp={[Function]}
-      onTouchEnd={[Function]}
-      onTouchMove={[Function]}
-      onTouchStart={[Function]}
-      style={
-        Object {
-          "lineHeight": "2rem",
-          "maxWidth": "15rem",
-          "textAlign": "left",
-          "width": "100%",
-        }
-      }
-      tabIndex={-1}
-      title={null}
-      type="button"
-    >
-      <span
-        className="MuiButton-label"
-      />
-    </button>
   </div>
 </div>
 `;
@@ -3166,17 +3362,17 @@ exports[`Storyshots EmployerQuestion default 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-cvbbAY iReTcD employer-question"
+          className="sc-jAaTju cRYNZb employer-question"
         >
           <div
-            className="sc-jWBwVP dYrTfP"
+            className="sc-jDwBTQ bnduhJ"
           >
             <div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-employer"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-employer"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3212,10 +3408,10 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 </div>
               </div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-work-hours"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-work-hours"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3254,10 +3450,10 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 </div>
               </div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-salary"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-salary"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3297,10 +3493,10 @@ exports[`Storyshots EmployerQuestion default 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root sc-brqgnP inKFnP root-contract"
+              className="MuiFormControl-root sc-gPEVay kIPluu root-contract"
             >
               <label
-                className="MuiFormLabel-root sc-cMljjf bRmdGn"
+                className="MuiFormLabel-root sc-iRbamj dWJwFn"
                 style={
                   Object {
                     "paddingBottom": "1rem",
@@ -3323,7 +3519,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     aria-describedby={null}
                     aria-disabled={false}
                     aria-hidden="false"
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1599 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1571 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3350,7 +3546,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={false}
-                        className="PrivateSwitchBase-input-1602"
+                        className="PrivateSwitchBase-input-1574"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3358,7 +3554,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         value="yes"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1615"
+                        className="PrivateRadioButtonIcon-root-1587"
                       >
                         <svg
                           aria-hidden="true"
@@ -3373,7 +3569,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1616"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1588"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3408,7 +3604,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1599 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1571 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3432,7 +3628,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                     >
                       <input
                         checked={false}
-                        className="PrivateSwitchBase-input-1602"
+                        className="PrivateSwitchBase-input-1574"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3440,7 +3636,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         value="no"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1615"
+                        className="PrivateRadioButtonIcon-root-1587"
                       >
                         <svg
                           aria-hidden="true"
@@ -3455,7 +3651,7 @@ exports[`Storyshots EmployerQuestion default 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1616"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1588"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3490,13 +3686,13 @@ exports[`Storyshots EmployerQuestion default 1`] = `
           </div>
           <button
             aria-label="Supprimer"
-            className="sc-jAaTju jEFoMd"
+            className="sc-jlyJG blCxpJ"
             onClick={[Function]}
             type="button"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
+              className="MuiSvgIcon-root sc-csuQGl fCHxKD"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -3569,17 +3765,17 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-cvbbAY iReTcD employer-question"
+          className="sc-jAaTju cRYNZb employer-question"
         >
           <div
-            className="sc-jWBwVP dYrTfP"
+            className="sc-jDwBTQ bnduhJ"
           >
             <div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-employer"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-employer"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3615,10 +3811,10 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 </div>
               </div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-work-hours"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-work-hours"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3657,10 +3853,10 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 </div>
               </div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-salary"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-salary"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -3700,10 +3896,10 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root sc-brqgnP inKFnP root-contract"
+              className="MuiFormControl-root sc-gPEVay kIPluu root-contract"
             >
               <label
-                className="MuiFormLabel-root sc-cMljjf bRmdGn"
+                className="MuiFormLabel-root sc-iRbamj dWJwFn"
                 style={
                   Object {
                     "paddingBottom": "1rem",
@@ -3726,7 +3922,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     aria-describedby={null}
                     aria-disabled={false}
                     aria-hidden="false"
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1753 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-1754 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1725 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW PrivateSwitchBase-checked-1726 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3753,7 +3949,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={true}
-                        className="PrivateSwitchBase-input-1756"
+                        className="PrivateSwitchBase-input-1728"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3761,7 +3957,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         value="yes"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1769 PrivateRadioButtonIcon-checked-1771"
+                        className="PrivateRadioButtonIcon-root-1741 PrivateRadioButtonIcon-checked-1743"
                       >
                         <svg
                           aria-hidden="true"
@@ -3776,7 +3972,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1770"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1742"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3811,7 +4007,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1753 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1725 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -3835,7 +4031,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                     >
                       <input
                         checked={false}
-                        className="PrivateSwitchBase-input-1756"
+                        className="PrivateSwitchBase-input-1728"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -3843,7 +4039,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         value="no"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1769"
+                        className="PrivateRadioButtonIcon-root-1741"
                       >
                         <svg
                           aria-hidden="true"
@@ -3858,7 +4054,7 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1770"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1742"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -3893,13 +4089,13 @@ exports[`Storyshots EmployerQuestion filled 1`] = `
           </div>
           <button
             aria-label="Supprimer"
-            className="sc-jAaTju jEFoMd"
+            className="sc-jlyJG blCxpJ"
             onClick={[Function]}
             type="button"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
+              className="MuiSvgIcon-root sc-csuQGl fCHxKD"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -3972,17 +4168,17 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-cvbbAY iReTcD employer-question"
+          className="sc-jAaTju cRYNZb employer-question"
         >
           <div
-            className="sc-jWBwVP dYrTfP"
+            className="sc-jDwBTQ bnduhJ"
           >
             <div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-employer"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-employer"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
@@ -4024,10 +4220,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 </div>
               </div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-work-hours"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-work-hours"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
@@ -4072,10 +4268,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 </div>
               </div>
               <div
-                className="sc-jDwBTQ bxUydo"
+                className="sc-gipzik kZqImy"
               >
                 <div
-                  className="MuiFormControl-root MuiTextField-root sc-iRbamj hWwckw root-salary"
+                  className="MuiFormControl-root MuiTextField-root sc-Rmtcm kFyucV root-salary"
                 >
                   <label
                     className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated Mui-error Mui-error"
@@ -4121,10 +4317,10 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
               </div>
             </div>
             <div
-              className="MuiFormControl-root sc-brqgnP inKFnP root-contract"
+              className="MuiFormControl-root sc-gPEVay kIPluu root-contract"
             >
               <label
-                className="MuiFormLabel-root sc-cMljjf bRmdGn"
+                className="MuiFormLabel-root sc-iRbamj dWJwFn"
                 style={
                   Object {
                     "paddingBottom": "1rem",
@@ -4152,7 +4348,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     aria-describedby={null}
                     aria-disabled={false}
                     aria-hidden="false"
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1915 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1887 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -4179,7 +4375,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                       <input
                         aria-describedby="yes[hasEndedThisMonth[1]]"
                         checked={false}
-                        className="PrivateSwitchBase-input-1918"
+                        className="PrivateSwitchBase-input-1890"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -4187,7 +4383,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         value="yes"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1931"
+                        className="PrivateRadioButtonIcon-root-1903"
                       >
                         <svg
                           aria-hidden="true"
@@ -4202,7 +4398,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1932"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1904"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -4237,7 +4433,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1915 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1887 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf bKrgIW MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -4261,7 +4457,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                     >
                       <input
                         checked={false}
-                        className="PrivateSwitchBase-input-1918"
+                        className="PrivateSwitchBase-input-1890"
                         disabled={false}
                         name="hasEndedThisMonth[1]"
                         onChange={[Function]}
@@ -4269,7 +4465,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         value="no"
                       />
                       <div
-                        className="PrivateRadioButtonIcon-root-1931"
+                        className="PrivateRadioButtonIcon-root-1903"
                       >
                         <svg
                           aria-hidden="true"
@@ -4284,7 +4480,7 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
                         </svg>
                         <svg
                           aria-hidden="true"
-                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1932"
+                          className="MuiSvgIcon-root PrivateRadioButtonIcon-layer-1904"
                           focusable="false"
                           role="presentation"
                           viewBox="0 0 24 24"
@@ -4319,13 +4515,13 @@ exports[`Storyshots EmployerQuestion filled with errors 1`] = `
           </div>
           <button
             aria-label="Supprimer"
-            className="sc-jAaTju jEFoMd"
+            className="sc-jlyJG blCxpJ"
             onClick={[Function]}
             type="button"
           >
             <svg
               aria-hidden="true"
-              className="MuiSvgIcon-root sc-gPEVay ixzhnH"
+              className="MuiSvgIcon-root sc-csuQGl fCHxKD"
               focusable="false"
               role="presentation"
               viewBox="0 0 24 24"
@@ -4746,19 +4942,19 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 
 exports[`Storyshots Home default 1`] = `
 <div
-  className="sc-caSCKo eWrkLT"
+  className="sc-TOsTZ ZqimG"
 >
   <section
-    className="sc-kjoXOD eDCrpP"
+    className="sc-cJSrbW cgZeUU"
   >
     <div
-      className="sc-cHGsZl dpEyru"
+      className="sc-ksYbfQ kSrnhr"
     >
       <div
-        className="sc-TOsTZ hynlWS"
+        className="sc-hmzhuo datgop"
       >
         <h1
-          className="MuiTypography-root sc-kgAjT cXtzbw MuiTypography-h1 MuiTypography-paragraph"
+          className="MuiTypography-root sc-frDJqD hYzqUN MuiTypography-h1 MuiTypography-paragraph"
           style={
             Object {
               "fontWeight": "bold",
@@ -4784,7 +4980,7 @@ exports[`Storyshots Home default 1`] = `
           </span>
         </h1>
         <h2
-          className="MuiTypography-root sc-cJSrbW dsxlcb MuiTypography-h6 MuiTypography-paragraph"
+          className="MuiTypography-root sc-kvZOFW hXNGpp MuiTypography-h6 MuiTypography-paragraph"
         >
           Zen est un service Pôle emploi dédié aux
            
@@ -4796,7 +4992,7 @@ exports[`Storyshots Home default 1`] = `
         </h2>
       </div>
       <button
-        className="sc-fMiknA kKucei"
+        className="sc-caSCKo jhTFdF"
         id="home-video"
         onClick={[Function]}
         style={
@@ -4848,7 +5044,7 @@ exports[`Storyshots Home default 1`] = `
     </div>
   </section>
   <section
-    className="sc-ksYbfQ jHwjmi"
+    className="sc-hqyNC keRCOE"
     style={
       Object {
         "alignItems": "center",
@@ -4874,13 +5070,13 @@ exports[`Storyshots Home default 1`] = `
       }
     />
     <ul
-      className="sc-uJMKN RyVfe"
+      className="sc-fYxtnH dQiEss"
     >
       <li
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
       >
         <span
-          className="sc-gGBfsJ csBMIw"
+          className="sc-hEsumM eevZsp"
         >
           <svg
             alt=""
@@ -4904,7 +5100,7 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX igdDMM MuiTypography-body1"
         >
           Zen additionne pour vous
           <br />
@@ -4915,7 +5111,7 @@ exports[`Storyshots Home default 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
         style={
           Object {
             "display": "block",
@@ -4926,7 +5122,7 @@ exports[`Storyshots Home default 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-ktHwxA urqsu MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -4937,10 +5133,10 @@ exports[`Storyshots Home default 1`] = `
         </svg>
       </li>
       <li
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
       >
         <span
-          className="sc-gGBfsJ csBMIw"
+          className="sc-hEsumM eevZsp"
         >
           <svg
             alt=""
@@ -4964,7 +5160,7 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX igdDMM MuiTypography-body1"
         >
           Zen vous indique
           <br />
@@ -4975,7 +5171,7 @@ exports[`Storyshots Home default 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
         style={
           Object {
             "display": "block",
@@ -4986,7 +5182,7 @@ exports[`Storyshots Home default 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-ktHwxA urqsu MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -4997,10 +5193,10 @@ exports[`Storyshots Home default 1`] = `
         </svg>
       </li>
       <li
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
       >
         <span
-          className="sc-gGBfsJ csBMIw"
+          className="sc-hEsumM eevZsp"
         >
           <svg
             alt=""
@@ -5024,7 +5220,7 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX igdDMM MuiTypography-body1"
         >
           Accédez à un espace personnel
           <br />
@@ -5036,10 +5232,10 @@ exports[`Storyshots Home default 1`] = `
     </ul>
   </section>
   <section
-    className="sc-feJyhm hxezng"
+    className="sc-btzYZH ghbbtZ"
   >
     <h2
-      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+      className="MuiTypography-root sc-jbKcbu deaTkG MuiTypography-h5"
       style={
         Object {
           "color": "#fff",
@@ -5049,13 +5245,13 @@ exports[`Storyshots Home default 1`] = `
       Zen est pour vous si ...
     </h2>
     <div
-      className="sc-iELTvK erUTl"
+      className="sc-lhVmIH fqtfhN"
     >
       <div
-        className="sc-cmTdod fgxRog"
+        className="sc-bYSBpT kJwQFm"
       >
         <p
-          className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
+          className="MuiTypography-root sc-elJkPf fRcIAE MuiTypography-body1"
         >
           <svg
             aria-hidden="true"
@@ -5103,10 +5299,10 @@ exports[`Storyshots Home default 1`] = `
     </div>
   </section>
   <section
-    className="sc-ksYbfQ jHwjmi"
+    className="sc-hqyNC keRCOE"
   >
     <h2
-      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+      className="MuiTypography-root sc-jbKcbu deaTkG MuiTypography-h5"
       style={
         Object {
           "textAlign": "center",
@@ -5122,18 +5318,18 @@ exports[`Storyshots Home default 1`] = `
        à chaque étape
     </h2>
     <div
-      className="sc-frDJqD cuqWVO"
+      className="sc-dNLxif jFornN"
     >
       <div
-        className="sc-hqyNC lJZqR"
+        className="sc-uJMKN kVfWpr"
       >
         <div
-          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-gGBfsJ jUSbcI MuiTypography-h1 MuiTypography-colorPrimary"
         >
           1
         </div>
         <h3
-          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-jbKcbu sc-bbmXgH kkbCKz MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Je suis informé(e) tous les mois du début de l'actualisation
         </h3>
@@ -5145,23 +5341,23 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jqCOkK jmfCHm"
+        className="sc-jnlKLf eYvmbp"
         src="photo1.jpg"
       />
     </div>
     <div
-      className="sc-frDJqD sc-kvZOFW iDSvQU"
+      className="sc-dNLxif sc-jqCOkK kaacme"
     >
       <div
-        className="sc-hqyNC lJZqR"
+        className="sc-uJMKN kVfWpr"
       >
         <div
-          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-gGBfsJ jUSbcI MuiTypography-h1 MuiTypography-colorPrimary"
         >
           2
         </div>
         <h3
-          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-jbKcbu sc-bbmXgH kkbCKz MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
         </h3>
@@ -5173,23 +5369,23 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jqCOkK jmfCHm"
+        className="sc-jnlKLf eYvmbp"
         src="photo2.jpg"
       />
     </div>
     <div
-      className="sc-frDJqD cuqWVO"
+      className="sc-dNLxif jFornN"
     >
       <div
-        className="sc-hqyNC lJZqR"
+        className="sc-uJMKN kVfWpr"
       >
         <div
-          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-gGBfsJ jUSbcI MuiTypography-h1 MuiTypography-colorPrimary"
         >
           3
         </div>
         <h3
-          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-jbKcbu sc-bbmXgH kkbCKz MuiTypography-h5 MuiTypography-colorSecondary"
         >
           J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
@@ -5201,13 +5397,13 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jqCOkK jmfCHm"
+        className="sc-jnlKLf eYvmbp"
         src="photo3.jpg"
       />
     </div>
   </section>
   <section
-    className="sc-ksYbfQ jHwjmi"
+    className="sc-hqyNC keRCOE"
     style={
       Object {
         "padding": "5rem",
@@ -5216,18 +5412,18 @@ exports[`Storyshots Home default 1`] = `
     }
   >
     <h2
-      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+      className="MuiTypography-root sc-jbKcbu deaTkG MuiTypography-h5"
     >
       Nos utilisateurs approuvent !
     </h2>
     <div
-      className="sc-hEsumM clAWdV"
+      className="sc-feJyhm hIjMuK"
     >
       <div
-        className="sc-ktHwxA eQuqDF"
+        className="sc-iELTvK eArEMc"
       >
         <p
-          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cmTdod fEtbrm MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Déborah - Lille
@@ -5236,16 +5432,16 @@ exports[`Storyshots Home default 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS fBWxJW MuiTypography-body1"
         >
           « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
         </p>
       </div>
       <div
-        className="sc-ktHwxA eQuqDF"
+        className="sc-iELTvK eArEMc"
       >
         <p
-          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cmTdod fEtbrm MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Sophie - Condette
@@ -5254,16 +5450,16 @@ exports[`Storyshots Home default 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS fBWxJW MuiTypography-body1"
         >
           « Plus simple vu le nombre d'employeurs. Belle innovation »
         </p>
       </div>
       <div
-        className="sc-ktHwxA eQuqDF"
+        className="sc-iELTvK eArEMc"
       >
         <p
-          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cmTdod fEtbrm MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Fatima - Amiens
@@ -5272,7 +5468,7 @@ exports[`Storyshots Home default 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS fBWxJW MuiTypography-body1"
         >
           « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
         </p>
@@ -5284,10 +5480,10 @@ exports[`Storyshots Home default 1`] = `
 
 exports[`Storyshots Home loginFailed 1`] = `
 <div
-  className="sc-caSCKo eWrkLT"
+  className="sc-TOsTZ ZqimG"
 >
   <div
-    className="sc-gisBJw knJsjc"
+    className="sc-kgAjT dpZWUM"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -5298,16 +5494,16 @@ exports[`Storyshots Home loginFailed 1`] = `
     </p>
   </div>
   <section
-    className="sc-kjoXOD eDCrpP"
+    className="sc-cJSrbW cgZeUU"
   >
     <div
-      className="sc-cHGsZl dpEyru"
+      className="sc-ksYbfQ kSrnhr"
     >
       <div
-        className="sc-TOsTZ hynlWS"
+        className="sc-hmzhuo datgop"
       >
         <h1
-          className="MuiTypography-root sc-kgAjT cXtzbw MuiTypography-h1 MuiTypography-paragraph"
+          className="MuiTypography-root sc-frDJqD hYzqUN MuiTypography-h1 MuiTypography-paragraph"
           style={
             Object {
               "fontWeight": "bold",
@@ -5333,7 +5529,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </span>
         </h1>
         <h2
-          className="MuiTypography-root sc-cJSrbW dsxlcb MuiTypography-h6 MuiTypography-paragraph"
+          className="MuiTypography-root sc-kvZOFW hXNGpp MuiTypography-h6 MuiTypography-paragraph"
         >
           Zen est un service Pôle emploi dédié aux
            
@@ -5345,7 +5541,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </h2>
       </div>
       <button
-        className="sc-fMiknA kKucei"
+        className="sc-caSCKo jhTFdF"
         id="home-video"
         onClick={[Function]}
         style={
@@ -5397,7 +5593,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
   </section>
   <section
-    className="sc-ksYbfQ jHwjmi"
+    className="sc-hqyNC keRCOE"
     style={
       Object {
         "alignItems": "center",
@@ -5423,13 +5619,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       }
     />
     <ul
-      className="sc-uJMKN RyVfe"
+      className="sc-fYxtnH dQiEss"
     >
       <li
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
       >
         <span
-          className="sc-gGBfsJ csBMIw"
+          className="sc-hEsumM eevZsp"
         >
           <svg
             alt=""
@@ -5453,7 +5649,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX igdDMM MuiTypography-body1"
         >
           Zen additionne pour vous
           <br />
@@ -5464,7 +5660,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
         style={
           Object {
             "display": "block",
@@ -5475,7 +5671,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-ktHwxA urqsu MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -5486,10 +5682,10 @@ exports[`Storyshots Home loginFailed 1`] = `
         </svg>
       </li>
       <li
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
       >
         <span
-          className="sc-gGBfsJ csBMIw"
+          className="sc-hEsumM eevZsp"
         >
           <svg
             alt=""
@@ -5513,7 +5709,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX igdDMM MuiTypography-body1"
         >
           Zen vous indique
           <br />
@@ -5524,7 +5720,7 @@ exports[`Storyshots Home loginFailed 1`] = `
       </li>
       <li
         aria-hidden="true"
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
         style={
           Object {
             "display": "block",
@@ -5535,7 +5731,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-jnlKLf bwcAwa MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-ktHwxA urqsu MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -5546,10 +5742,10 @@ exports[`Storyshots Home loginFailed 1`] = `
         </svg>
       </li>
       <li
-        className="sc-bbmXgH bgIkbH"
+        className="sc-tilXH dplTKL"
       >
         <span
-          className="sc-gGBfsJ csBMIw"
+          className="sc-hEsumM eevZsp"
         >
           <svg
             alt=""
@@ -5573,7 +5769,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-tilXH bMMiPE MuiTypography-body1"
+          className="MuiTypography-root sc-kafWEX igdDMM MuiTypography-body1"
         >
           Accédez à un espace personnel
           <br />
@@ -5585,10 +5781,10 @@ exports[`Storyshots Home loginFailed 1`] = `
     </ul>
   </section>
   <section
-    className="sc-feJyhm hxezng"
+    className="sc-btzYZH ghbbtZ"
   >
     <h2
-      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+      className="MuiTypography-root sc-jbKcbu deaTkG MuiTypography-h5"
       style={
         Object {
           "color": "#fff",
@@ -5598,13 +5794,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       Zen est pour vous si ...
     </h2>
     <div
-      className="sc-iELTvK erUTl"
+      className="sc-lhVmIH fqtfhN"
     >
       <div
-        className="sc-cmTdod fgxRog"
+        className="sc-bYSBpT kJwQFm"
       >
         <p
-          className="MuiTypography-root sc-jwKygS iRnJAf MuiTypography-body1"
+          className="MuiTypography-root sc-elJkPf fRcIAE MuiTypography-body1"
         >
           <svg
             aria-hidden="true"
@@ -5652,10 +5848,10 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
   </section>
   <section
-    className="sc-ksYbfQ jHwjmi"
+    className="sc-hqyNC keRCOE"
   >
     <h2
-      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+      className="MuiTypography-root sc-jbKcbu deaTkG MuiTypography-h5"
       style={
         Object {
           "textAlign": "center",
@@ -5671,18 +5867,18 @@ exports[`Storyshots Home loginFailed 1`] = `
        à chaque étape
     </h2>
     <div
-      className="sc-frDJqD cuqWVO"
+      className="sc-dNLxif jFornN"
     >
       <div
-        className="sc-hqyNC lJZqR"
+        className="sc-uJMKN kVfWpr"
       >
         <div
-          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-gGBfsJ jUSbcI MuiTypography-h1 MuiTypography-colorPrimary"
         >
           1
         </div>
         <h3
-          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-jbKcbu sc-bbmXgH kkbCKz MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Je suis informé(e) tous les mois du début de l'actualisation
         </h3>
@@ -5694,23 +5890,23 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jqCOkK jmfCHm"
+        className="sc-jnlKLf eYvmbp"
         src="photo1.jpg"
       />
     </div>
     <div
-      className="sc-frDJqD sc-kvZOFW iDSvQU"
+      className="sc-dNLxif sc-jqCOkK kaacme"
     >
       <div
-        className="sc-hqyNC lJZqR"
+        className="sc-uJMKN kVfWpr"
       >
         <div
-          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-gGBfsJ jUSbcI MuiTypography-h1 MuiTypography-colorPrimary"
         >
           2
         </div>
         <h3
-          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-jbKcbu sc-bbmXgH kkbCKz MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
         </h3>
@@ -5722,23 +5918,23 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jqCOkK jmfCHm"
+        className="sc-jnlKLf eYvmbp"
         src="photo2.jpg"
       />
     </div>
     <div
-      className="sc-frDJqD cuqWVO"
+      className="sc-dNLxif jFornN"
     >
       <div
-        className="sc-hqyNC lJZqR"
+        className="sc-uJMKN kVfWpr"
       >
         <div
-          className="MuiTypography-root sc-dNLxif hppdoe MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-gGBfsJ jUSbcI MuiTypography-h1 MuiTypography-colorPrimary"
         >
           3
         </div>
         <h3
-          className="MuiTypography-root sc-hmzhuo sc-jbKcbu deaTkG MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-jbKcbu sc-bbmXgH kkbCKz MuiTypography-h5 MuiTypography-colorSecondary"
         >
           J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
@@ -5750,13 +5946,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-jqCOkK jmfCHm"
+        className="sc-jnlKLf eYvmbp"
         src="photo3.jpg"
       />
     </div>
   </section>
   <section
-    className="sc-ksYbfQ jHwjmi"
+    className="sc-hqyNC keRCOE"
     style={
       Object {
         "padding": "5rem",
@@ -5765,18 +5961,18 @@ exports[`Storyshots Home loginFailed 1`] = `
     }
   >
     <h2
-      className="MuiTypography-root sc-hmzhuo dsJMjU MuiTypography-h5"
+      className="MuiTypography-root sc-jbKcbu deaTkG MuiTypography-h5"
     >
       Nos utilisateurs approuvent !
     </h2>
     <div
-      className="sc-hEsumM clAWdV"
+      className="sc-feJyhm hIjMuK"
     >
       <div
-        className="sc-ktHwxA eQuqDF"
+        className="sc-iELTvK eArEMc"
       >
         <p
-          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cmTdod fEtbrm MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Déborah - Lille
@@ -5785,16 +5981,16 @@ exports[`Storyshots Home loginFailed 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS fBWxJW MuiTypography-body1"
         >
           « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
         </p>
       </div>
       <div
-        className="sc-ktHwxA eQuqDF"
+        className="sc-iELTvK eArEMc"
       >
         <p
-          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cmTdod fEtbrm MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Sophie - Condette
@@ -5803,16 +5999,16 @@ exports[`Storyshots Home loginFailed 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS fBWxJW MuiTypography-body1"
         >
           « Plus simple vu le nombre d'employeurs. Belle innovation »
         </p>
       </div>
       <div
-        className="sc-ktHwxA eQuqDF"
+        className="sc-iELTvK eArEMc"
       >
         <p
-          className="MuiTypography-root sc-cIShpX hxKcBe MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-cmTdod fEtbrm MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
             Fatima - Amiens
@@ -5821,7 +6017,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-kafWEX dNChzQ MuiTypography-body1"
+          className="MuiTypography-root sc-jwKygS fBWxJW MuiTypography-body1"
         >
           « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
         </p>
@@ -5987,18 +6183,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-dVhcbM cXEqzP"
+          className="sc-gisBJw jqotlz"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-eqIVtm cGQxJX"
+            className="sc-kjoXOD kknohD"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-fAjcbJ fpfQc"
+            className="sc-cHGsZl jmcvPc"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -6065,18 +6261,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-dVhcbM bMObGm"
+          className="sc-gisBJw eKUrwZ"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-eqIVtm cGQxJX"
+            className="sc-kjoXOD kknohD"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-fAjcbJ fpfQc"
+            className="sc-cHGsZl jmcvPc"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -6143,7 +6339,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-hzDkRC dppXPs"
+          className="sc-dVhcbM epnTmF"
         >
           <p
             className="MuiTypography-root MuiTypography-body1"
@@ -6151,7 +6347,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
           <div
-            className="sc-jhAzac fGaSpH"
+            className="sc-eqIVtm leJuqt"
             style={
               Object {
                 "paddingTop": "3rem",
@@ -6182,7 +6378,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden="true"
-                  className="MuiSvgIcon-root sc-fBuWsC cwfsEu"
+                  className="MuiSvgIcon-root sc-fAjcbJ jgwyUC"
                   focusable="false"
                   role="presentation"
                   viewBox="0 0 24 24"
@@ -6257,7 +6453,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
         data-css-10e2wtd=""
       >
         <button
-          className="sc-fMiknA kKucei"
+          className="sc-caSCKo jhTFdF"
           id="video"
           onClick={[Function]}
           style={

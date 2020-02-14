@@ -38,7 +38,7 @@ type Props = {
 
 export default function DeclarationEmployers({ declaration }: Props) {
   const workHours = calculateTotal(declaration.employers, 'workHours');
-  const salary = calculateTotal(declaration.employers, 'workHours');
+  const salary = calculateTotal(declaration.employers, 'salary');
   const totalStr = `Total: ${workHours} h, ${salary} €`;
 
   const data = declaration.employers.map((employer) => ({

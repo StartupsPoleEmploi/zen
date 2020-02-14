@@ -24,6 +24,7 @@ const routesWithDisplayedNav = [
   '/files',
   '/dashboard',
   '/thanks',
+  '/history',
   '/cgu',
 ]
 const [, , , dashboardRoute] = routesWithDisplayedNav

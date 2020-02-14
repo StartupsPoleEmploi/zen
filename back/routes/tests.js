@@ -1,5 +1,11 @@
 const express = require('express')
-const { addWeeks, endOfMonth, startOfMonth, subWeeks } = require('date-fns')
+const {
+  addWeeks,
+  endOfMonth,
+  startOfMonth,
+  subWeeks,
+  subMonths,
+} = require('date-fns')
 
 const User = require('../models/User')
 const Declaration = require('../models/Declaration')
@@ -114,6 +120,33 @@ const insertDeclarationMonth = () =>
     startDate: subWeeks(new Date(), 1),
     endDate: addWeeks(new Date(), 1),
   })
+
+const insertOldAndCurrentDeclarationsMonths = async () => {
+  // NOTE : order is important
+  const m4 = await DeclarationMonth.query().insert({
+    month: subMonths(new Date(), 3),
+    startDate: subMonths(new Date(), 3),
+    endDate: subMonths(new Date(), 4),
+  })
+  const m3 = await DeclarationMonth.query().insert({
+    month: subMonths(new Date(), 2),
+    startDate: subMonths(new Date(), 2),
+    endDate: subMonths(new Date(), 3),
+  })
+
+  const m2 = await DeclarationMonth.query().insert({
+    month: subMonths(new Date(), 1),
+    startDate: subMonths(new Date(), 1),
+    endDate: addWeeks(new Date(), 1),
+  })
+  const m1 = await DeclarationMonth.query().insert({
+    month: new Date(),
+    startDate: subWeeks(new Date(), 1),
+    endDate: addWeeks(new Date(), 1),
+  })
+
+  return Promise.resolve([m1, m2, m3, m4])
+}
 
 const setServiceUp = () =>
   User.knex().raw('INSERT INTO status (up) values (true)')
@@ -244,6 +277,54 @@ router.post('/db/reset-for-employers', (req, res, next) =>
         },
       })
     })
+    .then(() => {
+      res.json('ok')
+    })
+    .catch(next),
+)
+
+router.post('/db/reset-for-history', (req, res, next) =>
+  truncateDatabase()
+    .then(() =>
+      Promise.all([
+        insertUser(req.body.userOverride),
+        insertOldAndCurrentDeclarationsMonths(),
+        setServiceUp(),
+      ]),
+    )
+
+    .then(async ([user, declarationMonths]) => {
+      fillSession(req, user)
+
+      const declaration = await insertDeclaration({
+        userId: user.id,
+        declarationMonthId: declarationMonths[3].id,
+        declarationOverride: {
+          isFinished: false,
+          hasSickLeave: true,
+          infos: [
+            {
+              type: 'sickLeave',
+              startDate: startOfMonth(declarationMonths[3].month),
+              endDate: endOfMonth(declarationMonths[3].month),
+            },
+          ],
+        },
+      })
+      await insertDeclaration({
+        userId: user.id,
+        declarationMonthId: declarationMonths[1].id,
+      })
+
+      return Promise.resolve(declaration)
+    })
+    .then((declaration) =>
+      insertEmployer({
+        employer: employer1,
+        userId: declaration.userId,
+        declarationId: declaration.id,
+      }),
+    )
     .then(() => {
       res.json('ok')
     })

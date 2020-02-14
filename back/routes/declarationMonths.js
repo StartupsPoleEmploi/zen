@@ -33,4 +33,12 @@ router.get('/current-declaration-month', (req, res) =>
     }),
 )
 
+router.get('/finished', (req, res) =>
+  DeclarationMonth.query()
+    .select(['id', 'month'])
+    .where('startDate', '<', 'now')
+    .orderBy('id', 'desc')
+    .then((months) => res.json(months)),
+)
+
 module.exports = router

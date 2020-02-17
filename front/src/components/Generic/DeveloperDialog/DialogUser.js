@@ -5,6 +5,8 @@ import { omit } from 'lodash'
 import React, { Fragment, useEffect, useState } from 'react'
 import superagent from 'superagent'
 
+import catchMaintenance from '../../../lib/catchMaintenance'
+
 const DEFAULT_STR = `{
   "id": 510,
   "firstName": "Harry",
@@ -32,6 +34,7 @@ export default function DialogUser() {
         .post('/api/developer/session/user', JSON.parse(sessionUser))
         .set('CSRF-Token', csrfToken)
         .then(() => window.location.reload(true))
+        .catch(catchMaintenance)
         .catch((err) => setError(`Erreur serveur : ${err}`))
     } catch (err) {
       return setError(`Le JSON est invalide : ${err}`)
@@ -43,6 +46,7 @@ export default function DialogUser() {
       setCsrfToken(body.csrfToken)
       setSessionUser(JSON.stringify(omit(body, 'csrfToken'), null, 2))
     })
+    .catch(catchMaintenance)
   }, [])
 
   return (

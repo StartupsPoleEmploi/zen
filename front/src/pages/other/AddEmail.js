@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { setEmail } from '../../redux/actions/user'
+import catchMaintenance from '../../lib/catchMaintenance'
 
 import tester from '../../images/tester.png'
 
@@ -104,6 +105,7 @@ export class AddEmail extends Component {
         this.props.setEmail(this.state.email.trim())
         window.location.replace('/')
       })
+      .catch(catchMaintenance)
       .catch(() => this.setState({ isError: true }))
   }
 

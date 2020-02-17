@@ -67,7 +67,7 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
     padding-left: 5rem;
     line-height: 3rem;
     border-left: #fff 0.5rem solid;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5) !important;
 
     &&.Stepper__Active {
       border-left: ${primaryBlue} 0.5rem solid;
@@ -141,6 +141,7 @@ const StepperItem = ({ label, link, shouldActivateLink, isActive }) => {
       <LiStep {...liProps}>
         <DesktopLink
           to={link}
+          style={{ fontWeight: isActive ? 'bold' : null }}
           className={isActive ? 'Stepper__Active__Link' : ''}
         >
           {label}
@@ -219,7 +220,7 @@ export const NavLogin = ({
             </>
           }
           link={dashboardRoute}
-          shouldActivateLink
+          shouldActivateLink={!user.needOnBoarding}
           isActive={pathname === dashboardRoute}
         />
         {!user.isBlocked && (
@@ -237,7 +238,8 @@ export const NavLogin = ({
             }
             link={declarationRoute}
             shouldActivateLink={
-              shouldActivateDeclarationLink || shouldActivateEmployersLink
+              (shouldActivateDeclarationLink || shouldActivateEmployersLink) &&
+              !user.needOnBoarding
             }
             isActive={false}
           />
@@ -256,7 +258,9 @@ export const NavLogin = ({
                 </SubLabel>
               }
               link={declarationRoute}
-              shouldActivateLink={shouldActivateDeclarationLink}
+              shouldActivateLink={
+                shouldActivateDeclarationLink && !user.needOnBoarding
+              }
               isActive={pathname === declarationRoute}
             />
             <StepperItem
@@ -266,7 +270,9 @@ export const NavLogin = ({
                 </SubLabel>
               }
               link={employersRoute}
-              shouldActivateLink={shouldActivateEmployersLink}
+              shouldActivateLink={
+                shouldActivateEmployersLink && !user.needOnBoarding
+              }
               isActive={pathname === employersRoute}
             />
           </>
@@ -279,7 +285,7 @@ export const NavLogin = ({
             </>
           }
           link={filesRoute}
-          shouldActivateLink={isFilesServiceUp}
+          shouldActivateLink={isFilesServiceUp && !user.needOnBoarding}
           isActive={pathname === filesRoute && isFilesServiceUp}
         />
       </UlStepper>
@@ -287,6 +293,7 @@ export const NavLogin = ({
         <StepperItem
           label="CGU"
           link={cguRoute}
+          shouldActivateLink
           isActive={pathname.startsWith(cguRoute)}
         />
       </UlStepper>
@@ -301,6 +308,7 @@ NavLogin.propTypes = {
     email: PropTypes.string,
     csrfToken: PropTypes.string,
     isBlocked: PropTypes.bool,
+    needOnBoarding: PropTypes.bool,
   }),
   isFilesServiceUp: PropTypes.bool,
   history: PropTypes.shape({

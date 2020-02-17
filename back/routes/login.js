@@ -10,16 +10,17 @@ const User = require('../models/User')
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation')
 const winston = require('../lib/log')
 const { credentials } = require('../lib/token')
+const mailjet = require('../lib/mailings/mailjet')
 const userCtrl = require('../controllers/userCtrl')
 const { REALM } = require('../constants')
 // eslint-disable-next-line import/order
 const oauth2 = require('simple-oauth2').create(credentials)
 
-const { clientId, redirectUri } = config
+const { peConnectScope, redirectUri } = config
 const tokenConfig = {
   redirect_uri: redirectUri,
   realm: REALM,
-  scope: `application_${clientId} api_peconnect-individuv1 qos_silver_peconnect-individuv1 openid profile email api_peconnect-coordonneesv1 qos_gold_peconnect-coordonneesv1 coordonnees api_peconnect-actualisationv1 qos_gold_peconnect-actualisationv1 individu api_peconnect-envoidocumentv1 document documentW`,
+  scope: peConnectScope
 }
 
 router.get('/', (req, res, next) => {
@@ -67,6 +68,7 @@ router.get('/callback', async (req, res) => {
       // user is not in the DB, so the user is not acceptable (is not asking to "Asmat")
       // PS: we take all "Asmat" from datalake (view code on file /lib/importUserFromDatalake.js)
       // so we only insert the user into the DB and not Authorize him
+      // NOTE: the user is not add to mailjet and doesn't receive any message
       const userToSave = {
         ...pick(userinfo, ['peId', 'email', 'firstName', 'lastName', 'gender']),
         postalCode: await userCtrl.getPostalCode(authToken),
@@ -85,7 +87,12 @@ router.get('/callback', async (req, res) => {
         // first login, need to set registerAt
         if (config.get('shouldSendTransactionalEmails') && dbUser.email) {
           // Note: We do not wait for Mailjet to answer to send data back to the user
-          sendSubscriptionConfirmation(dbUser).catch(Raven.captureException)
+          mailjet.addUser(dbUser).then(() => {
+            if (dbUser.isAuthorized) return sendSubscriptionConfirmation(dbUser);
+          }).catch((e) => {
+            winston.error('[Login] error when add user to mailjet and send it the confirmation email', e);
+          })
+          
         }
         dbUser = await dbUser
           .$query()
@@ -108,7 +115,7 @@ router.get('/callback', async (req, res) => {
     res.redirect('/')
   } catch (err) {
     res.redirect('/?loginFailed')
-    winston.error('Error at login while requesting pe api', err.message)
+    winston.error(`Error at login while requesting pe api ${err.message}`, err)
     return Raven.captureException(err)
   }
 })

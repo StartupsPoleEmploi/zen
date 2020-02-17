@@ -39,7 +39,7 @@ export default function UserDeclarations({ declarations = [] }: Props) {
 
   const columns = [
     { dataIndex: 'id', znSort: 'number' },
-    { dataIndex: 'month', title: 'Moin', defaultSortOrder: 'descend' },
+    { dataIndex: 'month', title: 'Mois', defaultSortOrder: 'descend' },
     { dataIndex: 'isFinished', title: 'isFinished', znSort: 'string' },
     { dataIndex: 'createdAt', title: 'Débuté le' },
     { dataIndex: 'updatedAt', title: 'Mise à jour le' },

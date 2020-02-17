@@ -52,7 +52,10 @@ const StyledPaper = styled(Paper)`
 `
 
 const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`
-  text-align: center;
+  && {
+    text-align: center;
+    font-weight: bold;
+  }
 `
 
 const ErrorMessage = styled(Typography).attrs({

@@ -6,7 +6,8 @@ import superagent from 'superagent'
 import moment from 'moment'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import { primaryBlue } from '../../constants'
+import { primaryBlue } from '../../../constants'
+import catchMaintenance from '../../../lib/catchMaintenance'
 
 const sectionColor = '#1e2c59'
 
@@ -56,6 +57,7 @@ const DeclarationClosed = ({ previousDeclaration }) => {
       .then(({ body: { startDate } }) => {
         setActuStartdDate(moment(new Date(startDate)).format('DD MMMM YYYY'))
       })
+      .catch(catchMaintenance)
   }, [])
 
   return (

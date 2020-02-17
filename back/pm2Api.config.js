@@ -18,15 +18,4 @@ const config = {
   ],
 }
 
-if (process.env.NODE_ENV === 'production') {
-  config.apps.push({
-    name: 'mailing-agent',
-    script: 'jobs/mailing-agent.js',
-  })
-  config.apps.push({
-    name: 'utilities-agent',
-    script: 'jobs/utilities-agent.js',
-  })
-}
-
 module.exports = config

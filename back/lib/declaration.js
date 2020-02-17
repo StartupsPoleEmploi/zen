@@ -69,7 +69,7 @@ const fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated = ({
 
       return transaction(Declaration.knex(), (trx) =>
         Promise.all([
-          declaration.$query(trx).upsertGraphAndFetch(),
+          declaration.$query(trx).upsertGraph(),
           ActivityLog.query(trx).insert({
             userId,
             action: ActivityLog.actions.VALIDATE_FILES,
@@ -77,7 +77,17 @@ const fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated = ({
               declarationId,
             }),
           }),
-        ]).then(([newDeclaration]) => newDeclaration),
+        ]).then(() =>
+          // Note : we don't use upsertGraphAndFetch above because we want the declarationMonth with the declaration
+          // And add it in the initial query will cause some trouble with the date :
+          //   See => https://github.com/StartupsPoleEmploi/zen/commit/d10e639179881ca67c63968054ab44f848b0d824
+          Declaration.query()
+            .eager(`[infos, employers.documents, declarationMonth]`)
+            .findOne({
+              id: declarationId,
+              userId,
+            }),
+        ),
       )
     })
 

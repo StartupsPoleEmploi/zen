@@ -11,8 +11,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Check from '@material-ui/icons/Check'
 
 import StatusFilesError from '../../components/Actu/StatusFilesError'
+import ActuStatus from '../../components/Generic/actu/ActuStatus'
+import { H2 } from '../../components/Generic/Titles'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -41,6 +44,14 @@ import {
 } from '../../selectors/declarations'
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils
+
+const CheckIcon = styled(Check)`
+  && {
+    margin-right: 1rem;
+    color: green;
+    vertical-align: sub;
+  }
+`
 
 const StyledFiles = styled.div`
   display: flex;
@@ -103,6 +114,29 @@ const StyledSup = styled.sup`
   color: #fff;
 `
 
+const ActuStatusContainer = styled.div`
+  max-width: 50rem;
+  margin: ${({ centered }) => (centered ? 'auto' : 'unset')};
+  align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)}
+  padding-left: ${({ width }) => (width !== 'xs' ? '5rem' : null)}
+`
+
+const Upper = styled.span`
+  text-transform: uppercase;
+`
+
+const StyledH2 = styled(H2)`
+  && {
+    margin-top: 8rem;
+    margin-bottom: 4rem;
+    font-size: 1.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: solid 1px lightgray;
+    display: inline-block;
+    align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)};
+  }
+`
+
 const infoSpecs = [
   {
     name: 'sickLeave',
@@ -148,7 +182,7 @@ const employerCertificateType = 'employerCertificate'
 const infoType = 'info'
 
 const OLD_MONTHS_TAB = 'oldMonths'
-const LAST_MONTH_TAB = 'lastMonth'
+const CURRENT_MONTH_TAB = 'currentMonth'
 
 const formatDate = (date) => moment(date).format('DD MMMM YYYY')
 const formatInfoDates = ({ startDate, endDate }) =>
@@ -176,7 +210,7 @@ export class Files extends Component {
     this.state = {
       showSkipConfirmation: false,
       skipFileCallback: noop,
-      selectedTab: LAST_MONTH_TAB,
+      selectedTab: CURRENT_MONTH_TAB,
     }
   }
 
@@ -401,6 +435,50 @@ export class Files extends Component {
     )
   }
 
+  renderCurrentMonthTab = (lastDeclaration) => {
+    const { activeMonth, user, declarations } = this.props
+
+    if (
+      activeMonth &&
+      (!lastDeclaration || !lastDeclaration.hasFinishedDeclaringEmployers)
+    ) {
+      return (
+        <ActuStatusContainer
+          centered={false}
+          width={this.props.width}
+          style={{ marginTop: '5rem' }}
+        >
+          <ActuStatus
+            activeMonth={activeMonth}
+            user={user}
+            declarations={declarations}
+            declaration={lastDeclaration}
+          />
+        </ActuStatusContainer>
+      )
+    }
+
+    // Not in declaration time => last actu done is used
+    return lastDeclaration.isFinished ? (
+      <ActuStatusContainer
+        style={{
+          paddingLeft: this.props.width !== 'xs' ? '2rem' : null,
+        }}
+      >
+        <StyledH2 width={this.props.width}>
+          Actualisation -{' '}
+          <Upper>{moment(lastDeclaration).format('MMMM YYYY')}</Upper>
+        </StyledH2>
+        <Typography style={{ fontWeight: 'bold', fontSize: '1.8rem' }}>
+          <CheckIcon />
+          <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
+        </Typography>
+      </ActuStatusContainer>
+    ) : (
+      this.renderSection(lastDeclaration)
+    )
+  }
+
   renderSection = (declaration) => {
     const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration)
 
@@ -424,7 +502,7 @@ export class Files extends Component {
 
     return (
       <FilesSection key={declaration.id}>
-        <StyledTitle variant="h6" component="h1">
+        <StyledTitle variant="h6" component="h1" style={{ fontWeight: 'bold' }}>
           Justificatifs de {formattedMonth}
         </StyledTitle>
         <StyledInfo>
@@ -446,6 +524,7 @@ export class Files extends Component {
   render() {
     const {
       declarations: allDeclarations,
+      declaration: activeDeclaration,
       isLoading,
       previewedEmployerDoc,
       previewedInfoDoc,
@@ -458,6 +537,8 @@ export class Files extends Component {
       validateEmployerDoc,
       isFilesServiceUp,
       validateDeclarationInfoDoc,
+      activeMonth,
+      user,
     } = this.props
 
     if (isLoading) {
@@ -484,17 +565,46 @@ export class Files extends Component {
       ({ hasFinishedDeclaringEmployers }) => hasFinishedDeclaringEmployers,
     )
 
-    const [lastDeclaration, ...oldDeclarations] = declarations
+    /**
+      The code above needs some explanations :
 
-    const areUnfinishedDeclarations = declarations
-      .slice(1)
-      .some(({ isFinished }) => !isFinished)
-
+      By default, we used the last declaration done (if exists) and consider all the other declarations as the old declarations.
+      But on a declaration period, we consider the current declaration as the last declaration (which could be null if the declaration is not started).
+    */
+    let lastDeclaration = declarations[0]
     if (
-      !lastDeclaration ||
-      (lastDeclaration.isFinished && !areUnfinishedDeclarations)
+      activeMonth &&
+      (!activeDeclaration || !activeDeclaration.hasFinishedDeclaringEmployers)
     ) {
-      // Users have come to this page without any old documents to validate
+      lastDeclaration = activeDeclaration
+    }
+
+    const oldDeclarations =
+      activeMonth && activeDeclaration ? declarations.slice(1) : declarations
+
+    const areUnfinishedDeclarations = oldDeclarations.some(
+      ({ isFinished }) => !isFinished,
+    )
+
+    if (activeMonth && !lastDeclaration && !areUnfinishedDeclarations) {
+      return (
+        <ActuStatusContainer>
+          <ActuStatus
+            activeMonth={activeMonth}
+            user={user}
+            declarations={declarations}
+            declaration={lastDeclaration}
+          />
+        </ActuStatusContainer>
+      )
+    }
+
+    // Users have come to this page without any old documents to validate
+    if (
+      !activeMonth &&
+      (!lastDeclaration || lastDeclaration.isFinished) &&
+      !areUnfinishedDeclarations
+    ) {
       return (
         <StyledFiles>
           <StyledTitle variant="h6" component="h1">
@@ -504,9 +614,11 @@ export class Files extends Component {
       )
     }
 
-    const lastDeclarationMissingFiles = getDeclarationMissingFilesNb(
-      lastDeclaration,
-    )
+    const lastDeclarationMissingFiles =
+      lastDeclaration && lastDeclaration.hasFinishedDeclaringEmployers
+        ? getDeclarationMissingFilesNb(lastDeclaration)
+        : 0
+
     const oldDeclarationsMissingFiles = oldDeclarations.reduce(
       (prev, declaration) => {
         if (
@@ -557,11 +669,13 @@ export class Files extends Component {
           style={{ width: '100%' }}
         >
           <Tab
-            value={LAST_MONTH_TAB}
+            value={CURRENT_MONTH_TAB}
             label={
               <div style={{ color: '#000' }}>
                 {formattedDeclarationMonth(
-                  lastDeclaration.declarationMonth.month,
+                  lastDeclaration
+                    ? lastDeclaration.declarationMonth.month
+                    : activeMonth.month,
                 )}{' '}
                 <StyledSup>{lastDeclarationMissingFiles}</StyledSup>
               </div>
@@ -579,24 +693,24 @@ export class Files extends Component {
           />
         </Tabs>
 
-        {this.state.selectedTab === LAST_MONTH_TAB &&
-          (lastDeclaration.isFinished ? (
-            <StyledTitle variant="h6" component="h1">
-              Vous avez terminé l'envoi des justificatifs du mois de{' '}
-              {formattedDeclarationMonth(
-                lastDeclaration.declarationMonth.month,
-              )}
-            </StyledTitle>
-          ) : (
-            this.renderSection(lastDeclaration)
-          ))}
+        {this.state.selectedTab === CURRENT_MONTH_TAB &&
+          this.renderCurrentMonthTab(lastDeclaration)}
 
         {this.state.selectedTab === OLD_MONTHS_TAB &&
           (oldDeclarations.length > 0 ? (
             oldDeclarations.map(this.renderSection)
           ) : (
             <FilesSection>
-              <StyledTitle variant="h6" component="h1">
+              <StyledTitle
+                variant="h6"
+                component="h1"
+                style={
+                  this.props.width !== 'xs' && {
+                    textAlign: 'right',
+                    paddingRight: '2rem',
+                  }
+                }
+              >
                 Pas d'anciens justificatifs disponibles
               </StyledTitle>
             </FilesSection>
@@ -621,6 +735,9 @@ Files.propTypes = {
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
+  activeMonth: PropTypes.instanceOf(Date).isRequired,
+  user: PropTypes.object.isRequired,
+  declaration: PropTypes.object,
   token: PropTypes.string.isRequired,
   declarations: PropTypes.arrayOf(PropTypes.object),
   fetchDeclarations: PropTypes.func.isRequired,
@@ -637,6 +754,7 @@ Files.propTypes = {
   validateEmployerDoc: PropTypes.func.isRequired,
   validateDeclarationInfoDoc: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  activeDeclaration: PropTypes.object,
   isUserLoggedOut: PropTypes.bool.isRequired,
   isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
@@ -649,6 +767,8 @@ export default connect(
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
     isFilesServiceUp: state.statusReducer.isFilesServiceUp,
+    activeMonth: state.activeMonthReducer.activeMonth,
+    user: state.userReducer.user,
     isUserLoggedOut: !!(
       state.userReducer.user && state.userReducer.user.isLoggedOut
     ),

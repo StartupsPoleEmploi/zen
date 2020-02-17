@@ -142,9 +142,10 @@ export class EmployerQuestion extends PureComponent {
             <EmployerQuestionContainer>
               <StyledTextField
                 id={`employerName[${index}]`}
+                className="root-employer"
                 label={this.renderLabel({
                   id: `employerName[${index}]`,
-                  label: "Nom employeur",
+                  label: 'Nom employeur',
                   content:
                     'Si vous avez plusieurs employeurs, cliquez sur "Ajouter un employeur"',
                   showTooltip,
@@ -165,6 +166,7 @@ export class EmployerQuestion extends PureComponent {
             <EmployerQuestionContainer>
               <StyledTextField
                 id={`workHours[${index}]`}
+                className="root-work-hours"
                 label={this.renderLabel({
                   id: `workHours[${index}]`,
                   label: "Nombre d'heures",
@@ -192,6 +194,7 @@ export class EmployerQuestion extends PureComponent {
             <EmployerQuestionContainer>
               <StyledTextField
                 id={`salary[${index}]`}
+                className="root-salary"
                 label={this.renderLabel({
                   id: `salary[${index}]`,
                   label: 'Salaire brut €',
@@ -215,7 +218,7 @@ export class EmployerQuestion extends PureComponent {
               />
             </EmployerQuestionContainer>
           </div>
-          <StyledFormControl>
+          <StyledFormControl className="root-contract">
             <StyledFormLabel
               style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
             >

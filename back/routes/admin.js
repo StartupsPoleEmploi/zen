@@ -9,7 +9,6 @@ const { Parser } = require('json2csv')
 
 const winston = require('../lib/log')
 const { deleteUser } = require('../lib/user')
-const mailjet = require('../lib/mailings/mailjet')
 const { computeFields, DATA_EXPORT_FIELDS } = require('../lib/exportUserList')
 
 const ActivityLog = require('../models/ActivityLog')
@@ -20,21 +19,6 @@ const DeclarationReview = require('../models/DeclarationReview')
 
 const User = require('../models/User')
 const Status = require('../models/Status')
-
-/*
-  This is temporary behaviour while a test is conducted:
-  We have some emails stored in a json file, and we prevent
-  them from being authorized in Zen.
- */
-let emailsToIgnore = []
-try {
-  /* eslint-disable-next-line */
-  emailsToIgnore = require('../constants/users-to-ignore.json').map((email) =>
-    email.toLowerCase(),
-  )
-} catch (e) {
-  winston.warn('No user in list of users to ignore')
-}
 
 const router = express.Router()
 router.use(zip())
@@ -101,59 +85,6 @@ router.get('/users/csv', async (req, res, next) => {
   } catch (err) {
     next(err)
   }
-})
-
-router.post('/users/authorize', (req, res, next) => {
-  const useEmails = Array.isArray(req.body.emails)
-  if (!useEmails) {
-    return res.status(400).json('Bad request')
-  }
-
-  const query = User.query().whereNotNull('registeredAt')
-
-  const emails = req.body.emails.filter(
-    (email) => !emailsToIgnore.includes(email.toLowerCase()),
-  )
-
-  if (emails.length === 0) {
-    return res.json({
-      updatedRowsNb: 0,
-    })
-  }
-
-  query.where(function() {
-    this.where('email', 'ilike', emails[0])
-    emails.slice(1).forEach((email) => {
-      this.orWhere('email', 'ilike', email)
-    })
-  })
-
-  // first get users to avoid sending "welcome" message to already subscribed users
-  return query
-    .andWhere('isAuthorized', false)
-    .then((users) => {
-      if (users.length === 0) return
-
-      return mailjet
-        .authorizeContactsAndSendConfirmationEmails({
-          users,
-          activeMonth: get(req.activeMonth, 'month'),
-        })
-        .then(() =>
-          User.query()
-            .patch({ isAuthorized: true })
-            .whereIn(
-              'id',
-              users.map((user) => user.id),
-            ),
-        )
-    })
-    .then((updatedRowsNb = 0) =>
-      res.json({
-        updatedRowsNb,
-      }),
-    )
-    .catch(next)
 })
 
 // get users *not* in db

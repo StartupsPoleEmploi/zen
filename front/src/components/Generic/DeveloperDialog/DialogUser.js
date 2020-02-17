@@ -5,6 +5,8 @@ import { omit } from 'lodash'
 import React, { Fragment, useEffect, useState } from 'react'
 import superagent from 'superagent'
 
+import catchMaintenance from '../../../lib/catchMaintenance'
+
 const DEFAULT_STR = `{
   "id": 510,
   "firstName": "Harry",
@@ -13,10 +15,13 @@ const DEFAULT_STR = `{
   "gender": "female",
   "isAuthorized": true,
   "isBlocked": false,
+  "needOnBoarding": false,
+  "needEmployerOnBoarding": false,
+  "registeredAt": "2019-05-06",
   "canSendDeclaration": true,
   "hasAlreadySentDeclaration": false,
   "tokenExpirationDate": "2059-05-06T13:34:15.985Z"
-}`;
+}`
 
 export default function DialogUser() {
   const [csrfToken, setCsrfToken] = useState(null)
@@ -29,6 +34,7 @@ export default function DialogUser() {
         .post('/api/developer/session/user', JSON.parse(sessionUser))
         .set('CSRF-Token', csrfToken)
         .then(() => window.location.reload(true))
+        .catch(catchMaintenance)
         .catch((err) => setError(`Erreur serveur : ${err}`))
     } catch (err) {
       return setError(`Le JSON est invalide : ${err}`)
@@ -40,6 +46,7 @@ export default function DialogUser() {
       setCsrfToken(body.csrfToken)
       setSessionUser(JSON.stringify(omit(body, 'csrfToken'), null, 2))
     })
+    .catch(catchMaintenance)
   }, [])
 
   return (
@@ -67,7 +74,12 @@ export default function DialogUser() {
         inputProps={{ style: { fontFamily: 'monospace' } }}
       />
 
-      <Button variant="contained" onClick={submit} color="primary" style={{marginTop: '2rem'}}>
+      <Button
+        variant="contained"
+        onClick={submit}
+        color="primary"
+        style={{ marginTop: '2rem' }}
+      >
         Mettre à jour req.session.user
       </Button>
     </Fragment>

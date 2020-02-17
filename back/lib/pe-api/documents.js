@@ -245,7 +245,7 @@ const sendDocument = ({ accessToken, document, previousTries = 0 }) => {
         }
         err.message = `Error while uploading or confirming document ${infosToSendDocument.dbDocument.id} (call to ${err.response.request.url}) (HTTP ${err.status}) => ${err.message}`
 
-        winston.error(err.message)
+        winston.error(err.message, err)
         Raven.captureException(err)
         throw err
       }),

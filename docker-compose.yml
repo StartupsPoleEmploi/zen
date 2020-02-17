@@ -1,4 +1,4 @@
-version: '2'
+version: '2.4'
 services:
   nginx:
     image: nginx
@@ -6,6 +6,8 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    cpus: '0.50'
+    mem_limit: 300M
     volumes:
       - './nginx/production.conf:/etc/nginx/conf.d/default.conf'
       - './nginx/.htpasswd:/etc/nginx/.htpasswd'
@@ -26,6 +28,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile_back
+    cpus: '2.5'
+    mem_limit: 4G
     volumes:
       - './back:/home/back'
     expose:
@@ -61,6 +65,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile_front
+    cpus: '0.50'
+    mem_limit: 500M
     volumes:
       - './front:/home/front'
     expose:
@@ -76,6 +82,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile_front
+    cpus: '0.50'
+    mem_limit: 300M
     volumes:
       - './front-admin:/home/front'
     expose:
@@ -89,6 +97,8 @@ services:
   db:
     image: postgres:10.4
     restart: always
+    cpus: '4.0'
+    mem_limit: 8G
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.150
@@ -99,6 +109,38 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Europe/Paris
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=200"
+      - "-c"
+      - "shared_buffers=2GB"
+      - "-c"
+      - "effective_cache_size=6GB"
+      - "-c"
+      - "maintenance_work_mem=512MB"
+      - "-c"
+      - "checkpoint_completion_target=0.7"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "default_statistics_target=100"
+      - "-c"
+      - "random_page_cost=4"
+      - "-c"
+      - "effective_io_concurrency=2"
+      - "-c"
+      - "work_mem=5242kB"
+      - "-c"
+      - "min_wal_size=1GB"
+      - "-c"
+      - "max_wal_size=4GB"
+      - "-c"
+      - "max_worker_processes=4"
+      - "-c"
+      - "max_parallel_workers_per_gather=2"
+      - "-c"
+      - "max_parallel_workers=4"
 
 networks:
   actualisation_network:
@@ -107,6 +149,7 @@ networks:
       config:
         - subnet: 172.0.0.0/16
           gateway: 172.0.0.1
+
 
 volumes:
   postgres-data:

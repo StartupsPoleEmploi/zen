@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import moment from 'moment'
 import { connect } from 'react-redux'
 import withWidth from '@material-ui/core/withWidth'
 import { Typography } from '@material-ui/core'
-import DoneIcon from '@material-ui/icons/Done'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { Link } from 'react-router-dom'
 
@@ -22,13 +20,10 @@ import {
 import { primaryBlue, DOCUMENT_LABELS } from '../../constants'
 import file from '../../images/files.svg'
 
-import DeclarationFinished from './DeclarationFinished'
-import DeclarationNotStarted from './DeclarationNotStarted'
-import DeclarationClosed from './DeclarationClosed'
-import DeclarationOnGoing from './DeclarationOnGoing'
-import DeclarationImpossible from './DeclarationImpossible'
+import ActuStatus from '../../components/Generic/actu/ActuStatus'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import StatusFilesError from '../../components/Actu/StatusFilesError'
+import OnBoarding from './onBoarding/OnBoarding'
 
 const StyledDashboard = styled.div`
   margin: 0 auto;
@@ -72,19 +67,14 @@ const StatusContainer = styled.div`
   display: ${({ width }) => (['xs', 'sm'].includes(width) ? 'block' : 'flex')};
 `
 
-const ActuStatus = styled.div`
+const FileStatus = styled.div`
   width: 90%;
-  padding: 3rem 2rem 3rem 0;
+  padding: 3rem 2rem;
+  background-color: #f7f7f7;
   margin: ${({ width }) => (['xs', 'sm'].includes(width) ? 'auto' : null)};
   padding: ${({ width }) =>
     ['xs', 'sm'].includes(width) ? '3rem 2rem' : null};
   width: ${({ width }) => (['xs', 'sm'].includes(width) ? '100%' : null)};
-`
-const FileStatus = styled(ActuStatus)`
-  && {
-    padding: 3rem 2rem;
-    background-color: #f7f7f7;
-  }
 `
 
 const Opacity = styled.div`
@@ -114,14 +104,6 @@ const MonthName = styled(Typography).attrs({ component: 'h3' })`
   && {
     color: #1e2c59;
     text-transform: capitalize;
-  }
-`
-
-const StyledDoneIcon = styled(DoneIcon)`
-  && {
-    margin-right: 1rem;
-    vertical-align: bottom;
-    color: green;
   }
 `
 
@@ -213,54 +195,6 @@ class Dashboard extends PureComponent {
     )
   }
 
-  renderActuStatus = () => {
-    const {
-      user,
-      declarations: allDeclarations,
-      declaration: activeDeclaration,
-      activeMonth,
-    } = this.props
-
-    if (!activeMonth) {
-      return <DeclarationClosed previousDeclaration={allDeclarations[0]} />
-    }
-
-    if (user.hasAlreadySentDeclaration) {
-      return (
-        <div>
-          <Typography
-            style={{ textTransform: 'uppercase', margin: '2rem 0 1.5rem 0' }}
-          >
-            <strong>
-              <StyledDoneIcon /> Actualisation déjà envoyée via pole-emploi.fr
-            </strong>
-          </Typography>
-        </div>
-      )
-    }
-
-    if (activeMonth && !activeDeclaration && user.canSendDeclaration) {
-      return <DeclarationNotStarted activeMonth={activeMonth} />
-    }
-
-    if (!user.canSendDeclaration) {
-      return <DeclarationImpossible />
-    }
-
-    if (activeDeclaration.hasFinishedDeclaringEmployers) {
-      return <DeclarationFinished declaration={activeDeclaration} />
-    }
-
-    if (activeDeclaration) {
-      return (
-        <DeclarationOnGoing
-          declaration={activeDeclaration}
-          activeMonth={this.props.activeMonth}
-        />
-      )
-    }
-  }
-
   getMissingFilesNb = () => {
     const { declarations: allDeclarations } = this.props
 
@@ -313,27 +247,37 @@ class Dashboard extends PureComponent {
   }
 
   render() {
-    const { user, width, activeMonth, isFilesServiceUp } = this.props
-
-    const activeMonthMoment = activeMonth ? moment(activeMonth) : null
-
+    const {
+      user,
+      width,
+      activeMonth,
+      isFilesServiceUp,
+      declarations,
+      declaration,
+    } = this.props
     const computeMissingFiles = this.getMissingFilesNb()
+
+    if (user.needOnBoarding) {
+      // Show "thank you" to only relative new users
+      return (
+        <OnBoarding
+          showEmail={!user.email}
+          showThankYou={user.registeredAt > '2020-01-16'}
+        />
+      )
+    }
 
     return (
       <StyledDashboard width={width}>
         <Title width={width}>Bonjour {user.firstName}</Title>
         <StatusContainer width={width}>
           {!user.isBlocked && (
-            <ActuStatus width={width}>
-              <SubTitle>
-                Actualisation
-                {activeMonthMoment && ' - '}
-                {activeMonthMoment && (
-                  <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
-                )}
-              </SubTitle>
-              {this.renderActuStatus()}
-            </ActuStatus>
+            <ActuStatus
+              activeMonth={activeMonth}
+              user={user}
+              declarations={declarations}
+              declaration={declaration}
+            />
           )}
           <FileStatus width={width}>
             <Opacity isFilesServiceUp={isFilesServiceUp}>
@@ -372,6 +316,9 @@ Dashboard.propTypes = {
     hasAlreadySentDeclaration: PropTypes.bool,
     canSendDeclaration: PropTypes.bool,
     isBlocked: PropTypes.bool,
+    email: PropTypes.string,
+    needOnBoarding: PropTypes.bool,
+    registeredAt: PropTypes.instanceOf(Date),
   }),
   isFilesServiceUp: PropTypes.bool,
   declaration: PropTypes.object,

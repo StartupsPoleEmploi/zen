@@ -22,8 +22,9 @@ import {
 } from './actionNames'
 import { MAX_PDF_PAGE } from '../../constants'
 import { utils } from '../../selectors/declarations'
-import { canUsePDFViewer } from '../../lib/file'
+import { canUsePDFViewer, optimizeImage, isImage } from '../../lib/file'
 import { manageErrorCsrfToken } from '../../lib/serviceHelpers'
+import catchMaintenance from '../../lib/catchMaintenance'
 
 const { findEmployer, findDeclarationInfo } = utils
 
@@ -42,6 +43,7 @@ export const fetchDeclarations = ({ limit } = {}) => (dispatch) => {
     .then((res) =>
       dispatch({ type: FETCH_DECLARATIONS_SUCCESS, payload: res.body }),
     )
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({ type: FETCH_DECLARATIONS_FAILURE, payload: err })
@@ -68,6 +70,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
         payload: res.body,
       }),
     )
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       // 404 are the normal status when no declaration was made.
@@ -105,7 +108,7 @@ export const uploadEmployerFile = ({
   isAddingFile,
   skip,
   file,
-}) => (dispatch, getState) => {
+}) => async (dispatch, getState) => {
   dispatch({
     type: POST_EMPLOYER_DOC_LOADING,
     payload: { documentId, employerId, employerDocType },
@@ -126,7 +129,8 @@ export const uploadEmployerFile = ({
   if (skip) {
     request = request.field('skip', true)
   } else {
-    request = request.attach('document', file)
+    const fileToSubmit = isImage(file) ? await optimizeImage(file) : file
+    request = request.attach('document', fileToSubmit)
   }
 
   return request
@@ -146,6 +150,7 @@ export const uploadEmployerFile = ({
         })
       }
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
@@ -166,7 +171,7 @@ export const uploadDeclarationInfoFile = ({
   file,
   skip,
   isAddingFile,
-}) => (dispatch, getState) => {
+}) => async (dispatch, getState) => {
   dispatch({ type: POST_DECLARATION_INFO_LOADING, payload: { documentId } })
 
   let url = '/api/declarations/files'
@@ -180,7 +185,8 @@ export const uploadDeclarationInfoFile = ({
   if (skip) {
     request = request.field('skip', true)
   } else {
-    request = request.attach('document', file)
+    const fileToSubmit = isImage(file) ? await optimizeImage(file) : file
+    request = request.attach('document', fileToSubmit)
   }
 
   return request
@@ -198,6 +204,7 @@ export const uploadDeclarationInfoFile = ({
         })
       }
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
@@ -230,6 +237,7 @@ export const removeEmployerFilePage = ({
     .then((res) =>
       dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body }),
     )
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
@@ -265,6 +273,7 @@ export const removeDeclarationInfoFilePage = ({
         payload: res.body,
       }),
     )
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
@@ -305,6 +314,7 @@ export const postDeclaration = (formData) => (dispatch, getState) =>
       }
       return res
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       throw err
@@ -320,6 +330,7 @@ export const postEmployers = (formData) => (dispatch, getState) =>
       }
       return res
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       throw err
@@ -345,6 +356,7 @@ export const validateEmployerDoc = ({
       dispatch({ type: FETCH_EMPLOYER_SUCCESS, payload: res.body })
       dispatch(hideEmployerFilePreview())
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({
@@ -378,6 +390,7 @@ export const validateDeclarationInfoDoc = ({ documentId }) => (
       dispatch({ type: FETCH_DECLARATION_SUCCESS, payload: res.body })
       dispatch(hideInfoFilePreview())
     })
+    .catch(catchMaintenance)
     .catch((err) => {
       if (manageErrorCsrfToken(err, dispatch)) return
       dispatch({

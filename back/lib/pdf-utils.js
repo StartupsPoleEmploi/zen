@@ -18,6 +18,10 @@ pdftk.configure({ bin: 'pdftk' })
 const IMG_EXTENSIONS = ['.png', '.jpeg', '.jpg']
 const MAX_PDF_SIZE = 5
 const MAX_IMAGE_DIMENSION = 1500 // in pixel
+const MIN_IMAGE_SIZE_FOR_OPTIMISATION = 1000000
+
+const unlink = util.promisify(fs.unlink)
+const stat = util.promisify(fs.stat)
 
 const getFileBasename = (filename) =>
   path.basename(filename, path.extname(filename))
@@ -65,7 +69,6 @@ const numberOfPage = (filePath) =>
 async function optimizePDF(pdfFilePath) {
   const tmpFilePath = pdfFilePath.replace('.pdf', '-tmp.pdf')
   const psFilePath = pdfFilePath.replace('.pdf', '.ps')
-  const stat = util.promisify(fs.stat)
 
   try {
     const { size: oldSize } = await stat(pdfFilePath)
@@ -105,23 +108,24 @@ const optimizeImage = (imgFilePath) =>
     ],
   })
 
-const transformImageToPDF = (filename) => {
+const transformImageToPDF = async (filename) => {
   const fileBaseName = getFileBasename(filename)
   const pdfFilePath = `${uploadDestination}${fileBaseName}.pdf`
   const imgFilePath = `${uploadDestination}${filename}`
 
-  return resizeImage(imgFilePath)
-    .then(() => optimizeImage(imgFilePath))
-    .then(() => imagesToPdf([imgFilePath], pdfFilePath))
-    .then(() => {
-      fs.unlink(imgFilePath, (deleteError) => {
-        if (deleteError) {
-          winston.warn(
-            `Erreur en supprimant l'image ${filename} : ${deleteError.message}`,
-          )
-        }
-      })
-    })
+  try {
+    const { size } = await stat(imgFilePath)
+
+    if (size > MIN_IMAGE_SIZE_FOR_OPTIMISATION) {
+      await resizeImage(imgFilePath)
+      await optimizeImage(imgFilePath)
+    }
+
+    await imagesToPdf([imgFilePath], pdfFilePath)
+    await unlink(imgFilePath)
+  } catch (err) {
+    winston.warn(`Erreur en supprimant l'image ${filename} : ${err.message}`)
+  }
 }
 
 const mergePDF = (file1, file2, output) =>

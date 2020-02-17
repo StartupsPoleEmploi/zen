@@ -29,19 +29,18 @@ const StyledTitle = styled(Typography).attrs({
 
 const HomeLink = styled(Link)`
   && {
-    color: ${(attr) => attr.zenColor || '#000'};
     text-decoration: none;
     font-family: filson-soft;
   }
 `
 
-export const AppTitle = ({ zenColor, ...props }) => {
+export const AppTitle = ({ zenColor = '#000', ...props }) => {
   const showHomeIcon = useMediaQuery(`(max-width:${mobileBreakpoint})`)
 
   return (
     <StyledTitle {...props}>
       <HomeLink
-        zenColor={zenColor}
+        style={{ color: zenColor }}
         to="/dashboard"
         title="Retourner à l'accueil du site"
       >
@@ -53,9 +52,6 @@ export const AppTitle = ({ zenColor, ...props }) => {
 }
 AppTitle.propTypes = {
   zenColor: PropTypes.string,
-}
-AppTitle.defaultProps = {
-  zenColor: '#000',
 }
 
 export default withWidth()(AppTitle)

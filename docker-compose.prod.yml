@@ -30,6 +30,7 @@ services:
     mem_limit: 8G
     volumes:
       - './back:/home/back'
+      - '/mnt/datalakepe/:/mnt/datalakepe/'
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.101

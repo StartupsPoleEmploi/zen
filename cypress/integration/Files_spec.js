@@ -47,7 +47,7 @@ describe('Files page', function() {
     // reset and seed the database prior to every test
     cy.request('POST', '/api/tests/db/reset-for-files')
     cy.visit('/files')
-    cy.get('h1').should('contain', 'Justificatifs de')
+    cy.get('h1').should('contain', 'justificatifs à transmettre')
   })
 
   it('should allow to send documents to Pole Emploi when they are all uploaded', () => {

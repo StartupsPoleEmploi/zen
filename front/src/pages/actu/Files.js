@@ -4,18 +4,18 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import withWidth from '@material-ui/core/withWidth'
-import CheckCircle from '@material-ui/icons/CheckCircle'
-import { capitalize, get, noop, sortBy } from 'lodash'
+import { get, noop } from 'lodash'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Check from '@material-ui/icons/Check'
+import { withStyles } from '@material-ui/core/styles'
 
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
-import { H2 } from '../../components/Generic/Titles'
+import { H2, H1 } from '../../components/Generic/Titles'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -34,7 +34,7 @@ import DocumentUpload from '../../components/Actu/DocumentUpload'
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog'
-import { muiBreakpoints, secondaryBlue } from '../../constants'
+import { muiBreakpoints, primaryBlue, secondaryBlue } from '../../constants'
 import { formattedDeclarationMonth } from '../../lib/date'
 import { getDeclarationMissingFilesNb } from '../../lib/file'
 import {
@@ -58,7 +58,7 @@ const StyledFiles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 88rem;
+  max-width: 90rem;
   width: 100%;
   margin: auto;
   padding-bottom: 2rem;
@@ -71,27 +71,27 @@ const StyledTitle = styled(Typography)`
   }
 `
 
-const StyledInfo = styled.div`
-  text-align: center;
+const MonthInfoTitle = styled(Typography)`
+  && {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+    color: ${secondaryBlue};
+  }
 `
 
 const FilesSection = styled.section`
-  max-width: 88rem;
+  max-width: 90rem;
   width: 100%;
   margin: auto;
-  padding-bottom: 4rem;
+  padding-bottom: 1rem;
 
   &:not(:first-child) {
-    padding-top: 4rem;
+    padding-top: 3rem;
   }
   &:not(:last-child) {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
-`
-
-const FilesDoneSection = styled(FilesSection)`
-  display: flex;
-  justify-content: center;
 `
 
 const StyledUl = styled.ul`
@@ -101,9 +101,10 @@ const StyledUl = styled.ul`
 `
 
 const DocumentsGroup = styled.div`
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '3rem')};
+  padding-bottom: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '3rem')};
+  border-bottom: ${({ isOldTab = false }) =>
+    isOldTab ? null : '1px solid rgba(0, 0, 0, 0.1)'};
 `
 
 const StyledSup = styled.sup`
@@ -113,6 +114,7 @@ const StyledSup = styled.sup`
   height: 1.8rem;
   display: inline-block;
   color: #fff;
+  font-size: 1rem;
 `
 
 const ActuStatusContainer = styled.div`
@@ -137,6 +139,32 @@ const StyledH2 = styled(H2)`
     align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)};
   }
 `
+
+const H1Title = styled(H1)`
+  && {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+  }
+`
+const BlueSpan = styled.span`
+  color: ${primaryBlue};
+`
+
+const LabelTypography = styled(Typography).attrs({ variant: 'subtitle1' })`
+  && {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+`
+
+const styles = () => ({
+  selected: {
+    fontWeight: 'bold',
+  },
+})
 
 const infoSpecs = [
   {
@@ -265,17 +293,27 @@ export class Files extends Component {
       (spec) => !!declaration[spec.fieldToCheck],
     )
 
-    const sortedEmployers = sortBy(declaration.employers, 'name')
+    const sortedEmployers = declaration.employers.slice()
+    sortedEmployers.sort((emp1, emp2) => {
+      const emp1MissingFile = emp1.documents.filter((d) => d.isTransmitted)
+        .length
+      const emp2MissingFile = emp2.documents.filter((d) => d.isTransmitted)
+        .length
+      return emp1MissingFile - emp2MissingFile
+    })
+
+    const isOldTab = this.state.selectedTab === OLD_MONTHS_TAB
 
     const infoDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => (
-        <DocumentsGroup key={neededDocumentSpecs.name}>
-          <Typography
+        <DocumentsGroup key={neededDocumentSpecs.name} isOldTab={isOldTab}>
+          <LabelTypography
             variant="subtitle1"
+            component="h2"
             style={{ textTransform: 'uppercase' }}
           >
-            <b>{neededDocumentSpecs.sectionLabel}</b>
-          </Typography>
+            {neededDocumentSpecs.sectionLabel}
+          </LabelTypography>
           <StyledUl>
             {this.renderDocumentsOfType({
               label: neededDocumentSpecs.label,
@@ -295,13 +333,12 @@ export class Files extends Component {
     return (
       <div>
         {sortedEmployers.map((employer, index) => (
-          <DocumentsGroup key={employer.id}>
-            <Typography
-              variant="subtitle1"
-              style={{ textTransform: 'uppercase' }}
-            >
-              <b>Employeur&nbsp;: {employer.employerName}</b>
-            </Typography>
+          <DocumentsGroup key={employer.id} isOldTab={isOldTab}>
+            {!isOldTab && (
+              <LabelTypography component="h2">
+                Employeur&nbsp;: {employer.employerName}
+              </LabelTypography>
+            )}
             <StyledUl>
               {this.renderEmployerRow({
                 employer,
@@ -344,16 +381,14 @@ export class Files extends Component {
           declarationInfoId={info.id}
           isLoading={info.isLoading}
           error={info.error}
-          useLightVersion={muiBreakpoints.xs === this.props.width}
+          useLightVersion={
+            muiBreakpoints.xs === this.props.width ||
+            muiBreakpoints.sm === this.props.width
+          }
         />
       ))
 
-  renderEmployerRow = ({
-    declaration,
-    employer,
-    allowSkipFile,
-    showTooltip,
-  }) => {
+  renderEmployerRow = ({ employer, allowSkipFile, showTooltip }) => {
     const salaryDoc = employer.documents.find(
       ({ type }) => type === salarySheetType,
     )
@@ -373,18 +408,20 @@ export class Files extends Component {
       allowSkipFile,
       employerId: employer.id,
       showPreview: this.props.showEmployerFilePreview,
-      caption: capitalize(
-        formattedDeclarationMonth(declaration.declarationMonth.month),
-      ),
-      useLightVersion: muiBreakpoints.xs === this.props.width,
+      useLightVersion:
+        muiBreakpoints.xs === this.props.width ||
+        muiBreakpoints.sm === this.props.width,
     }
+
+    const isOldTab = OLD_MONTHS_TAB === this.state.selectedTab
 
     const salarySheetUpload = (
       <DocumentUpload
         {...commonProps}
         key={`${employer.id}-${salarySheetType}`}
         id={get(salaryDoc, 'id')}
-        label="Bulletin de salaire"
+        label={isOldTab ? employer.employerName : 'Bulletin de salaire'}
+        caption={isOldTab ? 'Bulletin de salaire' : null}
         fileExistsOnServer={
           !!get(salaryDoc, 'file') && !get(salaryDoc, 'isCleanedUp')
         }
@@ -403,7 +440,8 @@ export class Files extends Component {
         {...commonProps}
         key={`${employer.id}-${employerCertificateType}`}
         id={get(certificateDoc, 'id')}
-        label="Attestation employeur"
+        label={isOldTab ? employer.employerName : 'Attestation employeur'}
+        caption={isOldTab ? 'Attestation employeur' : null}
         fileExistsOnServer={
           !!get(certificateDoc, 'file') && !get(certificateDoc, 'isCleanedUp')
         }
@@ -419,10 +457,13 @@ export class Files extends Component {
       <>
         {certificateUpload}
         {certificateDoc && !salaryDoc ? (
-          <Typography variant="caption">
+          <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
             <span
               aria-hidden
-              style={{ display: 'inline-block', paddingRight: '0.5rem' }}
+              style={{
+                display: 'inline-block',
+                paddingRight: '0.5rem',
+              }}
             >
               👍
             </span>
@@ -500,31 +541,18 @@ export class Files extends Component {
     // the object in the store main not be updated.
     // This should be changed as the next look for this page is implemented.
     if (declaration.isFinished || declarationRemainingDocsNb === 0) {
-      return (
-        <FilesDoneSection key={declaration.id}>
-          <Typography>Justificatifs de {formattedMonth} transmis</Typography>
-          {' '}
-          <CheckCircle />
-        </FilesDoneSection>
-      )
+      return null
     }
+
+    const isOldTab = OLD_MONTHS_TAB === this.state.selectedTab
 
     return (
       <FilesSection key={declaration.id}>
-        <StyledTitle variant="h6" component="h1" style={{ fontWeight: 'bold' }}>
-          Justificatifs de {formattedMonth}
-        </StyledTitle>
-        <StyledInfo>
-          <Typography
-            style={{
-              color: secondaryBlue,
-              paddingBottom: '2rem',
-            }}
-          >
-            Vous avez encore {declarationRemainingDocsNb} justificatif
-            {declarationRemainingDocsNb > 1 ? 's' : ''} à envoyer
-          </Typography>
-        </StyledInfo>
+        {isOldTab && (
+          <MonthInfoTitle variant="h6" component="h2">
+            {formattedMonth}
+          </MonthInfoTitle>
+        )}
         {this.renderDocumentList(declaration)}
       </FilesSection>
     )
@@ -548,6 +576,7 @@ export class Files extends Component {
       validateDeclarationInfoDoc,
       activeMonth,
       user,
+      classes,
     } = this.props
 
     if (isLoading) {
@@ -645,6 +674,8 @@ export class Files extends Component {
       },
       0,
     )
+    const totalMissingFiles =
+      lastDeclarationMissingFiles + oldDeclarationsMissingFiles
 
     const showEmployerPreview = !!get(previewedEmployerDoc, 'file')
     const showInfoDocPreview = !!get(previewedInfoDoc, 'file')
@@ -673,73 +704,83 @@ export class Files extends Component {
     }
 
     return (
-      <StyledFiles>
-        <Tabs
-          value={this.state.selectedTab}
-          onChange={this.selectTab}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          style={{ width: '100%' }}
-        >
-          <Tab
-            value={CURRENT_MONTH_TAB}
-            label={
-              <div style={{ color: '#000' }}>
-                {formattedDeclarationMonth(
-                  lastDeclaration
-                    ? lastDeclaration.declarationMonth.month
-                    : activeMonth.month,
-                )}{' '}
-                <StyledSup>{lastDeclarationMissingFiles}</StyledSup>
-              </div>
-            }
-          />
-          <Tab
-            style={{ color: '#000' }}
-            value={OLD_MONTHS_TAB}
-            label={
-              <div style={{ color: '#000' }}>
-                Mois précédents{' '}
-                <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
-              </div>
-            }
-          />
-        </Tabs>
+      <>
+        <H1Title style={{ fontSize: '2rem' }}>
+          Vous avez <BlueSpan>{totalMissingFiles}</BlueSpan>{' '}
+          {totalMissingFiles > 1 ? 'justificatifs' : 'justificatif'} à
+          transmettre
+        </H1Title>
 
-        {this.state.selectedTab === CURRENT_MONTH_TAB &&
-          this.renderCurrentMonthTab(lastDeclaration)}
+        <StyledFiles>
+          <Tabs
+            value={this.state.selectedTab}
+            onChange={this.selectTab}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            style={{ width: '100%' }}
+          >
+            <Tab
+              value={CURRENT_MONTH_TAB}
+              classes={{ selected: classes.selected }}
+              label={
+                <div style={{ color: '#000', fontSize: '1.6rem' }}>
+                  {formattedDeclarationMonth(
+                    lastDeclaration
+                      ? lastDeclaration.declarationMonth.month
+                      : activeMonth.month,
+                  )}{' '}
+                  <StyledSup>{lastDeclarationMissingFiles}</StyledSup>
+                </div>
+              }
+            />
+            <Tab
+              style={{ color: '#000' }}
+              value={OLD_MONTHS_TAB}
+              classes={{ selected: classes.selected }}
+              label={
+                <div style={{ color: '#000', fontSize: '1.6rem' }}>
+                  Justificatifs manquants{' '}
+                  <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+                </div>
+              }
+            />
+          </Tabs>
 
-        {this.state.selectedTab === OLD_MONTHS_TAB &&
-          (oldDeclarations.length > 0 ? (
-            oldDeclarations.map(this.renderSection)
-          ) : (
-            <FilesSection>
-              <StyledTitle
-                variant="h6"
-                component="h1"
-                style={
-                  this.props.width !== 'xs' && {
-                    textAlign: 'right',
-                    paddingRight: '2rem',
+          {this.state.selectedTab === CURRENT_MONTH_TAB &&
+            this.renderCurrentMonthTab(lastDeclaration)}
+
+          {this.state.selectedTab === OLD_MONTHS_TAB &&
+            (oldDeclarations.length > 0 ? (
+              oldDeclarations.map(this.renderSection)
+            ) : (
+              <FilesSection>
+                <StyledTitle
+                  variant="h6"
+                  component="h1"
+                  style={
+                    this.props.width !== 'xs' && {
+                      textAlign: 'right',
+                      paddingRight: '2rem',
+                    }
                   }
-                }
-              >
-                Pas d'anciens justificatifs disponibles
-              </StyledTitle>
-            </FilesSection>
-          ))}
+                >
+                  Pas d'anciens justificatifs disponibles
+                </StyledTitle>
+              </FilesSection>
+            ))}
 
-        <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
-        <FileTransmittedToPE
-          isOpened={this.state.showSkipConfirmation}
-          onCancel={this.closeSkipModal}
-          onConfirm={this.state.skipFileCallback}
-        />
-        {(showEmployerPreview || showInfoDocPreview) && (
-          <DocumentDialog isOpened {...previewProps} />
-        )}
-      </StyledFiles>
+          <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
+          <FileTransmittedToPE
+            isOpened={this.state.showSkipConfirmation}
+            onCancel={this.closeSkipModal}
+            onConfirm={this.state.skipFileCallback}
+          />
+          {(showEmployerPreview || showInfoDocPreview) && (
+            <DocumentDialog isOpened {...previewProps} />
+          )}
+        </StyledFiles>
+      </>
     )
   }
 }
@@ -772,6 +813,7 @@ Files.propTypes = {
   isUserLoggedOut: PropTypes.bool.isRequired,
   isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
+  classes: PropTypes.object,
 }
 
 export default connect(
@@ -800,4 +842,4 @@ export default connect(
     validateEmployerDoc: validateEmployerDocAction,
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
   },
-)(withWidth()(Files))
+)(withWidth()(withStyles(styles)(Files)))

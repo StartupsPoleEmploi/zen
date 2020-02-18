@@ -42,6 +42,7 @@ import {
   selectPreviewedInfoDoc,
   utils,
 } from '../../selectors/declarations'
+import NotAutorized from '../other/NotAutorized'
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils
 
@@ -442,6 +443,14 @@ export class Files extends Component {
       activeMonth &&
       (!lastDeclaration || !lastDeclaration.hasFinishedDeclaringEmployers)
     ) {
+      if (user.isBlocked) {
+        return (
+          <div style={{ marginTop: '3rem' }}>
+            <NotAutorized showIcon={false} />
+          </div>
+        )
+      }
+
       return (
         <ActuStatusContainer
           centered={false}
@@ -586,7 +595,12 @@ export class Files extends Component {
       ({ isFinished }) => !isFinished,
     )
 
-    if (activeMonth && !lastDeclaration && !areUnfinishedDeclarations) {
+    if (
+      activeMonth &&
+      !lastDeclaration &&
+      !areUnfinishedDeclarations &&
+      !user.isBlocked
+    ) {
       return (
         <ActuStatusContainer>
           <ActuStatus

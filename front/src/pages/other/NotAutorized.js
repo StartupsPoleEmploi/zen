@@ -1,5 +1,6 @@
-import Typography from '@material-ui/core/Typography'
 import React from 'react'
+import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied'
 
@@ -25,13 +26,15 @@ const StyleSeparator = styled.div`
   height: 0.6rem;
 `
 
-export default function NotAutorized() {
+export default function NotAutorized({ showIcon = true }) {
   return (
     <StyledNotAutorized>
-      <SentimentVeryDissatisfiedIcon
-        style={{ fontSize: 84 }}
-        color="secondary"
-      />
+      {showIcon && (
+        <SentimentVeryDissatisfiedIcon
+          style={{ fontSize: 84 }}
+          color="secondary"
+        />
+      )}
       <LandingText component="h1" style={{ marginBottom: '5rem' }}>
         Malheureusement, vous n'êtes pas autorisé à utiliser Zen.
       </LandingText>
@@ -40,7 +43,7 @@ export default function NotAutorized() {
         <strong>
           <span aria-label="Seuls">Seul.e.s</span> les{' '}
           <span aria-label="assistants ou assistantes maternels">
-            assistant.e maternel.le
+            assistant.e.s maternel.le.s
           </span>
           <br />
           (hormis les régions suivantes : Bourgogne-Franche-Comté, Centre Val de
@@ -59,4 +62,8 @@ export default function NotAutorized() {
       <StyleSeparator />
     </StyledNotAutorized>
   )
+}
+
+NotAutorized.propTypes = {
+  showIcon: PropTypes.bool,
 }

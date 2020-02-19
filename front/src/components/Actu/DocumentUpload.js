@@ -277,7 +277,7 @@ export class DocumentUpload extends Component {
                       <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
                       <div>
                         Pôle emploi <Upper>a déjà ce justificatif</Upper>
-                        <TooltipOnFocus content="Cochez cette case si vous avez transmis ce justificatif à Pôle emploi par d'autres moyens que Zen.">
+                        <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
                           <InfoImg />
                         </TooltipOnFocus>
                       </div>

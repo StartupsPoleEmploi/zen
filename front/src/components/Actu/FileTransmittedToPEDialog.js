@@ -10,20 +10,19 @@ const FileTransmittedToPE = ({ isOpened, onCancel, onConfirm }) => (
   <CustomDialog
     content={
       <DialogContentText>
-        Avez-vous déjà transmis ce fichier à Pôle emploi via un autre moyen que
-        Zen&nbsp;?
+        Confirmez-vous que Pôle emploi a déjà ce justificatif ? Ce justificatif ne sera plus demandé sur Zen
       </DialogContentText>
     }
     actions={
       <Fragment>
-        <CustomColorButton onClick={onCancel}>Non</CustomColorButton>
+        <CustomColorButton onClick={onCancel}>J'annule</CustomColorButton>
         <Button
           variant="contained"
           onClick={onConfirm}
           color="primary"
           autoFocus
         >
-          Oui
+          Je confirme
         </Button>
       </Fragment>
     }

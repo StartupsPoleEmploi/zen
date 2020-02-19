@@ -184,7 +184,7 @@ async function importUserFromDatalake() {
     winston.info(`[ImportUserFromDatalake] ${userToUpdate.length} Users to block ...`)
     while (userToUpdate.length) {
       winston.info(`Still ${userToUpdate.length} user to block`)
-      const userIn = userToUpdate.splice(0, 100);
+      const userIn = userToUpdate.splice(0, 1);
       await User.query()
         .patch({ isBlocked: true })
         .whereIn('peId', userIn.map((e) => e.peId))

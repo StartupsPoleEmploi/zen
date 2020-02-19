@@ -25,7 +25,7 @@ export const skipEmployerFile = ({ index }) => {
     .find('.already-transmitted-button')
     .click()
   cy.get('button')
-    .contains('Oui')
+    .contains('Je confirme')
     .click()
 }
 
@@ -35,7 +35,7 @@ export const skipDeclarationInfoFile = ({ index }) => {
     .find('.already-transmitted-button')
     .click()
   cy.get('button')
-    .contains('Oui')
+    .contains('Je confirme')
     .click()
 }
 

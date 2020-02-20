@@ -11,6 +11,7 @@ describe('Dashboard page', function() {
   describe('Declaration not started ', () => {
     beforeEach(() => {
       cy.request('POST', '/api/tests/db/reset')
+      cy.viewport(1400, 1600)
       cy.visit('/')
       cy.url().should('contain', '/dashboard')
     })
@@ -23,6 +24,7 @@ describe('Dashboard page', function() {
   describe('Declaration closed ', () => {
     beforeEach(() => {
       cy.request('POST', '/api/tests/db/reset-for-actu-closed')
+      cy.viewport(1400, 1600)
       cy.visit('/')
       cy.url().should('contain', '/dashboard')
     })
@@ -35,6 +37,7 @@ describe('Dashboard page', function() {
   describe('Declaration on going - Employers *not* declared', () => {
     beforeEach(() => {
       cy.request('POST', '/api/tests/db/reset-for-employers')
+      cy.viewport(1400, 1600)
       cy.visit('/')
       cy.url().should('contain', '/dashboard')
     })
@@ -50,6 +53,7 @@ describe('Dashboard page', function() {
   describe('Declaration on going - Employers declared', () => {
     beforeEach(() => {
       cy.request('POST', '/api/tests/db/reset-for-files')
+      cy.viewport(1400, 1600)
       cy.visit('/')
       cy.url().should('contain', '/dashboard')
     })
@@ -76,6 +80,7 @@ describe('Dashboard page', function() {
           isFinished: true,
         },
       })
+      cy.viewport(1400, 1600)
       cy.visit('/')
       cy.url().should('contain', '/dashboard')
     })

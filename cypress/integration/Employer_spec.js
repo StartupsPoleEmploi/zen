@@ -17,19 +17,38 @@ describe('Employers page', function() {
 
   describe('Employers => ', () => {
     beforeEach(() => {
+      cy.viewport(1400, 1600)
       cy.visit('/employers')
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500)
       cy.get('h1').should(
         'contain',
         'Pour quels employeurs avez-vous travaillé',
       )
     })
 
-    it('should a new employer', () => {
+    it('should add a new employer', () => {
       cy.get('.employer-question').should('have.length', 1)
       addNewEmployer()
       cy.get('.employer-question').should('have.length', 2)
       addNewEmployer()
       cy.get('.employer-question').should('have.length', 3)
+    })
+
+    it('should not allowed letters in salary', () => {
+      fillEmployerForm({
+        employerName: 'John Doe',
+        workHours: 37,
+        salary: 'Hello',
+        employerEndThisMonth: 'no',
+      })
+      checkEmployerLineValues({
+        employerName: 'John Doe',
+        workHours: '37h',
+        salary: '',
+      })
+      sendDeclaration()
+      checkGlobalFormErrorMessageExists()
     })
 
     it('should remove a employer line', () => {
@@ -178,21 +197,6 @@ describe('Employers page', function() {
       })
     })
 
-    it('should not allowed letters in salary', () => {
-      fillEmployerForm({
-        employerName: 'John Doe',
-        workHours: 37,
-        salary: 'Hello',
-        employerEndThisMonth: 'no',
-      })
-      checkEmployerLineValues({
-        employerName: 'John Doe',
-        workHours: '37h',
-        salary: '',
-      })
-      sendDeclaration()
-      checkGlobalFormErrorMessageExists()
-    })
     it('should limit salary input length to 99999', () => {
       fillEmployerForm({
         employerName: 'John Doe',

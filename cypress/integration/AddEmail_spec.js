@@ -5,6 +5,7 @@ describe('AddEmail page', function() {
     cy.request('POST', '/api/tests/db/reset-for-signup?authorizeUser=true', {
       userOverride: { email: '' },
     })
+    cy.viewport(1400, 1600)
     cy.visit('/add-email')
 
     cy.get('h1')

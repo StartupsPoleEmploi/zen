@@ -1,3 +1,4 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 export const uploadNewEmployerFile = ({
   file = 'pdf-1-page.pdf',
   index = 0,
@@ -27,6 +28,7 @@ export const skipEmployerFile = ({ index }) => {
   cy.get('button')
     .contains('Je confirme')
     .click()
+  cy.wait(500)
 }
 
 export const skipDeclarationInfoFile = ({ index }) => {

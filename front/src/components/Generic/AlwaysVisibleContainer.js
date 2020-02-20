@@ -2,8 +2,34 @@ import Paper from '@material-ui/core/Paper'
 import { throttle } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import styled from 'styled-components'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import { primaryBlue } from '../../constants'
 
 const padding = 20 // Padding to compensate for when switching to position fixed
+
+
+const ScrollButton = styled.button`
+  position: fixed;
+  bottom: 8rem;
+  right: 3rem;
+
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 1rem;
+
+  border-radius: 50%;
+  background-color: ${primaryBlue};
+  border: none;
+
+  cursor: pointer;
+`
+
+const ScrollImg = styled(ArrowDownwardIcon)`
+  color: white;
+`
+
 
 export class AlwaysVisibleContainer extends Component {
   static propTypes = {
@@ -51,6 +77,10 @@ export class AlwaysVisibleContainer extends Component {
     this.ref = ref
   }
 
+  scrollToBottom = () => {
+    window.scrollTo(0, document.body.scrollHeight)
+  }
+
   render() {
     const { usePositionFixed } = this.state
 
@@ -71,6 +101,11 @@ export class AlwaysVisibleContainer extends Component {
             background: usePositionFixed ? '#fff' : 'inherit',
           }}
         >
+          {usePositionFixed &&
+            <ScrollButton type="button" onClick={this.scrollToBottom}>
+              <ScrollImg alt="Se rendre en bas de de la page" />
+            </ScrollButton>
+          }
           {this.props.children}
         </Comp>
       </div>

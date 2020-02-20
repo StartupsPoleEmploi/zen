@@ -48,6 +48,7 @@ describe('Declaration page', function() {
           shouldAskAgain: true,
         }),
       )
+      cy.viewport(1400, 1000)
       cy.visit('/actu')
     })
 

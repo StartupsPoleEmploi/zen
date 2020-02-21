@@ -9,6 +9,7 @@ import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Check from '@material-ui/icons/Check'
+import RestoreIcon from '@material-ui/icons/Restore'
 
 import AppTitle from '../Generic/AppTitle'
 import { primaryBlue, mobileBreakpoint } from '../../constants'
@@ -16,13 +17,21 @@ import file from '../../images/files.svg'
 import actu from '../../images/actu.svg'
 import home from '../../images/home.svg'
 
-const stepperRoutes = ['/actu', '/employers', '/files', '/dashboard', '/cgu']
+const stepperRoutes = [
+  '/actu',
+  '/employers',
+  '/files',
+  '/dashboard',
+  '/cgu',
+  '/history',
+]
 const [
   declarationRoute,
   employersRoute,
   filesRoute,
   dashboardRoute,
   cguRoute,
+  historyRoute,
 ] = stepperRoutes
 const routesWithDisplayedNav = stepperRoutes.concat('/thanks')
 
@@ -107,6 +116,10 @@ const HomeIcon = styled.img`
 `
 
 const CheckIcon = styled(Check)`
+  width: 2.5rem;
+  margin-right: 1rem;
+`
+const RestoreIconImg = styled(RestoreIcon)`
   width: 2.5rem;
   margin-right: 1rem;
 `
@@ -287,6 +300,17 @@ export const NavLogin = ({
           link={filesRoute}
           shouldActivateLink={isFilesServiceUp && !user.needOnBoarding}
           isActive={pathname === filesRoute && isFilesServiceUp}
+        />
+
+        <StepperItem
+          label={
+            <>
+              <RestoreIconImg alt="" /> Mon historique
+            </>
+          }
+          link={historyRoute}
+          shouldActivateLink={!user.needOnBoarding}
+          isActive={pathname === historyRoute && isFilesServiceUp}
         />
       </UlStepper>
       <UlStepper style={{ position: 'absolute', bottom: '0px' }}>

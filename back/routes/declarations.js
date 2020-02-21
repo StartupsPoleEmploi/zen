@@ -316,19 +316,18 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
     .catch(next)
 })
 
-router.get('/summary-file', requireActiveMonth, (req, res, next) => {
+router.get('/summary-file', (req, res, next) => {
   const download = req.query.download === 'true'
 
   return Declaration.query()
     .eager('[declarationMonth, user, employers, infos]')
-    .findOne({ id: req.body.id, userId: req.session.user.id })
+    .findOne({ id: req.query.id, userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .skipUndefined()
     .then((declaration) => {
       if (!declaration) {
-        return res.status(404).json('Please send declaration first')
+        return res.status(404).json('No declaration found')
       }
-
       if (!declaration.hasFinishedDeclaringEmployers) {
         return res.status(403).json('Declaration not complete')
       }

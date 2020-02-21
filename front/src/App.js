@@ -29,6 +29,7 @@ import Files from './pages/actu/Files'
 import Thanks from './pages/actu/Thanks'
 import { LoggedOut } from './pages/generic/LoggedOut'
 import Home from './pages/home/Home'
+import History from './pages/history/History'
 import ZnLayout from './components/ZnLayout'
 import NotAutorized from './pages/other/NotAutorized'
 import AddEmail from './pages/other/AddEmail'
@@ -263,6 +264,12 @@ class App extends Component {
                 declaration={activeDeclaration}
               />
             )}
+          />
+          <PrivateRoute
+            exact
+            isLoggedIn={!!user}
+            path="/history"
+            render={(props) => <History {...props} />}
           />
           <PrivateRoute
             exact

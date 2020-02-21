@@ -236,10 +236,13 @@ const computeDocUrl = ({ id, type, file }) => {
 export class Files extends Component {
   constructor(props) {
     super(props)
+
+    const tab = new URL(window.location).searchParams.get('tab')
+
     this.state = {
       showSkipConfirmation: false,
       skipFileCallback: noop,
-      selectedTab: CURRENT_MONTH_TAB,
+      selectedTab: tab && tab === 'old' ? OLD_MONTHS_TAB : CURRENT_MONTH_TAB,
     }
   }
 
@@ -744,7 +747,7 @@ export class Files extends Component {
               classes={{ selected: classes.selected }}
               label={
                 <div style={{ color: '#000', fontSize: '1.6rem' }}>
-                  Justificatifs manquants{' '}
+                  Mois précédents{' '}
                   <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
                 </div>
               }

@@ -1,6 +1,7 @@
 describe('Home page', function() {
   beforeEach(() => {
     cy.request('POST', '/api/tests/db/set-empty')
+    cy.viewport(1400, 1600)
     cy.visit('/')
   })
 

@@ -502,7 +502,15 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
             userId: req.session.user.id,
           }),
         )
-        .then((declaration) => res.json(declaration))
+        .then(() =>
+          Declaration.query()
+            .eager('[employers.documents, infos, declarationMonth]')
+            .findOne({
+              id: declarationInfo.declaration.id,
+              userId: req.session.user.id,
+            }),
+        )
+        .then((updateDeclaration) => res.json(updateDeclaration))
     })
     .catch(next)
 })

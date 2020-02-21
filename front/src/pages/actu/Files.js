@@ -333,7 +333,11 @@ export class Files extends Component {
     return (
       <div>
         {sortedEmployers.map((employer, index) => (
-          <DocumentsGroup key={employer.id} isOldTab={isOldTab}>
+          <DocumentsGroup
+            key={employer.id}
+            isOldTab={isOldTab}
+            className="employer-row"
+          >
             {!isOldTab && (
               <LabelTypography component="h2">
                 Employeur&nbsp;: {employer.employerName}

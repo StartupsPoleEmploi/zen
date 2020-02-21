@@ -1,3 +1,4 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 import {
   addNewPage,
   closeModal,
@@ -21,6 +22,7 @@ import { DECLARATION_STATUS } from '../pages/Dashboard'
 describe('Files page - Declaration not started', function() {
   beforeEach(() => {
     cy.request('POST', '/api/tests/db/reset')
+    cy.viewport(1400, 1600)
     cy.visit('/files')
   })
 
@@ -31,6 +33,7 @@ describe('Files page - Declaration not started', function() {
 describe('Files page - Declaration started but employers not finished', function() {
   beforeEach(() => {
     cy.request('POST', '/api/tests/db/reset-for-employers')
+    cy.viewport(1400, 1600)
     cy.visit('/files')
   })
 
@@ -46,7 +49,9 @@ describe('Files page', function() {
   beforeEach(() => {
     // reset and seed the database prior to every test
     cy.request('POST', '/api/tests/db/reset-for-files')
+    cy.viewport(1400, 1600)
     cy.visit('/files')
+    cy.wait(500)
     cy.get('h1').should('contain', 'justificatifs à transmettre')
   })
 
@@ -54,10 +59,10 @@ describe('Files page', function() {
     uploadNewEmployerFile({ index: 0 })
     clickSendToPoleEmploiModalButton()
 
-    uploadNewEmployerFile({ index: 1 })
+    uploadNewDeclarationInfoFile({ index: 0 })
     clickSendToPoleEmploiModalButton()
 
-    uploadNewDeclarationInfoFile({ index: 0 })
+    uploadNewEmployerFile({ index: 0 })
     clickSendToPoleEmploiModalButton()
 
     cy.url().should('contain', '/thanks')
@@ -69,7 +74,7 @@ describe('Files page', function() {
 
   it('should allow to send documents to Pole Emploi when they are all skipped', () => {
     skipEmployerFile({ index: 0 })
-    skipEmployerFile({ index: 1 })
+    skipEmployerFile({ index: 0 })
     skipDeclarationInfoFile({ index: 0 })
 
     cy.url().should('contain', '/thanks')

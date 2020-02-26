@@ -4,6 +4,8 @@ services:
     volumes:
       - '/mnt/datalakepe/:/mnt/datalakepe/'
     environment:
+      - ELASTICSEARCH_LOG_INDEX=zen_node
+      - ELASTICSEARCH_LOG_INDEX_PREFIX=zen_node
       - NODE_ENV=production
       - ZEN_ENV=production
 
@@ -36,6 +38,8 @@ services:
         ipv4_address: 172.0.0.101
     depends_on:
       - 'db'
+    extra_hosts:
+      - "zen.elastic.pole-emploi.fr:137.74.30.34"
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - CLIENT_OAUTH_ID=${CLIENT_OAUTH_ID}
@@ -55,6 +59,13 @@ services:
       - SEND_CAMPAIGN_EMAILS=${SEND_CAMPAIGN_EMAILS}
       - SEND_TRANSACTIONAL_EMAILS=${SEND_TRANSACTIONAL_EMAILS}
       - AUTHORIZE_ALL_USERS=${AUTHORIZE_ALL_USERS}
+      - WINSTON_ENABLE_SLACK=${WINSTON_ENABLE_SLACK}
+      - WINSTON_ENABLE_ELASTICSEARCH=${WINSTON_ENABLE_ELASTICSEARCH}
+      - ELASTICSEARCH_LOG_URL=${ELASTICSEARCH_LOG_URL}
+      - ELASTICSEARCH_LOG_USER=${ELASTICSEARCH_LOG_USER}
+      - ELASTICSEARCH_LOG_PWD=${ELASTICSEARCH_LOG_PWD}
+      - ELASTICSEARCH_LOG_INDEX=zen_cron
+      - ELASTICSEARCH_LOG_INDEX_PREFIX=zen_cron
       - NODE_ENV=production
       - REACT_APP_ZEN_ENV=production
       - NPM_CONFIG_PRODUCTION=false

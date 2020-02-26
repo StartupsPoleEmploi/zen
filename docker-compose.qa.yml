@@ -6,6 +6,8 @@ services:
 
   node:
     environment:
+      - ELASTICSEARCH_LOG_INDEX=zen_node_qa
+      - ELASTICSEARCH_LOG_INDEX_PREFIX=zen_node_qa
       - NODE_ENV=qa
       - REACT_APP_ZEN_ENV=qa
     cpus: '1.5'

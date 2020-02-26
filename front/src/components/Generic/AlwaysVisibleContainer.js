@@ -8,11 +8,10 @@ import { primaryBlue } from '../../constants'
 
 const padding = 20 // Padding to compensate for when switching to position fixed
 
-
 const ScrollButton = styled.button`
   position: fixed;
-  bottom: 8rem;
-  right: 3rem;
+  bottom: 7rem;
+  right: 2rem;
 
   display: flex;
   align-self: center;
@@ -29,7 +28,6 @@ const ScrollButton = styled.button`
 const ScrollImg = styled(ArrowDownwardIcon)`
   color: white;
 `
-
 
 export class AlwaysVisibleContainer extends Component {
   static propTypes = {
@@ -101,11 +99,11 @@ export class AlwaysVisibleContainer extends Component {
             background: usePositionFixed ? '#fff' : 'inherit',
           }}
         >
-          {usePositionFixed &&
+          {usePositionFixed && (
             <ScrollButton type="button" onClick={this.scrollToBottom}>
               <ScrollImg alt="Se rendre en bas de de la page" />
             </ScrollButton>
-          }
+          )}
           {this.props.children}
         </Comp>
       </div>

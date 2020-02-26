@@ -6,10 +6,8 @@ import superagent from 'superagent'
 import moment from 'moment'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import { primaryBlue } from '../../../constants'
+import { primaryBlue, darkBlue } from '../../../constants'
 import catchMaintenance from '../../../lib/catchMaintenance'
-
-const sectionColor = '#1e2c59'
 
 const Container = styled.div`
   display: flex;
@@ -87,7 +85,7 @@ const DeclarationClosed = ({ previousDeclaration }) => {
             component="h3"
             style={{
               lineHeight: 1,
-              color: sectionColor,
+              color: darkBlue,
               marginBottom: '.5rem',
             }}
           >

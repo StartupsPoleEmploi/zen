@@ -1,5 +1,9 @@
 version: '2.4'
 services:
+  nginx:
+    volumes:
+      - './nginx/var/log/nginx:/var/log/nginx'
+
   node:
     volumes:
       - '/mnt/datalakepe/:/mnt/datalakepe/'

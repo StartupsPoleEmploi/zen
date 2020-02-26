@@ -35,8 +35,12 @@ const StyledFormLabel = styled(FormLabel)`
 
 const LabelsContainer = styled.div`
   flex: 0 1 auto;
-  padding-right: 3rem;
-  max-width: 18rem;
+  padding-right: 1rem;
+  min-width: 20rem;
+
+  @media (max-width: 1000px) {
+    min-width: auto;
+  }
 `
 
 const ActionsContainer = styled.div`

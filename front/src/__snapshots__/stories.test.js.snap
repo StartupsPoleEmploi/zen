@@ -1707,7 +1707,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -1884,7 +1884,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2061,7 +2061,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2238,7 +2238,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2415,7 +2415,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2597,7 +2597,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2779,7 +2779,7 @@ exports[`Storyshots DocumentUpload loading (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2828,7 +2828,7 @@ exports[`Storyshots DocumentUpload loading 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2877,7 +2877,7 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -3039,7 +3039,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -3201,7 +3201,7 @@ exports[`Storyshots DocumentUpload with transmitted file (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -3280,7 +3280,7 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs bcjXuG"
+    className="sc-hMqMXs ewWWDF"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"

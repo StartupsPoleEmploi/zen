@@ -21,7 +21,7 @@ const Row = styled.div`
     text-align: center;
   }
   @media (max-width: ${mobileBreakpoint}) {
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 0;
     justify-content: left;
     text-align: left;
   }
@@ -52,7 +52,7 @@ const NoDataCell = styled(Cell)`
     @media (max-width: ${mobileBreakpoint}) {
       border: none;
       text-align: left;
-      padding: .5rem 0 0 3rem;
+      padding: 0.5rem 0 0 3rem;
     }
   }
 `

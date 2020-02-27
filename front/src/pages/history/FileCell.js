@@ -43,7 +43,7 @@ const StyledFileCell = styled(Cell)`
     @media (max-width: ${mobileBreakpoint}) {
       align-items: flex-start;
       border-top: solid 1px #ececec;
-      padding: 2rem 1rem 1rem 1rem;
+      padding: 2rem 1rem 1rem 0rem;
     }
   }
 `

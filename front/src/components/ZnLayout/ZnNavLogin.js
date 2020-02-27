@@ -49,7 +49,7 @@ const Nav = styled.nav.attrs({ role: 'navigation' })`
   background: #fafafa;
   width: 25rem;
   border-right: 1px #ddd solid;
-  height: 100vh;
+  min-height: 100vh;
 `
 
 const AppTitleContainer = styled.div`
@@ -66,6 +66,17 @@ const UlStepper = styled.ul`
 
   > li {
     margin-top: 3rem;
+  }
+`
+const FooterUlStepper = styled(UlStepper)`
+  && {
+    position: fixed;
+    bottom: 0px;
+
+    @media (max-height: 400px) {
+      position: inherit;
+      padding-top: 1rem;
+    }
   }
 `
 
@@ -313,14 +324,14 @@ export const NavLogin = ({
           isActive={pathname === historyRoute && isFilesServiceUp}
         />
       </UlStepper>
-      <UlStepper style={{ position: 'absolute', bottom: '0px' }}>
+      <FooterUlStepper>
         <StepperItem
           label="CGU"
           link={cguRoute}
           shouldActivateLink
           isActive={pathname.startsWith(cguRoute)}
         />
-      </UlStepper>
+      </FooterUlStepper>
     </Nav>
   )
 }

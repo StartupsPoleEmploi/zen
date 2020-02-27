@@ -110,7 +110,7 @@ function History({
 
   // Gap at the beginning
   const lastMonthId = declarationMonths[0].id
-  for (let i = lastMonthId; i !== lastDeclarationMonthId; i--) {
+  for (let i = lastMonthId; i > lastDeclarationMonthId; i--) {
     filledDeclarations.push({
       declarationMonth: declarationMonths.find((dm) => dm.id === i),
     })

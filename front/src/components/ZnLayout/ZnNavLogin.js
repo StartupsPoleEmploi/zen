@@ -9,20 +9,20 @@ import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Check from '@material-ui/icons/Check'
+
 import RestoreIcon from '@material-ui/icons/Restore'
+import HomeOutlined from '@material-ui/icons/HomeOutlined'
+import DnsOutlined from '@material-ui/icons/DnsOutlined'
+import DescriptionOutlined from '@material-ui/icons/DescriptionOutlined'
 
 import AppTitle from '../Generic/AppTitle'
 import { primaryBlue, mobileBreakpoint } from '../../constants'
-import file from '../../images/files.svg'
-import actu from '../../images/actu.svg'
-import home from '../../images/home.svg'
 
 const stepperRoutes = [
   '/actu',
   '/employers',
   '/files',
   '/dashboard',
-  '/cgu',
   '/history',
 ]
 const [
@@ -30,22 +30,32 @@ const [
   employersRoute,
   filesRoute,
   dashboardRoute,
-  cguRoute,
   historyRoute,
 ] = stepperRoutes
 const routesWithDisplayedNav = stepperRoutes.concat('/thanks')
 
 const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
   && {
-    /* Get the active tab indicator */
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    border-radius: 2rem 2rem 0 0;
+    background-color: rgb(250, 250, 250);
+
     & div[role='tablist'] > span {
       height: 0.3rem;
+    }
+
+    .MuiTabs-indicator {
+      top: 0;
     }
   }
 `
 
 const Nav = styled.nav.attrs({ role: 'navigation' })`
-  flex-shrink: 0;
+  flex-shrink: 0
   background: #fafafa;
   width: 25rem;
   border-right: 1px #ddd solid;
@@ -68,17 +78,6 @@ const UlStepper = styled.ul`
     margin-top: 3rem;
   }
 `
-const FooterUlStepper = styled(UlStepper)`
-  && {
-    position: fixed;
-    bottom: 0px;
-
-    @media (max-height: 400px) {
-      position: inherit;
-      padding-top: 1rem;
-    }
-  }
-`
 
 const LiStep = styled(Typography).attrs({ component: 'li' })`
   && {
@@ -88,10 +87,13 @@ const LiStep = styled(Typography).attrs({ component: 'li' })`
     line-height: 3rem;
     border-left: #fff 0.5rem solid;
     color: rgba(0, 0, 0, 0.5) !important;
+    text-transform: none;
 
     &&.Stepper__Active {
+      img {
+        color: ${primaryBlue};
+      }
       border-left: ${primaryBlue} 0.5rem solid;
-      color: #000;
     }
   }
 `
@@ -116,23 +118,83 @@ const DesktopLink = styled(Link)`
   }
 `
 
-const FileIcon = styled.img`
+const StyledTab = styled(Tab)`
+  && {
+    text-transform: none;
+    overflow: visible;
+    padding-top: 2rem;
+    opacity: 1;
+    color: black;
+
+    &&.Mui-selected {
+      color: ${primaryBlue};
+      font-weight: bold;
+
+      svg {
+        color: ${primaryBlue} !important;
+        opacity: 1;
+      }
+    }
+  }
+`
+
+const HomeTab = styled(StyledTab)`
+  && {
+    min-width: inherit;
+    @media (max-width: 350px) {
+      flex-grow: inherit;
+      width: 100px;
+    }
+  }
+`
+
+const FileIcon = styled(DescriptionOutlined)`
   font-size: 1.5rem;
   margin-right: 1.4rem;
   margin-left: 0.2rem;
+  color: #1e2c59;
+  opacity: 0.7;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    margin-right: 0;
+  }
 `
-const HomeIcon = styled.img`
+const HomeIcon = styled(HomeOutlined)`
   font-size: 1.5rem;
   margin-right: 1rem;
+  color: #1e2c59;
+  opacity: 0.7;
+  @media (max-width: ${mobileBreakpoint}) {
+    margin-right: 0;
+  }
+`
+
+const ListIcon = styled(DnsOutlined)`
+  font-size: 1.5rem;
+  margin-right: 1.1rem;
+  color: #1e2c59;
+  opacity: 0.7;
+  @media (max-width: ${mobileBreakpoint}) {
+    margin-right: 0;
+  }
+`
+
+const RestoreIconImg = styled(RestoreIcon)`
+  width: 2.5rem;
+  margin-right: 1rem;
+  color: #1e2c59;
+  opacity: 0.7;
+  @media (max-width: ${mobileBreakpoint}) {
+    margin-right: 0;
+  }
 `
 
 const CheckIcon = styled(Check)`
   width: 2.5rem;
   margin-right: 1rem;
-`
-const RestoreIconImg = styled(RestoreIcon)`
-  width: 2.5rem;
-  margin-right: 1rem;
+  @media (max-width: ${mobileBreakpoint}) {
+    margin-right: 0;
+  }
 `
 
 const SmallGreenCheckIcon = styled(Check)`
@@ -141,11 +203,6 @@ const SmallGreenCheckIcon = styled(Check)`
     font-size: 2rem;
     margin-right: 0.5rem;
   }
-`
-
-const ListIcon = styled.img`
-  font-size: 1.5rem;
-  margin-right: 1.1rem;
 `
 
 const SubLabel = styled.div`
@@ -203,34 +260,73 @@ export const NavLogin = ({
     !activeDeclaration.hasFinishedDeclaringEmployers &&
     userCanDeclare
 
+  // Mobile version
   if (useMobileVersion && isNavVisible) {
+    const actuRoute =
+      activeDeclaration && !activeDeclaration.hasFinishedDeclaringEmployers
+        ? employersRoute
+        : declarationRoute
+
     return (
-      <StyledTabs variant="fullWidth" value={pathname} indicatorColor="primary">
-        <Tab
-          label="Situation"
+      <StyledTabs
+        variant="fullWidth"
+        value={pathname}
+        indicatorColor="primary"
+        in
+      >
+        <HomeTab
+          label={
+            <>
+              <HomeIcon alt="" />
+              Accueil
+            </>
+          }
           disabled={!shouldActivateDeclarationLink}
-          value={declarationRoute}
-          onClick={() => push(declarationRoute)}
+          value={dashboardRoute}
+          onClick={() => push(dashboardRoute)}
           role="link"
         />
-        <Tab
-          label="Employeurs"
-          disabled={!shouldActivateEmployersLink}
-          value={employersRoute}
-          onClick={() => push(employersRoute)}
+        <StyledTab
+          label={
+            <>
+              <ListIcon alt="" />
+              Actualisation
+            </>
+          }
+          disabled={!shouldActivateDeclarationLink}
+          value={actuRoute}
+          onClick={() => push(actuRoute)}
           role="link"
         />
-        <Tab
-          label="Justificatifs"
+        <StyledTab
+          label={
+            <>
+              <FileIcon alt="" />
+              Justificatifs
+            </>
+          }
           value={filesRoute}
           disabled={!isFilesServiceUp}
           onClick={() => push(filesRoute)}
+          role="link"
+        />
+        <StyledTab
+          label={
+            <>
+              <RestoreIconImg alt="" />
+              Historique
+            </>
+          }
+          value={historyRoute}
+          disabled={!isFilesServiceUp}
+          onClick={() => push(historyRoute)}
           role="link"
         />
       </StyledTabs>
     )
   }
 
+  // Desktop version
   return (
     <Nav>
       <AppTitleContainer>
@@ -240,7 +336,7 @@ export const NavLogin = ({
         <StepperItem
           label={
             <>
-              <HomeIcon src={home} alt="" /> Accueil
+              <HomeIcon alt="" /> Accueil
             </>
           }
           link={dashboardRoute}
@@ -255,7 +351,7 @@ export const NavLogin = ({
                 activeDeclaration.hasFinishedDeclaringEmployers ? (
                   <CheckIcon />
                 ) : (
-                  <ListIcon src={actu} alt="" />
+                  <ListIcon alt="" />
                 )}
                 Mon actualisation
               </>
@@ -305,7 +401,7 @@ export const NavLogin = ({
         <StepperItem
           label={
             <>
-              <FileIcon src={file} alt="" /> Mes justificatifs
+              <FileIcon alt="" /> Mes justificatifs
             </>
           }
           link={filesRoute}
@@ -324,14 +420,6 @@ export const NavLogin = ({
           isActive={pathname === historyRoute && isFilesServiceUp}
         />
       </UlStepper>
-      <FooterUlStepper>
-        <StepperItem
-          label="CGU"
-          link={cguRoute}
-          shouldActivateLink
-          isActive={pathname.startsWith(cguRoute)}
-        />
-      </FooterUlStepper>
     </Nav>
   )
 }

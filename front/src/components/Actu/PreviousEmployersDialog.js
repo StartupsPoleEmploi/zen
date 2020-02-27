@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import AlarmOn from '@material-ui/icons/AlarmOn'
 import PropTypes from 'prop-types'
@@ -7,6 +6,7 @@ import styled from 'styled-components'
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
 
 import CustomDialog from '../Generic/CustomDialog'
+import MainActionButton from '../Generic/MainActionButton'
 
 const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
@@ -75,10 +75,10 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
     isOpened={isOpened}
     onCancel={onCancel}
     actions={
-      <Button onClick={onCancel} variant="contained" color="primary">
+      <MainActionButton onClick={onCancel} variant="contained" color="primary">
         J'ai compris
         <StyledArrowRightAlt />
-      </Button>
+      </MainActionButton>
     }
     disableEscapeKeyDown
     disableBackdropClick

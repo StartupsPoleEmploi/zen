@@ -8,7 +8,6 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import Link from '@material-ui/core/Link'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Person from '@material-ui/icons/PersonOutline'
@@ -91,6 +90,7 @@ const Container = styled.div`
 const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
+  overflow: hidden;
 
   background: ${({ addBackground }) =>
     addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
@@ -158,14 +158,25 @@ export const Layout = ({
               open={isTooltipOpened}
               placement="bottom"
               title={
-                <Button
-                  href="/api/login/logout"
-                  target="_self"
-                  disableRipple
-                  variant="text"
-                >
-                  Déconnexion
-                </Button>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Button
+                    href="/cgu"
+                    target="_self"
+                    disableRipple
+                    variant="text"
+                  >
+                    CGU
+                  </Button>
+
+                  <Button
+                    href="/api/login/logout"
+                    target="_self"
+                    disableRipple
+                    variant="text"
+                  >
+                    Déconnexion
+                  </Button>
+                </div>
               }
             >
               <UserButton onClick={toggleTooltip} disableRipple>
@@ -183,11 +194,6 @@ export const Layout = ({
         {!useMobileVersion && isNavVisible && NavComponent()}
         <Main addBackground={pathname === dashboardRoute}>{children}</Main>
       </Container>
-      {useMobileVersion && isNavVisible && (
-        <Link href="/cgu" style={{ padding: '20px', height: '50px' }}>
-          CGU
-        </Link>
-      )}
     </StyledLayout>
   )
 }

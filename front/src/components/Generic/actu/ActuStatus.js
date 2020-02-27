@@ -4,21 +4,23 @@ import styled from 'styled-components'
 import moment from 'moment'
 import DoneIcon from '@material-ui/icons/Done'
 import { Typography } from '@material-ui/core'
-import withWidth from '@material-ui/core/withWidth'
 
 import DeclarationFinished from './DeclarationFinished'
 import DeclarationNotStarted from './DeclarationNotStarted'
 import DeclarationClosed from './DeclarationClosed'
 import DeclarationOnGoing from './DeclarationOnGoing'
 import DeclarationImpossible from './DeclarationImpossible'
+import { intermediaryBreakpoint } from '../../../constants'
 
 const StyledActuStatus = styled.div`
   width: 100%;
   padding: 3rem 2rem 3rem 0;
-  margin: ${({ width }) => (['xs', 'sm'].includes(width) ? 'auto' : null)};
-  padding: ${({ width }) =>
-    ['xs', 'sm'].includes(width) ? '3rem 2rem' : null};
-  width: ${({ width }) => (['xs', 'sm'].includes(width) ? '100%' : null)};
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    margin: auto;
+    padding: 3rem 2rem;
+    width: 100%;
+  }
 `
 
 const StyledDoneIcon = styled(DoneIcon)`
@@ -38,6 +40,10 @@ const SubTitle = styled(Typography).attrs({ variant: 'h5', component: 'h2' })`
     font-size: 2rem;
     font-weight: bold;
     position: relative;
+
+    @media (max-width: ${intermediaryBreakpoint}) {
+      width: 100%;
+    }
   }
 `
 
@@ -46,7 +52,6 @@ const Upper = styled.span`
 `
 
 function ActuStatus({
-  width,
   activeMonth,
   user,
   declarations: allDeclarations,
@@ -96,7 +101,7 @@ function ActuStatus({
   }
 
   return (
-    <StyledActuStatus width={width}>
+    <StyledActuStatus>
       <SubTitle>
         Actualisation
         {activeMonthMoment && ' - '}
@@ -122,7 +127,6 @@ ActuStatus.propTypes = {
   }),
   declaration: PropTypes.object,
   declarations: PropTypes.arrayOf(PropTypes.object),
-  width: PropTypes.string.isRequired,
 }
 
-export default withWidth()(ActuStatus)
+export default ActuStatus

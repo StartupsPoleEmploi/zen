@@ -24,6 +24,9 @@ const StyledHistory = styled.div`
   @media (max-width: 1200px) {
     margin: 5rem 2rem 0 2rem;
   }
+  @media (max-width: ${mobileBreakpoint}) {
+    margin: 1rem 2rem 0 2rem;
+  }
 `
 
 const MonthContainer = styled.div`

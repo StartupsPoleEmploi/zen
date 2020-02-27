@@ -3,17 +3,9 @@ import { Link } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import withWidth from '@material-ui/core/withWidth'
-import { useMediaQuery } from '@material-ui/core'
 import PropTypes from 'prop-types'
 
-import { primaryBlue, mobileBreakpoint } from '../../constants'
-import home from '../../images/home.svg'
-
-const HomeIcon = styled.img`
-  width: 2.5rem;
-  margin-right: 1rem;
-  vertical-align: middle;
-`
+import { primaryBlue } from '../../constants'
 
 const StyledTitle = styled(Typography).attrs({
   variant: 'h2',
@@ -34,22 +26,18 @@ const HomeLink = styled(Link)`
   }
 `
 
-export const AppTitle = ({ zenColor = '#000', ...props }) => {
-  const showHomeIcon = useMediaQuery(`(max-width:${mobileBreakpoint})`)
+export const AppTitle = ({ zenColor = '#000', ...props }) => (
+  <StyledTitle {...props}>
+    <HomeLink
+      style={{ color: zenColor }}
+      to="/dashboard"
+      title="Retourner à l'accueil du site"
+    >
+      zen<span style={{ color: primaryBlue }}>.</span>
+    </HomeLink>
+  </StyledTitle>
+)
 
-  return (
-    <StyledTitle {...props}>
-      <HomeLink
-        style={{ color: zenColor }}
-        to="/dashboard"
-        title="Retourner à l'accueil du site"
-      >
-        {showHomeIcon && <HomeIcon src={home} alt="" />}
-        zen<span style={{ color: primaryBlue }}>.</span>
-      </HomeLink>
-    </StyledTitle>
-  )
-}
 AppTitle.propTypes = {
   zenColor: PropTypes.string,
 }

@@ -102,7 +102,7 @@ const StyledUl = styled.ul`
 
 const DocumentsGroup = styled.div`
   padding-top: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '3rem')};
-  padding-bottom: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '3rem')};
+  padding-bottom: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '4rem')};
   border-bottom: ${({ isOldTab = false }) =>
     isOldTab ? null : '1px solid rgba(0, 0, 0, 0.1)'};
 `
@@ -588,6 +588,7 @@ export class Files extends Component {
       activeMonth,
       user,
       classes,
+      width,
     } = this.props
 
     if (isLoading) {
@@ -751,11 +752,20 @@ export class Files extends Component {
               classes={{ selected: classes.selected }}
               label={
                 <div style={{ color: '#000', fontSize: '1.6rem' }}>
-                  Mois{' '}
-                  <Pre>
-                    précédents{' '}
-                    <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
-                  </Pre>
+                  {width === 'xs' ? (
+                    <Pre>
+                      Précédents{' '}
+                      <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+                    </Pre>
+                  ) : (
+                    <>
+                      Mois{' '}
+                      <Pre>
+                        précédents{' '}
+                        <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+                      </Pre>
+                    </>
+                  )}
                 </div>
               }
             />

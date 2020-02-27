@@ -152,6 +152,11 @@ async function importUserFromDatalake() {
     const filePath = await $getFile()
     const filePathCsv = await unzipBz2(filePath)
     const dataToManage = await readCsv(filePathCsv)
+    // check if the file content at least 300000 lines in case of the peDump is empty or invalide
+    if (dataToManage.length <= 300000) {
+      winston.error(`[ImportUserFromDatalake] ERROR: the file content only ${dataToManage.length} lines`);
+      return;
+    }
     // remove the first line that contain titles and not data
     dataToManage.splice(0, 1)
 

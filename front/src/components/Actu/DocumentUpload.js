@@ -35,8 +35,12 @@ const StyledFormLabel = styled(FormLabel)`
 
 const LabelsContainer = styled.div`
   flex: 0 1 auto;
-  padding-right: 3rem;
-  max-width: 18rem;
+  padding-right: 1rem;
+  min-width: 20rem;
+
+  @media (max-width: 1000px) {
+    min-width: auto;
+  }
 `
 
 const ActionsContainer = styled.div`
@@ -72,6 +76,7 @@ const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
 
 const Upper = styled.span`
   text-transform: uppercase;
+  white-space: pre;
 `
 
 const Or = styled(Typography)`
@@ -273,13 +278,23 @@ export class DocumentUpload extends Component {
                   disabled={isTransmitted}
                 >
                   <>
-                    <Typography style={{ fontWeight: 'bold', display: 'flex' }}>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        whiteSpace: 'pre-wrap',
+                        alignItems: 'center',
+                      }}
+                    >
                       <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
                       <div>
-                        Pôle emploi <Upper>a déjà ce justificatif</Upper>
-                        <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
-                          <InfoImg />
-                        </TooltipOnFocus>
+                        Pôle emploi{' '}
+                        <Upper>
+                          a déjà ce justificatif
+                          <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
+                            <InfoImg />
+                          </TooltipOnFocus>
+                        </Upper>
                       </div>
                     </Typography>
                   </>

@@ -41,6 +41,7 @@ const StyledMissingCell = styled.div`
       border: none;
       padding-top: .5rem;
       padding-bottom: 2rem;
+      padding-left: 0;
     }
   }
 `
@@ -91,8 +92,8 @@ const MissingCell = ({ width, declaration }) => {
 
     return (
       <TooltipOnFocus content={tooltipContent}>
-        <Typography>
-          <StyledDoneIcon />
+        <Typography style={{ paddingLeft: width === 'xs' ? '3.2rem ' : null }}>
+          {width !== 'xs' && <StyledDoneIcon />}
           Tous les justificatifs envoyés
         </Typography>
       </TooltipOnFocus>
@@ -106,7 +107,7 @@ const MissingCell = ({ width, declaration }) => {
       ) : (
         <Link
           href="/files?tab=old"
-          style={{ paddingLeft: width === 'xs' ? '3.5rem' : null }}
+          style={{ paddingLeft: width === 'xs' ? '3.2rem' : null }}
         >
           <Typography>
             {missingFilesNumber}{' '}

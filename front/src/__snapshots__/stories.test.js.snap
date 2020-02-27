@@ -1707,7 +1707,7 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -1815,8 +1815,10 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -1837,31 +1839,32 @@ exports[`Storyshots DocumentUpload default for declaration info document (light 
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -1884,7 +1887,7 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -1992,8 +1995,10 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -2014,31 +2019,32 @@ exports[`Storyshots DocumentUpload default for declaration info document 1`] = `
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -2061,7 +2067,7 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2169,8 +2175,10 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -2191,31 +2199,32 @@ exports[`Storyshots DocumentUpload default for employer document (light version 
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -2238,7 +2247,7 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2346,8 +2355,10 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -2368,31 +2379,32 @@ exports[`Storyshots DocumentUpload default for employer document 1`] = `
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -2415,7 +2427,7 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2528,8 +2540,10 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -2550,31 +2564,32 @@ exports[`Storyshots DocumentUpload error (light version) 1`] = `
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -2597,7 +2612,7 @@ exports[`Storyshots DocumentUpload error 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2710,8 +2725,10 @@ exports[`Storyshots DocumentUpload error 1`] = `
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -2732,31 +2749,32 @@ exports[`Storyshots DocumentUpload error 1`] = `
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -2779,7 +2797,7 @@ exports[`Storyshots DocumentUpload loading (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2828,7 +2846,7 @@ exports[`Storyshots DocumentUpload loading 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2877,7 +2895,7 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2970,8 +2988,10 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -2992,31 +3012,32 @@ exports[`Storyshots DocumentUpload with file (light version) 1`] = `
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -3039,7 +3060,7 @@ exports[`Storyshots DocumentUpload with file 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -3132,8 +3153,10 @@ exports[`Storyshots DocumentUpload with file 1`] = `
           className="MuiTypography-root MuiTypography-body1"
           style={
             Object {
+              "alignItems": "center",
               "display": "flex",
               "fontWeight": "bold",
+              "whiteSpace": "pre-wrap",
             }
           }
         >
@@ -3154,31 +3177,32 @@ exports[`Storyshots DocumentUpload with file 1`] = `
             />
           </svg>
           <div>
-            Pôle emploi 
+            Pôle emploi
+             
             <span
-              className="sc-cvbbAY bWJQPb"
+              className="sc-cvbbAY fBhRGT"
             >
               a déjà ce justificatif
+              <svg
+                aria-describedby={null}
+                aria-hidden="false"
+                className="MuiSvgIcon-root sc-brqgnP grqIJY"
+                focusable="false"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
+                onTouchEnd={[Function]}
+                onTouchStart={[Function]}
+                role="presentation"
+                title={null}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
             </span>
-            <svg
-              aria-describedby={null}
-              aria-hidden="false"
-              className="MuiSvgIcon-root sc-brqgnP grqIJY"
-              focusable="false"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
-              onTouchEnd={[Function]}
-              onTouchStart={[Function]}
-              role="presentation"
-              title={null}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              />
-            </svg>
           </div>
         </p>
       </span>
@@ -3201,7 +3225,7 @@ exports[`Storyshots DocumentUpload with transmitted file (light version) 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -3280,7 +3304,7 @@ exports[`Storyshots DocumentUpload with transmitted file 1`] = `
   }
 >
   <div
-    className="sc-hMqMXs ewWWDF"
+    className="sc-hMqMXs jOrkEz"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"

@@ -160,6 +160,10 @@ const LabelTypography = styled(Typography).attrs({ variant: 'subtitle1' })`
   }
 `
 
+const Pre = styled.span`
+  white-space: pre;
+`
+
 const styles = () => ({
   selected: {
     fontWeight: 'bold',
@@ -731,14 +735,14 @@ export class Files extends Component {
               value={CURRENT_MONTH_TAB}
               classes={{ selected: classes.selected }}
               label={
-                <div style={{ color: '#000', fontSize: '1.6rem' }}>
+                <Pre style={{ color: '#000', fontSize: '1.6rem' }}>
                   {formattedDeclarationMonth(
                     lastDeclaration
                       ? lastDeclaration.declarationMonth.month
                       : activeMonth.month,
                   )}{' '}
                   <StyledSup>{lastDeclarationMissingFiles}</StyledSup>
-                </div>
+                </Pre>
               }
             />
             <Tab
@@ -747,8 +751,11 @@ export class Files extends Component {
               classes={{ selected: classes.selected }}
               label={
                 <div style={{ color: '#000', fontSize: '1.6rem' }}>
-                  Mois précédents{' '}
-                  <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+                  Mois{' '}
+                  <Pre>
+                    précédents{' '}
+                    <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+                  </Pre>
                 </div>
               }
             />

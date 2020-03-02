@@ -32,8 +32,6 @@ services:
       - EMAIL_KEY_SECRET=big_secret
       - SLACK_WEBHOOK_SU_ZEN_TECH=http://localhost
       - API_HOST=https://api-r.es-qvr.fr
-      - ELASTICSEARCH_LOG_INDEX=zen_node_test
-      - ELASTICSEARCH_LOG_INDEX_PREFIX=zen_node_test
       - NODE_ENV=test
       - ZEN_ENV=test
 

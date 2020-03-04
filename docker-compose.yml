@@ -17,6 +17,7 @@ services:
       - './back/extracts:/home/extracts'
       - './front:/home/front'
       - './front-admin:/home/front-admin'
+      - './nginx/var/log/nginx:/var/log/nginx'
     environment:
       - TZ=Europe/Paris
     networks:
@@ -32,6 +33,7 @@ services:
     mem_limit: 4G
     volumes:
       - './back:/home/back'
+      - './back/var/log/zen_node:/var/log/zen_node'
     expose:
       - '8080'
       - '8081'
@@ -62,6 +64,9 @@ services:
       - SEND_TRANSACTIONAL_EMAILS=${SEND_TRANSACTIONAL_EMAILS}
       - AUTHORIZE_ALL_USERS=${AUTHORIZE_ALL_USERS}
       - WINSTON_ENABLE_SLACK=${WINSTON_ENABLE_SLACK}
+      - WINSTON_ENABLE_LOG=${WINSTON_ENABLE_LOG}
+      - WINSTON_ENABLE_FILE=${WINSTON_ENABLE_FILE}
+      - WINSTON_FILE_FOLDER=/var/log/zen_node
 
   front:
     restart: unless-stopped

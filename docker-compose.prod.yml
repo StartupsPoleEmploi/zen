@@ -1,9 +1,5 @@
 version: '2.4'
 services:
-  nginx:
-    volumes:
-      - './nginx/var/log/nginx:/var/log/nginx'
-
   node:
     volumes:
       - '/mnt/datalakepe/:/mnt/datalakepe/'
@@ -62,6 +58,9 @@ services:
       - SEND_TRANSACTIONAL_EMAILS=${SEND_TRANSACTIONAL_EMAILS}
       - AUTHORIZE_ALL_USERS=${AUTHORIZE_ALL_USERS}
       - WINSTON_ENABLE_SLACK=${WINSTON_ENABLE_SLACK}
+      - WINSTON_ENABLE_LOG=${WINSTON_ENABLE_LOG}
+      - WINSTON_ENABLE_FILE=${WINSTON_ENABLE_FILE}
+      - WINSTON_FILE_FOLDER=/var/log/zen_cron
       - NODE_ENV=production
       - REACT_APP_ZEN_ENV=production
       - NPM_CONFIG_PRODUCTION=false

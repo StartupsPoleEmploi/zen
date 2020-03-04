@@ -1,4 +1,4 @@
-// Duplicate of /back/lib/admin/geo.js => don't forget to update it too !
+// Duplicate of /front/front-admin/common/agencesInfos.js => don't forget to update it too !
 const listAgences = [
   {
     region: 'AUVERGNE RHONE-ALPES',
@@ -20792,7 +20792,7 @@ const listAgences = [
   },
 ]
 
-export const departmentsSlugToName = {
+const departmentsSlugToName = {
   ain: 'AIN',
   allier: 'ALLIER',
   ardeche: 'ARDECHE',
@@ -20878,7 +20878,7 @@ export const departmentsSlugToName = {
   vaucluse: 'VAUCLUSE',
 }
 
-export const regionsSlugToName = {
+const regionsSlugToName = {
   'auvergne-rhone-alpes': 'AUVERGNE RHONE-ALPES',
   bretagne: 'BRETAGNE',
   corse: 'CORSE',
@@ -20893,64 +20893,24 @@ export const regionsSlugToName = {
   'provence-alpes-cote-dazur': "PROVENCE-ALPES-COTE D'AZUR",
 }
 
-const tree = {}
-export function getHierarchicAgences() {
-  // Cache
-  if (Object.keys(tree).length) return tree
-
-  // Extract region
-  listAgences.forEach(({ region, departement, codeAgence, nomAgence }) => {
-    // Create region if not exists
-    if (!tree[region]) tree[region] = {}
-
-    // Create departement if not exists
-    if (!tree[region][departement]) tree[region][departement] = {}
-
-    // Add agency
-    tree[region][departement][codeAgence] = `${codeAgence} - ${nomAgence}`
-  })
-
-  return tree
+function getAllCodeAgencyFromRegionSlug(slug) {
+  const reg = regionsSlugToName[slug]
+  if (!reg) throw new Error('Unknown region')
+  return listAgences
+    .filter((e) => e.region === reg)
+    .map((a) => Number(a.codeAgence))
 }
 
-const departments = []
-export function getAllDepartments() {
-  // Cache
-  if (Object.keys(departments).length) return departments
+function getAllCodeAgencyFromDepartmentSlug(slug) {
+  const dep = departmentsSlugToName[slug]
+  if (!dep) throw new Error('Unknown department')
 
-  listAgences.forEach(({ departement: department }) => {
-    // Create departement if not exists
-    if (!departments[department]) departments[department] = department
-  })
-
-  return Object.keys(departments)
+  return listAgences
+    .filter((e) => e.departement === dep)
+    .map((a) => Number(a.codeAgence))
 }
 
-const agencies = {}
-export function getAllAgencies() {
-  // Cache
-  if (Object.keys(agencies).length) return agencies
-
-  listAgences.forEach(({ codeAgence, nomAgence }) => {
-    // Create departement if not exists
-    const name = `${codeAgence} - ${nomAgence}`
-    if (!agencies[name]) {
-      agencies[name] = name
-    }
-  })
-  return Object.keys(agencies)
-}
-
-// eslint-disable-next-line import/prefer-default-export
-export function getAgenceName(agencyCode) {
-  const elem = listAgences.find((e) => e.codeAgence === agencyCode)
-  return elem
-    ? `${elem.nomAgence} dans ${elem.departement} en ${elem.region} (${agencyCode})`
-    : agencyCode
-}
-
-export function getAgence(agencyCode) {
-  // Remove 0 char at the beggining => 02214 become 2214
-  const formatAgencyCode = Number(agencyCode).toString()
-  return listAgences.find((e) => e.codeAgence === formatAgencyCode)
+module.exports = {
+  getAllCodeAgencyFromDepartmentSlug,
+  getAllCodeAgencyFromRegionSlug,
 }

@@ -1,5 +1,6 @@
 const { format } = require('date-fns')
 const fr = require('date-fns/locale/fr')
+const async = require('async')
 
 const mailjet = require('./mailjet')
 const winston = require('../log')
@@ -58,44 +59,40 @@ const sendDeclarationConfirmationEmail = (declaration) =>
 
 let isSendingEmails = false
 
-const sendDeclarationConfirmationEmails = () => {
+async function sendDeclarationConfirmationEmails() {
   if (isSendingEmails) return
   isSendingEmails = true
 
-  return Declaration.query()
-    .eager('[declarationMonth, user, employers, infos]')
-    .where({ hasFinishedDeclaringEmployers: true, isEmailSent: false })
-    .then((declarations) =>
-      Promise.all(
-        declarations.map((declaration) => {
-          if (!declaration.user.email) {
-            // no user email, getting rid of this
-            return declaration.$query().patch({ isEmailSent: true })
-          }
+  try {
+    const declarations = await Declaration.query()
+      .eager('[declarationMonth, user, employers, infos]')
+      .where({ hasFinishedDeclaringEmployers: true, isEmailSent: false });
 
-          let promise = Promise.resolve()
-          if (isProd) {
-            promise = setDeclarationDoneProperty(declaration)
-          }
+    await async.eachSeries(declarations, async (declaration) => {
+      // no user email, getting rid of this
+      if (!declaration.user.email) return declaration.$query().patch({ isEmailSent: true });
 
-          return promise
-            .then(() => sendDeclarationConfirmationEmail(declaration))
-            .then(() => declaration.$query().patch({ isEmailSent: true }))
-            .catch((err) =>
-              winston.error(
-                `There was an error while sending confirmation email for declaration ${declaration.id}: ${err}`,
-                { error: err, data: declaration }
-              ),
-            )
-        }),
-      ),
-    )
-    .then(() => {
-      isSendingEmails = false
+      const logInfo = { declarationId: declaration.id, userId: declaration.userId };
+      // todo verify if setDeclarationDoneProperty is still useful
+      let canContinue = true;
+      if (isProd) {
+        await setDeclarationDoneProperty(declaration).catch(err => {
+          canContinue = false;
+          winston.warn(`[CRON] There was an error while sending DoneProperty into mailjet for declaration ${declaration.id}: ${err}`, logInfo);
+        })
+      }
+      if (!canContinue) return;
+
+      await sendDeclarationConfirmationEmail(declaration)
+        .then(() => declaration.$query().patch({ isEmailSent: true }))
+        .catch((err) => {
+          winston.warn(`[CRON] There was an error while sending confirmation email for declaration ${declaration.id}: ${err}`, logInfo);
+        })
     })
-    .catch(() => {
-      isSendingEmails = false
-    })
+  } catch (error) {
+    winston.warn(`[CRON] Error on sendDeclarationConfirmationEmails ${error}`, { error });
+  }
+  isSendingEmails = false
 }
 
 module.exports = sendDeclarationConfirmationEmails

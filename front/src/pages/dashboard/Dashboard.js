@@ -17,7 +17,7 @@ import {
   getMissingEmployerFiles,
   getDeclarationMissingFilesNb,
 } from '../../lib/file'
-import { primaryBlue, DOCUMENT_LABELS } from '../../constants'
+import { primaryBlue, DOCUMENT_LABELS, darkBlue } from '../../constants'
 import file from '../../images/files.svg'
 
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
@@ -102,7 +102,7 @@ const ErrorContainer = styled.div`
 
 const MonthName = styled(Typography).attrs({ component: 'h3' })`
   && {
-    color: #1e2c59;
+    color: ${darkBlue};
     text-transform: capitalize;
   }
 `

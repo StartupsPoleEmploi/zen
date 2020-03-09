@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 
 import MainActionButton from '../MainActionButton'
 import CircleJauge from '../../../pages/dashboard/CircleJauge'
+import { darkBlue } from '../../../constants'
 
 const FlexContainer = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const DeclarationOnGoing = ({ declaration }) => (
       </JaugeContainer>
 
       <div>
-        <Typography style={{ textTransform: 'uppercase', color: '#1e2c59' }}>
+        <Typography style={{ textTransform: 'uppercase', color: darkBlue }}>
           Avancement de l'actualisation
         </Typography>
         <Typography>

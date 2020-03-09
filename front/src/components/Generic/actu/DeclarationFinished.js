@@ -6,9 +6,7 @@ import DoneIcon from '@material-ui/icons/Done'
 import PrintIcon from '@material-ui/icons/Print'
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 
-import { primaryBlue } from '../../../constants'
-
-const sectionColor = '#1e2c59'
+import { primaryBlue, darkBlue } from '../../../constants'
 
 const StyledDoneIcon = styled(DoneIcon)`
   && {
@@ -102,7 +100,7 @@ const DeclarationFinished = ({ declaration }) => {
           <div>
             <Typography
               component="h3"
-              style={{ lineHeight: 1, color: sectionColor }}
+              style={{ lineHeight: 1, color: darkBlue }}
             >
               <Dot>.</Dot>
               Mes employeurs
@@ -120,7 +118,7 @@ const DeclarationFinished = ({ declaration }) => {
           <div>
             <Typography
               component="h3"
-              style={{ lineHeight: 1, color: sectionColor }}
+              style={{ lineHeight: 1, color: darkBlue }}
             >
               <Dot>.</Dot>
               Salaire brut déclaré

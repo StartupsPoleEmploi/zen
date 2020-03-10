@@ -151,7 +151,7 @@ function History({
           </StyledH2>
 
           {d.id ? (
-            <DeclarationHistory declaration={d} />
+            <DeclarationHistory lastMonthId={lastMonthId} declaration={d} />
           ) : (
             <EmptyDeclaration month={d.declarationMonth} />
           )}

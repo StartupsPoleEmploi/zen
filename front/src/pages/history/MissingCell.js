@@ -60,7 +60,7 @@ const StyledDoneIcon = styled(DoneIcon)`
   }
 `
 
-const MissingCell = ({ width, declaration }) => {
+const MissingCell = ({ lastMonthId, width, declaration }) => {
   const missingFilesNumber = getDeclarationMissingFilesNb(declaration)
 
   function renderAllFilesSend(declarationContent) {
@@ -100,13 +100,17 @@ const MissingCell = ({ width, declaration }) => {
     )
   }
 
+  console.log(declaration)
+
   return (
     <StyledMissingCell className="text">
       {missingFilesNumber === 0 ? (
         renderAllFilesSend(declaration)
       ) : (
         <Link
-          href="/files?tab=old"
+          href={`/files${
+            lastMonthId === declaration.declarationMonth.id ? '' : '?tab=old'
+          }`}
           style={{ paddingLeft: width === 'xs' ? '3.2rem' : null }}
         >
           <Typography>
@@ -123,6 +127,7 @@ const MissingCell = ({ width, declaration }) => {
 
 MissingCell.propTypes = {
   declaration: PropTypes.object,
+  lastMonthId: PropTypes.number.isRequired,
   width: PropTypes.string.isRequired,
 }
 

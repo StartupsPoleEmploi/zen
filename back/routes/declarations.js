@@ -108,7 +108,10 @@ router.post('/remove-file-page', (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-  if ('last' in req.query || 'active' in req.query) {
+  if (
+    'last' in req.query ||
+    ('active' in req.query && req.query.active === 'true')
+  ) {
     return Declaration.query()
       .eager(eagerDeclarationString)
       .where({ userId: req.session.user.id })
@@ -121,6 +124,7 @@ router.get('/', (req, res, next) => {
         if (
           !declaration ||
           ('active' in req.query &&
+            req.query.active === 'true' &&
             declaration.monthId !== get(req.activeMonth, 'id'))
         ) {
           return res.status(404).json('No such declaration')

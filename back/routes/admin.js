@@ -93,6 +93,48 @@ router.get('/users/csv', async (req, res, next) => {
   }
 })
 
+router.get('/declaration/users/csv', async (req, res, next) => {
+  const { condition, monthId } = req.query
+  if (!monthId || Number.isNaN(+monthId)) return res.send(400)
+
+  // Filename
+  let filename = 'actualisations-debutees'
+  if (condition === 'hasFinishedDeclaringEmployers') {
+    filename = 'actualisations-terminees'
+  } else if (condition === 'isFinished') filename = 'documents-envoyes'
+
+  // Query
+  const query = Declaration.query()
+    .eager('user')
+    .where({ monthId })
+
+  if (condition === 'hasFinishedDeclaringEmployers') {
+    query.andWhere({ hasFinishedDeclaringEmployers: true })
+  } else if (condition === 'isFinished') {
+    query.andWhere({ isFinished: true })
+  }
+
+  const declarations = await query.execute()
+  const users = declarations.map((d) => d.user)
+
+  // Generate CSV
+  try {
+    const json2csvParser = new Parser({ DATA_EXPORT_FIELDS })
+    const csv = json2csvParser.parse(users)
+    res.set(
+      'Content-disposition',
+      `attachment; filename=${filename}-${format(
+        new Date(),
+        'YYYY-MM-DD',
+      )}.csv`,
+    )
+    res.set('Content-type', 'text/csv')
+    return res.send(csv)
+  } catch (err) {
+    next(err)
+  }
+})
+
 // get users *not* in db
 router.post('/users/filter', (req, res, next) => {
   let emails

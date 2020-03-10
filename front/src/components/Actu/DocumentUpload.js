@@ -106,6 +106,12 @@ const DocumentZone = styled.div`
   }
 `
 
+const SkipFileSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 const employerType = 'employer'
 const infosType = 'info'
 
@@ -201,7 +207,7 @@ export class DocumentUpload extends Component {
         className={`${type}-row`}
       >
         <LabelsContainer>
-          <Typography>
+          <Typography style={{ marginBottom: '1.5rem' }}>
             <b>{label}</b>
           </Typography>
           {caption && (
@@ -266,39 +272,37 @@ export class DocumentUpload extends Component {
             {!isTransmitted && (
               <>
                 <Or>OU</Or>
-                <Button
-                  aria-describedby={`file[${id}]`}
-                  onClick={this.skipFile}
-                  className="already-transmitted-button"
-                  style={{
-                    textAlign: 'left',
-                    lineHeight: '2rem',
-                  }}
-                  size={useLightVersion ? 'medium' : 'small'}
-                  disabled={isTransmitted}
-                >
-                  <>
-                    <Typography
-                      style={{
-                        fontWeight: 'bold',
-                        display: 'flex',
-                        whiteSpace: 'pre-wrap',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
-                      <div>
-                        Pôle emploi{' '}
-                        <Upper>
-                          a déjà ce justificatif
-                          <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
-                            <InfoImg />
-                          </TooltipOnFocus>
-                        </Upper>
-                      </div>
-                    </Typography>
-                  </>
-                </Button>
+                <SkipFileSection>
+                  <Button
+                    aria-describedby={`file[${id}]`}
+                    onClick={this.skipFile}
+                    className="already-transmitted-button"
+                    style={{
+                      textAlign: 'left',
+                      lineHeight: '2rem',
+                    }}
+                    size={useLightVersion ? 'medium' : 'small'}
+                    disabled={isTransmitted}
+                  >
+                    <>
+                      <Typography
+                        style={{
+                          fontWeight: 'bold',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
+                        <div>
+                          Pôle emploi <Upper>a déjà ce justificatif</Upper>
+                        </div>
+                      </Typography>
+                    </>
+                  </Button>
+                  <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
+                    <InfoImg />
+                  </TooltipOnFocus>
+                </SkipFileSection>
               </>
             )}
           </DocumentZone>

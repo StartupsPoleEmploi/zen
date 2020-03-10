@@ -3,35 +3,20 @@ import { throttle } from 'lodash'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
-import { primaryBlue } from '../../constants'
+import withWidth from '@material-ui/core/withWidth'
+import ScrollToButton from './ScrollToButton'
 
 const padding = 20 // Padding to compensate for when switching to position fixed
 
-const ScrollButton = styled.button`
-  position: fixed;
-  bottom: 7rem;
-  right: 2rem;
-
-  display: flex;
-  align-self: center;
-  justify-content: center;
-  padding: 1rem;
-
-  border-radius: 50%;
-  background-color: ${primaryBlue};
-  border: none;
-
-  cursor: pointer;
-`
-
-const ScrollImg = styled(ArrowDownwardIcon)`
-  color: white;
+const ScrollButtonContainer = styled.div`
+  position: relative;
 `
 
 export class AlwaysVisibleContainer extends Component {
   static propTypes = {
     children: PropTypes.node,
+    scrollButtonTopValue: PropTypes.string,
+    width: PropTypes.string.isRequired,
   }
 
   state = {
@@ -56,6 +41,13 @@ export class AlwaysVisibleContainer extends Component {
 
   handleEvent = () => {
     if (!this.ref) return
+    if (this.props.width === 'xs') {
+      this.setState({
+        usePositionFixed: false,
+      })
+      return
+    }
+
     // offsetHeight = 0 when position absolute, so we save the biggest offsetHeight we get
     if (
       this.ref.offsetHeight !== this.offsetHeight &&
@@ -75,19 +67,21 @@ export class AlwaysVisibleContainer extends Component {
     this.ref = ref
   }
 
-  scrollToBottom = () => {
-    window.scrollTo(0, document.body.scrollHeight)
-  }
-
   render() {
     const { usePositionFixed } = this.state
+    const { scrollButtonTopValue } = this.props
 
     const Comp = usePositionFixed ? Paper : 'div'
     return (
       <div ref={this.setRef} {...this.props}>
         {usePositionFixed && (
           /* Placeholder for lost height when element goes fixed */
-          <div style={{ visibility: 'hidden', minHeight: this.offsetHeight }} />
+          <div
+            style={{
+              visibility: 'hidden',
+              minHeight: this.props.width === 'xs' ? null : this.offsetHeight,
+            }}
+          />
         )}
         <Comp
           style={{
@@ -100,9 +94,9 @@ export class AlwaysVisibleContainer extends Component {
           }}
         >
           {usePositionFixed && (
-            <ScrollButton type="button" onClick={this.scrollToBottom}>
-              <ScrollImg alt="Se rendre en bas de de la page" />
-            </ScrollButton>
+            <ScrollButtonContainer>
+              <ScrollToButton top={scrollButtonTopValue} />
+            </ScrollButtonContainer>
           )}
           {this.props.children}
         </Comp>
@@ -111,4 +105,4 @@ export class AlwaysVisibleContainer extends Component {
   }
 }
 
-export default AlwaysVisibleContainer
+export default withWidth()(AlwaysVisibleContainer)

@@ -166,7 +166,11 @@ function TooltipsDemo({ onFinish, slides }) {
 
   function goToNextSlide() {
     const nextSlide = currentSlide + 1
-    if (nextSlide >= slides.length) return onFinish()
+    if (nextSlide >= slides.length) {
+      const current = document.querySelector('.intro-overlay')
+      if (current) current.classList.remove('intro-overlay')
+      return onFinish()
+    }
     setCurrentSlide(nextSlide)
   }
 

@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -7,6 +6,8 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Check from '@material-ui/icons/Check'
 
 import CustomDialog from '../Generic/CustomDialog'
+import { mobileBreakpoint } from '../../constants'
+import MainActionButton from '../Generic/MainActionButton'
 
 const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
   && {
@@ -21,10 +22,18 @@ const CheckIcon = styled(Check)`
   }
 `
 
+// These br are not active on mobile
+const NotMobileBR = styled.br`
+  @media (max-width: ${mobileBreakpoint}) {
+    display: none;
+  }
+`
+
 const DeclarationTransmitted = ({ isOpened, onCancel }) => (
   <CustomDialog
+    width="xl"
     content={
-      <DialogContentText gutterBottom>
+      <DialogContentText gutterBottom style={{ color: 'black' }}>
         Si vous êtes en possession de vos justificatifs, vous pouvez dès à
         présent les ajouter à votre dossier Zen.
       </DialogContentText>
@@ -33,7 +42,7 @@ const DeclarationTransmitted = ({ isOpened, onCancel }) => (
       <span>
         <CheckIcon />
         Votre actualisation a bien
-        <br />
+        <NotMobileBR />
         été transmise à Pôle emploi !
       </span>
     }
@@ -41,10 +50,15 @@ const DeclarationTransmitted = ({ isOpened, onCancel }) => (
     isOpened={isOpened}
     onCancel={onCancel}
     actions={
-      <Button variant="contained" onClick={onCancel} color="primary">
+      <MainActionButton
+        primary
+        variant="contained"
+        onClick={onCancel}
+        color="primary"
+      >
         Continuer
         <StyledArrowForwardIcon />
-      </Button>
+      </MainActionButton>
     }
   />
 )

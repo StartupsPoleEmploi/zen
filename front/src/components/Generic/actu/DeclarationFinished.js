@@ -6,7 +6,11 @@ import DoneIcon from '@material-ui/icons/Done'
 import PrintIcon from '@material-ui/icons/Print'
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 
-import { primaryBlue, darkBlue } from '../../../constants'
+import {
+  primaryBlue,
+  darkBlue,
+  intermediaryBreakpoint,
+} from '../../../constants'
 
 const StyledDoneIcon = styled(DoneIcon)`
   && {
@@ -21,7 +25,9 @@ const Dot = styled.span`
   font-family: serif;
   font-size: 3.5rem;
   font-weight: bold;
-  margin-right: 1rem;
+  margin-right: 2.5rem;
+  position: relative;
+  top: -5px;
 `
 
 const Section = styled.div`
@@ -32,7 +38,7 @@ const Section = styled.div`
 const UlEmployers = styled.ul`
   margin: 0;
   list-style: none;
-  padding-left: 2rem;
+  padding-left: 3.5rem;
 `
 
 const UlFiles = styled.ul`
@@ -41,6 +47,10 @@ const UlFiles = styled.ul`
   list-style: none;
   margin-top: 2rem;
   display: inline-block;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    width: 100%;
+  }
 `
 
 const FileLink = styled.a`
@@ -91,9 +101,12 @@ const DeclarationFinished = ({ declaration }) => {
   return (
     <>
       <Section>
-        <StyledDoneIcon />
         <div>
-          <Typography className="declaration-status">
+          <Typography
+            className="declaration-status"
+            style={{ marginBottom: '1rem' }}
+          >
+            <StyledDoneIcon />
             <strong>Actualisation envoyée</strong>
           </Typography>
 
@@ -124,7 +137,7 @@ const DeclarationFinished = ({ declaration }) => {
               Salaire brut déclaré
               <br />
             </Typography>
-            <Typography style={{ marginLeft: '2rem' }}>
+            <Typography style={{ marginLeft: '3.5rem' }}>
               <strong>{salary} €</strong>
             </Typography>
           </div>

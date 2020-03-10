@@ -12,6 +12,7 @@ const BaseButton = styled(Button).attrs({
     margin: 0 0.5rem;
     width: 17.5rem;
     height: 7.5rem;
+    text-transform: uppercase;
   }
 `
 

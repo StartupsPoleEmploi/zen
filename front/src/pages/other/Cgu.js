@@ -83,7 +83,9 @@ function Cgu({ isLogin }) {
   const classes = useStyles({ isLogin })
   return (
     <div container className={classes.container}>
-      <H1 className={classes.title}>Conditions générales d’utilisation</H1>
+      <H1 style={{ fontSize: '3rem' }} className={classes.title}>
+        Conditions générales d’utilisation
+      </H1>
       <Text>
         L’utilisateur du service doit respecter ces conditions générales
         d’utilisation. Elles peuvent être modifiées par Pôle emploi et

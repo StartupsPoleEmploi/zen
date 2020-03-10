@@ -41,11 +41,6 @@ const SecondFormControlLabel = styled(StyledFormControlLabel)`
 const StyledRadio = styled(Radio)`
   && {
     color: #000000;
-    && {
-      svg {
-        font-size: 1.5rem;
-      }
-    }
   }
 `
 
@@ -69,7 +64,7 @@ export class YesNoRadioGroup extends Component {
     const yesRadio = (
       <StyledRadio
         style={{
-          color: isYesChecked ? primaryBlue : null,
+          color: isYesChecked ? primaryBlue : 'rgba(0, 0, 0, 0.54)',
         }}
         inputProps={{
           'aria-describedby': `yes[${name}]`,
@@ -116,7 +111,7 @@ export class YesNoRadioGroup extends Component {
           control={
             <StyledRadio
               style={{
-                color: isNoChecked ? primaryBlue : null,
+                color: isNoChecked ? primaryBlue : 'rgba(0, 0, 0, 0.54)',
               }}
             />
           }

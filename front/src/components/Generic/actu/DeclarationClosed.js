@@ -27,7 +27,7 @@ const Dot = styled.span`
   font-family: serif;
   font-size: 3.5rem;
   font-weight: bold;
-  margin-right: 1rem;
+  margin-right: 2.2rem;
 `
 
 const EmployerSection = styled.div`
@@ -37,7 +37,7 @@ const EmployerSection = styled.div`
 const UlEmployers = styled.ul`
   margin: 0;
   list-style: none;
-  padding-left: 2rem;
+  padding-left: 3.2rem;
 `
 
 const DeclarationClosed = ({ previousDeclaration }) => {

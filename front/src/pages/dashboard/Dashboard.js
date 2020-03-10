@@ -39,15 +39,16 @@ const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
     margin-bottom: 2rem;
     font-weight: bold;
     letter-spacing: 1px;
-    text-align: ${({ width }) =>
-      ['xs', 'sm'].includes(width) ? 'center' : 'left'};
+    text-align: left;
+    margin-left: ${({ width }) =>
+      ['xs', 'sm'].includes(width) ? '2rem' : null};
     margin-top: ${({ width }) =>
       ['xs', 'sm'].includes(width) ? '2rem' : '5rem'};
   }
 `
 const SubTitle = styled(Typography).attrs({ variant: 'h5', component: 'h2' })`
   && {
-    display: inline-block;
+    display: flex;
     padding-bottom: 0.5rem;
     margin-bottom: 2rem;
     border-bottom: solid 1px lightgray;
@@ -282,10 +283,12 @@ class Dashboard extends PureComponent {
           <FileStatus width={width}>
             <Opacity isFilesServiceUp={isFilesServiceUp}>
               <SubTitle>
-                <FileIcon src={file} alt="" />
-                {computeMissingFiles !== 0 && (
-                  <StyledSup>{computeMissingFiles}</StyledSup>
-                )}
+                <div>
+                  <FileIcon src={file} alt="" />
+                  {computeMissingFiles !== 0 && (
+                    <StyledSup>{computeMissingFiles}</StyledSup>
+                  )}
+                </div>
                 Justificatifs manquants sur Zen
               </SubTitle>
 

@@ -26,7 +26,9 @@ const ConsistencyErrorsDialogs = ({
             </DialogContentText>
           ))}
         </ul>
-        <DialogContentText>Confirmez-vous ces informations ?</DialogContentText>
+        <DialogContentText style={{ color: 'black' }}>
+          Confirmez-vous ces informations ?
+        </DialogContentText>
       </Fragment>
     }
     actions={

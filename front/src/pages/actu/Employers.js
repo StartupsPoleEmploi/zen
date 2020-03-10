@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import withWidth from '@material-ui/core/withWidth'
+import Add from '@material-ui/icons/Add'
 import {
   isNaN as _isNaN,
   cloneDeep,
@@ -30,7 +31,11 @@ import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDial
 import WorkSummary from '../../components/Actu/WorkSummary'
 import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
 import MainActionButton from '../../components/Generic/MainActionButton'
-import { muiBreakpoints } from '../../constants'
+import {
+  intermediaryBreakpoint,
+  mobileBreakpoint,
+  primaryBlue,
+} from '../../constants'
 import {
   MAX_SALARY,
   MAX_WORK_HOURS,
@@ -46,7 +51,11 @@ const StyledEmployers = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 4rem; /* space for position:fixed div */
+  padding-bottom: 4rem;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding-bottom: 0;
+  }
 `
 
 const Title = styled(Typography)`
@@ -73,10 +82,14 @@ const AddEmployersButtonContainer = styled.div`
 
 const AddEmployersButton = styled(Button)`
   && {
-    min-width: 15rem;
+    width: 23rem;
     margin: 0 5rem;
     min-height: 5.5rem;
     color: black;
+
+    @media (max-width: ${intermediaryBreakpoint}) {
+      margin: 0 3rem;
+    }
   }
 `
 
@@ -85,6 +98,10 @@ const LineDiv = styled.div`
   max-width: 16.6rem;
   height: 0.1rem;
   background-color: #e4e4e4;
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    width: 15%;
+  }
 `
 const ButtonsContainer = styled.div`
   display: flex;
@@ -114,6 +131,14 @@ const StyledAlwaysVisibleContainer = styled(AlwaysVisibleContainer)`
   && {
     @media (max-width: 550px) {
       padding: 2rem 1rem;
+    }
+  }
+`
+
+const StyledMainAction = styled(MainActionButton)`
+  && {
+    @media (max-width: ${mobileBreakpoint}) {
+      width: 17rem;
     }
   }
 `
@@ -440,7 +465,6 @@ export class Employers extends Component {
       onChange={this.onChange}
       onRemove={this.onRemove}
       activeMonth={this.props.activeMonth}
-      verticalLayout={this.props.width === muiBreakpoints.xs}
     />
   )
 
@@ -473,14 +497,15 @@ export class Employers extends Component {
               variant="outlined"
               color="primary"
               onClick={this.addEmployer}
-              size="small"
             >
-              + Ajouter un employeur
+              <Add style={{ marginRight: '1rem', color: primaryBlue }} />
+              Ajouter un employeur
             </AddEmployersButton>
             <LineDiv />
           </AddEmployersButtonContainer>
 
           <StyledAlwaysVisibleContainer
+            scrollButtonTopValue="0"
             style={{ marginTop: '2rem', alignSelf: 'stretch' }}
           >
             {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -488,16 +513,16 @@ export class Employers extends Component {
             <WorkSummary employers={employers} />
 
             <ButtonsContainer>
-              <MainActionButton primary onClick={this.openDialog}>
+              <StyledMainAction primary onClick={this.openDialog}>
                 Envoyer mon
                 <br />
                 actualisation
-              </MainActionButton>
-              <MainActionButton primary={false} onClick={this.saveAndRedirect}>
+              </StyledMainAction>
+              <StyledMainAction primary={false} onClick={this.saveAndRedirect}>
                 Enregistrer
                 <br />
                 et finir plus tard
-              </MainActionButton>
+              </StyledMainAction>
             </ButtonsContainer>
           </StyledAlwaysVisibleContainer>
         </Form>

@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import ZnLayoutLogin from './ZnLayoutLogin'
 import ZnLayoutLogout from './ZnLayoutLogout'
+import HelpLink from './HelpLink'
 
 export const ZnLayout = ({
   activeMonth,
@@ -23,6 +24,8 @@ export const ZnLayout = ({
       user={user}
     >
       {children}
+
+      <HelpLink />
     </ZnLayoutLogin>
   )
 }

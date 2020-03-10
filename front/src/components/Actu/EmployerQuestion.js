@@ -7,6 +7,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
+import withWidth from '@material-ui/core/withWidth'
 
 import EuroInput from '../Generic/EuroInput'
 import HourInput from '../Generic/HourInput'
@@ -41,6 +42,10 @@ const StyledFormControl = styled(FormControl)`
     justify-content: center;
     flex: 0 1 auto;
     max-width: 30rem;
+
+    @media (max-width: 811px) {
+      margin-top: 1rem;
+    }
   }
 `
 
@@ -68,6 +73,9 @@ const RemoveButton = styled.button`
 
 const EmployerQuestionContainer = styled.div`
   display: inline-flex;
+  @media (max-width: 811px) {
+    width: 100%;
+  }
 `
 
 const DeleteIcon = styled(Delete)`
@@ -79,8 +87,13 @@ const DeleteIcon = styled(Delete)`
 
 const StyledTextField = styled(TextField)`
   && {
-    width: ${(props) => (props.fullWidth ? '' : '15rem')};
-    margin-right: ${(props) => (props.fullWidth ? 'inherit' : '1rem')};
+    width: 15rem;
+    margin-right: 1rem;
+
+    @media (max-width: 811px) {
+      margin-right: inherit;
+      width: 100%;
+    }
   }
 `
 
@@ -131,6 +144,7 @@ export class EmployerQuestion extends PureComponent {
       salary,
       hasEndedThisMonth,
       verticalLayout,
+      width,
     } = this.props
 
     const showTooltip = index === 0
@@ -222,8 +236,18 @@ export class EmployerQuestion extends PureComponent {
             <StyledFormLabel
               style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
             >
-              Contrat terminé en {moment(this.props.activeMonth).format('MMMM')}
-              &nbsp;?
+              {width !== 'xs' ? (
+                <>
+                  Contrat terminé en{' '}
+                  {moment(this.props.activeMonth).format('MMMM')}
+                  &nbsp;?
+                </>
+              ) : (
+                <>
+                  Terminé en {moment(this.props.activeMonth).format('MMMM')}
+                  &nbsp;?
+                </>
+              )}
               {hasEndedThisMonth.error && (
                 <FormHelperText error>{hasEndedThisMonth.error}</FormHelperText>
               )}
@@ -271,6 +295,7 @@ EmployerQuestion.propTypes = {
   onRemove: PropTypes.func.isRequired,
   activeMonth: PropTypes.instanceOf(Date).isRequired,
   verticalLayout: PropTypes.bool,
+  width: PropTypes.string.isRequired,
 }
 
-export default EmployerQuestion
+export default withWidth()(EmployerQuestion)

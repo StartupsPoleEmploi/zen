@@ -2,7 +2,7 @@ const express = require('express')
 const config = require('config')
 
 const { isUserTokenValid } = require('../lib/token')
-const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
+const { refreshAccessToken } = require('../lib/middleware/refreshAccessTokenMiddleware')
 const mailjet = require('../lib/mailings/mailjet')
 const winston = require('../lib/log')
 

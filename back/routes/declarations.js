@@ -17,8 +17,8 @@ const {
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
-const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
-const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
+const { requireActiveMonth } = require('../lib/middleware/activeMonthMiddleware')
+const { refreshAccessToken } = require('../lib/middleware/refreshAccessTokenMiddleware')
 const { sendDocument } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const { isUserTokenValid } = require('../lib/token')

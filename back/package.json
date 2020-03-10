@@ -23,6 +23,7 @@
     "verbose": true
   },
   "dependencies": {
+    "async": "^3.2.0",
     "config": "^2.0.2",
     "connect-pg-simple": "^6.0.1",
     "cookie-parser": "~1.4.4",

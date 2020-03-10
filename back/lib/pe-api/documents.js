@@ -1,6 +1,4 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
+/* eslint-disable prefer-destructuring */
 
 /*
  * Code to send documents via the API
@@ -24,9 +22,9 @@ const { uploadsDirectory } = require('config')
 const config = require('config')
 const fs = require('fs')
 const path = require('path')
-const { deburr } = require('lodash')
+const { deburr, pick } = require('lodash')
 const { format } = require('date-fns')
-const Raven = require('raven')
+const async = require('async')
 
 const { request, checkHeadersAndWait } = require('../resilientRequest')
 const EmployerDocument = require('../../models/EmployerDocument')
@@ -110,8 +108,6 @@ const uploadUrl = `${config.apiHost}/partenaire/peconnect-envoidocument/v1/depos
 const getConfirmationUrl = (conversionId) =>
   `${config.apiHost}/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`
 
-const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
-
 const formatDeclarationInfoDoc = (doc) => {
   const typeInfos = documentsToTransmitTypes.find(
     ({ type }) => type === doc.type,
@@ -183,73 +179,58 @@ const doConfirm = ({ conversionId, document, accessToken }) =>
     },
   })
 
-const sendDocument = ({ accessToken, document, previousTries = 0 }) => {
-  let infosToSendDocument
+async function sendDocument({ accessToken, document }) {
+  let documentType = null;
+  let userId = null;
+  let infosToSendDocument = null;
   if (Object.values(DeclarationInfo.types).includes(document.type)) {
     infosToSendDocument = formatDeclarationInfoDoc(document)
+    documentType = `DeclarationInfo ${document.type}`
+    userId = document.declaration.userId;
   } else if (Object.values(EmployerDocument.types).includes(document.type)) {
     infosToSendDocument = formatEmployerDoc(document)
+    documentType = `EmployerDocument ${document.type}`
+    userId = document.employer.userId;
   } else {
     throw new Error('Unknown document type')
   }
 
   if (config.get('bypassDocumentsDispatch')) {
-    winston.info(
-      `Simulating sending document ${infosToSendDocument.dbDocument.type} ${infosToSendDocument.dbDocument.id} to PE`,
-    )
-
-    return infosToSendDocument.dbDocument
-      .$query()
-      .patch({ isTransmitted: true })
+    winston.info(`Simulating sending document ${infosToSendDocument.dbDocument.type} ${infosToSendDocument.dbDocument.id} to PE`)
+    return infosToSendDocument.dbDocument.$query().patch({ isTransmitted: true })
   }
 
-  let promise = Promise.resolve()
   if (path.extname(infosToSendDocument.filePath) === '.pdf') {
     // optimize PDF before sending them to PE
-    // TODO : Do this at upload?
-    promise = optimizePDF(infosToSendDocument.filePath).catch((err) =>
+    await optimizePDF(infosToSendDocument.filePath).catch((err) =>
       // if the optimization fails, log it, but continue anyway
-      winston.debug(
-        `Error while optimizing document ${infosToSendDocument.dbDocument.id} (ERR ${err})`,
-      ),
+      winston.debug(`Error while optimizing document ${infosToSendDocument.dbDocument.id} (ERR ${err})`),
     )
   }
 
-  return promise.then(() =>
-    doUpload({
-      filePath: infosToSendDocument.filePath,
-      accessToken,
+  let step = 0;
+  try {
+    const retryTime = { times: MAX_TRIES, interval: DEFAULT_WAIT_TIME };
+    const { body: { conversionId } } = await async.retry(retryTime, 
+      async () => doUpload({ filePath: infosToSendDocument.filePath, accessToken }),
+    );
+    step += 1;
+    await async.retry(retryTime, 
+      async () => doConfirm({ document: infosToSendDocument, accessToken, conversionId }),
+    );
+    await infosToSendDocument.dbDocument.$query().patch({ isTransmitted: true });
+  } catch (err) {
+    const errorFrom = step === 0 ? 'uploading' : 'confirming'
+    const docId = infosToSendDocument.dbDocument.id;
+    err.message = `Error while ${errorFrom} document ${docId} with type "${documentType}" of user "${userId}" (HTTP ${err.status}) => ${err.message}`;
+    winston.error(err.message, { 
+      url: err.response.request.url, 
+      userId, 
+      doc: { docId, ... pick(infosToSendDocument, ['filePath', 'label', 'confirmationData']) },
+      err,
     })
-      .then(({ body: { conversionId } }) =>
-        wait(DEFAULT_WAIT_TIME).then(() => conversionId),
-      )
-      .then((conversionId) =>
-        doConfirm({
-          document: infosToSendDocument,
-          accessToken,
-          conversionId,
-        }),
-      )
-      .then(() =>
-        infosToSendDocument.dbDocument.$query().patch({ isTransmitted: true }),
-      )
-      .catch((err) => {
-        if (previousTries < MAX_TRIES) {
-          return wait(DEFAULT_WAIT_TIME).then(() =>
-            sendDocument({
-              accessToken,
-              document,
-              previousTries: previousTries + 1,
-            }),
-          )
-        }
-        err.message = `Error while uploading or confirming document ${infosToSendDocument.dbDocument.id} (call to ${err.response.request.url}) (HTTP ${err.status}) => ${err.message}`
-
-        winston.error(err.message, err)
-        Raven.captureException(err)
-        throw err
-      }),
-  )
+    throw err
+  }
 }
 
 module.exports = {

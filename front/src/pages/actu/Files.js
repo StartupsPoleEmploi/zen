@@ -775,7 +775,7 @@ export class Files extends Component {
             this.renderCurrentMonthTab(lastDeclaration)}
 
           {this.state.selectedTab === OLD_MONTHS_TAB &&
-            (oldDeclarations.length > 0 ? (
+            (oldDeclarationsMissingFiles > 0 ? (
               oldDeclarations.map(this.renderSection)
             ) : (
               <FilesSection>
@@ -783,10 +783,10 @@ export class Files extends Component {
                   variant="h6"
                   component="h1"
                   style={
-                    this.props.width !== 'xs' && {
+                    this.props.width !== 'xs' ? {
                       textAlign: 'right',
                       paddingRight: '2rem',
-                    }
+                    } : null
                   }
                 >
                   Pas d'anciens justificatifs disponibles

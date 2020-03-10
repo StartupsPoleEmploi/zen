@@ -101,7 +101,7 @@ function History({
   if (declarations.length === 0) {
     return (
       <StyledHistory>
-        <StyledH1>L'historique de votre actualisations sur Zen</StyledH1>
+        <StyledH1>L'historique de votre actualisation sur Zen</StyledH1>
         <Typography>Pas d'historique pour le moment</Typography>
       </StyledHistory>
     )
@@ -142,7 +142,7 @@ function History({
 
   return (
     <StyledHistory>
-      <StyledH1>L'historique de votre actualisations sur Zen</StyledH1>
+      <StyledH1>L'historique de votre actualisation sur Zen</StyledH1>
 
       {filledDeclarations.map((d, index) => (
         <MonthContainer

@@ -10,9 +10,11 @@ import Declaration from './containers/Declaration';
 import Settings from './containers/Settings';
 import User from './containers/User';
 import Users from './containers/Users';
+import Dashboard from './containers/Dashboard';
 
 const Routes = () => (
   <Switch>
+    <Route path={URLS.BASE} exact component={Dashboard} />
     <Route path={URLS.DECLARATIONS.BASE} exact component={Declarations} />
     <Route path={URLS.DECLARATIONS.VIEW} exact component={Declaration} />
     <Route path={URLS.ACTIVITIES} exact component={ActivityLogs} />

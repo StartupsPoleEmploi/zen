@@ -43,7 +43,7 @@ const Cell = styled.div`
   }
 `
 
-function DeclarationHistory({ declaration, width }) {
+function DeclarationHistory({ lastMonthId, declaration, width }) {
   return (
     <Row>
       <Cell className="status">
@@ -53,7 +53,11 @@ function DeclarationHistory({ declaration, width }) {
         </Typography>
       </Cell>
 
-      <MissingCell declaration={declaration} width={width} />
+      <MissingCell
+        lastMonthId={lastMonthId}
+        declaration={declaration}
+        width={width}
+      />
       <FileCell declaration={declaration} />
     </Row>
   )
@@ -61,6 +65,7 @@ function DeclarationHistory({ declaration, width }) {
 
 DeclarationHistory.propTypes = {
   declaration: PropTypes.object,
+  lastMonthId: PropTypes.number.isRequired,
   width: PropTypes.string.isRequired,
 }
 

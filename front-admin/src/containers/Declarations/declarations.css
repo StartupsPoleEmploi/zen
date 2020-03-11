@@ -1,0 +1,13 @@
+.admin-declarations a,
+.admin-declarations a:hover,
+.admin-declarations a:active,
+.admin-declarations a:focus,
+.admin-declarations a:visited {
+  background: #0065db;
+  color: white;
+  padding: 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  white-space: normal;
+}

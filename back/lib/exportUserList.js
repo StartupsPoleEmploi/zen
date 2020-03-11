@@ -22,6 +22,9 @@ const DATA_EXPORT_FIELDS = [
   'gender',
   'isAuthorized',
   'peId',
+  'agencyCode',
+  'situationRegardEmploiId',
+  'registeredAt',
 ]
 
 const getDeclaration = (declarations, monthId) =>

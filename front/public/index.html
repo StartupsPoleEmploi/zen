@@ -36,7 +36,7 @@
     <!-- End Sentry -->
   </head>
 
-  <body>
+  <body id="body">
     <noscript>
       <iframe
         id="gtm-frame"
@@ -47,4 +47,25 @@
     </noscript>
     <div id="root"></div>
   </body>
+
+  <script type="text/javascript">
+    function handleIE() {
+      var ua = navigator.userAgent
+      if (ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1) {
+        var html = '<div id="browser-compatibility" style="font-size:16px;width:700px;margin:50px auto;text-align:center;">'
+        html += '<img src="./zen-logo.png" alt="" style="margin-bottom: 15px" />'
+        html += '<h1>Mettez votre navigateur à jour pour profiter pleinement du site zen.pole-emploi.fr !</h1>'
+        html += "<p>Votre navigateur ne permet pas de naviguer de manière sécurisée et dans des conditions d'affichage optimales. Nous vous recommandons d'utiliser l'un des navigateurs suivants :</p>"
+        html += '<div class="browsers" style="margin-bottom: 15px">'
+        html += '<a href="https://www.microsoft.com/en-us/edge" title="Nouvelle fenêtre" target="_blank"><img src="./browsers/edge-chronium.png" alt="Chronium Edge" /></a>'
+        html += '<a href="http://www.mozilla.org/fr/firefox/new/" title="Nouvelle fenêtre" target="_blank" ><img src="./browsers/firefox.png" alt="Firefox" /></a>'
+        html += '<a href="https://www.google.com/intl/fr_fr/chrome/browser/" title="Nouvelle fenêtre" target="_blank" ><img src="./browsers/chrome.png" alt="Chrome"/></a>'
+        html += '</div>'
+
+        var body = document.getElementById('body')
+        body.innerHTML = html
+      }
+    }
+    handleIE()
+  </script>
 </html>

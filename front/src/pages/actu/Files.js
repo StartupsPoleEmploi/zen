@@ -789,7 +789,7 @@ export class Files extends Component {
                     } : null
                   }
                 >
-                  Pas d'anciens justificatifs disponibles
+                  Pas de justificatifs à envoyer
                 </StyledTitle>
               </FilesSection>
             ))}

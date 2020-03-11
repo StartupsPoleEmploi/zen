@@ -306,7 +306,7 @@ router.get('/retention', async (req, res) => {
   // Users who have done their first declaration in this period
   const firstDeclarationsIds = await Declaration.query()
     .select('userId')
-    .where('hasFinishedDeclaringEmployers', true) // TODO: check with alameen
+    .where('hasFinishedDeclaringEmployers', true)
     .where({ monthId: start })
     .groupBy('userId')
     .havingRaw('COUNT("userId") = 1')
@@ -325,6 +325,9 @@ router.get('/retention', async (req, res) => {
   // Extract only ids
   const ids = firstDeclarationsIds.map((i) => i.userId)
 
+  // Users with at least one declaration in the next six month
+  const oneDeclarationAtLeast = new Set()
+
   for (const m of declarationMonths) {
     // eslint-disable-next-line no-await-in-loop
     const users = await Declaration.query()
@@ -337,7 +340,14 @@ router.get('/retention', async (req, res) => {
       month: m.month,
       value: users.length,
     })
+
+    const userIds = users.map(u => u.userId)
+    userIds.forEach(i => oneDeclarationAtLeast.add(i))
   }
+
+  // Users which have done at least one actualisation in the next 6 months
+  results.oneDeclarationInSixMonths = oneDeclarationAtLeast.size;
+
 
   return res.json(results)
 })
@@ -369,6 +379,8 @@ router.get('/metrics/new-users', async (req, res) => {
     .andWhere('registeredAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("registeredAt", 'yyyy-mm-dd')`)
 
+
+
   return res.json(formatQueryResults(firstPeriodData, secondPeriodData))
 })
 
@@ -386,6 +398,9 @@ router.get('/metrics/declaration-started', async (req, res) => {
     endSecondPeriod,
   } = computePeriods(req.query)
 
+
+  const accumulate = 'accumulate' in req.query && req.query.accumulate === 'true'
+
   const firstPeriodData = await Declaration.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
@@ -398,7 +413,7 @@ router.get('/metrics/declaration-started', async (req, res) => {
     .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData))
+  return res.json(formatQueryResults(firstPeriodData, secondPeriodData, accumulate))
 })
 
 /**
@@ -415,6 +430,8 @@ router.get('/metrics/declaration-finished', async (req, res) => {
     endSecondPeriod,
   } = computePeriods(req.query)
 
+  const accumulate = 'accumulate' in req.query && req.query.accumulate === 'true'
+
   const firstPeriodData = await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
@@ -429,7 +446,7 @@ router.get('/metrics/declaration-finished', async (req, res) => {
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData))
+  return res.json(formatQueryResults(firstPeriodData, secondPeriodData, accumulate))
 })
 
 /**
@@ -446,6 +463,8 @@ router.get('/metrics/files-end', async (req, res) => {
     endSecondPeriod,
   } = computePeriods(req.query)
 
+  const accumulate = 'accumulate' in req.query && req.query.accumulate === 'true'
+
   const firstPeriodData = await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
@@ -460,7 +479,7 @@ router.get('/metrics/files-end', async (req, res) => {
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData))
+  return res.json(formatQueryResults(firstPeriodData, secondPeriodData, accumulate))
 })
 
 router.get('/repartition/region', async (req, res) => {

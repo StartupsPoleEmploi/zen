@@ -31,37 +31,48 @@ function RetentionResults({ startMonth }) {
   if (!values) return <Spin />
 
   return (
-    <div>
-      <h2 style={{ marginTop: '2rem' }}>
-        Sur les <strong>{values.baseUserNumber}</strong> utilisateurs ayant fait
-        leur <strong>première actualisation</strong> en{' '}
-        {formatMonth(startMonth.month)} :
-      </h2>
-
-      <ul>
-        {values.nextMonths.map(({ month, value }) => (
-          <li>
-            <strong>{value}</strong> ont fait leur actualisation au mois{' '}
-            {formatMonth(month)} --{' '}
-            <strong>{computePercentage(value, values.baseUserNumber)}%</strong>
-          </li>
-        ))}
-      </ul>
-
-      <div
-        style={{
-          color: '#004085',
-          backgroundColor: '#cce5ff',
-          borderColor: '#b8daff',
-          padding: '1rem',
-          margin: '3rem 1rem 1rem 1rem',
-        }}
-      >
-        Si la dernière période d'actualisation affichée est en cours de
-        déroulement, le nombre d'actualisation effectué évoluera jusqu'à la fin
-        de l'actualisation !
+    <>
+      <div>
+        <h2 style={{ marginTop: '2rem' }}>
+          Sur les <strong>{values.baseUserNumber}</strong> utilisateurs ayant fait
+          leur <strong>première actualisation</strong> en{' '}
+          {formatMonth(startMonth.month)} :
+        </h2>
+        <p>{values.oneDeclarationInSixMonths} ont fait <strong>au moins une actualisation</strong> dans les six mois suivants -- <strong>{computePercentage(values.oneDeclarationInSixMonths, values.baseUserNumber)}%</strong></p>
       </div>
-    </div>
+      <hr />
+      <div>
+        <h2 style={{ marginTop: '2rem' }}>
+          Sur les <strong>{values.baseUserNumber}</strong> utilisateurs ayant fait
+          leur <strong>première actualisation</strong> en{' '}
+          {formatMonth(startMonth.month)} :
+        </h2>
+
+        <ul>
+          {values.nextMonths.map(({ month, value }) => (
+            <li>
+              <strong>{value}</strong> ont fait leur actualisation au mois{' '}
+              {formatMonth(month)} --{' '}
+              <strong>{computePercentage(value, values.baseUserNumber)}%</strong>
+            </li>
+          ))}
+        </ul>
+
+        <div
+          style={{
+            color: '#004085',
+            backgroundColor: '#cce5ff',
+            borderColor: '#b8daff',
+            padding: '1rem',
+            margin: '3rem 1rem 1rem 1rem',
+          }}
+        >
+          Si la dernière période d'actualisation affichée est en cours de
+          déroulement, le nombre d'actualisation effectué évoluera jusqu'à la fin
+          de l'actualisation !
+        </div>
+      </div>
+    </>
   )
 }
 

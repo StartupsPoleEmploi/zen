@@ -9,19 +9,22 @@ import { URLS } from '../../../../common/routes'
 
 function RepartitionAgency({ agencyCode, declarationMonth }) {
   const [values, setValues] = useState(null)
-  const [agency] = useState(getAgence(agencyCode))
+  const [agency, setAgency] = useState(null)
   const history = useHistory()
 
   useEffect(() => {
     async function fetchData() {
-      if (!agency) return
+      const agencyTemp = getAgence(agencyCode)
+      if (!agencyTemp) return
+
+      setAgency(agencyTemp)
       const { body } = await superagent.get(
-        `/zen-admin-api/repartition/agency?agencyCode=${agency.codeAgence}&monthId=${declarationMonth.id}`,
+        `/zen-admin-api/repartition/agency?agencyCode=${agencyCode}&monthId=${declarationMonth.id}`,
       )
       setValues(body)
     }
     fetchData()
-  }, [agency, declarationMonth])
+  }, [agencyCode, setAgency, declarationMonth])
 
   if (!values) return <Spin />
 

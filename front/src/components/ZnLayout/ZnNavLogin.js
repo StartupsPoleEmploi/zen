@@ -281,7 +281,7 @@ export const NavLogin = ({
               Accueil
             </>
           }
-          disabled={!shouldActivateDeclarationLink}
+          disabled={false}
           value={dashboardRoute}
           onClick={() => push(dashboardRoute)}
           role="link"

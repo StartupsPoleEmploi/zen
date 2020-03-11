@@ -79,11 +79,20 @@ function MetricsForm() {
             <Select.Option value="declaration-started">
               Actualisations démarrées
             </Select.Option>
+            <Select.Option value="total-declaration-started">
+              Total actualisations démarrées
+            </Select.Option>
             <Select.Option value="declaration-employers-finished">
               Actualisations terminées
             </Select.Option>
+            <Select.Option value="total-declaration-employers-finished">
+              Total actualisations terminées
+            </Select.Option>
             <Select.Option value="declaration-files-end">
-              Actualisation terminées et fichier transmis
+              Actualisations terminées et fichier transmis
+            </Select.Option>
+            <Select.Option value="total-declaration-files-end">
+              Total actualisations terminées et fichier transmis
             </Select.Option>
           </Select>
         </div>

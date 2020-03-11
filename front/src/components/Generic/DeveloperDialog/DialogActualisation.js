@@ -39,17 +39,17 @@ export default function DialogUser() {
       <DialogContentText paragraph>
         Permet de changer la date de fin de la déclaration du mois courant.
       </DialogContentText>
-      {loading && 
+      {loading &&
         <DialogContentText paragraph>
           LOADING ...
         </DialogContentText>
       }
-      {!loading && !!error && 
+      {!loading && !!error &&
         <DialogContentText paragraph>
           {`Error: ${error}`}
         </DialogContentText>
       }
-      {!loading && !error && !!currentMonth && 
+      {!loading && !error && !!currentMonth &&
         <DialogContentText paragraph style={{textAlign: 'left'}}>
           <ul>
             <li><b>Id : </b>{currentMonth.id}</li>
@@ -68,7 +68,7 @@ export default function DialogUser() {
           </ul>
         </DialogContentText>
       }
-      
+
       <Button variant="contained" onClick={submit} color="primary" style={{marginTop: '2rem'}}>
         Mettre à jour date de fin
       </Button>

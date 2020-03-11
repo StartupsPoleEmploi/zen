@@ -108,6 +108,9 @@ function RepartitionForm() {
       return
     }
 
+    // Nothing to do
+    if(regionSelected === region) return
+
     setRegion(regionSelected)
 
     const filteredDepartment = Object.keys(agencesTree[regionSelected])
@@ -130,6 +133,10 @@ function RepartitionForm() {
       return
     }
 
+    // Nothing to do
+    if(departmentSelected === department) return
+
+
     setRegion(extractRegionFromDepartment(departmentSelected))
     setDepartment(departmentSelected)
 
@@ -144,6 +151,9 @@ function RepartitionForm() {
       setAgency('')
       return
     }
+
+    if(agencySelected === agency) return;
+
     const codeAgence = extractAgencyCode(agencySelected)
     const { region: reg, departement: dep } = getAgence(codeAgence)
 
@@ -174,6 +184,8 @@ function RepartitionForm() {
   const declarationMonth = period
     ? declarationsMonth.find((d) => d.id === period)
     : null
+
+  const agencyCode = extractAgencyCode(agency)
 
   return (
     <div>
@@ -254,10 +266,11 @@ function RepartitionForm() {
           </Select>
         </div>
       </div>
+
       {agency && declarationMonth && (
         <RepartitionAgency
           declarationMonth={declarationMonth}
-          agencyCode={extractAgencyCode(agency)}
+          agencyCode={agencyCode}
         />
       )}
 

@@ -100,8 +100,6 @@ const MissingCell = ({ lastMonthId, width, declaration }) => {
     )
   }
 
-  console.log(declaration)
-
   return (
     <StyledMissingCell className="text">
       {missingFilesNumber === 0 ? (

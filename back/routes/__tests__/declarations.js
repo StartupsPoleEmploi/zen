@@ -117,13 +117,13 @@ describe('declarations routes', () => {
     describe('?last', () => {
       test('HTTP 404 if no declaration found', () =>
         supertest(app)
-          .get('/?last')
+          .get('/?last=true')
           .expect(404))
 
       test('HTTP 200 if a declaration is found', () =>
         addActiveDeclaration().then(() =>
           supertest(app)
-            .get('/?last')
+            .get('/?last=true')
             .expect(200),
         ))
     })

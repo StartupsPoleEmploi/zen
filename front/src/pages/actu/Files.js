@@ -512,6 +512,7 @@ export class Files extends Component {
           <ActuStatus
             activeMonth={activeMonth}
             user={user}
+            showTitle={false}
             declarations={declarations}
             declaration={lastDeclaration}
           />
@@ -530,6 +531,7 @@ export class Files extends Component {
           Actualisation -{' '}
           <Upper>{moment(lastDeclaration).format('MMMM YYYY')}</Upper>
         </StyledH2>
+
         <Typography style={{ fontWeight: 'bold', fontSize: '1.8rem' }}>
           <CheckIcon />
           <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
@@ -772,7 +774,7 @@ export class Files extends Component {
           </Tabs>
 
           {this.state.selectedTab === CURRENT_MONTH_TAB &&
-            this.renderCurrentMonthTab(lastDeclaration)}
+            this.renderCurrentMonthTab(lastDeclaration, false)}
 
           {this.state.selectedTab === OLD_MONTHS_TAB &&
             (oldDeclarationsMissingFiles > 0 ? (
@@ -783,10 +785,12 @@ export class Files extends Component {
                   variant="h6"
                   component="h1"
                   style={
-                    this.props.width !== 'xs' ? {
-                      textAlign: 'right',
-                      paddingRight: '2rem',
-                    } : null
+                    this.props.width !== 'xs'
+                      ? {
+                          textAlign: 'right',
+                          paddingRight: '2rem',
+                        }
+                      : null
                   }
                 >
                   Pas de justificatifs à envoyer

@@ -20893,6 +20893,17 @@ const regionsSlugToName = {
   'provence-alpes-cote-dazur': "PROVENCE-ALPES-COTE D'AZUR",
 }
 
+let agencyCodeToAgenceMap = null
+function getAgencyCodeToAgenceMap() {
+  if (!agencyCodeToAgenceMap) {
+    agencyCodeToAgenceMap = {}
+    listAgences.forEach((agency) => {
+      agencyCodeToAgenceMap[agency.codeAgence] = agency
+    })
+  }
+  return agencyCodeToAgenceMap
+}
+
 function getAllCodeAgencyFromRegionSlug(slug) {
   const reg = regionsSlugToName[slug]
   if (!reg) throw new Error('Unknown region')
@@ -20910,7 +20921,15 @@ function getAllCodeAgencyFromDepartmentSlug(slug) {
     .map((a) => Number(a.codeAgence))
 }
 
+function getAgence(agencyCode) {
+  const agencyMap = getAgencyCodeToAgenceMap()
+  // Remove 0 char at the beggining => 02214 become 2214
+  const formatAgencyCode = Number(agencyCode).toString()
+  return agencyMap[formatAgencyCode]
+}
+
 module.exports = {
   getAllCodeAgencyFromDepartmentSlug,
   getAllCodeAgencyFromRegionSlug,
+  getAgence,
 }

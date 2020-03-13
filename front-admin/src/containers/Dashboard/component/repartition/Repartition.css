@@ -7,6 +7,10 @@
   border-radius: 3rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 30px;
+}
+.ul.double {
+  grid-template-columns: 1fr 1fr;
 }
 
 .ul li {
@@ -32,4 +36,28 @@
   font-style: italic;
   margin-top: -8px;
   margin-bottom: 1.5rem;
+}
+
+.download-list {
+  margin: 1rem 0 2rem 0;
+}
+.download-list li {
+  border: none;
+}
+.download-list li:hover {
+  background: none;
+}
+.download-list a,
+.download-list a:hover,
+.download-list a:active,
+.download-list a:focus,
+.download-list a:visited {
+  line-height: 1rem;
+  background: #0065db;
+  color: white;
+  padding: 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  white-space: normal;
 }

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react'
 import superagent from 'superagent'
-import { Select } from 'antd'
+import { Select, Spin } from 'antd'
 import moment from 'moment'
 import slug from 'slug'
 
@@ -81,6 +81,17 @@ function RepartitionForm() {
   )
   const [agency, setAgency] = useState('')
   const [agenciesToDisplay, setAgenciesToDisplay] = useState(allAgencies)
+  const [usersGlobalRepartition, setUsersGlobalRepartition] = useState(null)
+  const [formsInitDone, setFormsInitDone] = useState(false)
+
+  // Get global users repartition
+  useEffect(() => {
+    async function fetchData() {
+      const { body } = await superagent.get('/zen-admin-api/repartition/global')
+      setUsersGlobalRepartition(body)
+    }
+    fetchData()
+  }, [])
 
   // Get declaration months at start
   useEffect(() => {
@@ -94,8 +105,10 @@ function RepartitionForm() {
 
   // Update URL when values change
   useEffect(() => {
-    updateUrlParams({ agency, department, region, period })
-  }, [agency, department, region, period])
+    if (formsInitDone) {
+      updateUrlParams({ agency, department, region, period })
+    }
+  }, [agency, department, region, period, formsInitDone])
 
   // When a region is selected => update departement + agencies
   function selectRegionValue(regionSelected) {
@@ -109,7 +122,7 @@ function RepartitionForm() {
     }
 
     // Nothing to do
-    if(regionSelected === region) return
+    if (regionSelected === region) return
 
     setRegion(regionSelected)
 
@@ -134,8 +147,7 @@ function RepartitionForm() {
     }
 
     // Nothing to do
-    if(departmentSelected === department) return
-
+    if (departmentSelected === department) return
 
     setRegion(extractRegionFromDepartment(departmentSelected))
     setDepartment(departmentSelected)
@@ -152,7 +164,7 @@ function RepartitionForm() {
       return
     }
 
-    if(agencySelected === agency) return;
+    if (agencySelected === agency) return
 
     const codeAgence = extractAgencyCode(agencySelected)
     const { region: reg, departement: dep } = getAgence(codeAgence)
@@ -179,13 +191,21 @@ function RepartitionForm() {
       const reg = regionsSlugToName[regionSlug]
       if (reg) selectRegionValue(reg)
     }
-  }, [selectAgencyValue, selectDepartmentValue, selectRegionValue])
+    setTimeout(() => setFormsInitDone(true), 500)
+  }, [
+    selectAgencyValue,
+    selectDepartmentValue,
+    selectRegionValue,
+    setFormsInitDone,
+  ])
 
   const declarationMonth = period
     ? declarationsMonth.find((d) => d.id === period)
     : null
 
   const agencyCode = extractAgencyCode(agency)
+
+  if (usersGlobalRepartition === null) return <Spin />
 
   return (
     <div>
@@ -269,6 +289,7 @@ function RepartitionForm() {
 
       {agency && declarationMonth && (
         <RepartitionAgency
+          usersInAgency={usersGlobalRepartition.agencies[agencyCode]}
           declarationMonth={declarationMonth}
           agencyCode={agencyCode}
         />
@@ -276,6 +297,7 @@ function RepartitionForm() {
 
       {!agency && declarationMonth && (
         <RepartitionRegionDepartment
+          usersGlobalRepartition={usersGlobalRepartition}
           region={region}
           department={department}
           declarationMonth={declarationMonth}

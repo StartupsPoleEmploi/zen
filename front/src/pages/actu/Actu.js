@@ -29,6 +29,7 @@ import {
   jobSearchEndMotive,
   muiBreakpoints,
   ActuTypes as types,
+  mobileBreakpoint,
 } from '../../constants'
 import ScrollToButton from '../../components/Generic/ScrollToButton'
 
@@ -95,6 +96,11 @@ const StyledList = styled(List)`
   }
 `
 
+const Form = styled.form`
+  @media (max-width: ${mobileBreakpoint}) {
+    padding-bottom: 3rem;
+  }
+`
 const AddElementButtonContainer = styled.div`
   text-align: center;
   margin-top: 2rem;
@@ -559,7 +565,7 @@ export class Actu extends Component {
           Déclarer ma situation de {activeMonthMoment.format('MMMM')}
         </Title>
 
-        <form>
+        <Form>
           <StyledPaper>
             <StyledList>
               <DeclarationQuestion
@@ -737,7 +743,7 @@ export class Actu extends Component {
               </MainActionButton>
             </FinalButtonsContainer>
           </AlwaysVisibleContainer>
-        </form>
+        </Form>
 
         {!this.getFormError() && (
           // Note: only open this dialog if there is no form error (eg. the declaration can be sent)

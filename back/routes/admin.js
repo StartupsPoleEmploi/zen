@@ -43,9 +43,14 @@ router.get('/declarations', (req, res, next) => {
     return res.status(501).json('Must add monthId as query param')
   }
 
+  let conditions = { monthId: req.query.monthId }
+  if ('onlyDone' in req.query && req.query.onlyDone === 'true') {
+    conditions = { ...conditions, hasFinishedDeclaringEmployers: true }
+  }
+
   Declaration.query()
     .eager('user')
-    .where({ monthId: req.query.monthId })
+    .where(conditions)
     .then((declarations) => res.json(declarations))
     .catch(next)
 })
@@ -348,10 +353,18 @@ router.get('/retention', async (req, res) => {
 
   /** 1- Retention global + by month */
   // Users who have done their first declaration in this period
+  const userWithAlreadyADeclaration = await Declaration.query()
+    .distinct('userId')
+    .where('monthId', '<', monthId)
+  const userIdsWithAlreadyADeclaration = userWithAlreadyADeclaration.map(
+    (i) => i.userId,
+  )
+
   const firstDeclarationsIds = await Declaration.query()
     .select('userId')
     .where('hasFinishedDeclaringEmployers', true)
     .where({ monthId })
+    .whereNotIn('userId', userIdsWithAlreadyADeclaration)
     .groupBy('userId')
     .havingRaw('COUNT("userId") = 1')
 
@@ -487,7 +500,14 @@ router.get('/metrics/new-users', async (req, res) => {
     .andWhere('registeredAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("registeredAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData))
+  return res.json(
+    formatQueryResults({
+      startFirstPeriod,
+      firstPeriodData,
+      startSecondPeriod,
+      secondPeriodData,
+    }),
+  )
 })
 
 /**
@@ -520,7 +540,13 @@ router.get('/metrics/declaration-started', async (req, res) => {
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
   return res.json(
-    formatQueryResults(firstPeriodData, secondPeriodData, accumulate),
+    formatQueryResults({
+      startFirstPeriod,
+      firstPeriodData,
+      startSecondPeriod,
+      secondPeriodData,
+      accumulate,
+    }),
   )
 })
 
@@ -556,7 +582,13 @@ router.get('/metrics/declaration-finished', async (req, res) => {
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
   return res.json(
-    formatQueryResults(firstPeriodData, secondPeriodData, accumulate),
+    formatQueryResults({
+      startFirstPeriod,
+      firstPeriodData,
+      startSecondPeriod,
+      secondPeriodData,
+      accumulate,
+    }),
   )
 })
 
@@ -592,7 +624,13 @@ router.get('/metrics/files-end', async (req, res) => {
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
   return res.json(
-    formatQueryResults(firstPeriodData, secondPeriodData, accumulate),
+    formatQueryResults({
+      startFirstPeriod,
+      firstPeriodData,
+      startSecondPeriod,
+      secondPeriodData,
+      accumulate,
+    }),
   )
 })
 
@@ -661,7 +699,7 @@ router.get('/repartition/region', async (req, res) => {
 
   const declarations = await Declaration.query()
     .joinEager('user')
-    .where({ monthId })
+    .where({ monthId, hasFinishedDeclaringEmployers: true })
     .andWhere('user.agencyCode', 'in', agencies)
 
   return res.json(declarations)
@@ -683,7 +721,7 @@ router.get('/repartition/department', async (req, res) => {
 
   const declarations = await Declaration.query()
     .joinEager('user')
-    .where({ monthId })
+    .where({ monthId, hasFinishedDeclaringEmployers: true })
     .andWhere('user.agencyCode', 'in', agencies)
 
   return res.json(declarations)
@@ -698,7 +736,11 @@ router.get('/repartition/agency', async (req, res) => {
 
   const declarations = await Declaration.query()
     .joinEager('user')
-    .where({ monthId, 'user.agencyCode': agencyCode })
+    .where({
+      monthId,
+      hasFinishedDeclaringEmployers: true,
+      'user.agencyCode': agencyCode,
+    })
 
   return res.json(declarations)
 })
@@ -725,7 +767,11 @@ router.get('/repartition/agency/csv', async (req, res) => {
   } else {
     const declarations = await Declaration.query()
       .joinEager('user')
-      .where({ monthId, 'user.agencyCode': agencyCode })
+      .where({
+        monthId,
+        hasFinishedDeclaringEmployers: true,
+        'user.agencyCode': agencyCode,
+      })
     users = declarations.map((dec) => dec.user)
     filename = `actualisation-terminees-${agencyCode}`
   }

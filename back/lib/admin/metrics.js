@@ -1,4 +1,4 @@
-const { addWeeks } = require('date-fns')
+const { addWeeks, addDays, format } = require('date-fns')
 
 function computePeriods(queryParams) {
   const { first, second, duration } = queryParams
@@ -16,26 +16,39 @@ function computePeriods(queryParams) {
   }
 }
 
-function formatQueryResults(firstPeriodData, secondPeriodData, accumulate) {
+function formatQueryResults({
+  startFirstPeriod,
+  firstPeriodData,
+  startSecondPeriod,
+  secondPeriodData,
+  accumulate = false,
+}) {
   const results = {
     firstPeriod: {},
     secondPeriod: {},
   }
+
   for (let i = 0; i < firstPeriodData.length; i++) {
     const { count: firstCount } = firstPeriodData[i]
 
-    const label = `Jour ${i+1}`
+    // prettier-ignore
+    const label = `${format(addDays(startFirstPeriod, i + 1), 'DD/MM')} vs ${format(addDays(startSecondPeriod, i + 1), 'DD/MM')}`
+    // prettier-ignore
+    const labelPreviousDay = `${format(addDays(startFirstPeriod, i), 'DD/MM')} vs ${format(addDays(startSecondPeriod, i), 'DD/MM')}`
 
     const secondPeriod = secondPeriodData[i] || {} // Security if no data retrieve
     const { count: secondCount = 0 } = secondPeriod
 
     if (accumulate) {
       // Get previous value
-      const previousFirstPeriodValue = results.firstPeriod[`Jour ${i}`] || 0;
-      const previousSecondPeriodValue = results.secondPeriod[`Jour ${i}`] || 0;
+      const previousFirstPeriodValue =
+        results.firstPeriod[labelPreviousDay] || 0
+      const previousSecondPeriodValue =
+        results.secondPeriod[labelPreviousDay] || 0
 
       results.firstPeriod[label] = previousFirstPeriodValue + Number(firstCount)
-      results.secondPeriod[label] = previousSecondPeriodValue + Number(secondCount)
+      results.secondPeriod[label] =
+        previousSecondPeriodValue + Number(secondCount)
     } else {
       results.firstPeriod[label] = Number(firstCount)
       results.secondPeriod[label] = Number(secondCount)

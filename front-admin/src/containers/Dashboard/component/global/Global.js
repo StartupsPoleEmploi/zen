@@ -56,7 +56,7 @@ function Global() {
 
       <section>
         <ColumnChart
-          title="Nombre d'actualisatons par mois"
+          title="Nombre d'actualisations par mois"
           data={declatationsByMonthData}
           download={`actualisations-par-mois-${formatFrenchDate(new Date())}`}
         />

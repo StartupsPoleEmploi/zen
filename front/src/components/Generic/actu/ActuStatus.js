@@ -54,6 +54,7 @@ const Upper = styled.span`
 function ActuStatus({
   activeMonth,
   user,
+  showTitle = true,
   declarations: allDeclarations,
   declaration: activeDeclaration,
 }) {
@@ -102,13 +103,15 @@ function ActuStatus({
 
   return (
     <StyledActuStatus>
-      <SubTitle>
-        Actualisation
-        {activeMonthMoment && ' - '}
-        {activeMonthMoment && (
-          <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
-        )}
-      </SubTitle>
+      {showTitle && (
+        <SubTitle>
+          Actualisation
+          {activeMonthMoment && ' - '}
+          {activeMonthMoment && (
+            <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
+          )}
+        </SubTitle>
+      )}
       {renderActuStatus(user, allDeclarations, activeDeclaration, activeMonth)}
     </StyledActuStatus>
   )
@@ -126,6 +129,7 @@ ActuStatus.propTypes = {
     registeredAt: PropTypes.instanceOf(Date),
   }),
   declaration: PropTypes.object,
+  showTitle: PropTypes.bool,
   declarations: PropTypes.arrayOf(PropTypes.object),
 }
 

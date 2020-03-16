@@ -90,7 +90,10 @@ const FilesSection = styled.section`
     padding-top: 3rem;
   }
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: ${({ width }) =>
+      width === 'xs'
+        ? '2px solid rgba(0, 0, 0, 0.1)'
+        : '1px solid rgba(0, 0, 0, 0.1)'};
   }
 `
 
@@ -103,8 +106,12 @@ const StyledUl = styled.ul`
 const DocumentsGroup = styled.div`
   padding-top: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '3rem')};
   padding-bottom: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '4rem')};
-  border-bottom: ${({ isOldTab = false }) =>
-    isOldTab ? null : '1px solid rgba(0, 0, 0, 0.1)'};
+  border-bottom: ${({ isOldTab = false, width }) =>
+    isOldTab
+      ? null
+      : width === 'xs'
+      ? '2px solid rgba(0, 0, 0, 0.1)'
+      : '1px solid rgba(0, 0, 0, 0.1)'};
 `
 
 const StyledSup = styled.sup`
@@ -313,7 +320,11 @@ export class Files extends Component {
 
     const infoDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => (
-        <DocumentsGroup key={neededDocumentSpecs.name} isOldTab={isOldTab}>
+        <DocumentsGroup
+          width={this.props.width}
+          key={neededDocumentSpecs.name}
+          isOldTab={isOldTab}
+        >
           <LabelTypography
             variant="subtitle1"
             component="h2"
@@ -342,6 +353,7 @@ export class Files extends Component {
         {sortedEmployers.map((employer, index) => (
           <DocumentsGroup
             key={employer.id}
+            width={this.props.width}
             isOldTab={isOldTab}
             className="employer-row"
           >
@@ -512,6 +524,7 @@ export class Files extends Component {
           <ActuStatus
             activeMonth={activeMonth}
             user={user}
+            showTitle={false}
             declarations={declarations}
             declaration={lastDeclaration}
           />
@@ -530,6 +543,7 @@ export class Files extends Component {
           Actualisation -{' '}
           <Upper>{moment(lastDeclaration).format('MMMM YYYY')}</Upper>
         </StyledH2>
+
         <Typography style={{ fontWeight: 'bold', fontSize: '1.8rem' }}>
           <CheckIcon />
           <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
@@ -558,7 +572,7 @@ export class Files extends Component {
     const isOldTab = OLD_MONTHS_TAB === this.state.selectedTab
 
     return (
-      <FilesSection key={declaration.id}>
+      <FilesSection key={declaration.id} width={this.props.width}>
         {isOldTab && (
           <MonthInfoTitle variant="h6" component="h2">
             {formattedMonth}
@@ -772,7 +786,7 @@ export class Files extends Component {
           </Tabs>
 
           {this.state.selectedTab === CURRENT_MONTH_TAB &&
-            this.renderCurrentMonthTab(lastDeclaration)}
+            this.renderCurrentMonthTab(lastDeclaration, false)}
 
           {this.state.selectedTab === OLD_MONTHS_TAB &&
             (oldDeclarationsMissingFiles > 0 ? (
@@ -783,10 +797,12 @@ export class Files extends Component {
                   variant="h6"
                   component="h1"
                   style={
-                    this.props.width !== 'xs' ? {
-                      textAlign: 'right',
-                      paddingRight: '2rem',
-                    } : null
+                    this.props.width !== 'xs'
+                      ? {
+                          textAlign: 'right',
+                          paddingRight: '2rem',
+                        }
+                      : null
                   }
                 >
                   Pas de justificatifs à envoyer

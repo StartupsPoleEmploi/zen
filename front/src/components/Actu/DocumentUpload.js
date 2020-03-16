@@ -8,9 +8,16 @@ import Check from '@material-ui/icons/Check'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
+import { withWidth } from '@material-ui/core'
 
 import TooltipOnFocus from '../Generic/TooltipOnFocus'
-import { helpColor, darkBlue, primaryBlue } from '../../constants'
+import {
+  helpColor,
+  darkBlue,
+  primaryBlue,
+  intermediaryBreakpoint,
+  mobileBreakpoint,
+} from '../../constants'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -26,10 +33,15 @@ const StyledFormLabel = styled(FormLabel)`
   display: flex;
   border-radius: 1rem;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   flex: 1 0 auto;
   && {
     color: #000;
+  }
+
+  @media (max-width: ${mobileBreakpoint}) {
+    justify-content: flex-start;
+    padding: 1rem 0;
   }
 `
 
@@ -39,13 +51,20 @@ const LabelsContainer = styled.div`
   width: 20rem;
 
   @media (max-width: 1000px) {
-    min-width: auto;
+    width: auto;
   }
 `
 
 const ActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    align-self: flex-start;
+    padding: 1rem 0;
+  }
 `
 
 const ActionButton = styled(Button).attrs({
@@ -79,12 +98,32 @@ const Upper = styled.span`
   white-space: pre;
 `
 
+const SecondBloc = styled.div`
+  display: flex;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
+  @media (max-width: ${intermediaryBreakpoint}) {
+    flex-direction: row;
+    justify-content: center;
+  }
+  @media (max-width: ${mobileBreakpoint}) {
+    justify-content: flex-start;
+  }
+`
+
 const Or = styled(Typography)`
   && {
     font-weight: bold;
     width: 5rem;
     text-align: center;
     align-self: center;
+    margin-right: 1rem;
+
+    @media (max-width: ${mobileBreakpoint}) {
+      margin-right: 0;
+    }
   }
 `
 
@@ -110,6 +149,18 @@ const SkipFileSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    justify-content: flex-start;
+  }
+`
+
+const Dot = styled.span`
+  color: ${primaryBlue};
+  font-family: serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-right: 0;
 `
 
 const employerType = 'employer'
@@ -163,6 +214,7 @@ export class DocumentUpload extends Component {
       employerId,
       type,
       useLightVersion,
+      width,
     } = this.props
 
     const hiddenInput = (
@@ -208,7 +260,7 @@ export class DocumentUpload extends Component {
       >
         <LabelsContainer>
           <Typography style={{ marginBottom: '1.5rem' }}>
-            <b>{label}</b>
+            {width === 'xs' && <Dot>.</Dot>} <b>{label}</b>
           </Typography>
           {caption && (
             <Typography
@@ -234,13 +286,7 @@ export class DocumentUpload extends Component {
           <CircularProgress />
         ) : (
           <DocumentZone>
-            <ActionsContainer
-              style={{
-                alignItems: useLightVersion ? 'flex-start' : 'center',
-                alignSelf: 'center',
-                padding: useLightVersion ? '1rem 0' : '1rem',
-              }}
-            >
+            <ActionsContainer>
               {error && (
                 <ErrorTypography className="upload-error">
                   {error}
@@ -270,7 +316,7 @@ export class DocumentUpload extends Component {
             </ActionsContainer>
 
             {!isTransmitted && (
-              <>
+              <SecondBloc>
                 <Or>OU</Or>
                 <SkipFileSection>
                   <Button
@@ -303,7 +349,7 @@ export class DocumentUpload extends Component {
                     <InfoImg />
                   </TooltipOnFocus>
                 </SkipFileSection>
-              </>
+              </SecondBloc>
             )}
           </DocumentZone>
         )}
@@ -328,10 +374,11 @@ DocumentUpload.propTypes = {
   showPreview: PropTypes.func.isRequired,
   showTooltip: PropTypes.bool,
   useLightVersion: PropTypes.bool.isRequired,
+  width: PropTypes.string.isRequired,
 }
 
 DocumentUpload.defaultProps = {
   showTooltip: false,
 }
 
-export default DocumentUpload
+export default withWidth()(DocumentUpload)

@@ -125,9 +125,10 @@ const StyledTab = styled(Tab)`
     padding-top: 2rem;
     opacity: 1;
     color: black;
+    border-top: solid 1px #e2e2e2;
 
     &&.Mui-selected {
-      color: ${primaryBlue};
+      facolor: ${primaryBlue};
       font-weight: bold;
 
       svg {

@@ -1,0 +1,13 @@
+#admin-global section {
+  margin: 2rem 0;
+}
+#admin-global section p {
+  font-size: 1.5em;
+  color: black;
+}
+
+#admin-global a {
+  background: #096dd9;
+  border-radius: 50rem;
+  padding: 0.5rem;
+}

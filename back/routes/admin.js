@@ -383,13 +383,49 @@ router.get('/retention', async (req, res) => {
       value: users.length,
     })
 
-    const userIds = users.map(u => u.userId)
-    userIds.forEach(i => oneDeclarationAtLeast.add(i))
+    const userIds = users.map((u) => u.userId)
+    userIds.forEach((i) => oneDeclarationAtLeast.add(i))
   }
 
   // Users which have done at least one actualisation in the next 6 months
-  results.oneDeclarationInSixMonths = oneDeclarationAtLeast.size;
+  results.oneDeclarationInSixMonths = oneDeclarationAtLeast.size
 
+  return res.json(results)
+})
+
+/**
+ * Compute global metrics
+ */
+
+router.get('/metrics/global', async (req, res) => {
+  const results = {}
+
+  // Global users registered
+  const globalUserCount = await User.query()
+    .count()
+    .whereNotNull('Users.registeredAt')
+  results.globalUserRegistered = globalUserCount[0].count
+
+  // Registered users by month
+  results.userRegistedByMonth = await User.query()
+    .select(raw(`to_char("registeredAt", 'yyyy-mm') as month, COUNT('id')`))
+    .whereNotNull('Users.registeredAt')
+    .groupByRaw(`to_char("registeredAt", 'yyyy-mm')`)
+
+  // Global declarations done
+  const globalDeclarationDone = await Declaration.query()
+    .count()
+    .where({ hasFinishedDeclaringEmployers: true })
+  results.globalDeclarationsDone = globalDeclarationDone[0].count
+
+  // Declarations done by monthId
+  results.declarationsDoneByMonth = await Declaration.query()
+    .eager('declarationMonth')
+    .select()
+    .count('id')
+    .where({ hasFinishedDeclaringEmployers: true })
+    .groupBy('monthId')
+    .orderBy('monthId')
 
   return res.json(results)
 })
@@ -421,8 +457,6 @@ router.get('/metrics/new-users', async (req, res) => {
     .andWhere('registeredAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("registeredAt", 'yyyy-mm-dd')`)
 
-
-
   return res.json(formatQueryResults(firstPeriodData, secondPeriodData))
 })
 
@@ -440,8 +474,8 @@ router.get('/metrics/declaration-started', async (req, res) => {
     endSecondPeriod,
   } = computePeriods(req.query)
 
-
-  const accumulate = 'accumulate' in req.query && req.query.accumulate === 'true'
+  const accumulate =
+    'accumulate' in req.query && req.query.accumulate === 'true'
 
   const firstPeriodData = await Declaration.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
@@ -455,7 +489,9 @@ router.get('/metrics/declaration-started', async (req, res) => {
     .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData, accumulate))
+  return res.json(
+    formatQueryResults(firstPeriodData, secondPeriodData, accumulate),
+  )
 })
 
 /**
@@ -472,7 +508,8 @@ router.get('/metrics/declaration-finished', async (req, res) => {
     endSecondPeriod,
   } = computePeriods(req.query)
 
-  const accumulate = 'accumulate' in req.query && req.query.accumulate === 'true'
+  const accumulate =
+    'accumulate' in req.query && req.query.accumulate === 'true'
 
   const firstPeriodData = await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
@@ -488,7 +525,9 @@ router.get('/metrics/declaration-finished', async (req, res) => {
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData, accumulate))
+  return res.json(
+    formatQueryResults(firstPeriodData, secondPeriodData, accumulate),
+  )
 })
 
 /**
@@ -505,7 +544,8 @@ router.get('/metrics/files-end', async (req, res) => {
     endSecondPeriod,
   } = computePeriods(req.query)
 
-  const accumulate = 'accumulate' in req.query && req.query.accumulate === 'true'
+  const accumulate =
+    'accumulate' in req.query && req.query.accumulate === 'true'
 
   const firstPeriodData = await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
@@ -521,7 +561,9 @@ router.get('/metrics/files-end', async (req, res) => {
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  return res.json(formatQueryResults(firstPeriodData, secondPeriodData, accumulate))
+  return res.json(
+    formatQueryResults(firstPeriodData, secondPeriodData, accumulate),
+  )
 })
 
 router.get('/repartition/region', async (req, res) => {

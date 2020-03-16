@@ -49,10 +49,10 @@ export default function Users() {
           <TabPane tab="Comparaisons de périodes" key="2">
             <MetricsForm />
           </TabPane>
-          <TabPane tab="Répartition géographique" key="2">
+          <TabPane tab="Répartition géographique" key="3">
             <RepartitionForm />
           </TabPane>
-          <TabPane tab="Rétention" key="3">
+          <TabPane tab="Rétention" key="4">
             <UsersRetention />
           </TabPane>
         </Tabs>

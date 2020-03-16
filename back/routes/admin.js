@@ -440,6 +440,7 @@ router.get('/metrics/global', async (req, res) => {
     .select(raw(`to_char("registeredAt", 'yyyy-mm') as month, COUNT('id')`))
     .whereNotNull('Users.registeredAt')
     .groupByRaw(`to_char("registeredAt", 'yyyy-mm')`)
+    .orderByRaw(`to_char("registeredAt", 'yyyy-mm')`)
 
   // Global declarations done
   const globalDeclarationDone = await Declaration.query()

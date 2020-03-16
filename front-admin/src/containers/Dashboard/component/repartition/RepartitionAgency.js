@@ -7,7 +7,9 @@ import { useHistory } from 'react-router-dom'
 import { getAgence } from '../../../../common/agencesInfos'
 import { URLS } from '../../../../common/routes'
 
-function RepartitionAgency({ agencyCode, declarationMonth }) {
+import './Repartition.css'
+
+function RepartitionAgency({ usersInAgency, agencyCode, declarationMonth }) {
   const [values, setValues] = useState(null)
   const [agency, setAgency] = useState(null)
   const history = useHistory()
@@ -41,20 +43,44 @@ function RepartitionAgency({ agencyCode, declarationMonth }) {
       {values.length > 0 && (
         <>
           <h3 style={{ fontWeight: 'bold' }}>
-            {values.length} actualisations réalisées
+            {values.length} actualisations réalisées -- {usersInAgency}{' '}
+            assistantes maternelles présentes dans cette agence
           </h3>
+
+          <ul className="ul download-list double">
+            <li>
+              <Button
+                type="link"
+                target="_blank"
+                href={`/zen-admin-api/repartition/agency/csv?filter=actuDone&monthId=${declarationMonth.id}&agencyCode=${agencyCode}`}
+              >
+                Télécharger la liste des assistantes maternelles avec une
+                actualisation terminée
+              </Button>
+            </li>
+            <li>
+              <Button
+                type="link"
+                target="_blank"
+                href={`/zen-admin-api/repartition/agency/csv?filter=allUsers&agencyCode=${agencyCode}`}
+              >
+                Télécharger la liste des assistantes maternelles
+              </Button>
+            </li>
+          </ul>
+
           <table style={{ width: '100%', marginTop: '3rem' }}>
             <thead>
               <tr>
-                <th>Prénom Nom</th>
+                <th>Prénom & Nom</th>
                 <th>Déclaration démarrée le :</th>
-                <th>Déclaration</th>
+                <th>Voir la déclaration</th>
               </tr>
             </thead>
             <tbody>
               {values.map(
                 ({ id, createdAt, user: { firstName, lastName } }) => (
-                  <tr>
+                  <tr key={id}>
                     <td>
                       {firstName} {lastName}
                     </td>

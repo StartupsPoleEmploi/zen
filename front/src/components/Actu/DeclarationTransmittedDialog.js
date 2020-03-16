@@ -41,8 +41,7 @@ const DeclarationTransmitted = ({ isOpened, onCancel }) => (
     title={
       <span>
         <CheckIcon />
-        Votre actualisation a bien
-        <NotMobileBR />
+        Votre actualisation a bien <NotMobileBR />
         été transmise à Pôle emploi !
       </span>
     }

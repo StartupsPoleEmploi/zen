@@ -78,7 +78,7 @@ function RepartitionRegionDepartment({
     // prettier-ignore
     async function fetchData() {
       setIsLoading(true)
-      let url = `/zen-admin-api/declarations?monthId=${declarationMonth.id}`
+      let url = `/zen-admin-api/declarations?monthId=${declarationMonth.id}&onlyDone=true`
       if (department) url = `/zen-admin-api/repartition/department?department=${slug(department, { lower: true })}&monthId=${declarationMonth.id}`
       else if (region) url = `/zen-admin-api/repartition/region?region=${slug(region, { lower: true })}&monthId=${declarationMonth.id}`
 
@@ -135,10 +135,9 @@ function RepartitionRegionDepartment({
                     title="En savoir plus pour cette région"
                   >
                     {regionName} : {formatNb(total)} actualisations
-                    <br /> sur {formatNb(totalUsersRegion)}
-                     assistantes maternelles (
-                    {((total / totalUsersRegion) * 100).toFixed(2)}% de la
-                    région)
+                    <br /> sur {formatNb(totalUsersRegion)} assistantes
+                    maternelles ({((total / totalUsersRegion) * 100).toFixed(2)}
+                    % de la région)
                   </button>
                 </li>
               )

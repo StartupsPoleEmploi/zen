@@ -72,7 +72,7 @@ services:
       context: .
       dockerfile: dockerfile_front
     cpus: '0.50'
-    mem_limit: 1G
+    mem_limit: 2G
     volumes:
       - './front:/home/front'
     expose:
@@ -89,7 +89,7 @@ services:
       context: .
       dockerfile: dockerfile_front
     cpus: '0.50'
-    mem_limit: 1G
+    mem_limit: 2G
     volumes:
       - './front-admin:/home/front'
     expose:

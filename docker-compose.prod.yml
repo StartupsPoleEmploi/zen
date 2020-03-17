@@ -31,6 +31,7 @@ services:
     volumes:
       - './back:/home/back'
       - '/mnt/datalakepe/:/mnt/datalakepe/'
+      - './back/var/log/zen_cron:/var/log/zen_cron'
     networks:
       actualisation_network:
         ipv4_address: 172.0.0.101

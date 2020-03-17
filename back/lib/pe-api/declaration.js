@@ -176,10 +176,7 @@ const sendDeclaration = ({
           body.statut === DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY &&
           previousTries < MAX_RETRIES_AFTER_STATUS_IMPOSSIBLE_OR_UNNECESSARY
         ) {
-          winston.info(
-            `${message}, gonna retry in ${DEFAULT_WAIT_TIME}`,
-            dataToLog,
-          )
+          winston.info(`${message}, gonna retry in ${DEFAULT_WAIT_TIME}`, dataToLog)
           return wait().then(() =>
             sendDeclaration({
               declaration,
@@ -199,9 +196,9 @@ const sendDeclaration = ({
     .catch((err) => {
       winston.error(
         `Error while sending declaration ${declaration.id} (HTTP ${err.status})`,
-        {
-          error: err,
-          data: { dataSent: dataToSend, userId, declaration },
+        { 
+          data: { dataSent: dataToSend, userId, declarationId: declaration.id},
+          error: pick(err, ['status', 'code', 'address', 'port']),
         }
       )
       throw err

@@ -108,24 +108,33 @@ const optimizeImage = (imgFilePath) =>
     ],
   })
 
-const transformImageToPDF = async (filename) => {
+async function transformImageToPDF(filename) {
   const fileBaseName = getFileBasename(filename)
   const pdfFilePath = `${uploadDestination}${fileBaseName}.pdf`
   const imgFilePath = `${uploadDestination}${filename}`
 
-  try {
-    const { size } = await stat(imgFilePath)
-
-    if (size > MIN_IMAGE_SIZE_FOR_OPTIMISATION) {
-      await resizeImage(imgFilePath)
-      await optimizeImage(imgFilePath)
-    }
-
-    await imagesToPdf([imgFilePath], pdfFilePath)
-    await unlink(imgFilePath)
-  } catch (err) {
-    winston.warn(`Erreur en supprimant l'image ${filename} : ${err.message}`)
+  // optimize image if possible
+  const { size } = await stat(imgFilePath).catch((err) => {
+    winston.warn(`Error on transformImageToPDF when get stat of file (${filename}): ${err}`);
+    throw err;
+  })
+  if (size > MIN_IMAGE_SIZE_FOR_OPTIMISATION) {
+    await resizeImage(imgFilePath).catch((err) => {
+      winston.warn(`Error on transformImageToPDF when resizeImage (${filename}): ${err}`);
+    })
+    await optimizeImage(imgFilePath).catch((err) => {
+      winston.warn(`Error on transformImageToPDF when optimizeImage (${filename}): ${err}`);
+    })
   }
+
+  // transform image
+  await imagesToPdf([imgFilePath], pdfFilePath).catch((err) => {
+    winston.error(`Error when transforming image (${filename}) to pdf: ${err.message}`, err);
+    throw err;
+  })
+  await unlink(imgFilePath).catch((err) => {
+    winston.warn(`Error on transformImageToPDF when unlink file (${filename}): ${err}`);
+  })
 }
 
 const mergePDF = (file1, file2, output) =>
@@ -186,6 +195,9 @@ const handleNewFileUpload = async ({
       `${uploadDestination}${documentFileObj.file}`,
       `${uploadDestination}${existingDocumentFile}`,
     )
+    await unlink(`${uploadDestination}${documentFileObj.file}`).catch((err) => {
+      winston.warn(`Error on handleNewFileUpload when unlink file (${documentFileObj.file}): ${err}`);
+    })
 
     // If merging in successful or not, we need to keep that the file in DB is the old file name
     documentFileObj = { ...documentFileObj, file: existingDocumentFile }

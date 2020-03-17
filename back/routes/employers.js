@@ -11,13 +11,13 @@ const {
   uploadMiddleware,
   checkPDFValidityMiddleware,
 } = require('../lib/upload')
-const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
+const { requireActiveMonth } = require('../lib/middleware/activeMonthMiddleware')
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const { sendDocument } = require('../lib/pe-api/documents')
-const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
+const { refreshAccessToken } = require('../lib/middleware/refreshAccessTokenMiddleware')
 const { isUserTokenValid } = require('../lib/token')
 const winston = require('../lib/log')
 

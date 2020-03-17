@@ -25,12 +25,15 @@
   "dependencies": {
     "antd": "^3.26.0",
     "babel-plugin-import": "^1.13.0",
+    "chart.js": "^2.9.3",
     "history": "^4.9.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
+    "react-chartkick": "^0.4.0",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.3.0",
+    "slug": "^2.1.1",
     "superagent": "^5.1.2"
   },
   "devDependencies": {

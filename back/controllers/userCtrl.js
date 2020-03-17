@@ -151,6 +151,16 @@ async function getUsersWithoutDeclaration(declarationMonthId) {
     .whereNotIn('id', declarations.map(d => d.userId))
 }
 
+/**
+ * @returns {Promise<User[]>}
+ */
+async function getActiveUsers() {
+  return User.query()
+    .whereNotNull('Users.registeredAt')
+    .andWhere('Users.isBlocked', '=', false)
+    .andWhere('Users.isAuthorized', '=', true);
+}
+
 module.exports = {
   getUserinfo,
   getAuthToken,
@@ -158,4 +168,5 @@ module.exports = {
   getPostalCode,
   isAuthorized,
   getUsersWithoutDeclaration,
+  getActiveUsers,
 }

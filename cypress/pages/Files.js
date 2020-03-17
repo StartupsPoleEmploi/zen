@@ -1,3 +1,4 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 export const uploadNewEmployerFile = ({
   file = 'pdf-1-page.pdf',
   index = 0,
@@ -25,8 +26,9 @@ export const skipEmployerFile = ({ index }) => {
     .find('.already-transmitted-button')
     .click()
   cy.get('button')
-    .contains('Oui')
+    .contains('Je confirme')
     .click()
+  cy.wait(500)
 }
 
 export const skipDeclarationInfoFile = ({ index }) => {
@@ -35,7 +37,7 @@ export const skipDeclarationInfoFile = ({ index }) => {
     .find('.already-transmitted-button')
     .click()
   cy.get('button')
-    .contains('Oui')
+    .contains('Je confirme')
     .click()
 }
 

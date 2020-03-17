@@ -63,7 +63,7 @@ export const fetchActiveDeclaration = () => (dispatch) => {
   dispatch({ type: FETCH_ACTIVE_DECLARATION_LOADING })
 
   fetchActiveDeclarationPromise = superagent
-    .get('/api/declarations?active')
+    .get('/api/declarations?active=true')
     .then((res) =>
       dispatch({
         type: FETCH_ACTIVE_DECLARATION_SUCCESS,

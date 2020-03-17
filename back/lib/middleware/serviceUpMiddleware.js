@@ -1,5 +1,5 @@
 const { subSeconds } = require('date-fns')
-const Status = require('../models/Status')
+const Status = require('../../models/Status')
 
 let serviceUp = null
 let filesServiceUp = null

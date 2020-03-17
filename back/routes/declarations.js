@@ -17,8 +17,8 @@ const {
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
 } = require('../lib/declaration')
-const { requireActiveMonth } = require('../lib/activeMonthMiddleware')
-const { refreshAccessToken } = require('../lib/refreshAccessTokenMiddleware')
+const { requireActiveMonth } = require('../lib/middleware/activeMonthMiddleware')
+const { refreshAccessToken } = require('../lib/middleware/refreshAccessTokenMiddleware')
 const { sendDocument } = require('../lib/pe-api/documents')
 const { sendDeclaration } = require('../lib/pe-api/declaration')
 const { isUserTokenValid } = require('../lib/token')
@@ -108,7 +108,13 @@ router.post('/remove-file-page', (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-  if ('last' in req.query || 'active' in req.query) {
+ if ('active' in req.query && req.query.active !== 'true') return res.status(400).json('Bad request')
+ if ('last' in req.query && req.query.last !== 'true') return res.status(400).json('Bad request')
+
+  if (
+    'last' in req.query ||
+    'active' in req.query
+  ) {
     return Declaration.query()
       .eager(eagerDeclarationString)
       .where({ userId: req.session.user.id })
@@ -316,19 +322,18 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
     .catch(next)
 })
 
-router.get('/summary-file', requireActiveMonth, (req, res, next) => {
+router.get('/summary-file', (req, res, next) => {
   const download = req.query.download === 'true'
 
   return Declaration.query()
     .eager('[declarationMonth, user, employers, infos]')
-    .findOne({ id: req.body.id, userId: req.session.user.id })
+    .findOne({ id: req.query.id, userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .skipUndefined()
     .then((declaration) => {
       if (!declaration) {
-        return res.status(404).json('Please send declaration first')
+        return res.status(404).json('No declaration found')
       }
-
       if (!declaration.hasFinishedDeclaringEmployers) {
         return res.status(403).json('Declaration not complete')
       }
@@ -502,7 +507,15 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
             userId: req.session.user.id,
           }),
         )
-        .then((declaration) => res.json(declaration))
+        .then(() =>
+          Declaration.query()
+            .eager('[employers.documents, infos, declarationMonth]')
+            .findOne({
+              id: declarationInfo.declaration.id,
+              userId: req.session.user.id,
+            }),
+        )
+        .then((updateDeclaration) => res.json(updateDeclaration))
     })
     .catch(next)
 })

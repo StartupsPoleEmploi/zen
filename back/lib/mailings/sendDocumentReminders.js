@@ -9,6 +9,7 @@ const Declaration = require('../../models/Declaration')
 const EmployerDocument = require('../../models/EmployerDocument')
 const User = require('../../models/User')
 const winston = require('../log')
+const DOCUMENT_LABELS = require('../../constants')
 
 const ALL_DOCS_REMINDER_TEMPLATE_ID = 915055
 const DOCS_REMINDER_TEMPLATE_ID = 915059
@@ -17,15 +18,6 @@ const MAX_DOCUMENTS_TO_LIST = 10
 const WAIT_TIME = 3000 // wait 3 seconds between each mailjet request (trying to avoid mailjet quota error)
 const WAIT_TIME_AFTER_ERROR = 300000 // wait 5 minutes before retrying after an error
 
-const documentLabels = {
-  sickLeave: 'Feuille maladie',
-  internship: 'Attestation de stage',
-  maternityLeave: 'Attestation de congé maternité',
-  retirement: 'Attestation retraite',
-  invalidity: 'Attestation invalidité',
-  employerCertificate: 'Attestation employeur',
-  salarySheet: 'Bulletin de salaire',
-}
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 const getFormattedMonthAndYear = (date) =>
@@ -36,7 +28,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
     .filter(({ isTransmitted, file }) => !isTransmitted && !file)
     .map(
       ({ type }) =>
-        `${documentLabels[type]} / ${getFormattedMonthAndYear(
+        `${DOCUMENT_LABELS[type]} / ${getFormattedMonthAndYear(
           declaration.declarationMonth.month,
         )}`,
     )
@@ -49,7 +41,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
           )
         ) {
           return declarationPrev.concat(
-            `${documentLabels.employerCertificate} ${
+            `${DOCUMENT_LABELS.employerCertificate} ${
               employer.employerName
             } / ${getFormattedMonthAndYear(
               declaration.declarationMonth.month,
@@ -58,7 +50,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
         }
         if (employer.documents.length === 0) {
           return declarationPrev.concat(
-            `${documentLabels.salarySheet} ${
+            `${DOCUMENT_LABELS.salarySheet} ${
               employer.employerName
             } / ${getFormattedMonthAndYear(
               declaration.declarationMonth.month,

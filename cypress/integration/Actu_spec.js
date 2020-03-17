@@ -25,6 +25,7 @@ describe('Declaration page', function() {
 
   describe('Entrepreneur warning', () => {
     beforeEach(() => {
+      cy.viewport(1400, 1600)
       cy.visit('/actu')
     })
 
@@ -48,6 +49,7 @@ describe('Declaration page', function() {
           shouldAskAgain: true,
         }),
       )
+      cy.viewport(1400, 1600)
       cy.visit('/actu')
     })
 

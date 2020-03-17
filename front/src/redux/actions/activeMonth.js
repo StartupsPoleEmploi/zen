@@ -10,7 +10,7 @@ import {
 export const fetchActiveMonth = () => (dispatch) => {
   dispatch({ type: FETCH_ACTIVE_MONTH_LOADING })
   return superagent
-    .get('/api/declarationMonths?active')
+    .get('/api/declarationMonths?active=true')
     .then((res) => {
       const activeMonth = (res.body && new Date(res.body)) || null
       dispatch({ type: FETCH_ACTIVE_MONTH_SUCCESS, payload: activeMonth })

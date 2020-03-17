@@ -6,16 +6,7 @@ const fs = require('fs')
 require('../lib/db')
 const Declaration = require('../models/Declaration')
 const EmployerDocument = require('../models/EmployerDocument')
-
-const documentLabels = {
-  sickLeave: 'Feuille maladie',
-  internship: 'Attestation de stage',
-  maternityLeave: 'Attestation de congé maternité',
-  retirement: 'Attestation retraite',
-  invalidity: 'Attestation invalidité',
-  employerCertificate: 'Attestation employeur',
-  salarySheet: 'Bulletin de salaire',
-}
+const DOCUMENT_LABELS = require('../constants')
 
 const getFormattedMonthAndYear = (date) =>
   format(date, 'MMMM YYYY', { locale: fr })
@@ -25,7 +16,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
     .filter(({ isTransmitted, file }) => !isTransmitted && !file)
     .map(
       ({ type }) =>
-        `${documentLabels[type]} / ${getFormattedMonthAndYear(
+        `${DOCUMENT_LABELS[type]} / ${getFormattedMonthAndYear(
           declaration.declarationMonth.month,
         )}`,
     )
@@ -38,7 +29,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
           )
         ) {
           return declarationPrev.concat(
-            `${documentLabels.employerCertificate} ${
+            `${DOCUMENT_LABELS.employerCertificate} ${
               employer.employerName
             } / ${getFormattedMonthAndYear(
               declaration.declarationMonth.month,
@@ -47,7 +38,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
         }
         if (employer.documents.length === 0) {
           return declarationPrev.concat(
-            `${documentLabels.salarySheet} ${
+            `${DOCUMENT_LABELS.salarySheet} ${
               employer.employerName
             } / ${getFormattedMonthAndYear(
               declaration.declarationMonth.month,

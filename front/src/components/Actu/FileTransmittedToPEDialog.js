@@ -1,30 +1,31 @@
-import Button from '@material-ui/core/Button'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 
 import CustomColorButton from '../Generic/CustomColorButton'
 import CustomDialog from '../Generic/CustomDialog'
+import MainActionButton from '../Generic/MainActionButton'
 
 const FileTransmittedToPE = ({ isOpened, onCancel, onConfirm }) => (
   <CustomDialog
+    width="xl"
     content={
-      <DialogContentText>
-        Avez-vous déjà transmis ce fichier à Pôle emploi via un autre moyen que
-        Zen&nbsp;?
+      <DialogContentText style={{ color: 'black' }}>
+        Confirmez-vous que Pôle emploi a déjà ce justificatif ? Ce justificatif
+        ne sera plus demandé sur Zen
       </DialogContentText>
     }
     actions={
       <Fragment>
-        <CustomColorButton onClick={onCancel}>Non</CustomColorButton>
-        <Button
+        <CustomColorButton onClick={onCancel}>J'annule</CustomColorButton>
+        <MainActionButton
           variant="contained"
           onClick={onConfirm}
           color="primary"
           autoFocus
         >
-          Oui
-        </Button>
+          Je confirme
+        </MainActionButton>
       </Fragment>
     }
     title="Confirmation"

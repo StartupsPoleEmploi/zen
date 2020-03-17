@@ -4,18 +4,18 @@ const session = require('express-session')
 const config = require('config')
 const Raven = require('raven')
 
-const morgan = require('morgan')
 const helmet = require('helmet')
 const pgConnectSimple = require('connect-pg-simple')
 const csurf = require('csurf')
 
 const { version } = require('./package.json')
 
-const { setActiveMonth } = require('./lib/activeMonthMiddleware')
+const { setActiveMonth } = require('./lib/middleware/activeMonthMiddleware')
+const loggerMiddleware = require('./lib/middleware/loggerMiddleware')
 const {
   requireServiceUp,
   setIsServiceUp,
-} = require('./lib/serviceUpMiddleware')
+} = require('./lib/middleware/serviceUpMiddleware')
 const winston = require('./lib/log')
 
 const loginRouter = require('./routes/login')
@@ -59,7 +59,7 @@ if (sentryUrl) {
 }
 
 app.use(helmet())
-app.use(morgan(isDevEnv ? 'dev' : 'combined'))
+app.use(loggerMiddleware)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())

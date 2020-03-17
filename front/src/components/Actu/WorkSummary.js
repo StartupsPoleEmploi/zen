@@ -29,7 +29,6 @@ const Label = styled(Typography).attrs({
   && {
     display: inline-block;
     width: 18rem;
-    font-size: 1.5rem;
     line-height: 1.6rem;
   }
 `

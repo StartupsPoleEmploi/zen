@@ -30,6 +30,7 @@ import {
   muiBreakpoints,
   ActuTypes as types,
 } from '../../constants'
+import ScrollToButton from '../../components/Generic/ScrollToButton'
 
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
@@ -37,6 +38,12 @@ const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
 const UNHANDLED_ERROR = `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
 Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
 en attendant votre actualisation sur Pole-emploi.fr.`
+
+const ScrollButtonContainer = styled.div`
+  position: fixed;
+  bottom: 17rem;
+  right: 2rem;
+`
 
 const StyledActu = styled.div`
   display: flex;
@@ -694,6 +701,7 @@ export class Actu extends Component {
                     name="search"
                     value={this.state.jobSearchStopMotive}
                     onChange={this.onJobSearchStopMotive}
+                    style={{ marginTop: '1rem' }}
                   >
                     <FormControlLabel
                       value={jobSearchEndMotive.WORK}
@@ -744,13 +752,17 @@ export class Actu extends Component {
           />
         )}
 
+        {this.props.width === muiBreakpoints.xs && (
+          <ScrollButtonContainer>
+            <ScrollToButton autoRemove />
+          </ScrollButtonContainer>
+        )}
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledActu>
     )
   }
 }
 
-export default connect(
-  null,
-  { postDeclaration: postDeclarationAction },
-)(withWidth()(Actu))
+export default connect(null, { postDeclaration: postDeclarationAction })(
+  withWidth()(Actu),
+)

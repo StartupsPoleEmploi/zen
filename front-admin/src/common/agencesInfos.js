@@ -1,3 +1,4 @@
+// Duplicate of /back/lib/admin/geo.js => don't forget to update it too !
 const listAgences = [
   {
     region: 'AUVERGNE RHONE-ALPES',
@@ -20789,11 +20790,167 @@ const listAgences = [
     codeAgence: '84025',
     nomAgence: 'SUD VAUCLUSE',
   },
-];
+]
 
+export const departmentsSlugToName = {
+  ain: 'AIN',
+  allier: 'ALLIER',
+  ardeche: 'ARDECHE',
+  cantal: 'CANTAL',
+  drome: 'DROME',
+  'haute-loire': 'HAUTE-LOIRE',
+  'haute-savoie': 'HAUTE-SAVOIE',
+  isere: 'ISERE',
+  loire: 'LOIRE',
+  'puy-de-dome': 'PUY-DE-DOME',
+  rhone: 'RHONE',
+  savoie: 'SAVOIE',
+  'cotes-darmor': "COTES-D'ARMOR",
+  finistere: 'FINISTERE',
+  'ille-et-vilaine': 'ILLE-ET-VILAINE',
+  morbihan: 'MORBIHAN',
+  'corse-du-sud': 'CORSE-DU-SUD',
+  'haute-corse': 'HAUTE-CORSE',
+  ardennes: 'ARDENNES',
+  aube: 'AUBE',
+  'bas-rhin': 'BAS-RHIN',
+  'haut-rhin': 'HAUT-RHIN',
+  'haute-marne': 'HAUTE-MARNE',
+  marne: 'MARNE',
+  'meurthe-et-moselle': 'MEURTHE-ET-MOSELLE',
+  meuse: 'MEUSE',
+  moselle: 'MOSELLE',
+  vosges: 'VOSGES',
+  aisne: 'AISNE',
+  nord: 'NORD',
+  oise: 'OISE',
+  'pas-de-calais': 'PAS-DE-CALAIS',
+  somme: 'SOMME',
+  essonne: 'ESSONNE',
+  'hauts-de-seine': 'HAUTS-DE-SEINE',
+  paris: 'PARIS',
+  'seine-et-marne': 'SEINE-ET-MARNE',
+  'seine-saint-denis': 'SEINE-SAINT-DENIS',
+  'val-doise': "VAL-D'OISE",
+  'val-de-marne': 'VAL-DE-MARNE',
+  yvelines: 'YVELINES',
+  'la-reunion': 'LA REUNION',
+  calvados: 'CALVADOS',
+  eure: 'EURE',
+  manche: 'MANCHE',
+  orne: 'ORNE',
+  'seine-maritime': 'SEINE-MARITIME',
+  charente: 'CHARENTE',
+  'charente-maritime': 'CHARENTE-MARITIME',
+  correze: 'CORREZE',
+  creuse: 'CREUSE',
+  'deux-sevres': 'DEUX-SEVRES',
+  dordogne: 'DORDOGNE',
+  gironde: 'GIRONDE',
+  'haute-vienne': 'HAUTE-VIENNE',
+  landes: 'LANDES',
+  'lot-et-garonne': 'LOT-ET-GARONNE',
+  'pyrenees-atlantiques': 'PYRENEES-ATLANTIQUES',
+  vienne: 'VIENNE',
+  ariege: 'ARIEGE',
+  aude: 'AUDE',
+  aveyron: 'AVEYRON',
+  gard: 'GARD',
+  gers: 'GERS',
+  'haute-garonne': 'HAUTE-GARONNE',
+  'hautes-pyrenees': 'HAUTES-PYRENEES',
+  herault: 'HERAULT',
+  lot: 'LOT',
+  lozere: 'LOZERE',
+  'pyrenees-orientales': 'PYRENEES-ORIENTALES',
+  tarn: 'TARN',
+  'tarn-et-garonne': 'TARN-ET-GARONNE',
+  'loire-atlantique': 'LOIRE-ATLANTIQUE',
+  'maine-et-loire': 'MAINE-ET-LOIRE',
+  mayenne: 'MAYENNE',
+  sarthe: 'SARTHE',
+  vendee: 'VENDEE',
+  'alpes-de-haute-provence': 'ALPES-DE-HAUTE-PROVENCE',
+  'alpes-maritimes': 'ALPES-MARITIMES',
+  'bouches-du-rhone': 'BOUCHES-DU-RHONE',
+  'hautes-alpes': 'HAUTES-ALPES',
+  var: 'VAR',
+  vaucluse: 'VAUCLUSE',
+}
+
+export const regionsSlugToName = {
+  'auvergne-rhone-alpes': 'AUVERGNE RHONE-ALPES',
+  bretagne: 'BRETAGNE',
+  corse: 'CORSE',
+  'grand-est': 'GRAND-EST',
+  'hauts-de-france': 'HAUTS-DE-FRANCE',
+  'ile-de-france': 'ILE-DE-FRANCE',
+  'la-reunion': 'LA REUNION',
+  normandie: 'NORMANDIE',
+  'nouvelle-aquitaine': 'NOUVELLE-AQUITAINE',
+  occitanie: 'OCCITANIE',
+  'pays-de-la-loire': 'PAYS DE LA LOIRE',
+  'provence-alpes-cote-dazur': "PROVENCE-ALPES-COTE D'AZUR",
+}
+
+const tree = {}
+export function getHierarchicAgences() {
+  // Cache
+  if (Object.keys(tree).length) return tree
+
+  // Extract region
+  listAgences.forEach(({ region, departement, codeAgence, nomAgence }) => {
+    // Create region if not exists
+    if (!tree[region]) tree[region] = {}
+
+    // Create departement if not exists
+    if (!tree[region][departement]) tree[region][departement] = {}
+
+    // Add agency
+    tree[region][departement][codeAgence] = `${codeAgence} - ${nomAgence}`
+  })
+
+  return tree
+}
+
+const departments = []
+export function getAllDepartments() {
+  // Cache
+  if (Object.keys(departments).length) return departments
+
+  listAgences.forEach(({ departement: department }) => {
+    // Create departement if not exists
+    if (!departments[department]) departments[department] = department
+  })
+
+  return Object.keys(departments)
+}
+
+const agencies = {}
+export function getAllAgencies() {
+  // Cache
+  if (Object.keys(agencies).length) return agencies
+
+  listAgences.forEach(({ codeAgence, nomAgence }) => {
+    // Create departement if not exists
+    const name = `${codeAgence} - ${nomAgence}`
+    if (!agencies[name]) {
+      agencies[name] = name
+    }
+  })
+  return Object.keys(agencies)
+}
 
 // eslint-disable-next-line import/prefer-default-export
 export function getAgenceName(agencyCode) {
-  const elem = listAgences.find((e) => e.codeAgence === agencyCode);
-  return elem ? `${elem.nomAgence} dans ${elem.departement} en ${elem.region} (${agencyCode})` : agencyCode;
+  const elem = listAgences.find((e) => e.codeAgence === agencyCode)
+  return elem
+    ? `${elem.nomAgence} dans ${elem.departement} en ${elem.region} (${agencyCode})`
+    : agencyCode
+}
+
+export function getAgence(agencyCode) {
+  // Remove 0 char at the beggining => 02214 become 2214
+  const formatAgencyCode = Number(agencyCode).toString()
+  return listAgences.find((e) => e.codeAgence === formatAgencyCode)
 }

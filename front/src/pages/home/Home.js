@@ -104,7 +104,8 @@ const Title = styled(Typography).attrs({
     margin-bottom: 2rem;
 
     @media (max-width: ${mobileBreakpoint}) {
-      font-size: 3.4rem;
+      font-size: 3rem;
+      margin-bottom: 3rem;
     }
   }
 `
@@ -118,11 +119,20 @@ const Tagline = styled(Typography).attrs({
     max-width: 36rem;
     @media (max-width: ${mobileBreakpoint}) {
       margin: auto;
+      line-height: 2.7rem;
     }
   }
 `
 
 const Section = styled.section``
+
+const TestimonySection = styled(Section)`
+  padding: 5rem;
+  text-align: center;
+  @media (max-width: ${mobileBreakpoint}) {
+    padding: 2rem 0;
+  }
+`
 
 const SectionTitle = styled(Typography).attrs({
   variant: 'h5',
@@ -304,6 +314,13 @@ const ZenIsForYouText = styled(Typography)`
   }
 `
 
+// These br are not active on mobile
+const NotMobileBR = styled.br`
+  @media (max-width: ${mobileBreakpoint}) {
+    display: none;
+  }
+`
+
 const summaryImgStyle = {
   display: 'block',
   height: 'auto',
@@ -396,10 +413,8 @@ export const Home = ({ location: { search } }) => {
               <EuroIcon style={summaryImgStyle} alt="" />
             </SummaryImgContainer>
             <SummaryText>
-              Zen additionne pour vous
-              <br />
-              vos heures travaillées et totalise
-              <br />
+              Zen additionne pour vous <NotMobileBR />
+              vos heures travaillées et totalise <NotMobileBR />
               vos revenus mensuels !
             </SummaryText>
           </SummaryLi>
@@ -418,10 +433,9 @@ export const Home = ({ location: { search } }) => {
               <SendIcon style={summaryImgStyle} alt="" />
             </SummaryImgContainer>
             <SummaryText>
-              Zen vous indique
-              <br />
-              les justificatifs à transmettre selon
-              <br /> votre déclaration.
+              Zen vous indique <NotMobileBR />
+              les justificatifs à transmettre selon <NotMobileBR />
+              votre déclaration.
             </SummaryText>
           </SummaryLi>
           <SummaryLi
@@ -440,8 +454,8 @@ export const Home = ({ location: { search } }) => {
             </SummaryImgContainer>
             <SummaryText>
               Accédez à un espace personnel
-              <br /> avec tous vos justificatifs
-              <br /> transmis mois par mois.
+              <NotMobileBR /> avec tous vos justificatifs
+              <NotMobileBR /> transmis mois par mois.
             </SummaryText>
           </SummaryLi>
         </SummaryUl>
@@ -534,7 +548,7 @@ export const Home = ({ location: { search } }) => {
         </FlexDiv>
       </Section>
 
-      <Section style={{ textAlign: 'center', padding: '5rem' }}>
+      <TestimonySection>
         <SectionTitle>Nos utilisateurs approuvent !</SectionTitle>
         <TestimoniesContainer>
           <TestimonyContainer>
@@ -576,7 +590,7 @@ export const Home = ({ location: { search } }) => {
             </TestimonyText>
           </TestimonyContainer>
         </TestimoniesContainer>
-      </Section>
+      </TestimonySection>
     </StyledHome>
   )
 }

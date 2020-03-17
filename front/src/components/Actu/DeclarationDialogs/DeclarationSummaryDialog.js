@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import NumberFormat from 'react-number-format'
 import PropTypes from 'prop-types'
 import { isNaN as _isNaN } from 'lodash'
@@ -73,7 +73,7 @@ const ButtonsContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   max-width: 40rem;
-  padding-top: 0.5rem;
+  padding: 0.5rem 0 1rem 0;
 `
 
 const DeclarationSummaryDialog = ({
@@ -111,12 +111,12 @@ const DeclarationSummaryDialog = ({
   return (
     <CustomDialog
       content={
-        <Fragment>
+        <>
           <StyledDialogContentText>
             Votre actualisation
             {declaration.declarationMonth && (
               // FIXME this is a quickfix for the Actu page, but we should always have the month.
-              <Fragment>
+              <>
                 {' '}
                 de <br />
                 <b>
@@ -126,13 +126,13 @@ const DeclarationSummaryDialog = ({
                 </b>
                 <br />
                 est-elle exacte et complète ?
-              </Fragment>
+              </>
             )}
           </StyledDialogContentText>
 
           <DeclarationContent>
             {declaration.hasWorked && employers.length && (
-              <Fragment>
+              <>
                 <div>
                   <DeclarationHeader>
                     {employers.length}{' '}
@@ -170,7 +170,7 @@ const DeclarationSummaryDialog = ({
                     )}
                   </DeclarationValues>
                 </div>
-              </Fragment>
+              </>
             )}
 
             {!declaration.hasWorked && (
@@ -254,7 +254,7 @@ const DeclarationSummaryDialog = ({
                   Oui, je souhaite rester inscrit à Pôle emploi
                 </DeclarationValues>
               ) : (
-                <Fragment>
+                <>
                   <DeclarationValues>
                     Non, je ne souhaite pas rester inscrit à Pôle emploi
                   </DeclarationValues>
@@ -271,11 +271,11 @@ const DeclarationSummaryDialog = ({
                     {declaration.jobSearchStopMotive ===
                       jobSearchEndMotive.OTHER && 'Autre'}
                   </DeclarationValues>
-                </Fragment>
+                </>
               )}
             </div>
           </DeclarationContent>
-        </Fragment>
+        </>
       }
       actions={
         <ButtonsContainer>

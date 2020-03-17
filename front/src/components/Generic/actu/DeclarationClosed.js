@@ -6,10 +6,8 @@ import superagent from 'superagent'
 import moment from 'moment'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import { primaryBlue } from '../../../constants'
+import { primaryBlue, darkBlue } from '../../../constants'
 import catchMaintenance from '../../../lib/catchMaintenance'
-
-const sectionColor = '#1e2c59'
 
 const Container = styled.div`
   display: flex;
@@ -29,7 +27,7 @@ const Dot = styled.span`
   font-family: serif;
   font-size: 3.5rem;
   font-weight: bold;
-  margin-right: 1rem;
+  margin-right: 2.2rem;
 `
 
 const EmployerSection = styled.div`
@@ -39,7 +37,7 @@ const EmployerSection = styled.div`
 const UlEmployers = styled.ul`
   margin: 0;
   list-style: none;
-  padding-left: 2rem;
+  padding-left: 3.2rem;
 `
 
 const DeclarationClosed = ({ previousDeclaration }) => {
@@ -87,7 +85,7 @@ const DeclarationClosed = ({ previousDeclaration }) => {
             component="h3"
             style={{
               lineHeight: 1,
-              color: sectionColor,
+              color: darkBlue,
               marginBottom: '.5rem',
             }}
           >

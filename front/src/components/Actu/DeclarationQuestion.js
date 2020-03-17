@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
+import { mobileBreakpoint } from '../../constants'
 
 const Container = styled.li`
   padding: 1rem;
@@ -23,6 +24,10 @@ const MainQuestionContainer = styled.div`
 const QuestionLabel = styled(Typography)`
   && {
     flex-shrink: 1;
+
+    @media (max-width: ${mobileBreakpoint}) {
+      margin-bottom: 0.5rem;
+    }
   }
 `
 

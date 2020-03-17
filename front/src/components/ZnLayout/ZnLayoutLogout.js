@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   header: {
     backgroundColor: '#f3f4f5',
     padding: '5rem 10rem 4rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '5rem 0 3rem',
+    },
     ...windowWidthElement,
   },
   headerContent: {
@@ -35,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: '2rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: '3.5rem',
     },
   },
   headerConnectButton: {
@@ -92,7 +98,9 @@ export default function ZnLayoutLogout({ children }) {
         </Button>
       </header>
 
-      <main role="main">{children}</main>
+      <main style={{ overflow: 'hidden' }} role="main">
+        {children}
+      </main>
 
       <footer className={classes.footer} role="contentinfo">
         <Grid container justify="space-between" alignItems="center">

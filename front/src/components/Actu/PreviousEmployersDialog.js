@@ -1,9 +1,10 @@
+import React from 'react'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import AlarmOn from '@material-ui/icons/AlarmOn'
 import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
+import { Typography } from '@material-ui/core'
 
 import CustomDialog from '../Generic/CustomDialog'
 import MainActionButton from '../Generic/MainActionButton'
@@ -33,7 +34,11 @@ const StyledCustomDialog = styled(CustomDialog)`
 const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
   <StyledCustomDialog
     content={
-      <Fragment>
+      <>
+        <Typography style={{ fontSize: '2rem' }}>
+          Nous avons pré-rempli votre page employeurs avec ceux renseignés lors
+          de votre actualisation précédente :
+        </Typography>
         <ul
           style={{
             padding: '1.5rem',
@@ -60,17 +65,10 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
           Vous allez pouvoir supprimer vos employeurs pré-remplis ou ajouter de
           nouveaux employeurs pour le mois en cours.
         </DialogContentText>
-      </Fragment>
+      </>
     }
-    title={
-      <Fragment>
-        <AlarmOnIcon color="primary" />
-        <br />
-        <br />
-        Nous avons pré-rempli votre page employeurs avec ceux renseignés lors de
-        votre actualisation précédente&nbsp;:
-      </Fragment>
-    }
+    titleIcon={<AlarmOnIcon color="primary" />}
+    title="Employeurs pré-remplis"
     titleId="PreviousEmployersDialogContentText"
     isOpened={isOpened}
     onCancel={onCancel}

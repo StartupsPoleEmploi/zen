@@ -17,6 +17,7 @@ import {
   primaryBlue,
   intermediaryBreakpoint,
   mobileBreakpoint,
+  errorRed,
 } from '../../constants'
 
 const StyledContainer = styled.div`
@@ -61,6 +62,13 @@ const ActionsContainer = styled.div`
   align-items: center;
   padding: 1rem;
 
+  @media (max-width: 1200px) {
+    padding: 0;
+  }
+
+  @media (max-width: ${intermediaryBreakpoint}) {
+    padding: 1rem;
+  }
   @media (max-width: ${mobileBreakpoint}) {
     align-self: flex-start;
     padding: 1rem 0;
@@ -73,6 +81,13 @@ const ActionButton = styled(Button).attrs({
   && {
     border-radius: 9rem;
     padding: 1rem 3rem;
+
+    @media (max-width: 1200px) {
+      padding: 1rem 2rem;
+    }
+    @media (max-width: ${intermediaryBreakpoint}) {
+      padding: 1rem 3rem;
+    }
   }
 `
 
@@ -127,6 +142,18 @@ const Or = styled(Typography)`
   }
 `
 
+const MissingFileActionButton = styled(ActionButton)`
+  && {
+    background: ${errorRed};
+    color: white;
+
+    &:hover {
+      background: ${errorRed};
+      color: white;
+    }
+  }
+`
+
 const InfoImg = styled(InfoOutlinedIcon)`
   && {
     color: ${helpColor};
@@ -152,6 +179,12 @@ const SkipFileSection = styled.div`
 
   @media (max-width: ${mobileBreakpoint}) {
     justify-content: flex-start;
+  }
+`
+
+const LabelTypography = styled(Typography)`
+  @media (max-width: ${mobileBreakpoint}) {
+    margin-bottom: 1.5rem;
   }
 `
 
@@ -231,13 +264,17 @@ export class DocumentUpload extends Component {
     )
 
     const viewDocumentButton = (
-      <ActionButton
-        onClick={this.showPreview}
-        className="show-file"
-        color="primary"
-      >
-        Voir, modifier ou valider
-      </ActionButton>
+      <div style={{ textAlign: 'center' }}>
+        <MissingFileActionButton
+          onClick={this.showPreview}
+          className="show-file"
+        >
+          Voir, modifier ou valider
+        </MissingFileActionButton>
+        <Typography style={{ marginTop: '1rem', color: errorRed }}>
+          Justificatif à valider
+        </Typography>
+      </div>
     )
 
     const uploadInput = (
@@ -259,9 +296,9 @@ export class DocumentUpload extends Component {
         className={`${type}-row`}
       >
         <LabelsContainer>
-          <Typography style={{ marginBottom: '1.5rem' }}>
+          <LabelTypography>
             {width === 'xs' && <Dot>.</Dot>} <b>{label}</b>
-          </Typography>
+          </LabelTypography>
           {caption && (
             <Typography
               variant="caption"
@@ -269,15 +306,6 @@ export class DocumentUpload extends Component {
               style={{ fontSize: '1.6rem', color: darkBlue }}
             >
               {caption}
-            </Typography>
-          )}
-          {fileExistsOnServer && !isTransmitted && (
-            <Typography
-              variant="caption"
-              color={isTransmitted ? 'initial' : 'error'}
-              component="div"
-            >
-              Justificatif à valider
             </Typography>
           )}
         </LabelsContainer>

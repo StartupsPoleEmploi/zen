@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { isNaN as _isNaN } from 'lodash'
 import styled from 'styled-components'
 
-import { Typography } from '@material-ui/core'
+import { Typography, withWidth } from '@material-ui/core'
 import DialogContentText from '@material-ui/core/DialogContentText'
 
 import MainActionButton from '../../Generic/MainActionButton'
@@ -81,6 +81,7 @@ const DeclarationSummaryDialog = ({
   employers = [],
   onCancel,
   onConfirm,
+  width,
   ...props
 }) => {
   const sickLeaves = declaration.infos.filter(
@@ -285,10 +286,10 @@ const DeclarationSummaryDialog = ({
             primary
             autoFocus
           >
-            Oui, je confirme
+            {width === 'xs' ? 'Je confirme' : 'Oui, je confirme'}
           </MainActionButton>
           <MainActionButton primary={false} onClick={onCancel}>
-            Non, je modifie
+            {width === 'xs' ? 'Je modifie' : 'Non, je modifie'}
           </MainActionButton>
         </ButtonsContainer>
       }
@@ -302,6 +303,7 @@ DeclarationSummaryDialog.propTypes = {
   onConfirm: PropTypes.func.isRequired,
   declaration: PropTypes.object.isRequired,
   employers: PropTypes.arrayOf(PropTypes.object),
+  width: PropTypes.string.isRequired,
 }
 
-export default DeclarationSummaryDialog
+export default withWidth()(DeclarationSummaryDialog)

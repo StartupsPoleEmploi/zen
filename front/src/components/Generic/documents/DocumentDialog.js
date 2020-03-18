@@ -283,14 +283,14 @@ class DocumentDialog extends PureComponent {
                   Ajouter une nouvelle page {!canUploadMoreFile && ' (max : 5)'}
                 </Button>
 
-                <Button
+                <MainActionButton
                   className="validate-file"
                   onClick={this.confirmDocValidation}
                   color="primary"
                   variant="contained"
                 >
                   Valider ce justificatif
-                </Button>
+                </MainActionButton>
               </Fragment>
             )
           }

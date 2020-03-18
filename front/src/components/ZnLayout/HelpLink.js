@@ -21,6 +21,7 @@ const A = styled.a`
   border-radius: 999rem;
   font-size: 1.5rem;
   font-weight: bold;
+  z-index: 10;
 
   @media (max-width: ${mobileBreakpoint}) {
     bottom: 9rem;

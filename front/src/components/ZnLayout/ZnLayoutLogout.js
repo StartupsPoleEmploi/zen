@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import AccountIcon from '@material-ui/icons/AccountCircleOutlined'
 
+import HelpLink from './HelpLink'
 import AppTitle from '../Generic/AppTitle'
 import { secondaryBlue } from '../../constants'
 
@@ -128,6 +129,8 @@ export default function ZnLayoutLogout({ children }) {
           <Grid item xs={2} />
         </Grid>
       </footer>
+
+      <HelpLink />
     </div>
   )
 }

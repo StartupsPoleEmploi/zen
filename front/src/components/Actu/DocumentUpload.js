@@ -17,7 +17,7 @@ import {
   primaryBlue,
   intermediaryBreakpoint,
   mobileBreakpoint,
-  errorRed,
+  errorOrange,
 } from '../../constants'
 
 const StyledContainer = styled.div`
@@ -144,12 +144,12 @@ const Or = styled(Typography)`
 
 const MissingFileActionButton = styled(ActionButton)`
   && {
-    background: ${errorRed};
-    color: white;
+    background: transparent;
+    border: solid 2px ${errorOrange};
 
     &:hover {
-      background: ${errorRed};
-      color: white;
+      background: transparent;
+      border: solid 2px ${errorOrange};
     }
   }
 `
@@ -271,7 +271,7 @@ export class DocumentUpload extends Component {
         >
           Voir, modifier ou valider
         </MissingFileActionButton>
-        <Typography style={{ marginTop: '1rem', color: errorRed }}>
+        <Typography style={{ marginTop: '1rem', color: '#E5561E' }}>
           Justificatif à valider
         </Typography>
       </div>

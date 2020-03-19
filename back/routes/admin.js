@@ -1,5 +1,10 @@
 const express = require('express')
-const { format, subDays } = require('date-fns')
+const {
+  addDays,
+  format,
+  subDays,
+  differenceInCalendarDays,
+} = require('date-fns')
 const zip = require('express-easy-zip')
 const path = require('path')
 const superagent = require('superagent')
@@ -9,7 +14,7 @@ const { Parser } = require('json2csv')
 const { raw } = require('objection')
 
 const winston = require('../lib/log')
-const { computePeriods, formatQueryResults } = require('../lib/admin/metrics')
+const { formatQueryResults } = require('../lib/admin/metrics')
 const {
   getAllCodeAgencyFromRegionSlug,
   getAllCodeAgencyFromDepartmentSlug,
@@ -405,8 +410,7 @@ router.get('/retention', async (req, res) => {
   // Users which have done at least one actualisation in the next 6 months
   results.oneDeclarationInSixMonths = oneDeclarationAtLeast.size
 
-  /** 2-  */
-  // Total of user
+  /** 2- Total of user who have done their declaration during the 24h after their first login on Zen  */
   const declarationMonth = await DeclarationMonth.query().findById(monthId)
   const firstLoginUserCount = await User.query()
     .count()
@@ -431,6 +435,30 @@ router.get('/retention', async (req, res) => {
   results.validateAllFilesDeclarationLess24h = startDeclarationLess24h.filter(
     (d) => d.isFinished,
   ).length
+
+  /** 3 - User who have done their declaration - month by month */
+  const declarationMonthsPossible = await DeclarationMonth.query()
+    .andWhere('startDate', '<=', 'now')
+    .andWhere('id', '>', monthId)
+    .orderBy('id')
+
+  const declarationMonthsId = declarationMonthsPossible.map((dc) => dc.id)
+  const declarations = await Declaration.query()
+    .select(raw('"userId", COUNT("userId") as "countDeclaration"'))
+    .where('hasFinishedDeclaringEmployers', true)
+    .whereIn('userId', ids)
+    .whereIn('monthId', declarationMonthsId)
+    .groupBy('userId')
+    .orderByRaw('"countDeclaration"')
+
+  const retentionByDeclarationCount = []
+  retentionByDeclarationCount[0] = ids.length - declarations.length
+  for (const declaration of declarations) {
+    const { countDeclaration } = declaration
+    const value = retentionByDeclarationCount[countDeclaration] || 0
+    retentionByDeclarationCount[countDeclaration] = value + 1
+  }
+  results.retentionByDeclarationCount = retentionByDeclarationCount
 
   return res.json(results)
 })
@@ -476,162 +504,118 @@ router.get('/metrics/global', async (req, res) => {
 /**
  * Compute users registered during two periods of time
  */
-router.get('/metrics/new-users', async (req, res) => {
-  const { first, second, duration } = req.query
-  if (!first || !second || !duration) return res.send(400)
+// prettier-ignore
+router.get('/metrics', async (req, res) => {
+  const { firstMonthId, secondMonthId } = req.query
+  if (!firstMonthId) return res.send(400)
 
-  const {
-    startFirstPeriod,
-    endFirstPeriod,
-    startSecondPeriod,
-    endSecondPeriod,
-  } = computePeriods(req.query)
+  const hasSecondPeriod = secondMonthId && secondMonthId !== firstMonthId
+  const results = {}
 
-  // First period
-  const firstPeriodData = await User.query()
+  // 1- Compute periods begin and en dates
+  const firstDeclarationMonth = await DeclarationMonth.query().findById(firstMonthId)
+  const secondDeclarationMonth = hasSecondPeriod ? await DeclarationMonth.query().findById(secondMonthId) : null
+
+  // Get longer period duration
+  const firstPeriodDuration = differenceInCalendarDays(firstDeclarationMonth.endDate, firstDeclarationMonth.startDate)
+
+  const secondPeriodDuration = hasSecondPeriod ? differenceInCalendarDays(secondDeclarationMonth.endDate, secondDeclarationMonth.startDate) : 0;
+  const periodDuration = firstPeriodDuration > secondPeriodDuration ? firstPeriodDuration : secondPeriodDuration
+
+  // Compute periods start and end dates
+  const startFirstPeriod = firstDeclarationMonth.startDate
+  const endFirstPeriod = addDays(firstDeclarationMonth.startDate, periodDuration)
+  const startSecondPeriod = hasSecondPeriod ? secondDeclarationMonth.startDate : null
+  const endSecondPeriod = hasSecondPeriod ? addDays(secondDeclarationMonth.startDate, periodDuration) : null
+
+  // 2 - New users
+  const newUsersFirstPeriodData = await User.query()
     .select(raw(`to_char("registeredAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('registeredAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
     .andWhere('registeredAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("registeredAt", 'yyyy-mm-dd')`)
 
-  const secondPeriodData = await User.query()
+  const newUsersSecondPeriodData = hasSecondPeriod ? await User.query()
     .select(raw(`to_char("registeredAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('registeredAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
     .andWhere('registeredAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
-    .groupByRaw(`to_char("registeredAt", 'yyyy-mm-dd')`)
+    .groupByRaw(`to_char("registeredAt", 'yyyy-mm-dd')`) : null
 
-  return res.json(
-    formatQueryResults({
+
+    results.newUsers = formatQueryResults({
       startFirstPeriod,
-      firstPeriodData,
+      firstPeriodData: newUsersFirstPeriodData,
       startSecondPeriod,
-      secondPeriodData,
-    }),
-  )
-})
+      secondPeriodData: newUsersSecondPeriodData,
+    })
 
-/**
- * Compute declarations started for two periods of time
- */
-router.get('/metrics/declaration-started', async (req, res) => {
-  const { first, second, duration } = req.query
-  if (!first || !second || !duration) return res.send(400)
 
-  const {
-    startFirstPeriod,
-    endFirstPeriod,
-    startSecondPeriod,
-    endSecondPeriod,
-  } = computePeriods(req.query)
-
-  const accumulate =
-    'accumulate' in req.query && req.query.accumulate === 'true'
-
-  const firstPeriodData = await Declaration.query()
+  // 3 - Declarations started
+  const declarationStartedFirstPeriodData = await Declaration.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
     .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  const secondPeriodData = await Declaration.query()
+  const declarationStartedSecondPeriodData = hasSecondPeriod ? await Declaration.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
     .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
-    .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
+    .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`) : null
 
-  return res.json(
-    formatQueryResults({
+    results.declarationStarted = formatQueryResults({
       startFirstPeriod,
-      firstPeriodData,
+      firstPeriodData : declarationStartedFirstPeriodData,
       startSecondPeriod,
-      secondPeriodData,
-      accumulate,
-    }),
-  )
-})
+      secondPeriodData: declarationStartedSecondPeriodData,
+    })
 
-/**
- * Compute declarations finished for two periods of time
- */
-router.get('/metrics/declaration-finished', async (req, res) => {
-  const { first, second, duration } = req.query
-  if (!first || !second || !duration) return res.send(400)
-
-  const {
-    startFirstPeriod,
-    endFirstPeriod,
-    startSecondPeriod,
-    endSecondPeriod,
-  } = computePeriods(req.query)
-
-  const accumulate =
-    'accumulate' in req.query && req.query.accumulate === 'true'
-
-  const firstPeriodData = await ActivityLog.query()
+  // 4 - Declarations finished for two periods of time
+  const declarationFinishedFirstPeriodData = await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
     .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  const secondPeriodData = await ActivityLog.query()
+  const declarationFinishedSecondPeriodData = hasSecondPeriod ? await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
     .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
-    .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
+    .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`) : null
 
-  return res.json(
-    formatQueryResults({
+
+    results.declarationFinished = formatQueryResults({
       startFirstPeriod,
-      firstPeriodData,
+      firstPeriodData : declarationFinishedFirstPeriodData,
       startSecondPeriod,
-      secondPeriodData,
-      accumulate,
-    }),
-  )
-})
+      secondPeriodData: declarationFinishedSecondPeriodData,
+    })
 
-/**
- * Compute files transmitted for two periods of time
- */
-router.get('/metrics/files-end', async (req, res) => {
-  const { first, second, duration } = req.query
-  if (!first || !second || !duration) return res.send(400)
-
-  const {
-    startFirstPeriod,
-    endFirstPeriod,
-    startSecondPeriod,
-    endSecondPeriod,
-  } = computePeriods(req.query)
-
-  const accumulate =
-    'accumulate' in req.query && req.query.accumulate === 'true'
-
-  const firstPeriodData = await ActivityLog.query()
+  // 5 - Files transmitted
+  const filesTransmittedFirstPeriodData = await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
     .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
 
-  const secondPeriodData = await ActivityLog.query()
+  const filesTransmittedSecondPeriodData = hasSecondPeriod ? await ActivityLog.query()
     .select(raw(`to_char("createdAt", 'yyyy-mm-dd') as date, count(*)`))
     .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
     .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
     .andWhere('action', '=', 'VALIDATE_FILES')
-    .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)
+    .groupByRaw(`to_char("createdAt", 'yyyy-mm-dd')`)  : null
 
-  return res.json(
-    formatQueryResults({
+    results.filesTransmitted = formatQueryResults({
       startFirstPeriod,
-      firstPeriodData,
+      firstPeriodData: filesTransmittedFirstPeriodData,
       startSecondPeriod,
-      secondPeriodData,
-      accumulate,
-    }),
-  )
+      secondPeriodData: filesTransmittedSecondPeriodData,
+    })
+
+    return res.json(results)
 })
 
 /**
@@ -703,6 +687,54 @@ router.get('/repartition/region', async (req, res) => {
     .andWhere('user.agencyCode', 'in', agencies)
 
   return res.json(declarations)
+})
+
+/** Get all not registered users in a given region for propection purpose (in CSV) */
+router.get('/repartition/unregistered-users-region/csv', async (req, res) => {
+  const { region, monthId } = req.query
+  if (!monthId || Number.isNaN(+monthId)) {
+    return res.send(400)
+  }
+
+  let agencies = []
+  try {
+    agencies = getAllCodeAgencyFromRegionSlug(region)
+  } catch {
+    return res.send(400)
+  }
+
+  // Get all userId with a declaration in this region
+  const declarations = await Declaration.query()
+    .joinEager('user')
+    .where({ monthId })
+    .andWhere('user.agencyCode', 'in', agencies)
+  const declarationsUserId = declarations.map((d) => d.userId)
+
+  // Get all users ids in this regions
+  const usersInRegion = await User.query().where('agencyCode', 'in', agencies)
+
+  // Do diff
+  const users = usersInRegion.filter(
+    (usr) => !declarationsUserId.includes(usr.id),
+  )
+
+  const json2csvParser = new Parser({
+    fields: [
+      { label: 'Prenom', value: 'firstName' },
+      { label: 'Nom', value: 'lastName' },
+      { label: 'E-mail', value: 'email' },
+      { label: 'Code postal', value: 'postalCode' },
+    ],
+  })
+
+  const filename = `region-${region}-utilisateurs-non-enregistrés`
+  const csv = json2csvParser.parse(users)
+  res.set(
+    'Content-disposition',
+    `attachment; filename=${filename}-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+  )
+  res.set('Content-type', 'text/csv')
+  return res.send(csv)
 })
 
 router.get('/repartition/department', async (req, res) => {

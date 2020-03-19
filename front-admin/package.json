@@ -33,6 +33,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.3.0",
+    "simple-html2pdf": "^2.1.1",
     "slug": "^2.1.1",
     "superagent": "^5.1.2"
   },

@@ -9,6 +9,12 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 30px;
 }
+@media (max-width: 1200px) {
+  .ul {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .ul.double {
   grid-template-columns: 1fr 1fr;
 }

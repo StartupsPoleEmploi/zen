@@ -1,16 +1,17 @@
 // @flow
 
-import React from 'react';
-import { Switch, Redirect, Route } from 'react-router-dom';
+import React from 'react'
+import { Switch, Redirect, Route } from 'react-router-dom'
 
-import { URLS } from './common/routes';
-import ActivityLogs from './containers/ActivityLogs';
-import Declarations from './containers/Declarations';
-import Declaration from './containers/Declaration';
-import Settings from './containers/Settings';
-import User from './containers/User';
-import Users from './containers/Users';
-import Dashboard from './containers/Dashboard';
+import { URLS } from './common/routes'
+import ActivityLogs from './containers/ActivityLogs'
+import Declarations from './containers/Declarations'
+import Declaration from './containers/Declaration'
+import Settings from './containers/Settings'
+import User from './containers/User'
+import Users from './containers/Users'
+import Dashboard from './containers/Dashboard'
+import ConseillersHelp from './containers/ConseillersHelp'
 
 const Routes = () => (
   <Switch>
@@ -21,9 +22,10 @@ const Routes = () => (
     <Route path={URLS.SETTINGS} exact component={Settings} />
     <Route path={URLS.USERS.BASE} exact component={Users} />
     <Route path={URLS.USERS.VIEW} exact component={User} />
+    <Route path={URLS.CONSEILLERS} exact component={ConseillersHelp} />
 
     <Redirect to="/dashboard" />
   </Switch>
-);
+)
 
-export default Routes;
+export default Routes

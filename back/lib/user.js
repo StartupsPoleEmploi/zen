@@ -1,5 +1,6 @@
 const { transaction } = require('objection')
 const { uploadsDirectory: uploadDestination } = require('config')
+const ipRangeCheck = require('ip-range-check')
 
 const { eraseFile } = require('./files')
 const mailjet = require('./mailings/mailjet')
@@ -11,6 +12,18 @@ const DeclarationInfo = require('../models/DeclarationInfo')
 const Employer = require('../models/Employer')
 const EmployerDocument = require('../models/EmployerDocument')
 const DeclarationReview = require('../models/DeclarationReview')
+
+const isPro = (req) => {
+  const ALLOWED_IP = process.env.PE_IP
+
+  let ip = req.ip || (req.connection && req.connection.remoteAddress)
+  // Clean IP : remove ::ffff at beginning
+  const ipV4Startindex = ip.lastIndexOf(':')
+  if (ipV4Startindex !== -1) ip = ip.substr(ipV4Startindex + 1)
+  const userAgent = req.headers['user-agent']
+
+  return ipRangeCheck(ip, ALLOWED_IP) && !userAgent.includes('Pila')
+}
 
 const extractFileAndIdsFromEmployers = (employers) => {
   const employerDocumentFiles = []
@@ -109,4 +122,5 @@ const deleteUser = (user) => {
 
 module.exports = {
   deleteUser,
+  isPro,
 }

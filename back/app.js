@@ -86,7 +86,12 @@ if (isTestEnv) {
 }
 
 if (!isTestEnv) {
-  app.use(csurf())
+  // Disabled crsfToken for some routes
+  const csrf = csurf()
+  app.use(function(req, res, next) {
+    if (req.path === '/user/save-email') return next()
+    csrf(req, res, next)
+  })
 }
 
 app.use((req, res, next) => {
@@ -106,7 +111,12 @@ app.use('/status', (req, res) =>
 )
 
 app.use((req, res, next) => {
-  if (!req.path.startsWith('/login') && !req.session.user) {
+  if (
+    !req.path.startsWith('/login') &&
+    !req.path.startsWith('/user/save-email') &&
+    !req.path.startsWith('/user/is-pro') &&
+    !req.session.user
+  ) {
     return res.status(401).json('Unauthorized')
   }
 

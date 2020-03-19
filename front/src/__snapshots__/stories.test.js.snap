@@ -2749,57 +2749,57 @@ exports[`Storyshots Home default 1`] = `
       className="sc-elJkPf kYXavU"
     >
       <div
-        className="sc-jtRfpW hGLyXA"
+        className="sc-jtRfpW iKsomU"
       >
         <p
           className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Déborah - Lille
+            Céline
             <br />
-            (11/04/19)
+            Mars 2020
           </b>
         </p>
         <p
           className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
+          « Zen est simple d'utilisation, très pratique. On rentre les données et les calculs se font automatiquement. »
         </p>
       </div>
       <div
-        className="sc-jtRfpW hGLyXA"
+        className="sc-jtRfpW iKsomU"
       >
         <p
           className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Sophie - Condette
+            Myriam
             <br />
-            (10/04/19)
+            Mars 2020
           </b>
         </p>
         <p
           className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Plus simple vu le nombre d'employeurs. Belle innovation »
+          « Gain de temps et très facile d'utilisation pour transmettre les documents. Site très bien fait et adapté aux assistantes maternelles. À recommander fortement »
         </p>
       </div>
       <div
-        className="sc-jtRfpW hGLyXA"
+        className="sc-jtRfpW iKsomU"
       >
         <p
           className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Fatima - Amiens
+            Christiane
             <br />
-            (09/04/19)
+            Mars 2020
           </b>
         </p>
         <p
           className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
+          « Actualisation plus facile d'accès et d'utilisation. De plus, l'interface est agréable et bien organisée. »
         </p>
       </div>
     </div>
@@ -3304,57 +3304,57 @@ exports[`Storyshots Home loginFailed 1`] = `
       className="sc-elJkPf kYXavU"
     >
       <div
-        className="sc-jtRfpW hGLyXA"
+        className="sc-jtRfpW iKsomU"
       >
         <p
           className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Déborah - Lille
+            Céline
             <br />
-            (11/04/19)
+            Mars 2020
           </b>
         </p>
         <p
           className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
+          « Zen est simple d'utilisation, très pratique. On rentre les données et les calculs se font automatiquement. »
         </p>
       </div>
       <div
-        className="sc-jtRfpW hGLyXA"
+        className="sc-jtRfpW iKsomU"
       >
         <p
           className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Sophie - Condette
+            Myriam
             <br />
-            (10/04/19)
+            Mars 2020
           </b>
         </p>
         <p
           className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Plus simple vu le nombre d'employeurs. Belle innovation »
+          « Gain de temps et très facile d'utilisation pour transmettre les documents. Site très bien fait et adapté aux assistantes maternelles. À recommander fortement »
         </p>
       </div>
       <div
-        className="sc-jtRfpW hGLyXA"
+        className="sc-jtRfpW iKsomU"
       >
         <p
           className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Fatima - Amiens
+            Christiane
             <br />
-            (09/04/19)
+            Mars 2020
           </b>
         </p>
         <p
           className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
+          « Actualisation plus facile d'accès et d'utilisation. De plus, l'interface est agréable et bien organisée. »
         </p>
       </div>
     </div>

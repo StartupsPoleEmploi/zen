@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import ZnLayoutLogin from './ZnLayoutLogin'
 import ZnLayoutLogout from './ZnLayoutLogout'
 import HelpLink from './HelpLink'
+import Footer from './footer/Footer'
 
 export const ZnLayout = ({
   activeMonth,
@@ -17,16 +18,19 @@ export const ZnLayout = ({
   }
 
   return (
-    <ZnLayoutLogin
-      isFilesServiceUp={isFilesServiceUp}
-      activeMonth={activeMonth}
-      activeDeclaration={activeDeclaration}
-      user={user}
-    >
-      {children}
+    <>
+      <ZnLayoutLogin
+        isFilesServiceUp={isFilesServiceUp}
+        activeMonth={activeMonth}
+        activeDeclaration={activeDeclaration}
+        user={user}
+      >
+        {children}
 
-      <HelpLink />
-    </ZnLayoutLogin>
+        <HelpLink />
+      </ZnLayoutLogin>
+      <Footer />
+    </>
   )
 }
 

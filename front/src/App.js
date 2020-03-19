@@ -34,6 +34,7 @@ import ZnLayout from './components/ZnLayout'
 import NotAutorized from './pages/other/NotAutorized'
 import AddEmail from './pages/other/AddEmail'
 import Cgu from './pages/other/Cgu'
+import ConseillersHelp from './pages/other/ConseillersHelp'
 
 class App extends Component {
   constructor(props) {
@@ -130,7 +131,11 @@ class App extends Component {
     if (isUserLoading || isServiceStatusLoading) return null
     if (!user) {
       // User isn't logged
-      if (pathname !== '/' && !pathname.startsWith('/cgu')) {
+      if (
+        pathname !== '/' &&
+        !pathname.startsWith('/cgu') &&
+        !pathname.startsWith('/aide-conseillers')
+      ) {
         return <Redirect to="/" />
       }
     } else if (!user.isAuthorized) {
@@ -180,6 +185,7 @@ class App extends Component {
         >
           <Route exact path="/" component={Home} />
           <Route path="/cgu" component={Cgu} />
+          <Route path="/aide-conseillers" component={ConseillersHelp} />
           {!status.isLoading && (
             <StatusErrorDialog isOpened={!status.isServiceUp} />
           )}
@@ -298,6 +304,7 @@ class App extends Component {
 
           <Route exact path="/loggedOut" component={LoggedOut} />
           <Route path="/cgu" component={Cgu} />
+          <Route path="/aide-conseillers" component={ConseillersHelp} />
           <Route render={() => <div>404</div>} />
         </Switch>
         <StatusErrorDialog isOpened={!!this.state.isServiceDown} />

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined'
 
 import { mobileBreakpoint, helpColor } from '../../constants'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const A = styled.a`
   position: fixed;
@@ -50,8 +51,16 @@ const Help = styled(HelpOutlineOutlined)`
 `
 
 function HelpLink() {
+  function saveAskHelpEvent() {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Global',
+      action: 'Click on Help',
+    })
+  }
+
   return (
     <A
+      onClick={saveAskHelpEvent}
       href="https://pole-emploi.zendesk.com/hc/fr"
       title="Consulter notre page d'aide"
       target="_blank"

@@ -192,13 +192,15 @@ export class Actu extends Component {
     })
   }
 
-  closeDialog = () =>
+  closeDialog = () => {
+    // TODO
     this.setState({
       consistencyErrors: [],
       validationErrors: [],
       isDialogOpened: false,
       isValidating: false,
     })
+  }
 
   openDialog = () => {
     const error = this.getFormError()

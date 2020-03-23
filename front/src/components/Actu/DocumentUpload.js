@@ -19,6 +19,7 @@ import {
   mobileBreakpoint,
   errorOrange,
 } from '../../constants'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -226,13 +227,19 @@ export class DocumentUpload extends Component {
 
   showPreview = () => this.props.showPreview(this.props.id)
 
-  skipFile = () =>
-    this.props.skipFile({
+  skipFile = () => {
+    GoogleAnalyticsService.sendEvent({
+      category: 'File',
+      action: 'Click on skip file',
+    })
+
+    return this.props.skipFile({
       type: this.props.type,
       documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
     })
+  }
 
   render() {
     const {

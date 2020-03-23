@@ -35,6 +35,7 @@ import NotAutorized from './pages/other/NotAutorized'
 import AddEmail from './pages/other/AddEmail'
 import Cgu from './pages/other/Cgu'
 import ConseillersHelp from './pages/other/ConseillersHelp'
+import { GoogleAnalyticsService } from './lib/GoogleAnalytics'
 
 class App extends Component {
   constructor(props) {
@@ -48,6 +49,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // Google Analytics
+    GoogleAnalyticsService.initGoogleAnalytics()
+    this.props.history.listen((location) => {
+      if (!GoogleAnalyticsService.isGASetup()) return
+      GoogleAnalyticsService.setPageView(location.pathname + location.search)
+    })
+
     Promise.all([this.props.fetchStatus(), this.props.fetchUser()])
       .then(() => {
         if (!this.props.user || !this.props.user.isAuthorized) return
@@ -332,6 +340,7 @@ class App extends Component {
 App.propTypes = {
   history: PropTypes.shape({
     replace: PropTypes.func.isRequired,
+    listen: PropTypes.func.isRequired,
   }).isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string.isRequired })
     .isRequired,

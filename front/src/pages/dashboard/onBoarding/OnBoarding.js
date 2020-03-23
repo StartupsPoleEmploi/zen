@@ -23,6 +23,7 @@ import { setNoNeedOnBoarding as setNoNeedOnBoardingAction } from '../../../redux
 import { primaryBlue } from '../../../constants'
 import catchMaintenance from '../../../lib/catchMaintenance'
 import { EmailForm } from './EmailForm'
+import { GoogleAnalyticsService } from '../../../lib/GoogleAnalytics'
 
 const StyledOnBoarding = styled.div`
   max-width: ${({ width }) => (width === 'xs' ? '100%' : '90rem')};
@@ -99,6 +100,10 @@ function OnBoarding({
     setCurrentStep(index + 1)
   }
   function startAgain() {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Dashboard',
+      action: 'Click on restart ongoing',
+    })
     setCurrentStep(1)
   }
 

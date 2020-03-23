@@ -24,6 +24,7 @@ import ActuStatus from '../../components/Generic/actu/ActuStatus'
 import MainActionButton from '../../components/Generic/MainActionButton'
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import OnBoarding from './onBoarding/OnBoarding'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const StyledDashboard = styled.div`
   margin: 0 auto;
@@ -196,6 +197,13 @@ class Dashboard extends PureComponent {
     )
   }
 
+  saveGoToFilesDeclarationEvent = () => {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Dashboard',
+      action: 'Click on "Go to files"',
+    })
+  }
+
   getMissingFilesNb = () => {
     const { declarations: allDeclarations } = this.props
 
@@ -238,6 +246,7 @@ class Dashboard extends PureComponent {
             width: '90%',
             margin: '3rem auto 0 auto',
           }}
+          onClick={this.saveGoToFilesDeclarationEvent}
           primary
         >
           Gérer mes justificatifs

@@ -17,6 +17,7 @@ import ZnNavLogin from './ZnNavLogin'
 import { primaryBlue, mobileBreakpoint } from '../../constants'
 import dashboardBg from '../../images/dashboard-bg.svg'
 import Covid19Warning from '../Generic/Covid19Warning'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -138,6 +139,13 @@ export const Layout = ({
 
   const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
 
+  function saveLogoutEvent() {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Global',
+      action: 'Click on Logout',
+    })
+  }
+
   const NavComponent = () => (
     <ZnNavLogin
       user={user}
@@ -173,6 +181,7 @@ export const Layout = ({
                     target="_self"
                     disableRipple
                     variant="text"
+                    onClick={saveLogoutEvent}
                   >
                     Déconnexion
                   </Button>

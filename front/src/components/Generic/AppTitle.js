@@ -30,7 +30,7 @@ export const AppTitle = ({ zenColor = '#000', ...props }) => (
   <StyledTitle {...props}>
     <HomeLink
       style={{ color: zenColor }}
-      to="/dashboard"
+      to="/"
       title="Retourner à l'accueil du site"
     >
       zen<span style={{ color: primaryBlue }}>.</span>

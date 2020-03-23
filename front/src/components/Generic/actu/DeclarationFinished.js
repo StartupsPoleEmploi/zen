@@ -11,6 +11,7 @@ import {
   darkBlue,
   intermediaryBreakpoint,
 } from '../../../constants'
+import { GoogleAnalyticsService } from '../../../lib/GoogleAnalytics'
 
 const StyledDoneIcon = styled(DoneIcon)`
   && {
@@ -77,6 +78,11 @@ const DeclarationFinished = ({ declaration }) => {
   function printDeclaration(e) {
     e.preventDefault()
 
+    GoogleAnalyticsService.sendEvent({
+      category: 'Dashboard',
+      action: 'Print declaration',
+    })
+
     if (showPrintIframe) {
       try {
         iframeEl.current.contentWindow.print()
@@ -96,6 +102,13 @@ const DeclarationFinished = ({ declaration }) => {
       // For more information : https://bugzilla.mozilla.org/show_bug.cgi?id=874200
       window.open(DECLARATION_FILE_URL, '_blank')
     }
+  }
+
+  function saveDownloadDeclarationEvent() {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Dashboard',
+      action: 'Download declaration',
+    })
   }
 
   return (
@@ -149,6 +162,7 @@ const DeclarationFinished = ({ declaration }) => {
           <FileLink
             href="/api/declarations/summary-file?download=true"
             target="_blank"
+            onClick={saveDownloadDeclarationEvent}
             title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
           >
             <VerticalAlignBottomIcon

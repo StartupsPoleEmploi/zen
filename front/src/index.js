@@ -9,17 +9,15 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-import './lib/external/gtm'
 import './lib/external/hotjar'
-
 import { version } from '../package.json'
 import App from './App'
 import store from './redux/store'
 import DeveloperDialog from './components/Generic/DeveloperDialog'
 import CookiePolicy from './components/Generic/CookiePolicy'
 
+// Sentry
 const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
-
 if (environment !== 'development') {
   window.Raven.config(
     'https://a1844e1ab4404bf9b6b63fe127874cdf@sentry.io/1216087',
@@ -30,9 +28,11 @@ if (environment !== 'development') {
   ).install()
 }
 
+// Moment.js
 moment.locale('fr')
 moment.tz.setDefault('Europe/Paris')
 
+// MuiTheme
 const theme = createMuiTheme({
   typography: {
     useNextVariants: true,

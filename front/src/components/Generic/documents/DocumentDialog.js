@@ -15,6 +15,7 @@ import MainActionButton from '../MainActionButton'
 
 import { primaryBlue } from '../../../constants'
 import CustomDialog from '../CustomDialog'
+import { GoogleAnalyticsService } from '../../../lib/GoogleAnalytics'
 
 const PDFViewer = React.lazy(() => import('../PDFViewer/index'))
 
@@ -125,17 +126,33 @@ class DocumentDialog extends PureComponent {
     })
   }
 
-  confirmPageRemoval = () =>
+  confirmPageRemoval = () => {
+    GoogleAnalyticsService.sendEvent({
+      category: 'File',
+      action: 'Click on "Remove page"',
+    })
     this.setState({ showPageRemovalConfirmation: true })
+  }
 
   cancelRemovePage = () => this.setState({ showPageRemovalConfirmation: false })
 
-  confirmDocValidation = () => this.setState({ showDocValidationModal: true })
+  confirmDocValidation = () => {
+    GoogleAnalyticsService.sendEvent({
+      category: 'File',
+      action: 'Click on "Validate file"',
+    })
+    this.setState({ showDocValidationModal: true })
+  }
 
   cancelValidateDoc = () => this.setState({ showDocValidationModal: false })
 
   validateDoc = () => {
     this.setState({ showDocValidationModal: false })
+
+    GoogleAnalyticsService.sendEvent({
+      category: 'Files',
+      action: 'Validate and send file',
+    })
 
     this.props.validateDoc({
       documentId: this.props.id,
@@ -164,6 +181,10 @@ class DocumentDialog extends PureComponent {
 
   onCancel = () => {
     this.setState(initialState)
+    GoogleAnalyticsService.sendEvent({
+      category: 'Files',
+      action: 'Close the modal',
+    })
     this.props.onCancel()
   }
 

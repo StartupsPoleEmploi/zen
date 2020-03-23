@@ -11,6 +11,7 @@ import {
   mobileBreakpoint,
   primaryBlue,
 } from '../../constants'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const Cell = styled.div`
   flex: 1;
@@ -71,6 +72,11 @@ const FileCell = ({ declaration }) => {
   function printDeclaration(e) {
     e.preventDefault()
 
+    GoogleAnalyticsService.sendEvent({
+      category: 'History',
+      action: 'Print declaration',
+    })
+
     if (showPrintIframe) {
       try {
         iframeEl.current.contentWindow.print()
@@ -92,12 +98,20 @@ const FileCell = ({ declaration }) => {
     }
   }
 
+  function saveDownloadDeclarationEvent() {
+    GoogleAnalyticsService.sendEvent({
+      category: 'History',
+      action: 'Download declaration',
+    })
+  }
+
   return (
     <>
       <StyledFileCell className="download">
         <ActionLink
           href={`/api/declarations/summary-file?download=true&id=${declaration.id}`}
           target="_blank"
+          onClick={saveDownloadDeclarationEvent}
           title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
         >
           <VerticalAlignBottomIcon

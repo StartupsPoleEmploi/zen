@@ -7,6 +7,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import MainActionButton from '../../components/Generic/MainActionButton'
 import sendDoc from '../../images/sendDoc.svg'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 
@@ -54,6 +55,10 @@ export default class Thanks extends Component {
 
   printDeclaration = (e) => {
     e.preventDefault()
+    GoogleAnalyticsService.sendEvent({
+      category: 'Declaration',
+      action: 'Print declaration',
+    })
 
     if (this.state.showPrintIframe) {
       try {
@@ -64,6 +69,13 @@ export default class Thanks extends Component {
         window.open(DECLARATION_FILE_URL, '_blank')
       }
     } else this.setState({ showPrintIframe: true })
+  }
+
+  saveDownloadDeclarationEvent = () => {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Declaration',
+      action: 'Download declaration',
+    })
   }
 
   printIframeContent = (e) => {
@@ -100,6 +112,7 @@ export default class Thanks extends Component {
               <MainActionButton
                 href="/api/declarations/summary-file?download=true"
                 target="_blank"
+                onClick={this.saveDownloadDeclarationEvent}
                 title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
                 style={{
                   minWidth: '30rem',

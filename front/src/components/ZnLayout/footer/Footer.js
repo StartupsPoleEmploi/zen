@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from '@material-ui/core/Link'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
 import ChevronRight from '@material-ui/icons/ChevronRight'
@@ -96,7 +96,7 @@ function Footer() {
         <Left>
           <Ul>
             <Li>
-              <StyledLink href="cgu">
+              <StyledLink to="/cgu">
                 <Typography>Conditions Générales d'Utilisation</Typography>
                 <span style={{ textAlign: 'right' }}>
                   <ChevronRight />

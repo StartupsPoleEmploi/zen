@@ -12,6 +12,7 @@ import {
   isObject,
   isUndefined,
   pick,
+  isEmpty,
 } from 'lodash'
 import moment from 'moment'
 import { PropTypes } from 'prop-types'
@@ -48,6 +49,7 @@ import {
 import { setNoNeedEmployerOnBoarding as setNoNeedEmployerOnBoardingAction } from '../../redux/actions/user'
 import EmployerOnBoarding from './EmployerOnBoarding/EmployerOnBoarding'
 import ScrollToButton from '../../components/Generic/ScrollToButton'
+import { GoogleAnalyticsService } from '../../lib/GoogleAnalytics'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -350,8 +352,13 @@ export class Employers extends Component {
       employers: getEmployersMapFromFormData(this.state.employers),
     })
 
-  saveAndRedirect = () =>
-    this.onSave().then(() => this.props.history.push('/thanks?later'))
+  saveAndRedirect = () => {
+    GoogleAnalyticsService.sendEvent({
+      category: 'Employers',
+      action: 'Save and finish later',
+    })
+    return this.onSave().then(() => this.props.history.push('/thanks?later'))
+  }
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
@@ -455,6 +462,19 @@ export class Employers extends Component {
   }
 
   closeDialog = () => {
+    if (
+      !this.state.isValidating &&
+      this.state.validationErrors.length === 0 &&
+      this.state.consistencyErrors.length &&
+      !isEmpty(this.state.currentDeclaration)
+    ) {
+      // User cancels dialog summary modal
+      GoogleAnalyticsService.sendEvent({
+        category: 'Employers',
+        action: 'Click on modify my declaration',
+      })
+    }
+
     this.setState({
       consistencyErrors: [],
       validationErrors: [],

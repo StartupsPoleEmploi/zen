@@ -4,6 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Check from '@material-ui/icons/Check'
+import { withWidth } from '@material-ui/core'
 
 import CustomDialog from '../Generic/CustomDialog'
 import { mobileBreakpoint } from '../../constants'
@@ -29,21 +30,30 @@ const NotMobileBR = styled.br`
   }
 `
 
-const DeclarationTransmitted = ({ isOpened, onCancel }) => (
+const DeclarationTransmitted = ({ isOpened, onCancel, width }) => (
   <CustomDialog
-    width="xl"
+    fullWidth
     content={
-      <DialogContentText gutterBottom style={{ color: 'black' }}>
-        Si vous êtes en possession de vos justificatifs, vous pouvez dès à
-        présent les ajouter à votre dossier Zen.
+      <DialogContentText
+        gutterBottom
+        style={{ color: 'black', flex: 'inherit' }}
+      >
+        Votre actualisation a bien été transmise à Pôle emploi. Si vous êtes en
+        possession de vos justificatifs, vous pouvez dès à présent les ajouter à
+        votre dossier Zen.
       </DialogContentText>
     }
+    titleIcon={<CheckIcon />}
     title={
-      <span>
-        <CheckIcon />
-        Votre actualisation a bien <NotMobileBR />
-        été transmise à Pôle emploi !
-      </span>
+      width === 'xs' ? (
+        'Actualisation envoyée'
+      ) : (
+        <>
+          Votre actualisation a bien
+          <NotMobileBR />
+          été transmise à Pôle emploi !
+        </>
+      )
     }
     titleId="DeclarationTransmittedDialogTitle"
     isOpened={isOpened}
@@ -54,6 +64,7 @@ const DeclarationTransmitted = ({ isOpened, onCancel }) => (
         variant="contained"
         onClick={onCancel}
         color="primary"
+        style={{ marginBottom: '3rem' }}
       >
         Continuer
         <StyledArrowForwardIcon />
@@ -65,6 +76,7 @@ const DeclarationTransmitted = ({ isOpened, onCancel }) => (
 DeclarationTransmitted.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired,
 }
 
-export default DeclarationTransmitted
+export default withWidth()(DeclarationTransmitted)

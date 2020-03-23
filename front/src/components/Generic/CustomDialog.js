@@ -14,11 +14,31 @@ const StyledDialogContent = styled(DialogContent)`
     display: flex;
     flex-direction: column;
     text-align: center;
+    flex: inherit;
+  }
+`
+
+const StyledTitleIcon = styled.div`
+  margin-top: 3rem;
+  margin-bottom: 0;
+  text-align: center;
+  svg {
+    font-size: 4rem;
   }
 `
 
 const StyledDialogTitle = styled(DialogTitle)`
-  text-align: center;
+  && {
+    margin-top: ${({ hasIcon }) => (hasIcon ? '0' : '3rem')};
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+
+    h2 {
+      font-weight: bold;
+    }
+  }
 `
 
 const StyledDialogActions = styled(DialogActions)`
@@ -39,6 +59,7 @@ export const CustomDialog = ({
   header,
   titleId,
   title,
+  titleIcon,
   isOpened,
   onCancel,
   width,
@@ -62,7 +83,12 @@ export const CustomDialog = ({
       }}
       {...rest}
     >
-      {title && <StyledDialogTitle id={titleId}>{title}</StyledDialogTitle>}
+      {titleIcon && <StyledTitleIcon>{titleIcon}</StyledTitleIcon>}
+      {title && (
+        <StyledDialogTitle hasIcon={titleIcon} id={titleId}>
+          {title}
+        </StyledDialogTitle>
+      )}
       {header}
       {content && (
         <StyledDialogContent
@@ -91,6 +117,7 @@ CustomDialog.propTypes = {
   onCancel: PropTypes.func,
   isOpened: PropTypes.bool.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  titleIcon: PropTypes.node,
   titleId: PropTypes.string,
   forceConstantHeight: PropTypes.bool,
   width: PropTypes.string,

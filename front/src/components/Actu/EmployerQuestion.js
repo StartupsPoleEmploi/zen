@@ -234,7 +234,11 @@ export class EmployerQuestion extends PureComponent {
           </div>
           <StyledFormControl className="root-contract">
             <StyledFormLabel
-              style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
+              style={{
+                paddingTop: '1rem',
+                paddingBottom: '1rem',
+                color: 'black',
+              }}
             >
               {width !== 'xs' ? (
                 <>

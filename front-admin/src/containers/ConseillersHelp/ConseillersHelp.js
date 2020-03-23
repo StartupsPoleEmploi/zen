@@ -18,13 +18,14 @@ const COLUMNS = [
 ]
 
 export default function ConseillersHelp() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [conseillerHelps, setConseillersHelp] = useState([])
 
   useEffect(() => {
     async function fetchData() {
       const { body } = await superagent.get('/zen-admin-api/conseiller-helps')
       setConseillersHelp(body)
+      setIsLoading(false)
     }
 
     fetchData()

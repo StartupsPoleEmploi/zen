@@ -13,8 +13,15 @@ const Employer = require('../models/Employer')
 const EmployerDocument = require('../models/EmployerDocument')
 const DeclarationReview = require('../models/DeclarationReview')
 
-const isPro = (req) => {
+/**
+ * To detect is a user is a pro, meaning a member of the Pôle emploi staff,
+ * we need to detect if this user :
+ *  - have an IP is a certain range
+ *  - haven't got PILA in their user-agent (PILA refers to the computers in free access in Pôle emploi agencies for job attendees)
+ */
+function isPro(req) {
   const ALLOWED_IP = process.env.PE_IP
+  if (!ALLOWED_IP) return false
 
   let ip = req.ip || (req.connection && req.connection.remoteAddress)
   // Clean IP : remove ::ffff at beginning

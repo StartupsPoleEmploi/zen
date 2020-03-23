@@ -97,6 +97,8 @@ export default function ZnLayoutLogout({ children }) {
       </main>
 
       <Footer />
+
+      <HelpLink />
     </div>
   )
 }

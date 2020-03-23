@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import superagent from 'superagent'
 
-import { H1, H2 } from '../../components/Generic/Titles'
+import { H1 } from '../../components/Generic/Titles'
 
 const StyledConseillersHelp = styled.div`
   background: #f3f4f5;
@@ -23,12 +23,6 @@ const Content = styled.div`
 const StyledH1 = styled(H1)`
   && {
     padding-bottom: 2rem;
-  }
-`
-const StyledH2 = styled(H2)`
-  && {
-    padding-top: 2rem;
-    padding-bottom: 1rem;
   }
 `
 
@@ -61,12 +55,9 @@ function ConseillersHelp() {
 
         <Typography>Aide à destination des conseillers</Typography>
 
-        <StyledH2>Titre 2</StyledH2>
-        <StyledH2>Titre 3</StyledH2>
-        <StyledH2>Titre 4</StyledH2>
-        <StyledH2>Titre 5</StyledH2>
-        <StyledH2>Titre 6</StyledH2>
-        <StyledH2>Titre 7</StyledH2>
+        <Typography>
+          <strong>En construction</strong>
+        </Typography>
       </Content>
     </StyledConseillersHelp>
   )

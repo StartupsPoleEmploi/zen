@@ -52,11 +52,10 @@ const StyledButton = styled.button`
 `
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const IS_PRO_LOCAL_STORAGE = 'IS_PRO'
+const IS_PRO_LOCAL_STORAGE = 'IS_PRO_TMP'
 
 function isProLocalStorage() {
-  const isPro = localStorage.getItem(IS_PRO_LOCAL_STORAGE) === 'true'
-  return isPro
+  return localStorage.getItem(IS_PRO_LOCAL_STORAGE) === 'true'
 }
 
 function PeHelpLink() {
@@ -102,6 +101,8 @@ function PeHelpLink() {
       setShowEmailError(true)
     }
   }
+
+  if (!showProLink) return null
 
   return (
     <>

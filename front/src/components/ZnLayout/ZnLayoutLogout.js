@@ -2,17 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import AccountIcon from '@material-ui/icons/AccountCircleOutlined'
 
 import HelpLink from './HelpLink'
 import AppTitle from '../Generic/AppTitle'
-import { secondaryBlue } from '../../constants'
 
 import logoPEMono from '../../images/logoPE-mono.png'
+import Footer from './footer/Footer'
 
 const windowWidthElement = {
   width: '100vw',
@@ -45,12 +43,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   headerConnectButton: {
-    position: 'absolute',
+    position: 'fixed',
     right: '0',
     top: '0',
     display: 'flex',
+    textTransform: 'uppercase',
+    zIndex: 2,
 
-    width: '32rem',
+    width: '36rem',
     maxWidth: '100%',
     minHeight: '5rem',
     margin: '0',
@@ -58,13 +58,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '4rem',
     paddingRight: '4rem',
     lineHeight: '3rem',
-  },
-  footer: {
-    display: 'flex',
-    minHeight: '15rem',
-    backgroundColor: `${secondaryBlue}`,
-    textAlign: 'center',
-    ...windowWidthElement,
   },
 }))
 
@@ -103,32 +96,7 @@ export default function ZnLayoutLogout({ children }) {
         {children}
       </main>
 
-      <footer className={classes.footer} role="contentinfo">
-        <Grid container justify="space-between" alignItems="center">
-          <Grid item xs={2}>
-            <Link
-              href="cgu"
-              style={{ color: '#fff', textDecoration: 'underline' }}
-            >
-              <Typography>CGU</Typography>
-            </Link>
-          </Grid>
-          <Grid item xs={8}>
-            <div style={{ textAlign: 'center' }}>
-              <AppTitle zenColor="#fff" />
-              <br />
-              <Typography
-                variant="caption"
-                // 0.51 (not 0.5) is the accessibility threshold for our background color
-                style={{ color: '#fff', opacity: 0.51, letterSpacing: 1.5 }}
-              >
-                Un service propulsé par Pôle emploi
-              </Typography>
-            </div>
-          </Grid>
-          <Grid item xs={2} />
-        </Grid>
-      </footer>
+      <Footer />
 
       <HelpLink />
     </div>

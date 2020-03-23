@@ -28,6 +28,7 @@ const Declaration = require('../models/Declaration')
 
 const DeclarationMonth = require('../models/DeclarationMonth')
 const DeclarationReview = require('../models/DeclarationReview')
+const ConseillersHelpQuery = require('../models/ConseillersHelpQuery')
 
 const User = require('../models/User')
 const Status = require('../models/Status')
@@ -57,6 +58,12 @@ router.get('/declarations', (req, res, next) => {
     .eager('user')
     .where(conditions)
     .then((declarations) => res.json(declarations))
+    .catch(next)
+})
+
+router.get('/conseiller-helps', (req, res, next) => {
+  ConseillersHelpQuery.query()
+    .then((helps) => res.json(helps))
     .catch(next)
 })
 

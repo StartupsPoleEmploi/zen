@@ -15,16 +15,19 @@ export const URLS: Object = {
     BASE: '/users',
     VIEW: '/users/view/:id',
   },
-};
-const formatUrl = (url: string, id: *) => url
-  .replace(/[/]{2,10}/g, '/') // replave "//" by /
-  .replace(':id', id);
-const urlsKeysAddEdit = ['USERS', 'DECLARATIONS'];
+  CONSEILLERS: '/aide-conseillers',
+}
+
+const formatUrl = (url: string, id: *) =>
+  url
+    .replace(/[/]{2,10}/g, '/') // replave "//" by /
+    .replace(':id', id)
+const urlsKeysAddEdit = ['USERS', 'DECLARATIONS']
 urlsKeysAddEdit.forEach((e) => {
-  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '');
-  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id);
-  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id);
-});
+  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '')
+  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id)
+  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id)
+})
 
 export const MENU_ITEMS = [
   {
@@ -54,9 +57,16 @@ export const MENU_ITEMS = [
     match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
   },
   {
+    name: 'Aide conseillers',
+    iconName: 'plus',
+    to: URLS.CONSEILLERS,
+    key: 'conseillers-helps',
+    match: (pathname) => pathname.startsWith(URLS.CONSEILLERS),
+  },
+  {
     name: 'Système',
     iconName: 'setting',
     to: URLS.SETTINGS,
     key: 'SETTINGS',
   },
-];
+]

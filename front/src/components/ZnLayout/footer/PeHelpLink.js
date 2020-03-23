@@ -52,7 +52,7 @@ const StyledButton = styled.button`
 `
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const IS_PRO_LOCAL_STORAGE = 'IS_PRO_TMP'
+const IS_PRO_LOCAL_STORAGE = 'IS_PRO'
 
 function isProLocalStorage() {
   return localStorage.getItem(IS_PRO_LOCAL_STORAGE) === 'true'
@@ -67,7 +67,10 @@ function PeHelpLink() {
 
   useEffect(() => {
     async function fetchData() {
-      if (localStorage.getItem(IS_PRO_LOCAL_STORAGE) === null) {
+      if (
+        localStorage.getItem(IS_PRO_LOCAL_STORAGE) === null &&
+        process.env.REACT_APP_ENABLED_HELP_PE_STAFF === 'true'
+      ) {
         const { body } = await superagent.get('/api/user/is-pro')
         if (body.status === 'Authorized') {
           localStorage.setItem(IS_PRO_LOCAL_STORAGE, 'true')

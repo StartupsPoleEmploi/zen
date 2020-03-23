@@ -24,6 +24,7 @@ const stepperRoutes = [
   '/files',
   '/dashboard',
   '/history',
+  '/cgu',
 ]
 const [
   declarationRoute,

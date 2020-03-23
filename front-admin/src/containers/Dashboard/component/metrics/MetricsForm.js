@@ -1,30 +1,30 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react'
-import { DatePicker, InputNumber, Select } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Select, Spin } from 'antd'
+import superagent from 'superagent'
+import moment from 'moment'
+
 import Metrics from './Metrics'
 
 function MetricsForm() {
-  const [firstPeriodStart, setFirstPeriodStart] = useState(null)
-  const [secondPeriodStart, setSecondPeriodStart] = useState(null)
-  const [duration, setDuration] = useState(1) // in weeks
-  const [data, setData] = useState('') // in weeks
+  const [declarationMonths, setDeclarationMonths] = useState(null)
+  const [firstDeclarationMonth, setFirstDeclarationMonth] = useState(null)
+  const [secondDeclarationMonth, setSecondDeclarationMonth] = useState(null)
+
+  // Get declaration months at start
+  useEffect(() => {
+    async function fetchData() {
+      const { body } = await superagent.get('/zen-admin-api/declarationsMonths')
+      setDeclarationMonths(body)
+    }
+    fetchData()
+  }, [])
+
+  if (declarationMonths === null) return <Spin />
 
   return (
     <div>
-      <div
-        style={{
-          color: '#004085',
-          backgroundColor: '#cce5ff',
-          borderColor: '#b8daff',
-          padding: '1rem',
-          margin: '1rem 1rem 3rem 1rem',
-        }}
-      >
-        Cette page vous permet de comparer deux périodes temporels sur une
-        plusieurs semaines autour d'un évènements particuliers
-      </div>
-
       <div
         style={{
           display: 'flex',
@@ -34,79 +34,48 @@ function MetricsForm() {
         }}
       >
         <div>
-          <label htmlFor="first-period">
-            Date de début de la 1<up>ère</up> période:
-          </label>
-          <DatePicker
-            style={{ width: '150px', marginLeft: '1rem' }}
-            onChange={setFirstPeriodStart}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="second-period">
-            Date de début de la 2<up>ème</up> période:
-          </label>
-          <DatePicker
-            style={{ width: '150px', marginLeft: '1rem' }}
-            onChange={setSecondPeriodStart}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="duration">Durée (en semaines):</label>
-          <InputNumber
-            style={{ width: '75px', marginLeft: '1rem' }}
-            min={1}
-            max={10}
-            defaultValue={duration}
-            onChange={setDuration}
-          />
-        </div>
-
-        <div>
-          Données à afficher :
+          <label htmlFor="start-period">Actualisation 1 :</label>
           <Select
             id="start-period"
-            style={{ width: '300px', marginLeft: '1rem' }}
-            value={data}
-            onChange={setData}
+            style={{ width: '150px', marginLeft: '2rem' }}
+            value={firstDeclarationMonth}
+            onChange={setFirstDeclarationMonth}
           >
-            <Select.Option value=""></Select.Option>
-            <Select.Option value="new-user">
-              Utilisateurs inscrits
-            </Select.Option>
-            <Select.Option value="declaration-started">
-              Actualisations démarrées
-            </Select.Option>
-            <Select.Option value="total-declaration-started">
-              Total actualisations démarrées
-            </Select.Option>
-            <Select.Option value="declaration-employers-finished">
-              Actualisations terminées
-            </Select.Option>
-            <Select.Option value="total-declaration-employers-finished">
-              Total actualisations terminées
-            </Select.Option>
-            <Select.Option value="declaration-files-end">
-              Actualisations terminées et fichier transmis
-            </Select.Option>
-            <Select.Option value="total-declaration-files-end">
-              Total actualisations terminées et fichier transmis
-            </Select.Option>
+            {declarationMonths.map((month) => (
+              <Select.Option key={month.id} value={month.id}>
+                {moment(month.month).format('MMM YYYY')}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>{' '}
+        <div>
+          <label htmlFor="start-period">Actualisation 2 :</label>
+          <Select
+            id="start-period"
+            style={{ width: '150px', marginLeft: '2rem' }}
+            value={secondDeclarationMonth}
+            onChange={setSecondDeclarationMonth}
+          >
+            {declarationMonths.map((month) => (
+              <Select.Option key={month.id} value={month.id}>
+                {moment(month.month).format('MMM YYYY')}
+              </Select.Option>
+            ))}
           </Select>
         </div>
       </div>
 
-      {firstPeriodStart && secondPeriodStart && duration && data !== '' && (
-        <div style={{ margin: '2rem auto' }}>
-          <Metrics
-            firstPeriodStart={firstPeriodStart}
-            secondPeriodStart={secondPeriodStart}
-            duration={duration}
-            data={data}
-          />
-        </div>
+      {firstDeclarationMonth && (
+        <Metrics
+          firstDeclarationsMonth={declarationMonths.find(
+            (d) => d.id === firstDeclarationMonth,
+          )}
+          secondDeclarationsMonth={
+            secondDeclarationMonth
+              ? declarationMonths.find((d) => d.id === secondDeclarationMonth)
+              : null
+          }
+        />
       )}
     </div>
   )

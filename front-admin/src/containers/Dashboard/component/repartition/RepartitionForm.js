@@ -66,6 +66,7 @@ function updateUrlParams({ period, agency, department, region }) {
     if (agency) updateUrl(`${base}&agency=${extractAgencyCode(agency)}`)
     else if (department) updateUrl(`${base}&department=${slug(department, { lower: true })}`)
     else if (region) updateUrl(`${base}&region=${slug(region, { lower: true })}`)
+    else updateUrl(base)
   } else updateUrl('/zen-admin?activeTab=repartition')
 }
 // END UTILS
@@ -192,12 +193,7 @@ function RepartitionForm() {
       if (reg) selectRegionValue(reg)
     }
     setTimeout(() => setFormsInitDone(true), 500)
-  }, [
-    selectAgencyValue,
-    selectDepartmentValue,
-    selectRegionValue,
-    setFormsInitDone,
-  ])
+  }, [])
 
   const declarationMonth = period
     ? declarationsMonth.find((d) => d.id === period)

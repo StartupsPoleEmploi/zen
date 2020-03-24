@@ -16,6 +16,7 @@ import AppTitle from '../Generic/AppTitle'
 import ZnNavLogin from './ZnNavLogin'
 import { primaryBlue, mobileBreakpoint } from '../../constants'
 import dashboardBg from '../../images/dashboard-bg.svg'
+import Covid19Warning from '../Generic/Covid19Warning'
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -86,6 +87,13 @@ const PersonIcon = styled(Person)`
 const Container = styled.div`
   display: flex;
   width: 100%;
+`
+
+const CovidContainer = styled.div`
+  padding: 0 15% 1rem 15%;
+  @media (max-width: 1400px) {
+    padding: 0 5% 1rem 5%;
+  }
 `
 
 const Main = styled.main.attrs({ role: 'main' })`
@@ -193,7 +201,12 @@ export const Layout = ({
       {useMobileVersion && isNavVisible && NavComponent()}
       <Container>
         {!useMobileVersion && isNavVisible && NavComponent()}
-        <Main addBackground={pathname === dashboardRoute}>{children}</Main>
+        <Main addBackground={pathname === dashboardRoute}>
+          <CovidContainer>
+            <Covid19Warning />
+          </CovidContainer>
+          {children}
+        </Main>
       </Container>
     </StyledLayout>
   )

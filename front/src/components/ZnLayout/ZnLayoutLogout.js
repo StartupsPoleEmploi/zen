@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -11,6 +12,16 @@ import AppTitle from '../Generic/AppTitle'
 
 import logoPEMono from '../../images/logoPE-mono.png'
 import Footer from './footer/Footer'
+import Covid19Warning from '../Generic/Covid19Warning'
+
+const CovidContainer = styled.div`
+  padding: 0 15% 1rem 15%;
+  background: #f3f4f5;
+
+  @media (max-width: 1400px) {
+    padding: 0 5% 1rem 5%;
+  }
+`
 
 const windowWidthElement = {
   width: '100vw',
@@ -92,6 +103,9 @@ export default function ZnLayoutLogout({ children }) {
         </Button>
       </header>
 
+      <CovidContainer>
+        <Covid19Warning />
+      </CovidContainer>
       <main style={{ overflow: 'hidden' }} role="main">
         {children}
       </main>

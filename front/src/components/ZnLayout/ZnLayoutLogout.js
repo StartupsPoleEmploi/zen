@@ -104,7 +104,7 @@ export default function ZnLayoutLogout({ children }) {
       </header>
 
       <CovidContainer>
-        <Covid19Warning />
+        <Covid19Warning whiteBg />
       </CovidContainer>
       <main style={{ overflow: 'hidden' }} role="main">
         {children}

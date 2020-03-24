@@ -169,15 +169,6 @@ export const Layout = ({
               title={
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <Button
-                    href="/cgu"
-                    target="_self"
-                    disableRipple
-                    variant="text"
-                  >
-                    CGU
-                  </Button>
-
-                  <Button
                     href="/api/login/logout"
                     target="_self"
                     disableRipple

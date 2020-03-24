@@ -1,19 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 import MainActionButton from './MainActionButton'
 import { errorOrange, intermediaryBreakpoint } from '../../constants'
 
 const Container = styled.div`
   width: 100%;
+  max-width: 1100px;
   display: grid;
   grid-template-columns: 5px 1fr 230px;
   grid-column-gap: 2rem;
   grid-row-gap: 1rem;
   padding: 1.5rem;
   border: solid 1px ${errorOrange};
-  margin-bottom: 3rem;
+  margin: 0 auto 3rem auto;
+  background: ${({ whiteBg }) => (whiteBg ? 'white' : null)};
 
   @media (max-width: ${intermediaryBreakpoint}) {
     grid-template-columns: 5px 1fr;
@@ -59,9 +62,9 @@ const MoreInfoButton = styled(MainActionButton)`
   }
 `
 
-function Covid19Warning() {
+function Covid19Warning({ whiteBg = false }) {
   return (
-    <Container>
+    <Container whiteBg={whiteBg}>
       <div>
         <ExclamationMark aria-hidden="true">!</ExclamationMark>
       </div>
@@ -88,6 +91,10 @@ function Covid19Warning() {
       </ButtonContainer>
     </Container>
   )
+}
+
+Covid19Warning.propTypes = {
+  whiteBg: PropTypes.bool,
 }
 
 export default Covid19Warning

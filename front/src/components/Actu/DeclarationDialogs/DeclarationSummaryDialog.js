@@ -36,7 +36,7 @@ const DeclarationContent = styled(DialogContentText).attrs({
 })`
   && {
     margin: auto;
-    max-width: 29rem;
+    max-width: 40rem;
     text-align: left;
     padding-bottom: 3rem;
   }
@@ -111,6 +111,7 @@ const DeclarationSummaryDialog = ({
 
   return (
     <CustomDialog
+      fullWidth
       content={
         <>
           <StyledDialogContentText>

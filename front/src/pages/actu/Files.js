@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
-import { H2, H1 } from '../../components/Generic/Titles'
+import { H1 } from '../../components/Generic/Titles'
 
 import {
   fetchDeclarations as fetchDeclarationAction,
@@ -133,18 +133,6 @@ const ActuStatusContainer = styled.div`
 
 const Upper = styled.span`
   text-transform: uppercase;
-`
-
-const StyledH2 = styled(H2)`
-  && {
-    margin-top: 8rem;
-    margin-bottom: 4rem;
-    font-size: 1.9rem;
-    padding-bottom: 0.5rem;
-    border-bottom: solid 1px lightgray;
-    display: inline-block;
-    align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)};
-  }
 `
 
 const H1Title = styled(H1)`
@@ -539,12 +527,13 @@ export class Files extends Component {
           paddingLeft: this.props.width !== 'xs' ? '2rem' : null,
         }}
       >
-        <StyledH2 width={this.props.width}>
-          Actualisation -{' '}
-          <Upper>{moment(lastDeclaration).format('MMMM YYYY')}</Upper>
-        </StyledH2>
-
-        <Typography style={{ fontWeight: 'bold', fontSize: '1.8rem' }}>
+        <Typography
+          style={{
+            fontWeight: 'bold',
+            fontSize: '1.8rem',
+            padding: '3rem 2rem',
+          }}
+        >
           <CheckIcon />
           <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
         </Typography>

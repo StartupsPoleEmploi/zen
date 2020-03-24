@@ -242,6 +242,9 @@ export class Employers extends Component {
   }
 
   componentDidMount() {
+    // Scroll to top on enter
+    document.body.scrollIntoView()
+
     this.props
       .fetchDeclarations({ limit: 2 })
       .then(() => {

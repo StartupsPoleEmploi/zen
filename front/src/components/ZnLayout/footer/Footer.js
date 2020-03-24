@@ -76,13 +76,14 @@ const StyledLink = styled(Link)`
     display: grid;
     grid-template-columns: 1fr 5rem;
     cursor: pointer;
+    align-items: center;
 
     &:hover {
       text-decoration: underline;
     }
 
     @media (max-width: ${mobileBreakpoint}) {
-      width: 70%;
+      width: 90%;
       margin: auto;
     }
   }

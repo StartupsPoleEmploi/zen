@@ -657,7 +657,7 @@ export class Files extends Component {
       !user.isBlocked
     ) {
       return (
-        <ActuStatusContainer>
+        <ActuStatusContainer width={this.props.width}>
           <ActuStatus
             activeMonth={activeMonth}
             user={user}

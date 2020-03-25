@@ -46,7 +46,7 @@ export default function Users() {
           <TabPane tab="Global" key="1">
             <Global />
           </TabPane>
-          <TabPane tab="Comparaisons de périodes" key="2">
+          <TabPane tab="Comparaison d'actualisations" key="2">
             <MetricsForm />
           </TabPane>
           <TabPane tab="Répartition géographique" key="3">

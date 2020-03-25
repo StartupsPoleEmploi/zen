@@ -24,6 +24,7 @@ const stepperRoutes = [
   '/files',
   '/dashboard',
   '/history',
+  '/cgu',
 ]
 const [
   declarationRoute,
@@ -36,14 +37,22 @@ const routesWithDisplayedNav = stepperRoutes.concat('/thanks')
 
 const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
   && {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
     z-index: 5;
     border-radius: 2rem 2rem 0 0;
     background-color: rgb(250, 250, 250);
 
+    transform: translate3d(0, 0, 0);
+
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-transform: scale3d(1, 1, 1);
+
+    * {
+      -webkit-backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: scale3d(1, 1, 1);
+    }
     & div[role='tablist'] > span {
       height: 0.3rem;
     }
@@ -128,7 +137,7 @@ const StyledTab = styled(Tab)`
     border-top: solid 1px #e2e2e2;
 
     &&.Mui-selected {
-      facolor: ${primaryBlue};
+      color: ${primaryBlue};
       font-weight: bold;
 
       svg {
@@ -269,61 +278,65 @@ export const NavLogin = ({
         : declarationRoute
 
     return (
-      <StyledTabs
-        variant="fullWidth"
-        value={pathname}
-        indicatorColor="primary"
-        in
+      <div
+        style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 5 }}
       >
-        <HomeTab
-          label={
-            <>
-              <HomeIcon alt="" />
-              Accueil
-            </>
-          }
-          disabled={false}
-          value={dashboardRoute}
-          onClick={() => push(dashboardRoute)}
-          role="link"
-        />
-        <StyledTab
-          label={
-            <>
-              <ListIcon alt="" />
-              Actualisation
-            </>
-          }
-          disabled={!shouldActivateDeclarationLink}
-          value={actuRoute}
-          onClick={() => push(actuRoute)}
-          role="link"
-        />
-        <StyledTab
-          label={
-            <>
-              <FileIcon alt="" />
-              Justificatifs
-            </>
-          }
-          value={filesRoute}
-          disabled={!isFilesServiceUp}
-          onClick={() => push(filesRoute)}
-          role="link"
-        />
-        <StyledTab
-          label={
-            <>
-              <RestoreIconImg alt="" />
-              Historique
-            </>
-          }
-          value={historyRoute}
-          disabled={!isFilesServiceUp}
-          onClick={() => push(historyRoute)}
-          role="link"
-        />
-      </StyledTabs>
+        <StyledTabs
+          variant="fullWidth"
+          value={pathname}
+          indicatorColor="primary"
+          in
+        >
+          <HomeTab
+            label={
+              <>
+                <HomeIcon alt="" />
+                Accueil
+              </>
+            }
+            disabled={false}
+            value={dashboardRoute}
+            onClick={() => push(dashboardRoute)}
+            role="link"
+          />
+          <StyledTab
+            label={
+              <>
+                <ListIcon alt="" />
+                Actualisation
+              </>
+            }
+            disabled={!shouldActivateDeclarationLink}
+            value={actuRoute}
+            onClick={() => push(actuRoute)}
+            role="link"
+          />
+          <StyledTab
+            label={
+              <>
+                <FileIcon alt="" />
+                Justificatifs
+              </>
+            }
+            value={filesRoute}
+            disabled={!isFilesServiceUp}
+            onClick={() => push(filesRoute)}
+            role="link"
+          />
+          <StyledTab
+            label={
+              <>
+                <RestoreIconImg alt="" />
+                Historique
+              </>
+            }
+            value={historyRoute}
+            disabled={!isFilesServiceUp}
+            onClick={() => push(historyRoute)}
+            role="link"
+          />
+        </StyledTabs>
+      </div>
     )
   }
 

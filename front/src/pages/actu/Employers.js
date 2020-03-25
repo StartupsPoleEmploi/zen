@@ -35,6 +35,7 @@ import {
   intermediaryBreakpoint,
   mobileBreakpoint,
   primaryBlue,
+  muiBreakpoints,
 } from '../../constants'
 import {
   MAX_SALARY,
@@ -46,6 +47,7 @@ import {
 } from '../../lib/salary'
 import { setNoNeedEmployerOnBoarding as setNoNeedEmployerOnBoardingAction } from '../../redux/actions/user'
 import EmployerOnBoarding from './EmployerOnBoarding/EmployerOnBoarding'
+import ScrollToButton from '../../components/Generic/ScrollToButton'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -70,6 +72,10 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    padding-bottom: 3rem;
+  }
 `
 
 const AddEmployersButtonContainer = styled.div`
@@ -141,6 +147,12 @@ const StyledMainAction = styled(MainActionButton)`
       width: 17rem;
     }
   }
+`
+
+const ScrollButtonContainer = styled.div`
+  position: fixed;
+  bottom: 17rem;
+  right: 2rem;
 `
 
 const employerTemplate = {
@@ -230,6 +242,9 @@ export class Employers extends Component {
   }
 
   componentDidMount() {
+    // Scroll to top on enter
+    document.body.scrollIntoView()
+
     this.props
       .fetchDeclarations({ limit: 2 })
       .then(() => {
@@ -543,6 +558,12 @@ export class Employers extends Component {
           onCancel={this.closePreviousEmployersModal}
           employers={this.state.previousEmployers}
         />
+
+        {this.props.width === muiBreakpoints.xs && (
+          <ScrollButtonContainer>
+            <ScrollToButton autoRemove />
+          </ScrollButtonContainer>
+        )}
       </StyledEmployers>
     )
   }

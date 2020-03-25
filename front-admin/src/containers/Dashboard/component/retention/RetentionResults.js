@@ -122,6 +122,24 @@ function RetentionResults({ startMonth }) {
           fin de l'actualisation !
         </div>
       </div>
+      <hr />
+      <div>
+        <h2 style={{ marginTop: '2rem' }}>
+          Sur les <strong>{values.baseUserNumber}</strong> utilisateurs ayant
+          fait leur <strong>première actualisation</strong> en{' '}
+          {formatMonth(startMonth.month)} et sur les{' '}
+          {values.retentionByDeclarationCount.length - 1} actualisation(s)
+          possible(s) ensuite :
+        </h2>
+        <ul>
+          {values.retentionByDeclarationCount.map((count, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <li key={i}>
+              {count} ont fait {i} {i > 1 ? 'actualisations' : 'actualisation'}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   )
 }

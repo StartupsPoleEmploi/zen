@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import MainActionButton from '../../components/Generic/MainActionButton'
 import sendDoc from '../../images/sendDoc.svg'
@@ -102,7 +102,6 @@ export default class Thanks extends Component {
                 target="_blank"
                 title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
                 style={{
-                  borderRadius: '3rem',
                   minWidth: '30rem',
                 }}
                 primary
@@ -119,7 +118,6 @@ export default class Thanks extends Component {
                 onClick={this.printDeclaration}
                 style={{
                   minWidth: '30rem',
-                  borderRadius: '3rem',
                 }}
                 variant="outlined"
               >
@@ -166,10 +164,13 @@ export default class Thanks extends Component {
             <Typography paragraph>
               Vous pourrez reprendre ultérieurement.
             </Typography>
-            <ErrorOutlineIcon style={{ color: '#1F2C59', fontSize: 40, marginTop: '4rem' }} />
-            <Typography paragraph style={{ fontSize: '1.7rem' }} >
-              N’oubliez pas de revenir avant le 15 pour valider votre actualisation.
-              <br/>
+            <ErrorOutlineIcon
+              style={{ color: '#1F2C59', fontSize: 40, marginTop: '4rem' }}
+            />
+            <Typography paragraph style={{ fontSize: '1.7rem' }}>
+              N’oubliez pas de revenir avant le 15 pour valider votre
+              actualisation.
+              <br />
               Un e-mail de rappel vous sera envoyé.
             </Typography>
           </Fragment>

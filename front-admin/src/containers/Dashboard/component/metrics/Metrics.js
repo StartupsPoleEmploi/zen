@@ -4,67 +4,188 @@ import React, { useEffect, useState } from 'react'
 import superagent from 'superagent'
 import { Spin } from 'antd'
 import moment from 'moment'
-
 import { ColumnChart } from 'react-chartkick'
 import 'chart.js'
 
 import './metrics.css'
 
-
-// prettier-ignore
-const URLS = {
-  'new-user': '/zen-admin-api/metrics/new-users',
-  'declaration-started': '/zen-admin-api/metrics/declaration-started',
-  'total-declaration-started': '/zen-admin-api/metrics/declaration-started',
-  'declaration-employers-finished': '/zen-admin-api/metrics/declaration-finished',
-  'total-declaration-employers-finished': '/zen-admin-api/metrics/declaration-finished',
-  'declaration-files-end': '/zen-admin-api/metrics/files-end',
-  'total-declaration-files-end': '/zen-admin-api/metrics/files-end',
-};
-
-const TITLES = {
-  'new-user': 'Utilisateurs inscrits',
-  'declaration-started': 'Actualisations démarrées',
-  'total-declaration-started': 'Total actualisations démarrées',
-  'declaration-employers-finished': 'Actualisations terminées',
-  'total-declaration-employers-finished': 'Total actualisations terminées',
-  'declaration-files-end': ' Actualisations terminées et fichier transmis',
-  'total-declaration-files-end': 'Total actualisations terminées et fichier transmis',
-};
-
 function formatDate(date) {
-  return moment(date).format('YYYY-MM-DD')
+  return moment(date).format('DD-MM')
 }
 function formatFrenchDate(date) {
-  return moment(date).format('DD-MM-YYYY')
+  return moment(date).format('MMM YYYY')
 }
 
-function Metrics({ firstPeriodStart, secondPeriodStart, duration, data }) {
+function formatGraph(
+  values,
+  dateKey,
+  accumulatedKey,
+  firstDeclarationsMonth,
+  secondDeclarationsMonth,
+) {
+  const graphData = [
+    {
+      name: `Actualisation ${formatFrenchDate(firstDeclarationsMonth.month)}`,
+      data: values[dateKey][accumulatedKey].firstPeriod,
+    },
+  ]
+
+  if (
+    secondDeclarationsMonth &&
+    firstDeclarationsMonth.id !== secondDeclarationsMonth.id
+  ) {
+    graphData[1] = {
+      name: `Actualisation : ${formatFrenchDate(
+        secondDeclarationsMonth.month,
+      )}`,
+      data: values[dateKey][accumulatedKey].secondPeriod,
+    }
+  }
+
+  return graphData
+}
+
+function Metrics({ firstDeclarationsMonth, secondDeclarationsMonth }) {
   const [values, setValues] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
-      let url = `${URLS[data]}?first=${formatDate(firstPeriodStart)}&second=${formatDate(secondPeriodStart)}&duration=${duration}`
-      if (data.startsWith('total')) url += '&accumulate=true'
+      let url = `/zen-admin-api/metrics?firstMonthId=${firstDeclarationsMonth.id}`
+      if (secondDeclarationsMonth) {
+        url += `&secondMonthId=${secondDeclarationsMonth.id}`
+      }
 
       const { body } = await superagent.get(url)
       setValues(body)
     }
     fetchData()
-  }, [firstPeriodStart, secondPeriodStart, duration, data])
+  }, [firstDeclarationsMonth, secondDeclarationsMonth])
 
   if (!values) return <Spin />
 
-  // Format data
-  const graphData = [
-    { name: `Depuis le ${formatFrenchDate(firstPeriodStart)}`, data: values.firstPeriod },
-    { name: `Depuis le ${formatFrenchDate(secondPeriodStart)}`, data: values.secondPeriod },
-  ]
+  // Compute graph values
+  const newUsersGraph = formatGraph(
+    values,
+    'newUsers',
+    'byDayResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const newUsersAccumultedGraph = formatGraph(
+    values,
+    'newUsers',
+    'accumulatedResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const declarationStartedGraph = formatGraph(
+    values,
+    'declarationStarted',
+    'byDayResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const declarationStartedAccumultedGraph = formatGraph(
+    values,
+    'declarationStarted',
+    'accumulatedResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const declarationFinishedGraph = formatGraph(
+    values,
+    'declarationFinished',
+    'byDayResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const declarationFinishedAccumulatedGraph = formatGraph(
+    values,
+    'declarationFinished',
+    'accumulatedResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const filesTransmittedGraph = formatGraph(
+    values,
+    'filesTransmitted',
+    'byDayResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
+  const filesTransmittedAccumulatedGraph = formatGraph(
+    values,
+    'filesTransmitted',
+    'accumulatedResults',
+    firstDeclarationsMonth,
+    secondDeclarationsMonth,
+  )
 
   return (
     <>
-      <div id="admin-chart" style={{ marginTop: '3rem' }}>
-        <ColumnChart title={TITLES[data]} data={graphData} download={`${data}-${formatFrenchDate(new Date())}`} />
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Premières connexions à Zen"
+          data={newUsersGraph}
+          download={`premieres-demarrees-${formatDate(new Date())}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Total cumulé des premières connexions à Zen"
+          data={newUsersAccumultedGraph}
+          download={`total-cumule-premieres-demarrees-${formatDate(
+            new Date(),
+          )}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Actualisations démarrées"
+          data={declarationStartedGraph}
+          download={`actualisations-demarrees-${formatDate(new Date())}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Total cumulé des actualisations démarrées"
+          data={declarationStartedAccumultedGraph}
+          download={`total-cumule-actualisations-demarrees-${formatDate(
+            new Date(),
+          )}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Actualisations terminées"
+          data={declarationFinishedGraph}
+          download={`actualisations-terminees-${formatDate(new Date())}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Total cumulé des actualisations terminées"
+          data={declarationFinishedAccumulatedGraph}
+          download={`total-cumule-actualisations-terminees-${formatDate(
+            new Date(),
+          )}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Dossiers complets"
+          data={filesTransmittedGraph}
+          download={`actualisations-validees-${formatDate(new Date())}`}
+        />
+      </div>
+      <div className="admin-chart" style={{ marginTop: '3rem' }}>
+        <ColumnChart
+          title="Total cumulé des dossiers complets"
+          data={filesTransmittedAccumulatedGraph}
+          download={`total-cumule-actualisations-validees-${formatDate(
+            new Date(),
+          )}`}
+        />
       </div>
     </>
   )

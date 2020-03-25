@@ -204,12 +204,12 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
         data-css-10e2wtd=""
       >
         <li
-          className="sc-kGXeez gIitUf"
+          className="sc-kpOJdX ijvfyb"
           id="hasWorked"
           style={Object {}}
         >
           <div
-            className="sc-kpOJdX ilUEkk"
+            className="sc-dxgOiQ gGcbQM"
             style={
               Object {
                 "flexDirection": "row",
@@ -218,23 +218,23 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
             }
           >
             <p
-              className="MuiTypography-root sc-dxgOiQ cCEsjD MuiTypography-body1"
+              className="MuiTypography-root sc-ckVGcZ hFvAjz MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-jKJlTe kSqSQd"
             >
               <div
-                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
+                className="MuiFormGroup-root sc-cSHVUG fHoCBU MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-chPdSV gCVnmw"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -310,11 +310,11 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-kgoBCf jxJxBN"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-48 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -454,12 +454,12 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
         data-css-10e2wtd=""
       >
         <li
-          className="sc-kGXeez gIitUf"
+          className="sc-kpOJdX ijvfyb"
           id="hasWorked"
           style={Object {}}
         >
           <div
-            className="sc-kpOJdX ilUEkk"
+            className="sc-dxgOiQ gGcbQM"
             style={
               Object {
                 "flexDirection": "row",
@@ -468,23 +468,23 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
             }
           >
             <p
-              className="MuiTypography-root sc-dxgOiQ cCEsjD MuiTypography-body1"
+              className="MuiTypography-root sc-ckVGcZ hFvAjz MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-jKJlTe kSqSQd"
             >
               <div
-                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
+                className="MuiFormGroup-root sc-cSHVUG fHoCBU MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-chPdSV gCVnmw"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -560,11 +560,11 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-kgoBCf jxJxBN"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd PrivateSwitchBase-checked-274 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-273 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt PrivateSwitchBase-checked-274 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -704,12 +704,12 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
         data-css-10e2wtd=""
       >
         <li
-          className="sc-kGXeez gIitUf"
+          className="sc-kpOJdX ijvfyb"
           id="hasWorked"
           style={Object {}}
         >
           <div
-            className="sc-kpOJdX ilUEkk"
+            className="sc-dxgOiQ gGcbQM"
             style={
               Object {
                 "flexDirection": "column",
@@ -718,23 +718,23 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
             }
           >
             <p
-              className="MuiTypography-root sc-dxgOiQ cCEsjD MuiTypography-body1"
+              className="MuiTypography-root sc-ckVGcZ hFvAjz MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-jKJlTe kSqSQd"
             >
               <div
-                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
+                className="MuiFormGroup-root sc-cSHVUG fHoCBU MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-chPdSV gCVnmw"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -810,11 +810,11 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-kgoBCf jxJxBN"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-123 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -954,12 +954,12 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
         data-css-10e2wtd=""
       >
         <li
-          className="sc-kGXeez gIitUf"
+          className="sc-kpOJdX ijvfyb"
           id="hasWorked"
           style={Object {}}
         >
           <div
-            className="sc-kpOJdX ilUEkk"
+            className="sc-dxgOiQ gGcbQM"
             style={
               Object {
                 "flexDirection": "row",
@@ -968,23 +968,23 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
             }
           >
             <p
-              className="MuiTypography-root sc-dxgOiQ cCEsjD MuiTypography-body1"
+              className="MuiTypography-root sc-ckVGcZ hFvAjz MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-jKJlTe kSqSQd"
             >
               <div
-                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
+                className="MuiFormGroup-root sc-cSHVUG fHoCBU MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-chPdSV gCVnmw"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1060,11 +1060,11 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-kgoBCf jxJxBN"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd PrivateSwitchBase-checked-424 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-423 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt PrivateSwitchBase-checked-424 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1207,12 +1207,12 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
         data-css-10e2wtd=""
       >
         <li
-          className="sc-kGXeez gIitUf"
+          className="sc-kpOJdX ijvfyb"
           id="hasWorked"
           style={Object {}}
         >
           <div
-            className="sc-kpOJdX ilUEkk"
+            className="sc-dxgOiQ gGcbQM"
             style={
               Object {
                 "flexDirection": "row",
@@ -1221,23 +1221,23 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
             }
           >
             <p
-              className="MuiTypography-root sc-dxgOiQ cCEsjD MuiTypography-body1"
+              className="MuiTypography-root sc-ckVGcZ hFvAjz MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-jKJlTe kSqSQd"
             >
               <div
-                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
+                className="MuiFormGroup-root sc-cSHVUG fHoCBU MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-chPdSV gCVnmw"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd PrivateSwitchBase-checked-349 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt PrivateSwitchBase-checked-349 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1313,11 +1313,11 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-kgoBCf jxJxBN"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-348 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1460,12 +1460,12 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
         data-css-10e2wtd=""
       >
         <li
-          className="sc-kGXeez gIitUf"
+          className="sc-kpOJdX ijvfyb"
           id="hasWorked"
           style={Object {}}
         >
           <div
-            className="sc-kpOJdX ilUEkk"
+            className="sc-dxgOiQ gGcbQM"
             style={
               Object {
                 "flexDirection": "row",
@@ -1474,23 +1474,23 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
             }
           >
             <p
-              className="MuiTypography-root sc-dxgOiQ cCEsjD MuiTypography-body1"
+              className="MuiTypography-root sc-ckVGcZ hFvAjz MuiTypography-body1"
             >
               Avez-vous travaillé ?
             </p>
             <fieldset
-              className="MuiFormControl-root sc-ckVGcZ bTOTff"
+              className="MuiFormControl-root sc-jKJlTe kSqSQd"
             >
               <div
-                className="MuiFormGroup-root sc-jzJRlG jcfNmN MuiFormGroup-row"
+                className="MuiFormGroup-root sc-cSHVUG fHoCBU MuiFormGroup-row"
                 role="radiogroup"
               >
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-kAzzGY gyHdxr"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-chPdSV gCVnmw"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd PrivateSwitchBase-checked-199 Mui-checked MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt PrivateSwitchBase-checked-199 Mui-checked MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -1566,11 +1566,11 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
                   </span>
                 </label>
                 <label
-                  className="MuiFormControlLabel-root sc-cSHVUG sc-chPdSV cRvChx"
+                  className="MuiFormControlLabel-root sc-kAzzGY sc-kgoBCf jxJxBN"
                 >
                   <span
                     aria-disabled={false}
-                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kgoBCf iMZBEd MuiIconButton-colorSecondary"
+                    className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-198 MuiRadio-root MuiRadio-colorSecondary sc-kGXeez cxuVyt MuiIconButton-colorSecondary"
                     onBlur={[Function]}
                     onDragLeave={[Function]}
                     onFocus={[Function]}
@@ -2265,19 +2265,19 @@ exports[`Storyshots EuroInput with integer value 1`] = `
 
 exports[`Storyshots Home default 1`] = `
 <div
-  className="sc-ksYbfQ jtlMpM"
+  className="sc-kvZOFW bZIeuY"
 >
   <section
-    className="sc-frDJqD cdjoTX"
+    className="sc-jbKcbu cVPSpN"
   >
     <div
-      className="sc-kvZOFW cjFLKS"
+      className="sc-dNLxif ezhao"
     >
       <div
-        className="sc-hqyNC jDWPWK"
+        className="sc-jqCOkK cPFupp"
       >
         <h1
-          className="MuiTypography-root sc-jbKcbu gFfnWB MuiTypography-h1 MuiTypography-paragraph"
+          className="MuiTypography-root sc-uJMKN bdkFYP MuiTypography-h1 MuiTypography-paragraph"
           style={
             Object {
               "fontWeight": "bold",
@@ -2303,7 +2303,7 @@ exports[`Storyshots Home default 1`] = `
           </span>
         </h1>
         <h2
-          className="MuiTypography-root sc-dNLxif bEkpAh MuiTypography-h6 MuiTypography-paragraph"
+          className="MuiTypography-root sc-bbmXgH hoBceQ MuiTypography-h6 MuiTypography-paragraph"
         >
           Zen est un service Pôle emploi dédié aux
            
@@ -2315,7 +2315,7 @@ exports[`Storyshots Home default 1`] = `
         </h2>
       </div>
       <button
-        className="sc-cHGsZl kRpYEJ"
+        className="sc-cJSrbW jxxXNg"
         id="home-video"
         onClick={[Function]}
         style={
@@ -2367,7 +2367,7 @@ exports[`Storyshots Home default 1`] = `
     </div>
   </section>
   <section
-    className="sc-jqCOkK heXNii"
+    className="sc-gGBfsJ eaQlFN"
     style={
       Object {
         "alignItems": "center",
@@ -2393,13 +2393,13 @@ exports[`Storyshots Home default 1`] = `
       }
     />
     <ul
-      className="sc-cIShpX jWNHdF"
+      className="sc-iELTvK eDRMfJ"
     >
       <li
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
       >
         <span
-          className="sc-feJyhm bKpHmC"
+          className="sc-jwKygS casAyA"
         >
           <svg
             alt=""
@@ -2423,22 +2423,22 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jwKygS bxevnb MuiTypography-body1"
+          className="MuiTypography-root sc-bYSBpT hrVvoV MuiTypography-body1"
         >
           Zen additionne pour vous 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           vos heures travaillées et totalise 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           vos revenus mensuels !
         </p>
       </li>
       <li
         aria-hidden="true"
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
         style={
           Object {
             "display": "block",
@@ -2449,7 +2449,7 @@ exports[`Storyshots Home default 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-iELTvK cxOleS MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-btzYZH fyldYP MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -2460,10 +2460,10 @@ exports[`Storyshots Home default 1`] = `
         </svg>
       </li>
       <li
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
       >
         <span
-          className="sc-feJyhm bKpHmC"
+          className="sc-jwKygS casAyA"
         >
           <svg
             alt=""
@@ -2487,22 +2487,22 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jwKygS bxevnb MuiTypography-body1"
+          className="MuiTypography-root sc-bYSBpT hrVvoV MuiTypography-body1"
         >
           Zen vous indique 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           les justificatifs à transmettre selon 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           votre déclaration.
         </p>
       </li>
       <li
         aria-hidden="true"
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
         style={
           Object {
             "display": "block",
@@ -2513,7 +2513,7 @@ exports[`Storyshots Home default 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-iELTvK cxOleS MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-btzYZH fyldYP MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -2524,10 +2524,10 @@ exports[`Storyshots Home default 1`] = `
         </svg>
       </li>
       <li
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
       >
         <span
-          className="sc-feJyhm bKpHmC"
+          className="sc-jwKygS casAyA"
         >
           <svg
             alt=""
@@ -2551,15 +2551,15 @@ exports[`Storyshots Home default 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jwKygS bxevnb MuiTypography-body1"
+          className="MuiTypography-root sc-bYSBpT hrVvoV MuiTypography-body1"
         >
           Accédez à un espace personnel
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
            avec tous vos justificatifs
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
            transmis mois par mois.
         </p>
@@ -2567,10 +2567,10 @@ exports[`Storyshots Home default 1`] = `
     </ul>
   </section>
   <section
-    className="sc-jtRfpW gGqhsG"
+    className="sc-gxMtzJ ioOozY"
   >
     <h2
-      className="MuiTypography-root sc-bbmXgH kkbCKz MuiTypography-h5"
+      className="MuiTypography-root sc-fYxtnH ofFSq MuiTypography-h5"
       style={
         Object {
           "color": "#fff",
@@ -2580,13 +2580,13 @@ exports[`Storyshots Home default 1`] = `
       Zen est pour vous si ...
     </h2>
     <div
-      className="sc-kTUwUJ gltHCD"
+      className="sc-dfVpRl kjCkNI"
     >
       <div
-        className="sc-dqBHgY jkiPku"
+        className="sc-gzOgki bAVrZt"
       >
         <p
-          className="MuiTypography-root sc-gxMtzJ byEvmI MuiTypography-body1"
+          className="MuiTypography-root sc-iyvyFf dayALN MuiTypography-body1"
         >
           <svg
             aria-hidden="true"
@@ -2634,10 +2634,10 @@ exports[`Storyshots Home default 1`] = `
     </div>
   </section>
   <section
-    className="sc-jqCOkK heXNii"
+    className="sc-gGBfsJ eaQlFN"
   >
     <h2
-      className="MuiTypography-root sc-bbmXgH kkbCKz MuiTypography-h5"
+      className="MuiTypography-root sc-fYxtnH ofFSq MuiTypography-h5"
       style={
         Object {
           "textAlign": "center",
@@ -2653,18 +2653,18 @@ exports[`Storyshots Home default 1`] = `
        à chaque étape
     </h2>
     <div
-      className="sc-gGBfsJ flSbsd"
+      className="sc-tilXH biHGoU"
     >
       <div
-        className="sc-fYxtnH jWIsyd"
+        className="sc-ktHwxA gTOjLO"
       >
         <div
-          className="MuiTypography-root sc-hEsumM bnKIKs MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-kafWEX fLNuIr MuiTypography-h1 MuiTypography-colorPrimary"
         >
           1
         </div>
         <h3
-          className="MuiTypography-root sc-bbmXgH sc-tilXH kDvpqI MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-fYxtnH sc-cIShpX duZDNm MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Je suis informé(e) tous les mois du début de l'actualisation
         </h3>
@@ -2676,23 +2676,23 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-ktHwxA iXGkBQ"
+        className="sc-feJyhm eRmued"
         src="photo1.jpg"
       />
     </div>
     <div
-      className="sc-gGBfsJ sc-jnlKLf iYmePW"
+      className="sc-tilXH sc-hEsumM dUZQBj"
     >
       <div
-        className="sc-fYxtnH jWIsyd"
+        className="sc-ktHwxA gTOjLO"
       >
         <div
-          className="MuiTypography-root sc-hEsumM bnKIKs MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-kafWEX fLNuIr MuiTypography-h1 MuiTypography-colorPrimary"
         >
           2
         </div>
         <h3
-          className="MuiTypography-root sc-bbmXgH sc-tilXH kDvpqI MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-fYxtnH sc-cIShpX duZDNm MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
         </h3>
@@ -2704,23 +2704,23 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-ktHwxA iXGkBQ"
+        className="sc-feJyhm eRmued"
         src="photo2.jpg"
       />
     </div>
     <div
-      className="sc-gGBfsJ flSbsd"
+      className="sc-tilXH biHGoU"
     >
       <div
-        className="sc-fYxtnH jWIsyd"
+        className="sc-ktHwxA gTOjLO"
       >
         <div
-          className="MuiTypography-root sc-hEsumM bnKIKs MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-kafWEX fLNuIr MuiTypography-h1 MuiTypography-colorPrimary"
         >
           3
         </div>
         <h3
-          className="MuiTypography-root sc-bbmXgH sc-tilXH kDvpqI MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-fYxtnH sc-cIShpX duZDNm MuiTypography-h5 MuiTypography-colorSecondary"
         >
           J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
@@ -2732,74 +2732,74 @@ exports[`Storyshots Home default 1`] = `
       </div>
       <img
         alt=""
-        className="sc-ktHwxA iXGkBQ"
+        className="sc-feJyhm eRmued"
         src="photo3.jpg"
       />
     </div>
   </section>
   <section
-    className="sc-jqCOkK sc-uJMKN bAllyU"
+    className="sc-gGBfsJ sc-jnlKLf aPaLq"
   >
     <h2
-      className="MuiTypography-root sc-bbmXgH kkbCKz MuiTypography-h5"
+      className="MuiTypography-root sc-fYxtnH ofFSq MuiTypography-h5"
     >
       Nos utilisateurs approuvent !
     </h2>
     <div
-      className="sc-btzYZH fHOmYY"
+      className="sc-elJkPf kYXavU"
     >
       <div
-        className="sc-lhVmIH glWtdI"
+        className="sc-jtRfpW iKsomU"
       >
         <p
-          className="MuiTypography-root sc-bYSBpT bOZpjV MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Déborah - Lille
+            Céline
             <br />
-            (11/04/19)
+            Mars 2020
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-elJkPf jRsZyA MuiTypography-body1"
+          className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
+          « Zen est simple d'utilisation, très pratique. On rentre les données et les calculs se font automatiquement. »
         </p>
       </div>
       <div
-        className="sc-lhVmIH glWtdI"
+        className="sc-jtRfpW iKsomU"
       >
         <p
-          className="MuiTypography-root sc-bYSBpT bOZpjV MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Sophie - Condette
+            Myriam
             <br />
-            (10/04/19)
+            Mars 2020
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-elJkPf jRsZyA MuiTypography-body1"
+          className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Plus simple vu le nombre d'employeurs. Belle innovation »
+          « Gain de temps et très facile d'utilisation pour transmettre les documents. Site très bien fait et adapté aux assistantes maternelles. À recommander fortement »
         </p>
       </div>
       <div
-        className="sc-lhVmIH glWtdI"
+        className="sc-jtRfpW iKsomU"
       >
         <p
-          className="MuiTypography-root sc-bYSBpT bOZpjV MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Fatima - Amiens
+            Christiane
             <br />
-            (09/04/19)
+            Mars 2020
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-elJkPf jRsZyA MuiTypography-body1"
+          className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
+          « Actualisation plus facile d'accès et d'utilisation. De plus, l'interface est agréable et bien organisée. »
         </p>
       </div>
     </div>
@@ -2809,10 +2809,10 @@ exports[`Storyshots Home default 1`] = `
 
 exports[`Storyshots Home loginFailed 1`] = `
 <div
-  className="sc-ksYbfQ jtlMpM"
+  className="sc-kvZOFW bZIeuY"
 >
   <div
-    className="sc-hmzhuo cvHPoa"
+    className="sc-hqyNC TculT"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
@@ -2823,16 +2823,16 @@ exports[`Storyshots Home loginFailed 1`] = `
     </p>
   </div>
   <section
-    className="sc-frDJqD cdjoTX"
+    className="sc-jbKcbu cVPSpN"
   >
     <div
-      className="sc-kvZOFW cjFLKS"
+      className="sc-dNLxif ezhao"
     >
       <div
-        className="sc-hqyNC jDWPWK"
+        className="sc-jqCOkK cPFupp"
       >
         <h1
-          className="MuiTypography-root sc-jbKcbu gFfnWB MuiTypography-h1 MuiTypography-paragraph"
+          className="MuiTypography-root sc-uJMKN bdkFYP MuiTypography-h1 MuiTypography-paragraph"
           style={
             Object {
               "fontWeight": "bold",
@@ -2858,7 +2858,7 @@ exports[`Storyshots Home loginFailed 1`] = `
           </span>
         </h1>
         <h2
-          className="MuiTypography-root sc-dNLxif bEkpAh MuiTypography-h6 MuiTypography-paragraph"
+          className="MuiTypography-root sc-bbmXgH hoBceQ MuiTypography-h6 MuiTypography-paragraph"
         >
           Zen est un service Pôle emploi dédié aux
            
@@ -2870,7 +2870,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         </h2>
       </div>
       <button
-        className="sc-cHGsZl kRpYEJ"
+        className="sc-cJSrbW jxxXNg"
         id="home-video"
         onClick={[Function]}
         style={
@@ -2922,7 +2922,7 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
   </section>
   <section
-    className="sc-jqCOkK heXNii"
+    className="sc-gGBfsJ eaQlFN"
     style={
       Object {
         "alignItems": "center",
@@ -2948,13 +2948,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       }
     />
     <ul
-      className="sc-cIShpX jWNHdF"
+      className="sc-iELTvK eDRMfJ"
     >
       <li
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
       >
         <span
-          className="sc-feJyhm bKpHmC"
+          className="sc-jwKygS casAyA"
         >
           <svg
             alt=""
@@ -2978,22 +2978,22 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jwKygS bxevnb MuiTypography-body1"
+          className="MuiTypography-root sc-bYSBpT hrVvoV MuiTypography-body1"
         >
           Zen additionne pour vous 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           vos heures travaillées et totalise 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           vos revenus mensuels !
         </p>
       </li>
       <li
         aria-hidden="true"
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
         style={
           Object {
             "display": "block",
@@ -3004,7 +3004,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-iELTvK cxOleS MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-btzYZH fyldYP MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -3015,10 +3015,10 @@ exports[`Storyshots Home loginFailed 1`] = `
         </svg>
       </li>
       <li
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
       >
         <span
-          className="sc-feJyhm bKpHmC"
+          className="sc-jwKygS casAyA"
         >
           <svg
             alt=""
@@ -3042,22 +3042,22 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jwKygS bxevnb MuiTypography-body1"
+          className="MuiTypography-root sc-bYSBpT hrVvoV MuiTypography-body1"
         >
           Zen vous indique 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           les justificatifs à transmettre selon 
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
           votre déclaration.
         </p>
       </li>
       <li
         aria-hidden="true"
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
         style={
           Object {
             "display": "block",
@@ -3068,7 +3068,7 @@ exports[`Storyshots Home loginFailed 1`] = `
         <svg
           alt=""
           aria-hidden="true"
-          className="MuiSvgIcon-root sc-iELTvK cxOleS MuiSvgIcon-colorPrimary"
+          className="MuiSvgIcon-root sc-btzYZH fyldYP MuiSvgIcon-colorPrimary"
           focusable="false"
           role="presentation"
           viewBox="0 0 24 24"
@@ -3079,10 +3079,10 @@ exports[`Storyshots Home loginFailed 1`] = `
         </svg>
       </li>
       <li
-        className="sc-kafWEX dACNUE"
+        className="sc-cmTdod kJBHPz"
       >
         <span
-          className="sc-feJyhm bKpHmC"
+          className="sc-jwKygS casAyA"
         >
           <svg
             alt=""
@@ -3106,15 +3106,15 @@ exports[`Storyshots Home loginFailed 1`] = `
           </svg>
         </span>
         <p
-          className="MuiTypography-root sc-jwKygS bxevnb MuiTypography-body1"
+          className="MuiTypography-root sc-bYSBpT hrVvoV MuiTypography-body1"
         >
           Accédez à un espace personnel
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
            avec tous vos justificatifs
           <br
-            className="sc-dfVpRl cqOZrN"
+            className="sc-hwwEjo gGcDIS"
           />
            transmis mois par mois.
         </p>
@@ -3122,10 +3122,10 @@ exports[`Storyshots Home loginFailed 1`] = `
     </ul>
   </section>
   <section
-    className="sc-jtRfpW gGqhsG"
+    className="sc-gxMtzJ ioOozY"
   >
     <h2
-      className="MuiTypography-root sc-bbmXgH kkbCKz MuiTypography-h5"
+      className="MuiTypography-root sc-fYxtnH ofFSq MuiTypography-h5"
       style={
         Object {
           "color": "#fff",
@@ -3135,13 +3135,13 @@ exports[`Storyshots Home loginFailed 1`] = `
       Zen est pour vous si ...
     </h2>
     <div
-      className="sc-kTUwUJ gltHCD"
+      className="sc-dfVpRl kjCkNI"
     >
       <div
-        className="sc-dqBHgY jkiPku"
+        className="sc-gzOgki bAVrZt"
       >
         <p
-          className="MuiTypography-root sc-gxMtzJ byEvmI MuiTypography-body1"
+          className="MuiTypography-root sc-iyvyFf dayALN MuiTypography-body1"
         >
           <svg
             aria-hidden="true"
@@ -3189,10 +3189,10 @@ exports[`Storyshots Home loginFailed 1`] = `
     </div>
   </section>
   <section
-    className="sc-jqCOkK heXNii"
+    className="sc-gGBfsJ eaQlFN"
   >
     <h2
-      className="MuiTypography-root sc-bbmXgH kkbCKz MuiTypography-h5"
+      className="MuiTypography-root sc-fYxtnH ofFSq MuiTypography-h5"
       style={
         Object {
           "textAlign": "center",
@@ -3208,18 +3208,18 @@ exports[`Storyshots Home loginFailed 1`] = `
        à chaque étape
     </h2>
     <div
-      className="sc-gGBfsJ flSbsd"
+      className="sc-tilXH biHGoU"
     >
       <div
-        className="sc-fYxtnH jWIsyd"
+        className="sc-ktHwxA gTOjLO"
       >
         <div
-          className="MuiTypography-root sc-hEsumM bnKIKs MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-kafWEX fLNuIr MuiTypography-h1 MuiTypography-colorPrimary"
         >
           1
         </div>
         <h3
-          className="MuiTypography-root sc-bbmXgH sc-tilXH kDvpqI MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-fYxtnH sc-cIShpX duZDNm MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Je suis informé(e) tous les mois du début de l'actualisation
         </h3>
@@ -3231,23 +3231,23 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-ktHwxA iXGkBQ"
+        className="sc-feJyhm eRmued"
         src="photo1.jpg"
       />
     </div>
     <div
-      className="sc-gGBfsJ sc-jnlKLf iYmePW"
+      className="sc-tilXH sc-hEsumM dUZQBj"
     >
       <div
-        className="sc-fYxtnH jWIsyd"
+        className="sc-ktHwxA gTOjLO"
       >
         <div
-          className="MuiTypography-root sc-hEsumM bnKIKs MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-kafWEX fLNuIr MuiTypography-h1 MuiTypography-colorPrimary"
         >
           2
         </div>
         <h3
-          className="MuiTypography-root sc-bbmXgH sc-tilXH kDvpqI MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-fYxtnH sc-cIShpX duZDNm MuiTypography-h5 MuiTypography-colorSecondary"
         >
           Mon dossier est à jour, je perçois le bon montant d'indemnité : moins de risque de trop perçus !
         </h3>
@@ -3259,23 +3259,23 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-ktHwxA iXGkBQ"
+        className="sc-feJyhm eRmued"
         src="photo2.jpg"
       />
     </div>
     <div
-      className="sc-gGBfsJ flSbsd"
+      className="sc-tilXH biHGoU"
     >
       <div
-        className="sc-fYxtnH jWIsyd"
+        className="sc-ktHwxA gTOjLO"
       >
         <div
-          className="MuiTypography-root sc-hEsumM bnKIKs MuiTypography-h1 MuiTypography-colorPrimary"
+          className="MuiTypography-root sc-kafWEX fLNuIr MuiTypography-h1 MuiTypography-colorPrimary"
         >
           3
         </div>
         <h3
-          className="MuiTypography-root sc-bbmXgH sc-tilXH kDvpqI MuiTypography-h5 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-fYxtnH sc-cIShpX duZDNm MuiTypography-h5 MuiTypography-colorSecondary"
         >
           J'ai fait mon actualisation sur Zen. Pas besoin de m'actualiser sur le site Pôle emploi !
         </h3>
@@ -3287,74 +3287,74 @@ exports[`Storyshots Home loginFailed 1`] = `
       </div>
       <img
         alt=""
-        className="sc-ktHwxA iXGkBQ"
+        className="sc-feJyhm eRmued"
         src="photo3.jpg"
       />
     </div>
   </section>
   <section
-    className="sc-jqCOkK sc-uJMKN bAllyU"
+    className="sc-gGBfsJ sc-jnlKLf aPaLq"
   >
     <h2
-      className="MuiTypography-root sc-bbmXgH kkbCKz MuiTypography-h5"
+      className="MuiTypography-root sc-fYxtnH ofFSq MuiTypography-h5"
     >
       Nos utilisateurs approuvent !
     </h2>
     <div
-      className="sc-btzYZH fHOmYY"
+      className="sc-elJkPf kYXavU"
     >
       <div
-        className="sc-lhVmIH glWtdI"
+        className="sc-jtRfpW iKsomU"
       >
         <p
-          className="MuiTypography-root sc-bYSBpT bOZpjV MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Déborah - Lille
+            Céline
             <br />
-            (11/04/19)
+            Mars 2020
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-elJkPf jRsZyA MuiTypography-body1"
+          className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Merci pour ce site qui prend en compte pleinement notre métier d'assistante maternelle »
+          « Zen est simple d'utilisation, très pratique. On rentre les données et les calculs se font automatiquement. »
         </p>
       </div>
       <div
-        className="sc-lhVmIH glWtdI"
+        className="sc-jtRfpW iKsomU"
       >
         <p
-          className="MuiTypography-root sc-bYSBpT bOZpjV MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Sophie - Condette
+            Myriam
             <br />
-            (10/04/19)
+            Mars 2020
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-elJkPf jRsZyA MuiTypography-body1"
+          className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « Plus simple vu le nombre d'employeurs. Belle innovation »
+          « Gain de temps et très facile d'utilisation pour transmettre les documents. Site très bien fait et adapté aux assistantes maternelles. À recommander fortement »
         </p>
       </div>
       <div
-        className="sc-lhVmIH glWtdI"
+        className="sc-jtRfpW iKsomU"
       >
         <p
-          className="MuiTypography-root sc-bYSBpT bOZpjV MuiTypography-body1 MuiTypography-colorSecondary"
+          className="MuiTypography-root sc-kTUwUJ jaaAyZ MuiTypography-body1 MuiTypography-colorSecondary"
         >
           <b>
-            Fatima - Amiens
+            Christiane
             <br />
-            (09/04/19)
+            Mars 2020
           </b>
         </p>
         <p
-          className="MuiTypography-root sc-elJkPf jRsZyA MuiTypography-body1"
+          className="MuiTypography-root sc-dqBHgY fJPQKI MuiTypography-body1"
         >
-          « C'est plus rapide, moins prise de tête, et facile à comprendre ! »
+          « Actualisation plus facile d'accès et d'utilisation. De plus, l'interface est agréable et bien organisée. »
         </p>
       </div>
     </div>
@@ -3518,18 +3518,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-TOsTZ kpsexy"
+          className="sc-ksYbfQ eqbBDH"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-kgAjT fqNHNm"
+            className="sc-hmzhuo ckmEam"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-cJSrbW kNEnnW"
+            className="sc-frDJqD dwCOcm"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -3596,18 +3596,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-TOsTZ JsRvV"
+          className="sc-ksYbfQ dNgFct"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-kgAjT fqNHNm"
+            className="sc-hmzhuo ckmEam"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-cJSrbW kNEnnW"
+            className="sc-frDJqD dwCOcm"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -3674,7 +3674,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-caSCKo pPQle"
+          className="sc-cHGsZl fIPWJY"
         >
           <p
             className="MuiTypography-root MuiTypography-body1"
@@ -3682,7 +3682,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
           <div
-            className="sc-gisBJw jOWcx"
+            className="sc-TOsTZ cGdALp"
             style={
               Object {
                 "paddingTop": "3rem",
@@ -3690,7 +3690,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             }
           >
             <button
-              className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-bxivhb sc-ifAKCX khyPKi MuiButton-containedPrimary"
+              className="MuiButtonBase-root MuiButton-root MuiButton-contained sc-ifAKCX sc-EHOje jKaUVh MuiButton-containedPrimary"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -3713,7 +3713,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden="true"
-                  className="MuiSvgIcon-root sc-kjoXOD kKumiS"
+                  className="MuiSvgIcon-root sc-kgAjT bVPnxy"
                   focusable="false"
                   role="presentation"
                   viewBox="0 0 24 24"
@@ -3788,7 +3788,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
         data-css-10e2wtd=""
       >
         <button
-          className="sc-cHGsZl kRpYEJ"
+          className="sc-cJSrbW jxxXNg"
           id="video"
           onClick={[Function]}
           style={

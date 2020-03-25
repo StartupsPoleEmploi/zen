@@ -2,13 +2,22 @@
 import React, { useEffect, useState } from 'react'
 import superagent from 'superagent'
 import slug from 'slug'
-import { Spin } from 'antd'
+import { Spin, Button } from 'antd'
+import html2pdf from 'simple-html2pdf'
+import moment from 'moment'
+
 import { getAgence } from '../../../../common/agencesInfos'
 
 import './Repartition.css'
 
 function extractAgencyCode(agencyLabel) {
   return agencyLabel.split('-')[0].trim()
+}
+
+function sort(obj) {
+  return Object.entries(obj).sort(
+    ([, r1Total], [, r2Total]) => r2Total - r1Total,
+  )
 }
 
 const numberFormatter = Intl.NumberFormat('fr-Fr')
@@ -28,6 +37,7 @@ function RepartitionRegionDepartment({
   selectAgency,
 }) {
   const [isLoading, setIsLoading] = useState(true)
+  const [exportOnGoing, setExportOnGoing] = useState(false)
   const [franceTotal, setFranceTotal] = useState(0)
   const [byRegionTotal, setByRegion] = useState({})
   const [byDepartmentTotal, setByDepartment] = useState({})
@@ -58,9 +68,9 @@ function RepartitionRegionDepartment({
     })
 
     setFranceTotal(declarations.length)
-    setByRegion(regionsTotal)
-    setByDepartment(departmentsTotal)
-    setByAgency(agencyTotal)
+    setByRegion(sort(regionsTotal))
+    setByDepartment(sort(departmentsTotal))
+    setByAgency(sort(agencyTotal))
     setTimeout(() => setIsLoading(false), 500)
   }
 
@@ -88,74 +98,117 @@ function RepartitionRegionDepartment({
     fetchData()
   }, [region, department, declarationMonth])
 
+  function exportAsPDF() {
+    setExportOnGoing(true)
+    let filename = region ? `region-${region}-` : 'france-'
+    filename += moment(new Date()).format('YYYY/MM')
+    filename += '.pdf'
+
+    html2pdf(document.getElementById('pdf-content'), { filename }, () =>
+      setExportOnGoing(false),
+    )
+  }
+
   if (isLoading) return <Spin />
 
   return (
-    <div>
-      <h1>
-        Répartition pour
-        {department ? ` le département ${department}` : null}
-        {region && !department ? ` la region ${region}` : null}
-        {!region && !department ? ' la France entière' : null}
-      </h1>
+    <>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          marginBottom: '2rem',
+        }}
+      >
+        {!department && (
+          <div style={{ flex: 1 }}>
+            <Button onClick={exportAsPDF}>
+              {exportOnGoing ? <Spin /> : 'Exporter comme PDF'}
+            </Button>
+          </div>
+        )}
 
-      {/* No region selected ? we can display the repartition for all the regions */}
-      {!region && (
-        <>
-          <h2 className="h2">France entière</h2>
-          <p>
-            Total de <strong>{formatNb(franceTotal)}</strong> actualisations
-            <br />
-            sur un total de{' '}
-            <strong>
-              {formatNb(usersGlobalRepartition.franceTotal)} assistantes
-              maternelles
-            </strong>{' '}
-            (
-            {((franceTotal / usersGlobalRepartition.franceTotal) * 100).toFixed(
-              2,
-            )}
-            %)
-          </p>
+        {region && !department && (
+          <div style={{ flex: 1 }}>
+            <Button
+              target="_blank"
+              href={`/zen-admin-api/repartition/unregistered-users-region/csv?monthId=${
+                declarationMonth.id
+              }&region=${slug(region, { lower: true })}`}
+            >
+              Télécharger la liste des assistantes maternelles de {region} ne
+              s'étant jamais connectées à Zen
+            </Button>
+          </div>
+        )}
+      </div>
 
-          <h2 className="h2">Par régions</h2>
-          <p className="subtitle">
-            Les régions sans actualisation ne sont pas listées
-          </p>
-          <ul className="ul">
-            {Object.entries(byRegionTotal).map(([regionName, total]) => {
-              const totalUsersRegion =
-                usersGlobalRepartition.regions[regionName]
-              return (
-                <li key={regionName}>
-                  <button
-                    onClick={doSelectRegion}
-                    data-region={regionName}
-                    type="button"
-                    title="En savoir plus pour cette région"
-                  >
-                    {regionName} : {formatNb(total)} actualisations
-                    <br /> sur {formatNb(totalUsersRegion)} assistantes
-                    maternelles ({((total / totalUsersRegion) * 100).toFixed(2)}
-                    % de la région)
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </>
-      )}
+      <div id="pdf-content">
+        <h1>
+          Répartition pour
+          {department ? ` le département ${department}` : null}
+          {region && !department ? ` la region ${region}` : null}
+          {!region && !department ? ' la France entière' : null}
+        </h1>
 
-      {/* No department selected ? we can display the repartition for all the departments */}
-      {!department && (
-        <>
-          <h2 className="h2">Par département</h2>
-          <p className="subtitle">
-            Les départements sans actualisation ne sont pas listés
-          </p>
-          <ul className="ul">
-            {Object.entries(byDepartmentTotal).map(
-              ([departmentName, total]) => {
+        {/* No region selected ? we can display the repartition for all the regions */}
+        {!region && (
+          <>
+            <h2 className="h2">France entière</h2>
+            <p>
+              Total de <strong>{formatNb(franceTotal)}</strong> actualisations
+              <br />
+              sur un total de{' '}
+              <strong>
+                {formatNb(usersGlobalRepartition.franceTotal)} assistantes
+                maternelles
+              </strong>{' '}
+              (
+              {(
+                (franceTotal / usersGlobalRepartition.franceTotal) *
+                100
+              ).toFixed(2)}
+              %)
+            </p>
+
+            <h2 className="h2">Par régions</h2>
+            <p className="subtitle">
+              Les régions sans actualisation ne sont pas listées
+            </p>
+            <ul className="ul">
+              {byRegionTotal.map(([regionName, total]) => {
+                const totalUsersRegion =
+                  usersGlobalRepartition.regions[regionName]
+                return (
+                  <li key={regionName}>
+                    <button
+                      onClick={doSelectRegion}
+                      data-region={regionName}
+                      type="button"
+                      title="En savoir plus pour cette région"
+                    >
+                      {regionName} : {formatNb(total)} actualisations
+                      <br /> sur {formatNb(totalUsersRegion)} assistantes
+                      maternelles (
+                      {((total / totalUsersRegion) * 100).toFixed(2)}% de la
+                      région)
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
+        )}
+
+        {/* No department selected ? we can display the repartition for all the departments */}
+        {!department && (
+          <>
+            <h2 className="h2">Par département</h2>
+            <p className="subtitle">
+              Les départements sans actualisation ne sont pas listés
+            </p>
+            <ul className="ul">
+              {byDepartmentTotal.map(([departmentName, total]) => {
                 const totalUsersDepartments =
                   usersGlobalRepartition.departments[departmentName]
                 return (
@@ -174,39 +227,39 @@ function RepartitionRegionDepartment({
                     </button>
                   </li>
                 )
-              },
-            )}
-          </ul>
-        </>
-      )}
+              })}
+            </ul>
+          </>
+        )}
 
-      <h2 className="h2">Par agence</h2>
-      <p className="subtitle">
-        Les agences sans actualisation ne sont pas listées
-      </p>
-      <ul className="ul">
-        {Object.entries(byAgencyTotal).map(([agenceName, total]) => {
-          const totalUsersAgency =
-            usersGlobalRepartition.agencies[extractAgencyCode(agenceName)]
+        <h2 className="h2">Par agence</h2>
+        <p className="subtitle">
+          Les agences sans actualisation ne sont pas listées
+        </p>
+        <ul className="ul">
+          {byAgencyTotal.map(([agenceName, total]) => {
+            const totalUsersAgency =
+              usersGlobalRepartition.agencies[extractAgencyCode(agenceName)]
 
-          return (
-            <li key={agenceName}>
-              <button
-                onClick={doSelectAgency}
-                data-agency={agenceName}
-                type="button"
-                title="En savoir plus sur cette agence"
-              >
-                {agenceName} : {total} actualisations
-                <br /> sur {formatNb(totalUsersAgency)} assistantes maternelles
-                (soit {((total / totalUsersAgency) * 100).toFixed(2)}% de
-                l'agence)
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    </div>
+            return (
+              <li key={agenceName}>
+                <button
+                  onClick={doSelectAgency}
+                  data-agency={agenceName}
+                  type="button"
+                  title="En savoir plus sur cette agence"
+                >
+                  {agenceName} : {total} actualisations
+                  <br /> sur {formatNb(totalUsersAgency)} assistantes
+                  maternelles (soit{' '}
+                  {((total / totalUsersAgency) * 100).toFixed(2)}% de l'agence)
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </>
   )
 }
 

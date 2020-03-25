@@ -266,7 +266,7 @@ const TestimonyContainer = styled.div`
   border: 1px solid #bbb;
   padding: 2rem;
   margin: 1rem;
-  max-width: 25rem;
+  max-width: 30rem;
 `
 const TestimonyTitle = styled(Typography).attrs({
   color: 'secondary',
@@ -554,39 +554,41 @@ export const Home = ({ location: { search } }) => {
           <TestimonyContainer>
             <TestimonyTitle>
               <b>
-                Déborah - Lille
+                Céline
                 <br />
-                (11/04/19)
+                Mars 2020
               </b>
             </TestimonyTitle>
             <TestimonyText>
-              « Merci pour ce site qui prend en compte pleinement notre métier
-              d'assistante maternelle&nbsp;»
+              « Zen est simple d'utilisation, très pratique. On rentre les
+              données et les calculs se font automatiquement. »
             </TestimonyText>
           </TestimonyContainer>
           <TestimonyContainer>
             <TestimonyTitle>
               <b>
-                Sophie - Condette
+                Myriam
                 <br />
-                (10/04/19)
+                Mars 2020
               </b>
             </TestimonyTitle>
             <TestimonyText>
-              « Plus simple vu le nombre d'employeurs. Belle innovation&nbsp;»
+              « Gain de temps et très facile d'utilisation pour transmettre les
+              documents. Site très bien fait et adapté aux assistantes
+              maternelles. À recommander fortement »
             </TestimonyText>
           </TestimonyContainer>
           <TestimonyContainer>
             <TestimonyTitle>
               <b>
-                Fatima - Amiens
+                Christiane
                 <br />
-                (09/04/19)
+                Mars 2020
               </b>
             </TestimonyTitle>
             <TestimonyText>
-              « C'est plus rapide, moins prise de tête, et facile à
-              comprendre&nbsp;!&nbsp;»
+              « Actualisation plus facile d'accès et d'utilisation. De plus,
+              l'interface est agréable et bien organisée. »
             </TestimonyText>
           </TestimonyContainer>
         </TestimoniesContainer>

@@ -97,6 +97,7 @@ for (let i = 1; i < 16; i++) {
       )
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.error(err)
     })
 }

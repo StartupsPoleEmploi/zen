@@ -9,11 +9,12 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import withWidth from '@material-ui/core/withWidth';
 
-import EuroInput from '../Generic/EuroInput';
-import HourInput from '../Generic/HourInput';
-import YesNoRadioGroup from '../Generic/YesNoRadioGroup';
-import TooltipOnFocus from '../Generic/TooltipOnFocus';
-import warn from '../../images/warn.svg';
+import EuroInput from '../../Generic/EuroInput';
+import HourInput from '../../Generic/HourInput';
+import YesNoRadioGroup from '../../Generic/YesNoRadioGroup';
+import TooltipOnFocus from '../../Generic/TooltipOnFocus';
+import warn from '../../../images/warn.png';
+import EmployerQuestionSalaryModal from './EmployerQuestionSalaryModal';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -106,6 +107,13 @@ const InfoImg = styled.img`
 `;
 
 export class EmployerQuestion extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      onpenModal: false,
+    }
+  }
+
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
     let value = _value;
     if (type === 'blur' && fieldName.startsWith('employerName')) {
@@ -121,6 +129,21 @@ export class EmployerQuestion extends PureComponent {
       value,
       index: this.props.index,
     });
+  }
+
+  onChangeSalaryModal = (value) => {
+    document.activeElement.blur();
+    this.props.onChange({ name: 'salary', value, index: this.props.index })
+  }
+
+  onCloseModal = () => {
+    document.activeElement.blur();
+    this.setState({ onpenModal: false });
+  }
+
+  onOpenModal = () => {
+    document.activeElement.blur();
+    this.setState({ onpenModal: true });
   }
 
   onRemove = () => this.props.onRemove(this.props.index)
@@ -187,7 +210,7 @@ export class EmployerQuestion extends PureComponent {
                   id: `workHours[${index}]`,
                   label: "Nombre d'heures",
                   content:
-                    'Indiquez les heures qui seront inscrites sur votre fiche de paie',
+                    "Si vous avez une fiche de paie, inscrivez le nombre d'heures qui y figure. Si vous déclarez être en activité partielle, vous devez déclarer un minimum de 1h travaillée.",
                   showTooltip,
                 })}
                 name={`workHours[${index}]`}
@@ -213,13 +236,14 @@ export class EmployerQuestion extends PureComponent {
                 className="root-salary"
                 label={this.renderLabel({
                   id: `salary[${index}]`,
-                  label: 'Salaire brut €',
-                  content: 'Déclarez le salaire brut pour cet employeur',
-                  showTooltip,
+                  label: 'Rémunération €',
+                  content: 'Déclarez la rémunération pour cet employeur',
+                  showTooltip: false,
                 })}
                 name={`salary[${index}]`}
                 value={salary.value}
-                onChange={this.onChange}
+                onClick={this.onOpenModal}
+                onFocus={this.onOpenModal}
                 error={!!salary.error}
                 helperText={salary.error}
                 InputProps={{
@@ -263,7 +287,7 @@ export class EmployerQuestion extends PureComponent {
             </StyledFormLabel>
             <YesNoRadioGroup
               yesTooltipContent={`Si votre employeur vous a payé des congés, n’oubliez pas
-                    d’inclure cette somme dans le salaire brut déclaré`}
+                    d’inclure cette somme dans la rémunération déclarée`}
               name={`hasEndedThisMonth[${index}]`}
               value={hasEndedThisMonth.value}
               onAnswer={this.onChange}
@@ -277,6 +301,12 @@ export class EmployerQuestion extends PureComponent {
         >
           <DeleteIcon />
         </RemoveButton>
+        <EmployerQuestionSalaryModal 
+          index={index}
+          onChange={this.onChangeSalaryModal}
+          onClose={this.onCloseModal}
+          isOpened={this.state.onpenModal}
+        />
       </StyledContainer>
     );
   }

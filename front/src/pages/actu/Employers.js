@@ -25,7 +25,7 @@ import {
   postEmployers as postEmployersAction,
 } from '../../redux/actions/declarations';
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler';
-import EmployerQuestion from '../../components/Actu/EmployerQuestion';
+import EmployerQuestion from '../../components/Actu/EmployerQuestion/EmployerQuestion';
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
 import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog';
 import WorkSummary from '../../components/Actu/WorkSummary';

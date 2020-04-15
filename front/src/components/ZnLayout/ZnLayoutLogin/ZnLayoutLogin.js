@@ -12,6 +12,7 @@ import dashboardBg from '../../../images/dashboard-bg.svg';
 import SuccessSnackBar from '../../Generic/SuccessSnackBar';
 import ZnLayoutHeader from './ZnLayoutHeader';
 import Covid19Warning from '../../Generic/Covid19Warning';
+import Codiv19Justif from '../../Generic/Codiv19Justif';
 
 const StyledLayout = styled.div`
   margin: auto;
@@ -82,6 +83,7 @@ export const Layout = ({
           <Main addBackground={false}>
             <CovidContainer>
               <Covid19Warning />
+              <Codiv19Justif />
             </CovidContainer>
             {children}
           </Main>

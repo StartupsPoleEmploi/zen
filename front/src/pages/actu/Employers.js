@@ -25,7 +25,7 @@ import {
   postEmployers as postEmployersAction,
 } from '../../redux/actions/declarations'
 import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
-import EmployerQuestion from '../../components/Actu/EmployerQuestion'
+import EmployerQuestion from '../../components/Actu/EmployerQuestion/EmployerQuestion'
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
 import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
 import WorkSummary from '../../components/Actu/WorkSummary'
@@ -182,7 +182,7 @@ const getFieldError = ({ name, value }) => {
       return `Merci de ne saisir que des chiffres`
     }
     if (value < MIN_WORK_HOURS || value > MAX_WORK_HOURS) {
-      return `Merci de corriger le nombre d'heures travaillées`
+      return `Vous devez déclarer 1h minimum`
     }
   }
   if (name === SALARY) {

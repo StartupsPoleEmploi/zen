@@ -228,8 +228,8 @@ function OnBoarding({
                   Vos justificatifs doivent correspondre exactement à votre
                   déclaration.
                 </strong>{' '}
-                Vous déclarez 10h pour 100€ brut, Pôle emploi attend une fiche
-                de paie avec 10h et 100€ brut
+                Vous déclarez 10h pour 100€ de rémunération, Pôle emploi attend une fiche
+                de paie avec 10h et 100€ de rémunération
               </>,
             ]}
           />

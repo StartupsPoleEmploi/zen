@@ -134,7 +134,7 @@ const DeclarationFinished = ({ declaration }) => {
               style={{ lineHeight: 1, color: darkBlue }}
             >
               <Dot>.</Dot>
-              Salaire brut déclaré
+              Rémunération déclarée
               <br />
             </Typography>
             <Typography style={{ marginLeft: '3.5rem' }}>

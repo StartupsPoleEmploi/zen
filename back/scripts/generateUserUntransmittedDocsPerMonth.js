@@ -73,7 +73,6 @@ for (let i = 1; i < 16; i++) {
 
       const csv = declarations.map((declaration) => {
         const documents = getMissingDocumentLabelsFromDeclaration(declaration)
-        console.log(documents)
         if (documents.length === 0) {
           documents.push('Pas de document retenu')
         }
@@ -94,6 +93,7 @@ for (let i = 1; i < 16; i++) {
       )
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.error(err)
     })
 }

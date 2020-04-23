@@ -17,6 +17,7 @@ import ZnNavLogin from './ZnNavLogin'
 import { primaryBlue, mobileBreakpoint } from '../../constants'
 import dashboardBg from '../../images/dashboard-bg.svg'
 import Covid19Warning from '../Generic/Covid19Warning'
+import Codiv19Justif from '../Generic/Codiv19Justif'
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -195,6 +196,7 @@ export const Layout = ({
         <Main addBackground={pathname === dashboardRoute}>
           <CovidContainer>
             <Covid19Warning />
+            <Codiv19Justif />
           </CovidContainer>
           {children}
         </Main>

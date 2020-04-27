@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
+import superagent from 'superagent'
 import DoneIcon from '@material-ui/icons/Done'
 import { Typography } from '@material-ui/core'
 
@@ -11,16 +12,13 @@ import DeclarationClosed from './DeclarationClosed'
 import DeclarationOnGoing from './DeclarationOnGoing'
 import DeclarationImpossible from './DeclarationImpossible'
 import { intermediaryBreakpoint } from '../../../constants'
+import catchMaintenance from '../../../lib/catchMaintenance'
 
 const StyledActuStatus = styled.div`
   width: 100%;
-  padding: 3rem 2rem 3rem 0;
-
-  @media (max-width: ${intermediaryBreakpoint}) {
-    margin: auto;
-    padding: 3rem 2rem;
-    width: 100%;
-  }
+  padding: 2rem;
+  margin-bottom: 6rem;
+  background-color: #f7f7f7;
 `
 
 const StyledDoneIcon = styled(DoneIcon)`
@@ -33,22 +31,17 @@ const StyledDoneIcon = styled(DoneIcon)`
 
 const SubTitle = styled(Typography).attrs({ variant: 'h5', component: 'h2' })`
   && {
+    text-transform: uppercase;
     display: inline-block;
     padding-bottom: 0.5rem;
     margin-bottom: 2rem;
-    border-bottom: solid 1px lightgray;
     font-size: 2rem;
-    font-weight: bold;
     position: relative;
 
     @media (max-width: ${intermediaryBreakpoint}) {
       width: 100%;
     }
   }
-`
-
-const Upper = styled.span`
-  text-transform: uppercase;
 `
 
 function ActuStatus({
@@ -58,11 +51,22 @@ function ActuStatus({
   declarations: allDeclarations,
   declaration: activeDeclaration,
 }) {
-  const activeMonthMoment = activeMonth ? moment(activeMonth) : null
+  const [monthDateMoment, setMonthDateMoment] = useState(activeMonth ? moment(activeMonth) : null)
+
+  useEffect(() => {
+    if (activeMonth === null) {
+      superagent
+        .get('/api/declarationMonths/next-declaration-month')
+        .then(({ body: { startDate } }) => {
+          setMonthDateMoment(moment(new Date(startDate)))
+        })
+        .catch(catchMaintenance)
+    }
+  }, [activeMonth])
 
   function renderActuStatus() {
     if (!activeMonth) {
-      return <DeclarationClosed previousDeclaration={allDeclarations[0]} />
+      return <DeclarationClosed dateActuNextMonth={monthDateMoment} />
     }
 
     if (user.hasAlreadySentDeclaration) {
@@ -80,7 +84,7 @@ function ActuStatus({
     }
 
     if (activeMonth && !activeDeclaration && user.canSendDeclaration) {
-      return <DeclarationNotStarted activeMonth={activeMonth} />
+      return <DeclarationNotStarted />
     }
 
     if (!user.canSendDeclaration) {
@@ -105,11 +109,8 @@ function ActuStatus({
     <StyledActuStatus>
       {showTitle && (
         <SubTitle>
-          Actualisation
-          {activeMonthMoment && ' - '}
-          {activeMonthMoment && (
-            <Upper>{activeMonthMoment.format('MMMM YYYY')}</Upper>
-          )}
+          <b>Actualisation</b>
+          {monthDateMoment && ` - ${monthDateMoment.format('MMMM YYYY')}`}
         </SubTitle>
       )}
       {renderActuStatus(user, allDeclarations, activeDeclaration, activeMonth)}

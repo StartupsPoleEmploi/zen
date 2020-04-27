@@ -193,7 +193,7 @@ export const Layout = ({
       {useMobileVersion && isNavVisible && NavComponent()}
       <Container>
         {!useMobileVersion && isNavVisible && NavComponent()}
-        <Main addBackground={pathname === dashboardRoute}>
+        <Main addBackground={false}>
           <CovidContainer>
             <Covid19Warning />
             <Codiv19Justif />

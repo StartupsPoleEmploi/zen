@@ -4,19 +4,14 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import withWidth from '@material-ui/core/withWidth'
 import { Typography, Grid, Hidden } from '@material-ui/core'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { Link } from 'react-router-dom'
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
-
 import { formattedDeclarationMonth, formatIntervalDates } from '../../lib/date'
-import {
-  getMissingEmployerFiles,
-  getMissingFilesNb,
-} from '../../lib/file'
+import { getMissingEmployerFiles, getMissingFilesNb } from '../../lib/file'
 import { primaryBlue, DOCUMENT_LABELS, darkBlue } from '../../constants'
 
-import MainActionButton from '../../components/Generic/MainActionButton'
+import DashbordMainBt from '../../components/Generic/DashbordMainBt'
 import StatusFilesError from '../../components/Actu/StatusFilesError'
 import OnBoarding from './onBoarding/OnBoarding'
 
@@ -78,12 +73,6 @@ const MonthName = styled(Typography).attrs({ component: 'h3' })`
   }
 `
 
-const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
-  && {
-    margin-left: 1rem;
-  }
-`
-
 const Dot = styled.span`
   color: ${primaryBlue};
   font-family: serif;
@@ -115,16 +104,14 @@ class DashboardJustificatifs extends PureComponent {
   renderButton = () => {
     const { isFilesServiceUp } = this.props
     return (
-      <MainActionButton
+      <DashbordMainBt
         to="/files"
         component={Link}
         disabled={!isFilesServiceUp}
         style={{ width: '90%', margin: '3rem auto 0 auto' }}
-        primary
       >
         Gérer mes justificatifs
-        <StyledArrowForwardIcon />
-      </MainActionButton>
+      </DashbordMainBt>
     )
   }
 
@@ -183,12 +170,14 @@ class DashboardJustificatifs extends PureComponent {
     // Missing files list
     return (
       <Grid container spacing={4}>
-        <Grid items lg={8} md={12} >
-          <div style={{display: 'flex', margin: '2rem 0 1.5rem 0'}}>
+        <Grid items lg={7} md={12} >
+          <div style={{ display: 'flex', margin: '2rem 0 1.5rem 0' }}>
             <StyledPriorityIcon />
             <div>
               <Typography style={{width: '90%'}}>
-                Vous avez un ou des justificatifs manquants. Mettez à jour dès à présent votre dossier Zen Pôle emploi pour éviter <b>un risque de trop-perçu.</b>
+                Vous avez un ou des justificatifs manquants. Mettez à jour dès à présent votre
+                {' '}
+                dossier Zen Pôle emploi pour éviter <b>un risque de trop-perçu.</b>
               </Typography>
               <Hidden mdDown>
                 {this.renderButton()}
@@ -196,7 +185,7 @@ class DashboardJustificatifs extends PureComponent {
             </div>
           </div>
         </Grid>
-        <Grid items lg={4} md={12}>
+        <Grid items lg={5} md={12}>
           {onGoingDeclarations.map(this.renderMonthFileSection)}
         </Grid>
         <Hidden lgUp>

@@ -3,25 +3,19 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { Link } from 'react-router-dom'
 
-import MainActionButton from '../MainActionButton'
+import ActuButton from './ActuButton'
 import CircleJauge from '../../../pages/dashboard/CircleJauge'
 import { darkBlue } from '../../../constants'
 
 const FlexContainer = styled.div`
   display: flex;
+  margin-bottom: 2rem;
 `
 
 const JaugeContainer = styled.div`
   margin-right: 2.5rem;
-`
-
-const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
-  && {
-    margin-left: 1rem;
-  }
 `
 
 const DeclarationOnGoing = ({ declaration }) => (
@@ -53,19 +47,13 @@ const DeclarationOnGoing = ({ declaration }) => (
       </div>
     </FlexContainer>
 
-    <MainActionButton
+    <ActuButton
       to={declaration.hasFinishedDeclaringEmployers ? '/files' : '/employers'}
       component={Link}
       title="Continuez votre actualisation"
-      style={{
-        width: '90%',
-        margin: '2rem auto 0 auto',
-      }}
-      primary
     >
       Continuer l'actualisation
-      <StyledArrowForwardIcon />
-    </MainActionButton>
+    </ActuButton>
   </div>
 )
 

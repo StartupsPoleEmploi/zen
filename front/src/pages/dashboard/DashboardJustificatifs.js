@@ -43,6 +43,17 @@ const ContainerFile = styled.div`
   padding: 2rem;
 `
 
+const ContainerFileSection = styled.div`
+  margin-top: ${({ width }) => {
+    if (['xs', 'sm', 'md'].includes(width)) return '2rem'
+    return 'inherite'
+  }};
+  margin-left: ${({ width }) => {
+    if (['xs', 'sm', 'md'].includes(width)) return '1rem'
+    return 'inherite'
+  }};
+`
+
 const Opacity = styled.div`
   opacity: ${({ isFilesServiceUp }) => (isFilesServiceUp ? 1 : 0.4)};
 `
@@ -56,7 +67,7 @@ const Lower = styled.span`
 
 const RemainingFiles = styled.div`
   border-left: solid 1px #d4e2f3;
-  padding-left: 3rem;
+  padding-left: 2rem;
   position: relative;
 `
 
@@ -162,7 +173,7 @@ class DashboardJustificatifs extends PureComponent {
       return <Typography>Vous n'avez pas de fichier à envoyer.</Typography>
     }
 
-    const { declarations: allDeclarations } = this.props
+    const { declarations: allDeclarations, width } = this.props
     const onGoingDeclarations = allDeclarations.filter(
       ({ hasFinishedDeclaringEmployers, isFinished }) =>
         hasFinishedDeclaringEmployers && !isFinished,
@@ -171,7 +182,7 @@ class DashboardJustificatifs extends PureComponent {
     return (
       <Grid container spacing={4}>
         <Grid items lg={7} md={12} >
-          <div style={{ display: 'flex', margin: '2rem 0 1.5rem 0' }}>
+          <div style={{ display: 'flex', marginRight: '1.5rem' }}>
             <StyledPriorityIcon />
             <div>
               <Typography style={{width: '90%'}}>
@@ -186,7 +197,9 @@ class DashboardJustificatifs extends PureComponent {
           </div>
         </Grid>
         <Grid items lg={5} md={12}>
-          {onGoingDeclarations.map(this.renderMonthFileSection)}
+          <ContainerFileSection width={width}>
+            {onGoingDeclarations.map(this.renderMonthFileSection)}
+          </ContainerFileSection>
         </Grid>
         <Hidden lgUp>
             {this.renderButton()}

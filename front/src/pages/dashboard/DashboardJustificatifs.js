@@ -181,7 +181,7 @@ class DashboardJustificatifs extends PureComponent {
     // Missing files list
     return (
       <Grid container spacing={4}>
-        <Grid items lg={7} md={12} >
+        <Grid item lg={7} md={12} >
           <div style={{ display: 'flex', marginRight: '1.5rem' }}>
             <StyledPriorityIcon />
             <div>
@@ -196,7 +196,7 @@ class DashboardJustificatifs extends PureComponent {
             </div>
           </div>
         </Grid>
-        <Grid items lg={5} md={12}>
+        <Grid item lg={5} md={12}>
           <ContainerFileSection width={width}>
             {onGoingDeclarations.map(this.renderMonthFileSection)}
           </ContainerFileSection>

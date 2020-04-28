@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import withWidth from '@material-ui/core/withWidth'
 
 import DashbordMainBt from '../DashbordMainBt'
+import {ActuHr} from './ActuGenericComponent'
 
 const Bt = styled(DashbordMainBt)`
   && {
@@ -19,7 +20,7 @@ const Bt = styled(DashbordMainBt)`
 function ActuButton({ width, ...props }) {
   return (
     <>
-      <div style={{ margin: "0rem -2rem", backgroundColor: "#fff", height: '0.5rem' }} />
+      <ActuHr/>
       <Bt width={width} {...props} >
         Je m'actualise
       </Bt>

@@ -9,8 +9,11 @@ import Hidden from '@material-ui/core/Hidden';
 
 import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations'
 import ActuStatus from '../../components/Generic/actu/ActuStatus'
+import { H4 } from '../../components/Generic/Titles'
 import OnBoarding from './onBoarding/OnBoarding'
 import DashboardJustificatifs from './DashboardJustificatifs'
+import dashboardHelpImg from '../../images/dashboardHelp.svg'
+import MainActionButton from '../../components/Generic/MainActionButton'
 
 const StyledDashboard =  styled.div`
   margin: ${({ width }) => {
@@ -29,7 +32,7 @@ const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
     margin-left: ${({ width }) =>
       ['xs', 'sm'].includes(width) ? '2rem' : null};
     margin-top: ${({ width }) =>
-      ['xs', 'sm'].includes(width) ? '2rem' : '5rem'};
+      ['xs', 'sm'].includes(width) ? '0rem' : '0rem'};
   }
 `
 
@@ -55,8 +58,8 @@ class Dashboard extends PureComponent {
 
     return (
       <StyledDashboard width={width}>
-        <Grid container spacing={2}>
-          <Grid item md={8} sm={12}>
+        <Grid container spacing={4}>
+          <Grid item md={9} sm={12}>
             <Title>Bonjour {user.firstName}</Title>
             <StatusContainer>
               {!user.isBlocked && (
@@ -71,8 +74,22 @@ class Dashboard extends PureComponent {
             </StatusContainer>
           </Grid>
           <Hidden only={['xs', 'sm']}>
-            <Grid item xs={4}>
-              <h1>Besoin d'aide</h1>
+            <Grid item xs={3}>
+              <img src={dashboardHelpImg} style={{width: '100%'}} alt="Besoin d'aide"  />
+              <H4>Besoin d'aide ?</H4>
+              <Typography>
+                Toutes nos réponses concernant l'actualisation sue Zen Pôle emploi.
+              </Typography>
+              <MainActionButton
+                href="https://pole-emploi.zendesk.com/hc/fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Contactez-nous"
+                primary
+                style={{ margin: '2rem 0rem', height: '5.5rem', textTransform: 'none'}}
+              >
+                Contactez-nous
+              </MainActionButton>
             </Grid>
           </Hidden>
         </Grid>

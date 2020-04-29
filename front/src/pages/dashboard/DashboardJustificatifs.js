@@ -126,7 +126,7 @@ class DashboardJustificatifs extends PureComponent {
     )
   }
 
-  renderMonthFileSection = (declaration) => {
+  renderMonthFileSection = (declaration, idx) => {
     if (declaration.isFinished) return null
 
     const employerFilesMissing = getMissingEmployerFiles(declaration)
@@ -141,8 +141,8 @@ class DashboardJustificatifs extends PureComponent {
 
     return (
       <RemainingFiles key={declaration.id}>
-        <Dot>.</Dot>
-        <MonthName>{formattedMonth}</MonthName>
+        <Dot style={{ paddingTop: idx ? '1.5rem' : 'auto' }}>.</Dot>
+        <MonthName style={{ paddingTop: idx ? '1.5rem' : 'auto' }}>{formattedMonth}</MonthName>
 
         {employerFilesMissing.map(({ name, type, employerId }) => (
           <Typography

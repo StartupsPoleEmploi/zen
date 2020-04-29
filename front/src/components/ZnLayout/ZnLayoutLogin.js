@@ -29,7 +29,6 @@ const routesWithDisplayedNav = [
   '/cgu',
   '/aide-conseillers',
 ]
-const [, , , dashboardRoute] = routesWithDisplayedNav
 
 const useStyles = makeStyles((theme) => ({
   lightTooltip: {

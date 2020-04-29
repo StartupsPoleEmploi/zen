@@ -13,20 +13,13 @@ import DeclarationOnGoing from './DeclarationOnGoing'
 import DeclarationImpossible from './DeclarationImpossible'
 import { intermediaryBreakpoint } from '../../../constants'
 import catchMaintenance from '../../../lib/catchMaintenance'
+import { ActuStatusBlock } from './ActuGenericComponent'
 
 const StyledActuStatus = styled.div`
   width: 100%;
   padding: 2rem;
   margin-bottom: 6rem;
   background-color: #f7f7f7;
-`
-
-const StyledDoneIcon = styled(DoneIcon)`
-  && {
-    margin-right: 1rem;
-    vertical-align: bottom;
-    color: green;
-  }
 `
 
 const SubTitle = styled(Typography).attrs({ variant: 'h5', component: 'h2' })`
@@ -70,17 +63,10 @@ function ActuStatus({
     }
 
     if (user.hasAlreadySentDeclaration) {
-      return (
-        <div>
-          <Typography
-            style={{ textTransform: 'uppercase', margin: '2rem 0 1.5rem 0' }}
-          >
-            <strong>
-              <StyledDoneIcon /> Actualisation déjà envoyée via pole-emploi.fr
-            </strong>
-          </Typography>
-        </div>
-      )
+      return (<ActuStatusBlock 
+        title="Actualisation déjà envoyée via pole-emploi.fr" 
+        Icon={<DoneIcon style={{color: "green"}}/>}
+      />)
     }
 
     if (activeMonth && !activeDeclaration && user.canSendDeclaration) {

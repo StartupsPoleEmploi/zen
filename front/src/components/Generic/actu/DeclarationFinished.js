@@ -9,7 +9,7 @@ import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 import withWidth from '@material-ui/core/withWidth'
 
 import { primaryBlue } from '../../../constants'
-import { ActuStatus, ActuHr } from './ActuGenericComponent'
+import { ActuStatusBlock, ActuHr } from './ActuGenericComponent'
 
 const FileLink = styled.a`
   display: flex;
@@ -69,11 +69,11 @@ const DeclarationFinished = ({ declaration, width }) => {
     <>
       <Grid container spacing={2}>
         <Grid item sm={12} md={6}>
-          <ActuStatus title="Actualisation envoyée" Icon={<DoneIcon style={{color: "green"}}/>}>
+          <ActuStatusBlock title="Actualisation envoyée" Icon={<DoneIcon style={{color: "green"}}/>}>
             <Typography>
               Envoyée le {moment(declaration.transmitedAt).format('DD/MM/YYYY à HH:mm')}
             </Typography>
-          </ActuStatus>
+          </ActuStatusBlock>
         </Grid>
         <Grid item sm={12} md={6}>
           <Typography  style={{ padding: '0 0 1rem 0' }}>

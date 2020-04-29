@@ -2,7 +2,7 @@
 // TODO harmonize error colors here
 export const primaryBlue = '#0065DB'
 export const secondaryBlue = '#262C65'
-export const helpColor = '#791A8B'
+export const helpColor = '#0065DB'
 export const darkBlue = '#1e2c59'
 export const errorOrange = '#ff6237'
 export const errorRed = '#e20000'

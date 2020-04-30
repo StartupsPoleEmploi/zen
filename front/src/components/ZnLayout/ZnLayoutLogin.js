@@ -1,20 +1,23 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Button from '@material-ui/core/Button'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { makeStyles } from '@material-ui/core/styles'
-import Tooltip from '@material-ui/core/Tooltip'
+import Popover from '@material-ui/core/Popover'
+import Typography from '@material-ui/core/Typography'
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+
+
+
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import Person from '@material-ui/icons/PersonOutline'
 
 import AppTitle from '../Generic/AppTitle'
 import ZnNavLogin from './ZnNavLogin'
-import { primaryBlue, mobileBreakpoint } from '../../constants'
+import { secondaryBlue, mobileBreakpoint } from '../../constants'
 import dashboardBg from '../../images/dashboard-bg.svg'
 import Covid19Warning from '../Generic/Covid19Warning'
 import Codiv19Justif from '../Generic/Codiv19Justif'
@@ -30,15 +33,6 @@ const routesWithDisplayedNav = [
   '/aide-conseillers',
 ]
 
-const useStyles = makeStyles((theme) => ({
-  lightTooltip: {
-    background: theme.palette.common.white,
-    color: theme.palette.text.primary,
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-}))
-
 const StyledLayout = styled.div`
   margin: auto;
 `
@@ -46,47 +40,56 @@ const StyledLayout = styled.div`
 const Header = styled.header.attrs({ role: 'banner' })`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 8.3rem;
+  width: 100%;
+  border-bottom: 1px #ddd solid;
 
   @media (max-width: ${mobileBreakpoint}) {
     justify-content: space-between;
   }
 `
 
-const UserButton = styled(Button)`
+const ButtonMail = styled(Button)`
+  .MuiButton-label {
+    width: auto;
+  }
+`
+
+const PopoverMailContainer = styled(Typography)`
   && {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: ${primaryBlue};
-    padding: 1.5rem 10rem;
-    border-radius: 0;
-    border-bottom-left-radius: 7rem 5rem;
-    color: #fff;
-    height: 5.5rem;
-    margin-bottom: -5.5rem;
-
-    &:hover {
-      background-color: ${primaryBlue};
-    }
-
-    @media (max-width: ${mobileBreakpoint}) {
-      margin-bottom: 0;
-      padding: 1.5rem;
-      padding-left: 6rem;
-    }
+    align-items: start;
+    width: 33rem;
+    margin: 2rem;
   }
 `
 
-const PersonIcon = styled(Person)`
-  && {
-    margin-right: 1rem;
-    font-size: 2rem;
+const HeaderElem = styled.div`
+  display: ${({logo}) => logo ? 'none' : 'flex'};
+  align-items: center;
+  padding-left: ${({ first }) => first ? '3rem' : '1.5rem'};
+  padding-right: ${({ end }) => end ? '3rem' : '1.5rem'};
+  height: 100%;
+  border-left: ${({ first }) => first ? '1px solid #ddd' : 'none'};
+  
+  .logo {
+    display: none;
   }
-`
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
+  svg {
+    color: ${secondaryBlue};
+    margin-right: ${({first, end}) => first || end ? '0.8rem' : 'auto'};
+  }
+
+  @media (max-width: ${mobileBreakpoint}) {
+    display: flex;
+    padding-left: ${({ first }) => first ? '1rem' : '1rem'};
+    padding-right: ${({ end }) => end ? '1rem' : '0rem'};
+    .logout-text {
+      display: none;
+    }
+  }
 `
 
 const CovidContainer = styled.div`
@@ -116,10 +119,6 @@ const Main = styled.main.attrs({ role: 'main' })`
   }
 `
 
-const AppTitleMobileContainer = styled.div`
-  padding-left: 2rem;
-  padding-top: 0.5rem;
-`
 
 export const Layout = ({
   activeMonth,
@@ -130,13 +129,13 @@ export const Layout = ({
   location: { pathname },
   history: { push },
 }) => {
-  const classes = useStyles()
-  const [isTooltipOpened, setTooltipOpened] = useState(false)
-  const toggleTooltip = () => setTooltipOpened(!isTooltipOpened)
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const isNavVisible = routesWithDisplayedNav.includes(pathname)
 
   const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
+
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   const NavComponent = () => (
     <ZnNavLogin
@@ -149,57 +148,76 @@ export const Layout = ({
     />
   )
 
+  const openMail = Boolean(anchorEl);
+  const idMail = openMail ? 'simple-popover' : undefined;
+
   return (
     <StyledLayout>
-      <Header>
-        {useMobileVersion && (
-          <AppTitleMobileContainer>
-            <AppTitle />
-          </AppTitleMobileContainer>
-        )}
-        {user && (
-          <ClickAwayListener onClickAway={() => setTooltipOpened(false)}>
-            <Tooltip
-              classes={{ tooltip: classes.lightTooltip }}
-              disableHoverListener
-              disableFocusListener
-              disableTouchListener
-              open={isTooltipOpened}
-              placement="bottom"
-              title={
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Button
-                    href="/api/login/logout"
-                    target="_self"
-                    disableRipple
-                    variant="text"
-                  >
-                    Déconnexion
-                  </Button>
-                </div>
-              }
-            >
-              <UserButton onClick={toggleTooltip} disableRipple>
-                <PersonIcon />
-                {user.firstName}
-                {isTooltipOpened ? <ExpandLess /> : <ExpandMore />}
-              </UserButton>
-            </Tooltip>
-          </ClickAwayListener>
-        )}
-      </Header>
-
       {useMobileVersion && isNavVisible && NavComponent()}
-      <Container>
+      <div style={{ display: 'flex', width: '100vw' }}>
         {!useMobileVersion && isNavVisible && NavComponent()}
-        <Main addBackground={false}>
-          <CovidContainer>
-            <Covid19Warning />
-            <Codiv19Justif />
-          </CovidContainer>
-          {children}
-        </Main>
-      </Container>
+        <div style={{width: '100vw'}}>
+          <Header>
+            <HeaderElem logo>
+              <AppTitle/>
+            </HeaderElem>
+            <HeaderElem first>
+              <AccountCircleOutlinedIcon />
+              <Typography>
+                {user.firstName}
+              </Typography>
+            </HeaderElem>
+            <HeaderElem>
+              <ButtonMail aria-describedby={idMail} onClick={handleClick}>
+                <MailOutlineIcon/>
+              </ButtonMail>
+              <Popover
+                id={idMail}
+                open={openMail}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              >
+                <PopoverMailContainer>
+                  <ReportProblemOutlinedIcon style={{ marginRight: '2rem', fontSize: '4rem', color: 'red' }} />
+                  <Typography>
+                    N'oubliez pas de consulter régulièrement vos courriers en ligne sur votre{' '}
+                    espace personnel pôle emploi.
+                  </Typography>
+                </PopoverMailContainer>
+              </Popover>
+            </HeaderElem>
+            <HeaderElem end>
+              <Button
+                href="/api/login/logout"
+                target="_self"
+                disableRipple
+                variant="text"
+                style={{ padding: '0', margin: '0' }}
+              >
+                <ExitToAppIcon/>
+                <Typography className="logout-text">
+                  Se déconnecter
+                </Typography>
+              </Button>
+            </HeaderElem>
+          </Header>
+          <Main addBackground={false}>
+            <CovidContainer>
+              <Covid19Warning />
+              <Codiv19Justif />
+            </CovidContainer>
+            {children}
+          </Main>
+        </div>
+      </div>
     </StyledLayout>
   )
 }

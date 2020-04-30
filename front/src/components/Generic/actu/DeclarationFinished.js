@@ -1,57 +1,15 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
+import { Typography, Grid } from '@material-ui/core'
 import DoneIcon from '@material-ui/icons/Done'
 import PrintIcon from '@material-ui/icons/Print'
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
+import withWidth from '@material-ui/core/withWidth'
 
-import {
-  primaryBlue,
-  darkBlue,
-  intermediaryBreakpoint,
-} from '../../../constants'
-
-const StyledDoneIcon = styled(DoneIcon)`
-  && {
-    margin-right: 1rem;
-    vertical-align: bottom;
-    color: green;
-  }
-`
-
-const Dot = styled.span`
-  color: ${primaryBlue};
-  font-family: serif;
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-right: 2.5rem;
-  position: relative;
-  top: -5px;
-`
-
-const Section = styled.div`
-  text-transform: uppercase;
-  display: flex;
-`
-
-const UlEmployers = styled.ul`
-  margin: 0;
-  list-style: none;
-  padding-left: 3.5rem;
-`
-
-const UlFiles = styled.ul`
-  border-top: solid 1px lightgray;
-  padding: 2rem 0;
-  list-style: none;
-  margin-top: 2rem;
-  display: inline-block;
-
-  @media (max-width: ${intermediaryBreakpoint}) {
-    width: 100%;
-  }
-`
+import { primaryBlue } from '../../../constants'
+import { ActuStatusBlock, ActuHr } from './ActuGenericComponent'
 
 const FileLink = styled.a`
   display: flex;
@@ -63,10 +21,19 @@ const FileLink = styled.a`
     color: ${primaryBlue};
   }
 `
+const Hr = styled.div`
+  width: 0.3rem;
+  height: 100%; 
+  background-color: #ffffff;
+  margin: ${({ width }) => {
+    if (['xs', 'sm', 'md'].includes(width)) return '0 2rem;'
+    return '0 4rem;'
+  }};
+`
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 
-const DeclarationFinished = ({ declaration }) => {
+const DeclarationFinished = ({ declaration, width }) => {
   const [showPrintIframe, setShowPrintIframe] = useState(false)
   const iframeEl = useRef(null)
 
@@ -100,71 +67,52 @@ const DeclarationFinished = ({ declaration }) => {
 
   return (
     <>
-      <Section>
-        <div>
-          <Typography
-            className="declaration-status"
-            style={{ marginBottom: '1rem' }}
-          >
-            <StyledDoneIcon />
-            <strong>Actualisation envoyée</strong>
+      <Grid container spacing={2}>
+        <Grid item sm={12} md={6}>
+          <ActuStatusBlock title="Actualisation envoyée" Icon={<DoneIcon style={{color: "green"}}/>}>
+            <Typography>
+              Envoyée le {moment(declaration.transmitedAt).format('DD/MM/YYYY à HH:mm')}
+            </Typography>
+          </ActuStatusBlock>
+        </Grid>
+        <Grid item sm={12} md={6}>
+          <Typography  style={{ padding: '0 0 1rem 0' }}>
+            <FileLink
+              href="/api/declarations/summary-file?download=true"
+              target="_blank"
+              title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
+            >
+              <VerticalAlignBottomIcon style={{ color: primaryBlue, marginRight: '1rem' }}/>
+              Télécharger ma déclaration
+            </FileLink>
           </Typography>
 
-          <div>
-            <Typography
-              component="h3"
-              style={{ lineHeight: 1, color: darkBlue }}
-            >
-              <Dot>.</Dot>
-              Mes employeurs
+          <Typography  style={{ padding: '0 0 1rem 0' }}>
+            <FileLink href="#" onClick={printDeclaration}>
+              <PrintIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
+              Imprimer ma déclaration
+            </FileLink>
+          </Typography>
+        </Grid>
+      </Grid>
+      <ActuHr/>
+      <div style={{margin: '2rem auto 2rem auto'}}>
+        <Grid container >
+          <Grid item xs={5} sm={4} md={4} lg={3}>
+            <Typography>Employeurs</Typography>
+            <Typography variant="h2" style={{lineHeight: '1'}}>
+              {declaration.employers.length}
             </Typography>
-            <Typography>
-              <UlEmployers>
-                {declaration.employers.map((emp) => (
-                  <li key={emp.id}>
-                    <strong>{emp.employerName}</strong>
-                  </li>
-                ))}
-              </UlEmployers>
+          </Grid>
+          <Grid item ><Hr width={width}/></Grid>
+          <Grid item xs={5} sm={6}>
+            <Typography>Rémunération déclarée</Typography>
+            <Typography variant="h2" style={{lineHeight: '1'}}>
+              {salary} €
             </Typography>
-          </div>
-          <div>
-            <Typography
-              component="h3"
-              style={{ lineHeight: 1, color: darkBlue }}
-            >
-              <Dot>.</Dot>
-              Rémunération déclarée
-              <br />
-            </Typography>
-            <Typography style={{ marginLeft: '3.5rem' }}>
-              <strong>{salary} €</strong>
-            </Typography>
-          </div>
-        </div>
-      </Section>
-
-      <UlFiles>
-        <Typography component="li" style={{ padding: '0 0 1rem 0' }}>
-          <FileLink
-            href="/api/declarations/summary-file?download=true"
-            target="_blank"
-            title="Télécharger votre déclaration au format PDF (Nouvelle fenêtre)"
-          >
-            <VerticalAlignBottomIcon
-              style={{ color: primaryBlue, marginRight: '1rem' }}
-            />
-            Télécharger ma déclaration
-          </FileLink>
-        </Typography>
-
-        <Typography component="li" style={{ padding: '0 0 1rem 0' }}>
-          <FileLink href="#" onClick={printDeclaration}>
-            <PrintIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
-            Imprimer ma déclaration
-          </FileLink>
-        </Typography>
-      </UlFiles>
+          </Grid>
+        </Grid>
+      </div>
 
       {showPrintIframe && (
         <iframe
@@ -182,6 +130,7 @@ const DeclarationFinished = ({ declaration }) => {
 
 DeclarationFinished.propTypes = {
   declaration: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired,
 }
 
-export default DeclarationFinished
+export default withWidth()(DeclarationFinished)

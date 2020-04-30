@@ -23,6 +23,7 @@ export const getMissingEmployerFiles = (declaration) =>
         return prev.concat({
           name: employer.employerName,
           type: salarySheetType,
+          employerId: employer.id,
         })
       }
       return prev
@@ -46,11 +47,12 @@ export const getMissingEmployerFiles = (declaration) =>
       return prev.concat({
         name: employer.employerName,
         type: employerCertificateType,
+        employerId: employer.id,
       })
     }
     return prev.concat(
-      { name: employer.employerName, type: salarySheetType },
-      { name: employer.employerName, type: employerCertificateType },
+      { name: employer.employerName, type: salarySheetType, employerId: employer.id },
+      { name: employer.employerName, type: employerCertificateType, employerId: employer.id },
     )
   }, [])
 
@@ -80,6 +82,26 @@ export const getDeclarationMissingFilesNb = (declaration) => {
       if (hasEmployerCertificate) return prev + 0
       return prev + (hasSalarySheet ? 1 : 2)
     }, 0) + infoDocumentsRequiredNb
+  )
+}
+
+export function getMissingFilesNb(allDeclarations) {
+  const declarations = allDeclarations.filter(
+    ({ hasFinishedDeclaringEmployers, isFinished }) =>
+      hasFinishedDeclaringEmployers && !isFinished,
+  )
+
+  const [lastDeclaration] = declarations
+  if (
+    !lastDeclaration ||
+    (lastDeclaration.isFinished && declarations.length === 0)
+  ) {
+    return 0
+  }
+
+  return declarations.reduce(
+    (prev, decl) => prev + getDeclarationMissingFilesNb(decl),
+    0,
   )
 }
 

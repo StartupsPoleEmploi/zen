@@ -9,6 +9,7 @@
  * dependency of this project, as it is bundled in @reduxjs/toolkit)
  */
 import { createReducer } from '@reduxjs/toolkit'
+import { getMissingFilesNb } from '../../lib/file'
 
 import {
   POST_DECLARATION_INFO_FAILURE,
@@ -44,6 +45,7 @@ const declarationsReducer = createReducer(
   {
     isLoading: false,
     declarations: [],
+    missingFiles: 0,
     employers: [],
     employersDocuments: [],
     declarationsInfos: [],
@@ -61,6 +63,7 @@ const declarationsReducer = createReducer(
     },
     [FETCH_DECLARATIONS_SUCCESS]: (state, action) => {
       state.declarations = action.payload
+      state.missingFiles = getMissingFilesNb(action.payload)
       state.isLoading = false
     },
     [FETCH_DECLARATIONS_FAILURE]: (state, action) => {

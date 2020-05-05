@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { formattedDeclarationMonth, formatIntervalDates } from '../../lib/date'
-import { getMissingEmployerFiles, getMissingFilesNb } from '../../lib/file'
+import { getMissingEmployerFiles } from '../../lib/file'
 import { primaryBlue, DOCUMENT_LABELS, darkBlue } from '../../constants'
 
 import DashbordMainBt from '../../components/Generic/DashbordMainBt'
@@ -119,7 +119,7 @@ class DashboardJustificatifs extends PureComponent {
         to="/files"
         component={Link}
         disabled={!isFilesServiceUp}
-        style={{ width: '90%', margin: '3rem auto 0 auto' }}
+        style={{ width: '90%', maxWidth: '36rem', margin: '3rem auto 0 auto' }}
       >
         Gérer mes justificatifs
       </DashbordMainBt>
@@ -168,8 +168,9 @@ class DashboardJustificatifs extends PureComponent {
     )
   }
 
-  renderFilesSection(computeMissingFiles) {
-    if (computeMissingFiles === 0 ) {
+  renderFilesSection() {
+    const { missingFiles } = this.props
+    if (missingFiles === 0 ) {
       return <Typography>Vous n'avez pas de fichier à envoyer.</Typography>
     }
 
@@ -209,8 +210,7 @@ class DashboardJustificatifs extends PureComponent {
   }
 
   render() {
-    const { user, width, isFilesServiceUp, declarations } = this.props
-    const computeMissingFiles = getMissingFilesNb(declarations)
+    const { user, width, isFilesServiceUp, missingFiles } = this.props
 
     if (user.needOnBoarding) {
       // Show "thank you" to only relative new users
@@ -226,12 +226,12 @@ class DashboardJustificatifs extends PureComponent {
       <div width={width}>
         <SubTitle>
           Justificatif(s) manquant(s)
-          {computeMissingFiles !== 0 && (<StyledSup>{computeMissingFiles}</StyledSup>)}
+          {missingFiles !== 0 && (<StyledSup>{missingFiles}</StyledSup>)}
         </SubTitle>
 
         <ContainerFile width={width}>
           <Opacity isFilesServiceUp={isFilesServiceUp}>
-            {this.renderFilesSection(computeMissingFiles)}
+            {this.renderFilesSection()}
           </Opacity>
           {!isFilesServiceUp && (
             <ErrorContainer>
@@ -256,12 +256,14 @@ DashboardJustificatifs.propTypes = {
   }),
   isFilesServiceUp: PropTypes.bool,
   declarations: PropTypes.arrayOf(PropTypes.object),
+  missingFiles: PropTypes.number,
   width: PropTypes.string.isRequired,
 }
 
 export default connect(
   (state) => ({
     declarations: state.declarationsReducer.declarations,
+    missingFiles: state.declarationsReducer.missingFiles,
     user: state.userReducer.user,
     isFilesServiceUp: state.statusReducer.isFilesServiceUp,
   }),

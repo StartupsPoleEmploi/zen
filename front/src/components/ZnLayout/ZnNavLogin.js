@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
@@ -90,6 +91,7 @@ const UlStepper = styled.ul`
 
 const LiStep = styled(Typography).attrs({ component: 'li' })`
   && {
+    position: relative;
     display: flex;
     align-items: center;
     padding-left: 5rem;
@@ -129,6 +131,7 @@ const DesktopLink = styled(Link)`
 
 const StyledTab = styled(Tab)`
   && {
+    position: relative;
     text-transform: none;
     overflow: visible;
     padding-top: 2rem;
@@ -221,6 +224,23 @@ const SubLabel = styled.div`
   justify-content: center;
 `
 
+const StyledSup = styled.sup`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  margin-left: 1rem;
+
+  background-color: #ff6237;
+  color: #fff;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+
+  position: absolute;
+`
+
 // eslint-disable-next-line react/prop-types
 const StepperItem = ({ label, link, shouldActivateLink, isActive }) => {
   const liProps = {
@@ -251,6 +271,7 @@ export const NavLogin = ({
   isFilesServiceUp,
   location: { pathname },
   history: { push },
+  missingFiles,
 }) => {
   const isNavVisible = routesWithDisplayedNav.includes(pathname)
 
@@ -316,6 +337,9 @@ export const NavLogin = ({
               <>
                 <FileIcon alt="" />
                 Justificatifs
+                {!!missingFiles &&
+                  <StyledSup style={{ top: '-0.8rem' }}>{missingFiles}</StyledSup>
+                }
               </>
             }
             value={filesRoute}
@@ -416,6 +440,9 @@ export const NavLogin = ({
           label={
             <>
               <FileIcon alt="" /> Mes justificatifs
+              {!!missingFiles &&
+                <StyledSup style={{ top: '-0.6rem', left: '5.2rem' }}>{missingFiles}</StyledSup>
+              }
             </>
           }
           link={filesRoute}
@@ -455,10 +482,17 @@ NavLogin.propTypes = {
     .isRequired,
   activeMonth: PropTypes.instanceOf(Date),
   activeDeclaration: PropTypes.object,
+  missingFiles: PropTypes.number,
 }
 
 NavLogin.defaultProps = {
-  isFilesServiceUp: false,
+  missingFiles: false,
 }
 
-export default withRouter(NavLogin)
+
+export default connect(
+  (state) => ({
+    missingFiles: state.declarationsReducer.missingFiles,
+  }),
+  { },
+)(withRouter(NavLogin))

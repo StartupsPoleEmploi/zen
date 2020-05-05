@@ -575,6 +575,7 @@ export class Files extends Component {
   render() {
     const {
       declarations: allDeclarations,
+      totalMissingFiles,
       declaration: activeDeclaration,
       isLoading,
       previewedEmployerDoc,
@@ -689,8 +690,6 @@ export class Files extends Component {
       },
       0,
     )
-    const totalMissingFiles =
-      lastDeclarationMissingFiles + oldDeclarationsMissingFiles
 
     const showEmployerPreview = !!get(previewedEmployerDoc, 'file')
     const showInfoDocPreview = !!get(previewedInfoDoc, 'file')
@@ -824,6 +823,7 @@ Files.propTypes = {
   declaration: PropTypes.object,
   token: PropTypes.string.isRequired,
   declarations: PropTypes.arrayOf(PropTypes.object),
+  totalMissingFiles: PropTypes.number,
   fetchDeclarations: PropTypes.func.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
@@ -848,6 +848,7 @@ Files.propTypes = {
 export default connect(
   (state) => ({
     declarations: state.declarationsReducer.declarations,
+    totalMissingFiles: state.declarationsReducer.missingFiles,
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),

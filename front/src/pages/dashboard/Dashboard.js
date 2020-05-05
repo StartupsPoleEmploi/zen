@@ -26,7 +26,7 @@ const StyledDashboard =  styled.div`
 
 const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
   && {
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
     font-weight: bold;
     letter-spacing: 1px;
     text-align: left;
@@ -59,9 +59,9 @@ class Dashboard extends PureComponent {
 
     return (
       <StyledDashboard width={width}>
+        <Title>Bonjour {user.firstName}</Title> 
         <Grid container spacing={4}>
           <Grid item md={9} sm={12}>
-            <Title>Bonjour {user.firstName}</Title>
             <StatusContainer>
               {!user.isBlocked && (
                 <ActuStatus
@@ -79,7 +79,7 @@ class Dashboard extends PureComponent {
               <img src={dashboardHelpImg} style={{width: '100%'}} alt="Besoin d'aide"  />
               <H4>Besoin d'aide ?</H4>
               <Typography>
-                Toutes nos réponses concernant l'actualisation sue Zen Pôle emploi.
+                Toutes nos réponses concernant l'actualisation sur Zen Pôle emploi.
               </Typography>
               <MainActionButton
                 onClick={this.props.openHelpPopup}

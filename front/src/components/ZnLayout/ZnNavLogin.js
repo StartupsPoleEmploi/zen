@@ -337,7 +337,9 @@ export const NavLogin = ({
               <>
                 <FileIcon alt="" />
                 Justificatifs
-                <StyledSup style={{ top: '-0.8rem' }}>{missingFiles}</StyledSup>
+                {!!missingFiles &&
+                  <StyledSup style={{ top: '-0.8rem' }}>{missingFiles}</StyledSup>
+                }
               </>
             }
             value={filesRoute}
@@ -437,7 +439,10 @@ export const NavLogin = ({
         <StepperItem
           label={
             <>
-              <FileIcon alt="" /> Mes justificatifs <StyledSup style={{ top: '-0.6rem', left: '5.2rem' }}>{missingFiles}</StyledSup>
+              <FileIcon alt="" /> Mes justificatifs
+              {!!missingFiles &&
+                <StyledSup style={{ top: '-0.6rem', left: '5.2rem' }}>{missingFiles}</StyledSup>
+              }
             </>
           }
           link={filesRoute}

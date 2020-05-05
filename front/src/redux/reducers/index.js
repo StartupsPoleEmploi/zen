@@ -4,6 +4,7 @@ import declarationMonthsReducer from './declarationMonths'
 import userReducer from './user'
 import statusReducer from './status'
 import activeMonthReducer from './activeMonth'
+import helpPopup from './helpPopup'
 
 export default combineReducers({
   declarationsReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   userReducer,
   statusReducer,
   activeMonthReducer,
+  helpPopup,
 })

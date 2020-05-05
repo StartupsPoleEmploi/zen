@@ -14,6 +14,7 @@ import OnBoarding from './onBoarding/OnBoarding'
 import DashboardJustificatifs from './DashboardJustificatifs'
 import dashboardHelpImg from '../../images/dashboardHelp.svg'
 import MainActionButton from '../../components/Generic/MainActionButton'
+import { openHelpPopup } from '../../redux/actions/helpPopup'
 
 const StyledDashboard =  styled.div`
   margin: ${({ width }) => {
@@ -81,12 +82,10 @@ class Dashboard extends PureComponent {
                 Toutes nos réponses concernant l'actualisation sue Zen Pôle emploi.
               </Typography>
               <MainActionButton
-                href="https://pole-emploi.zendesk.com/hc/fr"
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={this.props.openHelpPopup}
                 title="Contactez-nous"
                 primary
-                style={{ margin: '2rem 0rem', height: '5.5rem', textTransform: 'none'}}
+                style={{ margin: '2rem 0rem', height: '5.5rem' }}
               >
                 Contactez-nous
               </MainActionButton>
@@ -101,6 +100,7 @@ class Dashboard extends PureComponent {
 Dashboard.propTypes = {
   activeMonth: PropTypes.instanceOf(Date).isRequired,
   fetchDeclarations: PropTypes.func.isRequired,
+  openHelpPopup: PropTypes.func.isRequired,
   user: PropTypes.shape({
     firstName: PropTypes.string,
     hasAlreadySentDeclaration: PropTypes.bool,
@@ -124,5 +124,6 @@ export default connect(
   }),
   {
     fetchDeclarations: fetchDeclarationAction,
+    openHelpPopup,
   },
 )(withWidth()(Dashboard))

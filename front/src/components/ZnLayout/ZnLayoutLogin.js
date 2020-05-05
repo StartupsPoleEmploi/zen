@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 
 
@@ -17,7 +17,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import AppTitle from '../Generic/AppTitle'
 import ZnNavLogin from './ZnNavLogin'
-import { secondaryBlue, mobileBreakpoint } from '../../constants'
+import { secondaryBlue, errorOrange, mobileBreakpoint } from '../../constants'
 import dashboardBg from '../../images/dashboard-bg.svg'
 import Covid19Warning from '../Generic/Covid19Warning'
 import Codiv19Justif from '../Generic/Codiv19Justif'
@@ -186,7 +186,7 @@ export const Layout = ({
                 }}
               >
                 <PopoverMailContainer>
-                  <ReportProblemOutlinedIcon style={{ marginRight: '2rem', fontSize: '4rem', color: 'red' }} />
+                  <PriorityHighIcon style={{ marginRight: '2rem', fontSize: '4rem', color: errorOrange }} />
                   <Typography>
                     N'oubliez pas de consulter régulièrement vos courriers en ligne sur votre{' '}
                     espace personnel pôle emploi.
@@ -200,7 +200,7 @@ export const Layout = ({
                 target="_self"
                 disableRipple
                 variant="text"
-                style={{ padding: '0', margin: '0' }}
+                style={{ padding: '0px 0.5rem', margin: '0', height: '4rem' }}
               >
                 <ExitToAppIcon/>
                 <Typography className="logout-text">

@@ -119,7 +119,7 @@ class DashboardJustificatifs extends PureComponent {
         to="/files"
         component={Link}
         disabled={!isFilesServiceUp}
-        style={{ width: '90%', margin: '3rem auto 0 auto' }}
+        style={{ width: '90%', maxWidth: '36rem', margin: '3rem auto 0 auto' }}
       >
         Gérer mes justificatifs
       </DashbordMainBt>

@@ -7,6 +7,7 @@ import DoneIcon from '@material-ui/icons/Done'
 import PrintIcon from '@material-ui/icons/Print'
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 import withWidth from '@material-ui/core/withWidth'
+import NumberFormat from 'react-number-format'
 
 import { primaryBlue } from '../../../constants'
 import { ActuStatusBlock, ActuHr } from './ActuGenericComponent'
@@ -29,6 +30,13 @@ const Hr = styled.div`
     if (['xs', 'sm', 'md'].includes(width)) return '0 2rem;'
     return '0 4rem;'
   }};
+`
+
+
+const Block = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file'
@@ -71,7 +79,7 @@ const DeclarationFinished = ({ declaration, width }) => {
         <Grid item sm={12} md={6}>
           <ActuStatusBlock title="Actualisation envoyée" Icon={<DoneIcon style={{color: "green"}}/>}>
             <Typography>
-              Envoyée le {moment(declaration.transmitedAt).format('DD/MM/YYYY à HH:mm')}
+              Le {moment(declaration.transmitedAt).format('DD/MM/YYYY à HH:mm')}
             </Typography>
           </ActuStatusBlock>
         </Grid>
@@ -98,18 +106,33 @@ const DeclarationFinished = ({ declaration, width }) => {
       <ActuHr/>
       <div style={{margin: '2rem auto 2rem auto'}}>
         <Grid container >
-          <Grid item xs={5} sm={4} md={4} lg={3}>
-            <Typography>Employeurs</Typography>
-            <Typography variant="h2" style={{lineHeight: '1'}}>
-              {declaration.employers.length}
-            </Typography>
+          <Grid item xs={5} sm={4} md={4} lg={3} justify="center" alignItems="center">
+            <Block>
+              <div>
+                <Typography>Employeurs</Typography>
+                <Typography variant="h2" style={{lineHeight: '1'}}>
+                  {declaration.employers.length}
+                </Typography>
+              </div>
+            </Block>
           </Grid>
           <Grid item ><Hr width={width}/></Grid>
           <Grid item xs={5} sm={6}>
-            <Typography>Rémunération déclarée</Typography>
-            <Typography variant="h2" style={{lineHeight: '1'}}>
-              {salary} €
-            </Typography>
+            <Block>
+              <div>
+                <Typography>Rémunération déclarée</Typography>
+                <Typography variant="h2" style={{lineHeight: '1'}}>
+                  <NumberFormat
+                    thousandSeparator=" "
+                    decimalSeparator=","
+                    decimalScale={0}
+                    fixedDecimalScale
+                    displayType="text"
+                    value={salary}
+                  />{' '}€
+                </Typography>
+              </div>
+            </Block>
           </Grid>
         </Grid>
       </div>

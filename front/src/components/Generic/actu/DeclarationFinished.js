@@ -76,7 +76,7 @@ const DeclarationFinished = ({ declaration, width }) => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item sm={12} md={6}>
+        <Grid item sm={12} md={6} lg={5}>
           <ActuStatusBlock title="Actualisation envoyée" Icon={<DoneIcon style={{color: "green"}}/>}>
             <Typography>
               Le {moment(declaration.transmitedAt).format('DD/MM/YYYY à HH:mm')}
@@ -109,7 +109,7 @@ const DeclarationFinished = ({ declaration, width }) => {
           <Grid item xs={5} sm={4} md={4} lg={3} justify="center" alignItems="center">
             <Block>
               <div>
-                <Typography>Employeurs</Typography>
+                <Typography>Employeur(s)</Typography>
                 <Typography variant="h2" style={{lineHeight: '1'}}>
                   {declaration.employers.length}
                 </Typography>
@@ -117,7 +117,7 @@ const DeclarationFinished = ({ declaration, width }) => {
             </Block>
           </Grid>
           <Grid item ><Hr width={width}/></Grid>
-          <Grid item xs={5} sm={6}>
+          <Grid item xs={5} sm={4}>
             <Block>
               <div>
                 <Typography>Rémunération déclarée</Typography>

@@ -189,7 +189,7 @@ export const Layout = ({
                   <PriorityHighIcon style={{ marginRight: '2rem', fontSize: '4rem', color: errorOrange }} />
                   <Typography>
                     N'oubliez pas de consulter régulièrement vos courriers en ligne sur votre{' '}
-                    espace personnel pôle emploi.
+                    <a href="https://www.pole-emploi.fr" target="_blank" rel="noopener noreferrer">espace personnel</a> pôle emploi.
                   </Typography>
                 </PopoverMailContainer>
               </Popover>

@@ -29,8 +29,7 @@ const routesWithDisplayedNav = [
   '/dashboard',
   '/thanks',
   '/history',
-  '/cgu',
-  '/aide-conseillers',
+  '/cgu'
 ]
 
 const StyledLayout = styled.div`

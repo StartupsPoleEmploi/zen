@@ -3,6 +3,8 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import withWidth from '@material-ui/core/withWidth'
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -48,6 +50,15 @@ const StyledDialogActions = styled(DialogActions)`
   }
 `
 
+// eslint-disable-next-line react/prop-types
+function CloseButton({ onClose }) {
+  return  (
+    <IconButton onClick={onClose} style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+      <CloseIcon />
+    </IconButton>
+  );
+}
+
 /*
  * This base Dialog structure is used for most of the dialogs of the app
  * It includes thresholds with media queries to switch to full screen
@@ -65,6 +76,7 @@ export const CustomDialog = ({
   width,
   forceConstantHeight,
   paperProps,
+  displayCancel,
   ...rest
 }) => {
   const useMobileStyling = width === muiBreakpoints.xs
@@ -86,7 +98,12 @@ export const CustomDialog = ({
       {titleIcon && <StyledTitleIcon>{titleIcon}</StyledTitleIcon>}
       {title && (
         <StyledDialogTitle hasIcon={titleIcon} id={titleId}>
-          {title}
+          <>
+            {title}
+            {onCancel && displayCancel &&
+              <CloseButton onClose={onCancel} />  
+            }
+          </>
         </StyledDialogTitle>
       )}
       {header}
@@ -122,6 +139,7 @@ CustomDialog.propTypes = {
   forceConstantHeight: PropTypes.bool,
   width: PropTypes.string,
   paperProps: PropTypes.shape(),
+  displayCancel: PropTypes.bool,
 }
 
 CustomDialog.defaultProps = {

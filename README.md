@@ -40,3 +40,21 @@ module.exports = {
 ### HTTPS certificate
 
 The entrust-zen.pole-emploi.fr-key.pem file must be put in the nginx folder
+
+
+## Enable wordpress
+
+- add this to `/wordpress/wp-config.php`
+
+  ```
+  /** set the site URL */
+  define('WP_HOME','https://zen.pole-emploi.fr/zen-doc');
+  define('WP_SITEURL','https://zen.pole-emploi.fr/zen-doc');
+
+  /** Fix to get the dashboard working with the reverse proxy.*/
+  $_SERVER['REQUEST_URI'] = str_replace("/wp-admin/", "/zen-doc/wp-admin/",  $_SERVER['REQUEST_URI']);
+  ```
+
+- restart the wordpress container
+
+  `docker restart zen_wordpress_1`

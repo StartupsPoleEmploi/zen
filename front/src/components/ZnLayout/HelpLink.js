@@ -20,6 +20,7 @@ const A = styled.button`
   cursor: pointer;
 
   background-color: ${helpColor} !important;
+  border-color: ${helpColor} !important;
   color: white;
   padding: 1rem 1.6em;
   border-radius: 999rem;

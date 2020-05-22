@@ -24,7 +24,7 @@ import { hideHelpPopup } from '../../redux/actions/helpPopup'
 const A = styled(Button)`
   && {
     width: 100%;
-    height: 100%;
+    height: 13rem;
     border: 1px #ddd solid;
     border-radius: 0.5rem;
     padding: 1rem;
@@ -50,7 +50,8 @@ const MessageOutlinedIcon = styled(MessageOutlined)`
 `
 
 const Container = styled.div`
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
+  margin: 0px -8px;
 `
 
 // eslint-disable-next-line react/prop-types
@@ -62,7 +63,7 @@ function BlockItem({ Icon, text, section }) {
         target="_blank" 
         rel="noopener noreferrer" 
       >
-        <Icon style={{ marginBottom: '1rem', color: primaryBlue, fontSize: '4rem' }} />
+        <Icon style={{ marginBottom: '1rem', marginTop: '1rem', color: primaryBlue, fontSize: '4rem' }} />
         <Typography>{text}</Typography> 
       </A>
     </Grid>
@@ -85,6 +86,7 @@ function DialogHelp({ isOpened, onClose }) {
       )}
       titleId="HelpDialogContentText"
       fullWidth
+      displayCancel
       isOpened={isOpened}
       content={
         <Container>
@@ -138,11 +140,7 @@ function DialogHelp({ isOpened, onClose }) {
         </Container>
       }
       onCancel={onClose}
-      actions={
-        <Button variant="contained" onClick={onClose} color="primary">
-          Fermer
-        </Button>
-      }
+      actions={<div style={{marginTop: '1rem'}} />}
     />
   )
 }

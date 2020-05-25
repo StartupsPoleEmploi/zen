@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import DialogHelp from '../Generic/DialogHelp'
 import ZnLayoutLogin from './ZnLayoutLogin'
 import ZnLayoutLogout from './ZnLayoutLogout'
 import HelpLink from './HelpLink'
@@ -14,7 +15,12 @@ export const ZnLayout = ({
   user,
 }) => {
   if (!user) {
-    return <ZnLayoutLogout>{children}</ZnLayoutLogout>
+    return (
+      <ZnLayoutLogout>
+        {children}
+        <DialogHelp />
+      </ZnLayoutLogout>
+    );
   }
 
   return (
@@ -27,6 +33,7 @@ export const ZnLayout = ({
       >
         {children}
 
+        <DialogHelp />
         <HelpLink />
       </ZnLayoutLogin>
       <Footer />

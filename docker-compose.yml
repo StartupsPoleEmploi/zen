@@ -149,6 +149,37 @@ services:
       - '-c'
       - 'max_parallel_workers=4'
 
+  db-wordpress:
+    image: mysql:5.7
+    volumes:
+      - db-wordpress-data:/var/lib/mysql
+    restart: always
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.160
+    environment:
+      MYSQL_ROOT_PASSWORD: ${WORDPRESS_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${WORDPRESS_MYSQL_DATABASE}
+      MYSQL_USER: ${WORDPRESS_MYSQL_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_MYSQL_PASSWORD}
+
+  wordpress:
+    depends_on:
+      - db-wordpress
+    image: wordpress:5.1.1-php7.3-apache
+    restart: always
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.165
+    environment:
+      WORDPRESS_DB_HOST: db-wordpress:3306
+      WORDPRESS_DB_NAME: ${WORDPRESS_MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${WORDPRESS_MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_MYSQL_PASSWORD}
+    volumes:
+      - ./wordpress:/var/www/html
+       
+       
 networks:
   actualisation_network:
     driver: bridge
@@ -159,3 +190,4 @@ networks:
 
 volumes:
   postgres-data:
+  db-wordpress-data:

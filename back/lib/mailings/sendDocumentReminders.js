@@ -9,7 +9,7 @@ const Declaration = require('../../models/Declaration')
 const EmployerDocument = require('../../models/EmployerDocument')
 const User = require('../../models/User')
 const winston = require('../log')
-const DOCUMENT_LABELS = require('../../constants')
+const { DOCUMENT_LABELS } = require('../../constants')
 
 const ALL_DOCS_REMINDER_TEMPLATE_ID = 915055
 const DOCS_REMINDER_TEMPLATE_ID = 915059

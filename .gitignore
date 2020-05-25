@@ -1,7 +1,10 @@
 /.env
+/.env.dev
+/.env.qa
+/.env.prod
 node_modules
 nginx/entrust-zen.pole-emploi.fr-key.pem
-nginx/.htpasswd
+nginx/.htpasswd*
 nginx/var/
 .vscode/settings.json
 cypress/videos
@@ -12,3 +15,5 @@ cypress/integration/examples
 
 ignore/
 front-admin-old/
+
+wordpress

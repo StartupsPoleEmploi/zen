@@ -6,7 +6,7 @@ const fs = require('fs')
 require('../lib/db')
 const Declaration = require('../models/Declaration')
 const EmployerDocument = require('../models/EmployerDocument')
-const DOCUMENT_LABELS = require('../constants')
+const { DOCUMENT_LABELS } = require('../constants')
 
 const getFormattedMonthAndYear = (date) =>
   format(date, 'MMMM YYYY', { locale: fr })

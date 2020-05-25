@@ -1,31 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
-const StyledCloseIcon = styled(CloseIcon)`
-  && {
-    margin-right: 1rem;
-    vertical-align: bottom;
-    color: red;
-  }
-`
-
-const Section = styled.div`
-  text-transform: uppercase;
-  display: flex;
-`
+import { ActuStatusBlock } from './ActuGenericComponent'
 
 const DeclarationImpossible = () => (
-  <>
-    <Section>
-      <StyledCloseIcon />
-      <div>
-        <Typography className="declaration-status">
-          <strong>Actualisation impossible</strong>
-        </Typography>
-      </div>
-    </Section>
+  <ActuStatusBlock title="Actualisation impossible" Icon={<CloseIcon style={{color: "red"}}/>}>
     <Typography style={{ marginTop: '2rem' }}>
       Un problème technique nous empêche actuellement de récupérer les
       informations de votre statut de demandeur d'emploi.
@@ -37,7 +17,7 @@ const DeclarationImpossible = () => (
       </a>
       .
     </Typography>
-  </>
+  </ActuStatusBlock>
 )
 
 export default DeclarationImpossible

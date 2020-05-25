@@ -1,10 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined'
+import { connect } from 'react-redux'
 
 import { mobileBreakpoint, helpColor } from '../../constants'
+import { openHelpPopup } from '../../redux/actions/helpPopup'
 
-const A = styled.a`
+const A = styled.button`
   position: fixed;
   right: 2rem;
   bottom: 2rem;
@@ -14,8 +17,10 @@ const A = styled.a`
   white-space: no-wrap;
   font-family: inherit;
   text-decoration: none;
+  cursor: pointer;
 
   background-color: ${helpColor} !important;
+  border-color: ${helpColor} !important;
   color: white;
   padding: 1rem 1.6em;
   border-radius: 999rem;
@@ -49,13 +54,11 @@ const Help = styled(HelpOutlineOutlined)`
   }
 `
 
-function HelpLink() {
+function HelpLink({onClick}) {
   return (
     <A
-      href="https://pole-emploi.zendesk.com/hc/fr"
+      onClick={onClick}
       title="Consulter notre page d'aide"
-      target="_blank"
-      rel="noopener noreferrer"
     >
       <Help />
       <HelpText>Aide</HelpText>
@@ -63,4 +66,15 @@ function HelpLink() {
   )
 }
 
-export default HelpLink
+HelpLink.propTypes = {
+  onClick: PropTypes.func,
+}
+
+export default connect(
+  (state) => ({
+    isOpened: state.helpPopup.isOpen,
+  }),
+  {
+    onClick: openHelpPopup,
+  },
+)(HelpLink)

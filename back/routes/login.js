@@ -88,11 +88,14 @@ router.get('/callback', async (req, res) => {
         if (config.get('shouldSendTransactionalEmails') && dbUser.email) {
           // Note: We do not wait for Mailjet to answer to send data back to the user
           mailjet.addUser(dbUser).then(() => {
-            if (dbUser.isAuthorized) return sendSubscriptionConfirmation(dbUser);
+            if (dbUser.isAuthorized) {
+              return sendSubscriptionConfirmation(dbUser).catch((e) => {
+                winston.warn(`[Login] error when send the confirmation email ${dbUser.email}`, e);
+              });
+            }
           }).catch((e) => {
-            winston.error('[Login] error when add user to mailjet and send it the confirmation email', e);
+            winston.warn(`[Login] error when add user to mailjet ${dbUser.email}`, e);
           })
-          
         }
         dbUser = await dbUser
           .$query()

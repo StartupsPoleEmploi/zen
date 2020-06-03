@@ -7,7 +7,13 @@ const pgConnectSimple = require('connect-pg-simple')
 
 const { setActiveMonth } = require('./lib/middleware/activeMonthMiddleware')
 const loggerMiddleware = require('./lib/middleware/loggerMiddleware')
-const adminRouter = require('./routes/admin')
+const activityLogRouter = require('./routes/admin/activityLog.admin')
+const conseillerHelpsRouter = require('./routes/admin/conseillerHelps.admin')
+const dashbordRouter = require('./routes/admin/dashbord.admin')
+const declarationsRouter = require('./routes/admin/declarations.admin')
+const settingRouter = require('./routes/admin/setting.admin')
+const useradminsRouter = require('./routes/admin/useradmins.admin')
+const usersRouter = require('./routes/admin/users.admin')
 
 require('./lib/db') // setup db connection
 
@@ -26,11 +32,14 @@ app.use(
     saveUninitialized: false,
     secure: false, // TODO set to true when in production
     secret: config.cookieSecret,
-    store: new (pgConnectSimple(session))(),
+    store: new (pgConnectSimple(session))({
+      tableName : 'session_admin'
+    }),
   }),
 )
+
 app.use(setActiveMonth)
 
-app.use('/', adminRouter)
+app.use('/', activityLogRouter, conseillerHelpsRouter, dashbordRouter, declarationsRouter, settingRouter, useradminsRouter, usersRouter)
 
 module.exports = app

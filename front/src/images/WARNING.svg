@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="FEEDBACKS_JUSTIFICATIF_1" transform="translate(-263.000000, -788.000000)">
+            <g id="Group" transform="translate(263.000000, 788.000000)">
+                <circle id="Oval" fill="#FF784E" cx="12.5" cy="12.5" r="12.5"></circle>
+                <g id="priority_high-24px" transform="translate(11.000000, 5.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <ellipse id="Oval" cx="1.5" cy="13.0357143" rx="1.5" ry="1.54761905"></ellipse>
+                    <polygon id="Path" points="0 0.654761905 3 0.654761905 3 9.94047619 0 9.94047619"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

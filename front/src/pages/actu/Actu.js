@@ -32,6 +32,7 @@ import {
   mobileBreakpoint,
 } from '../../constants'
 import ScrollToButton from '../../components/Generic/ScrollToButton'
+import ErrorSnackBar from '../../components/Generic/ErrorSnackBar'
 
 const USER_GENDER_MALE = 'male'
 const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
@@ -63,18 +64,6 @@ const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`
   && {
     text-align: center;
     font-weight: bold;
-  }
-`
-
-const ErrorMessage = styled(Typography).attrs({
-  paragraph: true,
-  role: 'alert',
-  variant: 'body1',
-})`
-  && {
-    color: red;
-    text-align: center;
-    padding-top: 1.5rem;
   }
 `
 
@@ -170,6 +159,7 @@ export class Actu extends Component {
     validationErrors: [],
     isLoggedOut: false,
     infos: [],
+    errorsField: [],
     ...formFields.reduce((prev, field) => ({ ...prev, [field]: null }), {}),
   }
 
@@ -201,9 +191,9 @@ export class Actu extends Component {
     })
 
   openDialog = () => {
-    const error = this.getFormError()
-    if (error) {
-      return this.setState({ formError: error })
+    const { errorMsg, errorsField } = this.getFormError();
+    if (errorMsg) {
+      return this.setState({ formError: errorMsg, errorsField });
     }
     this.setState({ isDialogOpened: true })
   }
@@ -257,9 +247,15 @@ export class Actu extends Component {
     })
   }
 
-  onSetDate = ({ controlName, date }) => {
+  onSetDate = ({ controlName, date, indexError }) => {
     const newState = cloneDeep(this.state)
     set(newState, controlName, date)
+
+    const {errorsField} = this.state;
+    const index = errorsField.indexOf(indexError)
+    if (index !== -1) {
+      errorsField.splice(index, 1);
+    }
     this.setState({ ...newState, formError: null })
   }
 
@@ -292,94 +288,154 @@ export class Actu extends Component {
       isLookingForJob,
       jobSearchStopMotive,
     } = this.state
+    const localErrorFied = [];
+    let errorMsg = null;
+
     if (!this.hasAnsweredMainQuestions()) {
-      return 'Merci de répondre à toutes les questions'
+      return <>Merci de répondre à <b>toutes les questions</b></>
     }
 
     if (hasInternship) {
       const internshipDates = infos.filter(
         ({ type }) => type === types.INTERNSHIP,
-      )
-      const hasMissingInternshipDates =
-        internshipDates.some(
-          ({ startDate, endDate }) => !startDate || !endDate,
-        ) || !internshipDates.length
-      const hasWrongInternshipDates = internshipDates.some(
-        ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
-      )
+      );
+      let hasMissingInternshipDates = false;
+      let hasWrongInternshipDates = false;
+
+      internshipDates.forEach(({ startDate, endDate }, index) => {
+        if (!startDate) {
+          localErrorFied.push(`${types.INTERNSHIP}_${index}_start`);
+        }
+        if (!endDate) {
+          localErrorFied.push(`${types.INTERNSHIP}_${index}_end`);
+        }
+
+        if (!startDate || !endDate) {
+          hasMissingInternshipDates = true;
+        }
+
+        if (moment(endDate).isBefore(moment(startDate))) {
+          localErrorFied.push(`${types.INTERNSHIP}_${index}_start`);
+          localErrorFied.push(`${types.INTERNSHIP}_${index}_end`);
+          hasWrongInternshipDates = true;
+        }
+      })
 
       if (hasMissingInternshipDates) {
-        return `Merci d'indiquer toutes vos dates de stage`
+        errorMsg = <>Merci d'indiquer <b>toutes vos dates de stage</b></>
       }
       if (hasWrongInternshipDates) {
-        return 'Merci de corriger vos dates de stage (le début du stage ne peut être après sa fin)'
+        errorMsg = <>Merci de corriger <b>vos dates de stage (le début du stage ne peut être après sa fin)</b></>;
       }
     }
 
     if (hasSickLeave) {
       const sickLeaveDates = infos.filter(
         ({ type }) => type === types.SICK_LEAVE,
-      )
-      const hasMissingSickLeaveDates =
-        sickLeaveDates.some(
-          ({ startDate, endDate }) => !startDate || !endDate,
-        ) || !sickLeaveDates.length
-      const hasWrongSickLeaveDates = sickLeaveDates.some(
-        ({ startDate, endDate }) => moment(endDate).isBefore(moment(startDate)),
-      )
+      );
+
+      let hasMissingSickLeaveDates = false;
+      let hasWrongSickLeaveDates = false;
+
+      sickLeaveDates.forEach(({ startDate, endDate }, index) => {
+        if (!startDate) {
+          localErrorFied.push(`${types.SICK_LEAVE}_${index}_start`);
+        }
+        if (!endDate) {
+          localErrorFied.push(`${types.SICK_LEAVE}_${index}_end`);
+        }
+
+        if (!startDate || !endDate) {
+          hasMissingSickLeaveDates = true;
+        }
+
+        if (moment(endDate).isBefore(moment(startDate))) {
+          localErrorFied.push(`${types.SICK_LEAVE}_${index}_start`);
+          localErrorFied.push(`${types.SICK_LEAVE}_${index}_end`);
+          hasWrongSickLeaveDates = true;
+        }
+      })
+
 
       if (hasMissingSickLeaveDates) {
-        return `Merci d'indiquer tous vos dates d'arrêt maladie`
+        errorMsg = <>Merci d'indiquer <b>tous vos dates d'arrêt maladie</b></>;
       }
       if (hasWrongSickLeaveDates) {
-        return `Merci de corriger vos dates d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)`
+        errorMsg = <>Merci de corriger <b>vos dates d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)</b></>
       }
     }
 
     if (
-      hasMaternityLeave &&
-      !infos.some(
-        ({ type, startDate }) => type === types.MATERNITY_LEAVE && startDate,
-      )
+      hasMaternityLeave
     ) {
-      return `Merci d'indiquer votre date de départ en congé maternité`
+      const checkList = infos.filter(
+        ({ type }) => type === types.MATERNITY_LEAVE,
+      );
+
+      checkList.forEach(({ startDate }, index) => {
+        if (!startDate) {
+          localErrorFied.push(`${types.MATERNITY_LEAVE}_${index}_start`);
+          errorMsg = <>Merci d'indiquer <b>votre date de départ en congé maternité</b></>
+        }
+      })
     }
 
     if (
-      hasRetirement &&
-      !infos.some(
-        ({ type, startDate }) => type === types.RETIREMENT && startDate,
-      )
+      hasRetirement
     ) {
-      return `Merci d'indiquer depuis quand vous touchez une pension retraite`
+      const checkList = infos.filter(
+        ({ type }) => type === types.RETIREMENT,
+      );
+
+      checkList.forEach(({ startDate }, index) => {
+        if (!startDate) {
+          localErrorFied.push(`${types.RETIREMENT}_${index}_start`);
+          errorMsg = <>Merci d'indiquer depuis <b>quand vous touchez une pension retraite</b></>
+        }
+      })
     }
 
     if (
-      hasInvalidity &&
-      !infos.some(
-        ({ type, startDate }) => type === types.INVALIDITY && startDate,
-      )
+      hasInvalidity
     ) {
-      return `Merci d'indiquer depuis quand vous touchez une pension d'invalidité`
+      const checkList = infos.filter(
+        ({ type }) => type === types.INVALIDITY,
+      );
+
+      checkList.forEach(({ startDate }, index) => {
+        if (!startDate) {
+          localErrorFied.push(`${types.INVALIDITY}_${index}_start`);
+          errorMsg = <>Merci d'indiquer depuis <b>quand vous touchez une pension d'invalidité</b></>
+        }
+      })
+
     }
 
-    if (!isLookingForJob) {
-      if (
-        !infos.some(({ type, endDate }) => type === types.JOB_SEARCH && endDate)
-      ) {
-        return `Merci d'indiquer depuis quand vous ne cherchez plus d'emploi`
-      }
+    if (isLookingForJob === false) {
+      const checkList = infos.filter(
+        ({ type }) => type === types.JOB_SEARCH,
+      );
+
+      checkList.forEach(({ endDate }, index) => {
+        if (!endDate) {
+          localErrorFied.push(`${types.JOB_SEARCH}_${index}_end`);
+          errorMsg = <>Merci d'indiquer depuis <b>quand vous ne cherchez plus d'emploi</b></>
+        }
+      })
+
 
       if (!jobSearchStopMotive) {
-        return `Merci d'indiquer pourquoi vous ne recherchez plus d'emploi`
+        errorMsg = <>Merci d'indiquer <b>pourquoi vous ne recherchez plus d'emploi</b></>
       }
     }
+
+    return { errorMsg, errorsField: localErrorFied };
   }
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
-    const error = this.getFormError()
-    if (error) {
-      return this.setState({ formError: error })
+    const { errorMsg, errorsField } = this.getFormError();
+    if (errorMsg) {
+      return this.setState({ formError: errorMsg, errorsField })
     }
 
     this.setState({ isValidating: true })
@@ -484,7 +540,9 @@ export class Actu extends Component {
       .toDate()
 
     const nodes = []
+    let i = 0
     this.state.infos.forEach((declarationInfo, key) => {
+      const indexError = `${type  }_${i}`;
       if (declarationInfo.type !== type) return
 
       nodes.push(
@@ -496,18 +554,19 @@ export class Actu extends Component {
           {showStartDate && (
             <DatePicker
               label={startLabel}
-              onSelectDate={this.onSetDate}
+              onSelectDate={(props) => this.onSetDate({ ...props, indexError: `${indexError  }_start` })}
               minDate={datePickerMinDate}
               maxDate={datePickerMaxDate}
               name={`infos[${key}].startDate`}
               value={declarationInfo.startDate}
               style={{ paddingRight: '1rem' }}
+              error={this.state.errorsField.indexOf(`${indexError  }_start`) !== -1}
             />
           )}
           {showEndDate && (
             <DatePicker
               label={endLabel}
-              onSelectDate={this.onSetDate}
+              onSelectDate={(props) => this.onSetDate({ ...props, indexError: `${indexError  }_end` })}
               minDate={datePickerMinDate}
               maxDate={type !== 'jobSearch' ? MAX_DATE : datePickerMaxDate}
               // even with a far-away max-date, we want the default
@@ -515,6 +574,7 @@ export class Actu extends Component {
               initialFocusedDate={datePickerMaxDate}
               name={`infos[${key}].endDate`}
               value={declarationInfo.endDate}
+              error={this.state.errorsField.indexOf(`${indexError  }_end`) !== -1}
             />
           )}
           {allowRemove && (
@@ -531,6 +591,7 @@ export class Actu extends Component {
           )}
         </div>,
       )
+      i++;
     })
     return nodes
   }
@@ -558,6 +619,8 @@ export class Actu extends Component {
     const activeMonthMoment = moment(this.props.activeMonth)
 
     const useVerticalLayoutForQuestions = this.props.width === muiBreakpoints.xs
+    const { errorMsg } = formError || { errorMsg: null }
+    const error = errorMsg !== null
 
     return (
       <StyledActu>
@@ -611,7 +674,7 @@ export class Actu extends Component {
                   user.gender === USER_GENDER_MALE
                     ? ' ou en congé paternité'
                     : ''
-                } ?`}
+                  } ?`}
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
@@ -731,7 +794,9 @@ export class Actu extends Component {
           )}
 
           <AlwaysVisibleContainer>
-            {formError && <ErrorMessage>{formError}</ErrorMessage>}
+            {formError && <ErrorSnackBar
+              message={formError}
+            />}
             <FinalButtonsContainer>
               <MainActionButton
                 primary
@@ -745,7 +810,7 @@ export class Actu extends Component {
           </AlwaysVisibleContainer>
         </Form>
 
-        {!this.getFormError() && (
+        {!error && (
           // Note: only open this dialog if there is no form error (eg. the declaration can be sent)
           <DeclarationDialogsHandler
             isLoading={isValidating}

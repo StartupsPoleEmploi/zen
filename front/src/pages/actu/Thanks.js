@@ -7,6 +7,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import MainActionButton from '../../components/Generic/MainActionButton'
 import sendDoc from '../../images/sendDoc.svg'
+import SuccessSnackBar from '../../components/Generic/SuccessSnackBar'
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 
@@ -173,6 +174,7 @@ export default class Thanks extends Component {
               <br />
               Un e-mail de rappel vous sera envoyé.
             </Typography>
+            <SuccessSnackBar message="Vos données ont été sauvegardées" />
           </Fragment>
         )}
       </StyledThanks>

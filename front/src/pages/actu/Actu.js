@@ -256,7 +256,7 @@ export class Actu extends Component {
     if (index !== -1) {
       errorsField.splice(index, 1);
     }
-    this.setState({ ...newState, formError: null })
+    this.setState({ ...newState, formError: null, errorsField })
   }
 
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
@@ -554,7 +554,7 @@ export class Actu extends Component {
           {showStartDate && (
             <DatePicker
               label={startLabel}
-              onSelectDate={(props) => this.onSetDate({ ...props, indexError: `${indexError  }_start` })}
+              onSelectDate={(props) => this.onSetDate({ ...props, indexError: `${indexError}_start` })}
               minDate={datePickerMinDate}
               maxDate={datePickerMaxDate}
               name={`infos[${key}].startDate`}
@@ -566,7 +566,7 @@ export class Actu extends Component {
           {showEndDate && (
             <DatePicker
               label={endLabel}
-              onSelectDate={(props) => this.onSetDate({ ...props, indexError: `${indexError  }_end` })}
+              onSelectDate={(props) => this.onSetDate({ ...props, indexError: `${indexError}_end` })}
               minDate={datePickerMinDate}
               maxDate={type !== 'jobSearch' ? MAX_DATE : datePickerMaxDate}
               // even with a far-away max-date, we want the default

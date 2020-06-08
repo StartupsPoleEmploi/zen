@@ -7,13 +7,6 @@ const pgConnectSimple = require('connect-pg-simple')
 
 const { setActiveMonth } = require('./lib/middleware/activeMonthMiddleware')
 const loggerMiddleware = require('./lib/middleware/loggerMiddleware')
-const activityLogRouter = require('./routes/admin/activityLog.admin')
-const conseillerHelpsRouter = require('./routes/admin/conseillerHelps.admin')
-const dashbordRouter = require('./routes/admin/dashbord.admin')
-const declarationsRouter = require('./routes/admin/declarations.admin')
-const settingRouter = require('./routes/admin/setting.admin')
-const useradminsRouter = require('./routes/admin/useradmins.admin')
-const usersRouter = require('./routes/admin/users.admin')
 
 require('./lib/db') // setup db connection
 
@@ -40,6 +33,15 @@ app.use(
 
 app.use(setActiveMonth)
 
-app.use('/', activityLogRouter, conseillerHelpsRouter, dashbordRouter, declarationsRouter, settingRouter, useradminsRouter, usersRouter)
+app.use('/', 
+  require('./routes/admin/activityLog.admin'),
+  require('./routes/admin/auth.admin'),
+  require('./routes/admin/conseillerHelps.admin'),
+  require('./routes/admin/dashbord.admin'),
+  require('./routes/admin/declarations.admin'),
+  require('./routes/admin/setting.admin'),
+  require('./routes/admin/useradmins.admin'),
+  require('./routes/admin/users.admin'),
+)
 
 module.exports = app

@@ -43,6 +43,8 @@ import {
   utils,
 } from '../../selectors/declarations'
 import NotAutorized from '../other/NotAutorized'
+import ErrorSnackBar from '../../components/Generic/ErrorSnackBar'
+import SuccessSnackBar from '../../components/Generic/SuccessSnackBar'
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils
 
@@ -242,6 +244,8 @@ export class Files extends Component {
       showSkipConfirmation: false,
       skipFileCallback: noop,
       selectedTab: tab && tab === 'old' ? OLD_MONTHS_TAB : CURRENT_MONTH_TAB,
+      snackError: null,
+      snackSuccess: null,
     }
   }
 
@@ -594,6 +598,11 @@ export class Files extends Component {
       classes,
       width,
     } = this.props
+    
+    const {
+      snackError,
+      snackSuccess
+    } = this.state
 
     if (isLoading) {
       return (
@@ -698,23 +707,29 @@ export class Files extends Component {
 
     if (showEmployerPreview) {
       previewProps = {
-        onCancel: hideEmployerFilePreview,
+        onCancel: (props) => {this.setState({snackError: 'Un justificatif n\'a pas été validé'}); return hideEmployerFilePreview(props)},
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
-        validateDoc: validateEmployerDoc,
+        validateDoc: (props) => validateEmployerDoc(props).then(() => this.setState({snackSuccess: 'Justificatif envoyé disponible dans l\'historique'})),
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,
       }
     } else if (showInfoDocPreview) {
       previewProps = {
-        onCancel: hideInfoFilePreview,
+        onCancel: (props) => {this.setState({snackError: 'Un justificatif n\'a pas été validé'}); return hideInfoFilePreview(props)},
         submitFile: uploadDeclarationInfoFile,
         removePage: removeDeclarationInfoFilePage,
-        validateDoc: validateDeclarationInfoDoc,
+        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({snackSuccess: 'Justificatif envoyé disponible dans l\'historique'})),
         url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
         ...previewedInfoDoc,
       }
+    }
+
+    let error = snackError;
+    if(!error && ((lastDeclaration.employers || []).some(d => d.salarySheetError) || (lastDeclaration.infos || []).some(d => d.error))) {
+      // fetch if document have an error
+      error = 'Un problème est survenu veuillez réessayer plus tard'
     }
 
     return (
@@ -807,6 +822,10 @@ export class Files extends Component {
           {(showEmployerPreview || showInfoDocPreview) && (
             <DocumentDialog isOpened {...previewProps} />
           )}
+
+            
+        {snackSuccess && <SuccessSnackBar message={snackSuccess} onHide={() => this.setState({snackSuccess: null})} closeIcon duraction={null} />}
+        {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
         </StyledFiles>
       </>
     )
@@ -843,6 +862,8 @@ Files.propTypes = {
   isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
   classes: PropTypes.object,
+  snackError: PropTypes.string,
+  snackSuccess: PropTypes.string,
 }
 
 export default connect(

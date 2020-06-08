@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Typography, Snackbar } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 import WarningIcon from "../../images/WARNING.svg"
 import { snackBarDuration } from '../../constants'
 
@@ -9,8 +10,14 @@ const Logo = styled.img`
   margin-right: 10px;
 `
 
+const Close = styled(CloseIcon)`
+  margin-left: 1rem;
+`
+
+
 const SnackbarWarning = styled(Snackbar)`
   > div { 
+    cursor: pointer;
     background-color: #F3F3F3; 
 
     > div {
@@ -23,7 +30,7 @@ const SnackbarWarning = styled(Snackbar)`
 
 
 // eslint-disable-next-line react/prop-types
-function ErrorSnackBar({ message, onHide, icon }) {
+function ErrorSnackBar({ message, onHide, icon, duraction, closeIcon }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const close = () => {
@@ -38,12 +45,13 @@ function ErrorSnackBar({ message, onHide, icon }) {
     <SnackbarWarning
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isOpen}
-      autoHideDuration={snackBarDuration}
+      autoHideDuration={duraction !== undefined ? duraction : snackBarDuration}
       onClose={close}
       onClick={close}
       message={<>
       <Logo src={icon || WarningIcon} />
       <Typography>{message}</Typography>
+      {closeIcon && <Close />}
       </>
       }
     />

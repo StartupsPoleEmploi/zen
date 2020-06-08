@@ -40,6 +40,7 @@ export const MENU_ITEMS = [
     iconName: 'appstore',
     to: URLS.DASHBOARD,
     key: 'DASHBOARD',
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Déclarations',
@@ -47,12 +48,14 @@ export const MENU_ITEMS = [
     to: URLS.DECLARATIONS.BASE,
     key: 'DECLARATIONS',
     match: (pathname) => pathname.startsWith(URLS.DECLARATIONS.BASE),
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Activités',
     iconName: 'robot',
     to: URLS.ACTIVITIES,
     key: 'ACTIVITIES',
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Utilisateurs',
@@ -60,6 +63,7 @@ export const MENU_ITEMS = [
     to: URLS.USERS.BASE,
     key: 'users',
     match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Aide conseillers',
@@ -67,6 +71,7 @@ export const MENU_ITEMS = [
     to: URLS.CONSEILLERS,
     key: 'conseillers-helps',
     match: (pathname) => pathname.startsWith(URLS.CONSEILLERS),
+    access: ['admin'],
   },
   {
     name: 'Utilisateurs admin',
@@ -74,11 +79,13 @@ export const MENU_ITEMS = [
     to: URLS.USERADMINS.BASE,
     key: 'useradmins',
     match: (pathname) => pathname.startsWith(URLS.USERADMINS.BASE),
+    access: ['admin'],
   },
   {
     name: 'Système',
     iconName: 'setting',
     to: URLS.SETTINGS,
     key: 'SETTINGS',
+    access: ['admin'],
   },
 ];

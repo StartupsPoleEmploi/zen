@@ -71,7 +71,7 @@ export default function ZnMenuLayout(props: Props) {
       }
       return (
         <Menu.Item key={link.key || link.name}>
-          {!link.to ? (
+          {!link.to && !link.onClick ? (
             renderLine(link)
           ) : (
             <Link to={link.to} onClick={link.onClick}>

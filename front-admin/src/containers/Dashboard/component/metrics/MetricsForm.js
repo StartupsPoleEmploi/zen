@@ -1,27 +1,30 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useEffect } from 'react'
-import { Select, Spin } from 'antd'
-import superagent from 'superagent'
-import moment from 'moment'
+import React, { useState, useEffect } from 'react';
+import { Select, Spin } from 'antd';
+import superagent from 'superagent';
+import moment from 'moment';
 
-import Metrics from './Metrics'
+import { useUseradmin } from '../../../../common/contexts/useradminCtx';
+import Metrics from './Metrics';
 
 function MetricsForm() {
-  const [declarationMonths, setDeclarationMonths] = useState(null)
-  const [firstDeclarationMonth, setFirstDeclarationMonth] = useState(null)
-  const [secondDeclarationMonth, setSecondDeclarationMonth] = useState(null)
+  const [declarationMonths, setDeclarationMonths] = useState(null);
+  const [firstDeclarationMonth, setFirstDeclarationMonth] = useState(null);
+  const [secondDeclarationMonth, setSecondDeclarationMonth] = useState(null);
+  const { logoutIfNeed } = useUseradmin();
 
   // Get declaration months at start
   useEffect(() => {
     async function fetchData() {
-      const { body } = await superagent.get('/zen-admin-api/declarationsMonths')
-      setDeclarationMonths(body)
+      await superagent.get('/zen-admin-api/declarationsMonths')
+        .then(({ body }) => setDeclarationMonths(body))
+        .catch(logoutIfNeed);
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, [logoutIfNeed]);
 
-  if (declarationMonths === null) return <Spin />
+  if (declarationMonths === null) return <Spin />;
 
   return (
     <div>
@@ -78,7 +81,7 @@ function MetricsForm() {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default MetricsForm
+export default MetricsForm;

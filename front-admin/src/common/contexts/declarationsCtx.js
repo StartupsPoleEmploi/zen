@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import superagent from 'superagent';
+import { useUseradmin } from './useradminCtx';
 
 const DeclarationsContext = React.createContext();
 
@@ -9,26 +10,33 @@ export function DeclarationsProvider(props) {
   const [selectedMonthId, _setSelectedMonthId] = useState(null);
   const [declarations, _setDeclarations] = useState([]);
   const [isLoading, _setIsLoading] = useState(true);
+  const { logoutIfNeed } = useUseradmin();
 
-  const setSelectedMonthId = async (monthId) => {
+  const setSelectedMonthId = useCallback(async (monthId) => {
     _setSelectedMonthId(monthId);
     _setIsLoading(true);
 
-    const { body } = await superagent.get(`/zen-admin-api/declarations?monthId=${monthId}`);
-    _setIsLoading(false);
-    _setDeclarations(body);
-  };
+    await superagent.get(`/zen-admin-api/declarations?monthId=${monthId}`)
+      .then(({ body }) => {
+        _setIsLoading(false);
+        _setDeclarations(body);
+      })
+      .catch(logoutIfNeed);
+  }, [logoutIfNeed]);
 
-  const init = async () => {
+  const init = useCallback(async () => {
     if (!availableMonths.length) {
       _setIsLoading(true);
 
-      const { body } = await superagent.get('/zen-admin-api/declarationsMonths');
-      _setIsLoading(false);
-      _setAvailableMonths(body);
-      setSelectedMonthId(body[0].id);
+      await superagent.get('/zen-admin-api/declarationsMonths')
+        .then(({ body }) => {
+          _setIsLoading(false);
+          _setAvailableMonths(body);
+          setSelectedMonthId(body[0].id);
+        })
+        .catch(logoutIfNeed);
     }
-  };
+  }, [availableMonths.length, logoutIfNeed, setSelectedMonthId]);
 
   return (
     <DeclarationsContext.Provider

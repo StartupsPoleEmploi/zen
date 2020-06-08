@@ -1,19 +1,20 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import superagent from 'superagent'
-import { Spin } from 'antd'
-import moment from 'moment'
-import { ColumnChart } from 'react-chartkick'
-import 'chart.js'
+import React, { useEffect, useState } from 'react';
+import superagent from 'superagent';
+import { Spin } from 'antd';
+import moment from 'moment';
+import { ColumnChart } from 'react-chartkick';
+import 'chart.js';
 
-import './metrics.css'
+import { useUseradmin } from '../../../../common/contexts/useradminCtx';
+import './metrics.css';
 
 function formatDate(date) {
-  return moment(date).format('DD-MM')
+  return moment(date).format('DD-MM');
 }
 function formatFrenchDate(date) {
-  return moment(date).format('MMM YYYY')
+  return moment(date).format('MMM YYYY');
 }
 
 function formatGraph(
@@ -28,40 +29,42 @@ function formatGraph(
       name: `Actualisation ${formatFrenchDate(firstDeclarationsMonth.month)}`,
       data: values[dateKey][accumulatedKey].firstPeriod,
     },
-  ]
+  ];
 
   if (
-    secondDeclarationsMonth &&
-    firstDeclarationsMonth.id !== secondDeclarationsMonth.id
+    secondDeclarationsMonth
+    && firstDeclarationsMonth.id !== secondDeclarationsMonth.id
   ) {
     graphData[1] = {
       name: `Actualisation : ${formatFrenchDate(
         secondDeclarationsMonth.month,
       )}`,
       data: values[dateKey][accumulatedKey].secondPeriod,
-    }
+    };
   }
 
-  return graphData
+  return graphData;
 }
 
 function Metrics({ firstDeclarationsMonth, secondDeclarationsMonth }) {
-  const [values, setValues] = useState(null)
+  const [values, setValues] = useState(null);
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
     async function fetchData() {
-      let url = `/zen-admin-api/metrics?firstMonthId=${firstDeclarationsMonth.id}`
+      let url = `/zen-admin-api/metrics?firstMonthId=${firstDeclarationsMonth.id}`;
       if (secondDeclarationsMonth) {
-        url += `&secondMonthId=${secondDeclarationsMonth.id}`
+        url += `&secondMonthId=${secondDeclarationsMonth.id}`;
       }
 
-      const { body } = await superagent.get(url)
-      setValues(body)
+      await superagent.get(url)
+        .then(({ body }) => setValues(body))
+        .catch(logoutIfNeed);
     }
-    fetchData()
-  }, [firstDeclarationsMonth, secondDeclarationsMonth])
+    fetchData();
+  }, [firstDeclarationsMonth, logoutIfNeed, secondDeclarationsMonth]);
 
-  if (!values) return <Spin />
+  if (!values) return <Spin />;
 
   // Compute graph values
   const newUsersGraph = formatGraph(
@@ -70,56 +73,56 @@ function Metrics({ firstDeclarationsMonth, secondDeclarationsMonth }) {
     'byDayResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const newUsersAccumultedGraph = formatGraph(
     values,
     'newUsers',
     'accumulatedResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const declarationStartedGraph = formatGraph(
     values,
     'declarationStarted',
     'byDayResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const declarationStartedAccumultedGraph = formatGraph(
     values,
     'declarationStarted',
     'accumulatedResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const declarationFinishedGraph = formatGraph(
     values,
     'declarationFinished',
     'byDayResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const declarationFinishedAccumulatedGraph = formatGraph(
     values,
     'declarationFinished',
     'accumulatedResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const filesTransmittedGraph = formatGraph(
     values,
     'filesTransmitted',
     'byDayResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
   const filesTransmittedAccumulatedGraph = formatGraph(
     values,
     'filesTransmitted',
     'accumulatedResults',
     firstDeclarationsMonth,
     secondDeclarationsMonth,
-  )
+  );
 
   return (
     <>
@@ -188,7 +191,7 @@ function Metrics({ firstDeclarationsMonth, secondDeclarationsMonth }) {
         />
       </div>
     </>
-  )
+  );
 }
 
-export default Metrics
+export default Metrics;

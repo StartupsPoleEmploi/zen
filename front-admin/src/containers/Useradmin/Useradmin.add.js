@@ -5,6 +5,7 @@ import superagent from 'superagent';
 import { notification } from 'antd';
 import { useHistory } from 'react-router-dom';
 
+import { useUseradmin } from '../../common/contexts/useradminCtx';
 import { URLS } from '../../common/routes';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
@@ -18,18 +19,21 @@ async function putUseradmin(data) {
 
 export default function UseradminAdd() {
   const history = useHistory();
+  const { logoutIfNeed } = useUseradmin();
 
   const onSubmit = (values) => {
     putUseradmin(values).then(() => {
       notification.success({ message: 'Utilisateur admin bien ajouter' });
       history.push(URLS.USERADMINS.BASE);
-    }).catch((err) => {
-      if (err.status < 500 && err.response.text) {
-        notification.error({ message: err.response.text });
-      } else {
-        notification.error({ message: 'Une erreur est survenue' });
-      }
-    });
+    })
+      .catch(logoutIfNeed)
+      .catch((err) => {
+        if (err.status < 500 && err.response.text) {
+          notification.error({ message: err.response.text });
+        } else {
+          notification.error({ message: 'Une erreur est survenue' });
+        }
+      });
   };
 
   return (

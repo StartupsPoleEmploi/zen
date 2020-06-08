@@ -1,17 +1,57 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import superagent from 'superagent';
+import { useHistory } from 'react-router-dom';
+
+import { URLS } from '../routes';
 
 const UseradminContext = React.createContext();
 
+
 export function UseradminProvider(props) {
-  const [useradmin, setUseradmin] = useState(null);
+  const [useradmin, _setUseradmin] = useState(null);
+  const history = useHistory();
+
+  const login = useCallback(async ({ email, password }) => {
+    const data = await superagent
+      .post('/zen-admin-api/login', { email, password })
+      .then(({ body }) => body);
+    _setUseradmin(data);
+  }, []);
+
+  const autologin = useCallback(async () => {
+    const data = await superagent
+      .get('/zen-admin-api/autologin')
+      .then(({ body }) => body)
+      .catch(() => null);
+    _setUseradmin(data);
+  }, []);
+
+  const logout = useCallback(async () => {
+    await superagent.post('/zen-admin-api/logout');
+    _setUseradmin();
+  }, []);
+
+  const logoutIfNeed = useCallback(async (error) => {
+    if (error.status === 401) {
+      await logout();
+    } else if (error.status === 403) {
+      await logout();
+      history.replace(URLS.DASHBOARD);
+    } else {
+      throw error;
+    }
+  }, [history, logout]);
 
   return (
     <UseradminContext.Provider
       {...props}
       value={{
         useradmin,
-        setUseradmin,
+        login,
+        autologin,
+        logout,
+        logoutIfNeed,
       }}
     />
   );

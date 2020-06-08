@@ -2,30 +2,35 @@ import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
 import { Switch, Form } from 'antd';
 
+
+import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
 
 export default function Settings() {
   const [isGlobalActivated, setIsGlobalActivated] = useState(null);
   const [isFilesActivated, setIsFilesActivated] = useState(null);
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
     superagent.get('/api/status').then(({ body }) => {
       setIsGlobalActivated(body.global.up);
       setIsFilesActivated(body.files.up);
-    });
-  }, []);
+    }).catch(logoutIfNeed);
+  }, [logoutIfNeed]);
 
   const updateGlobalStatus = () => {
     superagent
       .post('/zen-admin-api/status-global', { up: !isGlobalActivated })
-      .then(({ body }) => setIsGlobalActivated(body.up));
+      .then(({ body }) => setIsGlobalActivated(body.up))
+      .catch(logoutIfNeed);
   };
 
   const updateFilesStatus = () => {
     superagent
       .post('/zen-admin-api/status-files', { up: !isFilesActivated })
-      .then(({ body }) => setIsFilesActivated(body.isFilesServiceUp));
+      .then(({ body }) => setIsFilesActivated(body.isFilesServiceUp))
+      .catch(logoutIfNeed);
   };
 
   return (

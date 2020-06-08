@@ -8,6 +8,7 @@ import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import superagent from 'superagent';
 
+import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnTable from '../../components/ZnTable';
 import { URLS } from '../../common/routes';
 
@@ -21,14 +22,15 @@ export default function UseradminsList() {
   const history = useHistory();
   const [isLoading, _setIsLoading] = useState(false);
   const [useradmins, _setUseradmins] = useState([]);
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
     _setIsLoading(true);
     fetchUseradmins()
       .then(_setUseradmins)
-      .then(() => _setIsLoading(false))
-      .catch(() => _setIsLoading(false));
-  }, []);
+      .catch(logoutIfNeed)
+      .finally(() => _setIsLoading(false));
+  }, [logoutIfNeed]);
 
   const data = useradmins.map((useradmin) => ({
     ...useradmin,

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
 
+import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
 import UserInfos from './components/UserInfos';
@@ -15,13 +16,15 @@ type Props = {
 
 export default function User({ match }: Props) {
   const [user, setUser] = useState(null);
+  const { logoutIfNeed } = useUseradmin();
   const { id: userId } = match.params;
 
   useEffect(() => {
     superagent
       .get(`/zen-admin-api/users/${userId}`)
-      .then(({ body }) => setUser(body));
-  }, [userId]);
+      .then(({ body }) => setUser(body))
+      .catch(logoutIfNeed);
+  }, [logoutIfNeed, userId]);
 
 
   return (

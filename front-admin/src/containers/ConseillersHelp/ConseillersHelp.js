@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import moment from 'moment'
-import { Spin } from 'antd'
-import superagent from 'superagent'
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import { Spin } from 'antd';
+import superagent from 'superagent';
 
-import ZnContent from '../../components/ZnContent'
-import ZnHeader from '../../components/ZnHeader'
-import ZnTable from '../../components/ZnTable'
+import { useUseradmin } from '../../common/contexts/useradminCtx';
+import ZnContent from '../../components/ZnContent';
+import ZnHeader from '../../components/ZnHeader';
+import ZnTable from '../../components/ZnTable';
 
 const COLUMNS = [
   { title: 'Id', dataIndex: 'id' },
@@ -15,21 +16,25 @@ const COLUMNS = [
     dataIndex: 'createdAt',
     render: (text) => moment(text).format('DD-MM-YYYY HH:ss'),
   },
-]
+];
 
 export default function ConseillersHelp() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [conseillerHelps, setConseillersHelp] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [conseillerHelps, setConseillersHelp] = useState([]);
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
     async function fetchData() {
-      const { body } = await superagent.get('/zen-admin-api/conseiller-helps')
-      setConseillersHelp(body)
-      setIsLoading(false)
+      await superagent.get('/zen-admin-api/conseiller-helps')
+        .then(({ body }) => {
+          setConseillersHelp(body);
+          setIsLoading(false);
+        })
+        .catch(logoutIfNeed);
     }
 
-    fetchData()
-  }, [setIsLoading, setConseillersHelp])
+    fetchData();
+  }, [setIsLoading, setConseillersHelp, logoutIfNeed]);
 
   if (isLoading) {
     return (
@@ -40,7 +45,7 @@ export default function ConseillersHelp() {
           <Spin />
         </ZnContent>
       </div>
-    )
+    );
   }
 
   return (
@@ -63,5 +68,5 @@ export default function ConseillersHelp() {
         )}
       </ZnContent>
     </div>
-  )
+  );
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import superagent from 'superagent';
 import {
   Form, Input, Button, Spin, Row, Col,
 } from 'antd';
@@ -9,36 +8,22 @@ import ZnHeader from '../../components/ZnHeader';
 import { useUseradmin } from '../../common/contexts/useradminCtx';
 
 
-async function loginUser({ email, password }) {
-  return superagent
-    .post('/zen-admin-api/login', { email, password })
-    .then(({ body }) => body);
-}
-
-async function autologin() {
-  return superagent.get('/zen-admin-api/autologin')
-    .then(({ body }) => body)
-    .catch(() => null);
-}
-
 type Props = { form: Object }
 
 function Login({ form }: Props) {
   const [isLoading, _setIsLoading] = useState(false);
-  const { setUseradmin } = useUseradmin();
+  const { autologin, login } = useUseradmin();
   const { getFieldDecorator } = form;
 
   useEffect(() => {
     _setIsLoading(true);
     autologin()
-      .then(setUseradmin)
       .then(() => _setIsLoading(false));
-  }, [setUseradmin]);
+  }, [autologin]);
 
-  const login = ({ email, password }) => {
+  const loginUser = ({ email, password }) => {
     _setIsLoading(true);
-    loginUser({ email, password })
-      .then(setUseradmin)
+    login({ email, password })
       .then(() => _setIsLoading(false))
       .catch(() => _setIsLoading(false));
   };
@@ -47,7 +32,7 @@ function Login({ form }: Props) {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        login(values);
+        loginUser(values);
       }
     });
   };

@@ -1,6 +1,5 @@
 const express = require('express')
 
-const { deleteUser } = require('../../lib/user')
 const Useradmin = require('../../models/Useradmin')
 
 const router = express.Router()

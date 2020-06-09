@@ -17,6 +17,10 @@ export default function App() {
   const { useradmin, logout } = useUseradmin();
   if (!useradmin) return <Login />;
 
+  const profileElem = {
+    name: <span style={{ color: '#fff', fontWeight: 'bold' }}>{useradmin.email}</span>,
+    key: 'current_profile',
+  };
   const logoutElem = {
     name: 'Logout',
     iconName: 'logout',
@@ -29,6 +33,7 @@ export default function App() {
       <Layout.Sider width={240} trigger={null}>
         <ZnMenuLayout
           links={[
+            profileElem,
             ...MENU_ITEMS.filter((e) => e.access.includes(useradmin.type)),
             logoutElem,
           ]}

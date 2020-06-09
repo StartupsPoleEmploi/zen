@@ -35,6 +35,7 @@ app.use(
 app.use(setActiveMonth)
 
 app.use(require('./routes/admin/auth.admin'))
+
 app.use(checkLogin)
 app.use('/', 
   require('./routes/admin/activityLog.admin'),
@@ -42,6 +43,7 @@ app.use('/',
   require('./routes/admin/declarations.admin'),
   require('./routes/admin/users.admin'),
 )
+
 app.use(checkAdmin)
 app.use('/', 
   require('./routes/admin/conseillerHelps.admin'),

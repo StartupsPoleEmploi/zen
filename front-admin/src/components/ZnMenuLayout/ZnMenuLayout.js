@@ -70,7 +70,7 @@ export default function ZnMenuLayout(props: Props) {
         );
       }
       return (
-        <Menu.Item key={link.key || link.name}>
+        <Menu.Item key={link.key || link.name} disabled={!link.to && !link.onClick}>
           {!link.to && !link.onClick ? (
             renderLine(link)
           ) : (

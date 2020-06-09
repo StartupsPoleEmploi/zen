@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
-import { notification } from 'antd';
+import { Button, Modal, notification } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import { useUseradmin } from '../../common/contexts/useradminCtx';
@@ -23,7 +23,7 @@ type Props = {
 export default function UseradminEdit({ match }: Props) {
   const history = useHistory();
   const [useradmin, setUseradmin] = useState(null);
-  const { logoutIfNeed } = useUseradmin();
+  const { logoutIfNeed, useradmin: useradminConnected } = useUseradmin();
   const { id: useradminId } = match.params;
 
   useEffect(() => {
@@ -49,12 +49,38 @@ export default function UseradminEdit({ match }: Props) {
       });
   };
 
+
+  const showDeleteConfirm = () => {
+    Modal.confirm({
+      title: 'Voulez-vous vraiment supprimer cet utilisateur ?',
+      content: 'Il ne pourras plus avoir accès à l\'admin',
+      okText: 'Oui',
+      okType: 'danger',
+      cancelText: 'Non',
+      onOk() {
+        superagent
+          .delete(`/zen-admin-api/useradmins/${useradminId}/delete`)
+          .then(() => history.push(URLS.USERADMINS.BASE))
+          .catch(logoutIfNeed);
+      },
+    });
+  };
+
   return (
     <div>
       <ZnHeader title={`Utilisateurs ${useradminId}`} />
       <ZnContent>
         {useradmin ? (
-          <UseradminForm onSubmit={onSubmit} mode="edit" useradmin={useradmin} />
+          <>
+            <UseradminForm onSubmit={onSubmit} mode="edit" useradmin={useradmin} />
+            {useradminConnected.email !== useradmin.email
+            && (
+              <Button type="danger" onClick={showDeleteConfirm}>
+                Supprimer l'utilisateur
+              </Button>
+            )}
+
+          </>
         )
           : <h3 style={{ textAlign: 'center', margin: '20px' }}>Loading ...</h3>}
       </ZnContent>

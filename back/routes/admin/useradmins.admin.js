@@ -57,16 +57,12 @@ router.post('/useradmins/:id/update', async (req, res, next) => {
 })
 
 
-router.delete('/useradmins/delete', (req, res, next) => {
-  const { userId } = req.query
-  if (!userId) throw new Error('No user id given')
-
+router.delete('/useradmins/:id/delete', (req, res, next) => {
   Useradmin.query()
-    .eager('[employers.documents, declarations.[infos,review]]')
-    .findById(userId)
-    .then((user) => {
-      if (!user) throw new Error('No such user id')
-      return deleteUser(user)
+    .findById(req.params.id)
+    .then((useradmin) => {
+      if (!useradmin) throw new Error('No such useradmin id')
+      return Useradmin.query().deleteById(req.params.id);
     })
     .then(() => res.send('ok'))
     .catch(next)

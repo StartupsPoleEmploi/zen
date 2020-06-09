@@ -1,8 +1,6 @@
 // @flow
 
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import { Layout } from 'antd';
 
 import Routes from './Routes';
@@ -11,29 +9,44 @@ import { MENU_ITEMS } from './common/routes';
 import imgLogo from './assets/images/logoFull.svg';
 import { DeclarationsProvider } from './common/contexts/declarationsCtx';
 import { UsersProvider } from './common/contexts/usersCtx';
+import { useUseradmin } from './common/contexts/useradminCtx';
+import Login from './containers/Login';
 
-const browserHistory = createBrowserHistory({
-  basename: '/zen-admin',
-});
 
 export default function App() {
+  const { useradmin, logout } = useUseradmin();
+  if (!useradmin) return <Login />;
+
+  const profileElem = {
+    name: <span style={{ color: '#fff', fontWeight: 'bold' }}>{useradmin.email}</span>,
+    key: 'current_profile',
+  };
+  const logoutElem = {
+    name: 'Logout',
+    iconName: 'logout',
+    onClick: logout,
+    key: 'logout',
+  };
+
   return (
-    <Router history={browserHistory}>
-      <Layout style={{ height: '100vh', minWidth: '1024px', overflowX: 'auto' }}>
-        <Layout.Sider width={240} trigger={null}>
-          <ZnMenuLayout
-            links={MENU_ITEMS}
-            logo={imgLogo}
-          />
-        </Layout.Sider>
-        <Layout>
-          <DeclarationsProvider>
-            <UsersProvider>
-              <Routes />
-            </UsersProvider>
-          </DeclarationsProvider>
-        </Layout>
+    <Layout style={{ height: '100vh', minWidth: '1024px', overflowX: 'auto' }}>
+      <Layout.Sider width={240} trigger={null}>
+        <ZnMenuLayout
+          links={[
+            profileElem,
+            ...MENU_ITEMS.filter((e) => e.access.includes(useradmin.type)),
+            logoutElem,
+          ]}
+          logo={imgLogo}
+        />
+      </Layout.Sider>
+      <Layout>
+        <DeclarationsProvider>
+          <UsersProvider>
+            <Routes />
+          </UsersProvider>
+        </DeclarationsProvider>
       </Layout>
-    </Router>
+    </Layout>
   );
 }

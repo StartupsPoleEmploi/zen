@@ -84,24 +84,26 @@ const DeclarationSummaryDialog = ({
   width,
   ...props
 }) => {
-  const sickLeaves = declaration.infos.filter(
+  const infos = declaration.infos ||[]
+
+  const sickLeaves = infos.filter(
     (info) => info.type === types.SICK_LEAVE,
   )
-  const maternityLeave = declaration.infos.find(
+  const maternityLeave = infos.find(
     (info) => info.type === types.MATERNITY_LEAVE,
   )
-  const interships = declaration.infos.filter(
+  const interships = infos.filter(
     (info) => info.type === types.INTERNSHIP,
   )
 
-  const jobSearch = declaration.infos.find(
+  const jobSearch = infos.find(
     (info) => info.type === types.JOB_SEARCH,
   )
 
-  const invalidity = declaration.infos.find(
+  const invalidity = infos.find(
     (info) => info.type === types.INVALIDITY,
   )
-  const retirement = declaration.infos.find(
+  const retirement = infos.find(
     (info) => info.type === types.RETIREMENT,
   )
 
@@ -261,9 +263,9 @@ const DeclarationSummaryDialog = ({
                     Non, je ne souhaite pas rester inscrit à Pôle emploi
                   </DeclarationValues>
 
-                  <DeclarationValues>
+                  {jobSearch && <DeclarationValues>
                     Date de fin : {formatDate(jobSearch.endDate)}
-                  </DeclarationValues>
+                  </DeclarationValues>}
                   <DeclarationValues>
                     Motif :{' '}
                     {declaration.jobSearchStopMotive ===

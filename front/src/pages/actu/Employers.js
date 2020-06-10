@@ -48,6 +48,8 @@ import {
 import { setNoNeedEmployerOnBoarding as setNoNeedEmployerOnBoardingAction } from '../../redux/actions/user'
 import EmployerOnBoarding from './EmployerOnBoarding/EmployerOnBoarding'
 import ScrollToButton from '../../components/Generic/ScrollToButton'
+import ErrorSnackBar from '../../components/Generic/ErrorSnackBar'
+import SuccessSnackBar from '../../components/Generic/SuccessSnackBar'
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -119,18 +121,6 @@ const ButtonsContainer = styled.div`
   text-align: center;
   max-width: 40rem;
   margin: 0 auto;
-`
-
-const ErrorMessage = styled(Typography).attrs({
-  paragraph: true,
-})`
-  && {
-    color: red;
-    text-align: center;
-    margin: auto;
-    margin-bottom: 2rem;
-    max-width: 70rem;
-  }
 `
 
 const StyledAlwaysVisibleContainer = styled(AlwaysVisibleContainer)`
@@ -239,6 +229,7 @@ export class Employers extends Component {
     validationErrors: [],
     isValidating: false,
     isLoggedOut: false,
+    snackMessage: null,
   }
 
   componentDidMount() {
@@ -343,6 +334,7 @@ export class Employers extends Component {
   onRemove = (index) =>
     this.setState(({ employers }) => ({
       employers: employers.filter((e, key) => key !== index),
+      snackMessage: "Employeur supprimé"
     }))
 
   onSave = () =>
@@ -484,7 +476,7 @@ export class Employers extends Component {
   )
 
   render() {
-    const { employers, error, isLoading } = this.state
+    const { employers, error, isLoading, snackMessage } = this.state
 
     if (isLoading) {
       return (
@@ -523,7 +515,6 @@ export class Employers extends Component {
             scrollButtonTopValue="0"
             style={{ marginTop: '2rem', alignSelf: 'stretch' }}
           >
-            {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <WorkSummary employers={employers} />
 
@@ -564,6 +555,9 @@ export class Employers extends Component {
             <ScrollToButton autoRemove />
           </ScrollButtonContainer>
         )}
+
+        {snackMessage && <SuccessSnackBar message={snackMessage} onHide={() => this.setState({snackMessage: null})} />}
+        {error && <ErrorSnackBar message={error} />}
       </StyledEmployers>
     )
   }

@@ -47,3 +47,5 @@ export const jobSearchEndMotive = {
 }
 
 export const MAX_PDF_PAGE = 5
+
+export const snackBarDuration = 10000

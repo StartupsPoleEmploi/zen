@@ -11,7 +11,7 @@ import {
 
 const { omit } = Cypress._
 
-describe('Declaration page', function() {
+describe('Declaration page', function () {
   // Set the day to not the current day because if you select the current date the modal will not close.
   // you will have to click on ok
   const currentDate = new Date().getDate()
@@ -29,7 +29,7 @@ describe('Declaration page', function() {
       cy.visit('/actu')
     })
 
-    it('Displays the entrepreneur warning', function() {
+    it('Displays the entrepreneur warning', function () {
       cy.contains(`créateur / créatrice d'entreprise`)
       cy.get('button')
         .contains(`J'ai compris`)
@@ -90,7 +90,7 @@ describe('Declaration page', function() {
 
           getNextButton().click()
 
-          cy.get('p[role=alert]').should('be.visible')
+          cy.get('.snackbar').should('be.visible')
 
           if (
             fieldToTest === 'hasInternship' ||
@@ -104,8 +104,7 @@ describe('Declaration page', function() {
 
             getNextButton().click()
 
-            cy.get('p[role=alert]')
-              .contains('Merci de corriger')
+            cy.get('.snackbar')
               .should('be.visible')
           }
 

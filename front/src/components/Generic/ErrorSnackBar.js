@@ -34,7 +34,7 @@ function ErrorSnackBar({ message, onHide, icon, duraction, closeIcon }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const close = () => {
-    if(onHide) {
+    if (onHide) {
       onHide()
     }
 
@@ -43,15 +43,16 @@ function ErrorSnackBar({ message, onHide, icon, duraction, closeIcon }) {
 
   return (
     <SnackbarWarning
+      className="snackbar"
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isOpen}
       autoHideDuration={duraction !== undefined ? duraction : snackBarDuration}
       onClose={close}
       onClick={close}
       message={<>
-      <Logo src={icon || WarningIcon} />
-      <Typography>{message}</Typography>
-      {closeIcon && <Close />}
+        <Logo src={icon || WarningIcon} />
+        <Typography>{message}</Typography>
+        {closeIcon && <Close />}
       </>
       }
     />

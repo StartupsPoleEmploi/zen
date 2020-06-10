@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const fs = require('fs')
+const _ = require('lodash');
 
 const router = express.Router()
 const { get, omit } = require('lodash')
@@ -119,6 +120,7 @@ router.get('/', (req, res, next) => {
       .eager(eagerDeclarationString)
       .where({ userId: req.session.user.id })
       .orderBy('createdAt', 'desc')
+      .orderBy('id', 'asc')
       .first()
       .then((declaration) => {
         // if we're looking for the active declaration, check last declaration against
@@ -131,6 +133,11 @@ router.get('/', (req, res, next) => {
         ) {
           return res.status(404).json('No such declaration')
         }
+
+        if(declaration.employers) {
+          declaration.employers = _.sortBy(declaration.employers, ['id']);
+        }
+
         res.json(declaration)
       })
       .catch(next)
@@ -148,7 +155,18 @@ router.get('/', (req, res, next) => {
     .where({ userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .limit(limit)
-    .then((declarations) => res.json(declarations))
+    .then((declarations) => {
+      // sort employer
+      declarations = declarations.map(declaration => {
+        if(declaration.employers) {
+          declaration.employers = _.sortBy(declaration.employers, ['id'])
+        }
+
+        return declaration
+      })
+
+      res.json(declarations)
+    })
     .catch(next)
 })
 

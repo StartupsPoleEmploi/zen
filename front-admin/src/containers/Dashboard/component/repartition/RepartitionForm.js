@@ -235,7 +235,7 @@ function RepartitionForm() {
             value={region}
             onChange={selectRegionValue}
           >
-            <Select.Option value=""></Select.Option>
+            <Select.Option value="">-----</Select.Option>
             {allRegions.map((reg) => (
               <Select.Option key={reg} value={reg}>
                 {reg}
@@ -253,7 +253,7 @@ function RepartitionForm() {
             value={department}
             onChange={selectDepartmentValue}
           >
-            <Select.Option value=""></Select.Option>
+            <Select.Option value="">-----</Select.Option>
             {departmentsToDisplay.map((dep) => (
               <Select.Option key={dep} value={dep}>
                 {dep}
@@ -270,7 +270,7 @@ function RepartitionForm() {
             value={agency}
             onChange={selectAgencyValue}
           >
-            <Select.Option value=""></Select.Option>
+            <Select.Option value="">-----</Select.Option>
             {agenciesToDisplay.map((dep) => (
               <Select.Option key={dep} value={dep}>
                 {dep}
@@ -310,9 +310,6 @@ function RepartitionForm() {
           region={region}
           department={department}
           declarationMonth={declarationMonth}
-          selectRegion={selectRegionValue}
-          selectDepartment={selectDepartmentValue}
-          selectAgency={selectAgencyValue}
         />
       )}
     </div>

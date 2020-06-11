@@ -4,17 +4,16 @@ import React, { useEffect, useState } from 'react';
 import superagent from 'superagent';
 import slug from 'slug';
 import { Spin, Button } from 'antd';
-import html2pdf from 'simple-html2pdf';
-import moment from 'moment';
 
 import { useUseradmin } from '../../../../common/contexts/useradminCtx';
 import { getAgence } from '../../../../common/agencesInfos';
+import TableByAgence from './Tables/TableByAgence';
+import TableByDepartment from './Tables/TableByDepartment';
+import TableByRegion from './Tables/TableByRegion';
+import generateExecFromJson from './generateExcel';
 
 import './Repartition.css';
 
-function extractAgencyCode(agencyLabel) {
-  return agencyLabel.split('-')[0].trim();
-}
 
 function sort(obj) {
   return Object.entries(obj).sort(
@@ -32,9 +31,6 @@ type Props = {
   region: string,
   department: string,
   declarationMonth: Object,
-  selectRegion: Function,
-  selectDepartment: Function,
-  selectAgency: Function,
 }
 
 function RepartitionRegionDepartment({
@@ -43,10 +39,6 @@ function RepartitionRegionDepartment({
   region,
   department,
   declarationMonth,
-
-  selectRegion,
-  selectDepartment,
-  selectAgency,
 }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [exportOnGoing, setExportOnGoing] = useState(false);
@@ -87,16 +79,6 @@ function RepartitionRegionDepartment({
     setTimeout(() => setIsLoading(false), 500);
   }
 
-  function doSelectRegion(e) {
-    selectRegion(e.target.getAttribute('data-region'));
-  }
-  function doSelectDepartment(e) {
-    selectDepartment(e.target.getAttribute('data-department'));
-  }
-  function doSelectAgency(e) {
-    selectAgency(e.target.getAttribute('data-agency'));
-  }
-
   useEffect(() => {
     // prettier-ignore
     async function fetchData() {
@@ -112,13 +94,16 @@ function RepartitionRegionDepartment({
     fetchData();
   }, [region, department, declarationMonth, logoutIfNeed]);
 
-  function exportAsPDF() {
+  function exportAsExcel() {
     setExportOnGoing(true);
-    let filename = region ? `region-${region}-` : 'france-';
-    filename += moment(new Date()).format('YYYY/MM');
-    filename += '.pdf';
-
-    html2pdf(document.getElementById('pdf-content'), { filename }, () => setExportOnGoing(false));
+    generateExecFromJson({
+      usersGlobalRepartition,
+      byAgencyTotal,
+      byDepartmentTotal,
+      byRegionTotal,
+      filtre: { region, department, declarationMonth },
+    });
+    setExportOnGoing(false);
   }
 
   if (isLoading) return <Spin />;
@@ -132,13 +117,12 @@ function RepartitionRegionDepartment({
           marginBottom: '2rem',
         }}
       >
-        {!department && (
-          <div style={{ flex: 1 }}>
-            <Button onClick={exportAsPDF}>
-              {exportOnGoing ? <Spin /> : 'Exporter comme PDF'}
-            </Button>
-          </div>
-        )}
+        <div style={{ flex: 1 }}>
+          <Button onClick={exportAsExcel}>
+            {exportOnGoing ? <Spin /> : 'Exporter comme excel'}
+          </Button>
+        </div>
+
 
         {region && !department && (
           <div style={{ flex: 1 }}>
@@ -187,27 +171,10 @@ function RepartitionRegionDepartment({
             <p className="subtitle">
               Les régions sans actualisation ne sont pas listées
             </p>
-            <ul className="ul">
-              {byRegionTotal.map(([regionName, total]) => {
-                const totalUsersRegion = usersGlobalRepartition.regions[regionName];
-                return (
-                  <li key={regionName}>
-                    <button
-                      onClick={doSelectRegion}
-                      data-region={regionName}
-                      type="button"
-                      title="En savoir plus pour cette région"
-                    >
-                      {regionName} : {formatNb(total)} actualisations
-                      <br /> sur {formatNb(totalUsersRegion)} assistantes
-                      maternelles (
-                      {((total / totalUsersRegion) * 100).toFixed(2)}% de la
-                      région)
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <TableByRegion
+              byRegionTotal={byRegionTotal}
+              usersGlobalRepartition={usersGlobalRepartition}
+            />
           </>
         )}
 
@@ -218,27 +185,10 @@ function RepartitionRegionDepartment({
             <p className="subtitle">
               Les départements sans actualisation ne sont pas listés
             </p>
-            <ul className="ul">
-              {byDepartmentTotal.map(([departmentName, total]) => {
-                const totalUsersDepartments = usersGlobalRepartition.departments[departmentName];
-                return (
-                  <li key={departmentName}>
-                    <button
-                      onClick={doSelectDepartment}
-                      data-department={departmentName}
-                      type="button"
-                      title="En savoir plus pour ce département"
-                    >
-                      {departmentName} : {formatNb(total)} actualisations <br />{' '}
-                      sur {formatNb(totalUsersDepartments)} assistantes
-                      maternelles (soit{' '}
-                      {((total / totalUsersDepartments) * 100).toFixed(2)}% du
-                      département)
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <TableByDepartment
+              byDepartmentTotal={byDepartmentTotal}
+              usersGlobalRepartition={usersGlobalRepartition}
+            />
           </>
         )}
 
@@ -246,27 +196,10 @@ function RepartitionRegionDepartment({
         <p className="subtitle">
           Les agences sans actualisation ne sont pas listées
         </p>
-        <ul className="ul">
-          {byAgencyTotal.map(([agenceName, total]) => {
-            const totalUsersAgency = usersGlobalRepartition.agencies[extractAgencyCode(agenceName)];
-
-            return (
-              <li key={agenceName}>
-                <button
-                  onClick={doSelectAgency}
-                  data-agency={agenceName}
-                  type="button"
-                  title="En savoir plus sur cette agence"
-                >
-                  {agenceName} : {total} actualisations
-                  <br /> sur {formatNb(totalUsersAgency)} assistantes
-                  maternelles (soit{' '}
-                  {((total / totalUsersAgency) * 100).toFixed(2)}% de l'agence)
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <TableByAgence
+          byAgencyTotal={byAgencyTotal}
+          usersGlobalRepartition={usersGlobalRepartition}
+        />
       </div>
     </>
   );

@@ -238,7 +238,10 @@ export class Files extends Component {
   constructor(props) {
     super(props)
 
-    const tab = new URL(window.location).searchParams.get('tab')
+    let tab
+    if(new URL(window.location).searchParams) {
+      tab = new URL(window.location).searchParams.get('tab');
+    }
 
     this.state = {
       showSkipConfirmation: false,

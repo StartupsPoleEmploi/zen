@@ -1,8 +1,8 @@
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
-import React from 'react'
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react';
+import React from 'react';
 
-import DocumentUpload from '../DocumentUpload'
+import DocumentUpload from '../DocumentUpload';
 
 const defaultProps = {
   id: 1,
@@ -14,7 +14,7 @@ const defaultProps = {
   type: DocumentUpload.types.info,
   showPreview: action('Show file'),
   useLightVersion: false,
-}
+};
 
 storiesOf('DocumentUpload', module)
   .add('default for declaration info document', () => (
@@ -69,4 +69,4 @@ storiesOf('DocumentUpload', module)
 
   .add('error (light version)', () => (
     <DocumentUpload {...defaultProps} error="Tout est cassé" useLightVersion />
-  ))
+  ));

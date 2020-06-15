@@ -1,8 +1,8 @@
-exports.up = async function(knex) {
+exports.up = async function up(knex) {
   await knex.schema.table('Users', (table) => {
-    table.timestamp('registeredAt').defaultTo(null)
-  })
-  const users = await knex('Users').select()
+    table.timestamp('registeredAt').defaultTo(null);
+  });
+  const users = await knex('Users').select();
 
   await knex.transaction((trx) =>
     Promise.all(
@@ -10,16 +10,14 @@ exports.up = async function(knex) {
         knex('Users')
           .update({ registeredAt: user.createdAt })
           .where('id', user.id)
-          .transacting(trx),
-      ),
+          .transacting(trx)),
     )
       .then(trx.commit)
-      .catch(trx.rollback),
-  )
-}
+      .catch(trx.rollback));
+};
 
-exports.down = async function(knex) {
-  knex.schema.table('Users', function(table) {
-    table.dropColumn('registeredAt')
-  })
-}
+exports.down = async function down(knex) {
+  knex.schema.table('Users', (table) => {
+    table.dropColumn('registeredAt');
+  });
+};

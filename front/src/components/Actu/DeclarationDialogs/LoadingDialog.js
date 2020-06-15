@@ -1,22 +1,22 @@
-import React, { Fragment } from 'react'
+import React from 'react';
 
-import DialogContentText from '@material-ui/core/DialogContentText'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import DialogContentText from '@material-ui/core/DialogContentText';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import CustomDialog from '../../Generic/CustomDialog'
+import CustomDialog from '../../Generic/CustomDialog';
 
 const LoadingDialog = (props) => (
   <CustomDialog
-    content={
-      <Fragment>
+    content={(
+      <>
         <CircularProgress />
         <DialogContentText>Envoi en cours…</DialogContentText>
-      </Fragment>
-    }
+      </>
+    )}
     disableEscapeKeyDown
     disableBackdropClick
     {...props}
   />
-)
+);
 
-export default LoadingDialog
+export default LoadingDialog;

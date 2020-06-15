@@ -1,11 +1,11 @@
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { action } from '@storybook/addon-actions'
-import { host } from 'storybook-host'
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { action } from '@storybook/addon-actions';
+import { host } from 'storybook-host';
 
-import PreviousEmployersDialog from '../PreviousEmployersDialog'
+import PreviousEmployersDialog from '../PreviousEmployersDialog';
 
-const onCancel = action('onConfirm')
+const onCancel = action('onConfirm');
 
 storiesOf('PreviousEmployersDialog', module)
   .addDecorator(
@@ -29,4 +29,4 @@ storiesOf('PreviousEmployersDialog', module)
       isOpened
       onCancel={onCancel}
     />
-  ))
+  ));

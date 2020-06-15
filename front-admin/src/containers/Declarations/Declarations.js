@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { Row, Col, Select, Button } from 'antd';
+import {
+  Row, Col, Select, Button,
+} from 'antd';
 
 import { useDeclarations } from '../../common/contexts/declarationsCtx';
 import ZnContent from '../../components/ZnContent';
@@ -93,5 +95,5 @@ export default function Declarations() {
         )}
       </ZnContent>
     </div>
-  )
+  );
 }

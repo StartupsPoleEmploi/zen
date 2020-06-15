@@ -1,15 +1,15 @@
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
-import superagent from 'superagent'
-import { hot } from 'react-hot-loader'
-import { connect } from 'react-redux'
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import superagent from 'superagent';
+import { hot } from 'react-hot-loader';
+import { connect } from 'react-redux';
 
-import { setEmail } from '../../../redux/actions/user'
-import MainActionButton from '../../../components/Generic/MainActionButton'
-import catchMaintenance from '../../../lib/catchMaintenance'
+import { setEmail } from '../../../redux/actions/user';
+import MainActionButton from '../../../components/Generic/MainActionButton';
+import catchMaintenance from '../../../lib/catchMaintenance';
 
 const StyledEmailForm = styled.div`
   margin: auto;
@@ -18,12 +18,12 @@ const StyledEmailForm = styled.div`
   justify-content: center;
   text-align: center;
   margin-bottom: 6rem;
-`
+`;
 
 const LandingText = styled(Typography).attrs({
   variant: 'h6',
   paragraph: true,
-})``
+})``;
 
 const Form = styled.form`
   display: flex;
@@ -31,13 +31,13 @@ const Form = styled.form`
   padding-top: 1rem;
 
   width: 100%;
-`
+`;
 
 const FieldsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   text-align: left;
-`
+`;
 
 const StyledTextField = styled(TextField)`
   && {
@@ -48,9 +48,9 @@ const StyledTextField = styled(TextField)`
       width: 100%;
     }
   }
-`
+`;
 
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export class EmailForm extends PureComponent {
   static propTypes = {
@@ -74,26 +74,26 @@ export class EmailForm extends PureComponent {
   onSubmit = () => {
     if (!EMAIL_REGEX.test(this.state.email)) {
       return this.setState({
-        emailError: `Merci d'entrer une adresse e-mail valide`,
+        emailError: 'Merci d\'entrer une adresse e-mail valide',
         emailConfirmationError: '',
-      })
+      });
     }
     if (this.state.email.trim() !== this.state.emailConfirmation.trim()) {
       return this.setState({
         emailError: '',
-        emailConfirmationError: `Les deux adresses e-mails ne sont pas identiques`,
-      })
+        emailConfirmationError: 'Les deux adresses e-mails ne sont pas identiques',
+      });
     }
 
     superagent
       .patch('/api/user', { email: this.state.email })
       .set('CSRF-Token', this.props.csrfToken)
       .then(() => {
-        this.setState({ isSuccess: true, isError: false })
-        setEmail(this.state.email.trim())
+        this.setState({ isSuccess: true, isError: false });
+        setEmail(this.state.email.trim());
       })
       .catch(catchMaintenance)
-      .catch(() => this.setState({ isError: true }))
+      .catch(() => this.setState({ isError: true }));
   }
 
   render() {
@@ -104,7 +104,7 @@ export class EmailForm extends PureComponent {
       emailConfirmation,
       emailConfirmationError,
       isSuccess,
-    } = this.state
+    } = this.state;
 
     if (isSuccess) {
       return (
@@ -113,7 +113,7 @@ export class EmailForm extends PureComponent {
             Votre adresse e-mail a été enregistrée avec succès.
           </Typography>
         </StyledEmailForm>
-      )
+      );
     }
     if (isError) {
       return (
@@ -125,7 +125,7 @@ export class EmailForm extends PureComponent {
             réessayer ultérieurement.
           </Typography>
         </StyledEmailForm>
-      )
+      );
     }
 
     return (
@@ -169,7 +169,7 @@ export class EmailForm extends PureComponent {
           </div>
         </Form>
       </StyledEmailForm>
-    )
+    );
   }
 }
 
@@ -177,4 +177,4 @@ export default hot(module)(
   connect((state) => ({
     csrfToken: state.userReducer.user.csrfToken,
   }))(EmailForm),
-)
+);

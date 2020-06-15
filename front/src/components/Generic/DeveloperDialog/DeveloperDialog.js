@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 
-import CustomDialog from '../CustomDialog'
-import DialogUser from './DialogUser'
-import DialogActualisation from './DialogActualisation'
+import CustomDialog from '../CustomDialog';
+import DialogUser from './DialogUser';
+import DialogActualisation from './DialogActualisation';
 
-const ESCAPE_KEY_CODE = 27
+const ESCAPE_KEY_CODE = 27;
 
 function TabPanel(props) {
   // eslint-disable-next-line react/prop-types
@@ -27,30 +27,29 @@ function TabPanel(props) {
   This should not be replicated to others components.
  */
 export default function DeveloperDialog() {
-  const [isDisplayed, setDisplayed] = useState(false)
+  const [isDisplayed, setDisplayed] = useState(false);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
-      if (e.keyCode !== ESCAPE_KEY_CODE) return
+      if (e.keyCode !== ESCAPE_KEY_CODE) return;
 
-      setDisplayed(!isDisplayed)
-    })
-  }, [])
+      setDisplayed(!isDisplayed);
+    });
+  }, [isDisplayed, setDisplayed]);
 
-  if (!isDisplayed) return null
+  if (!isDisplayed) return null;
 
   return (
     <CustomDialog
-      content={
+      content={(
         <div>
-          <Tabs value={value} onChange={handleChange} >
-            <Tab label="User"  />
+          <Tabs value={value} onChange={handleChange}>
+            <Tab label="User" />
             <Tab label="Actualisation" />
           </Tabs>
           <TabPanel value={value} index={0}>
@@ -60,12 +59,11 @@ export default function DeveloperDialog() {
             <DialogActualisation />
           </TabPanel>
         </div>
-      }
+      )}
       title="Modal Développeur"
       titleId="DevDialogContentText"
       isOpened
       onCancel={() => setDisplayed(false)}
     />
-  )
+  );
 }
-

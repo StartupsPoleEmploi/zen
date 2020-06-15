@@ -1,8 +1,8 @@
-const BaseModel = require('./BaseModel')
+const BaseModel = require('./BaseModel');
 
 class Status extends BaseModel {
   static get tableName() {
-    return 'status'
+    return 'status';
   }
 
   static get jsonSchema() {
@@ -14,12 +14,12 @@ class Status extends BaseModel {
         up: { type: 'boolean' },
         isFilesServiceUp: { type: 'boolean' },
       },
-    }
+    };
   }
 
   static get relationMappings() {
-    return {}
+    return {};
   }
 }
 
-module.exports = Status
+module.exports = Status;

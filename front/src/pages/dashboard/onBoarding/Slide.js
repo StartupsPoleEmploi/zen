@@ -1,16 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
-import Check from '@material-ui/icons/Check'
-import PropTypes from 'prop-types'
-import { Typography } from '@material-ui/core'
+import React from 'react';
+import styled from 'styled-components';
+import Check from '@material-ui/icons/Check';
+import PropTypes from 'prop-types';
+import { Typography } from '@material-ui/core';
 
-import { H2 } from '../../../components/Generic/Titles'
+import { H2 } from '../../../components/Generic/Titles';
 import {
   intermediaryBreakpoint,
   primaryBlue,
   mobileBreakpoint,
-} from '../../../constants'
-import arrow from '../../../images/onBoarding/arrow.svg'
+} from '../../../constants';
+import arrow from '../../../images/onBoarding/arrow.svg';
 
 const Left = styled.div`
   padding: 2rem;
@@ -18,17 +18,17 @@ const Left = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     padding: 0;
   }
-`
+`;
 const Right = styled.div`
   display: flex;
   @media (max-width: ${intermediaryBreakpoint}) {
     margin-bottom: 2rem;
   }
-`
+`;
 
 const Li = styled.div`
   margin-top: 2.5rem;
-`
+`;
 
 const BlueBadge = styled.div`
   background: ${primaryBlue};
@@ -42,7 +42,7 @@ const BlueBadge = styled.div`
   display: flex;
   align-items: center;
   margin-right: 1rem;
-`
+`;
 
 const SmallGreenCheckIcon = styled(Check)`
   && {
@@ -51,15 +51,15 @@ const SmallGreenCheckIcon = styled(Check)`
     margin-right: 1rem;
     padding-top: 2px;
   }
-`
+`;
 
 const Ul = styled.div`
   margin: 0;
-`
+`;
 
 const Figure = styled.figure`
   margin: 0;
-`
+`;
 
 const SlideContainer = styled.div`
   display: flex;
@@ -80,7 +80,7 @@ const SlideContainer = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     padding: 5rem 2rem;
   }
-`
+`;
 
 function Slide({
   leftText,
@@ -125,7 +125,8 @@ function Slide({
               lineHeight: '3rem',
             }}
           >
-            {h2Content}{' '}
+            {h2Content}
+            {' '}
           </H2>
 
           <Ul>
@@ -142,7 +143,7 @@ function Slide({
         </div>
       </Right>
     </SlideContainer>
-  )
+  );
 }
 
 Slide.propTypes = {
@@ -152,6 +153,6 @@ Slide.propTypes = {
   h2Content: PropTypes.object.isRequired,
   arrowStyle: PropTypes.object.isRequired,
   list: PropTypes.array.isRequired,
-}
+};
 
-export default Slide
+export default Slide;

@@ -1,10 +1,10 @@
-import Button from '@material-ui/core/Button'
-import React from 'react'
-import styled from 'styled-components'
+import Button from '@material-ui/core/Button';
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledDiv = styled.div`
   text-align: center;
-`
+`;
 
 export const LoggedOut = () => (
   <StyledDiv>
@@ -13,6 +13,6 @@ export const LoggedOut = () => (
       Retour à la page d'accueil
     </Button>
   </StyledDiv>
-)
+);
 
-export default LoggedOut
+export default LoggedOut;

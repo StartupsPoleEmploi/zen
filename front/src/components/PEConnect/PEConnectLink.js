@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import styled from 'styled-components'
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 
-import blueIcon from './PEConnectIcon-blue.svg'
-import whiteIcon from './PEConnectIcon-white.svg'
+import blueIcon from './PEConnectIcon-blue.svg';
+import whiteIcon from './PEConnectIcon-white.svg';
 
-const BLUE = '#1b2e57'
-const WHITE = '#fff'
+const BLUE = '#1b2e57';
+const WHITE = '#fff';
 
 /*
  * Style adapted from
@@ -39,18 +39,18 @@ const StyledA = styled.a`
   &:focus {
     opacity: 0.7;
   }
-`
+`;
 
 const PEConnectIcon = styled.img`
   display: inline-block;
   vertical-align: middle;
-`
+`;
 
 const PEConnectText = styled.span`
   vertical-align: middle;
   padding: 0 10px;
   margin-top: 6px;
-`
+`;
 
 export const PEConnectLink = ({ useDarkVersion = false }) => (
   <StyledA href="/api/login" useDarkVersion={useDarkVersion}>
@@ -62,10 +62,10 @@ export const PEConnectLink = ({ useDarkVersion = false }) => (
     />
     <PEConnectText>Se connecter avec Pôle emploi</PEConnectText>
   </StyledA>
-)
+);
 
 PEConnectLink.propTypes = {
   useDarkVersion: PropTypes.bool,
-}
+};
 
-export default PEConnectLink
+export default PEConnectLink;

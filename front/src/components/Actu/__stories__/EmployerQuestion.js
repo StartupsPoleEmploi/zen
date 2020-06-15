@@ -1,9 +1,9 @@
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { host } from 'storybook-host'
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { host } from 'storybook-host';
 
-import EmployerQuestion from '../EmployerQuestion/EmployerQuestion'
+import EmployerQuestion from '../EmployerQuestion/EmployerQuestion';
 
 const defaultProps = {
   employerName: {
@@ -26,7 +26,7 @@ const defaultProps = {
   onChange: action('onChange'),
   onRemove: action('onRemove'),
   activeMonth: new Date('2018-07-01T09:51:28.389Z'),
-}
+};
 
 storiesOf('EmployerQuestion', module)
   .addDecorator(
@@ -58,4 +58,4 @@ storiesOf('EmployerQuestion', module)
         error: 'Champ obligatoire',
       }}
     />
-  ))
+  ));

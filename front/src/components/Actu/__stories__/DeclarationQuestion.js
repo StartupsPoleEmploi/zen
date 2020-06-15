@@ -1,15 +1,15 @@
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { host } from 'storybook-host'
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { host } from 'storybook-host';
 
-import DeclarationQuestion from '../DeclarationQuestion'
+import DeclarationQuestion from '../DeclarationQuestion';
 
 const defaultProps = {
   name: 'hasWorked',
   label: "Avez-vous travaillé ou reçu une indemnité d'activité partielle ?",
   onAnswer: action('onAnswer'),
-}
+};
 
 storiesOf('DeclarationQuestion', module)
   .addDecorator(
@@ -33,4 +33,4 @@ storiesOf('DeclarationQuestion', module)
     <DeclarationQuestion {...defaultProps} value={false} withChildrenOnNo>
       <div>Sub question</div>
     </DeclarationQuestion>
-  ))
+  ));

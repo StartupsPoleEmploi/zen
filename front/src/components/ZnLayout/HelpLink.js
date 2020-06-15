@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined'
-import { connect } from 'react-redux'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import { connect } from 'react-redux';
 
-import { mobileBreakpoint, helpColor } from '../../constants'
-import { openHelpPopup } from '../../redux/actions/helpPopup'
+import { mobileBreakpoint, helpColor } from '../../constants';
+import { openHelpPopup } from '../../redux/actions/helpPopup';
 
 const A = styled.button`
   position: fixed;
@@ -35,7 +35,7 @@ const A = styled.button`
     width: 45px;
     height: 45px;
   }
-`
+`;
 
 const HelpText = styled.span`
   @media (max-width: ${mobileBreakpoint}) {
@@ -43,7 +43,7 @@ const HelpText = styled.span`
     left: -10000px;
     top: -10000px;
   }
-`
+`;
 
 const Help = styled(HelpOutlineOutlined)`
   margin-right: 0.5rem;
@@ -52,9 +52,9 @@ const Help = styled(HelpOutlineOutlined)`
   @media (max-width: ${mobileBreakpoint}) {
     margin: 0;
   }
-`
+`;
 
-function HelpLink({onClick}) {
+function HelpLink({ onClick }) {
   return (
     <A
       onClick={onClick}
@@ -63,12 +63,12 @@ function HelpLink({onClick}) {
       <Help />
       <HelpText>Aide</HelpText>
     </A>
-  )
+  );
 }
 
 HelpLink.propTypes = {
   onClick: PropTypes.func,
-}
+};
 
 export default connect(
   (state) => ({
@@ -77,4 +77,4 @@ export default connect(
   {
     onClick: openHelpPopup,
   },
-)(HelpLink)
+)(HelpLink);

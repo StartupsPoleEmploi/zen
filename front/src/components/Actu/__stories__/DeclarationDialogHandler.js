@@ -1,9 +1,9 @@
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { host } from 'storybook-host'
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { host } from 'storybook-host';
 
-import DeclarationDialogsHandler from '../DeclarationDialogs/DeclarationDialogsHandler'
+import DeclarationDialogsHandler from '../DeclarationDialogs/DeclarationDialogsHandler';
 
 const defaultProps = {
   isOpened: true,
@@ -12,7 +12,7 @@ const defaultProps = {
   onCancel: action('onCancel'),
   consistencyErrors: [],
   validationErrors: [],
-}
+};
 
 storiesOf('DeclarationDialogsHandler', module)
   .addDecorator(
@@ -38,4 +38,4 @@ storiesOf('DeclarationDialogsHandler', module)
       {...defaultProps}
       validationErrors={['Votre statut ne vous permet pas de déclarer ceci']}
     />
-  ))
+  ));

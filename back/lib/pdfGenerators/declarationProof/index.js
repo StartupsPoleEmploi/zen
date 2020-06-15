@@ -1,20 +1,20 @@
-const fs = require('fs')
-const util = require('util')
-const { format } = require('date-fns')
-const fr = require('date-fns/locale/fr')
-const Mustache = require('mustache')
+const fs = require('fs');
+const util = require('util');
+const { format } = require('date-fns');
+const fr = require('date-fns/locale/fr');
+const Mustache = require('mustache');
 
-const { uploadsDeclarationDirectory } = require('config')
-const { htmlToPdf } = require('../utils')
+const { uploadsDeclarationDirectory } = require('config');
+const { htmlToPdf } = require('../utils');
 
-const isProdEnv = process.env.NODE_ENV === 'prod'
-const DECLARATION_PDF_TEMPLATE = `${__dirname}/declarationPdf.mst`
+const isProdEnv = process.env.NODE_ENV === 'prod';
+const DECLARATION_PDF_TEMPLATE = `${__dirname}/declarationPdf.mst`;
 
-const exists = util.promisify(fs.exists)
-const mkDir = util.promisify(fs.mkdir)
-const readFile = util.promisify(fs.readFile)
-const writeFile = util.promisify(fs.writeFile)
-let templateHTML // For caching
+const exists = util.promisify(fs.exists);
+const mkDir = util.promisify(fs.mkdir);
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
+let templateHTML; // For caching
 
 const DOCUMENT_LABELS = {
   sickLeave: 'Avoir été en arrêt maladie',
@@ -22,37 +22,37 @@ const DOCUMENT_LABELS = {
   maternityLeave: 'Avoir été en congé maternité',
   retirement: 'Percevoir une nouvelle pension retraite',
   invalidity: 'Percevoir une nouvelle pension d’invalidité',
-}
+};
 
 const formatIntervalDates = (startDate, endDate) => {
-  const startString = format(new Date(startDate), 'DD/MM/YYYY')
-  if (!endDate) return `le ${startString}`
+  const startString = format(new Date(startDate), 'DD/MM/YYYY');
+  if (!endDate) return `le ${startString}`;
 
-  const endString = format(new Date(endDate), 'DD/MM/YYYY')
-  return `du ${startString} au ${endString}`
-}
+  const endString = format(new Date(endDate), 'DD/MM/YYYY');
+  return `du ${startString} au ${endString}`;
+};
 
 const generatePdfName = (declaration) => {
-  const declarationDate = format(declaration.declarationMonth.month, 'YYYY-MM')
-  return `${declarationDate}__${declaration.userId}.pdf`
-}
+  const declarationDate = format(declaration.declarationMonth.month, 'YYYY-MM');
+  return `${declarationDate}__${declaration.userId}.pdf`;
+};
 
 function getFriendlyPdfName({ declarationMonth: { month } }) {
-  const declarationDate = format(month, 'MMMM-YYYY', { locale: fr })
-  return `declaration-${declarationDate}.pdf`
+  const declarationDate = format(month, 'MMMM-YYYY', { locale: fr });
+  return `declaration-${declarationDate}.pdf`;
 }
 
 const generatePdfPath = (declaration) =>
-  `${uploadsDeclarationDirectory}${generatePdfName(declaration)}`
+  `${uploadsDeclarationDirectory}${generatePdfName(declaration)}`;
 
 function lowerCaseFirstLetter(string) {
-  return string.charAt(0).toLowerCase() + string.slice(1)
+  return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
 const generateDeclarationAsPdf = async (declaration, pdfPath) => {
   // Generate actualisation/ folder if not exists
-  const folderExists = await exists(uploadsDeclarationDirectory)
-  if (!folderExists) await mkDir(uploadsDeclarationDirectory)
+  const folderExists = await exists(uploadsDeclarationDirectory);
+  if (!folderExists) await mkDir(uploadsDeclarationDirectory);
 
   const data = {
     user: {
@@ -86,31 +86,31 @@ const generateDeclarationAsPdf = async (declaration, pdfPath) => {
       0,
     ),
     specialSituations: Object.entries(DOCUMENT_LABELS).map(([key, val]) => {
-      const info = declaration.infos.find((e) => e.type === key)
+      const info = declaration.infos.find((e) => e.type === key);
       if (info) {
-        return `${val} ${formatIntervalDates(info.startDate, info.endDate)}`
+        return `${val} ${formatIntervalDates(info.startDate, info.endDate)}`;
       }
-      return `Ne pas ${lowerCaseFirstLetter(val)}`
+      return `Ne pas ${lowerCaseFirstLetter(val)}`;
     }),
-  }
+  };
 
-  if (!templateHTML) templateHTML = await readFile(DECLARATION_PDF_TEMPLATE)
-  const html = Mustache.render(templateHTML.toString(), data)
-  const pdfStream = await htmlToPdf(html)
+  if (!templateHTML) templateHTML = await readFile(DECLARATION_PDF_TEMPLATE);
+  const html = Mustache.render(templateHTML.toString(), data);
+  const pdfStream = await htmlToPdf(html);
 
-  await writeFile(pdfPath, pdfStream, { flags: 'w' })
-}
+  await writeFile(pdfPath, pdfStream, { flags: 'w' });
+};
 
 const getDeclarationPdf = async (declaration) => {
-  const pdfPath = generatePdfPath(declaration)
+  const pdfPath = generatePdfPath(declaration);
 
-  const fileExist = await exists(pdfPath)
-  if (!fileExist) await generateDeclarationAsPdf(declaration, pdfPath)
-  return readFile(pdfPath)
-}
+  const fileExist = await exists(pdfPath);
+  if (!fileExist) await generateDeclarationAsPdf(declaration, pdfPath);
+  return readFile(pdfPath);
+};
 
 module.exports = {
   getDeclarationPdf,
   generatePdfPath,
   getFriendlyPdfName,
-}
+};

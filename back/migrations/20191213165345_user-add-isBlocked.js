@@ -1,14 +1,14 @@
-exports.up = async function(knex) {
+exports.up = async function up(knex) {
   await knex.schema.table('Users', (table) => {
     table
       .boolean('isBlocked')
       .defaultTo(false)
-      .notNullable()
-  })
-}
+      .notNullable();
+  });
+};
 
-exports.down = async function(knex) {
-  knex.schema.table('Users', function(table) {
-    table.dropColumn('isBlocked')
-  })
-}
+exports.down = async function down(knex) {
+  knex.schema.table('Users', (table) => {
+    table.dropColumn('isBlocked');
+  });
+};

@@ -1,9 +1,9 @@
-const { BelongsToOneRelation } = require('objection')
-const BaseModel = require('./BaseModel')
+const { BelongsToOneRelation } = require('objection');
+const BaseModel = require('./BaseModel');
 
 class ActivityLog extends BaseModel {
   static get tableName() {
-    return 'activity_logs'
+    return 'activity_logs';
   }
 
   static get jsonSchema() {
@@ -17,7 +17,7 @@ class ActivityLog extends BaseModel {
         action: { type: 'string' },
         metadata: { type: 'json' },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -31,7 +31,7 @@ class ActivityLog extends BaseModel {
           to: 'Users.id',
         },
       },
-    }
+    };
   }
 
   static get actions() {
@@ -41,15 +41,15 @@ class ActivityLog extends BaseModel {
       VALIDATE_FILES: 'VALIDATE_FILES',
       TRANSMIT_FILE: 'TRANSMIT_FILE',
       TRANSMIT_DECLARATION: 'TRANSMIT_DECLARATION',
-    }
+    };
   }
 
   $beforeUpdate() {} // overrides base model setting updatedAt
 
   $beforeInsert() {
     // overrides base model setting updatedAt
-    this.createdAt = new Date().toISOString()
+    this.createdAt = new Date().toISOString();
   }
 }
 
-module.exports = ActivityLog
+module.exports = ActivityLog;

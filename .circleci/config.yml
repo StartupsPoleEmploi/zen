@@ -43,6 +43,8 @@ jobs:
 
       - run: yarn
 
+      - run: yarn lint
+
       - run:
           name: Build front for Bundle analyzer
           command: cd front; yarn && CI=false yarn build; cd ../

@@ -1,5 +1,5 @@
-const { BelongsToOneRelation, Model, ValidationError } = require('objection')
-const { format, isAfter, isValid } = require('date-fns')
+const { BelongsToOneRelation, Model, ValidationError } = require('objection');
+const { format, isAfter, isValid } = require('date-fns');
 
 const types = {
   internship: 'internship',
@@ -8,11 +8,11 @@ const types = {
   retirement: 'retirement',
   invalidity: 'invalidity',
   jobSearch: 'jobSearch',
-}
+};
 
 class DeclarationInfo extends Model {
   static get tableName() {
-    return 'declaration_infos'
+    return 'declaration_infos';
   }
 
   /*
@@ -26,59 +26,59 @@ class DeclarationInfo extends Model {
     This resolves it by relying on the node server to correctly format dates to YYYY-MM-DD.
   */
   convertUTCDatesToPGDates() {
-    if (this.startDate) this.startDate = format(this.startDate, 'YYYY-MM-DD')
-    if (this.endDate) this.endDate = format(this.endDate, 'YYYY-MM-DD')
+    if (this.startDate) this.startDate = format(this.startDate, 'YYYY-MM-DD');
+    if (this.endDate) this.endDate = format(this.endDate, 'YYYY-MM-DD');
   }
 
   $beforeUpdate() {
-    super.$beforeUpdate()
-    this.convertUTCDatesToPGDates()
+    super.$beforeUpdate();
+    this.convertUTCDatesToPGDates();
   }
 
   $beforeInsert() {
-    super.$beforeInsert()
-    this.convertUTCDatesToPGDates()
+    super.$beforeInsert();
+    this.convertUTCDatesToPGDates();
   }
 
   $beforeValidate(jsonSchema, json, opt) {
-    if (!opt.old && opt.patch) return // Custom validation logic only makes sense for objects modified using instance.$query()
+    if (!opt.old && opt.patch) return; // Custom validation logic only makes sense for objects modified using instance.$query()
 
-    const objectToValidate = { ...opt.old, ...json }
+    const objectToValidate = { ...opt.old, ...json };
 
     const throwValidationError = (label) => {
       throw new ValidationError({
         message: label,
         type: 'DeclarationInfoValidationError',
-      })
-    }
+      });
+    };
 
     const validateDates = (type, datesToValidate) => {
-      if (!objectToValidate) return
+      if (!objectToValidate) return;
       datesToValidate.forEach((date) => {
-        if (!isValid(new Date(date))) throwValidationError(type)
-      })
+        if (!isValid(new Date(date))) throwValidationError(type);
+      });
       if (
-        datesToValidate.length === 2 &&
-        isAfter(datesToValidate[0], datesToValidate[1])
+        datesToValidate.length === 2
+        && isAfter(datesToValidate[0], datesToValidate[1])
       ) {
-        throwValidationError(type)
+        throwValidationError(type);
       }
-    }
+    };
 
-    const { startDate, endDate, type } = objectToValidate
+    const { startDate, endDate, type } = objectToValidate;
 
     if (type === types.internship || type === types.sickLeave) {
-      validateDates(type, [startDate, endDate])
+      validateDates(type, [startDate, endDate]);
     }
     if (
-      type === types.maternityLeave ||
-      type === types.retirement ||
-      type === types.invalidity
+      type === types.maternityLeave
+      || type === types.retirement
+      || type === types.invalidity
     ) {
-      validateDates(type, [startDate])
+      validateDates(type, [startDate]);
     }
     if (type === types.jobSearch) {
-      validateDates(type, [endDate])
+      validateDates(type, [endDate]);
     }
   }
 
@@ -98,7 +98,7 @@ class DeclarationInfo extends Model {
         isTransmitted: { type: 'boolean' },
         isCleanedUp: { default: false, type: 'boolean' },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -112,12 +112,12 @@ class DeclarationInfo extends Model {
           to: 'declarations.id',
         },
       },
-    }
+    };
   }
 
   static get types() {
-    return types
+    return types;
   }
 }
 
-module.exports = DeclarationInfo
+module.exports = DeclarationInfo;

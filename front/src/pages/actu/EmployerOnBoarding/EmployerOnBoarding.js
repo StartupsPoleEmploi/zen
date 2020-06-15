@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Typography } from '@material-ui/core'
-import TooltipsDemo from '../../../components/Generic/TooltipsDemo'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Typography } from '@material-ui/core';
+import TooltipsDemo from '../../../components/Generic/TooltipsDemo';
 
 const EMPLOYER_SLIDES = [
   {
@@ -16,7 +16,9 @@ const EMPLOYER_SLIDES = [
     selector: '.employer-question:nth-child(1) .root-work-hours',
     content: (
       <Typography>
-        Si vous avez une fiche de paie, inscrivez le nombre d'heures qui y figure. Si vous déclarez être en activité partielle, vous devez déclarer un minimum de 1h travaillée.
+        Si vous avez une fiche de paie, inscrivez le nombre d'heures qui y figure. Si vous
+        {' '}
+        déclarez être en activité partielle, vous devez déclarer un minimum de 1h travaillée.
       </Typography>
     ),
   },
@@ -35,14 +37,14 @@ const EMPLOYER_SLIDES = [
       </Typography>
     ),
   },
-]
+];
 
 function EmployerOnBoarding({ onFinish }) {
-  return <TooltipsDemo slides={EMPLOYER_SLIDES} onFinish={onFinish} />
+  return <TooltipsDemo slides={EMPLOYER_SLIDES} onFinish={onFinish} />;
 }
 
 EmployerOnBoarding.propTypes = {
   onFinish: PropTypes.func.isRequired,
-}
+};
 
-export default EmployerOnBoarding
+export default EmployerOnBoarding;

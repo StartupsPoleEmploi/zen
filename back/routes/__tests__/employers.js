@@ -1,30 +1,30 @@
-const express = require('express')
-const supertest = require('supertest')
-const employersRouter = require('../employers')
-const Declaration = require('../../models/Declaration')
-const DeclarationMonth = require('../../models/DeclarationMonth')
-const User = require('../../models/User')
+const express = require('express');
+const supertest = require('supertest');
+const employersRouter = require('../employers');
+const Declaration = require('../../models/Declaration');
+const DeclarationMonth = require('../../models/DeclarationMonth');
+const User = require('../../models/User');
 
-let user
+let user;
 
-const IMPOSSIBLE_ID = 666666666
+const IMPOSSIBLE_ID = 666666666;
 
-const getActiveMonth = () => DeclarationMonth.query().first()
+const getActiveMonth = () => DeclarationMonth.query().first();
 
-const app = express()
+const app = express();
 app.use((req, res, next) => {
   req.session = {
     user,
-  }
+  };
 
   getActiveMonth().then((month) => {
-    req.activeMonth = month
-    next()
-  })
-})
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(employersRouter)
+    req.activeMonth = month;
+    next();
+  });
+});
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(employersRouter);
 
 const validDeclaration = {
   hasWorked: true,
@@ -36,15 +36,15 @@ const validDeclaration = {
   hasInvalidity: false,
   isLookingForJob: true,
   userId: 1,
-}
+};
 
 const employer1 = {
   employerName: 'Paul',
   workHours: 20,
   salary: 200,
-}
+};
 
-const employer2 = { ...employer1, employerName: 'Jacques' }
+const employer2 = { ...employer1, employerName: 'Jacques' };
 
 const addBasicDeclaration = () =>
   getActiveMonth().then((activeMonth) =>
@@ -54,8 +54,7 @@ const addBasicDeclaration = () =>
         userId: user.id,
         monthId: activeMonth.id,
       })
-      .returning('*'),
-  )
+      .returning('*'));
 
 const addDeclarationWithEmployers = () =>
   getActiveMonth().then((activeMonth) =>
@@ -71,18 +70,17 @@ const addDeclarationWithEmployers = () =>
         ],
         monthId: activeMonth.id,
       })
-      .returning('*'),
-  )
+      .returning('*'));
 
 // Adds a document, returned for further use, and tests that the upload worked correctly
 const postEmployerDocument = (declaration, type = 'salarySheet') =>
   supertest(app)
-    .post(`/files`)
+    .post('/files')
     .field('employerId', declaration.employers[0].id)
     .field('documentType', type)
     .attach('document', 'tests/mockDocument.pdf')
     .expect(200)
-    .then((res) => res.body)
+    .then((res) => res.body);
 
 describe('employers routes', () => {
   beforeAll(() =>
@@ -95,28 +93,26 @@ describe('employers routes', () => {
       })
       .returning('*')
       .then((dbUser) => {
-        user = dbUser
-      }),
-  )
+        user = dbUser;
+      }));
 
-  afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'))
+  afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE;'));
   afterEach(() =>
     Declaration.knex().raw(
       'TRUNCATE "declarations", "employers", "declaration_infos", "employer_documents" CASCADE',
-    ),
-  )
+    ));
 
   describe('POST /', () => {
     test('HTTP 400 if no data sent', () =>
       supertest(app)
         .post('/')
-        .expect(400))
+        .expect(400));
 
     test('HTTP 400 if no declaration is found', () =>
       supertest(app)
         .post('/')
         .send({ employers: [employer1] })
-        .expect(400))
+        .expect(400));
 
     test('HTTP 200 if employers were correctly added', () =>
       addBasicDeclaration().then(() =>
@@ -125,9 +121,7 @@ describe('employers routes', () => {
           .send({ employers: [employer1] })
           .expect(200)
           .then(({ body }) =>
-            expect(body.employers).toMatchObject([employer1]),
-          ),
-      ))
+            expect(body.employers).toMatchObject([employer1]))));
 
     test('HTTP 200 if employers were correctly updated', () =>
       addDeclarationWithEmployers().then(() =>
@@ -136,21 +130,19 @@ describe('employers routes', () => {
           .send({ employers: [employer2] })
           .expect(200)
           .then(({ body }) =>
-            expect(body.employers).toMatchObject([employer2]),
-          ),
-      ))
-  })
+            expect(body.employers).toMatchObject([employer2]))));
+  });
 
   describe('GET /files', () => {
     test('HTTP 400 if no employerId is sent', () =>
       supertest(app)
         .get('/files')
-        .expect(400))
+        .expect(400));
 
     test('HTTP 404 if no file is found', () =>
       supertest(app)
         .get(`/files?documentId=${IMPOSSIBLE_ID}`)
-        .expect(404))
+        .expect(404));
 
     test('HTTP 200 if a file is found', () =>
       addDeclarationWithEmployers()
@@ -158,77 +150,76 @@ describe('employers routes', () => {
         .then((employer) =>
           supertest(app)
             .get(`/files?documentId=${employer.documents[0].id}`)
-            .expect(200),
-        ))
-  })
+            .expect(200)));
+  });
 
   describe('POST /files', () => {
     test('HTTP 400 if no file is sent', () =>
       supertest(app)
-        .post(`/files`)
-        .field('employerId', 666))
+        .post('/files')
+        .field('employerId', 666));
 
     test('HTTP 400 if no employerId is sent', () =>
       supertest(app)
-        .post(`/files`)
+        .post('/files')
         .field('documentType', 'employerCertificate')
-        .attach('document', 'tests/mockDocument.pdf'))
+        .attach('document', 'tests/mockDocument.pdf'));
 
     test('HTTP 400 if no documentType is sent', () =>
       supertest(app)
-        .post(`/files`)
+        .post('/files')
         .field('employerId', 1)
-        .attach('document', 'tests/mockDocument.pdf'))
+        .attach('document', 'tests/mockDocument.pdf'));
 
     test('HTTP 400 if a bad documentType is sent', () =>
       supertest(app)
-        .post(`/files`)
+        .post('/files')
         .field('employerId', 1)
         .field('documentType', 'something')
-        .attach('document', 'tests/mockDocument.pdf'))
+        .attach('document', 'tests/mockDocument.pdf'));
 
     test('HTTP 404 if no employer is found', () =>
       supertest(app)
-        .post(`/files`)
+        .post('/files')
         .field('employerId', 666)
         .field('documentType', 'employerCertificate')
         .attach('document', 'tests/mockDocument.pdf')
-        .expect(404))
+        .expect(404));
 
     test('HTTP 200 if the file is correctly processed', () =>
       // HTTP 200 is checked in postEmployerDocument
       // This also checks the correct behaviour of the routes' files replacements mechanisms
       addDeclarationWithEmployers().then(async (declaration) => {
-        const employer = await postEmployerDocument(declaration)
+        const employer = await postEmployerDocument(declaration);
         // File was correctly uploaded
-        expect(employer.documents.length).toEqual(1)
+        expect(employer.documents.length).toEqual(1);
 
         // Check that sending the same file correctly replaces it (same id returned)
         const employerAfterSecondUpload = await postEmployerDocument(
           declaration,
-        )
+        );
         expect(employerAfterSecondUpload.documents[0].id).toEqual(
           employer.documents[0].id,
-        )
-        expect(employer.documents.length).toEqual(1)
+        );
+        expect(employer.documents.length).toEqual(1);
 
         // Upload document of another type and check that it was correctly added
         const employerAfterThirdUpload = await postEmployerDocument(
           declaration,
           'employerCertificate',
-        )
-        expect(employerAfterThirdUpload.documents.length).toEqual(2)
+        );
+        expect(employerAfterThirdUpload.documents.length).toEqual(2);
 
         // Check that sending the same file correctly replaces it (same id returned)
         const employerAfterFourthUpload = await postEmployerDocument(
           declaration,
           'employerCertificate',
-        )
-        expect(employerAfterFourthUpload.documents.length).toEqual(2)
+        );
+        expect(employerAfterFourthUpload.documents.length).toEqual(2);
 
         expect(employerAfterFourthUpload.documents[0].id).toEqual(
           employerAfterThirdUpload.documents[0].id,
-        )
-      }))
-  })
-})
+        );
+      }));
+  });
+});

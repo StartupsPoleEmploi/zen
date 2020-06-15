@@ -4,8 +4,8 @@ const config = {
       name: 'back',
       script: 'bin/www',
       watch:
-        process.env.NODE_ENV === 'development' ||
-        process.env.NODE_ENV === 'test',
+        process.env.NODE_ENV === 'development'
+        || process.env.NODE_ENV === 'test',
       ignore_watch: ['uploads', 'datalake', 'var'],
     },
     {
@@ -16,6 +16,6 @@ const config = {
       ignore_watch: ['uploads', 'datalake', 'var'],
     },
   ],
-}
+};
 
-module.exports = config
+module.exports = config;

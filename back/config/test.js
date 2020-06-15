@@ -4,4 +4,4 @@
 module.exports = {
   bypassDeclarationDispatch: true,
   bypassDocumentsDispatch: true,
-}
+};

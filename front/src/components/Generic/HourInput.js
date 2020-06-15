@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import NumberFormat from 'react-number-format'
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import NumberFormat from 'react-number-format';
 
 export class HourInput extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export class HourInput extends Component {
     })
 
   render() {
-    const { inputRef, onChange, ...other } = this.props
+    const { inputRef, onChange, ...other } = this.props;
     return (
       <NumberFormat
         {...other}
@@ -28,8 +28,8 @@ export class HourInput extends Component {
         allowNegative={false}
         decimalScale={0}
       />
-    )
+    );
   }
 }
 
-export default HourInput
+export default HourInput;

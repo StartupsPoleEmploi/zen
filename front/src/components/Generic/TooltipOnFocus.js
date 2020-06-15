@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { withStyles } from '@material-ui/core/styles'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import styled from 'styled-components'
+import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import { helpColor } from '../../constants'
-import info from '../../images/info.svg'
+import { helpColor } from '../../constants';
+import info from '../../images/info.svg';
 
 const TooltipTitle = styled(Typography)`
   && {
@@ -15,19 +15,19 @@ const TooltipTitle = styled(Typography)`
     font-size: 1.6rem;
     padding-bottom: 1.5rem;
   }
-`
+`;
 
 const TooltipText = styled(Typography)`
   && {
     line-height: 2rem;
   }
-`
+`;
 
 const InfoImg = styled.img`
   width: 2.5rem;
   float: left;
   margin-right: 1rem;
-`
+`;
 
 const styles = () => ({
   tooltip: {
@@ -104,14 +104,14 @@ const styles = () => ({
       borderStyle: 'solid',
     },
   },
-})
+});
 
 class TooltipOnFocus extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       arrowRef: null,
-    }
+    };
   }
 
   handleArrowRef = (arrowRef) =>
@@ -120,7 +120,9 @@ class TooltipOnFocus extends Component {
     })
 
   render() {
-    const { children, classes, content, tooltipId, ...props } = this.props
+    const {
+      children, classes, content, tooltipId, ...props
+    } = this.props;
 
     return (
       <Tooltip
@@ -128,7 +130,7 @@ class TooltipOnFocus extends Component {
         placement="bottom"
         aria-hidden="false"
         enterTouchDelay={0}
-        title={
+        title={(
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <TooltipTitle>
@@ -139,7 +141,7 @@ class TooltipOnFocus extends Component {
             <TooltipText>{content}</TooltipText>
             <span className={classes.arrowArrow} ref={this.handleArrowRef} />
           </div>
-        }
+        )}
         classes={{ popper: classes.arrowPopper, tooltip: classes.tooltip }}
         PopperProps={{
           popperOptions: {
@@ -155,7 +157,7 @@ class TooltipOnFocus extends Component {
       >
         {children}
       </Tooltip>
-    )
+    );
   }
 }
 
@@ -164,6 +166,6 @@ TooltipOnFocus.propTypes = {
   classes: PropTypes.object,
   content: PropTypes.string,
   tooltipId: PropTypes.string,
-}
+};
 
-export default withStyles(styles)(TooltipOnFocus)
+export default withStyles(styles)(TooltipOnFocus);

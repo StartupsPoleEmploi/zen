@@ -1,36 +1,36 @@
-const express = require('express')
-const path = require('path')
-const fs = require('fs')
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const _ = require('lodash');
 
-const router = express.Router()
-const { get, omit } = require('lodash')
-const { transaction } = require('objection')
-const Raven = require('raven')
-const { uploadsDirectory: uploadDestination } = require('config')
+const router = express.Router();
+const { get, omit } = require('lodash');
+const { transaction } = require('objection');
+const Raven = require('raven');
+const { uploadsDirectory: uploadDestination } = require('config');
 
-const { DECLARATION_STATUSES } = require('../constants')
-const winston = require('../lib/log')
+const { DECLARATION_STATUSES } = require('../constants');
+const winston = require('../lib/log');
 const {
   uploadMiddleware,
   checkPDFValidityMiddleware,
-} = require('../lib/upload')
+} = require('../lib/upload');
 const {
   fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated,
-} = require('../lib/declaration')
-const { requireActiveMonth } = require('../lib/middleware/activeMonthMiddleware')
-const { refreshAccessToken } = require('../lib/middleware/refreshAccessTokenMiddleware')
-const { sendDocument } = require('../lib/pe-api/documents')
-const { sendDeclaration } = require('../lib/pe-api/declaration')
-const { isUserTokenValid } = require('../lib/token')
-const Declaration = require('../models/Declaration')
-const DeclarationInfo = require('../models/DeclarationInfo')
-const ActivityLog = require('../models/ActivityLog')
+} = require('../lib/declaration');
+const { requireActiveMonth } = require('../lib/middleware/activeMonthMiddleware');
+const { refreshAccessToken } = require('../lib/middleware/refreshAccessTokenMiddleware');
+const { sendDocument } = require('../lib/pe-api/documents');
+const { sendDeclaration } = require('../lib/pe-api/declaration');
+const { isUserTokenValid } = require('../lib/token');
+const Declaration = require('../models/Declaration');
+const DeclarationInfo = require('../models/DeclarationInfo');
+const ActivityLog = require('../models/ActivityLog');
 const {
   generatePdfPath,
   getDeclarationPdf,
   getFriendlyPdfName,
-} = require('../lib/pdfGenerators/declarationProof')
+} = require('../lib/pdfGenerators/declarationProof');
 
 const {
   getPDF,
@@ -38,17 +38,17 @@ const {
   numberOfPage,
   IMG_EXTENSIONS,
   handleNewFileUpload,
-} = require('../lib/pdf-utils')
+} = require('../lib/pdf-utils');
 
-const docTypes = DeclarationInfo.types
+const docTypes = DeclarationInfo.types;
 
-const MAX_MONTHS_TO_FETCH = 24 // 2 years
+const MAX_MONTHS_TO_FETCH = 24; // 2 years
 
-const eagerDeclarationString = `[declarationMonth, infos, employers.documents]`
+const eagerDeclarationString = '[declarationMonth, infos, employers.documents]';
 
 router.post('/remove-file-page', (req, res, next) => {
   if (!req.body.declarationInfoId) {
-    return res.status(400).json('Missing declarationInfoId')
+    return res.status(400).json('Missing declarationInfoId');
   }
 
   return DeclarationInfo.query()
@@ -56,44 +56,44 @@ router.post('/remove-file-page', (req, res, next) => {
     .findById(req.body.declarationInfoId)
     .then((declarationInfo) => {
       if (
-        !declarationInfo ||
-        !declarationInfo.file ||
-        get(declarationInfo, 'declaration.user.id') !== req.session.user.id
+        !declarationInfo
+        || !declarationInfo.file
+        || get(declarationInfo, 'declaration.user.id') !== req.session.user.id
       ) {
-        return res.status(404).json('No such file')
+        return res.status(404).json('No such file');
       }
 
-      const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10)
+      const pageNumberToRemove = parseInt(req.query.pageNumberToRemove, 10);
       if (!pageNumberToRemove || Number.isNaN(pageNumberToRemove)) {
-        return res.status(400).json('No page to remove')
+        return res.status(400).json('No page to remove');
       }
 
       if (
-        !declarationInfo.file ||
-        !path.extname(declarationInfo.file) === '.pdf'
+        !declarationInfo.file
+        || !path.extname(declarationInfo.file) === '.pdf'
       ) {
         throw new Error(
           `Attempt to remove a page to a non-PDF file : ${declarationInfo.file}`,
-        )
+        );
       }
 
-      const pdfFilePath = `${uploadDestination}${declarationInfo.file}`
+      const pdfFilePath = `${uploadDestination}${declarationInfo.file}`;
 
       return numberOfPage(pdfFilePath)
         .then((pageRemaining) => {
           if (pageRemaining === 1) {
             return new Promise((resolve, reject) => {
               fs.unlink(pdfFilePath, (deleteError) => {
-                if (deleteError) return reject(deleteError)
+                if (deleteError) return reject(deleteError);
                 return declarationInfo
                   .$query()
                   .patch({ ...declarationInfo, file: null })
                   .then(resolve)
-                  .catch(reject)
-              })
-            })
+                  .catch(reject);
+              });
+            });
           }
-          return removePage(pdfFilePath, pageNumberToRemove)
+          return removePage(pdfFilePath, pageNumberToRemove);
         })
         .then(() =>
           Declaration.query()
@@ -101,20 +101,19 @@ router.post('/remove-file-page', (req, res, next) => {
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,
-            }),
-        )
-        .then((updatedDeclaration) => res.json(updatedDeclaration))
+            }))
+        .then((updatedDeclaration) => res.json(updatedDeclaration));
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.get('/', (req, res, next) => {
- if ('active' in req.query && req.query.active !== 'true') return res.status(400).json('Bad request')
- if ('last' in req.query && req.query.last !== 'true') return res.status(400).json('Bad request')
+  if ('active' in req.query && req.query.active !== 'true') return res.status(400).json('Bad request');
+  if ('last' in req.query && req.query.last !== 'true') return res.status(400).json('Bad request');
 
   if (
-    'last' in req.query ||
-    'active' in req.query
+    'last' in req.query
+    || 'active' in req.query
   ) {
     return Declaration.query()
       .eager(eagerDeclarationString)
@@ -127,28 +126,29 @@ router.get('/', (req, res, next) => {
         // active month id
 
         if (
-          !declaration ||
-          ('active' in req.query &&
-            declaration.monthId !== get(req.activeMonth, 'id'))
+          !declaration
+          || ('active' in req.query
+            && declaration.monthId !== get(req.activeMonth, 'id'))
         ) {
-          return res.status(404).json('No such declaration')
+          return res.status(404).json('No such declaration');
         }
 
-        if(declaration.employers) {
+        if (declaration.employers) {
           declaration.employers = _.sortBy(declaration.employers, ['id']);
         }
 
-        res.json(declaration)
+        res.json(declaration);
       })
-      .catch(next)
+      .catch(next);
   }
 
-  const queryLimit = Math.abs(req.query.limit)
+  const queryLimit = Math.abs(req.query.limit);
+  // eslint-disable-next-line no-nested-ternary
   const limit = Number.isNaN(queryLimit)
     ? MAX_MONTHS_TO_FETCH
     : queryLimit < MAX_MONTHS_TO_FETCH
-    ? queryLimit
-    : MAX_MONTHS_TO_FETCH
+      ? queryLimit
+      : MAX_MONTHS_TO_FETCH;
 
   return Declaration.query()
     .eager(eagerDeclarationString)
@@ -157,18 +157,18 @@ router.get('/', (req, res, next) => {
     .limit(limit)
     .then((declarations) => {
       // sort employer
-      declarations = declarations.map(declaration => {
-        if(declaration.employers) {
-          declaration.employers = _.sortBy(declaration.employers, ['id'])
+      declarations = declarations.map((declaration) => {
+        if (declaration.employers) {
+          declaration.employers = _.sortBy(declaration.employers, ['id']);
         }
 
-        return declaration
-      })
+        return declaration;
+      });
 
-      res.json(declarations)
+      res.json(declarations);
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
   let declarationData = omit(
@@ -179,59 +179,58 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
       monthId: req.activeMonth.id,
     },
     'id',
-  )
+  );
 
-  if (!declarationData.infos) declarationData.infos = []
+  if (!declarationData.infos) declarationData.infos = [];
 
   // This next section is dedicated to the validation of infos and correspondance
   // between what will be saved in Declaration and DeclarationInfo.
   try {
-    Declaration.fromJson(declarationData).$validate()
+    Declaration.fromJson(declarationData).$validate();
     declarationData.infos.forEach((declarationInfo) =>
-      DeclarationInfo.fromJson(declarationInfo).$validate(),
-    )
+      DeclarationInfo.fromJson(declarationInfo).$validate());
 
     if (
-      declarationData.hasInternship &&
-      !declarationData.infos.some(({ type }) => type === docTypes.internship)
+      declarationData.hasInternship
+      && !declarationData.infos.some(({ type }) => type === docTypes.internship)
     ) {
-      throw new Error('No internship dates given')
+      throw new Error('No internship dates given');
     }
     if (
-      declarationData.hasSickLeave &&
-      !declarationData.infos.some(({ type }) => type === docTypes.sickLeave)
+      declarationData.hasSickLeave
+      && !declarationData.infos.some(({ type }) => type === docTypes.sickLeave)
     ) {
-      throw new Error('No sick leave dates given')
+      throw new Error('No sick leave dates given');
     }
     if (
-      declarationData.hasMaternityLeave &&
-      !declarationData.infos.some(
+      declarationData.hasMaternityLeave
+      && !declarationData.infos.some(
         ({ type }) => type === docTypes.maternityLeave,
       )
     ) {
-      throw new Error('No maternity leave dates given')
+      throw new Error('No maternity leave dates given');
     }
     if (
-      declarationData.hasRetirement &&
-      !declarationData.infos.some(({ type }) => type === docTypes.retirement)
+      declarationData.hasRetirement
+      && !declarationData.infos.some(({ type }) => type === docTypes.retirement)
     ) {
-      throw new Error('No retirement dates given')
+      throw new Error('No retirement dates given');
     }
     if (
-      declarationData.hasInvalidity &&
-      !declarationData.infos.some(({ type }) => type === docTypes.invalidity)
+      declarationData.hasInvalidity
+      && !declarationData.infos.some(({ type }) => type === docTypes.invalidity)
     ) {
-      throw new Error('No invalidity dates given')
+      throw new Error('No invalidity dates given');
     }
     if (
-      !declarationData.isLookingForJob &&
-      !declarationData.infos.some(({ type }) => type === docTypes.jobSearch)
+      !declarationData.isLookingForJob
+      && !declarationData.infos.some(({ type }) => type === docTypes.jobSearch)
     ) {
-      throw new Error('No jobSearch dates given')
+      throw new Error('No jobSearch dates given');
     }
   } catch (e) {
-    Raven.captureException(e)
-    return res.status(400).json('Invalid declaration')
+    Raven.captureException(e);
+    return res.status(400).json('Invalid declaration');
   }
 
   return Declaration.query()
@@ -247,34 +246,32 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
     .skipUndefined()
     .then(async (declaration) => {
       const saveDeclaration = (trx) =>
-        Declaration.query(trx).upsertGraphAndFetch(declarationData)
+        Declaration.query(trx).upsertGraphAndFetch(declarationData);
 
       const saveAndLogDeclaration = () =>
         transaction(Declaration.knex(), (trx) =>
           saveDeclaration(trx).then((savedDeclaration) =>
             Promise.all([
               savedDeclaration,
-              !declaration &&
-                ActivityLog.query(trx).insert({
+              !declaration
+                && ActivityLog.query(trx).insert({
                   userId: req.session.user.id,
                   action: ActivityLog.actions.VALIDATE_DECLARATION,
                 }),
-              !declarationData.hasWorked &&
-                ActivityLog.query(trx).insert({
+              !declarationData.hasWorked
+                && ActivityLog.query(trx).insert({
                   userId: req.session.user.id,
                   action: ActivityLog.actions.VALIDATE_EMPLOYERS,
                   metadata: JSON.stringify({
                     declarationId: savedDeclaration.id,
                   }),
                 }),
-            ]),
-          ),
-        )
+            ])));
 
       if (declaration) {
-        declarationData.id = declaration.id
+        declarationData.id = declaration.id;
         if (declaration.isFinished) {
-          throw new Error('Declaration already done')
+          throw new Error('Declaration already done');
         }
       }
 
@@ -282,12 +279,11 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
         // If the user token is invalid, save the declaration data then exit.
         if (!isUserTokenValid(req.user.tokenExpirationDate)) {
           return saveDeclaration().then(() =>
-            res.status(401).json('Expired token'),
-          )
+            res.status(401).json('Expired token'));
         }
 
         // We save what the user sent but do not validate in case of an error occured.
-        declarationData = await saveDeclaration()
+        declarationData = await saveDeclaration();
         // Declaration with no employers We need to send the declaration to PE.fr
         return sendDeclaration({
           declaration: declarationData,
@@ -307,41 +303,38 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
                 .json({
                   consistencyErrors: body.erreursIncoherence || [],
                   validationErrors: Object.values(body.erreursValidation || {}),
-                })
+                });
             }
 
             winston.info(
               `Sent declaration for user ${req.session.user.id} to PE`,
-            )
+            );
 
-            declarationData.hasFinishedDeclaringEmployers = true
-            declarationData.transmittedAt = new Date()
+            declarationData.hasFinishedDeclaringEmployers = true;
+            declarationData.transmittedAt = new Date();
             if (!Declaration.needsDocuments(declarationData)) {
-              declarationData.isFinished = true
+              declarationData.isFinished = true;
             }
 
             return saveAndLogDeclaration().then(([dbDeclaration]) =>
-              res.json(dbDeclaration),
-            )
+              res.json(dbDeclaration));
           })
           .catch((err) =>
             // If we could not save the declaration on pe.fr
             // We still save the data the user sent us
             saveDeclaration().then(() => {
-              throw err
-            }),
-          )
+              throw err;
+            }));
       }
 
       return saveAndLogDeclaration().then(([dbDeclaration]) =>
-        res.json(dbDeclaration),
-      )
+        res.json(dbDeclaration));
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.get('/summary-file', (req, res, next) => {
-  const download = req.query.download === 'true'
+  const download = req.query.download === 'true';
 
   return Declaration.query()
     .eager('[declarationMonth, user, employers, infos]')
@@ -350,29 +343,29 @@ router.get('/summary-file', (req, res, next) => {
     .skipUndefined()
     .then((declaration) => {
       if (!declaration) {
-        return res.status(404).json('No declaration found')
+        return res.status(404).json('No declaration found');
       }
       if (!declaration.hasFinishedDeclaringEmployers) {
-        return res.status(403).json('Declaration not complete')
+        return res.status(403).json('Declaration not complete');
       }
 
       return getDeclarationPdf(declaration).then(() => {
-        const pdfPath = generatePdfPath(declaration)
-        const filename = getFriendlyPdfName(declaration)
+        const pdfPath = generatePdfPath(declaration);
+        const filename = getFriendlyPdfName(declaration);
 
         if (download) {
-          res.download(pdfPath, filename)
+          res.download(pdfPath, filename);
         } else {
-          res.sendFile(pdfPath)
+          res.sendFile(pdfPath);
         }
-      })
+      });
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.get('/files', (req, res, next) => {
   if (!req.query.declarationInfoId) {
-    return res.status(400).json('Missing declarationInfoId')
+    return res.status(400).json('Missing declarationInfoId');
   }
 
   return DeclarationInfo.query()
@@ -380,31 +373,31 @@ router.get('/files', (req, res, next) => {
     .findById(req.query.declarationInfoId)
     .then((declarationInfo) => {
       if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id) {
-        return res.status(404).json('No such file')
+        return res.status(404).json('No such file');
       }
 
-      const extension = path.extname(declarationInfo.file)
+      const extension = path.extname(declarationInfo.file);
 
       // Not a PDF / convertible as PDF file
       if (extension !== '.pdf' && !IMG_EXTENSIONS.includes(extension)) {
-        return res.sendFile(declarationInfo.file, { root: uploadDestination })
+        return res.sendFile(declarationInfo.file, { root: uploadDestination });
       }
 
       return getPDF(declarationInfo, uploadDestination).then((pdfPath) => {
-        res.sendFile(pdfPath, { root: uploadDestination })
-      })
+        res.sendFile(pdfPath, { root: uploadDestination });
+      });
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.post(
   '/files',
   uploadMiddleware.single('document'),
   checkPDFValidityMiddleware,
   (req, res, next) => {
-    if (!req.file && !req.body.skip) return res.status(400).json('Missing file')
+    if (!req.file && !req.body.skip) return res.status(400).json('Missing file');
     if (!req.body.declarationInfoId) {
-      return res.status(400).json('Missing declarationInfoId')
+      return res.status(400).json('Missing declarationInfoId');
     }
 
     return DeclarationInfo.query()
@@ -412,39 +405,38 @@ router.post(
       .findById(req.body.declarationInfoId)
       .then(async (declarationInfo) => {
         if (
-          !declarationInfo ||
-          declarationInfo.declaration.user.id !== req.session.user.id
+          !declarationInfo
+          || declarationInfo.declaration.user.id !== req.session.user.id
         ) {
-          return res.status(400).json('No such DeclarationInfo id')
+          return res.status(400).json('No such DeclarationInfo id');
         }
 
-        const isAddingFile = !!req.query.add && declarationInfo.originalFileName
+        const isAddingFile = !!req.query.add && declarationInfo.originalFileName;
 
         let documentFileObj = req.body.skip
           ? {
-              // Used in case the user sent his file by another means.
-              file: null,
-              originalFileName: null,
-              isTransmitted: true,
-            }
+            // Used in case the user sent his file by another means.
+            file: null,
+            originalFileName: null,
+            isTransmitted: true,
+          }
           : {
-              file: req.file.filename,
-              originalFileName: isAddingFile
-                ? declarationInfo.originalFileName
-                : req.file.originalname,
-            }
+            file: req.file.filename,
+            originalFileName: isAddingFile
+              ? declarationInfo.originalFileName
+              : req.file.originalname,
+          };
 
         if (!req.body.skip) {
-          const existingDocumentIsPDF =
-            declarationInfo.file &&
-            path.extname(declarationInfo.file) === '.pdf'
+          const existingDocumentIsPDF = declarationInfo.file
+            && path.extname(declarationInfo.file) === '.pdf';
 
           if (isAddingFile && !existingDocumentIsPDF) {
             // Couldn't happen because 'Add a page' is only available in PDFViewer
             // So the file should already be a PDF (for how long ? FIXME ?)
             throw new Error(
               `Attempt to add a page to a non-PDF file : ${declarationInfo.file}`,
-            )
+            );
           }
 
           try {
@@ -453,11 +445,11 @@ router.post(
               existingDocumentFile: declarationInfo.file,
               documentFileObj,
               isAddingFile,
-            })
+            });
           } catch (err) {
             // To get the correct error message front-side,
             // we need to ensure that the HTTP status is 413
-            return res.status(413).json(err.message)
+            return res.status(413).json(err.message);
           }
         }
 
@@ -470,26 +462,25 @@ router.post(
               .findOne({
                 id: declarationInfo.declaration.id,
                 userId: req.session.user.id,
-              }),
-          )
+              }))
           .then((updatedDeclaration) => {
             if (req.body.skip) {
               return fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
                 declarationId: updatedDeclaration.id,
                 userId: req.session.user.id,
-              }).then(() => updatedDeclaration)
+              }).then(() => updatedDeclaration);
             }
-            return updatedDeclaration
+            return updatedDeclaration;
           })
-          .then((updatedDeclaration) => res.json(updatedDeclaration))
+          .then((updatedDeclaration) => res.json(updatedDeclaration));
       })
-      .catch(next)
+      .catch(next);
   },
-)
+);
 
 router.post('/files/validate', refreshAccessToken, (req, res, next) => {
   if (!isUserTokenValid(req.user.tokenExpirationDate)) {
-    return res.status(401).json('Expired token')
+    return res.status(401).json('Expired token');
   }
 
   return DeclarationInfo.query()
@@ -497,14 +488,14 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
     .findOne({ id: req.body.id })
     .then((declarationInfo) => {
       if (
-        !declarationInfo ||
-        get(declarationInfo, 'declaration.userId') !== req.session.user.id
+        !declarationInfo
+        || get(declarationInfo, 'declaration.userId') !== req.session.user.id
       ) {
-        return res.status(404).json('Not found')
+        return res.status(404).json('Not found');
       }
 
       if (declarationInfo.isTransmitted) {
-        return res.json(declarationInfo.declaration)
+        return res.json(declarationInfo.declaration);
       }
 
       return sendDocument({
@@ -517,25 +508,22 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,
-            }),
-        )
+            }))
         .then(() =>
           fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
             declarationId: declarationInfo.declaration.id,
             userId: req.session.user.id,
-          }),
-        )
+          }))
         .then(() =>
           Declaration.query()
             .eager('[employers.documents, infos, declarationMonth]')
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,
-            }),
-        )
-        .then((updateDeclaration) => res.json(updateDeclaration))
+            }))
+        .then((updateDeclaration) => res.json(updateDeclaration));
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
-module.exports = router
+module.exports = router;

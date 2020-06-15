@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
-import { primaryBlue } from '../../../constants'
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { primaryBlue } from '../../../constants';
 
 const Dot = styled.span`
   font-size: 8rem;
   color: ${({ selected, selectedColor, notSelectedColor }) =>
-    selected ? selectedColor : notSelectedColor};
+    (selected ? selectedColor : notSelectedColor)};
   font-family: auto;
   line-height: 0;
-`
+`;
 
 const Button = styled.button`
   overflow: hidden;
@@ -17,17 +17,17 @@ const Button = styled.button`
   cursor: pointer;
   background: none;
   padding: 0;
-`
+`;
 
 const Ol = styled.ol`
   margin: 0;
   padding: 0;
   list-style: none;
   display: inline-block;
-`
+`;
 const Li = styled.li`
   display: inline-block;
-`
+`;
 
 function StepCounter({
   itemNumber,
@@ -37,12 +37,12 @@ function StepCounter({
   notSelectedColor = '#cde0f8',
 }) {
   function updateStep(e) {
-    goToStep(+e.currentTarget.getAttribute('data-step'))
+    goToStep(+e.currentTarget.getAttribute('data-step'));
   }
 
-  const dots = []
-  for (let i = 0; i < itemNumber; i++) {
-    const isCurrent = i + 1 === currentStep
+  const dots = [];
+  for (let i = 0; i < itemNumber; i += 1) {
+    const isCurrent = i + 1 === currentStep;
 
     dots.push(
       <Li aria-current={isCurrent ? 'step' : null} key={i}>
@@ -61,10 +61,10 @@ function StepCounter({
           </Dot>
         </Button>
       </Li>,
-    )
+    );
   }
 
-  return <Ol>{dots}</Ol>
+  return <Ol>{dots}</Ol>;
 }
 
 StepCounter.propTypes = {
@@ -73,6 +73,6 @@ StepCounter.propTypes = {
   goToStep: PropTypes.func.isRequired,
   selectedColor: PropTypes.string,
   notSelectedColor: PropTypes.string,
-}
+};
 
-export default StepCounter
+export default StepCounter;

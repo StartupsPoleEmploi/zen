@@ -1,6 +1,6 @@
-const JUNE_2019_MONTH_ID = 14
+const JUNE_2019_MONTH_ID = 14;
 
-exports.up = function(knex, Promise) {
+exports.up = function up(knex) {
   return knex.transaction((trx) =>
     trx
       .raw(
@@ -18,12 +18,9 @@ exports.up = function(knex, Promise) {
           .then(() =>
             trx.raw(`UPDATE declaration_infos SET "isTransmitted"=true WHERE "declarationId" IN (
               SELECT id from "declarations" WHERE "monthId" <= ${JUNE_2019_MONTH_ID} AND "hasFinishedDeclaringEmployers"=true
-            )`),
-          ),
-      ),
-  )
-}
+            )`))));
+};
 
-exports.down = function(knex, Promise) {
-  return Promise.resolve()
-}
+exports.down = function down(knex, Promise) {
+  return Promise.resolve();
+};

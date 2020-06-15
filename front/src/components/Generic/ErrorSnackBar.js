@@ -1,19 +1,18 @@
-import PropTypes from 'prop-types'
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Typography, Snackbar } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
-import WarningIcon from "../../images/WARNING.svg"
-import { snackBarDuration } from '../../constants'
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Typography, Snackbar } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import WarningIcon from '../../images/WARNING.svg';
+import { snackBarDuration } from '../../constants';
 
 const Logo = styled.img`
   margin-right: 10px;
-`
+`;
 
 const Close = styled(CloseIcon)`
   margin-left: 1rem;
-`
-
+`;
 
 const SnackbarWarning = styled(Snackbar)`
   > div { 
@@ -26,20 +25,20 @@ const SnackbarWarning = styled(Snackbar)`
       color: black;
     }
   } 
-`
+`;
 
-
-// eslint-disable-next-line react/prop-types
-function ErrorSnackBar({ message, onHide, icon, duraction, closeIcon }) {
+function ErrorSnackBar({
+  message, onHide, icon, duraction, closeIcon,
+}) {
   const [isOpen, setIsOpen] = useState(true);
 
   const close = () => {
     if (onHide) {
-      onHide()
+      onHide();
     }
 
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   return (
     <SnackbarWarning
@@ -49,20 +48,23 @@ function ErrorSnackBar({ message, onHide, icon, duraction, closeIcon }) {
       autoHideDuration={duraction !== undefined ? duraction : snackBarDuration}
       onClose={close}
       onClick={close}
-      message={<>
-        <Logo src={icon || WarningIcon} />
-        <Typography>{message}</Typography>
-        {closeIcon && <Close />}
-      </>
-      }
+      message={(
+        <>
+          <Logo src={icon || WarningIcon} />
+          <Typography>{message}</Typography>
+          {closeIcon && <Close />}
+        </>
+)}
     />
-  )
+  );
 }
 
 ErrorSnackBar.propTypes = {
   message: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   onHide: PropTypes.func,
-  icon: PropTypes.object
-}
+  closeIcon: PropTypes.func,
+  icon: PropTypes.object,
+  duraction: PropTypes.number,
+};
 
 export default ErrorSnackBar;

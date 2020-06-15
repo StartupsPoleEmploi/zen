@@ -1,21 +1,21 @@
-import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
-import moment from 'moment'
-import React from 'react'
-import { host } from 'storybook-host'
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react';
+import moment from 'moment';
+import React from 'react';
+import { host } from 'storybook-host';
 
-import DatePicker from '../DatePicker'
+import DatePicker from '../DatePicker';
 
-const activeMonthMoment = moment('2018-07-01T09:51:28.389Z')
+const activeMonthMoment = moment('2018-07-01T09:51:28.389Z');
 
 const minDate = activeMonthMoment
   .clone()
   .startOf('month')
-  .toDate()
+  .toDate();
 const maxDate = activeMonthMoment
   .clone()
   .endOf('month')
-  .toDate()
+  .toDate();
 
 const defaultProps = {
   label: 'Entrez une date',
@@ -23,7 +23,7 @@ const defaultProps = {
   onSelectDate: action('onSelectDate'),
   maxDate,
   minDate,
-}
+};
 
 storiesOf('DatePicker', module)
   .addDecorator(
@@ -41,4 +41,4 @@ storiesOf('DatePicker', module)
         .add(1, 'day')
         .toDate()}
     />
-  ))
+  ));

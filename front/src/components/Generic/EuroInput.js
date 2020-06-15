@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import NumberFormat from 'react-number-format'
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import NumberFormat from 'react-number-format';
 
 export class EuroInput extends Component {
   static propTypes = {
@@ -19,13 +19,13 @@ export class EuroInput extends Component {
   state = { isFocused: false }
 
   onFocus = (e) => {
-    this.setState({ isFocused: true })
-    this.props.onFocus(e)
+    this.setState({ isFocused: true });
+    this.props.onFocus(e);
   }
 
   onBlur = (e) => {
-    this.setState({ isFocused: false })
-    this.props.onBlur(e)
+    this.setState({ isFocused: false });
+    this.props.onBlur(e);
   }
 
   onValueChange = (values) =>
@@ -37,7 +37,7 @@ export class EuroInput extends Component {
     })
 
   render() {
-    const { inputRef, onChange, ...other } = this.props
+    const { inputRef, onChange, ...other } = this.props;
     return (
       <NumberFormat
         {...other}
@@ -54,8 +54,8 @@ export class EuroInput extends Component {
         // Used to avoid displaying ".00" on first input
         fixedDecimalScale={!this.state.isFocused}
       />
-    )
+    );
   }
 }
 
-export default EuroInput
+export default EuroInput;

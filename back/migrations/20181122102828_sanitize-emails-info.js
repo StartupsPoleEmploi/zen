@@ -1,4 +1,4 @@
-exports.up = function(knex) {
+exports.up = function up(knex) {
   return knex
     .raw(
       'UPDATE "Declarations" SET "isEmailSent"=true WHERE "hasFinishedDeclaringEmployers"=true',
@@ -6,8 +6,7 @@ exports.up = function(knex) {
     .then(() =>
       knex.raw(
         'UPDATE "Declarations" SET "isDocEmailSent"=true WHERE "isFinished"=true',
-      ),
-    )
-}
+      ));
+};
 
-exports.down = function() {}
+exports.down = function down() {};

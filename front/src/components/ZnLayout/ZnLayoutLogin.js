@@ -1,26 +1,24 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import { withRouter } from 'react-router-dom'
-import styled from 'styled-components'
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import Button from '@material-ui/core/Button'
-import Popover from '@material-ui/core/Popover'
-import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-
-import AppTitle from '../Generic/AppTitle'
-import ZnNavLogin from './ZnNavLogin'
-import { secondaryBlue, errorOrange, mobileBreakpoint } from '../../constants'
-import dashboardBg from '../../images/dashboard-bg.svg'
-import Covid19Warning from '../Generic/Covid19Warning'
-import Codiv19Justif from '../Generic/Codiv19Justif'
+import AppTitle from '../Generic/AppTitle';
+import ZnNavLogin from './ZnNavLogin';
+import { secondaryBlue, errorOrange, mobileBreakpoint } from '../../constants';
+import dashboardBg from '../../images/dashboard-bg.svg';
+import Covid19Warning from '../Generic/Covid19Warning';
+import Codiv19Justif from '../Generic/Codiv19Justif';
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -31,11 +29,11 @@ const routesWithDisplayedNav = [
   '/history',
   '/cgu',
   '/aide-conseillers',
-]
+];
 
 const StyledLayout = styled.div`
   margin: auto;
-`
+`;
 
 const Header = styled.header.attrs({ role: 'banner' })`
   display: flex;
@@ -48,13 +46,13 @@ const Header = styled.header.attrs({ role: 'banner' })`
   @media (max-width: ${mobileBreakpoint}) {
     justify-content: space-between;
   }
-`
+`;
 
 const ButtonMail = styled(Button)`
   .MuiButton-label {
     width: auto;
   }
-`
+`;
 
 const PopoverMailContainer = styled(Typography)`
   && {
@@ -63,15 +61,15 @@ const PopoverMailContainer = styled(Typography)`
     width: 33rem;
     margin: 2rem;
   }
-`
+`;
 
 const HeaderElem = styled.div`
-  display: ${({logo}) => logo ? 'none' : 'flex'};
+  display: ${({ logo }) => (logo ? 'none' : 'flex')};
   align-items: center;
-  padding-left: ${({ first }) => first ? '3rem' : '1.5rem'};
-  padding-right: ${({ end }) => end ? '3rem' : '1.5rem'};
+  padding-left: ${({ first }) => (first ? '3rem' : '1.5rem')};
+  padding-right: ${({ end }) => (end ? '3rem' : '1.5rem')};
   height: 100%;
-  border-left: ${({ first }) => first ? '1px solid #ddd' : 'none'};
+  border-left: ${({ first }) => (first ? '1px solid #ddd' : 'none')};
   
   .logo {
     display: none;
@@ -79,25 +77,25 @@ const HeaderElem = styled.div`
 
   svg {
     color: ${secondaryBlue};
-    margin-right: ${({first, end}) => first || end ? '0.8rem' : 'auto'};
+    margin-right: ${({ first, end }) => (first || end ? '0.8rem' : 'auto')};
   }
 
   @media (max-width: ${mobileBreakpoint}) {
     display: flex;
-    padding-left: ${({ first }) => first ? '1rem' : '1rem'};
-    padding-right: ${({ end }) => end ? '1rem' : '0rem'};
+    padding-left: ${({ first }) => (first ? '1rem' : '1rem')};
+    padding-right: ${({ end }) => (end ? '1rem' : '0rem')};
     .logout-text {
       display: none;
     }
   }
-`
+`;
 
 const CovidContainer = styled.div`
   padding: 0 15% 1rem 15%;
   @media (max-width: 1400px) {
     padding: 0 5% 1rem 5%;
   }
-`
+`;
 
 const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
@@ -105,7 +103,7 @@ const Main = styled.main.attrs({ role: 'main' })`
   overflow: hidden;
 
   background: ${({ addBackground }) =>
-    addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null};
+    (addBackground ? `url(${dashboardBg}) no-repeat 0 100%` : null)};
 
   @media (max-height: 1000px) {
     background: none;
@@ -117,8 +115,7 @@ const Main = styled.main.attrs({ role: 'main' })`
   @media (max-width: ${mobileBreakpoint}) {
     padding-top: 2rem;
   }
-`
-
+`;
 
 export const Layout = ({
   activeMonth,
@@ -130,9 +127,9 @@ export const Layout = ({
   history: { push },
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const isNavVisible = routesWithDisplayedNav.includes(pathname)
+  const isNavVisible = routesWithDisplayedNav.includes(pathname);
 
-  const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
+  const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -146,7 +143,7 @@ export const Layout = ({
       activeMonth={activeMonth}
       activeDeclaration={activeDeclaration}
     />
-  )
+  );
 
   const openMail = Boolean(anchorEl);
   const idMail = openMail ? 'simple-popover' : undefined;
@@ -156,10 +153,10 @@ export const Layout = ({
       {useMobileVersion && isNavVisible && NavComponent()}
       <div style={{ display: 'flex', width: '100vw' }}>
         {!useMobileVersion && isNavVisible && NavComponent()}
-        <div style={{width: '100vw'}}>
+        <div style={{ width: '100vw' }}>
           <Header>
             <HeaderElem logo>
-              <AppTitle/>
+              <AppTitle />
             </HeaderElem>
             <HeaderElem first>
               <AccountCircleOutlinedIcon />
@@ -169,7 +166,7 @@ export const Layout = ({
             </HeaderElem>
             <HeaderElem>
               <ButtonMail aria-describedby={idMail} onClick={handleClick}>
-                <MailOutlineIcon/>
+                <MailOutlineIcon />
               </ButtonMail>
               <Popover
                 id={idMail}
@@ -188,8 +185,11 @@ export const Layout = ({
                 <PopoverMailContainer>
                   <PriorityHighIcon style={{ marginRight: '2rem', fontSize: '4rem', color: errorOrange }} />
                   <Typography>
-                    N'oubliez pas de consulter régulièrement vos courriers en ligne sur votre{' '}
-                    <a href="https://www.pole-emploi.fr" target="_blank" rel="noopener noreferrer">espace personnel</a> pôle emploi.
+                    N'oubliez pas de consulter régulièrement vos courriers en ligne sur votre
+                    {' '}
+                    <a href="https://www.pole-emploi.fr" target="_blank" rel="noopener noreferrer">espace personnel</a>
+                    {' '}
+                    pôle emploi.
                   </Typography>
                 </PopoverMailContainer>
               </Popover>
@@ -202,7 +202,7 @@ export const Layout = ({
                 variant="text"
                 style={{ padding: '0px 0.5rem', margin: '0', height: '4rem' }}
               >
-                <ExitToAppIcon/>
+                <ExitToAppIcon />
                 <Typography className="logout-text">
                   Se déconnecter
                 </Typography>
@@ -219,8 +219,8 @@ export const Layout = ({
         </div>
       </div>
     </StyledLayout>
-  )
-}
+  );
+};
 
 Layout.propTypes = {
   children: PropTypes.node,
@@ -236,6 +236,6 @@ Layout.propTypes = {
     .isRequired,
   activeMonth: PropTypes.instanceOf(Date),
   activeDeclaration: PropTypes.object,
-}
+};
 
-export default withRouter(Layout)
+export default withRouter(Layout);

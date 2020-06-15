@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import { Typography } from '@material-ui/core'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Typography } from '@material-ui/core';
 
-import { H1, H2 } from '../../components/Generic/Titles'
-import DeclarationHistory from './DeclarationHistory'
-import EmptyDeclaration from './EmptyDeclaration'
+import { H1, H2 } from '../../components/Generic/Titles';
+import DeclarationHistory from './DeclarationHistory';
+import EmptyDeclaration from './EmptyDeclaration';
 
-import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations'
-import { fetchDeclarationMonths as fetchDeclarationMonthsAction } from '../../redux/actions/declarationMonths'
+import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations';
+import { fetchDeclarationMonths as fetchDeclarationMonthsAction } from '../../redux/actions/declarationMonths';
 import {
   darkBlue,
   mobileBreakpoint,
   intermediaryBreakpoint,
-} from '../../constants'
-import { formattedDeclarationMonth } from '../../lib/date'
+} from '../../constants';
+import { formattedDeclarationMonth } from '../../lib/date';
 
 const StyledHistory = styled.div`
   max-width: 90rem;
@@ -27,12 +27,12 @@ const StyledHistory = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     margin: 1rem 2rem 0 2rem;
   }
-`
+`;
 
 const MonthContainer = styled.div`
   border-bottom: solid 1px #ddd;
   padding: 3.5rem 0 2rem 0;
-`
+`;
 const StyledH1 = styled(H1)`
   && {
     font-size: 2rem;
@@ -45,7 +45,7 @@ const StyledH1 = styled(H1)`
       margin-bottom: 0;
     }
   }
-`
+`;
 
 const StyledH2 = styled(H2)`
   && {
@@ -55,7 +55,7 @@ const StyledH2 = styled(H2)`
     font-weight: normal;
     margin-bottom: 2rem;
   }
-`
+`;
 
 function History({
   isDeclarationsLoading,
@@ -66,36 +66,36 @@ function History({
   fetchDeclarations,
   fetchDeclarationMonths,
 }) {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchDeclarations()
-    fetchDeclarationMonths()
-  }, [])
+    fetchDeclarations();
+    fetchDeclarationMonths();
+  }, [fetchDeclarations, fetchDeclarationMonths]);
 
   useEffect(() => {
-    setIsLoading(isDeclarationsLoading || isDeclarationMonthsLoading)
-  }, [isDeclarationsLoading, isDeclarationMonthsLoading])
+    setIsLoading(isDeclarationsLoading || isDeclarationMonthsLoading);
+  }, [isDeclarationsLoading, isDeclarationMonthsLoading]);
 
   if (isLoading || !declarationMonths) {
     return (
       <StyledHistory>
         <CircularProgress />
       </StyledHistory>
-    )
+    );
   }
 
   // Remove unfinished declaration
   if (declarations.length) {
     // eslint-disable-next-line no-param-reassign
-    declarations = declarations.filter((d) => d.hasFinishedDeclaringEmployers)
+    declarations = declarations.filter((d) => d.hasFinishedDeclaringEmployers);
   }
   // Remove active declaration
   if (activeMonth && declarations.length) {
     // eslint-disable-next-line no-param-reassign
     declarations = declarations.filter(
       (d) => d.declarationMonth.id !== activeMonth.id,
-    )
+    );
   }
 
   if (declarations.length === 0) {
@@ -104,41 +104,41 @@ function History({
         <StyledH1>L'historique de votre actualisation sur Zen</StyledH1>
         <Typography>Pas d'historique pour le moment</Typography>
       </StyledHistory>
-    )
+    );
   }
 
   // Fill the gaps
-  const filledDeclarations = []
-  let lastDeclarationMonthId = declarations[0].declarationMonth.id
+  const filledDeclarations = [];
+  let lastDeclarationMonthId = declarations[0].declarationMonth.id;
 
   // Gap at the beginning
-  const lastMonthId = declarationMonths[0].id
-  for (let i = lastMonthId; i > lastDeclarationMonthId; i--) {
+  const lastMonthId = declarationMonths[0].id;
+  for (let i = lastMonthId; i > lastDeclarationMonthId; i -= 1) {
     filledDeclarations.push({
       declarationMonth: declarationMonths.find((dm) => dm.id === i),
-    })
+    });
   }
 
   declarations.forEach((declaration) => {
-    const currentMonth = declaration.declarationMonth.id
+    const currentMonth = declaration.declarationMonth.id;
     if (
       currentMonth === lastDeclarationMonthId &&
       declaration.hasFinishedDeclaringEmployers
     ) {
-      filledDeclarations.push(declaration)
+      filledDeclarations.push(declaration);
     } else {
       // We find a empty month, we add empty declaration until we get to the current declaration
-      for (let i = lastDeclarationMonthId; i !== currentMonth; i--) {
+      for (let i = lastDeclarationMonthId; i !== currentMonth; i -= 1) {
         filledDeclarations.push({
           declarationMonth: declarationMonths.find((dm) => dm.id === i),
-        })
-        lastDeclarationMonthId--
+        });
+        lastDeclarationMonthId -= 1;
       }
-      filledDeclarations.push(declaration)
+      filledDeclarations.push(declaration);
     }
 
-    lastDeclarationMonthId--
-  })
+    lastDeclarationMonthId -= 1;
+  });
 
   return (
     <StyledHistory>
@@ -161,7 +161,7 @@ function History({
         </MonthContainer>
       ))}
     </StyledHistory>
-  )
+  );
 }
 
 History.propTypes = {
@@ -174,7 +174,7 @@ History.propTypes = {
   declarationMonths: PropTypes.arrayOf(PropTypes.object),
   fetchDeclarationMonths: PropTypes.func.isRequired,
   isDeclarationMonthsLoading: PropTypes.bool,
-}
+};
 
 export default connect(
   (state) => ({
@@ -190,4 +190,4 @@ export default connect(
     fetchDeclarations: fetchDeclarationAction,
     fetchDeclarationMonths: fetchDeclarationMonthsAction,
   },
-)(History)
+)(History);

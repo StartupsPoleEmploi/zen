@@ -1,25 +1,25 @@
-import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
-import TextField from '@material-ui/core/TextField'
-import Delete from '@material-ui/icons/DeleteOutlined'
-import moment from 'moment'
-import PropTypes from 'prop-types'
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
-import withWidth from '@material-ui/core/withWidth'
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormLabel from '@material-ui/core/FormLabel';
+import TextField from '@material-ui/core/TextField';
+import Delete from '@material-ui/icons/DeleteOutlined';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import withWidth from '@material-ui/core/withWidth';
 
-import EuroInput from '../../Generic/EuroInput'
-import HourInput from '../../Generic/HourInput'
-import YesNoRadioGroup from '../../Generic/YesNoRadioGroup'
-import TooltipOnFocus from '../../Generic/TooltipOnFocus'
-import warn from '../../../images/warn.png'
-import EmployerQuestionSalaryModal from './EmployerQuestionSalaryModal'
+import EuroInput from '../../Generic/EuroInput';
+import HourInput from '../../Generic/HourInput';
+import YesNoRadioGroup from '../../Generic/YesNoRadioGroup';
+import TooltipOnFocus from '../../Generic/TooltipOnFocus';
+import warn from '../../../images/warn.png';
+import EmployerQuestionSalaryModal from './EmployerQuestionSalaryModal';
 
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const StyledMain = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const StyledMain = styled.div`
   max-width: 95rem;
   flex-wrap: wrap;
   box-shadow: 0 0 0.5rem 0.1rem #eeeeee;
-`
+`;
 
 const StyledFormControl = styled(FormControl)`
   && {
@@ -48,7 +48,7 @@ const StyledFormControl = styled(FormControl)`
       margin-top: 1rem;
     }
   }
-`
+`;
 
 const StyledFormLabel = styled(FormLabel)`
   flex-shrink: 1;
@@ -56,7 +56,7 @@ const StyledFormLabel = styled(FormLabel)`
   && {
     color: #000;
   }
-`
+`;
 
 const RemoveButton = styled.button`
   border: none;
@@ -70,21 +70,21 @@ const RemoveButton = styled.button`
     border: 0;
     padding: 0;
   }
-`
+`;
 
 const EmployerQuestionContainer = styled.div`
   display: inline-flex;
   @media (max-width: 811px) {
     width: 100%;
   }
-`
+`;
 
 const DeleteIcon = styled(Delete)`
   && {
     width: 2.5rem;
     height: 2.5rem;
   }
-`
+`;
 
 const StyledTextField = styled(TextField)`
   && {
@@ -96,7 +96,7 @@ const StyledTextField = styled(TextField)`
       width: 100%;
     }
   }
-`
+`;
 
 const InfoImg = styled.img`
   width: 2rem;
@@ -104,36 +104,36 @@ const InfoImg = styled.img`
   margin-left: 3px;
   cursor: pointer;
   z-index: 2;
-`
+`;
 
 export class EmployerQuestion extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       onpenModal: false,
-    }
+    };
   }
 
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
-    let value = _value
+    let value = _value;
     if (type === 'blur' && fieldName.startsWith('employerName')) {
-      value = (_value || '').trim()
+      value = (_value || '').trim();
     }
     // The input 'name' attribute needs an array format
     // to avoid confusions (for example, browser autocompletions)
     // but the parent component here juste needs 'employerName'
     // for example.
-    const name = fieldName.substr(0, fieldName.indexOf('['))
+    const name = fieldName.substr(0, fieldName.indexOf('['));
     this.props.onChange({
       name,
       value,
       index: this.props.index,
-    })
+    });
   }
 
   onChangeSalaryModal = (value) => {
     document.activeElement.blur();
-    this.props.onChange({ name: 'salary', value, index: this.props.index })
+    this.props.onChange({ name: 'salary', value, index: this.props.index });
   }
 
   onCloseModal = () => {
@@ -148,13 +148,15 @@ export class EmployerQuestion extends PureComponent {
 
   onRemove = () => this.props.onRemove(this.props.index)
 
-  renderLabel = ({ id, label, content, showTooltip }) => (
+  renderLabel = ({
+    id, label, content, showTooltip,
+  }) => (
     <div>
       {label}
       {showTooltip && (
-        <TooltipOnFocus tooltipId={id} content={content}>
-          <InfoImg src={warn} alt="Informations" />
-        </TooltipOnFocus>
+      <TooltipOnFocus tooltipId={id} content={content}>
+        <InfoImg src={warn} alt="Informations" />
+      </TooltipOnFocus>
       )}
     </div>
   )
@@ -168,9 +170,9 @@ export class EmployerQuestion extends PureComponent {
       hasEndedThisMonth,
       verticalLayout,
       width,
-    } = this.props
+    } = this.props;
 
-    const showTooltip = index === 0
+    const showTooltip = index === 0;
 
     return (
       <StyledContainer className="employer-question">
@@ -266,13 +268,16 @@ export class EmployerQuestion extends PureComponent {
             >
               {width !== 'xs' ? (
                 <>
-                  Contrat terminé en{' '}
+                  Contrat terminé en
+                  {' '}
                   {moment(this.props.activeMonth).format('MMMM')}
                   &nbsp;?
                 </>
               ) : (
                 <>
-                  Terminé en {moment(this.props.activeMonth).format('MMMM')}
+                  Terminé en
+                  {' '}
+                  {moment(this.props.activeMonth).format('MMMM')}
                   &nbsp;?
                 </>
               )}
@@ -296,14 +301,14 @@ export class EmployerQuestion extends PureComponent {
         >
           <DeleteIcon />
         </RemoveButton>
-        <EmployerQuestionSalaryModal 
+        <EmployerQuestionSalaryModal
           index={index}
           onChange={this.onChangeSalaryModal}
           onClose={this.onCloseModal}
           isOpened={this.state.onpenModal}
         />
       </StyledContainer>
-    )
+    );
   }
 }
 
@@ -330,6 +335,6 @@ EmployerQuestion.propTypes = {
   activeMonth: PropTypes.instanceOf(Date).isRequired,
   verticalLayout: PropTypes.bool,
   width: PropTypes.string.isRequired,
-}
+};
 
-export default withWidth()(EmployerQuestion)
+export default withWidth()(EmployerQuestion);

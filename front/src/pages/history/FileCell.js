@@ -1,16 +1,16 @@
-import React, { useRef, useState } from 'react'
-import { Typography } from '@material-ui/core'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React, { useRef, useState } from 'react';
+import { Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
-import PrintIcon from '@material-ui/icons/Print'
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+import PrintIcon from '@material-ui/icons/Print';
 
 import {
   intermediaryBreakpoint,
   mobileBreakpoint,
   primaryBlue,
-} from '../../constants'
+} from '../../constants';
 
 const Cell = styled.div`
   flex: 1;
@@ -26,7 +26,7 @@ const Cell = styled.div`
     justify-content: left;
     padding: 0;
   }
-`
+`;
 
 const StyledFileCell = styled(Cell)`
   && {
@@ -46,7 +46,7 @@ const StyledFileCell = styled(Cell)`
       padding: 2rem 1rem 1rem 0rem;
     }
   }
-`
+`;
 
 const ActionLink = styled.a`
   display: flex;
@@ -59,36 +59,36 @@ const ActionLink = styled.a`
   &:hover {
     text-decoration: underline;
   }
-`
+`;
 
 const FileCell = ({ declaration }) => {
-  const [showPrintIframe, setShowPrintIframe] = useState(false)
-  const iframeEl = useRef(null)
+  const [showPrintIframe, setShowPrintIframe] = useState(false);
+  const iframeEl = useRef(null);
 
   // Missing justificatifs
-  const DECLARATION_FILE_URL = `/api/declarations/summary-file?id=${declaration.id}`
+  const DECLARATION_FILE_URL = `/api/declarations/summary-file?id=${declaration.id}`;
 
   function printDeclaration(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (showPrintIframe) {
       try {
-        iframeEl.current.contentWindow.print()
+        iframeEl.current.contentWindow.print();
       } catch (err) {
         // Some browser, like firefox, can't print an iframe content, so we open a new tab for the PDF
         // For more information : https://bugzilla.mozilla.org/show_bug.cgi?id=874200
-        window.open(DECLARATION_FILE_URL, '_blank')
+        window.open(DECLARATION_FILE_URL, '_blank');
       }
-    } else setShowPrintIframe(true)
+    } else setShowPrintIframe(true);
   }
 
   function printIframeContent(e) {
     try {
-      e.target.contentWindow.print()
+      e.target.contentWindow.print();
     } catch (err) {
       // Some browser, like firefox, can't print an iframe content, so we open a new tab for the PDF
       // For more information : https://bugzilla.mozilla.org/show_bug.cgi?id=874200
-      window.open(DECLARATION_FILE_URL, '_blank')
+      window.open(DECLARATION_FILE_URL, '_blank');
     }
   }
 
@@ -123,11 +123,11 @@ const FileCell = ({ declaration }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
 FileCell.propTypes = {
   declaration: PropTypes.object,
-}
+};
 
-export default FileCell
+export default FileCell;

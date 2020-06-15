@@ -1,11 +1,11 @@
-import Typography from '@material-ui/core/Typography'
-import { isNaN as _isNaN, isObject } from 'lodash'
-import PropTypes from 'prop-types'
-import React from 'react'
-import NumberFormat from 'react-number-format'
-import styled from 'styled-components'
+import Typography from '@material-ui/core/Typography';
+import { isNaN as _isNaN, isObject } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import NumberFormat from 'react-number-format';
+import styled from 'styled-components';
 
-import { primaryBlue } from '../../constants'
+import { primaryBlue } from '../../constants';
 
 import {
   WORK_HOURS,
@@ -14,14 +14,14 @@ import {
   MIN_WORK_HOURS,
   MAX_SALARY,
   MAX_WORK_HOURS,
-} from '../../lib/salary'
+} from '../../lib/salary';
 
 const SummaryContainer = styled.ul`
   padding: 0;
   width: 27rem;
   list-style: none;
   margin: auto auto 2rem auto;
-`
+`;
 
 const Label = styled(Typography).attrs({
   component: 'span',
@@ -31,7 +31,7 @@ const Label = styled(Typography).attrs({
     width: 18rem;
     line-height: 1.6rem;
   }
-`
+`;
 
 const Value = styled(Typography).attrs({
   component: 'span',
@@ -42,21 +42,21 @@ const Value = styled(Typography).attrs({
     border-left: solid 1px ${primaryBlue};
     display: inline-block;
   }
-`
+`;
 
 const calculateTotal = (employers, field, lowLimit, highLimit) => {
   const total = employers.reduce((prev, employer) => {
     const number = parseFloat(
       isObject(employer[field]) ? employer[field].value : employer[field],
-    )
-    if (number < lowLimit || number > highLimit) return NaN
-    return number + prev
-  }, 0)
+    );
+    if (number < lowLimit || number > highLimit) return NaN;
+    return number + prev;
+  }, 0);
 
-  if (total < lowLimit || total > highLimit) return NaN
+  if (total < lowLimit || total > highLimit) return NaN;
 
-  return Math.round(total, 10)
-}
+  return Math.round(total, 10);
+};
 
 const WorkSummary = ({ employers }) => {
   const totalWorkHours = calculateTotal(
@@ -64,8 +64,8 @@ const WorkSummary = ({ employers }) => {
     WORK_HOURS,
     MIN_WORK_HOURS,
     MAX_WORK_HOURS,
-  )
-  const totalSalary = calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY)
+  );
+  const totalSalary = calculateTotal(employers, SALARY, MIN_SALARY, MAX_SALARY);
 
   return (
     <SummaryContainer>
@@ -74,11 +74,12 @@ const WorkSummary = ({ employers }) => {
 
         <Value style={{ paddingBottom: '0.5rem' }}>
           <b>
-            {_isNaN(totalWorkHours) || totalWorkHours === 0
-              ? '-'
-              : totalWorkHours}
+            {_isNaN(totalWorkHours) || totalWorkHours === 0 ?
+              '-' :
+              totalWorkHours}
           </b>
-          {' '}h
+          {' '}
+          h
         </Value>
       </li>
 
@@ -99,12 +100,13 @@ const WorkSummary = ({ employers }) => {
               />
             )}
           </b>
-          {' '}€
+          {' '}
+          €
         </Value>
       </li>
     </SummaryContainer>
-  )
-}
+  );
+};
 
 WorkSummary.propTypes = {
   employers: PropTypes.arrayOf(
@@ -123,6 +125,6 @@ WorkSummary.propTypes = {
       ]),
     }),
   ),
-}
+};
 
-export default WorkSummary
+export default WorkSummary;

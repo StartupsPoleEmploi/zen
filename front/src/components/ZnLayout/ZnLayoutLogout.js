@@ -1,18 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import AccountIcon from '@material-ui/icons/AccountCircleOutlined'
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import AccountIcon from '@material-ui/icons/AccountCircleOutlined';
 
-import HelpLink from './HelpLink'
-import AppTitle from '../Generic/AppTitle'
+import HelpLink from './HelpLink';
+import AppTitle from '../Generic/AppTitle';
 
-import logoPEMono from '../../images/logoPE-mono.png'
-import Footer from './footer/Footer'
-import Covid19Warning from '../Generic/Covid19Warning'
+import logoPEMono from '../../images/logoPE-mono.png';
+import Footer from './footer/Footer';
+import Covid19Warning from '../Generic/Covid19Warning';
 
 const CovidContainer = styled.div`
   padding: 0 15% 1rem 15%;
@@ -21,14 +21,14 @@ const CovidContainer = styled.div`
   @media (max-width: 1400px) {
     padding: 0 5% 1rem 5%;
   }
-`
+`;
 
 const windowWidthElement = {
   width: '100vw',
   left: '50%',
   marginLeft: ' -50vw',
   position: 'relative',
-}
+};
 const useStyles = makeStyles((theme) => ({
   header: {
     backgroundColor: '#f3f4f5',
@@ -70,10 +70,10 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '4rem',
     lineHeight: '3rem',
   },
-}))
+}));
 
 export default function ZnLayoutLogout({ children }) {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <div>
       <header className={classes.header} role="banner">
@@ -114,9 +114,9 @@ export default function ZnLayoutLogout({ children }) {
 
       <HelpLink />
     </div>
-  )
+  );
 }
 
 ZnLayoutLogout.propTypes = {
   children: PropTypes.node,
-}
+};

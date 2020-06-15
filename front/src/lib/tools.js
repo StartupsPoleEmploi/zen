@@ -16,10 +16,10 @@ export const sayswho = () => {
 };
 
 export const hasFileBrokenByNavigator = () => {
-  const [navigator, version] = sayswho()
-  if (navigator === "Chrome" && +version <= 49) {
-    return true
+  const [navigator, version] = sayswho();
+  if (navigator === 'Chrome' && +version <= 49) {
+    return true;
   }
 
-  return false
-}
+  return false;
+};

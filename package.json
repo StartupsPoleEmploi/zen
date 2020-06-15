@@ -3,9 +3,8 @@
   "version": "1.11.1",
   "description": "",
   "scripts": {
-    "eslint": "eslint './front/**/*.js' && eslint './back/**/*.js'",
-    "eslint:fix": "eslint --fix './front/**/*.js' && eslint --fix './back/**/*.js'",
-    "test": "yarn eslint && yarn test:front && yarn test:back",
+    "lint": "bash script/lint-all.sh",
+    "test": "yarn test:front && yarn test:back",
     "test:all": "yarn test:e2e && yarn test # This is useful in this order for ci as e2e will install all dependencies needed for front & back tests",
     "test:e2e": "docker-compose -p test-e2e -f docker-compose.test.yml run --rm e2e; exitcode=$?; docker-compose -p test-e2e -f docker-compose.test.yml down; exit ${exitcode}",
     "test:front": "docker-compose -p test-front -f docker-compose.test.yml run --rm front yarn test",
@@ -15,12 +14,6 @@
     "database:knex-migrate": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:latest",
     "database:knex-rollback": "docker exec $(docker ps -aq --filter='name=zen_node') yarn run knex migrate:rollback",
     "start:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint",
-      "git add"
-    ]
   },
   "repository": {
     "type": "git",
@@ -33,26 +26,11 @@
   },
   "homepage": "https://github.com/StartupsPoleEmploi/actualisation#readme",
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^6.1.0",
-    "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^2.3.0",
-    "husky": "^3.0.2",
-    "lint-staged": "^9.2.1",
-    "prettier": "^1.18.2"
+    "husky": "^3.0.2"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "bash script/pre-commit.sh"
     }
-  },
-  "dependencies": {
-    "cypress": "^3.3.1",
-    "eslint-plugin-cypress": "^2.6.0"
   }
 }

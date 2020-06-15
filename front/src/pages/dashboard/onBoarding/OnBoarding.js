@@ -1,33 +1,33 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
-import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
-import superagent from 'superagent'
-import ArrowBack from '@material-ui/icons/ArrowBack'
-import withWidth from '@material-ui/core/withWidth'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { Typography } from '@material-ui/core';
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
+import superagent from 'superagent';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import withWidth from '@material-ui/core/withWidth';
 
-import step1 from '../../../images/onBoarding/step1.gif'
-import step2 from '../../../images/onBoarding/step2.gif'
-import step3 from '../../../images/onBoarding/step3.gif'
-import step4 from '../../../images/onBoarding/step4.gif'
-import step5 from '../../../images/onBoarding/step5.gif'
+import step1 from '../../../images/onBoarding/step1.gif';
+import step2 from '../../../images/onBoarding/step2.gif';
+import step3 from '../../../images/onBoarding/step3.gif';
+import step4 from '../../../images/onBoarding/step4.gif';
+import step5 from '../../../images/onBoarding/step5.gif';
 
-import { H1 } from '../../../components/Generic/Titles'
-import MainActionButton from '../../../components/Generic/MainActionButton'
-import StepCounter from './StepCounter'
-import Slide from './Slide'
+import { H1 } from '../../../components/Generic/Titles';
+import MainActionButton from '../../../components/Generic/MainActionButton';
+import StepCounter from './StepCounter';
+import Slide from './Slide';
 
-import { setNoNeedOnBoarding as setNoNeedOnBoardingAction } from '../../../redux/actions/user'
-import { primaryBlue } from '../../../constants'
-import catchMaintenance from '../../../lib/catchMaintenance'
-import { EmailForm } from './EmailForm'
+import { setNoNeedOnBoarding as setNoNeedOnBoardingAction } from '../../../redux/actions/user';
+import { primaryBlue } from '../../../constants';
+import catchMaintenance from '../../../lib/catchMaintenance';
+import { EmailForm } from './EmailForm';
 
 const StyledOnBoarding = styled.div`
   max-width: ${({ width }) => (width === 'xs' ? '100%' : '90rem')};
   margin: 0 auto;
-`
+`;
 
 const Thanks = styled(Typography)`
   && {
@@ -37,40 +37,40 @@ const Thanks = styled(Typography)`
     text-align: center;
     margin: 0 auto 5rem auto;
   }
-`
+`;
 
 const Container = styled.div`
   box-shadow: 0 0 3.5rem 1rem #ddd;
   background: white;
-`
+`;
 const ActionBar = styled.div`
   padding: ${({ width }) => (width === 'xs' ? '2rem 0' : '2rem')};
   padding: 2rem;
   height: 9rem;
   position: relative;
   text-align: center;
-`
+`;
 
 const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
-`
+`;
 
 const A = styled.a`
   color: ${primaryBlue};
-`
+`;
 
 const leftArrowStyle = {
   position: 'absolute',
   left: '0',
   top: '-90px',
   transform: 'rotateY(180deg)',
-}
+};
 
 const rightArrowStyle = {
   position: 'absolute',
   right: '-15px',
   top: '-100px',
-}
+};
 
 function OnBoarding({
   csrfToken,
@@ -79,9 +79,9 @@ function OnBoarding({
   showEmail = false,
   setNoNeedOnBoarding,
 }) {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(1);
 
-  const NUMBER_OF_STEP = 5
+  const NUMBER_OF_STEP = 5;
 
   function goToNextStep() {
     // Go to beginning
@@ -90,16 +90,16 @@ function OnBoarding({
         .post('/api/user/disable-need-on-boarding')
         .set('CSRF-Token', csrfToken)
         .then(() => setNoNeedOnBoarding())
-        .catch(catchMaintenance)
+        .catch(catchMaintenance);
     }
-    setCurrentStep(currentStep + 1)
+    setCurrentStep(currentStep + 1);
   }
 
   function goToStep(index) {
-    setCurrentStep(index + 1)
+    setCurrentStep(index + 1);
   }
   function startAgain() {
-    setCurrentStep(1)
+    setCurrentStep(1);
   }
 
   return (
@@ -126,24 +126,27 @@ function OnBoarding({
             leftText="Votre déclaration par employeur"
             badgeNumber="1"
             arrowStyle={rightArrowStyle}
-            h2Content={
+            h2Content={(
               <>
-                Service d'actualisation pour les{' '}
+                Service d'actualisation pour les
+                {' '}
                 <span aria-label="assistants ou assistantes maternels">
                   assistant.es maternel.les
                 </span>
               </>
-            }
+            )}
             img={step1}
             list={[
               <>
-                Exerçant en France excepté dans les régions{' '}
+                Exerçant en France excepté dans les régions
+                {' '}
                 <strong>
                   Bourgogne-Franche-Comté, Centre-Val de Loire et les DOM-TOM.
                 </strong>
               </>,
               <>
-                Une actualisation adaptée à votre profession,{' '}
+                Une actualisation adaptée à votre profession,
+                {' '}
                 <strong>employeur par employeur.</strong>
               </>,
             ]}
@@ -152,12 +155,14 @@ function OnBoarding({
 
         {currentStep === 2 && (
           <Slide
-            leftText={
+            leftText={(
               <>
                 Un e-mail indique
-                <br /> le début de l'actualisation
+                <br />
+                {' '}
+                le début de l'actualisation
               </>
-            }
+            )}
             badgeNumber="2"
             arrowStyle={leftArrowStyle}
             h2Content={
@@ -166,12 +171,17 @@ function OnBoarding({
             img={step2}
             list={[
               <>
-                <strong>Un e-mail</strong> est envoyé à l'ouverture de la
+                <strong>Un e-mail</strong>
+                {' '}
+                est envoyé à l'ouverture de la
                 période d'actualisation
               </>,
               <>
-                Vous pouvez vous actualiser{' '}
-                <strong>même si vous n'avez pas vos justificatifs</strong> :
+                Vous pouvez vous actualiser
+                {' '}
+                <strong>même si vous n'avez pas vos justificatifs</strong>
+                {' '}
+                :
                 fiches de paie, attestations employeur, arrêt maladie...
               </>,
             ]}
@@ -180,25 +190,30 @@ function OnBoarding({
 
         {currentStep === 3 && (
           <Slide
-            leftText={
+            leftText={(
               <>
                 Téléchargez et/ou imprimez
-                <br /> votre déclaration d'actualisation
+                <br />
+                {' '}
+                votre déclaration d'actualisation
                 <br />
                 depuis votre tableau de bord
               </>
-            }
+            )}
             badgeNumber="3"
             arrowStyle={{ ...rightArrowStyle, right: '-5px', top: '-60px' }}
             h2Content={<>Zen vous confirme que l'actualisation est validée</>}
             img={step3}
             list={[
               <>
-                <strong>Un e-mail</strong> est envoyé quand l'actualisation est
+                <strong>Un e-mail</strong>
+                {' '}
+                est envoyé quand l'actualisation est
                 terminée
               </>,
               <>
-                L'information est également présente depuis votre{' '}
+                L'information est également présente depuis votre
+                {' '}
                 <strong>tableau de bord</strong>
               </>,
             ]}
@@ -207,12 +222,14 @@ function OnBoarding({
 
         {currentStep === 4 && (
           <Slide
-            leftText={
+            leftText={(
               <>
                 Gérez vos justificatifs
-                <br /> depuis votre tableau de bord
+                <br />
+                {' '}
+                depuis votre tableau de bord
               </>
-            }
+            )}
             badgeNumber="4"
             arrowStyle={{ ...leftArrowStyle, left: '30px', top: '-110px' }}
             h2Content={<>Zen vous indique les justificatifs manquants</>}
@@ -220,14 +237,16 @@ function OnBoarding({
             list={[
               <>
                 Pour éviter les risques de trop-perçu, Zen vous rapelle les
-                justificatifs que vous devez fournir pour que{' '}
+                justificatifs que vous devez fournir pour que
+                {' '}
                 <strong>votre situation Zen Pôle emploi soit à jour</strong>
               </>,
               <>
                 <strong>
                   Vos justificatifs doivent correspondre exactement à votre
                   déclaration.
-                </strong>{' '}
+                </strong>
+                {' '}
                 Vous déclarez 10h pour 100€ de rémunération, Pôle emploi attend une fiche
                 de paie avec 10h et 100€ de rémunération
               </>,
@@ -237,12 +256,14 @@ function OnBoarding({
 
         {currentStep === 5 && (
           <Slide
-            leftText={
+            leftText={(
               <>
                 Zen transmet instantanément
-                <br /> vos informations à Pôle emploi
+                <br />
+                {' '}
+                vos informations à Pôle emploi
               </>
-            }
+            )}
             badgeNumber="5"
             arrowStyle={leftArrowStyle}
             h2Content={<>L'actualisation Zen suffit</>}
@@ -256,7 +277,8 @@ function OnBoarding({
               </>,
               <>
                 Vous n'êtes pas obligé de vous actualiser sur Zen. Vous pouvez
-                continuer à faire votre actualisation sur{' '}
+                continuer à faire votre actualisation sur
+                {' '}
                 <A href="https://pole-emploi.fr">pole-emploi.fr</A>
               </>,
             ]}
@@ -306,7 +328,7 @@ function OnBoarding({
         </ActionBar>
       </Container>
     </StyledOnBoarding>
-  )
+  );
 }
 
 OnBoarding.propTypes = {
@@ -315,11 +337,11 @@ OnBoarding.propTypes = {
   showThankYou: PropTypes.bool,
   showEmail: PropTypes.bool,
   width: PropTypes.string.isRequired,
-}
+};
 
 export default connect(
   (state) => ({
     csrfToken: state.userReducer.user.csrfToken,
   }),
   { setNoNeedOnBoarding: setNoNeedOnBoardingAction },
-)(withWidth()(OnBoarding))
+)(withWidth()(OnBoarding));

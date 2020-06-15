@@ -19,6 +19,7 @@ import {
   mobileBreakpoint,
   errorOrange,
 } from '../../constants'
+import { hasFileBrokenByNavigator } from '../../lib/tools'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -205,6 +206,12 @@ export class DocumentUpload extends Component {
   renderFileField(fileInput, showTooltip, id) {
     if (!showTooltip) return fileInput
 
+    if (hasFileBrokenByNavigator()) {
+      return (<ErrorTypography className="upload-error">
+        Votre navigateur est trop ancien, veuillez le mettre à jour ou allez sur PE pour transmattre les justificatifs.
+      </ErrorTypography>)
+    }
+
     return (
       <TooltipOnFocus
         tooltipId={`file[${id}]`}
@@ -313,74 +320,74 @@ export class DocumentUpload extends Component {
         {isLoading ? (
           <CircularProgress />
         ) : (
-          <DocumentZone>
-            <ActionsContainer>
-              {error && (
-                <ErrorTypography className="upload-error">
-                  {error}
-                </ErrorTypography>
-              )}
+            <DocumentZone>
+              <ActionsContainer>
+                {error && (
+                  <ErrorTypography className="upload-error">
+                    {error}
+                  </ErrorTypography>
+                )}
 
-              {isTransmitted ? (
-                <ActionButton
-                  disabled
-                  style={{ backgroundColor: '#039C6D', color: 'white' }}
-                >
-                  <CheckIcon /> Envoyé
-                </ActionButton>
-              ) : !fileExistsOnServer ? (
-                <StyledFormLabel
-                  style={{
-                    width: useLightVersion ? '100%' : 'auto',
-                    textAlign: 'center',
-                  }}
-                >
-                  {this.renderFileField(uploadInput, showTooltip, employerId)}
-                  {hiddenInput}
-                </StyledFormLabel>
-              ) : (
-                viewDocumentButton
-              )}
-            </ActionsContainer>
-
-            {!isTransmitted && (
-              <SecondBloc>
-                <Or>OU</Or>
-                <SkipFileSection>
-                  <Button
-                    aria-describedby={`file[${id}]`}
-                    onClick={this.skipFile}
-                    className="already-transmitted-button"
-                    style={{
-                      textAlign: 'left',
-                      lineHeight: '2rem',
-                    }}
-                    size={useLightVersion ? 'medium' : 'small'}
-                    disabled={isTransmitted}
+                {isTransmitted ? (
+                  <ActionButton
+                    disabled
+                    style={{ backgroundColor: '#039C6D', color: 'white' }}
                   >
-                    <>
-                      <Typography
-                        style={{
-                          fontWeight: 'bold',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
-                        <div>
-                          Pôle emploi <Upper>a déjà ce justificatif</Upper>
-                        </div>
-                      </Typography>
-                    </>
-                  </Button>
-                  <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
-                    <InfoImg />
-                  </TooltipOnFocus>
-                </SkipFileSection>
-              </SecondBloc>
-            )}
-          </DocumentZone>
-        )}
+                    <CheckIcon /> Envoyé
+                  </ActionButton>
+                ) : !fileExistsOnServer ? (
+                  <StyledFormLabel
+                    style={{
+                      width: useLightVersion ? '100%' : 'auto',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {this.renderFileField(uploadInput, showTooltip, employerId)}
+                    {hiddenInput}
+                  </StyledFormLabel>
+                ) : (
+                      viewDocumentButton
+                    )}
+              </ActionsContainer>
+
+              {!isTransmitted && (
+                <SecondBloc>
+                  <Or>OU</Or>
+                  <SkipFileSection>
+                    <Button
+                      aria-describedby={`file[${id}]`}
+                      onClick={this.skipFile}
+                      className="already-transmitted-button"
+                      style={{
+                        textAlign: 'left',
+                        lineHeight: '2rem',
+                      }}
+                      size={useLightVersion ? 'medium' : 'small'}
+                      disabled={isTransmitted}
+                    >
+                      <>
+                        <Typography
+                          style={{
+                            fontWeight: 'bold',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
+                          <div>
+                            Pôle emploi <Upper>a déjà ce justificatif</Upper>
+                          </div>
+                        </Typography>
+                      </>
+                    </Button>
+                    <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
+                      <InfoImg />
+                    </TooltipOnFocus>
+                  </SkipFileSection>
+                </SecondBloc>
+              )}
+            </DocumentZone>
+          )}
       </StyledContainer>
     )
   }

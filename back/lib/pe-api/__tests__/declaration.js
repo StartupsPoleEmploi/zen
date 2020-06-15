@@ -1,8 +1,8 @@
 /* eslint-disable no-await-in-loop */
-const config = require('config')
-const nock = require('nock')
-const { sendDeclaration } = require('../declaration')
-const { DECLARATION_STATUSES } = require('../../../constants')
+const config = require('config');
+const nock = require('nock');
+const { sendDeclaration } = require('../declaration');
+const { DECLARATION_STATUSES } = require('../../../constants');
 
 const declarationWithEmployers = {
   id: 543,
@@ -35,7 +35,7 @@ const declarationWithEmployers = {
       declarationId: 543,
     },
   ],
-}
+};
 
 const declarationWithEmployersAndHighWorkHours = {
   ...declarationWithEmployers,
@@ -50,7 +50,7 @@ const declarationWithEmployersAndHighWorkHours = {
       declarationId: 543,
     },
   ],
-}
+};
 
 const declarationWithoutEmployers = {
   hasWorked: false,
@@ -68,7 +68,7 @@ const declarationWithoutEmployers = {
   hasFinishedDeclaringEmployers: true,
   isTransmitted: false,
   isFinished: false,
-}
+};
 
 const declarationWithAllDatesFilled = {
   id: 543,
@@ -137,16 +137,16 @@ const declarationWithAllDatesFilled = {
       declarationId: 543,
     },
   ],
-}
+};
 
 const declarationWithJobSearchMotiveRetirement = {
   ...declarationWithAllDatesFilled,
   jobSearchStopMotive: 'retirement',
-}
+};
 const declarationWithJobSearchMotiveOther = {
   ...declarationWithAllDatesFilled,
   jobSearchStopMotive: 'other',
-}
+};
 
 const declarationWithMultipleSicknessAndInternshipDates = {
   ...declarationWithoutEmployers,
@@ -174,16 +174,16 @@ const declarationWithMultipleSicknessAndInternshipDates = {
       endDate: '2019-01-18T23:00:00.000Z',
     },
   ],
-}
+};
 
-const accessToken = 'AZERTYUIOP'
-const userId = 1
+const accessToken = 'AZERTYUIOP';
+const userId = 1;
 
 describe('PE API: sendDeclaration', () => {
   describe('API call success', () => {
     it('should send formatted data for declarations', async () => {
-      let parsedBody
-      let parsedHeaders
+      let parsedBody;
+      let parsedHeaders;
 
       const declarations = [
         declarationWithEmployers,
@@ -193,21 +193,21 @@ describe('PE API: sendDeclaration', () => {
         declarationWithJobSearchMotiveRetirement,
         declarationWithJobSearchMotiveOther,
         declarationWithMultipleSicknessAndInternshipDates,
-      ]
+      ];
 
       const scope = nock(config.apiHost)
         .post(
           '/partenaire/peconnect-actualisation/v1/actualisation',
           (body) => {
-            parsedBody = body
-            return body
+            parsedBody = body;
+            return body;
           },
         )
         .times(declarations.length)
-        .reply(function() {
-          parsedHeaders = this.req.headers
-          return [200, { statut: DECLARATION_STATUSES.SAVED }]
-        })
+        .reply(function reply() {
+          parsedHeaders = this.req.headers;
+          return [200, { statut: DECLARATION_STATUSES.SAVED }];
+        });
 
       for (const declaration of declarations) {
         const {
@@ -218,14 +218,14 @@ describe('PE API: sendDeclaration', () => {
           userId,
           // Arbitrary, just to set forceIncoherences to true once
           ignoreErrors: declaration.jobSearchStopMotive === 'other',
-        })
-        expect(statut).toEqual(DECLARATION_STATUSES.SAVED)
-        expect(parsedHeaders).toMatchSnapshot()
-        expect(parsedBody).toMatchSnapshot()
+        });
+        expect(statut).toEqual(DECLARATION_STATUSES.SAVED);
+        expect(parsedHeaders).toMatchSnapshot();
+        expect(parsedBody).toMatchSnapshot();
       }
-      scope.done()
-    })
-  })
+      scope.done();
+    });
+  });
 
   describe('API call failure', () => {
     it('should fail if there was a server error', (done) => {
@@ -234,17 +234,17 @@ describe('PE API: sendDeclaration', () => {
         .reply(500, {
           statut: DECLARATION_STATUSES.TECH_ERROR,
           message: 'Everything just exploded',
-        })
+        });
       sendDeclaration({
         declaration: declarationWithEmployers,
         accessToken,
         userId,
       }).catch((err) => {
-        expect(err).toBeDefined()
-        scope.done()
-        done()
-      })
-    })
+        expect(err).toBeDefined();
+        scope.done();
+        done();
+      });
+    });
 
     it('should retry multiple times if there was a status "impossible or unavailable" as an answer', (done) => {
       const scope = nock(config.apiHost)
@@ -253,16 +253,16 @@ describe('PE API: sendDeclaration', () => {
         .reply(200, {
           statut: DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY,
           message: 'Actualisation non effectuée',
-        })
+        });
       sendDeclaration({
         declaration: declarationWithEmployers,
         accessToken,
         userId,
       }).then(({ body }) => {
-        expect(body.statut === DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY)
-        scope.done()
-        done()
-      })
-    })
-  })
-})
+        expect(body.statut === DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY);
+        scope.done();
+        done();
+      });
+    });
+  });
+});

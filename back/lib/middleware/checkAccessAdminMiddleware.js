@@ -6,12 +6,12 @@ const checkAccessAdmin = (permission) => (req, res, next) => {
   } else {
     next();
   }
-}
+};
 
-const checkLogin = checkAccessAdmin(['admin', 'viewer'])
-const checkAdmin = checkAccessAdmin(['admin'])
+const checkLogin = checkAccessAdmin(['admin', 'viewer']);
+const checkAdmin = checkAccessAdmin(['admin']);
 
 module.exports = {
   checkLogin,
   checkAdmin,
-}
+};

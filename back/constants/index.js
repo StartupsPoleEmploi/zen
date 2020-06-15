@@ -8,7 +8,7 @@ const DECLARATION_STATUSES = {
   INVALID: 6,
   // This is the status when no declaration has been done and we GET the service
   IMPOSSIBLE_OR_UNNECESSARY: 7,
-}
+};
 
 const DECLARATION_ALT_STATUSES = {
   // from the docs: only possible status with the declaration webservice we use are:
@@ -23,12 +23,12 @@ const DECLARATION_ALT_STATUSES = {
   DONE: 3,
   CLOSED: 4,
   IMPOSSIBLE_OR_UNNECCESSARY: 5,
-}
+};
 
 // documents context in which we send declaration files
-const DECLARATION_CONTEXT_ID = '1'
+const DECLARATION_CONTEXT_ID = '1';
 
-const REALM = '/individu'
+const REALM = '/individu';
 
 const DOCUMENT_LABELS = {
   sickLeave: 'Feuille maladie',
@@ -38,13 +38,12 @@ const DOCUMENT_LABELS = {
   invalidity: 'Attestation invalidité',
   employerCertificate: 'Attestation employeur',
   salarySheet: 'Bulletin de salaire',
-}
-
+};
 
 module.exports = {
   DECLARATION_STATUSES,
   DECLARATION_ALT_STATUSES,
   DECLARATION_CONTEXT_ID,
   REALM,
-  DOCUMENT_LABELS
-}
+  DOCUMENT_LABELS,
+};

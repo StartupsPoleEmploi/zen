@@ -1,9 +1,9 @@
-const { BelongsToOneRelation } = require('objection')
-const BaseModel = require('./BaseModel')
+const { BelongsToOneRelation } = require('objection');
+const BaseModel = require('./BaseModel');
 
 class EmployerDocument extends BaseModel {
   static get tableName() {
-    return 'employer_documents'
+    return 'employer_documents';
   }
 
   static get jsonSchema() {
@@ -20,7 +20,7 @@ class EmployerDocument extends BaseModel {
         isTransmitted: { type: 'boolean' },
         isCleanedUp: { type: 'boolean' },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -34,15 +34,15 @@ class EmployerDocument extends BaseModel {
           to: 'employers.id',
         },
       },
-    }
+    };
   }
 
   static get types() {
     return {
       salarySheet: 'salarySheet',
       employerCertificate: 'employerCertificate',
-    }
+    };
   }
 }
 
-module.exports = EmployerDocument
+module.exports = EmployerDocument;

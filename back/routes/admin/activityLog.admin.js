@@ -1,10 +1,10 @@
-const express = require('express')
-const zip = require('express-easy-zip')
+const express = require('express');
+const zip = require('express-easy-zip');
 
-const ActivityLog = require('../../models/ActivityLog')
+const ActivityLog = require('../../models/ActivityLog');
 
-const router = express.Router()
-router.use(zip())
+const router = express.Router();
+router.use(zip());
 
 // No login form for now, users must be inserted in db manually.
 router.get('/activityLog', (req, res) => {
@@ -12,8 +12,7 @@ router.get('/activityLog', (req, res) => {
     .eager('user')
     .orderBy('createdAt', 'desc')
     .limit(1000)
-    .then((logs) => res.json(logs))
-})
+    .then((logs) => res.json(logs));
+});
 
-
-module.exports = router
+module.exports = router;

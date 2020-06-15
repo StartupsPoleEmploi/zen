@@ -1,15 +1,14 @@
-const bcryptjs = require('bcryptjs')
-const { omit } = require('lodash')
-const BaseModel = require('./BaseModel')
+const bcryptjs = require('bcryptjs');
+const { omit } = require('lodash');
+const BaseModel = require('./BaseModel');
 
 function encryptPassword(password) {
   return bcryptjs.hashSync(password, 10);
 }
 
-
 class Useradmin extends BaseModel {
   static get tableName() {
-    return 'useradmins'
+    return 'useradmins';
   }
 
   async $beforeUpdate(opt, queryContext) {
@@ -37,11 +36,11 @@ class Useradmin extends BaseModel {
         password: { type: 'string', minLength: 6, maxLength: 128 },
         type: { type: 'string', enum: ['admin', 'viewer'] },
       },
-    }
+    };
   }
 
   get $secureFields() {
-    return ['password']; 
+    return ['password'];
   }
 
   // omit stuff when creating json response from model
@@ -51,8 +50,8 @@ class Useradmin extends BaseModel {
   }
 
   static get relationMappings() {
-    return {}
+    return {};
   }
 }
 
-module.exports = Useradmin
+module.exports = Useradmin;

@@ -9,6 +9,6 @@ const config = {
       script: 'jobs/utilities-agent.js',
     },
   ],
-}
+};
 
-module.exports = config
+module.exports = config;

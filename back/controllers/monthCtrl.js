@@ -1,4 +1,4 @@
-const DeclarationMonth = require('../models/DeclarationMonth')
+const DeclarationMonth = require('../models/DeclarationMonth');
 
 /**
  * @desc get current month
@@ -8,9 +8,9 @@ async function getCurrentMonth() {
   return DeclarationMonth.query()
     .where('endDate', '>', new Date())
     .andWhere('startDate', '<=', 'now')
-    .first(); 
+    .first();
 }
 
 module.exports = {
   getCurrentMonth,
-}
+};

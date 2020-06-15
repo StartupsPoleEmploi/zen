@@ -1,8 +1,8 @@
-const BaseModel = require('./BaseModel')
+const BaseModel = require('./BaseModel');
 
 class ConseillersHelpQuery extends BaseModel {
   static get tableName() {
-    return 'conseillers_help_query'
+    return 'conseillers_help_query';
   }
 
   static get jsonSchema() {
@@ -14,13 +14,13 @@ class ConseillersHelpQuery extends BaseModel {
         id: { type: 'integer' },
         email: { type: 'string' },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
   static get relationMappings() {
-    return {}
+    return {};
   }
 }
 
-module.exports = ConseillersHelpQuery
+module.exports = ConseillersHelpQuery;

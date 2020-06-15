@@ -1,9 +1,9 @@
-const { BelongsToOneRelation, HasManyRelation } = require('objection')
-const BaseModel = require('./BaseModel')
+const { BelongsToOneRelation, HasManyRelation } = require('objection');
+const BaseModel = require('./BaseModel');
 
 class Employer extends BaseModel {
   static get tableName() {
-    return 'employers'
+    return 'employers';
   }
 
   static get jsonSchema() {
@@ -21,7 +21,7 @@ class Employer extends BaseModel {
         hasEndedThisMonth: { type: ['boolean', 'null'] },
         documentId: { type: ['integer'] },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -51,8 +51,8 @@ class Employer extends BaseModel {
           to: 'employer_documents.employerId',
         },
       },
-    }
+    };
   }
 }
 
-module.exports = Employer
+module.exports = Employer;

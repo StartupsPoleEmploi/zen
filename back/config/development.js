@@ -27,5 +27,5 @@ module.exports = {
     'api_peconnect-actualisationv1',
     // 'qos_gold_peconnect-actualisationv1',
     'individu',
-  ].join(' ')
-}
+  ].join(' '),
+};

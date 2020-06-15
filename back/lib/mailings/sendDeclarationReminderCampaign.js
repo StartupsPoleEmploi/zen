@@ -1,7 +1,7 @@
-const mailjet = require('./mailjet')
-const winston = require('../log')
-const monthCtrl = require('../../controllers/monthCtrl')
-const userCtrl = require('../../controllers/userCtrl')
+const mailjet = require('./mailjet');
+const winston = require('../log');
+const monthCtrl = require('../../controllers/monthCtrl');
+const userCtrl = require('../../controllers/userCtrl');
 
 /**
  * Send email to users that has not start declaration of the current month into zen.
@@ -12,11 +12,11 @@ async function sendDeclarationReminderCampaign() {
 
   const allUsers = await userCtrl.getUsersWithoutDeclaration(currentMonth.id);
   while (allUsers.length) {
-    const users = allUsers.splice(0, 50).filter(e => !!e.email);
+    const users = allUsers.splice(0, 50).filter((e) => !!e.email);
     // eslint-disable-next-line no-await-in-loop
     await mailjet.sendMail({
-      Messages: users.map(user => ({
-        From: { Email: 'no-reply@zen.pole-emploi.fr', Name: `L'équipe Zen` },
+      Messages: users.map((user) => ({
+        From: { Email: 'no-reply@zen.pole-emploi.fr', Name: 'L\'équipe Zen' },
         To: [{ Email: user.email, Name: `${user.firstName} ${user.lastName}` }],
         TemplateID: 502257,
         TemplateLanguage: true,

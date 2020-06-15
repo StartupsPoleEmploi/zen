@@ -1,1 +1,1 @@
-require('../lib/db')
+require('../lib/db');

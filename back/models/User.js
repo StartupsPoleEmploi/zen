@@ -1,9 +1,9 @@
-const { HasManyRelation } = require('objection')
-const BaseModel = require('./BaseModel')
+const { HasManyRelation } = require('objection');
+const BaseModel = require('./BaseModel');
 
 class User extends BaseModel {
   static get tableName() {
-    return 'Users'
+    return 'Users';
   }
 
   static get jsonSchema() {
@@ -33,7 +33,7 @@ class User extends BaseModel {
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
         registeredAt: { type: ['string', 'object', 'null'] },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -63,8 +63,8 @@ class User extends BaseModel {
           to: 'declarations.userId',
         },
       },
-    }
+    };
   }
 }
 
-module.exports = User
+module.exports = User;

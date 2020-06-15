@@ -1,4 +1,4 @@
-const supertest = require('supertest')
+const supertest = require('supertest');
 const app = require('../app') // eslint-disable-line
 
 describe('app.js', () => {
@@ -13,10 +13,10 @@ describe('app.js', () => {
       supertest(app)
         .get('/employers')
         .expect(401),
-    ]))
+    ]));
 
   test('GET /ping route should answer', () =>
     supertest(app)
       .get('/ping')
-      .expect(200))
-})
+      .expect(200));
+});

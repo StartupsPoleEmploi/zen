@@ -1,28 +1,28 @@
-const { format, isAfter, isBefore } = require('date-fns')
-const config = require('config')
-const { pick } = require('lodash')
+const { format, isAfter, isBefore } = require('date-fns');
+const config = require('config');
+const { pick } = require('lodash');
 
-const winston = require('../log')
-const DeclarationInfo = require('../../models/DeclarationInfo')
-const { request } = require('../resilientRequest')
+const winston = require('../log');
+const DeclarationInfo = require('../../models/DeclarationInfo');
+const { request } = require('../resilientRequest');
 
-const { DECLARATION_STATUSES } = require('../../constants')
+const { DECLARATION_STATUSES } = require('../../constants');
 
-const docTypes = DeclarationInfo.types
+const docTypes = DeclarationInfo.types;
 
-const DEFAULT_WAIT_TIME = process.env.NODE_ENV !== 'test' ? 1000 : 0
+const DEFAULT_WAIT_TIME = process.env.NODE_ENV !== 'test' ? 1000 : 0;
 const wait = (ms = DEFAULT_WAIT_TIME) =>
-  new Promise((resolve) => setTimeout(() => resolve(), ms))
-const convertDate = (date) => format(date, 'DDMMYYYY')
+  new Promise((resolve) => setTimeout(() => resolve(), ms));
+const convertDate = (date) => format(date, 'DDMMYYYY');
 
 const JOB_SEARCH_STOP_MOTIVES = {
   WORK: 0,
   RETIREMENT: 1,
   OTHER: 2,
-}
+};
 
-const MAX_DECLARABLE_HOURS = 420
-const MAX_RETRIES_AFTER_STATUS_IMPOSSIBLE_OR_UNNECESSARY = 2
+const MAX_DECLARABLE_HOURS = 420;
+const MAX_RETRIES_AFTER_STATUS_IMPOSSIBLE_OR_UNNECESSARY = 2;
 
 const getDeclarationWorkHours = (declaration) => {
   // We cannot declare more than 420 hours to PE.fr
@@ -30,20 +30,20 @@ const getDeclarationWorkHours = (declaration) => {
   const actualWorkHours = declaration.employers.reduce(
     (prev, { workHours }) => prev + workHours,
     0,
-  )
+  );
   return actualWorkHours > MAX_DECLARABLE_HOURS
     ? MAX_DECLARABLE_HOURS
-    : actualWorkHours
-}
+    : actualWorkHours;
+};
 
 const convertDeclarationToAPIFormat = (declaration) => {
-  const apiDeclaration = {}
+  const apiDeclaration = {};
 
   if (declaration.hasWorked) {
-    apiDeclaration.nbHeuresTrav = getDeclarationWorkHours(declaration)
+    apiDeclaration.nbHeuresTrav = getDeclarationWorkHours(declaration);
     apiDeclaration.montSalaire = Math.round(
       declaration.employers.reduce((prev, { salary }) => prev + salary, 0),
-    )
+    );
   }
 
   /*
@@ -59,11 +59,11 @@ const convertDeclarationToAPIFormat = (declaration) => {
         .filter(({ type }) => type === docTypes.internship)
         .reduce(
           (prev, { startDate }) =>
-            isBefore(prev, startDate) ? prev : startDate,
+            (isBefore(prev, startDate) ? prev : startDate),
           declaration.infos.find(({ type }) => type === docTypes.internship)
             .startDate,
         ),
-    )
+    );
     apiDeclaration.dateFinStage = convertDate(
       declaration.infos
         .filter(({ type }) => type === docTypes.internship)
@@ -72,7 +72,7 @@ const convertDeclarationToAPIFormat = (declaration) => {
           declaration.infos.find(({ type }) => type === docTypes.internship)
             .endDate,
         ),
-    )
+    );
   }
   if (declaration.hasSickLeave) {
     apiDeclaration.dateDebutMaladie = convertDate(
@@ -80,11 +80,11 @@ const convertDeclarationToAPIFormat = (declaration) => {
         .filter(({ type }) => type === docTypes.sickLeave)
         .reduce(
           (prev, { startDate }) =>
-            isBefore(prev, startDate) ? prev : startDate,
+            (isBefore(prev, startDate) ? prev : startDate),
           declaration.infos.find(({ type }) => type === docTypes.sickLeave)
             .startDate,
         ),
-    )
+    );
     apiDeclaration.dateFinMaladie = convertDate(
       declaration.infos
         .filter(({ type }) => type === docTypes.sickLeave)
@@ -93,41 +93,41 @@ const convertDeclarationToAPIFormat = (declaration) => {
           declaration.infos.find(({ type }) => type === docTypes.sickLeave)
             .endDate,
         ),
-    )
+    );
   }
   if (declaration.hasMaternityLeave) {
     const { startDate } = declaration.infos.find(
       ({ type }) => type === docTypes.maternityLeave,
-    )
-    apiDeclaration.dateDebutMaternite = convertDate(startDate)
+    );
+    apiDeclaration.dateDebutMaternite = convertDate(startDate);
   }
   if (declaration.hasRetirement) {
     const { startDate } = declaration.infos.find(
       ({ type }) => type === docTypes.retirement,
-    )
-    apiDeclaration.dateRetraite = convertDate(startDate)
+    );
+    apiDeclaration.dateRetraite = convertDate(startDate);
   }
   if (declaration.hasInvalidity) {
     const { startDate } = declaration.infos.find(
       ({ type }) => type === docTypes.invalidity,
-    )
-    apiDeclaration.dateInvalidite = convertDate(startDate)
+    );
+    apiDeclaration.dateInvalidite = convertDate(startDate);
   }
   if (!declaration.isLookingForJob) {
     const { endDate } = declaration.infos.find(
       ({ type }) => type === docTypes.jobSearch,
-    )
-    apiDeclaration.dateFinRech = convertDate(endDate)
-    apiDeclaration.motifFinRech =
-      declaration.jobSearchStopMotive === 'work'
-        ? JOB_SEARCH_STOP_MOTIVES.WORK
-        : declaration.jobSearchStopMotive === 'retirement'
+    );
+    apiDeclaration.dateFinRech = convertDate(endDate);
+    // eslint-disable-next-line no-nested-ternary
+    apiDeclaration.motifFinRech = declaration.jobSearchStopMotive === 'work'
+      ? JOB_SEARCH_STOP_MOTIVES.WORK
+      : declaration.jobSearchStopMotive === 'retirement'
         ? JOB_SEARCH_STOP_MOTIVES.RETIREMENT
-        : JOB_SEARCH_STOP_MOTIVES.OTHER
+        : JOB_SEARCH_STOP_MOTIVES.OTHER;
   }
 
-  return apiDeclaration
-}
+  return apiDeclaration;
+};
 
 const sendDeclaration = ({
   declaration,
@@ -138,21 +138,21 @@ const sendDeclaration = ({
 }) => {
   // NEVER ACTIVATE IN PRODUCTION
   if (config.get('bypassDeclarationDispatch')) {
-    winston.info(`Simulating sending ${declaration.id} to PE`)
-    return Promise.resolve({ body: { statut: 0 } })
+    winston.info(`Simulating sending ${declaration.id} to PE`);
+    return Promise.resolve({ body: { statut: 0 } });
   }
 
   const dataToSend = {
     ...convertDeclarationToAPIFormat(declaration),
     forceIncoherence: ignoreErrors ? 1 : 0,
-  }
+  };
 
   return request({
     method: 'post',
     url: `${config.apiHost}/partenaire/peconnect-actualisation/v1/actualisation`,
     data: dataToSend,
     accessToken,
-    headers: [ { key: 'media', value: 'I' } ],
+    headers: [{ key: 'media', value: 'I' }],
   })
     .then(({ body }) => {
       if (body.statut !== DECLARATION_STATUSES.SAVED) {
@@ -165,18 +165,18 @@ const sendDeclaration = ({
           'message',
           'erreursIncoherence',
           'erreursValidation',
-        ])
+        ]);
 
-        const message = `Declaration transmission error after HTTP 200 for user ${userId}`
+        const message = `Declaration transmission error after HTTP 200 for user ${userId}`;
 
         // This is auto retrial for a frequent error:
         // HTTP error coming back as statut: 7, message: Actu non effectuée
         // which should be solvable just by retrying.
         if (
-          body.statut === DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY &&
-          previousTries < MAX_RETRIES_AFTER_STATUS_IMPOSSIBLE_OR_UNNECESSARY
+          body.statut === DECLARATION_STATUSES.IMPOSSIBLE_OR_UNNECESSARY
+          && previousTries < MAX_RETRIES_AFTER_STATUS_IMPOSSIBLE_OR_UNNECESSARY
         ) {
-          winston.info(`${message}, gonna retry in ${DEFAULT_WAIT_TIME}`, dataToLog)
+          winston.info(`${message}, gonna retry in ${DEFAULT_WAIT_TIME}`, dataToLog);
           return wait().then(() =>
             sendDeclaration({
               declaration,
@@ -184,27 +184,26 @@ const sendDeclaration = ({
               ignoreErrors,
               userId,
               previousTries: previousTries + 1,
-            }),
-          )
+            }));
         }
 
-        winston.warn(message, { dataSent: dataToSend, error: dataToLog })
+        winston.warn(message, { dataSent: dataToSend, error: dataToLog });
       }
 
-      return { body }
+      return { body };
     })
     .catch((err) => {
       winston.error(
         `Error while sending declaration ${declaration.id} (HTTP ${err.status})`,
-        { 
-          data: { dataSent: dataToSend, userId, declarationId: declaration.id},
+        {
+          data: { dataSent: dataToSend, userId, declarationId: declaration.id },
           error: pick(err, ['status', 'code', 'address', 'port']),
-        }
-      )
-      throw err
-    })
-}
+        },
+      );
+      throw err;
+    });
+};
 
 module.exports = {
   sendDeclaration,
-}
+};

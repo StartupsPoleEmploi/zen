@@ -4,9 +4,10 @@
     "lint": "eslint '**/*.js'"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-cypress": "^2.6.0"
+    "eslint-plugin-cypress": "^2.6.0",
+    "eslint-plugin-import": "^2.21.2"
   }
 }

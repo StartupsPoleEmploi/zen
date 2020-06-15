@@ -7,7 +7,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "lint": "eslint 'src/**/*.js' --fix",
+    "lint": "eslint 'src/**/*.js'",
     "eject": "react-scripts eject"
   },
   "browserslist": {

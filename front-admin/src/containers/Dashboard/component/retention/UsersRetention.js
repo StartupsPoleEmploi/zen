@@ -1,24 +1,24 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useEffect } from 'react'
-import superagent from 'superagent'
-import { Select } from 'antd'
-import moment from 'moment'
+import React, { useState, useEffect } from 'react';
+import superagent from 'superagent';
+import { Select } from 'antd';
+import moment from 'moment';
 
-import RetentionResults from './RetentionResults'
+import RetentionResults from './RetentionResults';
 
 function UserRetention() {
-  const [declarationsMonthStart, setDeclarationsMonthStart] = useState([])
-  const [periodStart, setPeriodStart] = useState(null)
+  const [declarationsMonthStart, setDeclarationsMonthStart] = useState([]);
+  const [periodStart, setPeriodStart] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const { body } = await superagent.get('/zen-admin-api/declarationsMonths')
-      setDeclarationsMonthStart(body)
+      const { body } = await superagent.get('/zen-admin-api/declarationsMonths');
+      setDeclarationsMonthStart(body);
       // We don't take body[1] to get at least one month of retention
-      setPeriodStart(body[1].id)
+      setPeriodStart(body[1].id);
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -51,7 +51,7 @@ function UserRetention() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default UserRetention
+export default UserRetention;

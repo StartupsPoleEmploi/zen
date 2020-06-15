@@ -2,6 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import superagent from 'superagent';
 import { useHistory } from 'react-router-dom';
+import { notification } from 'antd';
 
 import { URLS } from '../routes';
 
@@ -15,7 +16,16 @@ export function UseradminProvider(props) {
   const login = useCallback(async ({ email, password }) => {
     const data = await superagent
       .post('/zen-admin-api/login', { email, password })
-      .then(({ body }) => body);
+      .then(({ body }) => body)
+      .catch((err) => {
+        if (err.response && err.response.statusCode) {
+          notification.error({
+            message: 'E-mail ou mot de passe incorrect',
+            description:
+              "Pour plus d'information veuillez prendre contact avec Sylvie Lebel.",
+          });
+        }
+      });
     _setUseradmin(data);
   }, []);
 

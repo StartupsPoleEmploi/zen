@@ -60,7 +60,7 @@ function ErrorSnackBar({ message, onHide, icon, duraction, closeIcon }) {
 }
 
 ErrorSnackBar.propTypes = {
-  message: PropTypes.object.isRequired,
+  message: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   onHide: PropTypes.func,
   icon: PropTypes.object
 }

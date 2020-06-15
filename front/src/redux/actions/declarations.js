@@ -96,10 +96,10 @@ const getUploadErrorMessage = (err) =>
   err.status === 413
     ? `Erreur : Fichier trop lourd (limite : 5000ko) ou dépassant la taille autorisée : ${MAX_PDF_PAGE} pages`
     : err.status === 400
-    ? 'Fichier invalide (accepté : .png, .jpg, .pdf)'
-    : err.status === 422
-    ? `Erreur : Le fichier que vous avez envoyé est illisible et ne peut être traité. Merci de vérifier le document`
-    : `Désolé, une erreur s'est produite. Merci de vérifier que le fichier que vous envoyez est valide, et de réessayer ultérieurement`
+      ? 'Fichier invalide (accepté : .png, .jpg, .pdf)'
+      : err.status === 422
+        ? `Erreur : Le fichier que vous avez envoyé est illisible et ne peut être traité. Merci de vérifier le document`
+        : `Désolé, une erreur s'est produite. Merci de vérifier que le fichier que vous envoyez est valide, et de réessayer ultérieurement`
 
 export const uploadEmployerFile = ({
   documentId,
@@ -370,7 +370,7 @@ export const validateEmployerDoc = ({
         },
       })
       if (err.status === 401 || err.status === 403) {
-        return dispatch({ type: SET_USER_LOGGED_OUT })
+        throw dispatch({ type: SET_USER_LOGGED_OUT })
       }
       window.Raven.captureException(err)
     })
@@ -402,7 +402,7 @@ export const validateDeclarationInfoDoc = ({ documentId }) => (
         },
       })
       if (err.status === 401 || err.status === 403) {
-        return dispatch({ type: SET_USER_LOGGED_OUT })
+        throw dispatch({ type: SET_USER_LOGGED_OUT })
       }
       window.Raven.captureException(err)
     })

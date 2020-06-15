@@ -305,7 +305,7 @@ export class Employers extends Component {
       !this.state.isLoading &&
       !this.hasSubmittedAndFinished &&
       get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
-        false
+      false
     ) {
       this.onSave()
     }
@@ -343,7 +343,7 @@ export class Employers extends Component {
     })
 
   saveAndRedirect = () =>
-    this.onSave().then(() => this.props.history.push('/thanks?later'))
+    this.onSave().then(() => this.setState({ snackMessage: 'Vos données ont été sauvegardées' }))
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
     this.setState({ isValidating: true })
@@ -556,7 +556,7 @@ export class Employers extends Component {
           </ScrollButtonContainer>
         )}
 
-        {snackMessage && <SuccessSnackBar message={snackMessage} onHide={() => this.setState({snackMessage: null})} />}
+        {snackMessage && <SuccessSnackBar message={snackMessage} onHide={() => this.setState({ snackMessage: null })} />}
         {error && <ErrorSnackBar message={error} />}
       </StyledEmployers>
     )

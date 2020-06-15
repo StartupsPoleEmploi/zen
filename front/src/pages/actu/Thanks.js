@@ -7,7 +7,6 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import MainActionButton from '../../components/Generic/MainActionButton'
 import sendDoc from '../../images/sendDoc.svg'
-import SuccessSnackBar from '../../components/Generic/SuccessSnackBar'
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file'
 
@@ -158,25 +157,24 @@ export default class Thanks extends Component {
             )}
           </Fragment>
         ) : (
-          <Fragment>
-            <Title variant="h6">
-              Merci, vos données ont bien été enregistrées.
+            <Fragment>
+              <Title variant="h6">
+                Merci, vos données ont bien été enregistrées.
             </Title>
-            <Typography paragraph>
-              Vous pourrez reprendre ultérieurement.
+              <Typography paragraph>
+                Vous pourrez reprendre ultérieurement.
             </Typography>
-            <ErrorOutlineIcon
-              style={{ color: '#1F2C59', fontSize: 40, marginTop: '4rem' }}
-            />
-            <Typography paragraph style={{ fontSize: '1.7rem' }}>
-              N’oubliez pas de revenir avant le 15 pour valider votre
-              actualisation.
+              <ErrorOutlineIcon
+                style={{ color: '#1F2C59', fontSize: 40, marginTop: '4rem' }}
+              />
+              <Typography paragraph style={{ fontSize: '1.7rem' }}>
+                N’oubliez pas de revenir avant le 15 pour valider votre
+                actualisation.
               <br />
               Un e-mail de rappel vous sera envoyé.
             </Typography>
-            <SuccessSnackBar message="Vos données ont été sauvegardées" />
-          </Fragment>
-        )}
+            </Fragment>
+          )}
       </StyledThanks>
     )
   }

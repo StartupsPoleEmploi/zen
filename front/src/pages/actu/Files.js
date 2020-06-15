@@ -93,9 +93,9 @@ const FilesSection = styled.section`
   }
   &:not(:last-child) {
     border-bottom: ${({ width }) =>
-      width === 'xs'
-        ? '2px solid rgba(0, 0, 0, 0.1)'
-        : '1px solid rgba(0, 0, 0, 0.1)'};
+    width === 'xs'
+      ? '2px solid rgba(0, 0, 0, 0.1)'
+      : '1px solid rgba(0, 0, 0, 0.1)'};
   }
 `
 
@@ -112,8 +112,8 @@ const DocumentsGroup = styled.div`
     isOldTab
       ? null
       : width === 'xs'
-      ? '2px solid rgba(0, 0, 0, 0.1)'
-      : '1px solid rgba(0, 0, 0, 0.1)'};
+        ? '2px solid rgba(0, 0, 0, 0.1)'
+        : '1px solid rgba(0, 0, 0, 0.1)'};
 `
 
 const StyledSup = styled.sup`
@@ -489,8 +489,8 @@ export class Files extends Component {
             employeur, car vous nous avez déjà transmis votre attestation
           </Typography>
         ) : (
-          salarySheetUpload
-        )}
+            salarySheetUpload
+          )}
       </>
     )
   }
@@ -546,8 +546,8 @@ export class Files extends Component {
         </Typography>
       </ActuStatusContainer>
     ) : (
-      this.renderSection(lastDeclaration)
-    )
+        this.renderSection(lastDeclaration)
+      )
   }
 
   renderSection = (declaration) => {
@@ -601,7 +601,7 @@ export class Files extends Component {
       classes,
       width,
     } = this.props
-    
+
     const {
       snackError,
       snackSuccess
@@ -710,27 +710,27 @@ export class Files extends Component {
 
     if (showEmployerPreview) {
       previewProps = {
-        onCancel: (props) => {this.setState({snackError: 'Un justificatif n\'a pas été validé'}); return hideEmployerFilePreview(props)},
+        onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideEmployerFilePreview(props) },
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
-        validateDoc: (props) => validateEmployerDoc(props).then(() => this.setState({snackSuccess: 'Justificatif envoyé disponible dans l\'historique'})),
+        validateDoc: (props) => validateEmployerDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,
       }
     } else if (showInfoDocPreview) {
       previewProps = {
-        onCancel: (props) => {this.setState({snackError: 'Un justificatif n\'a pas été validé'}); return hideInfoFilePreview(props)},
+        onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideInfoFilePreview(props) },
         submitFile: uploadDeclarationInfoFile,
         removePage: removeDeclarationInfoFilePage,
-        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({snackSuccess: 'Justificatif envoyé disponible dans l\'historique'})),
+        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
         url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
         ...previewedInfoDoc,
       }
     }
 
     let error = snackError;
-    if(!error && ((lastDeclaration.employers || []).some(d => d.salarySheetError) || (lastDeclaration.infos || []).some(d => d.error))) {
+    if (!error && ((lastDeclaration.employers || []).some(d => d.salarySheetError) || (lastDeclaration.infos || []).some(d => d.error))) {
       // fetch if document have an error
       error = 'Un problème est survenu veuillez réessayer plus tard'
     }
@@ -778,14 +778,14 @@ export class Files extends Component {
                       <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
                     </Pre>
                   ) : (
-                    <>
-                      Mois{' '}
-                      <Pre>
-                        précédents{' '}
-                        <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
-                      </Pre>
-                    </>
-                  )}
+                      <>
+                        Mois{' '}
+                        <Pre>
+                          précédents{' '}
+                          <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
+                        </Pre>
+                      </>
+                    )}
                 </div>
               }
             />
@@ -798,23 +798,23 @@ export class Files extends Component {
             (oldDeclarationsMissingFiles > 0 ? (
               oldDeclarations.map(this.renderSection)
             ) : (
-              <FilesSection>
-                <StyledTitle
-                  variant="h6"
-                  component="h1"
-                  style={
-                    this.props.width !== 'xs'
-                      ? {
+                <FilesSection>
+                  <StyledTitle
+                    variant="h6"
+                    component="h1"
+                    style={
+                      this.props.width !== 'xs'
+                        ? {
                           textAlign: 'right',
                           paddingRight: '2rem',
                         }
-                      : null
-                  }
-                >
-                  Pas de justificatifs à envoyer
+                        : null
+                    }
+                  >
+                    Pas de justificatifs à envoyer
                 </StyledTitle>
-              </FilesSection>
-            ))}
+                </FilesSection>
+              ))}
 
           <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
           <FileTransmittedToPE
@@ -826,9 +826,9 @@ export class Files extends Component {
             <DocumentDialog isOpened {...previewProps} />
           )}
 
-            
-        {snackSuccess && <SuccessSnackBar message={snackSuccess} onHide={() => this.setState({snackSuccess: null})} closeIcon duraction={null} />}
-        {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
+
+          {snackSuccess && <SuccessSnackBar message={snackSuccess} onHide={() => this.setState({ snackSuccess: null })} closeIcon duraction={null} />}
+          {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
         </StyledFiles>
       </>
     )

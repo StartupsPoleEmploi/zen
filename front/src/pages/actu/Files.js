@@ -505,7 +505,7 @@ export class Files extends Component {
       if (user.isBlocked) {
         return (
           <div style={{ marginTop: '3rem' }}>
-            <NotAutorized showIcon={false} />
+            <NotAutorized />
           </div>
         )
       }

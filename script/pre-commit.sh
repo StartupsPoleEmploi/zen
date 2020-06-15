@@ -15,7 +15,6 @@ for folder in "${foldres[@]}"; do
   arrayFile=();
   for file in $filesChange; do
     if [[ $file = $folder\/* ]] && [[ $file = $folder\/*.js ]]; then
-      echo "FILE $file"
       fileWithoutFolderName=$(echo $file | sed "s/$folder\///");
       arrayFile=( "${arrayFile[@]}" $fileWithoutFolderName );
     fi

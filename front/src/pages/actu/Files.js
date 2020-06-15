@@ -710,10 +710,7 @@ export class Files extends Component {
         onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideEmployerFilePreview(props) },
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
-        validateDoc: (props) => validateEmployerDoc(props).then(val => {
-          console.log(val);
-          this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })
-        }),
+        validateDoc: (props) => validateEmployerDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,

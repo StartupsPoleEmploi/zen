@@ -248,7 +248,7 @@ router.get('/repartition/region', async (req, res) => {
   let agencies = [];
   try {
     agencies = getAllCodeAgencyFromRegionSlug(region);
-  } catch {
+  } catch (err) {
     return res.send(400);
   }
 
@@ -270,7 +270,7 @@ router.get('/repartition/unregistered-users-region/csv', async (req, res) => {
   let agencies = [];
   try {
     agencies = getAllCodeAgencyFromRegionSlug(region);
-  } catch {
+  } catch (err) {
     return res.send(400);
   }
 
@@ -318,7 +318,7 @@ router.get('/repartition/department', async (req, res) => {
   let agencies = [];
   try {
     agencies = getAllCodeAgencyFromDepartmentSlug(department);
-  } catch {
+  } catch (err) {
     return res.send(400);
   }
 

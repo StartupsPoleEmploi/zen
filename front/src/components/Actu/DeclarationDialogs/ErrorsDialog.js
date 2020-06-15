@@ -1,16 +1,16 @@
-import React, { Fragment } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import DialogContentText from '@material-ui/core/DialogContentText'
-import Button from '@material-ui/core/Button'
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Button from '@material-ui/core/Button';
 
-import CustomColorButton from '../../Generic/CustomColorButton'
-import CustomDialog from '../../Generic/CustomDialog'
+import CustomColorButton from '../../Generic/CustomColorButton';
+import CustomDialog from '../../Generic/CustomDialog';
 
 const ErrorsDialog = ({ validationErrors, onCancel, ...props }) => (
   <CustomDialog
-    content={
-      <Fragment>
+    content={(
+      <>
         <DialogContentText>
           Notre système a détecté des erreurs dans votre déclaration :
         </DialogContentText>
@@ -25,10 +25,10 @@ const ErrorsDialog = ({ validationErrors, onCancel, ...props }) => (
           Zen n'est pas en mesure de prendre en charge votre déclaration.
           Veuillez la modifier, ou l'effectuer sur Pole-emploi.fr
         </DialogContentText>
-      </Fragment>
-    }
-    actions={
-      <Fragment>
+      </>
+    )}
+    actions={(
+      <>
         <CustomColorButton color="primary" onClick={onCancel}>
           Je modifie ma déclaration
         </CustomColorButton>
@@ -40,16 +40,16 @@ const ErrorsDialog = ({ validationErrors, onCancel, ...props }) => (
         >
           J'accède à Pole-Emploi.fr
         </Button>
-      </Fragment>
-    }
+      </>
+    )}
     {...props}
   />
-)
+);
 
 ErrorsDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   validationErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
   props: PropTypes.object.isRequired,
-}
+};
 
-export default ErrorsDialog
+export default ErrorsDialog;

@@ -1,51 +1,53 @@
 /* eslint-disable no-irregular-whitespace */
-import Button from '@material-ui/core/Button'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import List from '@material-ui/core/List'
-import Paper from '@material-ui/core/Paper'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import Typography from '@material-ui/core/Typography'
-import withWidth from '@material-ui/core/withWidth'
-import Delete from '@material-ui/icons/DeleteOutlined'
-import { cloneDeep, get, isNull, pick, set } from 'lodash'
-import moment from 'moment'
-import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
-import store from 'store2'
-import styled from 'styled-components'
-import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import Delete from '@material-ui/icons/DeleteOutlined';
+import {
+  cloneDeep, get, isNull, pick, set,
+} from 'lodash';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import store from 'store2';
+import styled from 'styled-components';
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
 
-import { postDeclaration as postDeclarationAction } from '../../redux/actions/declarations'
-import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
-import DeclarationQuestion from '../../components/Actu/DeclarationQuestion'
-import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
-import UserJobCheck from '../../components/Actu/UserJobCheck'
-import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
-import DatePicker from '../../components/Generic/DatePicker'
-import MainActionButton from '../../components/Generic/MainActionButton'
+import { postDeclaration as postDeclarationAction } from '../../redux/actions/declarations';
+import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler';
+import DeclarationQuestion from '../../components/Actu/DeclarationQuestion';
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
+import UserJobCheck from '../../components/Actu/UserJobCheck';
+import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer';
+import DatePicker from '../../components/Generic/DatePicker';
+import MainActionButton from '../../components/Generic/MainActionButton';
 import {
   jobSearchEndMotive,
   muiBreakpoints,
   ActuTypes as types,
   mobileBreakpoint,
-} from '../../constants'
-import ScrollToButton from '../../components/Generic/ScrollToButton'
-import ErrorSnackBar from '../../components/Generic/ErrorSnackBar'
+} from '../../constants';
+import ScrollToButton from '../../components/Generic/ScrollToButton';
+import ErrorSnackBar from '../../components/Generic/ErrorSnackBar';
 
-const USER_GENDER_MALE = 'male'
-const MAX_DATE = new Date('2029-12-31T00:00:00.000Z')
+const USER_GENDER_MALE = 'male';
+const MAX_DATE = new Date('2029-12-31T00:00:00.000Z');
 
 const UNHANDLED_ERROR = `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
 Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
-en attendant votre actualisation sur Pole-emploi.fr.`
+en attendant votre actualisation sur Pole-emploi.fr.`;
 
 const ScrollButtonContainer = styled.div`
   position: fixed;
   bottom: 17rem;
   right: 2rem;
-`
+`;
 
 const StyledActu = styled.div`
   display: flex;
@@ -53,19 +55,19 @@ const StyledActu = styled.div`
   align-items: stretch;
   max-width: 70rem;
   margin: 0 auto;
-`
+`;
 
 const StyledPaper = styled(Paper)`
   width: 100%;
   margin: 4rem auto;
-`
+`;
 
 const Title = styled(Typography).attrs({ variant: 'h6', component: 'h1' })`
   && {
     text-align: center;
     font-weight: bold;
   }
-`
+`;
 
 const FinalButtonsContainer = styled.div`
   margin: auto;
@@ -73,7 +75,7 @@ const FinalButtonsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
-`
+`;
 
 const StyledList = styled(List)`
   && {
@@ -83,22 +85,22 @@ const StyledList = styled(List)`
     /* primary color with 10% opacity */
     background: rgba(0, 101, 219, 0.1);
   }
-`
+`;
 
 const Form = styled.form`
   @media (max-width: ${mobileBreakpoint}) {
     padding-bottom: 3rem;
   }
-`
+`;
 const AddElementButtonContainer = styled.div`
   text-align: center;
   margin-top: 2rem;
   margin-bottom: -3rem;
-`
+`;
 
 const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
-`
+`;
 
 const AddElementButton = styled(Button).attrs({
   variant: 'outlined',
@@ -107,7 +109,7 @@ const AddElementButton = styled(Button).attrs({
   && {
     background: #fff;
   }
-`
+`;
 
 const formFields = [
   'hasWorked',
@@ -119,18 +121,18 @@ const formFields = [
   'hasInvalidity',
   'isLookingForJob',
   'jobSearchStopMotive',
-]
+];
 
-const JOB_CHECK_KEY = 'canUseService'
+const JOB_CHECK_KEY = 'canUseService';
 
 const getJobCheckFromStore = () => {
-  const data = store.get(JOB_CHECK_KEY) || {}
+  const data = store.get(JOB_CHECK_KEY) || {};
   return {
     shouldAskAgain: data.shouldAskAgain,
     validatedForMonth:
       data.validatedForMonth && new Date(data.validatedForMonth),
-  }
-}
+  };
+};
 
 export class Actu extends Component {
   static propTypes = {
@@ -164,13 +166,13 @@ export class Actu extends Component {
   }
 
   componentDidMount() {
-    const { declaration, user } = this.props
+    const { declaration, user } = this.props;
     if (declaration && declaration.hasFinishedDeclaringEmployers) {
-      return this.props.history.replace('/files')
+      return this.props.history.replace('/files');
     }
 
     if (!user.canSendDeclaration) {
-      return this.props.history.replace('/dashboard')
+      return this.props.history.replace('/dashboard');
     }
 
     // eslint-disable-next-line react/no-did-mount-set-state
@@ -179,7 +181,7 @@ export class Actu extends Component {
       // Set active declaration data, prevent declaration data unrelated to this form.
       ...pick(declaration, formFields.concat('id', 'infos')),
       isLoading: false,
-    })
+    });
   }
 
   closeDialog = () =>
@@ -195,31 +197,31 @@ export class Actu extends Component {
     if (errorMsg) {
       return this.setState({ formError: errorMsg, errorsField });
     }
-    this.setState({ isDialogOpened: true })
+    this.setState({ isDialogOpened: true });
   }
 
   onAnswer = ({ controlName, hasAnsweredYes }) => {
-    const { hasTrained: oldHasTrainedValue } = this.state
-    this.setState({ [controlName]: hasAnsweredYes, formError: null })
+    const { hasTrained: oldHasTrainedValue } = this.state;
+    this.setState({ [controlName]: hasAnsweredYes, formError: null });
 
     if (controlName === 'hasTrained') {
       if (hasAnsweredYes) {
-        this.removeDatesOfType(types.JOB_SEARCH)
-        this.setState({ isLookingForJob: true })
+        this.removeDatesOfType(types.JOB_SEARCH);
+        this.setState({ isLookingForJob: true });
       } else if (oldHasTrainedValue) {
         this.setState({
           // if "hasTrained" was previously true, state.hasTrained shoud be reset to null
           isLookingForJob: null,
-        })
+        });
       }
     }
 
     if (controlName === 'isLookingForJob') {
-      if (!hasAnsweredYes) this.addDates(types.JOB_SEARCH)
-      else this.removeDatesOfType(types.JOB_SEARCH)
+      if (!hasAnsweredYes) this.addDates(types.JOB_SEARCH);
+      else this.removeDatesOfType(types.JOB_SEARCH);
     }
 
-    ;[
+    [
       {
         boolName: 'hasInternship',
         type: types.INTERNSHIP,
@@ -241,22 +243,22 @@ export class Actu extends Component {
         type: types.RETIREMENT,
       },
     ].forEach(({ boolName, type }) => {
-      if (controlName !== boolName) return
-      if (hasAnsweredYes) return this.addDates(type)
-      this.removeDatesOfType(type)
-    })
+      if (controlName !== boolName) return;
+      if (hasAnsweredYes) return this.addDates(type);
+      this.removeDatesOfType(type);
+    });
   }
 
   onSetDate = ({ controlName, date, indexError }) => {
-    const newState = cloneDeep(this.state)
-    set(newState, controlName, date)
+    const newState = cloneDeep(this.state);
+    set(newState, controlName, date);
 
-    const {errorsField} = this.state;
-    const index = errorsField.indexOf(indexError)
+    const { errorsField } = this.state;
+    const index = errorsField.indexOf(indexError);
     if (index !== -1) {
       errorsField.splice(index, 1);
     }
-    this.setState({ ...newState, formError: null, errorsField })
+    this.setState({ ...newState, formError: null, errorsField });
   }
 
   onJobSearchStopMotive = ({ target: { value: jobSearchStopMotive } }) =>
@@ -287,12 +289,17 @@ export class Actu extends Component {
       hasInvalidity,
       isLookingForJob,
       jobSearchStopMotive,
-    } = this.state
+    } = this.state;
     const localErrorFied = [];
     let errorMsg = null;
 
     if (!this.hasAnsweredMainQuestions()) {
-      return <>Merci de répondre à <b>toutes les questions</b></>
+      return (
+        <>
+          Merci de répondre à
+          <b>toutes les questions</b>
+        </>
+      );
     }
 
     if (hasInternship) {
@@ -319,13 +326,23 @@ export class Actu extends Component {
           localErrorFied.push(`${types.INTERNSHIP}_${index}_end`);
           hasWrongInternshipDates = true;
         }
-      })
+      });
 
       if (hasMissingInternshipDates) {
-        errorMsg = <>Merci d'indiquer <b>toutes vos dates de stage</b></>
+        errorMsg = (
+          <>
+            Merci d'indiquer
+            <b>toutes vos dates de stage</b>
+          </>
+        );
       }
       if (hasWrongInternshipDates) {
-        errorMsg = <>Merci de corriger <b>vos dates de stage (le début du stage ne peut être après sa fin)</b></>;
+        errorMsg = (
+          <>
+            Merci de corriger
+            <b>vos dates de stage (le début du stage ne peut être après sa fin)</b>
+          </>
+        );
       }
     }
 
@@ -354,14 +371,23 @@ export class Actu extends Component {
           localErrorFied.push(`${types.SICK_LEAVE}_${index}_end`);
           hasWrongSickLeaveDates = true;
         }
-      })
-
+      });
 
       if (hasMissingSickLeaveDates) {
-        errorMsg = <>Merci d'indiquer <b>tous vos dates d'arrêt maladie</b></>;
+        errorMsg = (
+          <>
+            Merci d'indiquer
+            <b>tous vos dates d'arrêt maladie</b>
+          </>
+        );
       }
       if (hasWrongSickLeaveDates) {
-        errorMsg = <>Merci de corriger <b>vos dates d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)</b></>
+        errorMsg = (
+          <>
+            Merci de corriger
+            <b>vos dates d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)</b>
+          </>
+        );
       }
     }
 
@@ -375,9 +401,14 @@ export class Actu extends Component {
       checkList.forEach(({ startDate }, index) => {
         if (!startDate) {
           localErrorFied.push(`${types.MATERNITY_LEAVE}_${index}_start`);
-          errorMsg = <>Merci d'indiquer <b>votre date de départ en congé maternité</b></>
+          errorMsg = (
+            <>
+              Merci d'indiquer
+              <b>votre date de départ en congé maternité</b>
+            </>
+          );
         }
-      })
+      });
     }
 
     if (
@@ -390,9 +421,14 @@ export class Actu extends Component {
       checkList.forEach(({ startDate }, index) => {
         if (!startDate) {
           localErrorFied.push(`${types.RETIREMENT}_${index}_start`);
-          errorMsg = <>Merci d'indiquer depuis <b>quand vous touchez une pension retraite</b></>
+          errorMsg = (
+            <>
+              Merci d'indiquer depuis
+              <b>quand vous touchez une pension retraite</b>
+            </>
+          );
         }
-      })
+      });
     }
 
     if (
@@ -405,10 +441,14 @@ export class Actu extends Component {
       checkList.forEach(({ startDate }, index) => {
         if (!startDate) {
           localErrorFied.push(`${types.INVALIDITY}_${index}_start`);
-          errorMsg = <>Merci d'indiquer depuis <b>quand vous touchez une pension d'invalidité</b></>
+          errorMsg = (
+            <>
+              Merci d'indiquer depuis
+              <b>quand vous touchez une pension d'invalidité</b>
+            </>
+          );
         }
-      })
-
+      });
     }
 
     if (isLookingForJob === false) {
@@ -419,13 +459,22 @@ export class Actu extends Component {
       checkList.forEach(({ endDate }, index) => {
         if (!endDate) {
           localErrorFied.push(`${types.JOB_SEARCH}_${index}_end`);
-          errorMsg = <>Merci d'indiquer depuis <b>quand vous ne cherchez plus d'emploi</b></>
+          errorMsg = (
+            <>
+              Merci d'indiquer depuis
+              <b>quand vous ne cherchez plus d'emploi</b>
+            </>
+          );
         }
-      })
-
+      });
 
       if (!jobSearchStopMotive) {
-        errorMsg = <>Merci d'indiquer <b>pourquoi vous ne recherchez plus d'emploi</b></>
+        errorMsg = (
+          <>
+            Merci d'indiquer
+            <b>pourquoi vous ne recherchez plus d'emploi</b>
+          </>
+        );
       }
     }
 
@@ -435,16 +484,15 @@ export class Actu extends Component {
   onSubmit = ({ ignoreErrors = false } = {}) => {
     const { errorMsg, errorsField } = this.getFormError();
     if (errorMsg) {
-      return this.setState({ formError: errorMsg, errorsField })
+      return this.setState({ formError: errorMsg, errorsField });
     }
 
-    this.setState({ isValidating: true })
+    this.setState({ isValidating: true });
 
     return this.props
       .postDeclaration({ ...this.state, ignoreErrors })
       .then(() =>
-        this.props.history.push(this.state.hasWorked ? '/employers' : '/files'),
-      )
+        this.props.history.push(this.state.hasWorked ? '/employers' : '/files'))
       .catch((err) => {
         if (
           err.status === 400 &&
@@ -456,24 +504,24 @@ export class Actu extends Component {
             consistencyErrors: err.response.body.consistencyErrors,
             validationErrors: err.response.body.validationErrors,
             isValidating: false,
-          })
+          });
         }
 
         // Reporting here to get a metric of how much next error happens
-        window.Raven.captureException(err)
+        window.Raven.captureException(err);
 
         if (err.status === 401 || err.status === 403) {
-          this.closeDialog()
-          this.setState({ isLoggedOut: true })
-          return
+          this.closeDialog();
+          this.setState({ isLoggedOut: true });
+          return;
         }
 
         // Unhandled error
         this.setState({
           formError: UNHANDLED_ERROR,
-        })
-        this.closeDialog()
-      })
+        });
+        this.closeDialog();
+      });
   }
 
   setJobCheck = ({ shouldAskAgain } = {}) => {
@@ -482,10 +530,10 @@ export class Actu extends Component {
         validatedForMonth: this.props.activeMonth,
         shouldAskAgain,
       },
-    }
+    };
 
-    store.setAll(jobCheckObject)
-    this.setState(jobCheckObject)
+    store.setAll(jobCheckObject);
+    this.setState(jobCheckObject);
   }
 
   // display job check if not validated for current month and should ask again (default)
@@ -493,12 +541,12 @@ export class Actu extends Component {
     const lastMonthValidated = get(
       this.state[JOB_CHECK_KEY],
       'validatedForMonth',
-    )
-    if (!lastMonthValidated) return true
+    );
+    if (!lastMonthValidated) return true;
     return (
       !moment(lastMonthValidated).isSame(this.props.activeMonth, 'month') &&
       get(this.state[JOB_CHECK_KEY], 'shouldAskAgain', true)
-    )
+    );
   }
 
   addDates = (type) =>
@@ -528,22 +576,22 @@ export class Actu extends Component {
     startLabel = 'Date de début',
     endLabel = 'Date de fin',
   }) => {
-    const activeMonthMoment = moment(this.props.activeMonth)
+    const activeMonthMoment = moment(this.props.activeMonth);
 
     const datePickerMinDate = activeMonthMoment
       .clone()
       .startOf('month')
-      .toDate()
+      .toDate();
     const datePickerMaxDate = activeMonthMoment
       .clone()
       .endOf('month')
-      .toDate()
+      .toDate();
 
-    const nodes = []
-    let i = 0
+    const nodes = [];
+    let i = 0;
     this.state.infos.forEach((declarationInfo, key) => {
-      const indexError = `${type  }_${i}`;
-      if (declarationInfo.type !== type) return
+      const indexError = `${type}_${i}`;
+      if (declarationInfo.type !== type) return;
 
       nodes.push(
         <div
@@ -560,7 +608,7 @@ export class Actu extends Component {
               name={`infos[${key}].startDate`}
               value={declarationInfo.startDate}
               style={{ paddingRight: '1rem' }}
-              error={this.state.errorsField.indexOf(`${indexError  }_start`) !== -1}
+              error={this.state.errorsField.indexOf(`${indexError}_start`) !== -1}
             />
           )}
           {showEndDate && (
@@ -574,7 +622,7 @@ export class Actu extends Component {
               initialFocusedDate={datePickerMaxDate}
               name={`infos[${key}].endDate`}
               value={declarationInfo.endDate}
-              error={this.state.errorsField.indexOf(`${indexError  }_end`) !== -1}
+              error={this.state.errorsField.indexOf(`${indexError}_end`) !== -1}
             />
           )}
           {allowRemove && (
@@ -590,10 +638,10 @@ export class Actu extends Component {
             </Button>
           )}
         </div>,
-      )
-      i++;
-    })
-    return nodes
+      );
+      i += 1;
+    });
+    return nodes;
   }
 
   render() {
@@ -604,28 +652,30 @@ export class Actu extends Component {
       hasInternship,
       hasMaternityLeave,
       isValidating,
-    } = this.state
+    } = this.state;
 
-    const { user } = this.props
+    const { user } = this.props;
 
     if (isLoading) {
-      return null
+      return null;
     }
 
     if (this.shouldDisplayJobCheck()) {
-      return <UserJobCheck onValidate={this.setJobCheck} />
+      return <UserJobCheck onValidate={this.setJobCheck} />;
     }
 
-    const activeMonthMoment = moment(this.props.activeMonth)
+    const activeMonthMoment = moment(this.props.activeMonth);
 
-    const useVerticalLayoutForQuestions = this.props.width === muiBreakpoints.xs
-    const { errorMsg } = formError || { errorMsg: null }
-    const error = errorMsg !== null
+    const useVerticalLayoutForQuestions = this.props.width === muiBreakpoints.xs;
+    const { errorMsg } = formError || { errorMsg: null };
+    const error = errorMsg !== null;
 
     return (
       <StyledActu>
         <Title>
-          Déclarer ma situation de {activeMonthMoment.format('MMMM')}
+          Déclarer ma situation de
+          {' '}
+          {activeMonthMoment.format('MMMM')}
         </Title>
 
         <Form>
@@ -653,7 +703,7 @@ export class Actu extends Component {
                 onAnswer={this.onAnswer}
               >
                 {hasInternship && (
-                  <Fragment>
+                  <>
                     {this.renderDatePickerGroup({
                       type: types.INTERNSHIP,
                       allowRemove: true,
@@ -665,23 +715,23 @@ export class Actu extends Component {
                         + Ajouter un stage
                       </AddElementButton>
                     </AddElementButtonContainer>
-                  </Fragment>
+                  </>
                 )}
               </DeclarationQuestion>
               <DeclarationQuestion
                 verticalLayout={useVerticalLayoutForQuestions}
                 label={`Avez-vous été en arrêt maladie${
-                  user.gender === USER_GENDER_MALE
-                    ? ' ou en congé paternité'
-                    : ''
-                  } ?`}
+                  user.gender === USER_GENDER_MALE ?
+                    ' ou en congé paternité' :
+                    ''
+                } ?`}
                 name="hasSickLeave"
                 value={this.state.hasSickLeave}
                 onAnswer={this.onAnswer}
                 style={{ paddingTop: hasInternship ? '3rem' : '1rem' }}
               >
                 {hasSickLeave && (
-                  <Fragment>
+                  <>
                     {this.renderDatePickerGroup({
                       type: types.SICK_LEAVE,
                       allowRemove: true,
@@ -693,7 +743,7 @@ export class Actu extends Component {
                         + Ajouter un arrêt maladie
                       </AddElementButton>
                     </AddElementButtonContainer>
-                  </Fragment>
+                  </>
                 )}
               </DeclarationQuestion>
               {user.gender !== USER_GENDER_MALE && (
@@ -721,9 +771,9 @@ export class Actu extends Component {
                   // accounts for the fact that the section maternityLeave will be absent
                   // for males, and add padding if there was a "add sick leave" button
                   paddingTop:
-                    hasSickLeave && user.gender === USER_GENDER_MALE
-                      ? '3rem'
-                      : '1rem',
+                    hasSickLeave && user.gender === USER_GENDER_MALE ?
+                      '3rem' :
+                      '1rem',
                 }}
               >
                 {this.renderDatePickerGroup({
@@ -794,9 +844,11 @@ export class Actu extends Component {
           )}
 
           <AlwaysVisibleContainer>
-            {formError && <ErrorSnackBar
+            {formError && (
+            <ErrorSnackBar
               message={formError}
-            />}
+            />
+            )}
             <FinalButtonsContainer>
               <MainActionButton
                 primary
@@ -830,10 +882,10 @@ export class Actu extends Component {
         )}
         <LoginAgainDialog isOpened={this.state.isLoggedOut} />
       </StyledActu>
-    )
+    );
   }
 }
 
 export default connect(null, { postDeclaration: postDeclarationAction })(
   withWidth()(Actu),
-)
+);

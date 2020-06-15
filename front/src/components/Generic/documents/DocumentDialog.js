@@ -1,30 +1,30 @@
-import React, { PureComponent, Fragment, Suspense } from 'react'
-import styled from 'styled-components'
-import { CircularProgress } from '@material-ui/core'
-import PropTypes from 'prop-types'
-import { isNull } from 'lodash'
+import React, { PureComponent, Suspense } from 'react';
+import styled from 'styled-components';
+import { CircularProgress } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { isNull } from 'lodash';
 
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 
-import CloseIcon from '@material-ui/icons/Close'
-import DoneIcon from '@material-ui/icons/Done'
-import DeleteIcon from '@material-ui/icons/DeleteForever'
-import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
-import Typography from '@material-ui/core/Typography'
-import MainActionButton from '../MainActionButton'
+import CloseIcon from '@material-ui/icons/Close';
+import DoneIcon from '@material-ui/icons/Done';
+import DeleteIcon from '@material-ui/icons/DeleteForever';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import Typography from '@material-ui/core/Typography';
+import MainActionButton from '../MainActionButton';
 
-import { primaryBlue } from '../../../constants'
-import CustomDialog from '../CustomDialog'
+import { primaryBlue } from '../../../constants';
+import CustomDialog from '../CustomDialog';
 
-const PDFViewer = React.lazy(() => import('../PDFViewer/index'))
+const PDFViewer = React.lazy(() => import('../PDFViewer/index'));
 
-export const MAX_PDF_PAGE = 5
+export const MAX_PDF_PAGE = 5;
 
 const TopDialogActions = styled.div`
   display: flex;
   justify-content: flex-end;
   padding-bottom: 1rem;
-`
+`;
 
 const StyledDoneIcon = styled(DoneIcon)`
   && {
@@ -32,7 +32,7 @@ const StyledDoneIcon = styled(DoneIcon)`
     vertical-align: bottom;
     color: green;
   }
-`
+`;
 
 const initialState = {
   showSuccessAddMessage: false,
@@ -42,7 +42,7 @@ const initialState = {
   canUploadMoreFile: true,
   canDeletePage: false,
   totalPageNumber: null,
-}
+};
 
 class DocumentDialog extends PureComponent {
   static propTypes = {
@@ -70,7 +70,7 @@ class DocumentDialog extends PureComponent {
    * (one-shot reaction after user upload)
    */
   componentDidUpdate = (prevProps, prevState) => {
-    if (!this.props.isOpened) return
+    if (!this.props.isOpened) return;
 
     if (
       !isNull(prevState.totalPageNumber) &&
@@ -79,7 +79,7 @@ class DocumentDialog extends PureComponent {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessRemoveMessage: true,
-      })
+      });
     }
     if (
       !isNull(prevState.totalPageNumber) &&
@@ -88,7 +88,7 @@ class DocumentDialog extends PureComponent {
       // eslint-disable-next-line react/no-did-update-set-state
       return this.setState({
         showSuccessAddMessage: true,
-      })
+      });
     }
   }
 
@@ -100,7 +100,7 @@ class DocumentDialog extends PureComponent {
     this.setState({
       showSuccessAddMessage: false,
       showSuccessRemoveMessage: false,
-    })
+    });
 
     this.props.submitFile({
       isAddingFile: !!this.props.url,
@@ -108,7 +108,7 @@ class DocumentDialog extends PureComponent {
       documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
-    })
+    });
   }
 
   removePage = () => {
@@ -116,13 +116,13 @@ class DocumentDialog extends PureComponent {
       showSuccessAddMessage: false,
       showSuccessRemoveMessage: false,
       showPageRemovalConfirmation: false,
-    })
+    });
     this.props.removePage({
       pageNumberToRemove: this.state.currentPage,
       documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
-    })
+    });
   }
 
   confirmPageRemoval = () =>
@@ -135,13 +135,13 @@ class DocumentDialog extends PureComponent {
   cancelValidateDoc = () => this.setState({ showDocValidationModal: false })
 
   validateDoc = () => {
-    this.setState({ showDocValidationModal: false })
+    this.setState({ showDocValidationModal: false });
 
     this.props.validateDoc({
       documentId: this.props.id,
       employerId: this.props.employerId,
       employerDocType: this.props.employerDocType,
-    })
+    });
   }
 
   /*
@@ -149,31 +149,31 @@ class DocumentDialog extends PureComponent {
    * of pages, *including* at first load
    */
   onPageNumberChange = (currentPage, totalPageNumber) => {
-    this.setState({ currentPage, totalPageNumber })
+    this.setState({ currentPage, totalPageNumber });
 
-    const canUploadMoreFile = totalPageNumber < MAX_PDF_PAGE
+    const canUploadMoreFile = totalPageNumber < MAX_PDF_PAGE;
     if (canUploadMoreFile !== this.state.canUploadMoreFile) {
-      this.setState({ canUploadMoreFile })
+      this.setState({ canUploadMoreFile });
     }
 
-    const canDeletePage = totalPageNumber > 0
+    const canDeletePage = totalPageNumber > 0;
     if (canDeletePage !== this.state.canDeletePage) {
-      this.setState({ canDeletePage })
+      this.setState({ canDeletePage });
     }
   }
 
   onCancel = () => {
-    this.setState(initialState)
-    this.props.onCancel()
+    this.setState(initialState);
+    this.props.onCancel();
   }
 
   renderModalContent() {
-    const { isLoading, url, originalFileName } = this.props
+    const { isLoading, url, originalFileName } = this.props;
 
-    const loadingComponent = <CircularProgress style={{ margin: 'auto' }} />
+    const loadingComponent = <CircularProgress style={{ margin: 'auto' }} />;
 
     if (isLoading) {
-      return loadingComponent
+      return loadingComponent;
     }
 
     return (
@@ -184,11 +184,11 @@ class DocumentDialog extends PureComponent {
           originalFileName={originalFileName}
         />
       </Suspense>
-    )
+    );
   }
 
   render() {
-    const { isOpened, isLoading, error } = this.props
+    const { isOpened, isLoading, error } = this.props;
     const {
       showSuccessAddMessage,
       showSuccessRemoveMessage,
@@ -196,26 +196,26 @@ class DocumentDialog extends PureComponent {
       canDeletePage,
       showPageRemovalConfirmation,
       showDocValidationModal,
-    } = this.state
+    } = this.state;
 
     return (
-      <Fragment>
+      <>
         <CustomDialog
           isOpened={isOpened}
           onCancel={this.onCancel}
           fullWidth
           maxWidth="md"
           forceConstantHeight
-          header={
+          header={(
             <TopDialogActions>
               <Button onClick={this.onCancel} className="bt-close">
                 Fermer
                 <CloseIcon style={{ marginLeft: '1rem' }} />
               </Button>
             </TopDialogActions>
-          }
-          content={
-            <Fragment>
+          )}
+          content={(
+            <>
               {(error || showSuccessAddMessage || showSuccessRemoveMessage) && (
                 <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
                   {error && (
@@ -241,11 +241,11 @@ class DocumentDialog extends PureComponent {
               )}
 
               {this.renderModalContent()}
-            </Fragment>
-          }
+            </>
+          )}
           actions={
             !isLoading && (
-              <Fragment>
+              <>
                 {canDeletePage && (
                   <Button
                     onClick={this.confirmPageRemoval}
@@ -280,7 +280,9 @@ class DocumentDialog extends PureComponent {
                       fontSize: '3rem',
                     }}
                   />
-                  Ajouter une nouvelle page {!canUploadMoreFile && ' (max : 5)'}
+                  Ajouter une nouvelle page
+                  {' '}
+                  {!canUploadMoreFile && ' (max : 5)'}
                 </Button>
 
                 <MainActionButton
@@ -291,7 +293,7 @@ class DocumentDialog extends PureComponent {
                 >
                   Valider ce justificatif
                 </MainActionButton>
-              </Fragment>
+              </>
             )
           }
         />
@@ -301,22 +303,26 @@ class DocumentDialog extends PureComponent {
           isOpened={showPageRemovalConfirmation}
           onClose={this.cancelRemovePage}
           titleId="alert-dialog-title"
-          title={
+          title={(
             <span>
-              Êtes-vous <span aria-label="sûr">sûr(e)</span> de vouloir
+              Êtes-vous
+              {' '}
+              <span aria-label="sûr">sûr(e)</span>
+              {' '}
+              de vouloir
               supprimer cette page ?
             </span>
-          }
-          actions={
-            <Fragment>
+          )}
+          actions={(
+            <>
               <MainActionButton primary={false} onClick={this.cancelRemovePage}>
                 Non, j'annule
               </MainActionButton>
               <MainActionButton primary onClick={this.removePage}>
                 Oui, je confirme
               </MainActionButton>
-            </Fragment>
-          }
+            </>
+          )}
         />
 
         {/* Confirmation dialog when validating a document */}
@@ -325,8 +331,8 @@ class DocumentDialog extends PureComponent {
           onClose={this.cancelRemovePage}
           titleId="alert-dialog-title"
           title={<span>Valider ce justificatif ?</span>}
-          actions={
-            <Fragment>
+          actions={(
+            <>
               <MainActionButton
                 primary={false}
                 onClick={this.cancelValidateDoc}
@@ -340,12 +346,12 @@ class DocumentDialog extends PureComponent {
               >
                 Oui, je confirme
               </MainActionButton>
-            </Fragment>
-          }
+            </>
+          )}
         />
-      </Fragment>
-    )
+      </>
+    );
   }
 }
 
-export default DocumentDialog
+export default DocumentDialog;

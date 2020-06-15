@@ -1,20 +1,20 @@
-import { get } from 'lodash'
-import { readAndCompressImage } from 'browser-image-resizer'
+import { get } from 'lodash';
+import { readAndCompressImage } from 'browser-image-resizer';
 
-const salarySheetType = 'salarySheet'
-const employerCertificateType = 'employerCertificate'
+const salarySheetType = 'salarySheet';
+const employerCertificateType = 'employerCertificate';
 
 const extractFileExtension = (file) => {
-  const dotIndex = file.lastIndexOf('.')
-  if (dotIndex === -1) return ''
-  return file.substring(dotIndex, file.length).toLowerCase()
-}
+  const dotIndex = file.lastIndexOf('.');
+  if (dotIndex === -1) return '';
+  return file.substring(dotIndex, file.length).toLowerCase();
+};
 
 export const canUsePDFViewer = (fileName) => {
-  if (!fileName) return false
-  const extension = extractFileExtension(fileName)
-  return ['.png', '.pdf', '.jpg', '.jpeg'].includes(extension)
-}
+  if (!fileName) return false;
+  const extension = extractFileExtension(fileName);
+  return ['.png', '.pdf', '.jpg', '.jpeg'].includes(extension);
+};
 
 export const getMissingEmployerFiles = (declaration) =>
   declaration.employers.reduce((prev, employer) => {
@@ -24,9 +24,9 @@ export const getMissingEmployerFiles = (declaration) =>
           name: employer.employerName,
           type: salarySheetType,
           employerId: employer.id,
-        })
+        });
       }
-      return prev
+      return prev;
     }
 
     /*
@@ -36,35 +36,35 @@ export const getMissingEmployerFiles = (declaration) =>
     const hasEmployerCertificate = employer.documents.some(
       ({ type, isTransmitted }) =>
         type === employerCertificateType && isTransmitted,
-    )
+    );
     const hasSalarySheet = employer.documents.some(
       ({ type, isTransmitted }) => type === salarySheetType && isTransmitted,
-    )
+    );
 
-    if (hasEmployerCertificate) return prev
+    if (hasEmployerCertificate) return prev;
 
     if (hasSalarySheet) {
       return prev.concat({
         name: employer.employerName,
         type: employerCertificateType,
         employerId: employer.id,
-      })
+      });
     }
     return prev.concat(
       { name: employer.employerName, type: salarySheetType, employerId: employer.id },
       { name: employer.employerName, type: employerCertificateType, employerId: employer.id },
-    )
-  }, [])
+    );
+  }, []);
 
 export const getDeclarationMissingFilesNb = (declaration) => {
   const infoDocumentsRequiredNb = declaration.infos.filter(
     ({ type, isTransmitted }) => type !== 'jobSearch' && !isTransmitted,
-  ).length
+  ).length;
 
   return (
     declaration.employers.reduce((prev, employer) => {
       if (!employer.hasEndedThisMonth) {
-        return prev + (get(employer, 'documents[0].isTransmitted') ? 0 : 1)
+        return prev + (get(employer, 'documents[0].isTransmitted') ? 0 : 1);
       }
 
       /*
@@ -74,40 +74,40 @@ export const getDeclarationMissingFilesNb = (declaration) => {
       const hasEmployerCertificate = employer.documents.some(
         ({ type, isTransmitted }) =>
           type === employerCertificateType && isTransmitted,
-      )
+      );
       const hasSalarySheet = employer.documents.some(
         ({ type, isTransmitted }) => type === salarySheetType && isTransmitted,
-      )
+      );
 
-      if (hasEmployerCertificate) return prev + 0
-      return prev + (hasSalarySheet ? 1 : 2)
+      if (hasEmployerCertificate) return prev + 0;
+      return prev + (hasSalarySheet ? 1 : 2);
     }, 0) + infoDocumentsRequiredNb
-  )
-}
+  );
+};
 
 export function getMissingFilesNb(allDeclarations) {
   const declarations = allDeclarations.filter(
     ({ hasFinishedDeclaringEmployers, isFinished }) =>
       hasFinishedDeclaringEmployers && !isFinished,
-  )
+  );
 
-  const [lastDeclaration] = declarations
+  const [lastDeclaration] = declarations;
   if (
     !lastDeclaration ||
     (lastDeclaration.isFinished && declarations.length === 0)
   ) {
-    return 0
+    return 0;
   }
 
   return declarations.reduce(
     (prev, decl) => prev + getDeclarationMissingFilesNb(decl),
     0,
-  )
+  );
 }
 
 export function isImage(file) {
-  if (!file.type) return false
-  return file.type.startsWith('image/')
+  if (!file.type) return false;
+  return file.type.startsWith('image/');
 }
 
 export async function optimizeImage(file) {
@@ -117,11 +117,11 @@ export async function optimizeImage(file) {
       maxWidth: 1500,
       maxHeight: 1500,
       mimeType: 'image/jpeg',
-    })
-    return new File([blob], file.name, { type: 'image/jpeg' })
+    });
+    return new File([blob], file.name, { type: 'image/jpeg' });
   } catch (err) {
     // Optimization failed...
     // We will continue with the unoptimized file
-    return file
+    return file;
   }
 }

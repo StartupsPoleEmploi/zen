@@ -8,8 +8,8 @@
  * (note: this description of immer here is useful because it is not an explicit
  * dependency of this project, as it is bundled in @reduxjs/toolkit)
  */
-import { createReducer } from '@reduxjs/toolkit'
-import { getMissingFilesNb } from '../../lib/file'
+import { createReducer } from '@reduxjs/toolkit';
+import { getMissingFilesNb } from '../../lib/file';
 
 import {
   POST_DECLARATION_INFO_FAILURE,
@@ -30,8 +30,8 @@ import {
   FETCH_ACTIVE_DECLARATION_FAILURE,
   SHOW_DECLARATION_TRANSMITTED_DIALOG,
   HIDE_DECLARATION_TRANSMITTED_DIALOG,
-} from '../actions/actionNames'
-import { utils } from '../../selectors/declarations'
+} from '../actions/actionNames';
+import { utils } from '../../selectors/declarations';
 
 const {
   findEmployer,
@@ -39,7 +39,7 @@ const {
   findDeclarationInfo,
   getEmployerErrorKey,
   getEmployerLoadingKey,
-} = utils
+} = utils;
 
 const declarationsReducer = createReducer(
   {
@@ -58,40 +58,40 @@ const declarationsReducer = createReducer(
   },
   {
     [FETCH_DECLARATIONS_LOADING]: (state) => {
-      state.isLoading = true
-      state.error = true
+      state.isLoading = true;
+      state.error = true;
     },
     [FETCH_DECLARATIONS_SUCCESS]: (state, action) => {
-      state.declarations = action.payload
-      state.missingFiles = getMissingFilesNb(action.payload)
-      state.isLoading = false
+      state.declarations = action.payload;
+      state.missingFiles = getMissingFilesNb(action.payload);
+      state.isLoading = false;
     },
     [FETCH_DECLARATIONS_FAILURE]: (state, action) => {
-      state.error = action.payload
-      state.isLoading = false
+      state.error = action.payload;
+      state.isLoading = false;
     },
     [POST_DECLARATION_INFO_LOADING]: (
       { declarations },
       { payload: { documentId } },
     ) => {
-      const info = findDeclarationInfo({ declarations, documentId })
-      info.isLoading = true
-      info.error = null
+      const info = findDeclarationInfo({ declarations, documentId });
+      info.isLoading = true;
+      info.error = null;
     },
     [POST_DECLARATION_INFO_FAILURE]: (
       { declarations },
       { payload: { documentId, err } },
     ) => {
-      const info = findDeclarationInfo({ declarations, documentId })
-      info.error = err
-      info.isLoading = false
+      const info = findDeclarationInfo({ declarations, documentId });
+      info.error = err;
+      info.isLoading = false;
     },
     [FETCH_DECLARATION_SUCCESS]: (
       { declarations },
       { payload: declaration },
     ) => {
-      const index = declarations.findIndex((d) => d.id === declaration.id)
-      declarations[index] = declaration
+      const index = declarations.findIndex((d) => d.id === declaration.id);
+      declarations[index] = declaration;
     },
 
     [POST_EMPLOYER_DOC_LOADING]: (
@@ -99,74 +99,78 @@ const declarationsReducer = createReducer(
       { payload: { documentId, employerId, employerDocType } },
     ) => {
       if (documentId) {
-        const employerDoc = findEmployerDoc({ declarations, documentId })
-        employerDoc.isLoading = true
-        employerDoc.error = null
+        const employerDoc = findEmployerDoc({ declarations, documentId });
+        employerDoc.isLoading = true;
+        employerDoc.error = null;
       }
       // these keys are fallbacks if we don't have document ids
       // (for employers, we do not have ids before user uploads)
-      const employer = findEmployer({ declarations, employerId })
-      employer[getEmployerLoadingKey(employerDocType)] = true
-      employer[getEmployerErrorKey(employerDocType)] = null
+      const employer = findEmployer({ declarations, employerId });
+      employer[getEmployerLoadingKey(employerDocType)] = true;
+      employer[getEmployerErrorKey(employerDocType)] = null;
     },
     [POST_EMPLOYER_DOC_FAILURE]: (
       { declarations },
-      { payload: { documentId, employerId, employerDocType, err } },
+      {
+        payload: {
+          documentId, employerId, employerDocType, err,
+        },
+      },
     ) => {
       if (documentId) {
-        const employerDoc = findEmployerDoc({ declarations, documentId })
-        employerDoc.isLoading = false
-        employerDoc.error = err
+        const employerDoc = findEmployerDoc({ declarations, documentId });
+        employerDoc.isLoading = false;
+        employerDoc.error = err;
       }
       // these keys are fallbacks if we don't have document ids
       // (for employers, we do not have ids before user uploads)
-      const employer = findEmployer({ declarations, employerId })
-      employer[getEmployerLoadingKey(employerDocType)] = false
-      employer[getEmployerErrorKey(employerDocType)] = err
+      const employer = findEmployer({ declarations, employerId });
+      employer[getEmployerLoadingKey(employerDocType)] = false;
+      employer[getEmployerErrorKey(employerDocType)] = err;
     },
     [FETCH_EMPLOYER_SUCCESS]: ({ declarations }, { payload }) => {
       for (const declaration of declarations) {
         const index = declaration.employers.findIndex(
           (employer) => employer.id === payload.id,
-        )
+        );
         if (index !== -1) {
-          declaration.employers[index] = payload
-          return
+          declaration.employers[index] = payload;
+          return;
         }
       }
     },
     [HIDE_EMPLOYER_FILE_PREVIEW]: (state) => {
-      state.previewedEmployerFileId = null
+      state.previewedEmployerFileId = null;
     },
     [SHOW_EMPLOYER_FILE_PREVIEW]: (state, { payload }) => {
-      state.previewedEmployerFileId = payload
+      state.previewedEmployerFileId = payload;
     },
     [HIDE_INFO_FILE_PREVIEW]: (state) => {
-      state.previewedInfoFileId = null
+      state.previewedInfoFileId = null;
     },
     [SHOW_INFO_FILE_PREVIEW]: (state, { payload }) => {
-      state.previewedInfoFileId = payload
+      state.previewedInfoFileId = payload;
     },
 
     [FETCH_ACTIVE_DECLARATION_LOADING]: (state) => {
-      state.isActiveDeclarationLoading = true
-      state.activeDeclaration = null
+      state.isActiveDeclarationLoading = true;
+      state.activeDeclaration = null;
     },
     [FETCH_ACTIVE_DECLARATION_SUCCESS]: (state, { payload }) => {
-      state.isActiveDeclarationLoading = false
-      state.activeDeclaration = payload
+      state.isActiveDeclarationLoading = false;
+      state.activeDeclaration = payload;
     },
     [FETCH_ACTIVE_DECLARATION_FAILURE]: (state, { payload }) => {
-      state.isActiveDeclarationLoading = false
-      state.activeDeclarationError = payload
+      state.isActiveDeclarationLoading = false;
+      state.activeDeclarationError = payload;
     },
     [SHOW_DECLARATION_TRANSMITTED_DIALOG]: (state) => {
-      state.showDeclarationTransmittedDialog = true
+      state.showDeclarationTransmittedDialog = true;
     },
     [HIDE_DECLARATION_TRANSMITTED_DIALOG]: (state) => {
-      state.showDeclarationTransmittedDialog = false
+      state.showDeclarationTransmittedDialog = false;
     },
   },
-)
+);
 
-export default declarationsReducer
+export default declarationsReducer;

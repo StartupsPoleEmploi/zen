@@ -1,22 +1,24 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import IconArrowBack from '@material-ui/icons/ArrowBack'
-import IconArrowForward from '@material-ui/icons/ArrowForward'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import IconArrowBack from '@material-ui/icons/ArrowBack';
+import IconArrowForward from '@material-ui/icons/ArrowForward';
+import styled from 'styled-components';
 
-import { primaryBlue } from '../../../constants'
+import { primaryBlue } from '../../../constants';
 
 const PaginationContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export default function PDFNavigation(props) {
-  const { numPages, pageNumber, previousPage, nextPage } = props
-  if (!numPages) return null
+  const {
+    numPages, pageNumber, previousPage, nextPage,
+  } = props;
+  if (!numPages) return null;
 
   return (
     <PaginationContainer className="pager">
@@ -33,7 +35,9 @@ export default function PDFNavigation(props) {
       </Button>
 
       <Typography style={{ padding: '0 2rem' }}>
-        {pageNumber}/{numPages}
+        {pageNumber}
+        /
+        {numPages}
       </Typography>
 
       <Button
@@ -48,7 +52,7 @@ export default function PDFNavigation(props) {
         />
       </Button>
     </PaginationContainer>
-  )
+  );
 }
 
 PDFNavigation.propTypes = {
@@ -56,4 +60,4 @@ PDFNavigation.propTypes = {
   pageNumber: PropTypes.number.isRequired,
   previousPage: PropTypes.func.isRequired,
   nextPage: PropTypes.func.isRequired,
-}
+};

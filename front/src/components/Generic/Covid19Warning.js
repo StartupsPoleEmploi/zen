@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
-import PropTypes from 'prop-types'
+import React from 'react';
+import styled from 'styled-components';
+import { Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-import MainActionButton from './MainActionButton'
-import { errorOrange, intermediaryBreakpoint } from '../../constants'
+import MainActionButton from './MainActionButton';
+import { errorOrange, intermediaryBreakpoint } from '../../constants';
 
 const Container = styled.div`
   width: 100%;
@@ -21,7 +21,7 @@ const Container = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     grid-template-columns: 5px 1fr;
   }
-`
+`;
 
 const ExclamationMark = styled.div`
   color: ${errorOrange};
@@ -29,24 +29,24 @@ const ExclamationMark = styled.div`
   font-size: 2.5rem;
   position: relative;
   top: -3px;
-`
+`;
 const Title = styled.h2`
   text-transform: uppercase;
   margin: 0;
   font-size: 2rem;
-`
+`;
 
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const ButtonContainer = styled.div`
   align-self: center;
   @media (max-width: ${intermediaryBreakpoint}) {
     grid-column: 2/2;
   }
-`
+`;
 
 const MoreInfoButton = styled(MainActionButton)`
   && {
@@ -60,7 +60,7 @@ const MoreInfoButton = styled(MainActionButton)`
       width: 230px;
     }
   }
-`
+`;
 
 function Covid19Warning({ whiteBg = false }) {
   return (
@@ -70,7 +70,8 @@ function Covid19Warning({ whiteBg = false }) {
       </div>
       <Text>
         <Title>
-          Informations situation{' '}
+          Informations situation
+          {' '}
           <span style={{ color: errorOrange }}>Covid-19</span>
         </Title>
         <Typography>
@@ -90,11 +91,11 @@ function Covid19Warning({ whiteBg = false }) {
         </MoreInfoButton>
       </ButtonContainer>
     </Container>
-  )
+  );
 }
 
 Covid19Warning.propTypes = {
   whiteBg: PropTypes.bool,
-}
+};
 
-export default Covid19Warning
+export default Covid19Warning;

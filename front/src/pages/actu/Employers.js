@@ -1,8 +1,8 @@
-import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Typography from '@material-ui/core/Typography'
-import withWidth from '@material-ui/core/withWidth'
-import Add from '@material-ui/icons/Add'
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import Add from '@material-ui/icons/Add';
 import {
   isNaN as _isNaN,
   cloneDeep,
@@ -12,31 +12,31 @@ import {
   isObject,
   isUndefined,
   pick,
-} from 'lodash'
-import moment from 'moment'
-import { PropTypes } from 'prop-types'
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import superagent from 'superagent'
+} from 'lodash';
+import moment from 'moment';
+import { PropTypes } from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import superagent from 'superagent';
 
 import {
   fetchDeclarations as fetchDeclarationsAction,
   postEmployers as postEmployersAction,
-} from '../../redux/actions/declarations'
-import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler'
-import EmployerQuestion from '../../components/Actu/EmployerQuestion/EmployerQuestion'
-import LoginAgainDialog from '../../components/Actu/LoginAgainDialog'
-import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog'
-import WorkSummary from '../../components/Actu/WorkSummary'
-import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer'
-import MainActionButton from '../../components/Generic/MainActionButton'
+} from '../../redux/actions/declarations';
+import DeclarationDialogsHandler from '../../components/Actu/DeclarationDialogs/DeclarationDialogsHandler';
+import EmployerQuestion from '../../components/Actu/EmployerQuestion/EmployerQuestion';
+import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
+import PreviousEmployersDialog from '../../components/Actu/PreviousEmployersDialog';
+import WorkSummary from '../../components/Actu/WorkSummary';
+import AlwaysVisibleContainer from '../../components/Generic/AlwaysVisibleContainer';
+import MainActionButton from '../../components/Generic/MainActionButton';
 import {
   intermediaryBreakpoint,
   mobileBreakpoint,
   primaryBlue,
   muiBreakpoints,
-} from '../../constants'
+} from '../../constants';
 import {
   MAX_SALARY,
   MAX_WORK_HOURS,
@@ -44,12 +44,12 @@ import {
   MIN_WORK_HOURS,
   SALARY,
   WORK_HOURS,
-} from '../../lib/salary'
-import { setNoNeedEmployerOnBoarding as setNoNeedEmployerOnBoardingAction } from '../../redux/actions/user'
-import EmployerOnBoarding from './EmployerOnBoarding/EmployerOnBoarding'
-import ScrollToButton from '../../components/Generic/ScrollToButton'
-import ErrorSnackBar from '../../components/Generic/ErrorSnackBar'
-import SuccessSnackBar from '../../components/Generic/SuccessSnackBar'
+} from '../../lib/salary';
+import { setNoNeedEmployerOnBoarding as setNoNeedEmployerOnBoardingAction } from '../../redux/actions/user';
+import EmployerOnBoarding from './EmployerOnBoarding/EmployerOnBoarding';
+import ScrollToButton from '../../components/Generic/ScrollToButton';
+import ErrorSnackBar from '../../components/Generic/ErrorSnackBar';
+import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
 
 const StyledEmployers = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const StyledEmployers = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     padding-bottom: 0;
   }
-`
+`;
 
 const Title = styled(Typography)`
   && {
@@ -68,7 +68,7 @@ const Title = styled(Typography)`
     padding-bottom: 1.5rem;
     font-weight: bold;
   }
-`
+`;
 
 const Form = styled.form`
   display: flex;
@@ -78,7 +78,7 @@ const Form = styled.form`
   @media (max-width: ${mobileBreakpoint}) {
     padding-bottom: 3rem;
   }
-`
+`;
 
 const AddEmployersButtonContainer = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ const AddEmployersButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 3rem 0;
-`
+`;
 
 const AddEmployersButton = styled(Button)`
   && {
@@ -99,7 +99,7 @@ const AddEmployersButton = styled(Button)`
       margin: 0 3rem;
     }
   }
-`
+`;
 
 const LineDiv = styled.div`
   width: 100%;
@@ -110,7 +110,7 @@ const LineDiv = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     width: 15%;
   }
-`
+`;
 const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
@@ -121,7 +121,7 @@ const ButtonsContainer = styled.div`
   text-align: center;
   max-width: 40rem;
   margin: 0 auto;
-`
+`;
 
 const StyledAlwaysVisibleContainer = styled(AlwaysVisibleContainer)`
   && {
@@ -129,7 +129,7 @@ const StyledAlwaysVisibleContainer = styled(AlwaysVisibleContainer)`
       padding: 2rem 1rem;
     }
   }
-`
+`;
 
 const StyledMainAction = styled(MainActionButton)`
   && {
@@ -137,20 +137,20 @@ const StyledMainAction = styled(MainActionButton)`
       width: 17rem;
     }
   }
-`
+`;
 
 const ScrollButtonContainer = styled.div`
   position: fixed;
   bottom: 17rem;
   right: 2rem;
-`
+`;
 
 const employerTemplate = {
   employerName: { value: '', error: null },
   workHours: { value: '', error: null },
   salary: { value: '', error: null },
   hasEndedThisMonth: { value: null, error: null },
-}
+};
 
 const getEmployersMapFromFormData = (employers) =>
   employers.map((employerFormData) =>
@@ -160,44 +160,43 @@ const getEmployersMapFromFormData = (employers) =>
         [fieldName]: employerFormData[fieldName].value,
       }),
       {},
-    ),
-  )
+    ));
 
 const getFieldError = ({ name, value }) => {
-  const isValid = !isNull(value) && !isUndefined(value) && value !== ''
-  if (!isValid) return 'Champ obligatoire'
+  const isValid = !isNull(value) && !isUndefined(value) && value !== '';
+  if (!isValid) return 'Champ obligatoire';
 
   if (name === WORK_HOURS) {
     if (_isNaN(value)) {
-      return `Merci de ne saisir que des chiffres`
+      return 'Merci de ne saisir que des chiffres';
     }
     if (value < MIN_WORK_HOURS || value > MAX_WORK_HOURS) {
-      return `Vous devez déclarer 1h minimum`
+      return 'Vous devez déclarer 1h minimum';
     }
   }
   if (name === SALARY) {
     if (_isNaN(value)) {
-      return `Merci de ne saisir que des chiffres`
+      return 'Merci de ne saisir que des chiffres';
     }
     if (value < MIN_SALARY || value > MAX_SALARY) {
-      return `Merci de corriger votre salaire`
+      return 'Merci de corriger votre salaire';
     }
   }
   if (name === 'hasEndedThisMonth' && !isBoolean(value)) {
-    return 'Merci de répondre à la question'
+    return 'Merci de répondre à la question';
   }
-}
+};
 
 // TODO refactor this, repeated almost exactly in WorkSummary
 const calculateTotal = (employers, field) => {
   const total = employers.reduce((prev, employer) => {
     const number = parseFloat(
       isObject(employer[field]) ? employer[field].value : employer[field],
-    )
-    return number + prev
-  }, 0)
-  return total
-}
+    );
+    return number + prev;
+  }, 0);
+  return total;
+};
 
 // TODO the whole logic of this component needs to be sanitized
 export class Employers extends Component {
@@ -234,7 +233,7 @@ export class Employers extends Component {
 
   componentDidMount() {
     // Scroll to top on enter
-    document.body.scrollIntoView()
+    document.body.scrollIntoView();
 
     this.props
       .fetchDeclarations({ limit: 2 })
@@ -242,21 +241,21 @@ export class Employers extends Component {
         const [
           currentDeclaration,
           previousDeclaration,
-        ] = this.props.declarations
+        ] = this.props.declarations;
 
         if (currentDeclaration.hasFinishedDeclaringEmployers) {
-          return this.props.history.replace('/files')
+          return this.props.history.replace('/files');
         }
 
-        this.setState({ currentDeclaration })
+        this.setState({ currentDeclaration });
 
         if (currentDeclaration.employers.length === 0) {
-          if (!previousDeclaration) return
+          if (!previousDeclaration) return;
 
           const relevantPreviousEmployers = previousDeclaration.employers.filter(
             (employer) => !employer.hasEndedThisMonth,
-          )
-          if (relevantPreviousEmployers.length === 0) return
+          );
+          if (relevantPreviousEmployers.length === 0) return;
 
           return this.setState({
             employers: relevantPreviousEmployers.map((employer) => ({
@@ -268,7 +267,7 @@ export class Employers extends Component {
             })),
             previousEmployers: relevantPreviousEmployers,
             showPreviousEmployersModal: true,
-          })
+          });
         }
 
         this.setState({
@@ -290,11 +289,10 @@ export class Employers extends Component {
                 },
               }),
               {},
-            ),
-          ),
-        })
+            )),
+        });
       })
-      .then(() => this.setState({ isLoading: false }))
+      .then(() => this.setState({ isLoading: false }));
   }
 
   componentWillUnmount() {
@@ -307,7 +305,7 @@ export class Employers extends Component {
       get(this.state.currentDeclaration, 'hasFinishedDeclaringEmployers') ===
       false
     ) {
-      this.onSave()
+      this.onSave();
     }
   }
 
@@ -318,23 +316,26 @@ export class Employers extends Component {
 
   // onChange - let the user type whatever he wants, show errors
   onChange = ({ index, name, value }) => {
-    const error = getFieldError({ name, value })
+    const error = getFieldError({ name, value });
 
-    this.updateValue({ index, name, value, error })
+    this.updateValue({
+      index, name, value, error,
+    });
   }
 
-  updateValue = ({ index, name, value, error }) =>
+  updateValue = ({
+    index, name, value, error,
+  }) =>
     this.setState(({ employers: prevEmployers }) => ({
       employers: prevEmployers.map((employer, key) =>
-        key === index ? { ...employer, [name]: { value, error } } : employer,
-      ),
+        (key === index ? { ...employer, [name]: { value, error } } : employer)),
       error: null,
     }))
 
   onRemove = (index) =>
     this.setState(({ employers }) => ({
       employers: employers.filter((e, key) => key !== index),
-      snackMessage: "Employeur supprimé"
+      snackMessage: 'Employeur supprimé',
     }))
 
   onSave = () =>
@@ -346,7 +347,7 @@ export class Employers extends Component {
     this.onSave().then(() => this.setState({ snackMessage: 'Vos données ont été sauvegardées' }))
 
   onSubmit = ({ ignoreErrors = false } = {}) => {
-    this.setState({ isValidating: true })
+    this.setState({ isValidating: true });
 
     return this.props
       .postEmployers({
@@ -355,8 +356,8 @@ export class Employers extends Component {
         ignoreErrors,
       })
       .then(() => {
-        this.hasSubmittedAndFinished = true // used to cancel cWU actions
-        this.props.history.push('/files')
+        this.hasSubmittedAndFinished = true; // used to cancel cWU actions
+        this.props.history.push('/files');
       })
       .catch((err) => {
         if (
@@ -369,16 +370,16 @@ export class Employers extends Component {
             consistencyErrors: err.response.body.consistencyErrors,
             validationErrors: err.response.body.validationErrors,
             isValidating: false,
-          })
+          });
         }
 
         // Reporting here to get a metric of how much next error happens
-        window.Raven.captureException(err)
+        window.Raven.captureException(err);
 
         if (err.status === 401 || err.status === 403) {
-          this.closeDialog()
-          this.setState({ isLoggedOut: true })
-          return
+          this.closeDialog();
+          this.setState({ isLoggedOut: true });
+          return;
         }
 
         // Unhandled error
@@ -386,46 +387,45 @@ export class Employers extends Component {
           error: `Nous sommes désolés, mais une erreur s'est produite. Merci de réessayer ultérieurement.
           Si le problème persiste, merci de contacter l'équipe Zen, et d'effectuer
           en attendant votre actualisation sur Pole-emploi.fr.`,
-        })
-        this.closeDialog()
-      })
+        });
+        this.closeDialog();
+      });
   }
 
   checkFormValidity = () => {
     if (this.state.employers.length === 0) {
       this.setState({
-        error: `Merci d'entrer les informations sur vos employeurs`,
-      })
-      return false
+        error: 'Merci d\'entrer les informations sur vos employeurs',
+      });
+      return false;
     }
 
-    let isFormValid = true
-    const employersFormData = cloneDeep(this.state.employers)
+    let isFormValid = true;
+    const employersFormData = cloneDeep(this.state.employers);
 
     this.state.employers.forEach((employer, index) =>
       Object.keys(employer).forEach((fieldName) => {
         const error = getFieldError({
           name: fieldName,
           value: employer[fieldName].value,
-        })
+        });
 
-        if (error) isFormValid = false
+        if (error) isFormValid = false;
 
         employersFormData[index][fieldName] = {
           value: employer[fieldName].value,
           error,
-        }
-      }),
-    )
+        };
+      }));
 
-    let error = `Merci de corriger les erreurs du formulaire. `
+    let error = 'Merci de corriger les erreurs du formulaire. ';
 
     if (isFormValid) {
-      const salaryTotal = calculateTotal(employersFormData, SALARY)
+      const salaryTotal = calculateTotal(employersFormData, SALARY);
 
       if (salaryTotal > MAX_SALARY) {
-        error += `Vous ne pouvez pas déclarer plus de ${MAX_SALARY}€ total de salaire. `
-        isFormValid = false
+        error += `Vous ne pouvez pas déclarer plus de ${MAX_SALARY}€ total de salaire. `;
+        isFormValid = false;
       }
     }
 
@@ -433,16 +433,16 @@ export class Employers extends Component {
       this.setState({
         employers: employersFormData,
         error: isFormValid ? null : error,
-      })
+      });
     }
 
-    return isFormValid
+    return isFormValid;
   }
 
   openDialog = () => {
-    const isValid = this.checkFormValidity()
+    const isValid = this.checkFormValidity();
     if (isValid) {
-      this.setState({ isDialogOpened: true })
+      this.setState({ isDialogOpened: true });
     }
   }
 
@@ -452,7 +452,7 @@ export class Employers extends Component {
       validationErrors: [],
       isDialogOpened: false,
       isValidating: false,
-    })
+    });
   }
 
   onEmployerOnBoardingEnd = () =>
@@ -476,20 +476,25 @@ export class Employers extends Component {
   )
 
   render() {
-    const { employers, error, isLoading, snackMessage } = this.state
+    const {
+      employers, error, isLoading, snackMessage,
+    } = this.state;
 
     if (isLoading) {
       return (
         <StyledEmployers>
           <CircularProgress />
         </StyledEmployers>
-      )
+      );
     }
     return (
       <StyledEmployers>
         <Title variant="h6" component="h1">
-          Pour quels employeurs avez-vous travaillé en{' '}
-          {moment(this.props.activeMonth).format('MMMM YYYY')} ?
+          Pour quels employeurs avez-vous travaillé en
+          {' '}
+          {moment(this.props.activeMonth).format('MMMM YYYY')}
+          {' '}
+          ?
         </Title>
 
         {this.props.user.needEmployerOnBoarding && (
@@ -556,10 +561,15 @@ export class Employers extends Component {
           </ScrollButtonContainer>
         )}
 
-        {snackMessage && <SuccessSnackBar message={snackMessage} onHide={() => this.setState({ snackMessage: null })} />}
+        {snackMessage && (
+        <SuccessSnackBar
+          message={snackMessage}
+          onHide={() => this.setState({ snackMessage: null })}
+        />
+        )}
         {error && <ErrorSnackBar message={error} />}
       </StyledEmployers>
-    )
+    );
   }
 }
 
@@ -572,4 +582,4 @@ export default connect(
     postEmployers: postEmployersAction,
     setNoNeedEmployerOnBoarding: setNoNeedEmployerOnBoardingAction,
   },
-)(withWidth()(Employers))
+)(withWidth()(Employers));

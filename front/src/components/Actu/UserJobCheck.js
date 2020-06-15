@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
-import MainActionButton from '../Generic/MainActionButton'
+import React, { Component } from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
+import MainActionButton from '../Generic/MainActionButton';
 
 const StyledUserJobCheck = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const StyledUserJobCheck = styled.div`
   align-items: center;
   text-align: center;
   padding-top: 5rem;
-`
+`;
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -23,14 +23,14 @@ const ButtonsContainer = styled.div`
   padding: 1rem 0 1.5rem;
   max-width: 32rem;
   width: 100%;
-`
+`;
 
 const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
-`
+`;
 
 // activate this if we decide we want to display the checkbox again
-const ACTIVATE_CHECKBOX_DISPLAY = false
+const ACTIVATE_CHECKBOX_DISPLAY = false;
 
 export class UserJobCheck extends Component {
   static propTypes = { onValidate: PropTypes.func.isRequired }
@@ -65,20 +65,20 @@ export class UserJobCheck extends Component {
 
         {ACTIVATE_CHECKBOX_DISPLAY && (
           <FormControlLabel
-            control={
+            control={(
               <Checkbox
                 checked={!this.state.shouldAskAgain}
                 onChange={this.toggleCheckbox}
                 color="primary"
               />
-            }
+            )}
             label="Ne plus afficher cette question"
             style={{ marginTop: '5rem' }}
           />
         )}
       </StyledUserJobCheck>
-    )
+    );
   }
 }
 
-export default UserJobCheck
+export default UserJobCheck;

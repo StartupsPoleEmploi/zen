@@ -1,1 +1,1 @@
-export { default } from './DeveloperDialog'
+export { default } from './DeveloperDialog';

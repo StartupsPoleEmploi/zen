@@ -1,18 +1,19 @@
-import Button from '@material-ui/core/Button'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
+import Button from '@material-ui/core/Button';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-import CustomColorButton from '../Generic/CustomColorButton'
-import CustomDialog from '../Generic/CustomDialog'
+import CustomColorButton from '../Generic/CustomColorButton';
+import CustomDialog from '../Generic/CustomDialog';
 
 const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
   <CustomDialog
-    content={
-      <Fragment>
+    content={(
+      <>
         <DialogContentText gutterBottom>
           Vous avez déjà envoyé votre actualisation ce mois-ci en passant
-          directement par{' '}
+          directement par
+          {' '}
           <a href="https://www.pole-emploi.fr" style={{ whiteSpace: 'nowrap' }}>
             Pole-emploi.fr
           </a>
@@ -25,14 +26,14 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
           Vous pouvez cependant accéder à l'interface d'envoi de documents s'il
           vous en reste d'anciens à envoyer.
         </DialogContentText>
-      </Fragment>
-    }
+      </>
+    )}
     title="Vous avez déjà envoyé votre actualisation"
     titleId="DeclarationAlreadySentDialogContentText"
     isOpened={isOpened}
     onCancel={onCancel}
-    actions={
-      <Fragment>
+    actions={(
+      <>
         <CustomColorButton onClick={onCancel}>
           Voir les documents
         </CustomColorButton>
@@ -44,14 +45,14 @@ const DeclarationAlreadySentDialog = ({ isOpened, onCancel }) => (
         >
           J'accède à Pole-emploi.fr
         </Button>
-      </Fragment>
-    }
+      </>
+    )}
   />
-)
+);
 
 DeclarationAlreadySentDialog.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
-}
+};
 
-export default DeclarationAlreadySentDialog
+export default DeclarationAlreadySentDialog;

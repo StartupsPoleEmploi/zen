@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
-import PropTypes from 'prop-types'
-import { throttle } from 'lodash'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import PropTypes from 'prop-types';
+import { throttle } from 'lodash';
 
-import { primaryBlue } from '../../constants'
+import { primaryBlue } from '../../constants';
 
 const ScrollButton = styled.button`
   position: absolute;
@@ -23,51 +23,51 @@ const ScrollButton = styled.button`
   border: none;
 
   cursor: pointer;
-`
+`;
 
 const ScrollImg = styled(ArrowDownwardIcon)`
   color: white;
-`
+`;
 
 function ScrollToButton({ top = '-2rem', autoRemove = false }) {
   const [visible, setVisible] = useState(
     autoRemove ? window.scrollY < window.outerHeight : true,
-  )
+  );
 
   function handleEvent() {
-    setVisible(window.scrollY < window.outerHeight)
+    setVisible(window.scrollY < window.outerHeight);
   }
-  const throttleHandleEvent = throttle(handleEvent, 100)
+  const throttleHandleEvent = throttle(handleEvent, 100);
 
   useEffect(() => {
     if (autoRemove) {
-      window.addEventListener('scroll', throttleHandleEvent)
-      window.addEventListener('resize', throttleHandleEvent)
+      window.addEventListener('scroll', throttleHandleEvent);
+      window.addEventListener('resize', throttleHandleEvent);
     }
 
     return () => {
       if (autoRemove) {
-        window.removeEventListener('scroll', throttleHandleEvent)
-        window.removeEventListener('resize', throttleHandleEvent)
+        window.removeEventListener('scroll', throttleHandleEvent);
+        window.removeEventListener('resize', throttleHandleEvent);
       }
-    }
-  }, [])
+    };
+  }, [throttleHandleEvent, autoRemove]);
 
   function scrollToBottom() {
-    window.scrollTo(0, document.body.scrollHeight)
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
-  if (!visible) return null
+  if (!visible) return null;
   return (
     <ScrollButton type="button" onClick={scrollToBottom} style={{ top }}>
       <ScrollImg alt="Se rendre en bas de de la page" />
     </ScrollButton>
-  )
+  );
 }
 
 ScrollToButton.propTypes = {
   top: PropTypes.string,
   autoRemove: PropTypes.bool,
-}
+};
 
-export default ScrollToButton
+export default ScrollToButton;

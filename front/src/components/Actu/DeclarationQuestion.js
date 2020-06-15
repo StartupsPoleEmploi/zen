@@ -1,16 +1,16 @@
-import FormControl from '@material-ui/core/FormControl'
-import Typography from '@material-ui/core/Typography'
-import { isNull } from 'lodash'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import styled from 'styled-components'
+import FormControl from '@material-ui/core/FormControl';
+import Typography from '@material-ui/core/Typography';
+import { isNull } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import YesNoRadioGroup from '../Generic/YesNoRadioGroup'
-import { mobileBreakpoint } from '../../constants'
+import YesNoRadioGroup from '../Generic/YesNoRadioGroup';
+import { mobileBreakpoint } from '../../constants';
 
 const Container = styled.li`
   padding: 1rem;
-`
+`;
 
 const MainQuestionContainer = styled.div`
   && {
@@ -19,7 +19,7 @@ const MainQuestionContainer = styled.div`
     justify-content: space-between;
     flex: 1;
   }
-`
+`;
 
 const QuestionLabel = styled(Typography)`
   && {
@@ -29,14 +29,14 @@ const QuestionLabel = styled(Typography)`
       margin-bottom: 0.5rem;
     }
   }
-`
+`;
 
 const StyledFormControl = styled(FormControl)`
   && {
     flex-shrink: 0;
     padding-left: 1rem;
   }
-`
+`;
 
 export class DeclarationQuestion extends Component {
   static propTypes = {
@@ -54,7 +54,7 @@ export class DeclarationQuestion extends Component {
     this.props.onAnswer({
       hasAnsweredYes: value,
       controlName: this.props.name,
-    })
+    });
   }
 
   render() {
@@ -66,7 +66,7 @@ export class DeclarationQuestion extends Component {
       style = {},
       verticalLayout,
       withChildrenOnNo,
-    } = this.props
+    } = this.props;
     return (
       <Container style={style} id={name}>
         <MainQuestionContainer
@@ -86,8 +86,8 @@ export class DeclarationQuestion extends Component {
         </MainQuestionContainer>
         {!isNull(value) && value === !withChildrenOnNo && children}
       </Container>
-    )
+    );
   }
 }
 
-export default DeclarationQuestion
+export default DeclarationQuestion;

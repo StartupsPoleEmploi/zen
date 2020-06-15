@@ -1,8 +1,7 @@
-
 export const openHelpPopup = () => (dispatch) => {
-  dispatch({ type: 'HELP_POPUP_VISIBLE' })
-}
+  dispatch({ type: 'HELP_POPUP_VISIBLE' });
+};
 
 export const hideHelpPopup = () => (dispatch) => {
-  dispatch({ type: 'HELP_POPUP_HIDE' })
-}
+  dispatch({ type: 'HELP_POPUP_HIDE' });
+};

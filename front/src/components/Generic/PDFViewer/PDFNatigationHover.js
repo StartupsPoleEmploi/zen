@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import IconArrowBack from '@material-ui/icons/ArrowBack'
-import IconArrowForward from '@material-ui/icons/ArrowForward'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import IconArrowBack from '@material-ui/icons/ArrowBack';
+import IconArrowForward from '@material-ui/icons/ArrowForward';
+import styled from 'styled-components';
 
-import { primaryBlue } from '../../../constants'
+import { primaryBlue } from '../../../constants';
 
 const PaginationContainer = styled.div`
   .previous-page,
@@ -22,11 +22,13 @@ const PaginationContainer = styled.div`
   .next-page {
     right: 16px;
   }
-`
+`;
 
 export default function PDFNatigationHover(props) {
-  const { numPages, pageNumber, previousPage, nextPage } = props
-  if (!numPages) return null
+  const {
+    numPages, pageNumber, previousPage, nextPage,
+  } = props;
+  if (!numPages) return null;
 
   return (
     <PaginationContainer>
@@ -53,7 +55,7 @@ export default function PDFNatigationHover(props) {
         />
       </Button>
     </PaginationContainer>
-  )
+  );
 }
 
 PDFNatigationHover.propTypes = {
@@ -61,4 +63,4 @@ PDFNatigationHover.propTypes = {
   pageNumber: PropTypes.number.isRequired,
   previousPage: PropTypes.func.isRequired,
   nextPage: PropTypes.func.isRequired,
-}
+};

@@ -1,24 +1,24 @@
-import '@babel/polyfill'
-import 'moment/locale/fr'
+import '@babel/polyfill';
+import 'moment/locale/fr';
 
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import moment from 'moment-timezone'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import moment from 'moment-timezone';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-import './lib/external/gtm'
-import './lib/external/hotjar'
+import './lib/external/gtm';
+import './lib/external/hotjar';
 
-import { version } from '../package.json'
-import App from './App'
-import store from './redux/store'
-import DeveloperDialog from './components/Generic/DeveloperDialog'
-import CookiePolicy from './components/Generic/CookiePolicy'
+import { version } from '../package.json';
+import App from './App';
+import store from './redux/store';
+import DeveloperDialog from './components/Generic/DeveloperDialog';
+import CookiePolicy from './components/Generic/CookiePolicy';
 
-const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV
+const environment = process.env.REACT_APP_SENTRY_ENV || process.env.NODE_ENV;
 
 if (environment !== 'development') {
   window.Raven.config(
@@ -27,11 +27,11 @@ if (environment !== 'development') {
       release: version,
       environment,
     },
-  ).install()
+  ).install();
 }
 
-moment.locale('fr')
-moment.tz.setDefault('Europe/Paris')
+moment.locale('fr');
+moment.tz.setDefault('Europe/Paris');
 
 const theme = createMuiTheme({
   typography: {
@@ -87,7 +87,7 @@ const theme = createMuiTheme({
       },
     },
   },
-})
+});
 
 ReactDOM.render(
   <Provider store={store}>
@@ -95,7 +95,8 @@ ReactDOM.render(
     <MuiThemeProvider theme={theme}>
       {/* The following modal must never be displayed out of dev mode, modify with extreme caution */
       (process.env.REACT_APP_ZEN_ENV === 'development' ||
-        process.env.REACT_APP_ZEN_ENV === 'qa') && <DeveloperDialog />}
+        process.env.REACT_APP_ZEN_ENV === 'qa') && <DeveloperDialog />
+}
       <BrowserRouter>
         <App />
       </BrowserRouter>
@@ -103,4 +104,4 @@ ReactDOM.render(
     <CookiePolicy />
   </Provider>,
   document.getElementById('root'),
-)
+);

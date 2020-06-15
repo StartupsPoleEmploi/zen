@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import FormLabel from '@material-ui/core/FormLabel'
-import Typography from '@material-ui/core/Typography'
-import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank'
-import Check from '@material-ui/icons/Check'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
-import { withWidth } from '@material-ui/core'
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormLabel from '@material-ui/core/FormLabel';
+import Typography from '@material-ui/core/Typography';
+import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
+import Check from '@material-ui/icons/Check';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import { withWidth } from '@material-ui/core';
 
-import TooltipOnFocus from '../Generic/TooltipOnFocus'
+import TooltipOnFocus from '../Generic/TooltipOnFocus';
 import {
   helpColor,
   darkBlue,
@@ -18,8 +18,8 @@ import {
   intermediaryBreakpoint,
   mobileBreakpoint,
   errorOrange,
-} from '../../constants'
-import { hasFileBrokenByNavigator } from '../../lib/tools'
+} from '../../constants';
+import { hasFileBrokenByNavigator } from '../../lib/tools';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ const StyledContainer = styled.div`
   &:not(:last-child) {
     padding-bottom: 2rem;
   }
-`
+`;
 
 const StyledFormLabel = styled(FormLabel)`
   display: flex;
@@ -45,7 +45,7 @@ const StyledFormLabel = styled(FormLabel)`
     justify-content: flex-start;
     padding: 1rem 0;
   }
-`
+`;
 
 const LabelsContainer = styled.div`
   flex: 0 1 auto;
@@ -55,7 +55,7 @@ const LabelsContainer = styled.div`
   @media (max-width: 1000px) {
     width: auto;
   }
-`
+`;
 
 const ActionsContainer = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const ActionsContainer = styled.div`
     align-self: flex-start;
     padding: 1rem 0;
   }
-`
+`;
 
 const ActionButton = styled(Button).attrs({
   variant: 'contained',
@@ -90,29 +90,29 @@ const ActionButton = styled(Button).attrs({
       padding: 1rem 3rem;
     }
   }
-`
+`;
 
 const CheckBoxOutlineBlankIcon = styled(CheckBoxOutlineBlank)`
   color: ${primaryBlue};
   margin-right: 1rem;
   vertical-align: sub;
-`
+`;
 
 const CheckIcon = styled(Check)`
   margin-right: 0.5rem;
-`
+`;
 
 const ErrorTypography = styled(Typography).attrs({ variant: 'caption' })`
   && {
     color: red;
     padding-right: 1rem;
   }
-`
+`;
 
 const Upper = styled.span`
   text-transform: uppercase;
   white-space: pre;
-`
+`;
 
 const SecondBloc = styled.div`
   display: flex;
@@ -127,7 +127,7 @@ const SecondBloc = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     justify-content: flex-start;
   }
-`
+`;
 
 const Or = styled(Typography)`
   && {
@@ -141,7 +141,7 @@ const Or = styled(Typography)`
       margin-right: 0;
     }
   }
-`
+`;
 
 const MissingFileActionButton = styled(ActionButton)`
   && {
@@ -153,7 +153,7 @@ const MissingFileActionButton = styled(ActionButton)`
       border: solid 2px ${errorOrange};
     }
   }
-`
+`;
 
 const InfoImg = styled(InfoOutlinedIcon)`
   && {
@@ -161,7 +161,7 @@ const InfoImg = styled(InfoOutlinedIcon)`
     vertical-align: sub;
     margin-left: 0.5rem;
   }
-`
+`;
 const DocumentZone = styled.div`
   display: flex;
   flex: 3;
@@ -171,7 +171,7 @@ const DocumentZone = styled.div`
   @media (max-width: 1000px) {
     flex-direction: column;
   }
-`
+`;
 
 const SkipFileSection = styled.div`
   display: flex;
@@ -181,13 +181,13 @@ const SkipFileSection = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     justify-content: flex-start;
   }
-`
+`;
 
 const LabelTypography = styled(Typography)`
   @media (max-width: ${mobileBreakpoint}) {
     margin-bottom: 1.5rem;
   }
-`
+`;
 
 const Dot = styled.span`
   color: ${primaryBlue};
@@ -195,32 +195,13 @@ const Dot = styled.span`
   font-size: 2.5rem;
   font-weight: bold;
   margin-right: 0;
-`
+`;
 
-const employerType = 'employer'
-const infosType = 'info'
+const employerType = 'employer';
+const infosType = 'info';
 
 export class DocumentUpload extends Component {
   static types = { employer: employerType, info: infosType }
-
-  renderFileField(fileInput, showTooltip, id) {
-    if (!showTooltip) return fileInput
-
-    if (hasFileBrokenByNavigator()) {
-      return (<ErrorTypography className="upload-error">
-        La version de votre navigateur est trop ancienne pour transmettre vos justificatifs. Nous vous invitons à le mettre à jour.
-      </ErrorTypography>)
-    }
-
-    return (
-      <TooltipOnFocus
-        tooltipId={`file[${id}]`}
-        content="Formats acceptés: .png, .jpg, .jpeg, .pdf"
-      >
-        {fileInput}
-      </TooltipOnFocus>
-    )
-  }
 
   submitFile = (file) =>
     this.props.submitFile({
@@ -241,6 +222,29 @@ export class DocumentUpload extends Component {
       employerDocType: this.props.employerDocType,
     })
 
+  renderFileField(fileInput, showTooltip, id) {
+    if (!showTooltip) return fileInput;
+
+    if (hasFileBrokenByNavigator()) {
+      return (
+        <ErrorTypography className="upload-error">
+          La version de votre navigateur est trop ancienne pour transmettre vos justificatifs.
+          {' '}
+          Nous vous invitons à le mettre à jour.
+        </ErrorTypography>
+      );
+    }
+
+    return (
+      <TooltipOnFocus
+        tooltipId={`file[${id}]`}
+        content="Formats acceptés: .png, .jpg, .jpeg, .pdf"
+      >
+        {fileInput}
+      </TooltipOnFocus>
+    );
+  }
+
   render() {
     const {
       id,
@@ -255,7 +259,7 @@ export class DocumentUpload extends Component {
       type,
       useLightVersion,
       width,
-    } = this.props
+    } = this.props;
 
     const hiddenInput = (
       <input
@@ -268,7 +272,7 @@ export class DocumentUpload extends Component {
           },
         }) => this.submitFile(file)}
       />
-    )
+    );
 
     const viewDocumentButton = (
       <div style={{ textAlign: 'center' }}>
@@ -282,7 +286,7 @@ export class DocumentUpload extends Component {
           Justificatif à valider
         </Typography>
       </div>
-    )
+    );
 
     const uploadInput = (
       <ActionButton
@@ -292,7 +296,7 @@ export class DocumentUpload extends Component {
       >
         Transmettre à Pôle emploi
       </ActionButton>
-    )
+    );
 
     return (
       <StyledContainer
@@ -304,7 +308,9 @@ export class DocumentUpload extends Component {
       >
         <LabelsContainer>
           <LabelTypography>
-            {width === 'xs' && <Dot>.</Dot>} <b>{label}</b>
+            {width === 'xs' && <Dot>.</Dot>}
+            {' '}
+            <b>{label}</b>
           </LabelTypography>
           {caption && (
             <Typography
@@ -320,76 +326,80 @@ export class DocumentUpload extends Component {
         {isLoading ? (
           <CircularProgress />
         ) : (
-            <DocumentZone>
-              <ActionsContainer>
-                {error && (
-                  <ErrorTypography className="upload-error">
-                    {error}
-                  </ErrorTypography>
-                )}
-
-                {isTransmitted ? (
-                  <ActionButton
-                    disabled
-                    style={{ backgroundColor: '#039C6D', color: 'white' }}
-                  >
-                    <CheckIcon /> Envoyé
-                  </ActionButton>
-                ) : !fileExistsOnServer ? (
-                  <StyledFormLabel
-                    style={{
-                      width: useLightVersion ? '100%' : 'auto',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {this.renderFileField(uploadInput, showTooltip, employerId)}
-                    {hiddenInput}
-                  </StyledFormLabel>
-                ) : (
-                      viewDocumentButton
-                    )}
-              </ActionsContainer>
-
-              {!isTransmitted && (
-                <SecondBloc>
-                  <Or>OU</Or>
-                  <SkipFileSection>
-                    <Button
-                      aria-describedby={`file[${id}]`}
-                      onClick={this.skipFile}
-                      className="already-transmitted-button"
-                      style={{
-                        textAlign: 'left',
-                        lineHeight: '2rem',
-                      }}
-                      size={useLightVersion ? 'medium' : 'small'}
-                      disabled={isTransmitted}
-                    >
-                      <>
-                        <Typography
-                          style={{
-                            fontWeight: 'bold',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
-                          <div>
-                            Pôle emploi <Upper>a déjà ce justificatif</Upper>
-                          </div>
-                        </Typography>
-                      </>
-                    </Button>
-                    <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
-                      <InfoImg />
-                    </TooltipOnFocus>
-                  </SkipFileSection>
-                </SecondBloc>
+          <DocumentZone>
+            <ActionsContainer>
+              {error && (
+              <ErrorTypography className="upload-error">
+                {error}
+              </ErrorTypography>
               )}
-            </DocumentZone>
-          )}
+
+              {isTransmitted ? (
+                <ActionButton
+                  disabled
+                  style={{ backgroundColor: '#039C6D', color: 'white' }}
+                >
+                  <CheckIcon />
+                  {' '}
+                  Envoyé
+                </ActionButton>
+              ) : !fileExistsOnServer ? (
+                <StyledFormLabel
+                  style={{
+                    width: useLightVersion ? '100%' : 'auto',
+                    textAlign: 'center',
+                  }}
+                >
+                  {this.renderFileField(uploadInput, showTooltip, employerId)}
+                  {hiddenInput}
+                </StyledFormLabel>
+              ) : (
+                viewDocumentButton
+              )}
+            </ActionsContainer>
+
+            {!isTransmitted && (
+            <SecondBloc>
+              <Or>OU</Or>
+              <SkipFileSection>
+                <Button
+                  aria-describedby={`file[${id}]`}
+                  onClick={this.skipFile}
+                  className="already-transmitted-button"
+                  style={{
+                    textAlign: 'left',
+                    lineHeight: '2rem',
+                  }}
+                  size={useLightVersion ? 'medium' : 'small'}
+                  disabled={isTransmitted}
+                >
+                  <>
+                    <Typography
+                      style={{
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <CheckBoxOutlineBlankIcon style={{ width: '3rem' }} />
+                      <div>
+                        Pôle emploi
+                        {' '}
+                        <Upper>a déjà ce justificatif</Upper>
+                      </div>
+                    </Typography>
+                  </>
+                </Button>
+                <TooltipOnFocus content="Cochez cette case si vous ou votre employeur avez déjà transmis ce justificatif à Pôle emploi.">
+                  <InfoImg />
+                </TooltipOnFocus>
+              </SkipFileSection>
+            </SecondBloc>
+            )}
+          </DocumentZone>
+        )}
       </StyledContainer>
-    )
+    );
   }
 }
 
@@ -410,10 +420,10 @@ DocumentUpload.propTypes = {
   showTooltip: PropTypes.bool,
   useLightVersion: PropTypes.bool.isRequired,
   width: PropTypes.string.isRequired,
-}
+};
 
 DocumentUpload.defaultProps = {
   showTooltip: false,
-}
+};
 
-export default withWidth()(DocumentUpload)
+export default withWidth()(DocumentUpload);

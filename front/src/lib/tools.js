@@ -17,7 +17,7 @@ export const sayswho = () => {
 
 export const hasFileBrokenByNavigator = () => {
   const [navigator, version] = sayswho()
-  if (navigator === "Chrome" && +version <= 490) {
+  if (navigator === "Chrome" && +version <= 49) {
     return true
   }
 

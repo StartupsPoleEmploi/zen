@@ -208,7 +208,7 @@ export class DocumentUpload extends Component {
 
     if (hasFileBrokenByNavigator()) {
       return (<ErrorTypography className="upload-error">
-        Votre navigateur est trop ancien, veuillez le mettre à jour ou allez sur PE pour transmattre les justificatifs.
+        La version de votre navigateur est trop ancienne pour transmettre vos justificatifs. Nous vous invitons à le mettre à jour.
       </ErrorTypography>)
     }
 

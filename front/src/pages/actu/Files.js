@@ -675,9 +675,10 @@ export class Files extends Component {
 
     // Users have come to this page without any old documents to validate
     if (
-      !activeMonth &&
-      (!lastDeclaration || lastDeclaration.isFinished) &&
-      !areUnfinishedDeclarations
+      !lastDeclaration || (
+        !activeMonth &&
+        (!lastDeclaration || lastDeclaration.isFinished) &&
+        !areUnfinishedDeclarations)
     ) {
       return (
         <StyledFiles>
@@ -842,12 +843,12 @@ export class Files extends Component {
           )}
 
           {snackSuccess && (
-          <SuccessSnackBar
-            message={snackSuccess}
-            onHide={() => this.setState({ snackSuccess: null })}
-            closeIcon
-            duraction={null}
-          />
+            <SuccessSnackBar
+              message={snackSuccess}
+              onHide={() => this.setState({ snackSuccess: null })}
+              closeIcon
+              duraction={null}
+            />
           )}
           {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
         </StyledFiles>

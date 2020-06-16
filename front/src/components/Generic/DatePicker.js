@@ -1,13 +1,13 @@
-import MomentUtils from '@date-io/moment'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import ChevronRight from '@material-ui/icons/ChevronRight'
-import { omit } from 'lodash'
+import MomentUtils from '@date-io/moment';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import { omit } from 'lodash';
 import {
   DatePicker as MuiDatePicker,
   MuiPickersUtilsProvider,
-} from '@material-ui/pickers'
-import PropTypes from 'prop-types'
-import React, { PureComponent } from 'react'
+} from '@material-ui/pickers';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 export default class DatePicker extends PureComponent {
   static propTypes = {
@@ -24,7 +24,7 @@ export default class DatePicker extends PureComponent {
     this.props.onSelectDate({
       controlName: this.props.name,
       date: momentDate.toDate(),
-    })
+    });
   }
 
   render() {
@@ -45,6 +45,6 @@ export default class DatePicker extends PureComponent {
           }
         />
       </MuiPickersUtilsProvider>
-    )
+    );
   }
 }

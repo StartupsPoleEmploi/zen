@@ -1,5 +1,5 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import reducer from './reducers'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import reducer from './reducers';
 
 const store = configureStore({
   middleware: getDefaultMiddleware({
@@ -13,6 +13,6 @@ const store = configureStore({
   }),
 
   reducer,
-})
+});
 
-export default store
+export default store;

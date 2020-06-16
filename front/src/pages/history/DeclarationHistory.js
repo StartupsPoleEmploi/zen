@@ -1,13 +1,13 @@
-import React from 'react'
-import { Typography } from '@material-ui/core'
-import PropTypes from 'prop-types'
-import DoneIcon from '@material-ui/icons/Done'
-import styled from 'styled-components'
-import withWidth from '@material-ui/core/withWidth'
+import React from 'react';
+import { Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import DoneIcon from '@material-ui/icons/Done';
+import styled from 'styled-components';
+import withWidth from '@material-ui/core/withWidth';
 
-import { intermediaryBreakpoint, mobileBreakpoint } from '../../constants'
-import MissingCell from './MissingCell'
-import FileCell from './FileCell'
+import { intermediaryBreakpoint, mobileBreakpoint } from '../../constants';
+import MissingCell from './MissingCell';
+import FileCell from './FileCell';
 
 const Row = styled.div`
   display: grid;
@@ -17,7 +17,7 @@ const Row = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     grid-template-columns: 1fr;
   }
-`
+`;
 
 const StyledDoneIcon = styled(DoneIcon)`
   && {
@@ -25,7 +25,7 @@ const StyledDoneIcon = styled(DoneIcon)`
     vertical-align: bottom;
     color: green;
   }
-`
+`;
 
 const Cell = styled.div`
   flex: 1;
@@ -41,7 +41,7 @@ const Cell = styled.div`
     justify-content: left;
     padding: 0;
   }
-`
+`;
 
 function DeclarationHistory({ lastMonthId, declaration, width }) {
   return (
@@ -60,13 +60,13 @@ function DeclarationHistory({ lastMonthId, declaration, width }) {
       />
       <FileCell declaration={declaration} />
     </Row>
-  )
+  );
 }
 
 DeclarationHistory.propTypes = {
   declaration: PropTypes.object,
   lastMonthId: PropTypes.number.isRequired,
   width: PropTypes.string.isRequired,
-}
+};
 
-export default withWidth()(DeclarationHistory)
+export default withWidth()(DeclarationHistory);

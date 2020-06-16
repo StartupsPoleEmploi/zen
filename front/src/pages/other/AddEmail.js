@@ -1,18 +1,18 @@
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import styled from 'styled-components'
-import superagent from 'superagent'
-import { hot } from 'react-hot-loader'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import superagent from 'superagent';
+import { hot } from 'react-hot-loader';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { setEmail } from '../../redux/actions/user'
-import catchMaintenance from '../../lib/catchMaintenance'
+import { setEmail } from '../../redux/actions/user';
+import catchMaintenance from '../../lib/catchMaintenance';
 
-import tester from '../../images/tester.png'
+import tester from '../../images/tester.png';
 
 const StyledAddEmail = styled.div`
   margin: auto;
@@ -22,12 +22,12 @@ const StyledAddEmail = styled.div`
   justify-content: center;
   text-align: center;
   max-width: 50rem;
-`
+`;
 
 const LandingText = styled(Typography).attrs({
   variant: 'h6',
   paragraph: true,
-})``
+})``;
 
 const Form = styled.form`
   display: flex;
@@ -36,7 +36,7 @@ const Form = styled.form`
 
   max-width: 35rem;
   width: 100%;
-`
+`;
 
 const StyledButton = styled(Button).attrs({
   color: 'primary',
@@ -45,7 +45,7 @@ const StyledButton = styled(Button).attrs({
   && {
     margin-top: 2rem;
   }
-`
+`;
 
 const StyledTextField = styled(TextField)`
   && {
@@ -55,15 +55,15 @@ const StyledTextField = styled(TextField)`
       width: 100%;
     }
   }
-`
+`;
 
 const TesterImg = styled.img`
   display: block;
   width: 40rem;
   margin: 8rem auto 5rem auto;
-`
+`;
 
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export class AddEmail extends Component {
   static propTypes = {
@@ -87,26 +87,26 @@ export class AddEmail extends Component {
   onSubmit = () => {
     if (!EMAIL_REGEX.test(this.state.email)) {
       return this.setState({
-        emailError: `Merci d'entrer une adresse e-mail valide`,
+        emailError: 'Merci d\'entrer une adresse e-mail valide',
         emailConfirmationError: '',
-      })
+      });
     }
     if (this.state.email.trim() !== this.state.emailConfirmation.trim()) {
       return this.setState({
         emailError: '',
-        emailConfirmationError: `Les deux adresses e-mails ne sont pas identiques`,
-      })
+        emailConfirmationError: 'Les deux adresses e-mails ne sont pas identiques',
+      });
     }
 
     superagent
       .patch('/api/user', { email: this.state.email })
       .set('CSRF-Token', this.props.csrfToken)
       .then(() => {
-        this.props.setEmail(this.state.email.trim())
-        window.location.replace('/')
+        this.props.setEmail(this.state.email.trim());
+        window.location.replace('/');
       })
       .catch(catchMaintenance)
-      .catch(() => this.setState({ isError: true }))
+      .catch(() => this.setState({ isError: true }));
   }
 
   render() {
@@ -116,7 +116,7 @@ export class AddEmail extends Component {
       emailError,
       emailConfirmation,
       emailConfirmationError,
-    } = this.state
+    } = this.state;
 
     if (isError) {
       return (
@@ -128,7 +128,7 @@ export class AddEmail extends Component {
             réessayer ultérieurement.
           </Typography>
         </StyledAddEmail>
-      )
+      );
     }
 
     return (
@@ -136,7 +136,9 @@ export class AddEmail extends Component {
         <TesterImg src={tester} alt="" />
 
         <LandingText variant="h5" component="h1">
-          Merci pour votre demande d'inscription <br />
+          Merci pour votre demande d'inscription
+          {' '}
+          <br />
           au service Zen de Pôle emploi
         </LandingText>
 
@@ -171,7 +173,7 @@ export class AddEmail extends Component {
           <StyledButton onClick={this.onSubmit}>Valider</StyledButton>
         </Form>
       </StyledAddEmail>
-    )
+    );
   }
 }
 
@@ -184,4 +186,4 @@ export default hot(module)(
       { setEmail },
     )(AddEmail),
   ),
-)
+);

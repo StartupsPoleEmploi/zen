@@ -3,41 +3,41 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-loop-func */
 
-const { format } = require('date-fns')
-const { get } = require('lodash')
+const { format } = require('date-fns');
+const { get } = require('lodash');
 
-exports.up = function(knex) {
+exports.up = function up(knex) {
   return knex.schema
     .createTable('declaration_infos', (table) => {
-      table.increments('id').primary()
+      table.increments('id').primary();
       table
         .integer('declarationId')
         .notNull()
         .references('id')
-        .inTable('declarations')
-      table.string('type').notNull()
-      table.date('startDate')
-      table.date('endDate')
-      table.string('file')
-      table.bool('isTransmitted').defaultTo(false)
+        .inTable('declarations');
+      table.string('type').notNull();
+      table.date('startDate');
+      table.date('endDate');
+      table.string('file');
+      table.bool('isTransmitted').defaultTo(false);
     })
     .then(() => knex.raw('SELECT * FROM declarations'))
     .then(async () => {
       const { rows: declarations } = await knex.raw(
         'SELECT * FROM declarations',
-      )
+      );
       const { rows: declarationDocuments } = await knex.raw(
         'SELECT * FROM declaration_documents',
-      )
+      );
 
       for (const declaration of declarations) {
         if (declaration.hasInternship) {
-          const type = 'internship'
+          const type = 'internship';
           for (const { startDate, endDate } of declaration.dates.internships) {
             const declarationDoc = declarationDocuments.find(
               ({ declarationId, type: declarationDocType }) =>
                 declarationId === declaration.id && type === declarationDocType,
-            )
+            );
 
             await knex.table('declaration_infos').insert(
               {
@@ -49,16 +49,16 @@ exports.up = function(knex) {
                 isTransmitted: get(declarationDoc, 'isTransmitted'),
               },
               ['id'],
-            )
+            );
           }
         }
         if (declaration.hasSickLeave) {
-          const type = 'sickLeave'
+          const type = 'sickLeave';
           for (const { startDate, endDate } of declaration.dates.sickLeaves) {
             const declarationDoc = declarationDocuments.find(
               ({ declarationId, type: declarationDocType }) =>
                 declarationId === declaration.id && type === declarationDocType,
-            )
+            );
             await knex.table('declaration_infos').insert(
               {
                 type,
@@ -69,16 +69,16 @@ exports.up = function(knex) {
                 isTransmitted: get(declarationDoc, 'isTransmitted'),
               },
               ['id'],
-            )
+            );
           }
         }
 
         if (declaration.hasMaternityLeave) {
-          const type = 'maternityLeave'
+          const type = 'maternityLeave';
           const declarationDoc = declarationDocuments.find(
             ({ declarationId, type: declarationDocType }) =>
               declarationId === declaration.id && type === declarationDocType,
-          )
+          );
           await knex.table('declaration_infos').insert(
             {
               type,
@@ -91,15 +91,15 @@ exports.up = function(knex) {
               isTransmitted: get(declarationDoc, 'isTransmitted'),
             },
             ['id'],
-          )
+          );
         }
 
         if (declaration.hasRetirement) {
-          const type = 'retirement'
+          const type = 'retirement';
           const declarationDoc = declarationDocuments.find(
             ({ declarationId, type: declarationDocType }) =>
               declarationId === declaration.id && type === declarationDocType,
-          )
+          );
           await knex.table('declaration_infos').insert(
             {
               type,
@@ -112,15 +112,15 @@ exports.up = function(knex) {
               isTransmitted: get(declarationDoc, 'isTransmitted'),
             },
             ['id'],
-          )
+          );
         }
 
         if (declaration.hasInvalidity) {
-          const type = 'invalidity'
+          const type = 'invalidity';
           const declarationDoc = declarationDocuments.find(
             ({ declarationId, type: declarationDocType }) =>
               declarationId === declaration.id && type === declarationDocType,
-          )
+          );
           await knex.table('declaration_infos').insert(
             {
               type,
@@ -133,11 +133,11 @@ exports.up = function(knex) {
               isTransmitted: get(declarationDoc, 'isTransmitted'),
             },
             ['id'],
-          )
+          );
         }
 
         if (!declaration.isLookingForJob) {
-          const type = 'jobSearch'
+          const type = 'jobSearch';
           await knex.table('declaration_infos').insert(
             {
               type,
@@ -148,16 +148,15 @@ exports.up = function(knex) {
               ),
             },
             ['id'],
-          )
+          );
         }
       }
     })
     .then(() =>
       knex.schema.table('declarations', (table) => {
-        table.dropColumn('dates')
-      }),
-    )
-    .then(() => knex.schema.dropTable('declaration_documents'))
-}
+        table.dropColumn('dates');
+      }))
+    .then(() => knex.schema.dropTable('declaration_documents'));
+};
 
-exports.down = function() {}
+exports.down = function down() {};

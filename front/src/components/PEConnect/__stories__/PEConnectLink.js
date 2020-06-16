@@ -1,8 +1,8 @@
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { host } from 'storybook-host'
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { host } from 'storybook-host';
 
-import PEConnectLink from '../PEConnectLink'
+import PEConnectLink from '../PEConnectLink';
 
 storiesOf('PEConnectLink', module)
   .addDecorator(
@@ -12,4 +12,4 @@ storiesOf('PEConnectLink', module)
     }),
   )
   .add('light', () => <PEConnectLink />)
-  .add('dark', () => <PEConnectLink useDarkVersion />)
+  .add('dark', () => <PEConnectLink useDarkVersion />);

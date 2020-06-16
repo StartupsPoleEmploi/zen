@@ -1,8 +1,8 @@
-const { BelongsToOneRelation, Model } = require('objection')
+const { BelongsToOneRelation, Model } = require('objection');
 
 class DeclarationReview extends Model {
   static get tableName() {
-    return 'declaration_reviews'
+    return 'declaration_reviews';
   }
 
   static get jsonSchema() {
@@ -16,7 +16,7 @@ class DeclarationReview extends Model {
         isVerified: { type: 'boolean ' },
         notes: { type: ['string', 'null'] },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -30,8 +30,8 @@ class DeclarationReview extends Model {
           to: 'declarations.id',
         },
       },
-    }
+    };
   }
 }
 
-module.exports = DeclarationReview
+module.exports = DeclarationReview;

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
-import logo from '../../images/logoFull.svg'
-import MainActionButton from './MainActionButton'
-import CustomDialog from './CustomDialog'
+import logo from '../../images/logoFull.svg';
+import MainActionButton from './MainActionButton';
+import CustomDialog from './CustomDialog';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -34,18 +34,18 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '1.4rem',
     },
   },
-}))
+}));
 
 export default function CookiePolicy() {
-  const classes = useStyles()
+  const classes = useStyles();
   const [consent, setConsent] = useState(
     localStorage.getItem('cookieConsent') === 'true' ||
       process.env.REACT_APP_ZEN_ENV === 'test',
-  )
+  );
   const setCookieConsent = () => {
-    localStorage.setItem('cookieConsent', 'true')
-    setConsent('true')
-  }
+    localStorage.setItem('cookieConsent', 'true');
+    setConsent('true');
+  };
 
   return (
     <CustomDialog
@@ -59,14 +59,14 @@ export default function CookiePolicy() {
       title={
         <img src={logo} alt="Zen - Pôle emploi" className={classes.titleImg} />
       }
-      content={
+      content={(
         <Typography className={classes.content} align="center">
           En poursuivant votre navigation sur ce site, vous acceptez
           l'utilisation de cookies pour améliorer la qualité du service et pour
           réaliser des statistiques de visite.
         </Typography>
-      }
-      actions={
+      )}
+      actions={(
         <MainActionButton
           onClick={setCookieConsent}
           title="J'accepte"
@@ -75,7 +75,7 @@ export default function CookiePolicy() {
         >
           J'accepte
         </MainActionButton>
-      }
+      )}
     />
-  )
+  );
 }

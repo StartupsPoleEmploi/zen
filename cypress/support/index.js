@@ -14,13 +14,13 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-const MAX_WAIT_TIME = 180000
-const startTime = Date.now()
+const MAX_WAIT_TIME = 180000;
+const startTime = Date.now();
 
 /*
  * This code is weird. Keep in mind that cypress will wait for its (bluebird) promises
@@ -32,35 +32,35 @@ const startTime = Date.now()
  */
 const waitForAppToBeReady = () => {
   if (Date.now() - startTime > MAX_WAIT_TIME) {
-    throw new Error('App not ready in time')
+    throw new Error('App not ready in time');
   }
 
   cy.request({
     url: '/api/ping',
     method: 'GET',
     failOnStatusCode: false,
-  }).then((res) => {
+  }).then(async (res) => {
     if (res.status !== 200) {
-      return waitForAppToBeReady()
+      await waitForAppToBeReady();
     }
-  })
+  });
 
   cy.request({
     url: '/',
     method: 'GET',
     failOnStatusCode: false,
-  }).then((res) => {
+  }).then(async (res) => {
     if (res.status !== 200) {
-      return waitForAppToBeReady()
+      await waitForAppToBeReady();
     }
-  })
+  });
 
-  cy.clearCookies()
+  cy.clearCookies();
   cy.request({
     url: '/api/user',
     method: 'GET',
     failOnStatusCode: false,
-  })
-}
+  });
+};
 
-before(() => waitForAppToBeReady())
+before(() => waitForAppToBeReady());

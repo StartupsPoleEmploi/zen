@@ -8,6 +8,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 30px;
+  padding: 0px 1rem;
 }
 @media (max-width: 1200px) {
   .ul {
@@ -38,7 +39,7 @@
 }
 
 .subtitle {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-style: italic;
   margin-top: -8px;
   margin-bottom: 1.5rem;

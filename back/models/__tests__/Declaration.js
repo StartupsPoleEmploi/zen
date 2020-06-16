@@ -1,8 +1,8 @@
-const DeclarationMonth = require('../DeclarationMonth')
-const Declaration = require('../Declaration')
-const User = require('../User')
+const DeclarationMonth = require('../DeclarationMonth');
+const Declaration = require('../Declaration');
+const User = require('../User');
 
-let user
+let user;
 
 const validDeclaration = {
   hasWorked: true,
@@ -13,7 +13,7 @@ const validDeclaration = {
   hasRetirement: false,
   hasInvalidity: false,
   isLookingForJob: true,
-}
+};
 
 describe('Declaration Model', () => {
   beforeAll(() =>
@@ -26,37 +26,36 @@ describe('Declaration Model', () => {
       }),
       DeclarationMonth.query().first(),
     ]).then(([savedUser, declarationMonth]) => {
-      user = savedUser
-      validDeclaration.monthId = declarationMonth.id
-    }),
-  )
-  afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE'))
+      user = savedUser;
+      validDeclaration.monthId = declarationMonth.id;
+    }));
+  afterAll(() => User.knex().raw('TRUNCATE "Users" CASCADE'));
 
-  afterEach(() => Declaration.knex().raw('TRUNCATE "declarations" CASCADE'))
+  afterEach(() => Declaration.knex().raw('TRUNCATE "declarations" CASCADE'));
 
   describe('Validation', () => {
     // Checks if declaration is valid by saving it.
     const checkValidDeclaration = (declaration) =>
-      Declaration.query().insert({ ...declaration, userId: user.id })
+      Declaration.query().insert({ ...declaration, userId: user.id });
 
     const checkInvalidDeclaration = (declaration) =>
       Declaration.query()
         .insert({ ...declaration, userId: user.id })
         .then(() => {
-          throw new Error('This should not validate')
+          throw new Error('This should not validate');
         })
         .catch((err) => {
-          if (err.type === 'DeclarationValidationError') return
-          throw new Error(err)
-        })
+          if (err.type === 'DeclarationValidationError') return;
+          throw new Error(err);
+        });
 
     test('accepts classic declaration', () =>
-      checkValidDeclaration(validDeclaration))
+      checkValidDeclaration(validDeclaration));
 
-    test('rejects empty declaration', () => checkInvalidDeclaration({}))
+    test('rejects empty declaration', () => checkInvalidDeclaration({}));
 
     describe('isLookingForJob', () => {
-      let lookingForJobDeclaration
+      let lookingForJobDeclaration;
 
       beforeAll(() => {
         // validDeclaration is populated in an upper level beforeAll,
@@ -64,11 +63,11 @@ describe('Declaration Model', () => {
         lookingForJobDeclaration = {
           ...validDeclaration,
           isLookingForJob: false,
-        }
-      })
+        };
+      });
 
       test('rejects without a motive', () =>
-        checkInvalidDeclaration(lookingForJobDeclaration))
-    })
-  })
-})
+        checkInvalidDeclaration(lookingForJobDeclaration));
+    });
+  });
+});

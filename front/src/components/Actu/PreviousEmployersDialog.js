@@ -1,24 +1,24 @@
-import React from 'react'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import AlarmOn from '@material-ui/icons/AlarmOn'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt'
-import { Typography } from '@material-ui/core'
+import React from 'react';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import AlarmOn from '@material-ui/icons/AlarmOn';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
+import { Typography } from '@material-ui/core';
 
-import CustomDialog from '../Generic/CustomDialog'
-import MainActionButton from '../Generic/MainActionButton'
+import CustomDialog from '../Generic/CustomDialog';
+import MainActionButton from '../Generic/MainActionButton';
 
 const StyledArrowRightAlt = styled(ArrowRightAlt)`
   margin-left: 1rem;
-`
+`;
 
 const AlarmOnIcon = styled(AlarmOn)`
   && {
     width: 4rem;
     height: 4rem;
   }
-`
+`;
 
 // Custom code so we get a modal with a white transparent background
 // without box-shadow, aligned with the top of the page
@@ -29,11 +29,11 @@ const StyledCustomDialog = styled(CustomDialog)`
   div[class^='MuiDialogContent-root'] {
     flex: inherit;
   }
-`
+`;
 
 const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
   <StyledCustomDialog
-    content={
+    content={(
       <>
         <Typography style={{ fontSize: '2rem' }}>
           Nous avons pré-rempli votre page employeurs avec ceux renseignés lors
@@ -66,22 +66,22 @@ const PreviousEmployersDialog = ({ employers = [], isOpened, onCancel }) => (
           nouveaux employeurs pour le mois en cours.
         </DialogContentText>
       </>
-    }
+    )}
     titleIcon={<AlarmOnIcon color="primary" />}
     title="Employeurs pré-remplis"
     titleId="PreviousEmployersDialogContentText"
     isOpened={isOpened}
     onCancel={onCancel}
-    actions={
+    actions={(
       <MainActionButton onClick={onCancel} variant="contained" color="primary">
         J'ai compris
         <StyledArrowRightAlt />
       </MainActionButton>
-    }
+    )}
     disableEscapeKeyDown
     disableBackdropClick
   />
-)
+);
 
 PreviousEmployersDialog.propTypes = {
   employers: PropTypes.arrayOf(
@@ -89,6 +89,6 @@ PreviousEmployersDialog.propTypes = {
   ),
   isOpened: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
-}
+};
 
-export default PreviousEmployersDialog
+export default PreviousEmployersDialog;

@@ -1,39 +1,39 @@
-import React from 'react'
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-import Link from '@material-ui/core/Link'
-import Typography from '@material-ui/core/Typography'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import EuroIcon from '@material-ui/icons/EuroSymbol'
-import FaceIcon from '@material-ui/icons/FaceOutlined'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
-import SendIcon from '@material-ui/icons/SendOutlined'
-import DescriptionIcon from '@material-ui/icons/DescriptionOutlined'
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import EuroIcon from '@material-ui/icons/EuroSymbol';
+import FaceIcon from '@material-ui/icons/FaceOutlined';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import SendIcon from '@material-ui/icons/SendOutlined';
+import DescriptionIcon from '@material-ui/icons/DescriptionOutlined';
 
-import YoutubeVideo from '../../components/Generic/YoutubeVideo'
+import YoutubeVideo from '../../components/Generic/YoutubeVideo';
 import {
   intermediaryBreakpoint,
   mobileBreakpoint,
   primaryBlue,
-} from '../../constants'
+} from '../../constants';
 
-import characters from '../../images/characters.svg'
-import photo1 from '../../images/photo1.jpg'
-import photo2 from '../../images/photo2.jpg'
-import photo3 from '../../images/photo3.jpg'
+import characters from '../../images/characters.svg';
+import photo1 from '../../images/photo1.jpg';
+import photo2 from '../../images/photo2.jpg';
+import photo3 from '../../images/photo3.jpg';
 
-const VIDEO_ID = 'home-video'
+const VIDEO_ID = 'home-video';
 
 const windowWidthElement = `
   width: 100vw;
   left: 50%;
   margin-left: -50vw;
   position: relative;
-`
+`;
 
 const StyledHome = styled.div`
   max-width: 144rem;
@@ -43,7 +43,7 @@ const StyledHome = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     padding: 0 2rem;
   }
-`
+`;
 
 const LoginError = styled.div`
   padding: 1rem;
@@ -51,7 +51,7 @@ const LoginError = styled.div`
   text-align: center;
 
   ${windowWidthElement}
-`
+`;
 
 const TopContentContainer = styled.section`
   background-color: #f3f4f5;
@@ -64,7 +64,7 @@ const TopContentContainer = styled.section`
   }
 
   ${windowWidthElement}
-`
+`;
 
 const TopContent = styled.div`
   display: flex;
@@ -80,7 +80,7 @@ const TopContent = styled.div`
     align-items: center;
     text-align: center;
   }
-`
+`;
 
 const TopContentTextsContainer = styled.div`
   max-width: 100%;
@@ -91,7 +91,7 @@ const TopContentTextsContainer = styled.div`
     padding-right: 0;
     padding-bottom: 0;
   }
-`
+`;
 
 const Title = styled(Typography).attrs({
   component: 'h1',
@@ -108,7 +108,7 @@ const Title = styled(Typography).attrs({
       margin-bottom: 3rem;
     }
   }
-`
+`;
 
 const Tagline = styled(Typography).attrs({
   variant: 'h6',
@@ -122,9 +122,9 @@ const Tagline = styled(Typography).attrs({
       line-height: 2.7rem;
     }
   }
-`
+`;
 
-const Section = styled.section``
+const Section = styled.section``;
 
 const TestimonySection = styled(Section)`
   padding: 5rem;
@@ -132,7 +132,7 @@ const TestimonySection = styled(Section)`
   @media (max-width: ${mobileBreakpoint}) {
     padding: 2rem 0;
   }
-`
+`;
 
 const SectionTitle = styled(Typography).attrs({
   variant: 'h5',
@@ -142,7 +142,7 @@ const SectionTitle = styled(Typography).attrs({
     font-weight: bold;
     padding-bottom: 2rem;
   }
-`
+`;
 
 const FlexDiv = styled.div`
   display: flex;
@@ -150,11 +150,11 @@ const FlexDiv = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     flex-direction: column;
   }
-`
+`;
 
 const FlexDivReverse = styled(FlexDiv)`
   flex-direction: row-reverse;
-`
+`;
 
 const StepText = styled.div`
   flex: 0 1 50%;
@@ -166,12 +166,12 @@ const StepText = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     text-align: center;
   }
-`
+`;
 
 const StepTitle = styled(SectionTitle).attrs({
   color: 'secondary',
   component: 'h3',
-})``
+})``;
 
 const StepNumber = styled(Typography).attrs({
   variant: 'h1',
@@ -187,13 +187,13 @@ const StepNumber = styled(Typography).attrs({
       text-align: center;
     }
   }
-`
+`;
 
 const SectionImg = styled.img`
   width: 30rem;
   height: 30rem;
   margin: 2rem auto;
-`
+`;
 
 const SummaryUl = styled.ul`
   display: flex;
@@ -206,7 +206,7 @@ const SummaryUl = styled.ul`
     flex-direction: column;
     align-items: center;
   }
-`
+`;
 
 const SummaryLi = styled.li`
   display: flex;
@@ -215,7 +215,7 @@ const SummaryLi = styled.li`
   align-items: center;
   text-align: center;
   padding: 2rem;
-`
+`;
 
 const SummaryImgContainer = styled.span`
   display: flex;
@@ -226,7 +226,7 @@ const SummaryImgContainer = styled.span`
   margin-bottom: 2rem;
   width: 7rem;
   height: 7rem;
-`
+`;
 
 const ArrowForward = styled(ArrowForwardIcon).attrs({ color: 'primary' })`
   && {
@@ -236,7 +236,7 @@ const ArrowForward = styled(ArrowForwardIcon).attrs({ color: 'primary' })`
     padding: 0;
     margin-top: 3.5rem;
   }
-`
+`;
 
 const ArrowDownward = styled(ArrowDownwardIcon).attrs({ color: 'primary' })`
   && {
@@ -244,13 +244,13 @@ const ArrowDownward = styled(ArrowDownwardIcon).attrs({ color: 'primary' })`
     height: 4rem;
     width: auto;
   }
-`
+`;
 
 const SummaryText = styled(Typography)`
   && {
     font-weight: bold;
   }
-`
+`;
 
 const TestimoniesContainer = styled.div`
   display: flex;
@@ -260,21 +260,21 @@ const TestimoniesContainer = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`
+`;
 const TestimonyContainer = styled.div`
   flex: 0 0 auto;
   border: 1px solid #bbb;
   padding: 2rem;
   margin: 1rem;
   max-width: 30rem;
-`
+`;
 const TestimonyTitle = styled(Typography).attrs({
   color: 'secondary',
 })`
   padding-bottom: 2rem;
-`
+`;
 
-const TestimonyText = styled(Typography)``
+const TestimonyText = styled(Typography)``;
 
 const FullWidthSection = styled.section`
   background-color: ${primaryBlue};
@@ -283,7 +283,7 @@ const FullWidthSection = styled.section`
   margin-bottom: 5rem;
 
   ${windowWidthElement}
-`
+`;
 
 const ZenIsForYouContainer = styled.div`
   display: flex;
@@ -296,7 +296,7 @@ const ZenIsForYouContainer = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     width: 100%;
   }
-`
+`;
 const ZenIsForYouSubSection = styled.div`
   padding: 3rem;
   flex: 1;
@@ -304,7 +304,7 @@ const ZenIsForYouSubSection = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     padding: 1rem 3rem;
   }
-`
+`;
 
 const ZenIsForYouText = styled(Typography)`
   && {
@@ -312,27 +312,27 @@ const ZenIsForYouText = styled(Typography)`
     color: white;
     margin: auto;
   }
-`
+`;
 
 // These br are not active on mobile
 const NotMobileBR = styled.br`
   @media (max-width: ${mobileBreakpoint}) {
     display: none;
   }
-`
+`;
 
 const summaryImgStyle = {
   display: 'block',
   height: 'auto',
   color: 'white',
   width: '4rem',
-}
+};
 
 export const Home = ({ location: { search } }) => {
-  const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`)
+  const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`);
   const useIntermediaryVersion = useMediaQuery(
     `(max-width:${intermediaryBreakpoint})`,
-  )
+  );
 
   return (
     <StyledHome>
@@ -356,13 +356,21 @@ export const Home = ({ location: { search } }) => {
                 textTransform: 'uppercase',
               }}
             >
-              L'actualisation <br />
-              Pôle emploi <br />
-              en toute <br />
-              simplicité<span style={{ color: primaryBlue }}>.</span>
+              L'actualisation
+              {' '}
+              <br />
+              Pôle emploi
+              {' '}
+              <br />
+              en toute
+              {' '}
+              <br />
+              simplicité
+              <span style={{ color: primaryBlue }}>.</span>
             </Title>
             <Tagline>
-              Zen est un service Pôle emploi dédié aux{' '}
+              Zen est un service Pôle emploi dédié aux
+              {' '}
               <strong>personnes ayant un ou plusieurs employeurs.</strong>
               <br />
               Bénéficiez d'une actualisation et d'un envoi de justificatifs
@@ -377,7 +385,9 @@ export const Home = ({ location: { search } }) => {
                     alignItems: 'center',
                   }}
                 >
-                  En savoir plus sur Zen <ExpandMore />
+                  En savoir plus sur Zen
+                  {' '}
+                  <ExpandMore />
                 </Link>
               </Typography>
             )}
@@ -413,8 +423,12 @@ export const Home = ({ location: { search } }) => {
               <EuroIcon style={summaryImgStyle} alt="" />
             </SummaryImgContainer>
             <SummaryText>
-              Zen additionne pour vous <NotMobileBR />
-              vos heures travaillées et totalise <NotMobileBR />
+              Zen additionne pour vous
+              {' '}
+              <NotMobileBR />
+              vos heures travaillées et totalise
+              {' '}
+              <NotMobileBR />
               vos revenus mensuels !
             </SummaryText>
           </SummaryLi>
@@ -433,8 +447,12 @@ export const Home = ({ location: { search } }) => {
               <SendIcon style={summaryImgStyle} alt="" />
             </SummaryImgContainer>
             <SummaryText>
-              Zen vous indique <NotMobileBR />
-              les justificatifs à transmettre selon <NotMobileBR />
+              Zen vous indique
+              {' '}
+              <NotMobileBR />
+              les justificatifs à transmettre selon
+              {' '}
+              <NotMobileBR />
               votre déclaration.
             </SummaryText>
           </SummaryLi>
@@ -454,8 +472,12 @@ export const Home = ({ location: { search } }) => {
             </SummaryImgContainer>
             <SummaryText>
               Accédez à un espace personnel
-              <NotMobileBR /> avec tous vos justificatifs
-              <NotMobileBR /> transmis mois par mois.
+              <NotMobileBR />
+              {' '}
+              avec tous vos justificatifs
+              <NotMobileBR />
+              {' '}
+              transmis mois par mois.
             </SummaryText>
           </SummaryLi>
         </SummaryUl>
@@ -477,13 +499,16 @@ export const Home = ({ location: { search } }) => {
                 }}
               />
               <strong>
-                Vous êtes{' '}
+                Vous êtes
+                {' '}
                 <span aria-label="assistants ou assistantes maternels">
                   assistant.e maternel.le
                 </span>
               </strong>
               <br />
-              <span aria-label="inscrits ou inscrites">inscrit.e</span> à Pôle
+              <span aria-label="inscrits ou inscrites">inscrit.e</span>
+              {' '}
+              à Pôle
               emploi
               <br />
               Exerçant une activité en France,
@@ -498,7 +523,11 @@ export const Home = ({ location: { search } }) => {
 
       <Section>
         <SectionTitle style={{ textAlign: 'center' }}>
-          Vous êtes <span aria-label="accompagné">accompagné(e)</span> à chaque
+          Vous êtes
+          {' '}
+          <span aria-label="accompagné">accompagné(e)</span>
+          {' '}
+          à chaque
           étape
         </SectionTitle>
         <FlexDiv>
@@ -594,11 +623,11 @@ export const Home = ({ location: { search } }) => {
         </TestimoniesContainer>
       </TestimonySection>
     </StyledHome>
-  )
-}
+  );
+};
 
 Home.propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }),
-}
+};
 
-export default Home
+export default Home;

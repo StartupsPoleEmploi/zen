@@ -1,12 +1,12 @@
-import React from 'react'
-import Link from '@material-ui/core/Link'
-import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
-import ChevronRight from '@material-ui/icons/ChevronRight'
+import React from 'react';
+import Link from '@material-ui/core/Link';
+import styled from 'styled-components';
+import { Typography } from '@material-ui/core';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
-import AppTitle from '../../Generic/AppTitle'
-import PeHelpLink from './PeHelpLink'
-import { secondaryBlue, mobileBreakpoint } from '../../../constants'
+import AppTitle from '../../Generic/AppTitle';
+import PeHelpLink from './PeHelpLink';
+import { secondaryBlue, mobileBreakpoint } from '../../../constants';
 
 const FooterContainer = styled.footer`
   background-color: ${secondaryBlue};
@@ -16,7 +16,7 @@ const FooterContainer = styled.footer`
   @media (max-width: ${mobileBreakpoint}) {
     padding: 0 0 10rem 0;
   }
-`
+`;
 const FooterContent = styled.div`
   width: 85rem;
   margin: auto;
@@ -26,7 +26,7 @@ const FooterContent = styled.div`
     width: 100%;
     flex-direction: column;
   }
-`
+`;
 
 const Left = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ const Left = styled.div`
     border-right: none;
     padding-right: 0;
   }
-`
+`;
 const Right = styled.div`
   flex: 5;
   padding-left: 4rem;
@@ -47,7 +47,7 @@ const Right = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     padding-left: 0;
   }
-`
+`;
 
 const Ul = styled.ul`
   list-style: none;
@@ -59,7 +59,7 @@ const Ul = styled.ul`
     width: 100%;
     margin-bottom: 2rem;
   }
-`
+`;
 const Li = styled.li`
   padding: 1.5rem 0;
 
@@ -67,7 +67,7 @@ const Li = styled.li`
     border-bottom: solid 1px #344370;
     padding: 2rem 0;
   }
-`
+`;
 
 const StyledLink = styled(Link)`
   && {
@@ -87,7 +87,7 @@ const StyledLink = styled(Link)`
       margin: auto;
     }
   }
-`
+`;
 
 function Footer() {
   return (
@@ -124,7 +124,7 @@ function Footer() {
         </Right>
       </FooterContent>
     </FooterContainer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

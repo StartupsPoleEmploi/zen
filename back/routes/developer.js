@@ -2,22 +2,22 @@
   These routes must ever ONLY be included in dev mode.
 */
 
-const express = require('express')
-const User = require('../models/User')
-const DeclarationMonth = require('../models/DeclarationMonth')
+const express = require('express');
+const User = require('../models/User');
+const DeclarationMonth = require('../models/DeclarationMonth');
 
-const router = express.Router()
+const router = express.Router();
 
 router.get('/session/user', (req, res) => {
   if (!req.session.userSecret) {
     // creating userSecret if it does not exist will avoid some errors if this mode is used,
     // as some routes require req.session.userSecret.accessToken, which is not useful
     // if using config bypasses
-    req.session.userSecret = {}
+    req.session.userSecret = {};
   }
 
-  res.json(req.session.user || {})
-})
+  res.json(req.session.user || {});
+});
 
 /*
     Security audits will use an URL to access to dev-Zen and can't do any login action.
@@ -30,16 +30,18 @@ router.get('/session/user', (req, res) => {
 */
 router.get('/fake-auth', async (req, res) => {
   if (req.query.connectedAs) {
-    const connectedAsId = Number(req.query.connectedAs)
+    const connectedAsId = Number(req.query.connectedAs);
 
     if (!Number.isNaN(connectedAsId)) {
-      const currentId = req.session.user ? req.session.user.id : null
+      const currentId = req.session.user ? req.session.user.id : null;
 
       if (currentId !== connectedAsId) {
-        const user = await User.query().findById(connectedAsId)
-        if (!user) return res.send(`User with id ${connectedAsId} not found`)
+        const user = await User.query().findById(connectedAsId);
+        if (!user) return res.send(`User with id ${connectedAsId} not found`);
 
-        const { id, firstName, lastName, email, gender } = user
+        const {
+          id, firstName, lastName, email, gender,
+        } = user;
 
         req.session.user = {
           id,
@@ -51,18 +53,18 @@ router.get('/fake-auth', async (req, res) => {
           canSendDeclaration: true,
           hasAlreadySentDeclaration: false,
           tokenExpirationDate: new Date(1654719447626),
-        }
+        };
       }
     }
   }
 
-  return res.redirect(req.query.to ? decodeURIComponent(req.query.to) : '/')
-})
+  return res.redirect(req.query.to ? decodeURIComponent(req.query.to) : '/');
+});
 
 router.post('/session/user', (req, res) => {
-  req.session.user = req.body
-  res.json('ok')
-})
+  req.session.user = req.body;
+  res.json('ok');
+});
 
 router.get('/current-month', (req, res) =>
   DeclarationMonth.query()
@@ -70,17 +72,16 @@ router.get('/current-month', (req, res) =>
     .orderBy('startDate', 'DESC')
     .first()
     .then((month) => {
-      if (!month) throw new Error('Current month not found.')
-      return res.json(month)
-    }),
-)
+      if (!month) throw new Error('Current month not found.');
+      return res.json(month);
+    }));
 
 router.post('/current-month', async (req, res) => {
   const { id, endDate } = req.body;
   await DeclarationMonth.query()
     .findById(id)
     .patch({ endDate });
-  res.json('ok')
-})
+  res.json('ok');
+});
 
-module.exports = router
+module.exports = router;

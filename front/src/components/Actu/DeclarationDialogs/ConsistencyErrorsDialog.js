@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react'
-import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import DialogContentText from '@material-ui/core/DialogContentText'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
-import CustomColorButton from '../../Generic/CustomColorButton'
-import CustomDialog from '../../Generic/CustomDialog'
+import CustomColorButton from '../../Generic/CustomColorButton';
+import CustomDialog from '../../Generic/CustomDialog';
 
 const ConsistencyErrorsDialogs = ({
   consistencyErrors,
@@ -13,8 +13,8 @@ const ConsistencyErrorsDialogs = ({
   ...props
 }) => (
   <CustomDialog
-    content={
-      <Fragment>
+    content={(
+      <>
         <DialogContentText>
           Notre système a détecté de possibles incohérences dans votre
           actualisation :
@@ -29,10 +29,10 @@ const ConsistencyErrorsDialogs = ({
         <DialogContentText style={{ color: 'black' }}>
           Confirmez-vous ces informations ?
         </DialogContentText>
-      </Fragment>
-    }
-    actions={
-      <Fragment>
+      </>
+    )}
+    actions={(
+      <>
         <CustomColorButton onClick={onCancel}>
           Je modifie ma déclaration
         </CustomColorButton>
@@ -44,16 +44,16 @@ const ConsistencyErrorsDialogs = ({
         >
           Je valide cette déclaration
         </Button>
-      </Fragment>
-    }
+      </>
+    )}
     {...props}
   />
-)
+);
 
 ConsistencyErrorsDialogs.propTypes = {
   onCancel: PropTypes.func.isRequired,
   confirmAndIgnoreErrors: PropTypes.func.isRequired,
   consistencyErrors: PropTypes.arrayOf(PropTypes.string).isRequired,
-}
+};
 
-export default ConsistencyErrorsDialogs
+export default ConsistencyErrorsDialogs;

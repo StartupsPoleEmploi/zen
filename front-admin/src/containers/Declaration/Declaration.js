@@ -13,6 +13,7 @@ import {
 } from 'antd';
 
 
+import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import { URLS } from '../../common/routes';
 import ZnHeader from '../../components/ZnHeader';
@@ -44,10 +45,11 @@ export default function Declaration({ match }: Props) {
   const [declaration, setDeclaration] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
   const [notes, setNotes] = useState('');
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
-    getDeclaration(id).then((data) => setDeclaration(data));
-  }, [id]);
+    getDeclaration(id).then((data) => setDeclaration(data)).catch(logoutIfNeed);
+  }, [id, logoutIfNeed]);
 
   useEffect(() => {
     setIsVerified(!!(declaration && declaration.review && declaration.review.isVerified));
@@ -59,8 +61,9 @@ export default function Declaration({ match }: Props) {
     updateDeclaration({ notes, isVerified, id })
       .then(() => {
         notification.success({ message: 'La modification a bien été prise en compte' });
-        getDeclaration(id).then((data) => setDeclaration(data));
+        getDeclaration(id).then((data) => setDeclaration(data)).catch(logoutIfNeed);
       })
+      .catch(logoutIfNeed)
       .catch(() => {
         notification.error({
           message: "Erreur d'enregistrement",

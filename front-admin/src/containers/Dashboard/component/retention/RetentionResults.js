@@ -1,39 +1,42 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import superagent from 'superagent'
-import { Spin } from 'antd'
-import moment from 'moment'
+import React, { useEffect, useState } from 'react';
+import superagent from 'superagent';
+import { Spin } from 'antd';
+import moment from 'moment';
+
+
+import { useUseradmin } from '../../../../common/contexts/useradminCtx';
 
 function RetentionResults({ startMonth }) {
-  const [values, setValues] = useState(null)
+  const [values, setValues] = useState(null);
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
-    if (!startMonth) return
+    if (!startMonth) return;
 
     async function fetchData() {
-      const { body } = await superagent.get(
-        `/zen-admin-api/retention?monthId=${startMonth.id}`,
-      )
-      setValues(body)
+      await superagent.get(`/zen-admin-api/retention?monthId=${startMonth.id}`)
+        .then(({ body }) => setValues(body))
+        .catch(logoutIfNeed);
     }
-    fetchData()
-  }, [startMonth])
+    fetchData();
+  }, [logoutIfNeed, startMonth]);
 
   function formatMonth(month) {
-    return moment(month).format('MMM YYYY')
+    return moment(month).format('MMM YYYY');
   }
   function formatDateInterval(month) {
     return `${moment(month.startDate).format('DD/MM/YYYY')} au ${moment(
       month.endDate,
-    ).format('DD/MM/YYYY')}`
+    ).format('DD/MM/YYYY')}`;
   }
 
   function computePercentage(value, maximum) {
-    return Math.floor((value / maximum) * 100)
+    return Math.floor((value / maximum) * 100);
   }
 
-  if (!values) return <Spin />
+  if (!values) return <Spin />;
 
   return (
     <>
@@ -141,7 +144,7 @@ function RetentionResults({ startMonth }) {
         </ul>
       </div>
     </>
-  )
+  );
 }
 
-export default RetentionResults
+export default RetentionResults;

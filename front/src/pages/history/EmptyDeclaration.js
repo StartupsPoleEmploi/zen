@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import { Typography } from '@material-ui/core'
-import { intermediaryBreakpoint, mobileBreakpoint } from '../../constants'
+import React from 'react';
+import styled from 'styled-components';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import { Typography } from '@material-ui/core';
+import { intermediaryBreakpoint, mobileBreakpoint } from '../../constants';
 
 const StyledCloseIcon = styled(CloseOutlinedIcon)`
   && {
@@ -11,7 +11,7 @@ const StyledCloseIcon = styled(CloseOutlinedIcon)`
     vertical-align: bottom;
     color: gray;
   }
-`
+`;
 
 const Row = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const Row = styled.div`
     justify-content: left;
     text-align: left;
   }
-`
+`;
 
 const Cell = styled.div`
   flex: 1;
@@ -38,7 +38,7 @@ const Cell = styled.div`
     padding: 0;
     border: none;
   }
-`
+`;
 
 const NoDataCell = styled(Cell)`
   && {
@@ -55,14 +55,14 @@ const NoDataCell = styled(Cell)`
       padding: 0.5rem 0 0 3rem;
     }
   }
-`
+`;
 
 const EmptyCell = styled(Cell)`
   padding: 2rem 1rem;
   @media (max-width: ${intermediaryBreakpoint}) {
     display: none;
   }
-`
+`;
 
 function EmptyDeclaration() {
   return (
@@ -78,7 +78,7 @@ function EmptyDeclaration() {
 
       <EmptyCell style={{ borderLeft: 'solid 1px #ddd' }} />
     </Row>
-  )
+  );
 }
 
-export default EmptyDeclaration
+export default EmptyDeclaration;

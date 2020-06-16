@@ -1,15 +1,15 @@
 /* Colors */
 // TODO harmonize error colors here
-export const primaryBlue = '#0065DB'
-export const secondaryBlue = '#262C65'
-export const helpColor = '#0065DB'
-export const darkBlue = '#1e2c59'
-export const errorOrange = '#ff6237'
-export const errorRed = '#e20000'
+export const primaryBlue = '#0065DB';
+export const secondaryBlue = '#262C65';
+export const helpColor = '#0065DB';
+export const darkBlue = '#1e2c59';
+export const errorOrange = '#ff6237';
+export const errorRed = '#e20000';
 
 /* Sizes */
-export const mobileBreakpoint = '672px'
-export const intermediaryBreakpoint = '960px'
+export const mobileBreakpoint = '672px';
+export const intermediaryBreakpoint = '960px';
 
 /* Material UI breakpoints in width order. */
 // TODO: all composants using this should be changed to use hooks and useMediaQuery() instead
@@ -19,7 +19,7 @@ export const muiBreakpoints = {
   md: 'md',
   lg: 'lg',
   xl: 'xl',
-}
+};
 
 export const ActuTypes = {
   INTERNSHIP: 'internship',
@@ -28,7 +28,7 @@ export const ActuTypes = {
   RETIREMENT: 'retirement',
   INVALIDITY: 'invalidity',
   JOB_SEARCH: 'jobSearch',
-}
+};
 
 export const DOCUMENT_LABELS = {
   sickLeave: 'Feuille maladie',
@@ -38,12 +38,14 @@ export const DOCUMENT_LABELS = {
   invalidity: 'Attestation invalidité',
   employerCertificate: 'Attestation employeur',
   salarySheet: 'Bulletin de salaire',
-}
+};
 
 export const jobSearchEndMotive = {
   WORK: 'work',
   RETIREMENT: 'retirement',
   OTHER: 'other',
-}
+};
 
-export const MAX_PDF_PAGE = 5
+export const MAX_PDF_PAGE = 5;
+
+export const snackBarDuration = 10000;

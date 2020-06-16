@@ -1,15 +1,15 @@
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import withWidth from '@material-ui/core/withWidth'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withWidth from '@material-ui/core/withWidth';
 import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton'
-import PropTypes from 'prop-types'
-import React from 'react'
-import styled from 'styled-components'
+import IconButton from '@material-ui/core/IconButton';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 
-import { muiBreakpoints } from '../../constants'
+import { muiBreakpoints } from '../../constants';
 
 const StyledDialogContent = styled(DialogContent)`
   && {
@@ -18,7 +18,7 @@ const StyledDialogContent = styled(DialogContent)`
     text-align: center;
     flex: inherit;
   }
-`
+`;
 
 const StyledTitleIcon = styled.div`
   margin-top: 3rem;
@@ -27,7 +27,7 @@ const StyledTitleIcon = styled.div`
   svg {
     font-size: 4rem;
   }
-`
+`;
 
 const StyledDialogTitle = styled(DialogTitle)`
   && {
@@ -41,18 +41,18 @@ const StyledDialogTitle = styled(DialogTitle)`
       font-weight: bold;
     }
   }
-`
+`;
 
 const StyledDialogActions = styled(DialogActions)`
   && {
     justify-content: space-around;
     flex-wrap: wrap;
   }
-`
+`;
 
 // eslint-disable-next-line react/prop-types
 function CloseButton({ onClose }) {
-  return  (
+  return (
     <IconButton onClick={onClose} style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
       <CloseIcon />
     </IconButton>
@@ -79,7 +79,7 @@ export const CustomDialog = ({
   displayCancel,
   ...rest
 }) => {
-  const useMobileStyling = width === muiBreakpoints.xs
+  const useMobileStyling = width === muiBreakpoints.xs;
 
   return (
     <Dialog
@@ -101,8 +101,7 @@ export const CustomDialog = ({
           <>
             {title}
             {onCancel && displayCancel &&
-              <CloseButton onClose={onCancel} />  
-            }
+              <CloseButton onClose={onCancel} />}
           </>
         </StyledDialogTitle>
       )}
@@ -124,8 +123,8 @@ export const CustomDialog = ({
         </StyledDialogActions>
       )}
     </Dialog>
-  )
-}
+  );
+};
 
 CustomDialog.propTypes = {
   actions: PropTypes.node,
@@ -140,11 +139,11 @@ CustomDialog.propTypes = {
   width: PropTypes.string,
   paperProps: PropTypes.shape(),
   displayCancel: PropTypes.bool,
-}
+};
 
 CustomDialog.defaultProps = {
   onCancel: () => {},
   paperProps: {},
-}
+};
 
-export default withWidth()(CustomDialog)
+export default withWidth()(CustomDialog);

@@ -1,22 +1,22 @@
-const express = require('express')
+const express = require('express');
 const {
   addWeeks,
   endOfMonth,
   startOfMonth,
   subWeeks,
   subMonths,
-} = require('date-fns')
+} = require('date-fns');
 
-const User = require('../models/User')
-const Declaration = require('../models/Declaration')
-const Employer = require('../models/Employer')
-const DeclarationMonth = require('../models/DeclarationMonth')
+const User = require('../models/User');
+const Declaration = require('../models/Declaration');
+const Employer = require('../models/Employer');
+const DeclarationMonth = require('../models/DeclarationMonth');
 
 if (process.env.NODE_ENV !== 'test') {
-  throw new Error('This routes are ONLY meant for automatic testing purposes')
+  throw new Error('This routes are ONLY meant for automatic testing purposes');
 }
 
-const router = express.Router()
+const router = express.Router();
 
 const defaultFemaleUser = {
   firstName: 'Harry',
@@ -28,7 +28,7 @@ const defaultFemaleUser = {
   needOnBoarding: false,
   needEmployerOnBoarding: false,
   registeredAt: '2019-04-16',
-}
+};
 
 const defaultDeclaration = {
   userId: 1,
@@ -48,14 +48,14 @@ const defaultDeclaration = {
   isTransmitted: false,
   isEmailSent: false,
   isDocEmailSent: false,
-}
+};
 const employer1 = {
   employerName: 'Marie',
   workHours: 232,
   salary: 41,
   hasEndedThisMonth: false,
   declarationId: 1,
-}
+};
 
 const employer2 = {
   employerName: 'Paul',
@@ -63,9 +63,9 @@ const employer2 = {
   salary: 34,
   hasEndedThisMonth: false,
   declarationId: 1,
-}
+};
 
-const getBooleanValue = (str) => str.toLowerCase() === 'true'
+const getBooleanValue = (str) => str.toLowerCase() === 'true';
 
 const truncateDatabase = () =>
   User.knex().raw(
@@ -83,15 +83,15 @@ const truncateDatabase = () =>
       status
       CASCADE
     `,
-  )
+  );
 
 const insertUser = (userOverride = {}) => {
   const user = {
     ...defaultFemaleUser,
     ...userOverride,
-  }
-  return User.query().insertAndFetch(user)
-}
+  };
+  return User.query().insertAndFetch(user);
+};
 
 const insertDeclaration = ({
   userId,
@@ -101,25 +101,25 @@ const insertDeclaration = ({
   const declaration = {
     ...defaultDeclaration,
     ...declarationOverride,
-  }
-  declaration.userId = userId
-  declaration.monthId = declarationMonthId
+  };
+  declaration.userId = userId;
+  declaration.monthId = declarationMonthId;
 
-  return Declaration.query().upsertGraphAndFetch(declaration)
-}
+  return Declaration.query().upsertGraphAndFetch(declaration);
+};
 
 const insertEmployer = ({ employer, userId, declarationId }) => {
-  employer.userId = userId
-  employer.declarationId = declarationId
-  return Employer.query().insertAndFetch(employer)
-}
+  employer.userId = userId;
+  employer.declarationId = declarationId;
+  return Employer.query().insertAndFetch(employer);
+};
 
 const insertDeclarationMonth = () =>
   DeclarationMonth.query().insert({
     month: new Date(),
     startDate: subWeeks(new Date(), 1),
     endDate: addWeeks(new Date(), 1),
-  })
+  });
 
 const insertOldAndCurrentDeclarationsMonths = async () => {
   // NOTE : order is important
@@ -127,32 +127,32 @@ const insertOldAndCurrentDeclarationsMonths = async () => {
     month: subMonths(new Date(), 3),
     startDate: subMonths(new Date(), 3),
     endDate: subMonths(new Date(), 4),
-  })
+  });
   const m3 = await DeclarationMonth.query().insert({
     month: subMonths(new Date(), 2),
     startDate: subMonths(new Date(), 2),
     endDate: subMonths(new Date(), 3),
-  })
+  });
 
   const m2 = await DeclarationMonth.query().insert({
     month: subMonths(new Date(), 1),
     startDate: subMonths(new Date(), 1),
     endDate: addWeeks(new Date(), 1),
-  })
+  });
   const m1 = await DeclarationMonth.query().insert({
     month: new Date(),
     startDate: subWeeks(new Date(), 1),
     endDate: addWeeks(new Date(), 1),
-  })
+  });
 
-  return Promise.resolve([m1, m2, m3, m4])
-}
+  return Promise.resolve([m1, m2, m3, m4]);
+};
 
 const setServiceUp = () =>
-  User.knex().raw('INSERT INTO status (up) values (true)')
+  User.knex().raw('INSERT INTO status (up) values (true)');
 
 const fillSession = (req, user) => {
-  req.isServiceUp = true
+  req.isServiceUp = true;
 
   req.session.user = {
     ...user,
@@ -169,46 +169,44 @@ const fillSession = (req, user) => {
         ? getBooleanValue(req.query.hasAlreadySentDeclaration)
         : false,
     tokenExpirationDate: '2059-05-06T13:34:15.985Z',
-  }
+  };
   req.session.userSecret = {
     accessToken: 'abcde',
     idToken: 'fghij',
-  }
-}
+  };
+};
 
 router.post('/db/reset-for-signup', (req, res, next) => {
   truncateDatabase()
     .then(() =>
-      Promise.all([insertUser(req.body.userOverride), setServiceUp()]),
-    )
+      Promise.all([insertUser(req.body.userOverride), setServiceUp()]))
     .then(([user]) => fillSession(req, user))
     .then(() => {
-      req.isServiceUp = true // Usefull ?
-      res.json('ok')
+      req.isServiceUp = true; // Usefull ?
+      res.json('ok');
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.post('/db/set-empty', (req, res, next) => {
   truncateDatabase()
     .then(() => setServiceUp())
     .then(() => res.json('ok'))
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.post('/db/reset-for-actu-closed', (req, res, next) => {
   truncateDatabase()
     .then(() =>
-      Promise.all([insertUser(req.body.userOverride), setServiceUp()]),
-    )
+      Promise.all([insertUser(req.body.userOverride), setServiceUp()]))
     .then(([user]) => {
-      fillSession(req, user)
+      fillSession(req, user);
     })
     .then(() => {
-      res.json('ok')
+      res.json('ok');
     })
-    .catch(next)
-})
+    .catch(next);
+});
 
 router.post('/db/reset-for-files', (req, res, next) =>
   truncateDatabase()
@@ -217,10 +215,9 @@ router.post('/db/reset-for-files', (req, res, next) =>
         insertUser(req.body.userOverride),
         insertDeclarationMonth(),
         setServiceUp(),
-      ]),
-    )
+      ]))
     .then(([user, declarationMonth]) => {
-      fillSession(req, user)
+      fillSession(req, user);
       return insertDeclaration({
         userId: user.id,
         declarationMonthId: declarationMonth.id,
@@ -235,7 +232,7 @@ router.post('/db/reset-for-files', (req, res, next) =>
           ],
           ...req.body.declarationOverride,
         },
-      })
+      });
     })
     .then((declaration) =>
       Promise.all([
@@ -249,13 +246,11 @@ router.post('/db/reset-for-files', (req, res, next) =>
           userId: declaration.userId,
           declarationId: declaration.id,
         }),
-      ]),
-    )
+      ]))
     .then(() => {
-      res.json('ok')
+      res.json('ok');
     })
-    .catch(next),
-)
+    .catch(next));
 
 router.post('/db/reset-for-employers', (req, res, next) =>
   truncateDatabase()
@@ -264,10 +259,9 @@ router.post('/db/reset-for-employers', (req, res, next) =>
         insertUser(req.body.userOverride),
         insertDeclarationMonth(),
         setServiceUp(),
-      ]),
-    )
+      ]))
     .then(([user, declarationMonth]) => {
-      fillSession(req, user)
+      fillSession(req, user);
       return insertDeclaration({
         userId: user.id,
         declarationMonthId: declarationMonth.id,
@@ -275,13 +269,12 @@ router.post('/db/reset-for-employers', (req, res, next) =>
           hasFinishedDeclaringEmployers: false,
           ...req.body.declarationOverride,
         },
-      })
+      });
     })
     .then(() => {
-      res.json('ok')
+      res.json('ok');
     })
-    .catch(next),
-)
+    .catch(next));
 
 router.post('/db/reset-for-history', (req, res, next) =>
   truncateDatabase()
@@ -290,11 +283,10 @@ router.post('/db/reset-for-history', (req, res, next) =>
         insertUser(req.body.userOverride),
         insertOldAndCurrentDeclarationsMonths(),
         setServiceUp(),
-      ]),
-    )
+      ]))
 
     .then(async ([user, declarationMonths]) => {
-      fillSession(req, user)
+      fillSession(req, user);
 
       const declaration = await insertDeclaration({
         userId: user.id,
@@ -310,26 +302,24 @@ router.post('/db/reset-for-history', (req, res, next) =>
             },
           ],
         },
-      })
+      });
       await insertDeclaration({
         userId: user.id,
         declarationMonthId: declarationMonths[1].id,
-      })
+      });
 
-      return Promise.resolve(declaration)
+      return Promise.resolve(declaration);
     })
     .then((declaration) =>
       insertEmployer({
         employer: employer1,
         userId: declaration.userId,
         declarationId: declaration.id,
-      }),
-    )
+      }))
     .then(() => {
-      res.json('ok')
+      res.json('ok');
     })
-    .catch(next),
-)
+    .catch(next));
 
 router.post('/db/reset', (req, res, next) =>
   truncateDatabase()
@@ -338,13 +328,11 @@ router.post('/db/reset', (req, res, next) =>
         insertUser(req.body.userOverride),
         insertDeclarationMonth(),
         setServiceUp(),
-      ]),
-    )
+      ]))
     .then(([user]) => {
-      fillSession(req, user)
-      res.json('ok')
+      fillSession(req, user);
+      res.json('ok');
     })
-    .catch(next),
-)
+    .catch(next));
 
-module.exports = router
+module.exports = router;

@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types'
-import React from 'react'
+import PropTypes from 'prop-types';
+import React from 'react';
 
-import { primaryBlue } from '../../constants'
+import { primaryBlue } from '../../constants';
 
 const Rectangle = ({ style }) => (
   <div
@@ -13,10 +13,10 @@ const Rectangle = ({ style }) => (
       ...style,
     }}
   />
-)
+);
 
 Rectangle.propTypes = {
   style: PropTypes.object,
-}
+};
 
-export default Rectangle
+export default Rectangle;

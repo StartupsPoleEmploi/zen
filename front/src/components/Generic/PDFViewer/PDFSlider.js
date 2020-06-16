@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import Slider from '@material-ui/core/Slider'
-import Tooltip from '@material-ui/core/Tooltip'
-import Grid from '@material-ui/core/Grid'
-import IconImage from '@material-ui/icons/Image'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
+import Grid from '@material-ui/core/Grid';
+import IconImage from '@material-ui/icons/Image';
 
 function ValueLabelComponent({ children, open, value }) {
-  const popperRef = React.useRef(null)
+  const popperRef = React.useRef(null);
   React.useEffect(() => {
     if (popperRef.current) {
-      popperRef.current.update()
+      popperRef.current.update();
     }
-  })
+  });
 
   return (
     <Tooltip
@@ -23,30 +23,30 @@ function ValueLabelComponent({ children, open, value }) {
     >
       {children}
     </Tooltip>
-  )
+  );
 }
 
 ValueLabelComponent.propTypes = {
   children: PropTypes.element.isRequired,
   open: PropTypes.bool.isRequired,
   value: PropTypes.number.isRequired,
-}
+};
 
 export default function PDFSlider({ onChange, value }) {
-  const [zoom, setZoom] = useState(value)
+  const [zoom, setZoom] = useState(value);
 
   React.useEffect(() => {
-    setZoom(value)
-  }, [value])
+    setZoom(value);
+  }, [value]);
 
   const onChangeSlide = (_, val) => {
-    setZoom(val)
-  }
+    setZoom(val);
+  };
 
   const onChangeCommitted = (_, val) => {
-    setZoom(val)
-    onChange(val)
-  }
+    setZoom(val);
+    onChange(val);
+  };
 
   return (
     <Grid container justify="center" spacing={2}>
@@ -73,10 +73,10 @@ export default function PDFSlider({ onChange, value }) {
         </Grid>
       </Grid>
     </Grid>
-  )
+  );
 }
 
 PDFSlider.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.number.isRequired,
-}
+};

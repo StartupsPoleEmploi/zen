@@ -15,19 +15,24 @@ export const URLS: Object = {
     BASE: '/users',
     VIEW: '/users/view/:id',
   },
+  USERADMINS: {
+    BASE: '/useradmins',
+    VIEW: '/useradmins/view/:id',
+    EDIT: '/useradmins/edit/:id',
+    ADD: '/useradmins/add',
+  },
   CONSEILLERS: '/aide-conseillers',
-}
+};
 
-const formatUrl = (url: string, id: *) =>
-  url
-    .replace(/[/]{2,10}/g, '/') // replave "//" by /
-    .replace(':id', id)
-const urlsKeysAddEdit = ['USERS', 'DECLARATIONS']
+const formatUrl = (url: string, id: *) => url
+  .replace(/[/]{2,10}/g, '/') // replave "//" by /
+  .replace(':id', id);
+const urlsKeysAddEdit = ['USERS', 'DECLARATIONS', 'USERADMINS'];
 urlsKeysAddEdit.forEach((e) => {
-  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '')
-  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id)
-  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id)
-})
+  URLS[e].add = () => formatUrl(`${URLS[e].ADD}`, '');
+  URLS[e].edit = (id) => formatUrl(`${URLS[e].EDIT}`, id);
+  URLS[e].view = (id) => formatUrl(`${URLS[e].VIEW}`, id);
+});
 
 export const MENU_ITEMS = [
   {
@@ -35,6 +40,7 @@ export const MENU_ITEMS = [
     iconName: 'appstore',
     to: URLS.DASHBOARD,
     key: 'DASHBOARD',
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Déclarations',
@@ -42,12 +48,14 @@ export const MENU_ITEMS = [
     to: URLS.DECLARATIONS.BASE,
     key: 'DECLARATIONS',
     match: (pathname) => pathname.startsWith(URLS.DECLARATIONS.BASE),
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Activités',
     iconName: 'robot',
     to: URLS.ACTIVITIES,
     key: 'ACTIVITIES',
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Utilisateurs',
@@ -55,6 +63,7 @@ export const MENU_ITEMS = [
     to: URLS.USERS.BASE,
     key: 'users',
     match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
+    access: ['admin', 'viewer'],
   },
   {
     name: 'Aide conseillers',
@@ -62,11 +71,21 @@ export const MENU_ITEMS = [
     to: URLS.CONSEILLERS,
     key: 'conseillers-helps',
     match: (pathname) => pathname.startsWith(URLS.CONSEILLERS),
+    access: ['admin'],
+  },
+  {
+    name: 'Utilisateurs admin',
+    iconName: 'team',
+    to: URLS.USERADMINS.BASE,
+    key: 'useradmins',
+    match: (pathname) => pathname.startsWith(URLS.USERADMINS.BASE),
+    access: ['admin'],
   },
   {
     name: 'Système',
     iconName: 'setting',
     to: URLS.SETTINGS,
     key: 'SETTINGS',
+    access: ['admin'],
   },
-]
+];

@@ -15,12 +15,13 @@
 // `config` is the resolved Cypress config
 
 /* This function adds the possibility to log to the console by using cy.task('log', 'message') */
-// eslint-disable-next-line
+// eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
   on('task', {
     log(message) {
-      console.log(message)
-      return null
+      // eslint-disable-next-line no-console
+      console.log(message);
+      return null;
     },
-  })
-}
+  });
+};

@@ -8,13 +8,13 @@
  * (note: this description of immer here is useful because it is not an explicit
  * dependency of this project, as it is bundled in @reduxjs/toolkit)
  */
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit';
 
 import {
   FETCH_ACTIVE_DECLARATION_MONTHS_LOADING,
   FETCH_ACTIVE_DECLARATION_MONTHS_SUCCESS,
   FETCH_ACTIVE_DECLARATION_MONTHS_FAILURE,
-} from '../actions/actionNames'
+} from '../actions/actionNames';
 
 export default createReducer(
   {
@@ -23,16 +23,16 @@ export default createReducer(
   },
   {
     [FETCH_ACTIVE_DECLARATION_MONTHS_LOADING]: (state) => {
-      state.isLoading = true
-      state.declarationMonths = null
+      state.isLoading = true;
+      state.declarationMonths = null;
     },
     [FETCH_ACTIVE_DECLARATION_MONTHS_SUCCESS]: (state, { payload }) => {
-      state.isLoading = false
-      state.declarationMonths = payload
+      state.isLoading = false;
+      state.declarationMonths = payload;
     },
     [FETCH_ACTIVE_DECLARATION_MONTHS_FAILURE]: (state, { payload }) => {
-      state.isLoading = false
-      state.declarationMonths = payload
+      state.isLoading = false;
+      state.declarationMonths = payload;
     },
   },
-)
+);

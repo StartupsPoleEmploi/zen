@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { isEmpty } from 'lodash'
-import PropTypes from 'prop-types'
-import LoadingDialog from './LoadingDialog'
-import ErrorsDialog from './ErrorsDialog'
-import ConsistencyErrorsDialogs from './ConsistencyErrorsDialog'
-import DeclarationSummaryDialog from './DeclarationSummaryDialog'
+import React, { Component } from 'react';
+import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
+import LoadingDialog from './LoadingDialog';
+import ErrorsDialog from './ErrorsDialog';
+import ConsistencyErrorsDialogs from './ConsistencyErrorsDialog';
+import DeclarationSummaryDialog from './DeclarationSummaryDialog';
 
 class DeclarationDialogsHandler extends Component {
   static propTypes = {
@@ -29,23 +29,23 @@ class DeclarationDialogsHandler extends Component {
       onCancel,
       declaration,
       employers,
-    } = this.props
+    } = this.props;
 
     const defaultProps = {
       title: "Envoi de l'actualisation",
       titleId: 'ActuDialogContentText',
       isOpened,
       onCancel,
-    }
+    };
 
     if (isLoading) {
-      return <LoadingDialog {...defaultProps} />
+      return <LoadingDialog {...defaultProps} />;
     }
 
     if (validationErrors.length > 0) {
       return (
         <ErrorsDialog validationErrors={validationErrors} {...defaultProps} />
-      )
+      );
     }
 
     if (consistencyErrors.length > 0) {
@@ -55,7 +55,7 @@ class DeclarationDialogsHandler extends Component {
           confirmAndIgnoreErrors={this.confirmAndIgnoreErrors}
           {...defaultProps}
         />
-      )
+      );
     }
 
     if (!isEmpty(declaration)) {
@@ -66,7 +66,7 @@ class DeclarationDialogsHandler extends Component {
           onConfirm={this.props.onConfirm}
           {...defaultProps}
         />
-      )
+      );
     }
 
     // FIXME This change is done quickly by fear that this could cause errors that
@@ -78,12 +78,12 @@ class DeclarationDialogsHandler extends Component {
         new Error(
           'DeclarationDialogsHandler is unable to create modal, this should never happen',
         ),
-      )
-      this.hasSentError = true
+      );
+      this.hasSentError = true;
     }
 
-    return null
+    return null;
   }
 }
 
-export default DeclarationDialogsHandler
+export default DeclarationDialogsHandler;

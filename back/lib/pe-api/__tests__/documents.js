@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
-const config = require('config')
-const nock = require('nock')
-const { sendDocument } = require('../documents')
+const config = require('config');
+const nock = require('nock');
+const { sendDocument } = require('../documents');
 
-const $query = () => ({ patch: () => {} })
+const $query = () => ({ patch: () => {} });
 
 const declarationWithLotsOfDocuments = {
   id: 649,
@@ -137,93 +137,94 @@ const declarationWithLotsOfDocuments = {
     createdAt: '2019-01-10T14:08:40.453Z',
     updatedAt: '2019-02-21T11:20:00.164Z',
   },
-}
+};
 
-const accessToken = 'AZERTYUIOP'
+const accessToken = 'AZERTYUIOP';
 
 describe('PE API: sendDocument', () => {
-  const conversionId = 1
-  let uploadScope
-  let confirmationScope
-  let parsedUploadHeaders = null
-  let parsedConfirmationBody = null
-  let parsedConfirmationHeaders = null
+  const conversionId = 1;
+  let uploadScope;
+  let confirmationScope;
+  let parsedUploadHeaders = null;
+  let parsedConfirmationBody = null;
+  let parsedConfirmationHeaders = null;
 
   const resetVariablesUsedForChecks = () => {
-    parsedUploadHeaders = null
-    parsedConfirmationBody = null
-    parsedConfirmationHeaders = null
-  }
+    parsedUploadHeaders = null;
+    parsedConfirmationBody = null;
+    parsedConfirmationHeaders = null;
+  };
 
-  beforeEach(resetVariablesUsedForChecks)
+  beforeEach(resetVariablesUsedForChecks);
 
   describe('API call success', () => {
     beforeAll(() => {
       uploadScope = nock(config.apiHost)
-        .post(`/partenaire/peconnect-envoidocument/v1/depose?synchrone=true`)
-        .reply(function() {
-          parsedUploadHeaders = this.req.headers
-          return [200, { conversionId }]
+        .post('/partenaire/peconnect-envoidocument/v1/depose?synchrone=true')
+        .reply(function reply() {
+          parsedUploadHeaders = this.req.headers;
+          return [200, { conversionId }];
         })
-        .persist()
+        .persist();
 
       confirmationScope = nock(config.apiHost)
         .post(
           `/partenaire/peconnect-envoidocument/v1/depose/${conversionId}/confirmer`,
           (body) => {
-            parsedConfirmationBody = body
-            return body
+            parsedConfirmationBody = body;
+            return body;
           },
         )
-        .reply(function() {
-          parsedConfirmationHeaders = this.req.headers
-          return [200]
+        .reply(function reply() {
+          parsedConfirmationHeaders = this.req.headers;
+          return [200];
         })
-        .persist()
-    })
+        .persist();
+    });
 
     afterAll(() => {
-      uploadScope.persist(false)
-      confirmationScope.persist(false)
-    })
+      uploadScope.persist(false);
+      confirmationScope.persist(false);
+    });
 
     const performChecks = () => {
-      expect(parsedConfirmationBody).toMatchSnapshot()
-      ;[parsedUploadHeaders, parsedConfirmationHeaders].forEach((headers) => {
-        expect(headers.authorization).toContain(accessToken)
-        expect(headers.accept).toBe('application/json')
-        expect(headers.media).toBe('M')
-        expect(headers['accept-encoding']).toBe('gzip')
-      })
+      expect(parsedConfirmationBody).toMatchSnapshot();
+      [parsedUploadHeaders, parsedConfirmationHeaders].forEach((headers) => {
+        expect(headers.authorization).toContain(accessToken);
+        expect(headers.accept).toBe('application/json');
+        expect(headers.media).toBe('M');
+        expect(headers['accept-encoding']).toBe('gzip');
+      });
       expect(parsedUploadHeaders['content-type']).toContain(
         'multipart/form-data;',
-      )
-    }
+      );
+    };
 
     it('should send formatted data for documents', async () => {
       for (const declarationInfo of declarationWithLotsOfDocuments.infos) {
-        if (declarationInfo.type === 'jobSearch') continue
-        declarationInfo.declaration = declarationWithLotsOfDocuments // shortcut for these tests.
+        // eslint-disable-next-line no-continue
+        if (declarationInfo.type === 'jobSearch') continue;
+        declarationInfo.declaration = declarationWithLotsOfDocuments; // shortcut for these tests.
         await sendDocument({
           document: declarationInfo,
           accessToken,
-        })
-        performChecks()
-        resetVariablesUsedForChecks()
+        });
+        performChecks();
+        resetVariablesUsedForChecks();
       }
 
       for (const employer of declarationWithLotsOfDocuments.employers) {
         for (const employerDoc of employer.documents) {
-          employerDoc.employer = employer // shortcut for these tests.
-          employerDoc.employer.declaration = declarationWithLotsOfDocuments // shortcut for these tests.
+          employerDoc.employer = employer; // shortcut for these tests.
+          employerDoc.employer.declaration = declarationWithLotsOfDocuments; // shortcut for these tests.
           await sendDocument({
             document: employerDoc,
             accessToken,
-          })
-          performChecks()
-          resetVariablesUsedForChecks()
+          });
+          performChecks();
+          resetVariablesUsedForChecks();
         }
       }
-    })
-  })
-})
+    });
+  });
+});

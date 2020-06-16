@@ -1,4 +1,4 @@
-const mailjet = require('./mailjet')
+const mailjet = require('./mailjet');
 
 module.exports = {
   setDeclarationDoneProperty: (declaration) =>
@@ -19,4 +19,4 @@ module.exports = {
         ),
       },
     }),
-}
+};

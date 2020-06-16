@@ -1,28 +1,28 @@
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
-import withWidth from '@material-ui/core/withWidth'
-import { Typography } from '@material-ui/core'
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import withWidth from '@material-ui/core/withWidth';
+import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 
-import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations'
-import ActuStatus from '../../components/Generic/actu/ActuStatus'
-import { H4 } from '../../components/Generic/Titles'
-import OnBoarding from './onBoarding/OnBoarding'
-import DashboardJustificatifs from './DashboardJustificatifs'
-import dashboardHelpImg from '../../images/dashboardHelp.svg'
-import MainActionButton from '../../components/Generic/MainActionButton'
-import { openHelpPopup } from '../../redux/actions/helpPopup'
+import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations';
+import ActuStatus from '../../components/Generic/actu/ActuStatus';
+import { H4 } from '../../components/Generic/Titles';
+import OnBoarding from './onBoarding/OnBoarding';
+import DashboardJustificatifs from './DashboardJustificatifs';
+import dashboardHelpImg from '../../images/dashboardHelp.svg';
+import MainActionButton from '../../components/Generic/MainActionButton';
+import { openHelpPopup } from '../../redux/actions/helpPopup';
 
-const StyledDashboard =  styled.div`
+const StyledDashboard = styled.div`
   margin: ${({ width }) => {
-    if (['xs', 'sm'].includes(width)) return '0rem 1rem !important'
-    if (['md'].includes(width)) return '0rem 2rem !important'
-    return '0rem 4rem !important'
+    if (['xs', 'sm'].includes(width)) return '0rem 1rem !important';
+    if (['md'].includes(width)) return '0rem 2rem !important';
+    return '0rem 4rem !important';
   }};
-`
+`;
 
 const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
   && {
@@ -31,21 +31,23 @@ const Title = styled(Typography).attrs({ variant: 'h3', component: 'h1' })`
     letter-spacing: 1px;
     text-align: left;
     margin-left: ${({ width }) =>
-      ['xs', 'sm'].includes(width) ? '2rem' : null};
+    (['xs', 'sm'].includes(width) ? '2rem' : null)};
     margin-top: ${({ width }) =>
-      ['xs', 'sm'].includes(width) ? '0rem' : '0rem'};
+    (['xs', 'sm'].includes(width) ? '0rem' : '0rem')};
   }
-`
+`;
 
-const StatusContainer = styled.div``
+const StatusContainer = styled.div``;
 
 class Dashboard extends PureComponent {
   componentDidMount() {
-    this.props.fetchDeclarations()
+    this.props.fetchDeclarations();
   }
 
   render() {
-    const { user, width, activeMonth, declarations, declaration } = this.props
+    const {
+      user, width, activeMonth, declarations, declaration,
+    } = this.props;
 
     if (user.needOnBoarding) {
       // Show "thank you" to only relative new users
@@ -54,12 +56,15 @@ class Dashboard extends PureComponent {
           showEmail={!user.email}
           showThankYou={user.registeredAt > '2020-01-16'}
         />
-      )
+      );
     }
 
     return (
       <StyledDashboard width={width}>
-        <Title>Bonjour {user.firstName}</Title> 
+        <Title>
+          Bonjour
+          {user.firstName}
+        </Title>
         <Grid container spacing={4}>
           <Grid item md={9} sm={12}>
             <StatusContainer>
@@ -76,7 +81,7 @@ class Dashboard extends PureComponent {
           </Grid>
           <Hidden only={['xs', 'sm']}>
             <Grid item xs={3}>
-              <img src={dashboardHelpImg} style={{width: '100%'}} alt="Besoin d'aide"  />
+              <img src={dashboardHelpImg} style={{ width: '100%' }} alt="Besoin d'aide" />
               <H4>Besoin d'aide ?</H4>
               <Typography>
                 Toutes nos réponses concernant l'actualisation sur Zen Pôle emploi.
@@ -93,7 +98,7 @@ class Dashboard extends PureComponent {
           </Hidden>
         </Grid>
       </StyledDashboard>
-    )
+    );
   }
 }
 
@@ -113,7 +118,7 @@ Dashboard.propTypes = {
   declaration: PropTypes.object,
   declarations: PropTypes.arrayOf(PropTypes.object),
   width: PropTypes.string.isRequired,
-}
+};
 
 export default connect(
   (state) => ({
@@ -126,4 +131,4 @@ export default connect(
     fetchDeclarations: fetchDeclarationAction,
     openHelpPopup,
   },
-)(withWidth()(Dashboard))
+)(withWidth()(Dashboard));

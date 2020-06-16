@@ -1,34 +1,44 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useEffect, useState } from 'react'
-import superagent from 'superagent'
-import { Button, Icon, Spin } from 'antd'
-import moment from 'moment'
-import { useHistory } from 'react-router-dom'
-import { getAgence } from '../../../../common/agencesInfos'
-import { URLS } from '../../../../common/routes'
+// @flow
+import React, { useEffect, useState } from 'react';
+import superagent from 'superagent';
+import { Button, Icon, Spin } from 'antd';
+import moment from 'moment';
+import { useHistory } from 'react-router-dom';
+import { getAgence } from '../../../../common/agencesInfos';
+import { URLS } from '../../../../common/routes';
 
-import './Repartition.css'
+import { useUseradmin } from '../../../../common/contexts/useradminCtx';
+import './Repartition.css';
 
-function RepartitionAgency({ usersInAgency, agencyCode, declarationMonth }) {
-  const [values, setValues] = useState(null)
-  const [agency, setAgency] = useState(null)
-  const history = useHistory()
+type Props = {
+  usersInAgency: Object,
+  agencyCode: string,
+  declarationMonth: string,
+}
+
+function RepartitionAgency({ usersInAgency, agencyCode, declarationMonth }: Props) {
+  const [values, setValues] = useState(null);
+  const [agency, setAgency] = useState(null);
+  const history = useHistory();
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
     async function fetchData() {
-      const agencyTemp = getAgence(agencyCode)
-      if (!agencyTemp) return
+      const agencyTemp = getAgence(agencyCode);
+      if (!agencyTemp) return;
 
-      setAgency(agencyTemp)
-      const { body } = await superagent.get(
+      setAgency(agencyTemp);
+      await superagent.get(
         `/zen-admin-api/repartition/agency?agencyCode=${agencyCode}&monthId=${declarationMonth.id}`,
       )
-      setValues(body)
+        .then(({ body }) => setValues(body))
+        .catch(logoutIfNeed);
     }
-    fetchData()
-  }, [agencyCode, setAgency, declarationMonth])
+    fetchData();
+  }, [agencyCode, setAgency, declarationMonth, logoutIfNeed]);
 
-  if (!values) return <Spin />
+  if (!values) return <Spin />;
 
   return (
     <div>
@@ -100,7 +110,7 @@ function RepartitionAgency({ usersInAgency, agencyCode, declarationMonth }) {
         </>
       )}
     </div>
-  )
+  );
 }
 
-export default RepartitionAgency
+export default RepartitionAgency;

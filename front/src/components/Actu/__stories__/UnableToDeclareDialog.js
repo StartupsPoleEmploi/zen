@@ -1,8 +1,8 @@
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { host } from 'storybook-host'
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { host } from 'storybook-host';
 
-import UnableToDeclareDialog from '../UnableToDeclareDialog'
+import UnableToDeclareDialog from '../UnableToDeclareDialog';
 
 storiesOf('UnableToDeclareDialog', module)
   .addDecorator(
@@ -11,4 +11,4 @@ storiesOf('UnableToDeclareDialog', module)
       width: 600,
     }),
   )
-  .add('default', () => <UnableToDeclareDialog isOpened />)
+  .add('default', () => <UnableToDeclareDialog isOpened />);

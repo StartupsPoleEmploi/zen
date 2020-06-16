@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import { Document, Page, pdfjs } from 'react-pdf'
-import styled from 'styled-components'
+import React, { PureComponent } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import { Document, Page, pdfjs } from 'react-pdf';
+import styled from 'styled-components';
 
-import PDFSlider from './PDFSlider'
-import PDFNatigation from './PDFNatigation'
-import PDFNatigationHover from './PDFNatigationHover'
+import PDFSlider from './PDFSlider';
+import PDFNatigation from './PDFNatigation';
+import PDFNatigationHover from './PDFNatigationHover';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.js`
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 
 const PDFViewerContainer = styled.div`
   display: flex;
@@ -34,13 +34,13 @@ const PDFViewerContainer = styled.div`
   .react-pdf__Page__annotations {
     display: none;
   }
-`
+`;
 
 const PageContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
-`
+`;
 
 export default class PDFViewer extends PureComponent {
   static propTypes = {
@@ -56,6 +56,8 @@ export default class PDFViewer extends PureComponent {
     needScale: true,
   }
 
+  refPageContainer = React.createRef();
+
   componentDidUpdate(prevProps, prevState) {
     // Notify parent when the current page or the total page number have been modified
     // For handling file page limit (or the delete page feature)
@@ -63,27 +65,25 @@ export default class PDFViewer extends PureComponent {
       prevState.numPages !== this.state.numPages ||
       prevState.pageNumber !== this.state.pageNumber
     ) {
-      this.props.onPageNumberChange(this.state.pageNumber, this.state.numPages)
+      this.props.onPageNumberChange(this.state.pageNumber, this.state.numPages);
     }
   }
 
-  refPageContainer = React.createRef()
-
   onDocumentLoadSuccess = (doc) => {
-    const { numPages } = doc
+    const { numPages } = doc;
     this.setState({
       numPages,
       pageNumber: numPages,
-    })
+    });
   }
 
   onDocumentRenderSuccess = () => {
-    const canvas = document.getElementsByTagName('canvas')[0]
+    const canvas = document.getElementsByTagName('canvas')[0];
     if (this.state.needScale && canvas) {
-      const wPage = this.refPageContainer.current.clientWidth
-      const scale = Number(Math.max(wPage / canvas.width, 0.1).toFixed(1))
+      const wPage = this.refPageContainer.current.clientWidth;
+      const scale = Number(Math.max(wPage / canvas.width, 0.1).toFixed(1));
       if (wPage < canvas.width) {
-        this.setState({ scale, needScale: false })
+        this.setState({ scale, needScale: false });
       }
     }
   }
@@ -102,8 +102,8 @@ export default class PDFViewer extends PureComponent {
   onChangeScale = (value) => this.setState({ scale: value })
 
   render() {
-    const { originalFileName } = this.props
-    const { numPages, pageNumber, scale } = this.state
+    const { originalFileName } = this.props;
+    const { numPages, pageNumber, scale } = this.state;
 
     return (
       <PDFViewerContainer>
@@ -142,6 +142,6 @@ export default class PDFViewer extends PureComponent {
 
         <PDFSlider onChange={this.onChangeScale} value={scale} />
       </PDFViewerContainer>
-    )
+    );
   }
 }

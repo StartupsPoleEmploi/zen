@@ -1,29 +1,29 @@
-import React from 'react'
-import styled from 'styled-components'
-import Typography from '@material-ui/core/Typography'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
+import React from 'react';
+import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
-import MainActionButton from '../Generic/MainActionButton'
+import MainActionButton from '../Generic/MainActionButton';
 
-const InfoImg = styled(InfoOutlinedIcon)``
+const InfoImg = styled(InfoOutlinedIcon)``;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 const SubContainer = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
   && {
     margin-left: 1rem;
   }
-`
+`;
 
 const StatusFilesError = ({ hideDashboardLink = false }) => (
   <Container>
@@ -38,8 +38,10 @@ const StatusFilesError = ({ hideDashboardLink = false }) => (
       />
 
       <Typography>
-        Le service d'envoi de justificatifs est{' '}
-        <strong style={{ textTransform: 'uppercase' }}>indisponible</strong>.
+        Le service d'envoi de justificatifs est
+        {' '}
+        <strong style={{ textTransform: 'uppercase' }}>indisponible</strong>
+        .
         Nous vous invitons à réessayer ultérieurement.
       </Typography>
     </SubContainer>
@@ -60,10 +62,10 @@ const StatusFilesError = ({ hideDashboardLink = false }) => (
       </MainActionButton>
     )}
   </Container>
-)
+);
 
 StatusFilesError.propTypes = {
   hideDashboardLink: PropTypes.bool.isRequired,
-}
+};
 
-export default StatusFilesError
+export default StatusFilesError;

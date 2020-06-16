@@ -1,3 +1,3 @@
-const knex = require('../lib/db')
+const knex = require('../lib/db');
 
-module.exports = () => knex.destroy()
+module.exports = () => knex.destroy();

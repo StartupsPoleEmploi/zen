@@ -1,15 +1,15 @@
 /* eslint-disable no-await-in-loop */
-const { format, subDays } = require('date-fns')
-const { Parser } = require('json2csv')
-const fr = require('date-fns/locale/fr')
-const fs = require('fs')
-require('../lib/db')
-const Declaration = require('../models/Declaration')
-const EmployerDocument = require('../models/EmployerDocument')
-const { DOCUMENT_LABELS } = require('../constants')
+const { format, subDays } = require('date-fns');
+const { Parser } = require('json2csv');
+const fr = require('date-fns/locale/fr');
+const fs = require('fs');
+require('../lib/db');
+const Declaration = require('../models/Declaration');
+const EmployerDocument = require('../models/EmployerDocument');
+const { DOCUMENT_LABELS } = require('../constants');
 
 const getFormattedMonthAndYear = (date) =>
-  format(date, 'MMMM YYYY', { locale: fr })
+  format(date, 'MMMM YYYY', { locale: fr });
 
 const getMissingDocumentLabelsFromDeclaration = (declaration) =>
   declaration.infos
@@ -23,8 +23,8 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
     .concat(
       declaration.employers.reduce((declarationPrev, employer) => {
         if (
-          employer.hasEndedThisMonth &&
-          !employer.documents.some(
+          employer.hasEndedThisMonth
+          && !employer.documents.some(
             (doc) => doc.type === EmployerDocument.types.employerCertificate,
           )
         ) {
@@ -34,7 +34,7 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
             } / ${getFormattedMonthAndYear(
               declaration.declarationMonth.month,
             )}`,
-          )
+          );
         }
         if (employer.documents.length === 0) {
           return declarationPrev.concat(
@@ -43,13 +43,13 @@ const getMissingDocumentLabelsFromDeclaration = (declaration) =>
             } / ${getFormattedMonthAndYear(
               declaration.declarationMonth.month,
             )}`,
-          )
+          );
         }
-        return declarationPrev
+        return declarationPrev;
       }, []),
-    )
+    );
 
-for (let i = 1; i < 16; i++) {
+for (let i = 1; i < 16; i += 1) {
   Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
     Declaration.query()
@@ -60,44 +60,44 @@ for (let i = 1; i < 16; i++) {
         hasFinishedDeclaringEmployers: true,
         monthId: i,
       })
-      .andWhere(function() {
+      .andWhere(function andWhere() {
         this.where(
           'Users.lastDocsReminderDate',
           '<',
           subDays(new Date(), 1),
-        ).orWhereNull('Users.lastDocsReminderDate')
+        ).orWhereNull('Users.lastDocsReminderDate');
       }),
   ])
     .then(([declarations]) => {
       const monthLabel = format(
         declarations[0].declarationMonth.month,
         'MM-YYYY',
-      )
+      );
 
       const csv = declarations.map((declaration) => {
-        const documents = getMissingDocumentLabelsFromDeclaration(declaration)
+        const documents = getMissingDocumentLabelsFromDeclaration(declaration);
 
         if (documents.length === 0) {
-          documents.push('Pas de document manquant')
+          documents.push('Pas de document manquant');
         }
 
         return {
           firstName: declaration.user.firstName,
           lastName: declaration.user.lastName,
           documents,
-        }
-      })
+        };
+      });
 
-      const fields = ['firstName', 'lastName', 'documents']
+      const fields = ['firstName', 'lastName', 'documents'];
 
-      const json2csvParser = new Parser({ fields })
+      const json2csvParser = new Parser({ fields });
       fs.writeFileSync(
         `/home/back/scripts/${monthLabel}-documents-not-sent-to-zen.csv`,
         json2csvParser.parse(csv),
-      )
+      );
     })
     .catch((err) => {
       // eslint-disable-next-line no-console
-      console.error(err)
-    })
+      console.error(err);
+    });
 }

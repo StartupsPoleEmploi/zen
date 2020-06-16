@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Link } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Link } from '@material-ui/core';
 
-import { H1, H2, H3 } from '../../components/Generic/Titles'
+import { H1, H2, H3 } from '../../components/Generic/Titles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,46 +41,49 @@ const useStyles = makeStyles((theme) => ({
   cookieBlock: {
     marginTop: theme.spacing(2),
   },
-}))
+}));
 
 function Title2({ num, children }) {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <H2 variant="h4" className={classes.title2}>
-      <span className={classes.titlePoint}>{num}.</span>
+      <span className={classes.titlePoint}>
+        {num}
+        .
+      </span>
       {children}
     </H2>
-  )
+  );
 }
 Title2.propTypes = {
   children: PropTypes.node.isRequired,
   num: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node])
     .isRequired,
-}
+};
 
 function Title3({ children }) {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <H3 className={classes.title3} variant="p">
       <span style={{ fontSize: '4rem', marginRight: '0.5rem' }}>.</span>
       {children}
     </H3>
-  )
+  );
 }
-Title3.propTypes = { children: PropTypes.node.isRequired }
+Title3.propTypes = { children: PropTypes.node.isRequired };
 
 function Text({ children, ...rest }) {
-  const { text } = useStyles()
+  const { text } = useStyles();
   return (
     <Typography className={text} {...rest}>
       {children}
     </Typography>
-  )
+  );
 }
-Text.propTypes = { children: PropTypes.node.isRequired }
+Text.propTypes = { children: PropTypes.node.isRequired };
 
 function Cgu({ isLogin }) {
-  const classes = useStyles({ isLogin })
+  const classes = useStyles({ isLogin });
   return (
     <div container className={classes.container}>
       <H1 style={{ fontSize: '3rem' }} className={classes.title}>
@@ -107,10 +110,12 @@ function Cgu({ isLogin }) {
 
       <Title2 num="2">Objet du service</Title2>
       <Text>
-        Le site internet{' '}
+        Le site internet
+        {' '}
         <Link href="https://zen.pole-emploi.fr">
           https://zen.pole-emploi.fr
-        </Link>{' '}
+        </Link>
+        {' '}
         est un service de Pôle emploi dédié aux assistant(e)s maternel(le)s de
         France (hormis les régions suivantes : Bourgogne, Franche-Comté, Centre
         Val de Loire et les DOM TOM) permettant faire de façon simple :
@@ -187,7 +192,8 @@ function Cgu({ isLogin }) {
         le transfert de vos données à tiers au moment de votre décès, en vous
         adressant par courrier postal ou électronique auprès de votre agence
         Pôle emploi, auprès du délégué à la protection des données de Pôle
-        emploi, 1, avenue du Docteur Gley, 75987 Paris cedex 20,{' '}
+        emploi, 1, avenue du Docteur Gley, 75987 Paris cedex 20,
+        {' '}
         <Link href="mailto:Courriers-cnil@pole-emploi.fr">
           Courriers-cnil@pole-emploi.fr
         </Link>
@@ -236,7 +242,9 @@ function Cgu({ isLogin }) {
         <Text color="primary" className={classes.cookieBlock}>
           <b>Mailjet</b>
           <br />
-          Typologie : <b>Pixel invisible mailjet</b>
+          Typologie :
+          {' '}
+          <b>Pixel invisible mailjet</b>
           <br />
           Finalites : Suivi d’ouverture des courriels
           <br />
@@ -245,7 +253,9 @@ function Cgu({ isLogin }) {
         <Text color="primary" className={classes.cookieBlock}>
           <b>Google analytics</b>
           <br />
-          Typologie : <b>_ga</b>
+          Typologie :
+          {' '}
+          <b>_ga</b>
           <br />
           Finalites : Ce cookie est utilisé pour l’analyse Google Analytics. Il
           permet de suivre les performances des pages consultées par les
@@ -254,7 +264,9 @@ function Cgu({ isLogin }) {
           Duree de vie et de conservation : 13 mois
         </Text>
         <Text color="primary" className={classes.cookieBlock}>
-          Typologie : <b>_gat_UA-119908609-2</b>
+          Typologie :
+          {' '}
+          <b>_gat_UA-119908609-2</b>
           <br />
           Finalites : Ce cookie est utilisé par Google Analytics pour diminuer
           le taux de requêtes en cas de fort trafic.
@@ -262,7 +274,9 @@ function Cgu({ isLogin }) {
           Duree de vie et de conservation : 12 mois
         </Text>
         <Text color="primary" className={classes.cookieBlock}>
-          Typologie : <b>_gid</b>
+          Typologie :
+          {' '}
+          <b>_gid</b>
           <br />
           Finalites : Ce cookie est utilisé par Google Universal Analytics pour
           enregistrer un identifiant unique afin de générer des données
@@ -402,14 +416,14 @@ function Cgu({ isLogin }) {
         code.
       </Text>
     </div>
-  )
+  );
 }
 
 Cgu.propTypes = {
   isLogin: PropTypes.bool.isRequired,
-}
+};
 
 export default connect(
   (state) => ({ isLogin: !!state.userReducer.user }),
   {},
-)(Cgu)
+)(Cgu);

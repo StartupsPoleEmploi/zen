@@ -112,6 +112,9 @@ export default class ZnTable extends React.PureComponent<Props, State> {
         const key = newCol.dataIndex;
         if (newCol.znSort === 'number') {
           newCol.sorter = (a, b) => a[key] - b[key];
+        } else if (newCol.znSort === 'numberToFormat') {
+          const strToNumber = (str) => parseFloat(str.replace(/\s/g, '').replace(',', '.'));
+          newCol.sorter = (a, b) => strToNumber(a[key]) - strToNumber(b[key]);
         } else {
           newCol.sorter = (a, b) => `${a[key]}`.localeCompare(`${b[key]}`);
         }

@@ -3,31 +3,31 @@ const {
   HasManyRelation,
   HasOneRelation,
   ValidationError,
-} = require('objection')
+} = require('objection');
 
-const BaseModel = require('./BaseModel')
+const BaseModel = require('./BaseModel');
 
 class Declaration extends BaseModel {
   static get tableName() {
-    return 'declarations'
+    return 'declarations';
   }
 
   $beforeValidate(jsonSchema, json, opt) {
-    if (!opt.old && opt.patch) return // Custom validation logic only makes sense for objects modified using instance.$query()
+    if (!opt.old && opt.patch) return; // Custom validation logic only makes sense for objects modified using instance.$query()
 
-    const objectToValidate = { ...opt.old, ...json }
-    const { isLookingForJob, jobSearchStopMotive } = objectToValidate
+    const objectToValidate = { ...opt.old, ...json };
+    const { isLookingForJob, jobSearchStopMotive } = objectToValidate;
 
     const throwValidationError = (label) => {
       throw new ValidationError({
         message: label,
         type: 'DeclarationValidationError',
-      })
-    }
+      });
+    };
 
     if (!isLookingForJob) {
       if (!jobSearchStopMotive) {
-        throwValidationError('isLookingForJob - stopJobSearchMotive')
+        throwValidationError('isLookingForJob - stopJobSearchMotive');
       }
     }
   }
@@ -84,7 +84,7 @@ class Declaration extends BaseModel {
         metadata: { type: 'object' },
         transmittedAt: { type: ['string', 'object', 'null'] },
       },
-    }
+    };
   }
 
   // This object defines the relations to other models.
@@ -130,7 +130,7 @@ class Declaration extends BaseModel {
           to: 'declaration_reviews.declarationId',
         },
       },
-    }
+    };
   }
 
   // helper function to determine if a declaration needs documents
@@ -142,8 +142,8 @@ class Declaration extends BaseModel {
       'hasMaternityLeave',
       'hasRetirement',
       'hasInvalidity',
-    ].some((hasSomething) => declaration[hasSomething])
+    ].some((hasSomething) => declaration[hasSomething]);
   }
 }
 
-module.exports = Declaration
+module.exports = Declaration;

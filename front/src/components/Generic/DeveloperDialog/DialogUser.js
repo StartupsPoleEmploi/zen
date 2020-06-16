@@ -1,11 +1,11 @@
-import Button from '@material-ui/core/Button'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import TextField from '@material-ui/core/TextField'
-import { omit } from 'lodash'
-import React, { Fragment, useEffect, useState } from 'react'
-import superagent from 'superagent'
+import Button from '@material-ui/core/Button';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import TextField from '@material-ui/core/TextField';
+import { omit } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import superagent from 'superagent';
 
-import catchMaintenance from '../../../lib/catchMaintenance'
+import catchMaintenance from '../../../lib/catchMaintenance';
 
 const DEFAULT_STR = `{
   "id": 510,
@@ -21,12 +21,12 @@ const DEFAULT_STR = `{
   "canSendDeclaration": true,
   "hasAlreadySentDeclaration": false,
   "tokenExpirationDate": "2059-05-06T13:34:15.985Z"
-}`
+}`;
 
 export default function DialogUser() {
-  const [csrfToken, setCsrfToken] = useState(null)
-  const [sessionUser, setSessionUser] = useState('')
-  const [error, setError] = useState(null)
+  const [csrfToken, setCsrfToken] = useState(null);
+  const [sessionUser, setSessionUser] = useState('');
+  const [error, setError] = useState(null);
 
   const submit = () => {
     try {
@@ -35,24 +35,28 @@ export default function DialogUser() {
         .set('CSRF-Token', csrfToken)
         .then(() => window.location.reload(true))
         .catch(catchMaintenance)
-        .catch((err) => setError(`Erreur serveur : ${err}`))
+        .catch((err) => setError(`Erreur serveur : ${err}`));
     } catch (err) {
-      return setError(`Le JSON est invalide : ${err}`)
+      return setError(`Le JSON est invalide : ${err}`);
     }
-  }
+  };
 
   useEffect(() => {
     superagent.get('/api/developer/session/user').then(({ body }) => {
-      setCsrfToken(body.csrfToken)
-      setSessionUser(JSON.stringify(omit(body, 'csrfToken'), null, 2))
+      setCsrfToken(body.csrfToken);
+      setSessionUser(JSON.stringify(omit(body, 'csrfToken'), null, 2));
     })
-    .catch(catchMaintenance)
-  }, [])
+      .catch(catchMaintenance);
+  }, []);
 
   return (
-    <Fragment>
+    <>
       <DialogContentText paragraph>
-        Permet de changer <code>req.session.user</code> côté back (JSON).
+        Permet de changer
+        {' '}
+        <code>req.session.user</code>
+        {' '}
+        côté back (JSON).
         <br />
         Exemple à réutiliser :
       </DialogContentText>
@@ -82,6 +86,6 @@ export default function DialogUser() {
       >
         Mettre à jour req.session.user
       </Button>
-    </Fragment>
-  )
+    </>
+  );
 }

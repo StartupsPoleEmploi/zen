@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import PropTypes from 'prop-types'
-import image from '../../images/youtube-video-thumb.jpg'
-import player from '../../images/player.svg'
+import PropTypes from 'prop-types';
+import image from '../../images/youtube-video-thumb.jpg';
+import player from '../../images/player.svg';
 
 const Button = styled.button`
   border: none;
@@ -23,7 +23,7 @@ const Button = styled.button`
     border: 0;
     padding: 0;
   }
-`
+`;
 
 const style = {
   width: '62rem',
@@ -31,11 +31,11 @@ const style = {
   maxHeight: '35rem',
   borderRadius: '5%',
   overflow: 'hidden',
-}
+};
 
 const shadowStyle = {
   boxShadow: '0 0 1.5rem 0.5rem rgba(0, 0, 0, 0.05)',
-}
+};
 
 export class YoutubeVideo extends Component {
   static propTypes = { id: PropTypes.string.isRequired }
@@ -47,7 +47,7 @@ export class YoutubeVideo extends Component {
   showVideo = () => this.setState({ showVideo: true })
 
   render() {
-    const title = 'Vidéo de présentation du service Zen'
+    const title = 'Vidéo de présentation du service Zen';
 
     if (this.state.showVideo) {
       return (
@@ -65,7 +65,7 @@ export class YoutubeVideo extends Component {
             }}
           />
         </div>
-      )
+      );
     }
 
     return (
@@ -92,8 +92,8 @@ export class YoutubeVideo extends Component {
         </div>
         <img src={image} alt={title} style={style} />
       </Button>
-    )
+    );
   }
 }
 
-export default YoutubeVideo
+export default YoutubeVideo;

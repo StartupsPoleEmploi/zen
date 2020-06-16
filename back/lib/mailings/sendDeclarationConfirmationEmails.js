@@ -1,23 +1,23 @@
-const { format } = require('date-fns')
-const fr = require('date-fns/locale/fr')
-const async = require('async')
+const { format } = require('date-fns');
+const fr = require('date-fns/locale/fr');
+const async = require('async');
 
-const mailjet = require('./mailjet')
-const winston = require('../log')
-const Declaration = require('../../models/Declaration')
-const { getDeclarationPdf } = require('../pdfGenerators/declarationProof')
-const { setDeclarationDoneProperty } = require('./manageContacts')
+const mailjet = require('./mailjet');
+const winston = require('../log');
+const Declaration = require('../../models/Declaration');
+const { getDeclarationPdf } = require('../pdfGenerators/declarationProof');
+const { setDeclarationDoneProperty } = require('./manageContacts');
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production';
 
 const sendDeclarationConfirmationEmail = (declaration) =>
   getDeclarationPdf(declaration).then((fileBuffer) => {
-    const base64File = fileBuffer.toString('base64')
+    const base64File = fileBuffer.toString('base64');
 
-    const declarationMonth = new Date(declaration.declarationMonth.month)
+    const declarationMonth = new Date(declaration.declarationMonth.month);
     const formattedDeclarationMonth = format(declarationMonth, 'MMMM YYYY', {
       locale: fr,
-    })
+    });
 
     return mailjet
       .sendMail({
@@ -25,7 +25,7 @@ const sendDeclarationConfirmationEmail = (declaration) =>
           {
             From: {
               Email: 'no-reply@zen.pole-emploi.fr',
-              Name: `L'équipe Zen`,
+              Name: 'L\'équipe Zen',
             },
             To: [
               {
@@ -54,14 +54,14 @@ const sendDeclarationConfirmationEmail = (declaration) =>
           },
         ],
       })
-      .then(() => declaration.$query().patch({ isEmailSent: true }))
-  })
+      .then(() => declaration.$query().patch({ isEmailSent: true }));
+  });
 
-let isSendingEmails = false
+let isSendingEmails = false;
 
 async function sendDeclarationConfirmationEmails() {
-  if (isSendingEmails) return
-  isSendingEmails = true
+  if (isSendingEmails) return;
+  isSendingEmails = true;
 
   try {
     const declarations = await Declaration.query()
@@ -76,10 +76,10 @@ async function sendDeclarationConfirmationEmails() {
       // todo verify if setDeclarationDoneProperty is still useful
       let canContinue = true;
       if (isProd) {
-        await setDeclarationDoneProperty(declaration).catch(err => {
+        await setDeclarationDoneProperty(declaration).catch((err) => {
           canContinue = false;
           winston.warn(`[CRON] There was an error while sending DoneProperty into mailjet for declaration ${declaration.id}: ${err}`, logInfo);
-        })
+        });
       }
       if (!canContinue) return;
 
@@ -87,12 +87,12 @@ async function sendDeclarationConfirmationEmails() {
         .then(() => declaration.$query().patch({ isEmailSent: true }))
         .catch((err) => {
           winston.warn(`[CRON] There was an error while sending confirmation email for declaration ${declaration.id}: ${err}`, logInfo);
-        })
-    })
+        });
+    });
   } catch (error) {
     winston.warn(`[CRON] Error on sendDeclarationConfirmationEmails ${error}`, { error });
   }
-  isSendingEmails = false
+  isSendingEmails = false;
 }
 
-module.exports = sendDeclarationConfirmationEmails
+module.exports = sendDeclarationConfirmationEmails;

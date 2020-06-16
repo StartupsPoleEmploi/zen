@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
 import moment from 'moment';
 
+import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
 import ZnTable from '../../components/ZnTable';
@@ -16,12 +17,13 @@ const actionsLabels = {
 
 export default function ActivitiesLogs() {
   const [activityLog, setActivityLog] = useState(null);
+  const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
-    superagent.get('/zen-admin-api/activityLog').then(({ body }) => {
-      setActivityLog(body);
-    });
-  }, []);
+    superagent.get('/zen-admin-api/activityLog')
+      .then(({ body }) => setActivityLog(body))
+      .catch(logoutIfNeed);
+  }, [logoutIfNeed]);
 
   if (!activityLog) return null;
 

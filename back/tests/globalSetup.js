@@ -1,6 +1,6 @@
 const knexCleaner = require('knex-cleaner') // eslint-disable-line
-const DeclarationMonth = require('../models/DeclarationMonth')
-const knex = require('../lib/db')
+const DeclarationMonth = require('../models/DeclarationMonth');
+const knex = require('../lib/db');
 
 // Initial setup : Empty db (except potential migrations data)
 // Then add a month in declaration months (will avoid putting it everywhere in the tests)
@@ -70,5 +70,4 @@ module.exports = () =>
           startDate: new Date('2019-12-28T00:00:00.000Z'),
           endDate: new Date('2020-01-16T00:00:00.000Z'),
         },
-      ]),
-    )
+      ]));

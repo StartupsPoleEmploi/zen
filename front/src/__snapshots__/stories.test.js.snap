@@ -2285,11 +2285,14 @@ exports[`Storyshots Home default 1`] = `
             }
           }
         >
-          L'actualisation 
+          L'actualisation
+           
           <br />
-          Pôle emploi 
+          Pôle emploi
+           
           <br />
-          en toute 
+          en toute
+           
           <br />
           simplicité
           <span
@@ -2425,11 +2428,13 @@ exports[`Storyshots Home default 1`] = `
         <p
           className="MuiTypography-root sc-kTUwUJ ijlERP MuiTypography-body1"
         >
-          Zen additionne pour vous 
+          Zen additionne pour vous
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
-          vos heures travaillées et totalise 
+          vos heures travaillées et totalise
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
@@ -2489,11 +2494,13 @@ exports[`Storyshots Home default 1`] = `
         <p
           className="MuiTypography-root sc-kTUwUJ ijlERP MuiTypography-body1"
         >
-          Zen vous indique 
+          Zen vous indique
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
-          les justificatifs à transmettre selon 
+          les justificatifs à transmettre selon
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
@@ -2557,11 +2564,13 @@ exports[`Storyshots Home default 1`] = `
           <br
             className="sc-esjQYD gEsxkM"
           />
-           avec tous vos justificatifs
+           
+          avec tous vos justificatifs
           <br
             className="sc-esjQYD gEsxkM"
           />
-           transmis mois par mois.
+           
+          transmis mois par mois.
         </p>
       </li>
     </ul>
@@ -2622,7 +2631,8 @@ exports[`Storyshots Home default 1`] = `
           >
             inscrit.e
           </span>
-           à Pôle emploi
+           
+          à Pôle emploi
           <br />
           Exerçant une activité en France,
           <br />
@@ -2644,13 +2654,15 @@ exports[`Storyshots Home default 1`] = `
         }
       }
     >
-      Vous êtes 
+      Vous êtes
+       
       <span
         aria-label="accompagné"
       >
         accompagné(e)
       </span>
-       à chaque étape
+       
+      à chaque étape
     </h2>
     <div
       className="sc-cIShpX eDMGFC"
@@ -2840,11 +2852,14 @@ exports[`Storyshots Home loginFailed 1`] = `
             }
           }
         >
-          L'actualisation 
+          L'actualisation
+           
           <br />
-          Pôle emploi 
+          Pôle emploi
+           
           <br />
-          en toute 
+          en toute
+           
           <br />
           simplicité
           <span
@@ -2980,11 +2995,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         <p
           className="MuiTypography-root sc-kTUwUJ ijlERP MuiTypography-body1"
         >
-          Zen additionne pour vous 
+          Zen additionne pour vous
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
-          vos heures travaillées et totalise 
+          vos heures travaillées et totalise
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
@@ -3044,11 +3061,13 @@ exports[`Storyshots Home loginFailed 1`] = `
         <p
           className="MuiTypography-root sc-kTUwUJ ijlERP MuiTypography-body1"
         >
-          Zen vous indique 
+          Zen vous indique
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
-          les justificatifs à transmettre selon 
+          les justificatifs à transmettre selon
+           
           <br
             className="sc-esjQYD gEsxkM"
           />
@@ -3112,11 +3131,13 @@ exports[`Storyshots Home loginFailed 1`] = `
           <br
             className="sc-esjQYD gEsxkM"
           />
-           avec tous vos justificatifs
+           
+          avec tous vos justificatifs
           <br
             className="sc-esjQYD gEsxkM"
           />
-           transmis mois par mois.
+           
+          transmis mois par mois.
         </p>
       </li>
     </ul>
@@ -3177,7 +3198,8 @@ exports[`Storyshots Home loginFailed 1`] = `
           >
             inscrit.e
           </span>
-           à Pôle emploi
+           
+          à Pôle emploi
           <br />
           Exerçant une activité en France,
           <br />
@@ -3199,13 +3221,15 @@ exports[`Storyshots Home loginFailed 1`] = `
         }
       }
     >
-      Vous êtes 
+      Vous êtes
+       
       <span
         aria-label="accompagné"
       >
         accompagné(e)
       </span>
-       à chaque étape
+       
+      à chaque étape
     </h2>
     <div
       className="sc-cIShpX eDMGFC"

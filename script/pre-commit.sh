@@ -24,6 +24,9 @@ for folder in "${foldres[@]}"; do
   sizeArray=${#arrayFile[@]}
   if [[ $sizeArray -gt 0 ]]; then
     cd ${ROOT_DIR}/${folder}
+    if [ ! -f "./node_modules/.bin/eslint" ]; then
+      yarn
+    fi
     ./node_modules/.bin/eslint ${arrayFile[@]}
 
     if [[ $? != 0 ]]; then

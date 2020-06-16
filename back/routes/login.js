@@ -9,12 +9,10 @@ const Raven = require('raven');
 const User = require('../models/User');
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation');
 const winston = require('../lib/log');
-const { credentials } = require('../lib/token');
+const { clientAuthorizationCode } = require('../lib/token');
 const mailjet = require('../lib/mailings/mailjet');
 const userCtrl = require('../controllers/userCtrl');
 const { REALM } = require('../constants');
-// eslint-disable-next-line import/order
-const oauth2 = require('simple-oauth2').create(credentials);
 
 const { peConnectScope, redirectUri } = config;
 const tokenConfig = {
@@ -33,7 +31,7 @@ router.get('/', (req, res, next) => {
     req.session.state = state;
     req.session.nonce = nonce;
 
-    const authorizationUri = oauth2.authorizationCode.authorizeURL({
+    const authorizationUri = clientAuthorizationCode.authorizeURL({
       ...tokenConfig,
       nonce,
       state,

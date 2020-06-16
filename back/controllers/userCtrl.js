@@ -7,11 +7,9 @@ const winston = require('../lib/log');
 const { request } = require('../lib/resilientRequest');
 const { DECLARATION_STATUSES, REALM } = require('../constants');
 const DEPARTMENTS_AUTORIZED = require('../constants/departmentsAutorized');
-const { credentials } = require('../lib/token');
+const { clientAuthorizationCode } = require('../lib/token');
 const Declaration = require('../models/Declaration');
 const User = require('../models/User');
-// eslint-disable-next-line import/order
-const oauth2 = require('simple-oauth2').create(credentials);
 
 const {
   clientId, redirectUri, tokenHost, apiHost,
@@ -45,9 +43,9 @@ async function getUserinfo(authToken) {
  * @returns {Promise<Object>} authToken
  */
 async function getAuthToken(code, nonce) {
-  const authToken = await oauth2.authorizationCode
+  const authToken = await clientAuthorizationCode
     .getToken({ redirect_uri: redirectUri, code })
-    .then((result) => oauth2.accessToken.create(result));
+    .then((result) => clientAuthorizationCode.createToken(result));
   const tokenClaims = jwt.decode(authToken.token.id_token);
   if (!tokenClaims.iss.startsWith(tokenHost)) throw new Error('Wrong iss');
   if (tokenClaims.aud !== clientId) throw new Error('Wrong aud');

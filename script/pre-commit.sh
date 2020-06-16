@@ -14,7 +14,8 @@ foldres=("back" "cypress" "front" "front-admin");
 for folder in "${foldres[@]}"; do
   arrayFile=();
   for file in $filesChange; do
-    if [[ $file = $folder\/* ]] && [[ $file = $folder\/*.js ]]; then
+    # test if file exist && file in folder && file whit .js extention
+    if [[ -f $file ]] && [[ $file = $folder\/* ]] && [[ $file = $folder\/*.js ]]; then
       fileWithoutFolderName=$(echo $file | sed "s/$folder\///");
       arrayFile=( "${arrayFile[@]}" $fileWithoutFolderName );
     fi

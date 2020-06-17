@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import { get, noop } from 'lodash';
@@ -10,11 +8,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import Check from '@material-ui/icons/Check';
 import { withStyles } from '@material-ui/core/styles';
 
 import StatusFilesError from '../../components/Actu/StatusFilesError';
-import ActuStatus from '../../components/Generic/actu/ActuStatus';
 import { H1 } from '../../components/Generic/Titles';
 
 import {
@@ -34,7 +30,7 @@ import DocumentUpload from '../../components/Actu/DocumentUpload';
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog';
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog';
-import { muiBreakpoints, primaryBlue, secondaryBlue } from '../../constants';
+import { muiBreakpoints, secondaryBlue } from '../../constants';
 import { formattedDeclarationMonth } from '../../lib/date';
 import { getDeclarationMissingFilesNb } from '../../lib/file';
 import {
@@ -48,19 +44,11 @@ import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils;
 
-const CheckIcon = styled(Check)`
-  && {
-    margin-right: 1rem;
-    color: green;
-    vertical-align: sub;
-  }
-`;
-
 const StyledFiles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 90rem;
+  max-width: 91rem;
   width: 100%;
   margin: auto;
   padding-bottom: 2rem;
@@ -78,14 +66,21 @@ const MonthInfoTitle = styled(Typography)`
     font-size: 2.5rem;
     margin-bottom: 1rem;
     text-transform: capitalize;
+    font-weight: bold;
     color: ${secondaryBlue};
   }
 `;
 
+const MonthNumberTitle = styled(MonthInfoTitle)`
+  && {
+    color: #FF6236;
+    font-weight: normal;
+    display: inline-block;
+  }
+`;
+
 const FilesSection = styled.section`
-  max-width: 90rem;
   width: 100%;
-  margin: auto;
   padding-bottom: 1rem;
 
   &:not(:first-child) {
@@ -106,14 +101,8 @@ const StyledUl = styled.ul`
 `;
 
 const DocumentsGroup = styled.div`
-  padding-top: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '3rem')};
-  padding-bottom: ${({ isOldTab = false }) => (isOldTab ? '1rem' : '4rem')};
-  border-bottom: ${({ isOldTab = false, width }) =>
-    (isOldTab ?
-      null :
-      width === 'xs' ?
-        '2px solid rgba(0, 0, 0, 0.1)' :
-        '1px solid rgba(0, 0, 0, 0.1)')};
+  padding-top: 3rem;
+  padding-bottom: 4rem;
 `;
 
 const StyledSup = styled.sup`
@@ -121,44 +110,26 @@ const StyledSup = styled.sup`
   border-radius: 50%;
   width: 1.8rem;
   height: 1.8rem;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   font-size: 1rem;
-`;
-
-const ActuStatusContainer = styled.div`
-  max-width: 50rem;
-  margin: ${({ centered }) => (centered ? 'auto' : 'unset')};
-  align-self: ${({ width }) => (width !== 'xs' ? 'flex-start' : null)}
-  padding-left: ${({ width }) => (width !== 'xs' ? '5rem' : null)}
-`;
-
-const Upper = styled.span`
-  text-transform: uppercase;
+  margin-left: 1rem;
 `;
 
 const H1Title = styled(H1)`
   && {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 4rem;
-    margin-top: 2rem;
+    font-size: 2.2rem;
+    width: 100%;
+    max-width: 95rem;
+    background-color: #FAFAFA;
+    display: flex;
+    align-items: center;
+    height: 8rem;
+    padding-left: 2rem;
+    margin: 2rem auto 4rem auto;
   }
-`;
-const BlueSpan = styled.span`
-  color: ${primaryBlue};
-`;
-
-const LabelTypography = styled(Typography).attrs({ variant: 'subtitle1' })`
-  && {
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-`;
-
-const Pre = styled.span`
-  white-space: pre;
 `;
 
 const styles = () => ({
@@ -211,9 +182,6 @@ const salarySheetType = 'salarySheet';
 const employerCertificateType = 'employerCertificate';
 const infoType = 'info';
 
-const OLD_MONTHS_TAB = 'oldMonths';
-const CURRENT_MONTH_TAB = 'currentMonth';
-
 const formatDate = (date) => moment(date).format('DD MMMM YYYY');
 const formatInfoDates = ({ startDate, endDate }) =>
   (!endDate ?
@@ -238,15 +206,9 @@ export class Files extends Component {
   constructor(props) {
     super(props);
 
-    let tab;
-    if (new URL(window.location).searchParams) {
-      tab = new URL(window.location).searchParams.get('tab');
-    }
-
     this.state = {
       showSkipConfirmation: false,
       skipFileCallback: noop,
-      selectedTab: tab && tab === 'old' ? OLD_MONTHS_TAB : CURRENT_MONTH_TAB,
       snackError: null,
       snackSuccess: null,
     };
@@ -295,8 +257,6 @@ export class Files extends Component {
       skipFileCallback: noop,
     })
 
-  selectTab = (event, selectedTab) => this.setState({ selectedTab })
-
   renderDocumentList = (declaration) => {
     const neededAdditionalDocumentsSpecs = infoSpecs.filter(
       (spec) => !!declaration[spec.fieldToCheck],
@@ -311,32 +271,15 @@ export class Files extends Component {
       return emp1MissingFile - emp2MissingFile;
     });
 
-    const isOldTab = this.state.selectedTab === OLD_MONTHS_TAB;
-
     const infoDocumentsNodes = neededAdditionalDocumentsSpecs.map(
       (neededDocumentSpecs) => (
-        <DocumentsGroup
-          width={this.props.width}
-          key={neededDocumentSpecs.name}
-          isOldTab={isOldTab}
-        >
-          <LabelTypography
-            variant="subtitle1"
-            component="h2"
-            style={{ textTransform: 'uppercase' }}
-          >
-            {neededDocumentSpecs.sectionLabel}
-          </LabelTypography>
-          <StyledUl>
-            {this.renderDocumentsOfType({
-              label: neededDocumentSpecs.label,
-              name: neededDocumentSpecs.name,
-              multiple: neededDocumentSpecs.multiple,
-              declaration,
-              allowSkipFile: true,
-            })}
-          </StyledUl>
-        </DocumentsGroup>
+        this.renderDocumentsOfType({
+          label: neededDocumentSpecs.label,
+          name: neededDocumentSpecs.name,
+          multiple: neededDocumentSpecs.multiple,
+          declaration,
+          allowSkipFile: true,
+        })
       ),
     );
 
@@ -346,28 +289,12 @@ export class Files extends Component {
     return (
       <div>
         {sortedEmployers.map((employer, index) => (
-          <DocumentsGroup
-            key={employer.id}
-            width={this.props.width}
-            isOldTab={isOldTab}
-            className="employer-row"
-          >
-            {!isOldTab && (
-              <LabelTypography component="h2">
-                Employeur&nbsp;:
-                {' '}
-                {employer.employerName}
-              </LabelTypography>
-            )}
-            <StyledUl>
-              {this.renderEmployerRow({
-                employer,
-                declaration,
-                allowSkipFile: true,
-                showTooltip: index === 0,
-              })}
-            </StyledUl>
-          </DocumentsGroup>
+          this.renderEmployerRow({
+            employer,
+            declaration,
+            allowSkipFile: true,
+            showTooltip: index === 0,
+          })
         ))}
 
         <div>{infoDocumentsNodes}</div>
@@ -380,34 +307,38 @@ export class Files extends Component {
   }) =>
     declaration.infos
       .filter(({ type }) => type === name)
-      .map((info) => (
-        <DocumentUpload
-          key={`${name}-${info.id}`}
-          id={info.id}
-          type={DocumentUpload.types.info}
-          label={label}
-          caption={formatInfoDates(info)}
-          fileExistsOnServer={!!info.file && !info.isCleanedUp}
-          submitFile={this.props.uploadDeclarationInfoFile}
-          removePageFromFile={this.removePageFromFile}
-          showPreview={this.props.showInfoFilePreview}
-          skipFile={(params) =>
-            this.askToSkipFile(() => {
-              this.props.uploadDeclarationInfoFile({ ...params, skip: true });
-              this.closeSkipModal();
-            })}
-          originalFileName={info.originalFileName}
-          allowSkipFile={allowSkipFile}
-          isTransmitted={info.isTransmitted}
-          declarationInfoId={info.id}
-          isLoading={info.isLoading}
-          error={info.error}
-          useLightVersion={
+      .map((info) => (info.isTransmitted ? <></> : (
+        <DocumentsGroup key={`${name}-${info.id}`} width={this.props.width}>
+          <StyledUl>
+            <DocumentUpload
+              id={info.id}
+              type={DocumentUpload.types.info}
+              label={label}
+              caption={formatInfoDates(info)}
+              fileExistsOnServer={!!info.file && !info.isCleanedUp}
+              submitFile={this.props.uploadDeclarationInfoFile}
+              removePageFromFile={this.removePageFromFile}
+              showPreview={this.props.showInfoFilePreview}
+              skipFile={(params) =>
+                this.askToSkipFile(() => {
+                  this.props.uploadDeclarationInfoFile({ ...params, skip: true });
+                  this.closeSkipModal();
+                })}
+              originalFileName={info.originalFileName}
+              allowSkipFile={allowSkipFile}
+              isTransmitted={info.isTransmitted}
+              declarationInfoId={info.id}
+              isLoading={info.isLoading}
+              error={info.error}
+              useLightVersion={
             muiBreakpoints.xs === this.props.width ||
             muiBreakpoints.sm === this.props.width
           }
-        />
-      ))
+            />
+          </StyledUl>
+
+        </DocumentsGroup>
+      )))
 
   renderEmployerRow = ({ employer, allowSkipFile, showTooltip }) => {
     const salaryDoc = employer.documents.find(
@@ -434,149 +365,94 @@ export class Files extends Component {
         muiBreakpoints.sm === this.props.width,
     };
 
-    const isOldTab = OLD_MONTHS_TAB === this.state.selectedTab;
-
+    const isSalaryDocTransmitted = get(salaryDoc, 'isTransmitted');
     const salarySheetUpload = (
       <DocumentUpload
         {...commonProps}
         key={`${employer.id}-${salarySheetType}`}
         id={get(salaryDoc, 'id')}
-        label={isOldTab ? employer.employerName : 'Bulletin de salaire'}
-        caption={isOldTab ? 'Bulletin de salaire' : null}
+        label={employer.employerName}
+        caption="Bulletin de salaire"
         fileExistsOnServer={
           !!get(salaryDoc, 'file') && !get(salaryDoc, 'isCleanedUp')
         }
         removePage={this.removePage}
-        isTransmitted={get(salaryDoc, 'isTransmitted')}
+        isTransmitted={isSalaryDocTransmitted}
         employerDocType={salarySheetType}
         isLoading={employer[getEmployerLoadingKey(salarySheetType)]}
         error={employer[getEmployerErrorKey(salarySheetType)]}
       />
     );
 
-    if (!employer.hasEndedThisMonth) return salarySheetUpload;
+    if (!employer.hasEndedThisMonth) {
+      return isSalaryDocTransmitted ? <></> : (
+        <DocumentsGroup key={employer.id} width={this.props.width}>
+          <StyledUl>{salarySheetUpload}</StyledUl>
+        </DocumentsGroup>
+      );
+    }
 
+    const isCertificatDocTransmitted = get(certificateDoc, 'isTransmitted');
     const certificateUpload = (
       <DocumentUpload
         {...commonProps}
         key={`${employer.id}-${employerCertificateType}`}
         id={get(certificateDoc, 'id')}
-        label={isOldTab ? employer.employerName : 'Attestation employeur'}
-        caption={isOldTab ? 'Attestation employeur' : null}
+        label={employer.employerName}
+        caption="Attestation employeur"
         fileExistsOnServer={
           !!get(certificateDoc, 'file') && !get(certificateDoc, 'isCleanedUp')
         }
         removePage={this.removePage}
-        isTransmitted={get(certificateDoc, 'isTransmitted')}
+        isTransmitted={isCertificatDocTransmitted}
         employerDocType={employerCertificateType}
         isLoading={employer[getEmployerLoadingKey(employerCertificateType)]}
         error={employer[getEmployerErrorKey(employerCertificateType)]}
       />
     );
 
-    return (
-      <>
-        {certificateUpload}
-        {certificateDoc && !salaryDoc ? (
-          <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
-            <span
-              aria-hidden
-              style={{
-                display: 'inline-block',
-                paddingRight: '0.5rem',
-              }}
-            >
-              👍
-            </span>
-            Nous n'avons pas besoin de votre bulletin de salaire pour cet
-            employeur, car vous nous avez déjà transmis votre attestation
-          </Typography>
-        ) : (
-          salarySheetUpload
-        )}
-      </>
+    return isCertificatDocTransmitted && isSalaryDocTransmitted ? <></> : (
+      <DocumentsGroup key={employer.id} width={this.props.width}>
+        <StyledUl>
+          {certificateUpload}
+          {certificateDoc && !salaryDoc ? (
+            <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
+              <span
+                aria-hidden
+                style={{
+                  display: 'inline-block',
+                  paddingRight: '0.5rem',
+                }}
+              >
+                👍
+              </span>
+              Nous n'avons pas besoin de votre bulletin de salaire pour cet
+              employeur, car vous nous avez déjà transmis votre attestation
+            </Typography>
+          ) : (
+            salarySheetUpload
+          )}
+        </StyledUl>
+      </DocumentsGroup>
     );
   }
 
-  renderCurrentMonthTab = (lastDeclaration) => {
-    const { activeMonth, user, declarations } = this.props;
-
-    if (
-      activeMonth &&
-      (!lastDeclaration || !lastDeclaration.hasFinishedDeclaringEmployers)
-    ) {
-      if (user.isBlocked) {
-        return (
-          <div style={{ marginTop: '3rem' }}>
-            <NotAutorized />
-          </div>
-        );
-      }
-
-      return (
-        <ActuStatusContainer
-          centered={false}
-          width={this.props.width}
-          style={{ marginTop: '5rem' }}
-        >
-          <ActuStatus
-            activeMonth={activeMonth}
-            user={user}
-            showTitle={false}
-            declarations={declarations}
-            declaration={lastDeclaration}
-          />
-        </ActuStatusContainer>
-      );
-    }
-
-    // Not in declaration time => last actu done is used
-    return lastDeclaration.isFinished ? (
-      <ActuStatusContainer
-        style={{
-          paddingLeft: this.props.width !== 'xs' ? '2rem' : null,
-        }}
-      >
-        <Typography
-          style={{
-            fontWeight: 'bold',
-            fontSize: '1.8rem',
-            padding: '3rem 2rem',
-          }}
-        >
-          <CheckIcon />
-          <Upper>Vous n'avez pas de justificatifs à envoyer</Upper>
-        </Typography>
-      </ActuStatusContainer>
-    ) : (
-      this.renderSection(lastDeclaration)
-    );
-  }
-
-  renderSection = (declaration) => {
-    const declarationRemainingDocsNb = getDeclarationMissingFilesNb(declaration);
-
+  renderMonth = (declaration) => {
     const formattedMonth = formattedDeclarationMonth(
       declaration.declarationMonth.month,
     );
 
-    // FIXME : if declarationRemainingDocsNb === 9, isFinished should be true
-    // however as sending employers does not for now refresh the whole declaration
-    // the object in the store main not be updated.
-    // This should be changed as the next look for this page is implemented.
-    if (declaration.isFinished || declarationRemainingDocsNb === 0) {
-      return null;
-    }
-
-    const isOldTab = OLD_MONTHS_TAB === this.state.selectedTab;
-
     return (
       <FilesSection key={declaration.id} width={this.props.width}>
-        {isOldTab && (
-          <MonthInfoTitle variant="h6" component="h2">
-            {formattedMonth}
-          </MonthInfoTitle>
-        )}
+        <MonthInfoTitle variant="h6" component="h2">
+          {formattedMonth}
+          {' '}
+          <MonthNumberTitle>
+            (
+            {declaration.nbMissingFiles}
+            )
+          </MonthNumberTitle>
+        </MonthInfoTitle>
         {this.renderDocumentList(declaration)}
       </FilesSection>
     );
@@ -584,9 +460,8 @@ export class Files extends Component {
 
   render() {
     const {
-      declarations: allDeclarations,
+      declarations,
       totalMissingFiles,
-      declaration: activeDeclaration,
       isLoading,
       previewedEmployerDoc,
       previewedInfoDoc,
@@ -599,16 +474,19 @@ export class Files extends Component {
       validateEmployerDoc,
       isFilesServiceUp,
       validateDeclarationInfoDoc,
-      activeMonth,
       user,
-      classes,
-      width,
     } = this.props;
 
     const {
       snackError,
       snackSuccess,
     } = this.state;
+
+    // declaration with finish declaration / not finished all / missing files and sort by newer
+    const allDeclarations = declarations.filter(({ hasFinishedDeclaringEmployers, isFinished }) =>
+      hasFinishedDeclaringEmployers && !isFinished)
+      .map((d) => ({ ...d, nbMissingFiles: getDeclarationMissingFilesNb(d) }))
+      .filter(({ nbMissingFiles }) => nbMissingFiles !== 0);
 
     if (isLoading) {
       return (
@@ -626,60 +504,15 @@ export class Files extends Component {
       );
     }
 
-    // display filter : In the case of old declarations displayed,
-    // a declaration which had been abandonned by a user at step 2
-    // could theoretically be here if the user came back later.
-    // We remove that possibility.
-    const declarations = allDeclarations.filter(
-      ({ hasFinishedDeclaringEmployers }) => hasFinishedDeclaringEmployers,
-    );
-
-    /**
-      The code above needs some explanations :
-
-      By default, we used the last declaration done (if exists) and consider all the other declarations as the old declarations.
-      But on a declaration period, we consider the current declaration as the last declaration (which could be null if the declaration is not started).
-    */
-    let lastDeclaration = declarations[0];
-    if (
-      activeMonth &&
-      (!activeDeclaration || !activeDeclaration.hasFinishedDeclaringEmployers)
-    ) {
-      lastDeclaration = activeDeclaration;
-    }
-
-    const oldDeclarations =
-      activeMonth && activeDeclaration ? declarations.slice(1) : declarations;
-
-    const areUnfinishedDeclarations = oldDeclarations.some(
-      ({ isFinished }) => !isFinished,
-    );
-
-    if (
-      activeMonth &&
-      !lastDeclaration &&
-      !areUnfinishedDeclarations &&
-      !user.isBlocked
-    ) {
+    if (user.isBlocked) {
       return (
-        <ActuStatusContainer width={this.props.width}>
-          <ActuStatus
-            activeMonth={activeMonth}
-            user={user}
-            declarations={declarations}
-            declaration={lastDeclaration}
-          />
-        </ActuStatusContainer>
+        <StyledFiles>
+          <NotAutorized />
+        </StyledFiles>
       );
     }
 
-    // Users have come to this page without any old documents to validate
-    if (
-      !lastDeclaration || (
-        !activeMonth &&
-        (!lastDeclaration || lastDeclaration.isFinished) &&
-        !areUnfinishedDeclarations)
-    ) {
+    if (!allDeclarations || allDeclarations.length === 0) {
       return (
         <StyledFiles>
           <StyledTitle variant="h6" component="h1">
@@ -688,24 +521,6 @@ export class Files extends Component {
         </StyledFiles>
       );
     }
-
-    const lastDeclarationMissingFiles =
-      lastDeclaration && lastDeclaration.hasFinishedDeclaringEmployers ?
-        getDeclarationMissingFilesNb(lastDeclaration) :
-        0;
-
-    const oldDeclarationsMissingFiles = oldDeclarations.reduce(
-      (prev, declaration) => {
-        if (
-          !declaration.hasFinishedDeclaringEmployers ||
-          declaration.isFinished
-        ) {
-          return prev;
-        }
-        return prev + getDeclarationMissingFilesNb(declaration);
-      },
-      0,
-    );
 
     const showEmployerPreview = !!get(previewedEmployerDoc, 'file');
     const showInfoDocPreview = !!get(previewedInfoDoc, 'file');
@@ -734,81 +549,39 @@ export class Files extends Component {
     }
 
     let error = snackError;
-    if (!error && (
-      (lastDeclaration.employers || []).some((d) => d.salarySheetError) ||
-      (lastDeclaration.infos || []).some((d) => d.error)
-    )) {
+    if (!error) {
       // fetch if document have an error
-      error = 'Un problème est survenu veuillez réessayer plus tard';
+      declarations.map((declaration) => {
+        if ((declaration.employers || []).some((d) => d.salarySheetError) ||
+        (declaration.infos || []).some((d) => d.error)) {
+          error = 'Un problème est survenu veuillez réessayer plus tard';
+        }
+
+        return declaration;
+      });
     }
 
     return (
       <>
-        <H1Title style={{ fontSize: '2rem' }}>
-          Vous avez
+        <H1Title>
+          {totalMissingFiles > 1 ? 'JUSTIFICATIFS MANQUANTS' : 'JUSTIFICATIF MANQUANT'}
           {' '}
-          <BlueSpan>{totalMissingFiles}</BlueSpan>
-          {' '}
-          {totalMissingFiles > 1 ? 'justificatifs' : 'justificatif'}
-          {' '}
-          à
-          transmettre
+          <StyledSup>{totalMissingFiles}</StyledSup>
         </H1Title>
 
         <StyledFiles>
-          <Tabs
-            value={this.state.selectedTab}
-            onChange={this.selectTab}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            style={{ width: '100%' }}
-          >
-            <Tab
-              value={CURRENT_MONTH_TAB}
-              classes={{ selected: classes.selected }}
-              label={(
-                <Pre style={{ color: '#000', fontSize: '1.6rem' }}>
-                  {formattedDeclarationMonth(
-                    lastDeclaration ?
-                      lastDeclaration.declarationMonth.month :
-                      activeMonth.month,
-                  )}
-                  {' '}
-                  <StyledSup>{lastDeclarationMissingFiles}</StyledSup>
-                </Pre>
-              )}
-            />
-            <Tab
-              style={{ color: '#000' }}
-              value={OLD_MONTHS_TAB}
-              classes={{ selected: classes.selected }}
-              label={(
-                <div style={{ color: '#000', fontSize: '1.6rem' }}>
-                  {width === 'xs' ? (
-                    <Pre>
-                      Précédents
-                      {' '}
-                      <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
-                    </Pre>
-                  ) : (
-                    <>
-                      Mois
-                      {' '}
-                      <Pre>
-                        précédents
-                        {' '}
-                        <StyledSup>{oldDeclarationsMissingFiles}</StyledSup>
-                      </Pre>
-                    </>
-                  )}
-                </div>
-              )}
-            />
-          </Tabs>
+          {allDeclarations.map(this.renderMonth.bind(this))}
+        </StyledFiles>
 
-          {this.state.selectedTab === CURRENT_MONTH_TAB &&
-            this.renderCurrentMonthTab(lastDeclaration, false)}
+        <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
+        <FileTransmittedToPE
+          isOpened={this.state.showSkipConfirmation}
+          onCancel={this.closeSkipModal}
+          onConfirm={this.state.skipFileCallback}
+        />
+        {(showEmployerPreview || showInfoDocPreview) && (
+        <DocumentDialog isOpened {...previewProps} />
+        )}
 
           {this.state.selectedTab === OLD_MONTHS_TAB &&
             (oldDeclarationsMissingFiles > 0 ? (
@@ -843,12 +616,12 @@ export class Files extends Component {
           )}
 
           {snackSuccess && (
-            <SuccessSnackBar
-              message={snackSuccess}
-              onHide={() => this.setState({ snackSuccess: null })}
-              closeIcon
-              duraction={null}
-            />
+          <SuccessSnackBar
+            message={snackSuccess}
+            onHide={() => this.setState({ snackSuccess: null })}
+            closeIcon
+            duraction={null}
+          />
           )}
           {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
         </StyledFiles>
@@ -862,12 +635,9 @@ Files.propTypes = {
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }).isRequired,
-  activeMonth: PropTypes.instanceOf(Date).isRequired,
   user: PropTypes.object.isRequired,
-  declaration: PropTypes.object,
-  token: PropTypes.string.isRequired,
-  declarations: PropTypes.arrayOf(PropTypes.object),
   totalMissingFiles: PropTypes.number,
+  declarations: PropTypes.arrayOf(PropTypes.object),
   fetchDeclarations: PropTypes.func.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
@@ -882,11 +652,9 @@ Files.propTypes = {
   validateEmployerDoc: PropTypes.func.isRequired,
   validateDeclarationInfoDoc: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  activeDeclaration: PropTypes.object,
   isUserLoggedOut: PropTypes.bool.isRequired,
   isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
-  classes: PropTypes.object,
   snackError: PropTypes.string,
   snackSuccess: PropTypes.string,
 };
@@ -899,7 +667,6 @@ export default connect(
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
     isFilesServiceUp: state.statusReducer.isFilesServiceUp,
-    activeMonth: state.activeMonthReducer.activeMonth,
     user: state.userReducer.user,
     isUserLoggedOut: !!(
       state.userReducer.user && state.userReducer.user.isLoggedOut

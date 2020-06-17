@@ -37,8 +37,8 @@ function $convertField(field) {
 
 function $lineToUser(lineContent) {
   const [
-    dc_ididentiteexterne,, // peId (eg => 2c786256-84ac-4fec-84da-52cb87e4a541)    ,
-
+    // peId (eg => 2c786256-84ac-4fec-84da-52cb87e4a541)
+    dc_ididentiteexterne,,,
     // [n_individuadmin_id] identifant national (eg => 1336559849)
     // [c_individulocal] identifiant local (eg => 0261148306J)
     c_prenomcorrespondance, // firstName
@@ -46,8 +46,8 @@ function $lineToUser(lineContent) {
     c_sexe_id, // F or H
     c_adresseemail, // email
     c_codepostal, // postalCode
-    c_cdeale,, // agencyCode (eg => 62574)    ,
-
+    // agencyCode (eg => 62574)
+    c_cdeale,,,
     // [dc_lbldepartement] (eg => PAS-DE-CALAIS)
     // [dc_lblregion] (eg => HAUTS-DE-FRANCE)
     radie, // every to false, because we only have user eligible

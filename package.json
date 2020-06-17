@@ -1,6 +1,6 @@
 {
   "name": "zen",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "description": "",
   "scripts": {
     "lint": "bash script/lint-all.sh",

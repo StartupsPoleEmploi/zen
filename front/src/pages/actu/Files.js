@@ -9,6 +9,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 
 import StatusFilesError from '../../components/Actu/StatusFilesError';
 import { H1 } from '../../components/Generic/Titles';
@@ -64,10 +66,10 @@ const StyledTitle = styled(Typography)`
 const MonthInfoTitle = styled(Typography)`
   && {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
     text-transform: capitalize;
     font-weight: bold;
     color: ${secondaryBlue};
+    flex: 1;
   }
 `;
 
@@ -132,11 +134,36 @@ const H1Title = styled(H1)`
   }
 `;
 
+const DialogContentTextLabel = styled(Typography)`
+  && {
+    color: black;
+  }
+`;
+
+const CollapsedTitle = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.4s;
+  margin-bottom: 1rem;
+  &:hover {
+    opacity: 0.6;
+  }
+`;
+
 const styles = () => ({
   selected: {
     fontWeight: 'bold',
   },
 });
+
+const ArrowDown = styled(ArrowDropDown)`
+  color: #0065DB;
+`;
+
+const ArrowUp = styled(ArrowDropUp)`
+  color: #0065DB;
+`;
 
 const infoSpecs = [
   {
@@ -211,6 +238,7 @@ export class Files extends Component {
       skipFileCallback: noop,
       snackError: null,
       snackSuccess: null,
+      collapsedMonth: [],
     };
   }
 
@@ -437,23 +465,43 @@ export class Files extends Component {
     );
   }
 
+  onCollapseMonth = (id) => {
+    const { collapsedMonth } = this.state;
+    const index = collapsedMonth.indexOf(id);
+
+    if (index === -1) {
+      collapsedMonth.push(id);
+    } else {
+      collapsedMonth.splice(index, 1);
+    }
+
+    this.setState({ collapsedMonth });
+  }
+
   renderMonth = (declaration) => {
     const formattedMonth = formattedDeclarationMonth(
       declaration.declarationMonth.month,
     );
+    const isCollapsed = !(this.state.collapsedMonth.indexOf(declaration.id) === -1);
 
     return (
       <FilesSection key={declaration.id} width={this.props.width}>
-        <MonthInfoTitle variant="h6" component="h2">
-          {formattedMonth}
-          {' '}
-          <MonthNumberTitle>
-            (
-            {declaration.nbMissingFiles}
-            )
-          </MonthNumberTitle>
-        </MonthInfoTitle>
-        {this.renderDocumentList(declaration)}
+        <CollapsedTitle onClick={() => this.onCollapseMonth(declaration.id)}>
+          <MonthInfoTitle variant="h6" component="h2">
+            {formattedMonth}
+            {' '}
+            <MonthNumberTitle>
+              (
+              {declaration.nbMissingFiles}
+              )
+            </MonthNumberTitle>
+          </MonthInfoTitle>
+          <DialogContentTextLabel>{isCollapsed ? 'AFFICHER' : 'MASQUER'}</DialogContentTextLabel>
+          {!isCollapsed ?
+            <ArrowDown /> :
+            <ArrowUp />}
+        </CollapsedTitle>
+        {!isCollapsed && this.renderDocumentList(declaration)}
       </FilesSection>
     );
   }
@@ -638,6 +686,7 @@ Files.propTypes = {
   user: PropTypes.object.isRequired,
   totalMissingFiles: PropTypes.number,
   declarations: PropTypes.arrayOf(PropTypes.object),
+  collapsedMonth: PropTypes.arrayOf(PropTypes.number),
   fetchDeclarations: PropTypes.func.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,

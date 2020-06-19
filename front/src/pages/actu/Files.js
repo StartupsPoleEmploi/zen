@@ -336,7 +336,7 @@ export class Files extends Component {
     declaration.infos
       .filter(({ type }) => type === name)
       .map((info) => (info.isTransmitted ? <></> : (
-        <DocumentsGroup key={`${name}-${info.id}`} width={this.props.width}>
+        <DocumentsGroup key={`${name}-${info.id}`} width={this.props.width} className="info-row">
           <StyledUl>
             <DocumentUpload
               id={info.id}
@@ -362,6 +362,7 @@ export class Files extends Component {
             muiBreakpoints.xs === this.props.width ||
             muiBreakpoints.sm === this.props.width
           }
+
             />
           </StyledUl>
 
@@ -409,12 +410,13 @@ export class Files extends Component {
         employerDocType={salarySheetType}
         isLoading={employer[getEmployerLoadingKey(salarySheetType)]}
         error={employer[getEmployerErrorKey(salarySheetType)]}
+
       />
     );
 
     if (!employer.hasEndedThisMonth) {
       return isSalaryDocTransmitted ? <></> : (
-        <DocumentsGroup key={employer.id} width={this.props.width}>
+        <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
           <StyledUl>{salarySheetUpload}</StyledUl>
         </DocumentsGroup>
       );
@@ -440,7 +442,7 @@ export class Files extends Component {
     );
 
     return isCertificatDocTransmitted && isSalaryDocTransmitted ? <></> : (
-      <DocumentsGroup key={employer.id} width={this.props.width}>
+      <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
         <StyledUl>
           {certificateUpload}
           {certificateDoc && !salaryDoc ? (
@@ -563,7 +565,7 @@ export class Files extends Component {
     if (!allDeclarations || allDeclarations.length === 0) {
       return (
         <StyledFiles>
-          <StyledTitle variant="h6" component="h1">
+          <StyledTitle variant="h6" component="h1" className="error-title">
             Vous n'avez pas de fichier à envoyer.
           </StyledTitle>
         </StyledFiles>
@@ -611,7 +613,7 @@ export class Files extends Component {
 
     return (
       <>
-        <H1Title>
+        <H1Title className="declaration-title">
           {totalMissingFiles > 1 ? 'JUSTIFICATIFS MANQUANTS' : 'JUSTIFICATIF MANQUANT'}
           {' '}
           <StyledSup>{totalMissingFiles}</StyledSup>
@@ -620,16 +622,6 @@ export class Files extends Component {
         <StyledFiles>
           {allDeclarations.map(this.renderMonth.bind(this))}
         </StyledFiles>
-
-        <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
-        <FileTransmittedToPE
-          isOpened={this.state.showSkipConfirmation}
-          onCancel={this.closeSkipModal}
-          onConfirm={this.state.skipFileCallback}
-        />
-        {(showEmployerPreview || showInfoDocPreview) && (
-        <DocumentDialog isOpened {...previewProps} />
-        )}
 
         <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
         <FileTransmittedToPE

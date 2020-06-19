@@ -631,48 +631,25 @@ export class Files extends Component {
         <DocumentDialog isOpened {...previewProps} />
         )}
 
-          {this.state.selectedTab === OLD_MONTHS_TAB &&
-            (oldDeclarationsMissingFiles > 0 ? (
-              oldDeclarations.map(this.renderSection)
-            ) : (
-              <FilesSection>
-                <StyledTitle
-                  variant="h6"
-                  component="h1"
-                  style={
-                      this.props.width !== 'xs' ?
-                        {
-                          textAlign: 'right',
-                          paddingRight: '2rem',
-                        } :
-                        null
-                    }
-                >
-                  Pas de justificatifs à envoyer
-                </StyledTitle>
-              </FilesSection>
-            ))}
+        <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
+        <FileTransmittedToPE
+          isOpened={this.state.showSkipConfirmation}
+          onCancel={this.closeSkipModal}
+          onConfirm={this.state.skipFileCallback}
+        />
+        {(showEmployerPreview || showInfoDocPreview) && (
+        <DocumentDialog isOpened {...previewProps} />
+        )}
 
-          <LoginAgainDialog isOpened={this.props.isUserLoggedOut} />
-          <FileTransmittedToPE
-            isOpened={this.state.showSkipConfirmation}
-            onCancel={this.closeSkipModal}
-            onConfirm={this.state.skipFileCallback}
-          />
-          {(showEmployerPreview || showInfoDocPreview) && (
-            <DocumentDialog isOpened {...previewProps} />
-          )}
-
-          {snackSuccess && (
+        {snackSuccess && (
           <SuccessSnackBar
             message={snackSuccess}
             onHide={() => this.setState({ snackSuccess: null })}
             closeIcon
             duraction={null}
           />
-          )}
-          {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
-        </StyledFiles>
+        )}
+        {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
       </>
     );
   }

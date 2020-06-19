@@ -43,12 +43,8 @@ describe('History page', () => {
     );
   });
 
-  it('should redirect to /files and specifically on old months tabs', () => {
+  it('should redirect to /files', () => {
     getDeclarationMissingFiles('#declaration-history-3').click({ force: true });
     cy.url().should('contain', '/files');
-    cy.get('button[aria-selected=true]').should(
-      'have.text',
-      'Mois précédents 2',
-    );
   });
 });

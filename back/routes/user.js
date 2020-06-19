@@ -19,6 +19,10 @@ const router = express.Router();
 router.get('/', refreshAccessToken, async (req, res) => {
   const dbUser = await User.query().findOne({ id: req.session.user.id });
 
+  if (!dbUser) {
+    return res.status(401).json('Unauthorized');
+  }
+
   return res.json({
     isBlocked: dbUser.isBlocked,
     needOnBoarding: dbUser.needOnBoarding,

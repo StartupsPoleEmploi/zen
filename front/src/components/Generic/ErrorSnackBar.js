@@ -18,6 +18,7 @@ const SnackbarWarning = styled(Snackbar)`
   > div { 
     cursor: pointer;
     background-color: #F3F3F3; 
+    margin-top: 65px;
 
     > div {
       display: flex;

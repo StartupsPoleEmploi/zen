@@ -11,6 +11,9 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
+import Check from '@material-ui/icons/Check';
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
+import thankImg from '../../images/thank.svg';
 
 import StatusFilesError from '../../components/Actu/StatusFilesError';
 import { H1 } from '../../components/Generic/Titles';
@@ -43,6 +46,7 @@ import {
 import NotAutorized from '../other/NotAutorized';
 import ErrorSnackBar from '../../components/Generic/ErrorSnackBar';
 import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
+import MainActionButton from '../../components/Generic/MainActionButton';
 
 const { getEmployerLoadingKey, getEmployerErrorKey } = utils;
 
@@ -151,6 +155,23 @@ const CollapsedTitle = styled.div`
   }
 `;
 
+const Text = styled(Typography)`
+font-size: 18px;
+`;
+
+const StyledThxImg = styled.img`
+  max-width: 30rem;
+  width: 80%;
+`;
+
+const CheckIcon = styled(Check)`
+  && {
+    margin-right: 1rem;
+    color: green;
+    vertical-align: sub;
+  }
+`;
+
 const styles = () => ({
   selected: {
     fontWeight: 'bold',
@@ -163,6 +184,21 @@ const ArrowDown = styled(ArrowDropDown)`
 
 const ArrowUp = styled(ArrowDropUp)`
   color: #0065DB;
+`;
+
+const TitleThx = styled(Typography).attrs({ component: 'h1' })`
+  padding: 0 0 0.5rem 0;
+  font-size: 22px !important;
+`;
+
+const BtnThx = styled(MainActionButton)`
+white-space: nowrap;
+width: auto !important;
+padding: 0 4rem !important;
+`;
+
+const StyledArrowRightAlt = styled(ArrowRightAlt)`
+  margin-left: 1rem;
 `;
 
 const infoSpecs = [
@@ -239,11 +275,19 @@ export class Files extends Component {
       snackError: null,
       snackSuccess: null,
       collapsedMonth: [],
+      showSurvey: false,
     };
   }
 
   componentDidMount() {
     this.props.fetchDeclarations();
+
+    const lastResponse = localStorage.getItem(`survey-response-${this.props.user.id}`);
+    const now = new Date();
+
+    const showSurvey = lastResponse === null ||
+     new Date(lastResponse).getMonth() !== now.getMonth();
+    this.setState({ showSurvey });
   }
 
   componentDidUpdate(prevProps) {
@@ -508,6 +552,11 @@ export class Files extends Component {
     );
   }
 
+  onMemorizeAction = () => {
+    localStorage.setItem(`survey-response-${this.props.user.id}`, new Date());
+    this.setState({ showSurvey: false });
+  }
+
   render() {
     const {
       declarations,
@@ -565,9 +614,44 @@ export class Files extends Component {
     if (!allDeclarations || allDeclarations.length === 0) {
       return (
         <StyledFiles>
-          <StyledTitle variant="h6" component="h1" className="error-title">
-            Vous n'avez pas de fichier à envoyer.
+          <StyledTitle variant="h4" className="error-title">
+            Félicitations, votre dossier est à jour.
           </StyledTitle>
+          <Text paragraph>
+            Soyez Zen, aucun justificatif à transmettre
+          </Text>
+          <StyledThxImg src={thankImg} alt="" />
+          {this.state.showSurvey ? (
+            <>
+              <TitleThx variant="h4" style={{ marginTop: '4rem' }}>
+                Quelques minutes devant vous ?
+              </TitleThx>
+              <Text paragraph>
+                Aidez-nous à améliorer Zen en donnant votre avis
+              </Text>
+              <a href="https://surveys.hotjar.com/s?siteId=929102&surveyId=156996" rel="noopener noreferrer" target="_blank" style={{ textDecoration: 'none' }} onClick={this.onMemorizeAction}>
+                <BtnThx color="primary" primary>
+                  Je donne mon avis
+                  <StyledArrowRightAlt />
+                </BtnThx>
+              </a>
+            </>
+          ) : (
+            <>
+              <TitleThx variant="h4" style={{ marginTop: '4rem' }}>
+                <CheckIcon />
+                {' '}
+                Merci, vous avez participé ce mois-ci
+              </TitleThx>
+              <Text paragraph>
+                Rendez-vous le mois prochain pour nous aider à améliorer Zen
+              </Text>
+              <BtnThx color="primary" primary disabled>
+                Je donne mon avis
+                <StyledArrowRightAlt />
+              </BtnThx>
+            </>
+          )}
         </StyledFiles>
       );
     }
@@ -675,6 +759,7 @@ Files.propTypes = {
   width: PropTypes.string,
   snackError: PropTypes.string,
   snackSuccess: PropTypes.string,
+  showSurvey: PropTypes.bool.isRequired,
 };
 
 export default connect(

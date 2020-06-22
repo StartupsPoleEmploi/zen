@@ -2,7 +2,7 @@ export const DECLARATION_STATUS = {
   CLOSED: 'Pas encore ouverte',
   FINISHED: 'Actualisation envoyée',
   NOT_STARTED: 'Actualisation non débutée',
-  NO_FILES: 'Vous n\'avez pas de fichier à envoyer.',
+  NO_FILES: 'Félicitations, votre dossier est à jour.',
   MISSING_FILES: 'JUSTIFICATIF',
   ON_GOING: 'Actualisation en cours',
 };

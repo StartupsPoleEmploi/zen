@@ -114,13 +114,13 @@ const DocumentsGroup = styled.div`
 const StyledSup = styled.sup`
   background-color: #ff6237;
   border-radius: 50%;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 3rem;
+  height: 3rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 1rem;
+  font-size: 2rem;
   margin-left: 1rem;
 `;
 
@@ -485,7 +485,8 @@ export class Files extends Component {
       />
     );
 
-    return isCertificatDocTransmitted && isSalaryDocTransmitted ? <></> : (
+    return (isCertificatDocTransmitted && isSalaryDocTransmitted) ||
+    (certificateDoc && !salaryDoc) ? <></> : (
       <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
         <StyledUl>
           {certificateUpload}

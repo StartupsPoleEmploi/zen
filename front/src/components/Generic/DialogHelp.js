@@ -59,7 +59,7 @@ function BlockItem({ Icon, text, section }) {
   return (
     <Grid item xs={12} sm={6} md={4}>
       <A
-        href={`https://pole-emploi.zendesk.com/hc/fr/sections/${section}`}
+        href={`https://zen.pole-emploi.fr/zen-doc/?${section}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -104,47 +104,47 @@ function DialogHelp({ isOpened, onClose }) {
             <BlockItem
               Icon={InfoOutlinedIcon}
               text="COVID-19"
-              section="360003786219-Crise-sanitaire-COVID-19"
+              section="cat=15"
             />
             <BlockItem
               Icon={ComputerOutlinedIcon}
               text="S'actualiser sur Zen pour la première fois"
-              section="360001504679-S-actualiser-sur-Zen-pour-la-premi%C3%A8re-fois-"
+              section="cat=16"
             />
             <BlockItem
               Icon={AccountCircleOutlinedIcon}
               text="Mon compte"
-              section="360001505040-Mon-compte"
+              section="cat=22"
             />
             <BlockItem
               Icon={DescriptionOutlinedIcon}
               text="Ma déclaration"
-              section="360001505060-Ma-d%C3%A9claration"
+              section="cat=17"
             />
             <BlockItem
               Icon={DnsOutlinedIcon}
               text="Mes employeurs"
-              section="360001413739-Mes-employeurs"
+              section="cat=18"
             />
             <BlockItem
               Icon={VerticalSplitOutlinedIcon}
               text="Mon actualisation"
-              section="360001413719-Mon-actualisation"
+              section="cat=19"
             />
             <BlockItem
               Icon={FileCopyOutlinedIcon}
               text="Mes justificatifs"
-              section="360001504699-Mes-justificatifs"
+              section="cat=20"
             />
             <BlockItem
               Icon={DonutLargeOutlinedIcon}
               text="Mes allocations chomâge"
-              section="360001505080-Mes-allocations-chom%C3%A2ge"
+              section="cat=21"
             />
             <BlockItem
               Icon={EmailOutlinedIcon}
               text="Contactez Pôle emploi"
-              section="360001505100-Contact"
+              section="p=298"
             />
           </Grid>
         </Container>

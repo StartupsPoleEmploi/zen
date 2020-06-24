@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 import superagent from 'superagent';
@@ -20,7 +19,6 @@ import { CustomDialog } from '../../Generic/CustomDialog';
 
 const Li = styled.li`
   padding: 1.5rem 0;
-
   @media (max-width: ${mobileBreakpoint}) {
     border-bottom: solid 1px #344370;
     padding: 2rem 0;
@@ -38,70 +36,56 @@ const StyledButton = styled.button`
     text-align: left;
     padding: 0;
     width: 100%;
-
     &:hover { text-decoration: underline; }
-
     p { flex: 1; }
     span { witdh: 5rem; }
-
     @media (max-width: ${mobileBreakpoint}) {
-      width: 70%;
+      width: 90%;
       margin: auto;
     }
   }
 `;
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const IS_PRO_LOCAL_STORAGE = 'IS_PRO';
-
-function isProLocalStorage() {
-  return localStorage.getItem(IS_PRO_LOCAL_STORAGE) === 'true';
-}
 
 function PeHelpLink() {
-  const history = useHistory();
-  const [showProLink, setShowProLink] = useState(isProLocalStorage());
+  const [showProLink, setShowProLink] = useState(false);
   const [email, setEmail] = useState('');
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showEmailError, setShowEmailError] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      if (
-        localStorage.getItem(IS_PRO_LOCAL_STORAGE) === null &&
-        process.env.REACT_APP_ENABLED_HELP_PE_STAFF === 'true'
-      ) {
+      if (process.env.REACT_APP_ENABLED_HELP_PE_STAFF === 'true') {
         const { body } = await superagent.get('/api/user/is-pro');
-        if (body.status === 'Authorized') {
-          localStorage.setItem(IS_PRO_LOCAL_STORAGE, 'true');
-          setShowProLink(true);
-        } else {
-          localStorage.setItem(IS_PRO_LOCAL_STORAGE, 'false');
-        }
+        setShowProLink(body.status === 'Authorized');
       }
     }
-    fetchData();
+    if (!showProLink) {
+      fetchData();
+    }
   }, [showProLink, setShowProLink]);
 
   // Modal
-  function showModal() {
-    setShowEmailModal(true);
-  }
   function closeModal() {
     setShowEmailModal(false);
   }
-  async function validateForm() {
-    if (!EMAIL_REGEX.test(email) || !email.endsWith('@pole-emploi.fr')) {
+  function validateForm() {
+    if (!email || !EMAIL_REGEX.test(email) || !email.endsWith('@pole-emploi.fr')) {
       setShowEmailError(true);
-      return;
+      return false;
     }
 
-    try {
+    closeModal();
+    setShowEmailError(false);
+    window.open('https://pole-emploi.zendesk.com/hc/fr/categories/360002502040-Zen-et-les-conseillers-P%C3%B4le-emploi');
+    superagent.post('/api/user/save-email', { email }).catch(() => {});
+    return true;
+  }
+  function showModal() {
+    if (!validateForm()) {
       setShowEmailError(false);
-      await superagent.post('/api/user/save-email', { email });
-      history.push('/aide-conseillers');
-    } catch {
-      setShowEmailError(true);
+      setShowEmailModal(true);
     }
   }
 
@@ -114,8 +98,7 @@ function PeHelpLink() {
           content={(
             <>
               <DialogContentText>
-                Pour continuer, veuillez entrer votre adresse e-mail Pôle emploi
-                :
+                Pour continuer, veuillez entrer votre adresse e-mail Pôle emploi :
               </DialogContentText>
               <DialogContentText>
                 <FormControl style={{ width: '100%' }}>
@@ -126,16 +109,22 @@ function PeHelpLink() {
                     error={showEmailError}
                   />
                   {showEmailError && (
-                    <FormHelperText style={{ color: errorRed }}>
-                      E-mail invalide. Veuillez renseigner votre adresse e-mail
-                      interne
+                    <FormHelperText style={{ color: errorRed, textAlign: 'center' }}>
+                      Veuillez réessayer ou prendre contact avec :
+                      <br />
+                      <br />
+                      sylvie.lebel@pole-emploi.fr
+                      <br />
+                      ou
+                      <br />
+                      s.vandenbergue@pole-emploi.fr
                     </FormHelperText>
                   )}
                 </FormControl>
               </DialogContentText>
             </>
           )}
-          title="Aide en ligne - Conseiller Pôle emploi"
+          title="Accès FAQ - Conseiller Pôle emploi"
           titleId="pe-mail-modal"
           isOpened={showEmailModal}
           onCancel={closeModal}
@@ -165,4 +154,4 @@ function PeHelpLink() {
   );
 }
 
-export default PeHelpLink;
+export default React.memo((props) => <PeHelpLink {...props} />);

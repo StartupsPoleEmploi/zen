@@ -21,6 +21,7 @@ const A = styled.button`
 
   background-color: ${helpColor} !important;
   border-color: ${helpColor} !important;
+  border-style: hidden;
   color: white;
   padding: 1rem 1.6em;
   border-radius: 999rem;

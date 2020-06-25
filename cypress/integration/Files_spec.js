@@ -13,11 +13,9 @@ import {
   uploadNewDeclarationInfoFile,
   skipEmployerFile,
   skipDeclarationInfoFile,
-  getDeclarationStatus,
-  getCompletionJauge,
 } from '../pages/Files';
 
-import { DECLARATION_STATUS } from '../pages/Dashboard';
+import { DECLARATION_STATUS, getDeclarationTitle } from '../pages/Dashboard';
 
 describe('Files page - Declaration not started', () => {
   beforeEach(() => {
@@ -27,7 +25,7 @@ describe('Files page - Declaration not started', () => {
   });
 
   it('should display declaration not started', () => {
-    getDeclarationStatus().should('have.text', DECLARATION_STATUS.NOT_STARTED);
+    cy.get('.error-title').should('have.text', DECLARATION_STATUS.NO_FILES);
   });
 });
 describe('Files page - Declaration started but employers not finished', () => {
@@ -38,10 +36,7 @@ describe('Files page - Declaration started but employers not finished', () => {
   });
 
   it('should display declaration on going', () => {
-    getDeclarationStatus().should('have.text', DECLARATION_STATUS.ON_GOING);
-  });
-  it('should display 50% as declaration completion', () => {
-    getCompletionJauge().should('have.text', '50%');
+    cy.get('.error-title').should('have.text', DECLARATION_STATUS.NO_FILES);
   });
 });
 
@@ -52,7 +47,7 @@ describe('Files page', () => {
     cy.viewport(1400, 1600);
     cy.visit('/files');
     cy.wait(500);
-    cy.get('h1').should('contain', 'justificatifs à transmettre');
+    getDeclarationTitle().contains(DECLARATION_STATUS.MISSING_FILES);
   });
 
   it('should allow to send documents to Pole Emploi when they are all uploaded', () => {

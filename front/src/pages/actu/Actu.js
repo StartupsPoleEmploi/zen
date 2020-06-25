@@ -297,6 +297,7 @@ export class Actu extends Component {
       return (
         <>
           Merci de répondre à
+          {' '}
           <b>toutes les questions</b>
         </>
       );
@@ -332,6 +333,7 @@ export class Actu extends Component {
         errorMsg = (
           <>
             Merci d'indiquer
+            {' '}
             <b>toutes vos dates de stage</b>
           </>
         );
@@ -340,6 +342,7 @@ export class Actu extends Component {
         errorMsg = (
           <>
             Merci de corriger
+            {' '}
             <b>vos dates de stage (le début du stage ne peut être après sa fin)</b>
           </>
         );
@@ -377,7 +380,8 @@ export class Actu extends Component {
         errorMsg = (
           <>
             Merci d'indiquer
-            <b>tous vos dates d'arrêt maladie</b>
+            {' '}
+            <b>toutes vos dates d'arrêt maladie</b>
           </>
         );
       }
@@ -385,6 +389,7 @@ export class Actu extends Component {
         errorMsg = (
           <>
             Merci de corriger
+            {' '}
             <b>vos dates d'arrêt maladie (le début de l'arrêt ne peut être après sa fin)</b>
           </>
         );
@@ -404,6 +409,7 @@ export class Actu extends Component {
           errorMsg = (
             <>
               Merci d'indiquer
+              {' '}
               <b>votre date de départ en congé maternité</b>
             </>
           );
@@ -424,6 +430,7 @@ export class Actu extends Component {
           errorMsg = (
             <>
               Merci d'indiquer depuis
+              {' '}
               <b>quand vous touchez une pension retraite</b>
             </>
           );
@@ -444,6 +451,7 @@ export class Actu extends Component {
           errorMsg = (
             <>
               Merci d'indiquer depuis
+              {' '}
               <b>quand vous touchez une pension d'invalidité</b>
             </>
           );
@@ -462,6 +470,7 @@ export class Actu extends Component {
           errorMsg = (
             <>
               Merci d'indiquer depuis
+              {' '}
               <b>quand vous ne cherchez plus d'emploi</b>
             </>
           );
@@ -472,6 +481,7 @@ export class Actu extends Component {
         errorMsg = (
           <>
             Merci d'indiquer
+            {' '}
             <b>pourquoi vous ne recherchez plus d'emploi</b>
           </>
         );

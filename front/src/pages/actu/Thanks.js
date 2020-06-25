@@ -141,7 +141,7 @@ export default class Thanks extends Component {
                 ou
                 {' '}
                 <a
-                  href="https://pole-emploi.zendesk.com/hc/fr"
+                  href="https://zen.pole-emploi.fr/zen-doc"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="ouverture dans une nouvelle fenêtre"

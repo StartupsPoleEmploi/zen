@@ -89,7 +89,7 @@ function PeHelpLink() {
     }
   }
 
-  // if (!showProLink) return null;
+  if (!showProLink) return null;
 
   return (
     <>

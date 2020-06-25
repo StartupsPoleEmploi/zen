@@ -81,7 +81,7 @@ function Covid19Warning({ whiteBg = false }) {
       </Text>
       <ButtonContainer>
         <MoreInfoButton
-          href="https://pole-emploi.zendesk.com/hc/fr/sections/360003786219-Crise-sanitaire-COVID-19"
+          href="https://zen.pole-emploi.fr/zen-doc/?cat=15"
           rel="noopener"
           target="_blank"
           primary

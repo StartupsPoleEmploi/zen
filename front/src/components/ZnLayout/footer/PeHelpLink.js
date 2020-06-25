@@ -78,7 +78,7 @@ function PeHelpLink() {
 
     closeModal();
     setShowEmailError(false);
-    window.open('https://pole-emploi.zendesk.com/hc/fr/categories/360002502040-Zen-et-les-conseillers-P%C3%B4le-emploi');
+    window.open('https://zen.pole-emploi.fr/zen-doc/?page_id=476');
     superagent.post('/api/user/save-email', { email }).catch(() => {});
     return true;
   }
@@ -89,7 +89,7 @@ function PeHelpLink() {
     }
   }
 
-  if (!showProLink) return null;
+  // if (!showProLink) return null;
 
   return (
     <>

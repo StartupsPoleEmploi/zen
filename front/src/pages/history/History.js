@@ -140,8 +140,6 @@ function History({
     lastDeclarationMonthId -= 1;
   });
 
-  console.log('filledDeclarations', filledDeclarations);
-
   return (
     <StyledHistory>
       <StyledH1>L'historique de votre actualisation sur Zen</StyledH1>

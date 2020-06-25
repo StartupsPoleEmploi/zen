@@ -286,7 +286,7 @@ export class Files extends Component {
     const now = new Date();
 
     const showSurvey = lastResponse === null ||
-     new Date(lastResponse).getMonth() !== now.getMonth();
+      new Date(lastResponse).getMonth() !== now.getMonth();
     this.setState({ showSurvey });
   }
 
@@ -403,9 +403,9 @@ export class Files extends Component {
               isLoading={info.isLoading}
               error={info.error}
               useLightVersion={
-            muiBreakpoints.xs === this.props.width ||
-            muiBreakpoints.sm === this.props.width
-          }
+                muiBreakpoints.xs === this.props.width ||
+                muiBreakpoints.sm === this.props.width
+              }
 
             />
           </StyledUl>
@@ -486,30 +486,30 @@ export class Files extends Component {
     );
 
     return (isCertificatDocTransmitted && isSalaryDocTransmitted) ||
-    (certificateDoc && !salaryDoc) ? <></> : (
-      <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
-        <StyledUl>
-          {certificateUpload}
-          {certificateDoc && !salaryDoc ? (
-            <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
-              <span
-                aria-hidden
-                style={{
-                  display: 'inline-block',
-                  paddingRight: '0.5rem',
-                }}
-              >
-                👍
-              </span>
-              Nous n'avons pas besoin de votre bulletin de salaire pour cet
-              employeur, car vous nous avez déjà transmis votre attestation
-            </Typography>
-          ) : (
-            salarySheetUpload
-          )}
-        </StyledUl>
-      </DocumentsGroup>
-    );
+      (certificateDoc && !salaryDoc) ? <></> : (
+        <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
+          <StyledUl>
+            {certificateUpload}
+            {certificateDoc && !salaryDoc ? (
+              <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
+                <span
+                  aria-hidden
+                  style={{
+                    display: 'inline-block',
+                    paddingRight: '0.5rem',
+                  }}
+                >
+                  👍
+                </span>
+                Nous n'avons pas besoin de votre bulletin de salaire pour cet
+                employeur, car vous nous avez déjà transmis votre attestation
+              </Typography>
+            ) : (
+              salarySheetUpload
+            )}
+          </StyledUl>
+        </DocumentsGroup>
+      );
   }
 
   onCollapseMonth = (id) => {
@@ -688,7 +688,7 @@ export class Files extends Component {
       // fetch if document have an error
       declarations.map((declaration) => {
         if ((declaration.employers || []).some((d) => d.salarySheetError) ||
-        (declaration.infos || []).some((d) => d.error)) {
+          (declaration.infos || []).some((d) => d.error)) {
           error = 'Un problème est survenu veuillez réessayer plus tard';
         }
 
@@ -715,7 +715,7 @@ export class Files extends Component {
           onConfirm={this.state.skipFileCallback}
         />
         {(showEmployerPreview || showInfoDocPreview) && (
-        <DocumentDialog isOpened {...previewProps} />
+          <DocumentDialog isOpened {...previewProps} />
         )}
 
         {snackSuccess && (

@@ -1,11 +1,15 @@
 import React from 'react';
-import { Typography, Link } from '@material-ui/core';
+import { Typography, Link, Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DoneIcon from '@material-ui/icons/Done';
+import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 
+import PriorityHighIcon from '@material-ui/icons/PriorityHighOutlined';
 import { getDeclarationMissingFilesNb } from '../../lib/file';
-import { intermediaryBreakpoint, mobileBreakpoint } from '../../constants';
+import {
+  intermediaryBreakpoint, mobileBreakpoint, primaryBlue, errorRed, errorOrange,
+} from '../../constants';
 import TooltipOnFocus from '../../components/Generic/TooltipOnFocus';
 
 // prettier-ignore
@@ -34,12 +38,17 @@ const StyledMissingCell = styled.div`
       padding: 2rem;
       border-left: none;
       border-top: solid 1px #ddd;
+      justify-content: stretch;
+
+      > div {
+        width: 100%;
+        text-align: left;
+      }
     }
 
     @media (max-width: ${mobileBreakpoint}) {
       justify-content: left;
-      border: none;
-      padding-top: .5rem;
+      padding-top: 2rem;
       padding-bottom: 2rem;
       padding-left: 0;
     }
@@ -60,20 +69,38 @@ const StyledDoneIcon = styled(DoneIcon)`
   }
 `;
 
+const BoxMissingDocs = styled(Box)`
+  flex-direction: column;
+`;
+
+const BoxLine = styled(Typography)`
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  svg {
+    margin-left: 2.3rem;
+  }
+
+  &:first-child {
+    margin-bottom: 1rem;
+  }
+`;
+
 const MissingCell = ({ lastMonthId, width, declaration }) => {
   const missingFilesNumber = getDeclarationMissingFilesNb(declaration);
 
-  function renderAllFilesSend(declarationContent) {
+  function renderAllFilesSend() {
     const filesByType = {};
 
-    declarationContent.infos.forEach(({ type }) => {
+    declaration.infos.forEach(({ type }) => {
       if (filesByType[type] === undefined) filesByType[type] = 1;
       else {
         filesByType[type] += 1;
       }
     });
 
-    declarationContent.employers.forEach((employer) => {
+    declaration.employers.forEach((employer) => {
       employer.documents.forEach(({ type }) => {
         if (filesByType[type] === undefined) filesByType[type] = 1;
         else {
@@ -81,6 +108,8 @@ const MissingCell = ({ lastMonthId, width, declaration }) => {
         }
       });
     });
+
+    const totalFilesSent = Object.entries(filesByType).length;
 
     const tooltipContent = (
       <Ul>
@@ -92,34 +121,43 @@ const MissingCell = ({ lastMonthId, width, declaration }) => {
 
     return (
       <TooltipOnFocus content={tooltipContent}>
-        <Typography style={{ paddingLeft: width === 'xs' ? '3.2rem ' : null }}>
-          {width !== 'xs' && <StyledDoneIcon />}
-          Tous les justificatifs envoyés
-        </Typography>
+        <BoxLine style={{ paddingLeft: width === 'xs' ? '3.2rem ' : null }}>
+          <Box flex={1}>
+            {width !== 'xs' && missingFilesNumber === 0 && <StyledDoneIcon />}
+            {totalFilesSent === 1 && `${totalFilesSent} justificatif envoyé`}
+            {totalFilesSent > 1 && `${totalFilesSent} justificatifs envoyés`}
+          </Box>
+          <VisibilityIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
+          <Typography>Visualiser</Typography>
+        </BoxLine>
       </TooltipOnFocus>
     );
   }
 
   return (
     <StyledMissingCell className="text">
-      {missingFilesNumber === 0 ? (
-        renderAllFilesSend(declaration)
-      ) : (
-        <Link
-          href={`/files${
-            lastMonthId === declaration.declarationMonth.id ? '' : '?tab=old'
-          }`}
-          style={{ paddingLeft: width === 'xs' ? '3.2rem' : null }}
-        >
-          <Typography>
-            {missingFilesNumber}
-            {' '}
-            {missingFilesNumber === 1 ?
-              'justificatif manquant' :
-              'justificatifs manquants'}
-          </Typography>
-        </Link>
-      )}
+
+      <BoxMissingDocs display="flex">
+        {renderAllFilesSend()}
+        <BoxLine>
+          <Box flex={1}>
+            <Link
+              href={`/files${
+                lastMonthId === declaration.declarationMonth.id ? '' : '?tab=old'
+              }`}
+              style={{ paddingLeft: width === 'xs' ? '3.2rem' : null, color: errorOrange }}
+            >
+              {missingFilesNumber}
+              {' '}
+              {missingFilesNumber === 1 ?
+                'justificatif manquant' :
+                'justificatifs manquants'}
+            </Link>
+          </Box>
+          <PriorityHighIcon style={{ color: errorRed, marginRight: '1rem' }} />
+          <Typography>Ajouter</Typography>
+        </BoxLine>
+      </BoxMissingDocs>
     </StyledMissingCell>
   );
 };

@@ -20,7 +20,8 @@ const DEFAULT_STR = `{
   "registeredAt": "2019-05-06",
   "canSendDeclaration": true,
   "hasAlreadySentDeclaration": false,
-  "tokenExpirationDate": "2059-05-06T13:34:15.985Z"
+  "tokenExpirationDate": "2059-05-06T13:34:15.985Z",
+  "isFakeAuth": true
 }`;
 
 export default function DialogUser() {

@@ -135,9 +135,10 @@ const sendDeclaration = ({
   ignoreErrors,
   userId,
   previousTries = 0,
+  isFakeAuth = false,
 }) => {
   // NEVER ACTIVATE IN PRODUCTION
-  if (config.get('bypassDeclarationDispatch')) {
+  if (isFakeAuth || config.get('bypassDeclarationDispatch')) {
     winston.info(`Simulating sending ${declaration.id} to PE`);
     return Promise.resolve({ body: { statut: 0 } });
   }

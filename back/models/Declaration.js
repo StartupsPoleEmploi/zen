@@ -141,7 +141,6 @@ class Declaration extends BaseModel {
     let list = await Employer.query().where('declarationId', '=', this.id);
     list = list.concat(await DeclarationInfo.query().where('declarationId', '=', this.id));
     list = list.concat(await DeclarationReview.query().where('declarationId', '=', this.id));
-    console.log('list', list);
 
     await Promise.all(
       list.map(async (d) =>

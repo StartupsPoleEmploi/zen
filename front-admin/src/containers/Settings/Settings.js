@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
 import { Switch, Form, Button } from 'antd';
+const http = require('http')
+
 
 
 import { useUseradmin } from '../../common/contexts/useradminCtx';
@@ -15,21 +17,21 @@ export default function Settings() {
   const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
-    superagent.agent().get('/api/status').then(({ body }) => {
+    superagent.get('/zen-admin-api/settings/status').then(({ body }) => {
       setIsGlobalActivated(body.global.up);
       setIsFilesActivated(body.files.up);
     }).catch(logoutIfNeed);
   }, [logoutIfNeed]);
 
   const updateGlobalStatus = () => {
-    superagent.agent()
+    superagent
       .post('/zen-admin-api/settings/status-global', { up: !isGlobalActivated })
       .then(({ body }) => setIsGlobalActivated(body.up))
       .catch(logoutIfNeed);
   };
 
   const updateFilesStatus = () => {
-    superagent.agent()
+    superagent
       .post('/zen-admin-api/settings/status-files', { up: !isFilesActivated })
       .then(({ body }) => setIsFilesActivated(body.isFilesServiceUp))
       .catch(logoutIfNeed);

@@ -1,6 +1,7 @@
 const express = require('express');
 const zip = require('express-easy-zip');
 const superagent = require('superagent');
+const { setIsServiceUp } = require('../../lib/middleware/serviceUpMiddleware');
 
 const winston = require('../../lib/log');
 const Status = require('../../models/Status');
@@ -64,5 +65,11 @@ router.post('/settings/remove-declarations', async (req, res, next) => {
     res.status(400).json('Only valid for development and qa env !');
   }
 });
+
+router.get('/settings/status', setIsServiceUp, (req, res) =>
+  res.json({
+    global: { up: req.isServiceUp },
+    files: { up: req.isFilesServiceUp },
+  }));
 
 module.exports = router;

@@ -38,6 +38,17 @@ export function DeclarationsProvider(props) {
     }
   }, [availableMonths.length, logoutIfNeed, setSelectedMonthId]);
 
+  const removeDeclarations = useCallback(async () => {
+    if(window.confirm('Je confirme la suppression des actualisations !!!')) {
+      await superagent
+      .post('/zen-admin-api/settings/remove-declarations')
+      .then(() => {
+        window.alert('L\'ensemble des actualisations sont supprimées.')
+      })
+      .catch(logoutIfNeed);
+    }
+  }, []);
+
   return (
     <DeclarationsContext.Provider
       {...props}
@@ -49,6 +60,7 @@ export function DeclarationsProvider(props) {
         // function
         setSelectedMonthId,
         init,
+        removeDeclarations,
       }}
     />
   );

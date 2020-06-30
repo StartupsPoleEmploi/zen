@@ -1,14 +1,17 @@
 const express = require('express');
 const zip = require('express-easy-zip');
 const superagent = require('superagent');
+const { setIsServiceUp } = require('../../lib/middleware/serviceUpMiddleware');
 
 const winston = require('../../lib/log');
 const Status = require('../../models/Status');
+const Declaration = require('../../models/Declaration');
+const monthCtrl = require('../../controllers/monthCtrl');
 
 const router = express.Router();
 router.use(zip());
 
-router.post('/status-global', (req, res, next) =>
+router.post('/settings/status-global', (req, res, next) =>
   Status.query()
     .patch({ up: req.body.up })
     .returning('*')
@@ -28,7 +31,7 @@ router.post('/status-global', (req, res, next) =>
     })
     .catch(next));
 
-router.post('/status-files', (req, res, next) =>
+router.post('/settings/status-files', (req, res, next) =>
   Status.query()
     .patch({ isFilesServiceUp: req.body.up })
     .returning('*')
@@ -47,5 +50,26 @@ router.post('/status-files', (req, res, next) =>
       return res.json(result[0]);
     })
     .catch(next));
+
+router.post('/settings/remove-declarations', async (req, res, next) => {
+  if (['development', 'qa'].includes(process.env.NODE_ENV)) {
+    const currentMonth = await monthCtrl.getCurrentMonth();
+    const declarations = await Declaration.query().where('monthId', '=', currentMonth.id);
+
+    await Promise.all(
+      declarations.map(async (d) =>
+        d.$query().delete()),
+    ).then(() => res.json('OK'))
+      .catch(next);
+  } else {
+    res.status(400).json('Only valid for development and qa env !');
+  }
+});
+
+router.get('/settings/status', setIsServiceUp, (req, res) =>
+  res.json({
+    global: { up: req.isServiceUp },
+    files: { up: req.isFilesServiceUp },
+  }));
 
 module.exports = router;

@@ -6,6 +6,9 @@ const {
 } = require('objection');
 
 const BaseModel = require('./BaseModel');
+const Employer = require('./Employer');
+const DeclarationInfo = require('./DeclarationInfo');
+const DeclarationReview = require('./DeclarationReview');
 
 class Declaration extends BaseModel {
   static get tableName() {
@@ -131,6 +134,18 @@ class Declaration extends BaseModel {
         },
       },
     };
+  }
+
+  async $beforeDelete(queryContext) {
+    await super.$beforeDelete(queryContext);
+    let list = await Employer.query().where('declarationId', '=', this.id);
+    list = list.concat(await DeclarationInfo.query().where('declarationId', '=', this.id));
+    list = list.concat(await DeclarationReview.query().where('declarationId', '=', this.id));
+
+    await Promise.all(
+      list.map(async (d) =>
+        d.$query().delete()),
+    );
   }
 
   // helper function to determine if a declaration needs documents

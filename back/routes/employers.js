@@ -178,6 +178,7 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
         userId: req.session.user.id,
         accessToken: req.session.userSecret.accessToken,
         ignoreErrors: req.body.ignoreErrors,
+        isFakeAuth: req.session.user.isFakeAuth,
       })
         .then(({ body }) => {
           if (body.statut !== DECLARATION_STATUSES.SAVED) {
@@ -387,6 +388,7 @@ router.post('/files/validate', (req, res, next) => {
         sendDocument({
           document: employerDoc,
           accessToken: req.session.userSecret.accessToken,
+          isFakeAuth: req.session.user.isFakeAuth,
         })
           .then(() =>
             fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({

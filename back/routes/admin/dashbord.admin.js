@@ -97,15 +97,15 @@ router.get('/metrics', async (req, res) => {
   // 2 - New users
   const newUsersFirstPeriodData = await User.query()
     .select(raw('to_char("registeredAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('registeredAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('registeredAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('registeredAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('registeredAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("registeredAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const newUsersSecondPeriodData = hasSecondPeriod ? await User.query()
     .select(raw('to_char("registeredAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('registeredAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('registeredAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('registeredAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('registeredAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("registeredAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
 
@@ -119,15 +119,15 @@ router.get('/metrics', async (req, res) => {
   // 3 - Declarations started
   const declarationStartedFirstPeriodData = await Declaration.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const declarationStartedSecondPeriodData = hasSecondPeriod ? await Declaration.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
 
@@ -141,16 +141,16 @@ router.get('/metrics', async (req, res) => {
   // 4 - Declarations finished for two periods of time
   const declarationFinishedFirstPeriodData = await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const declarationFinishedSecondPeriodData = hasSecondPeriod ? await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
@@ -165,16 +165,16 @@ router.get('/metrics', async (req, res) => {
   // 5 - Files transmitted
   const filesTransmittedFirstPeriodData = await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const filesTransmittedSecondPeriodData = hasSecondPeriod ? await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
@@ -302,7 +302,7 @@ router.get('/repartition/unregistered-users-region/csv', async (req, res) => {
   const csv = json2csvParser.parse(users);
   res.set(
     'Content-disposition',
-    `attachment; filename=${filename}-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+    `attachment; filename=${filename}-${format(new Date(), 'yyyy-MM-dd')}.csv`,
   );
   res.set('Content-type', 'text/csv');
   return res.send(csv);
@@ -390,7 +390,7 @@ router.get('/repartition/agency/csv', async (req, res) => {
   const csv = json2csvParser.parse(users);
   res.set(
     'Content-disposition',
-    `attachment; filename=${filename}-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+    `attachment; filename=${filename}-${format(new Date(), 'yyyy-MM-dd')}.csv`,
   );
   res.set('Content-type', 'text/csv');
   return res.send(csv);

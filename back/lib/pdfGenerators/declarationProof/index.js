@@ -25,20 +25,20 @@ const DOCUMENT_LABELS = {
 };
 
 const formatIntervalDates = (startDate, endDate) => {
-  const startString = format(new Date(startDate), 'DD/MM/YYYY');
+  const startString = format(new Date(startDate), 'dd/MM/yyyy');
   if (!endDate) return `le ${startString}`;
 
-  const endString = format(new Date(endDate), 'DD/MM/YYYY');
+  const endString = format(new Date(endDate), 'dd/MM/yyyy');
   return `du ${startString} au ${endString}`;
 };
 
 const generatePdfName = (declaration) => {
-  const declarationDate = format(new Date(declaration.declarationMonth.month), 'YYYY-MM');
+  const declarationDate = format(new Date(declaration.declarationMonth.month), 'yyyy-MM');
   return `${declarationDate}__${declaration.userId}.pdf`;
 };
 
 function getFriendlyPdfName({ declarationMonth: { month } }) {
-  const declarationDate = format(new Date(month), 'MMMM-YYYY', { locale: fr });
+  const declarationDate = format(new Date(month), 'MMMM-yyyy', { locale: fr });
   return `declaration-${declarationDate}.pdf`;
 }
 
@@ -65,14 +65,14 @@ const generateDeclarationAsPdf = async (declaration, pdfPath) => {
       : 'http://zen.beta.pole-emploi.fr',
     dateMonth: format(
       new Date(declaration.declarationMonth.month),
-      'MMMM YYYY',
+      'MMMM yyyy',
       { locale: fr },
     ),
-    declarationDate: format(new Date(declaration.updatedAt), 'DD/MM/YYYY'),
-    declarationTime: format(new Date(declaration.updatedAt), 'HH:MM'),
+    declarationDate: format(new Date(declaration.updatedAt), 'dd/MM/yyyy'),
+    declarationTime: format(new Date(declaration.updatedAt), 'HH:mm'),
     isLookingForJob: declaration.isLookingForJob,
     dateEndLookingForJob: declaration.isLookingForJob
-      ? format(new Date(), 'DDDD DD MMMM YYYY')
+      ? format(new Date(), 'dd MMMM yyyy')
       : null,
     hasWorked: declaration.hasWorked,
     workHours: Math.round(

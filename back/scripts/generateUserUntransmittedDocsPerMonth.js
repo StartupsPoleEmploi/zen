@@ -9,7 +9,7 @@ const EmployerDocument = require('../models/EmployerDocument');
 const { DOCUMENT_LABELS } = require('../constants');
 
 const getFormattedMonthAndYear = (date) =>
-  format(new Date(date), 'MMMM YYYY', { locale: fr });
+  format(new Date(date), 'MMMM yyyy', { locale: fr });
 
 const getMissingDocumentLabelsFromDeclaration = (declaration) =>
   declaration.infos
@@ -67,7 +67,7 @@ for (let i = 1; i < 16; i += 1) {
     .then(([declarations]) => {
       const monthLabel = format(
         declarations[0].declarationMonth.month,
-        'MM-YYYY',
+        'MM-yyyy',
       );
 
       const csv = declarations.map((declaration) => {

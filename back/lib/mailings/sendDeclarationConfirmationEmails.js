@@ -15,7 +15,7 @@ const sendDeclarationConfirmationEmail = (declaration) =>
     const base64File = fileBuffer.toString('base64');
 
     const declarationMonth = new Date(declaration.declarationMonth.month);
-    const formattedDeclarationMonth = format(declarationMonth, 'MMMM YYYY', {
+    const formattedDeclarationMonth = format(declarationMonth, 'MMMM yyyy', {
       locale: fr,
     });
 
@@ -49,7 +49,7 @@ const sendDeclarationConfirmationEmail = (declaration) =>
             ],
             CustomCampaign: `Confirmation de transmission de déclaration - ${format(
               declarationMonth,
-              'MM/YYYY',
+              'MM/yyyy',
             )}`,
           },
         ],

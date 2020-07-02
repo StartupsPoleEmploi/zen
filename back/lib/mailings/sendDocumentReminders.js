@@ -20,7 +20,7 @@ const WAIT_TIME_AFTER_ERROR = 300000; // wait 5 minutes before retrying after an
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 const getFormattedMonthAndYear = (date) =>
-  format(new Date(date), 'MMMM YYYY', { locale: fr });
+  format(new Date(date), 'MMMM yyyy', { locale: fr });
 
 const getMissingDocumentLabelsFromDeclaration = (declaration) =>
   declaration.infos
@@ -191,7 +191,7 @@ const sendAllDocumentsReminders = () =>
  */
 const sendCurrentDeclarationDocsReminders = () => {
   const lastMonth = subMonths(new Date(), 1);
-  const formattedMonthInFrench = format(lastMonth, 'MMMM YYYY', { locale: fr });
+  const formattedMonthInFrench = format(lastMonth, 'MMMM yyyy', { locale: fr });
 
   return DeclarationMonth.query()
     .where('endDate', '>', new Date())

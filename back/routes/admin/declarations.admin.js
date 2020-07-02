@@ -71,7 +71,7 @@ router.get('/declaration/users/csv', async (req, res, next) => {
       'Content-disposition',
       `attachment; filename=${filename}-${format(
         new Date(),
-        'YYYY-MM-DD',
+        'yyyy-MM-dd',
       )}.csv`,
     );
     res.set('Content-type', 'text/csv');
@@ -101,7 +101,7 @@ router.get('/declarations/:declarationId/files', (req, res) => {
 
       const formattedMonth = format(
         new Date(declaration.declarationMonth.month),
-        'MM-YYYY',
+        'MM-yyyy',
       );
 
       const files = declaration.infos

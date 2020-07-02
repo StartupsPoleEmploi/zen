@@ -47,7 +47,7 @@ router.get('/users/csv', async (req, res, next) => {
       'Content-disposition',
       `attachment; filename=utilisateurs-${
         !isAuthorized ? 'non-' : ''
-      }autorisés-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+      }autorisés-${format(new Date(), 'yyyy-MM-dd')}.csv`,
     );
     res.set('Content-type', 'text/csv');
     return res.send(csv);

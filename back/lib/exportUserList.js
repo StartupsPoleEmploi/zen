@@ -29,14 +29,14 @@ const getValidateFileActivityLog = (logs, { id: declarationId }) =>
 const computeFields = (declarationMonths) => {
   const months = [];
   declarationMonths.forEach((month) => {
-    const label = format(new Date(month.month), 'MM/YYYY');
+    const label = format(new Date(month.month), 'MM/yyyy');
     months.push({
       label: `${label} - Actu envoyee`,
       value: (row, field) => {
         if (row.declarations) {
           const declaration = getDeclaration(row.declarations, month.id);
 
-          if (declaration) return format(declaration.transmittedAt, 'DD/MM');
+          if (declaration) return format(declaration.transmittedAt, 'dd/MM');
         }
         return field.default;
       },
@@ -56,11 +56,11 @@ const computeFields = (declarationMonths) => {
                   row.activityLogs,
                   declaration,
                 );
-                if (log) return format(log.createdAt, 'DD/MM');
+                if (log) return format(log.createdAt, 'dd/MM');
               }
               // During 2 months we got a regression resulting in no VALIDATE_FILES activityLog...
               // We use declaration.updatedAt as fallback
-              return format(declaration.updatedAt, 'DD/MM');
+              return format(declaration.updatedAt, 'dd/MM');
             }
           }
         }

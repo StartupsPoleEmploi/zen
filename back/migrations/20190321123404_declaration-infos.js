@@ -43,8 +43,8 @@ exports.up = function up(knex) {
               {
                 type,
                 declarationId: declaration.id,
-                startDate: format(startDate, 'YYYY-MM-DD'),
-                endDate: format(endDate, 'YYYY-MM-DD'),
+                startDate: format(startDate, 'yyyy-MM-dd'),
+                endDate: format(endDate, 'yyyy-MM-dd'),
                 file: get(declarationDoc, 'file'),
                 isTransmitted: get(declarationDoc, 'isTransmitted'),
               },
@@ -63,8 +63,8 @@ exports.up = function up(knex) {
               {
                 type,
                 declarationId: declaration.id,
-                startDate: format(startDate, 'YYYY-MM-DD'),
-                endDate: format(endDate, 'YYYY-MM-DD'),
+                startDate: format(startDate, 'yyyy-MM-dd'),
+                endDate: format(endDate, 'yyyy-MM-dd'),
                 file: get(declarationDoc, 'file'),
                 isTransmitted: get(declarationDoc, 'isTransmitted'),
               },
@@ -85,7 +85,7 @@ exports.up = function up(knex) {
               declarationId: declaration.id,
               startDate: format(
                 declaration.dates.maternityLeave.startDate,
-                'YYYY-MM-DD',
+                'yyyy-MM-dd',
               ),
               file: get(declarationDoc, 'file'),
               isTransmitted: get(declarationDoc, 'isTransmitted'),
@@ -106,7 +106,7 @@ exports.up = function up(knex) {
               declarationId: declaration.id,
               startDate: format(
                 declaration.dates.retirement.startDate,
-                'YYYY-MM-DD',
+                'yyyy-MM-dd',
               ),
               file: get(declarationDoc, 'file'),
               isTransmitted: get(declarationDoc, 'isTransmitted'),
@@ -127,7 +127,7 @@ exports.up = function up(knex) {
               declarationId: declaration.id,
               startDate: format(
                 declaration.dates.invalidity.startDate,
-                'YYYY-MM-DD',
+                'yyyy-MM-dd',
               ),
               file: get(declarationDoc, 'file'),
               isTransmitted: get(declarationDoc, 'isTransmitted'),
@@ -144,7 +144,7 @@ exports.up = function up(knex) {
               declarationId: declaration.id,
               endDate: format(
                 declaration.dates.jobSearch.endDate,
-                'YYYY-MM-DD',
+                'yyyy-MM-dd',
               ),
             },
             ['id'],

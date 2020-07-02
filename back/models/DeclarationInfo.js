@@ -26,8 +26,8 @@ class DeclarationInfo extends Model {
     This resolves it by relying on the node server to correctly format dates to YYYY-MM-DD.
   */
   convertUTCDatesToPGDates() {
-    if (this.startDate) this.startDate = format(new Date(this.startDate), 'YYYY-MM-DD');
-    if (this.endDate) this.endDate = format(new Date(this.endDate), 'YYYY-MM-DD');
+    if (this.startDate) this.startDate = format(new Date(this.startDate), 'yyyy-MM-dd');
+    if (this.endDate) this.endDate = format(new Date(this.endDate), 'yyyy-MM-dd');
   }
 
   $beforeUpdate() {

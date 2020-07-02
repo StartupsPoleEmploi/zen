@@ -50,7 +50,7 @@ services:
       - "3000"
 
   db:
-    image: postgres
+    image: postgres:10.4
     environment:
       - POSTGRES_DB=test-db
       - POSTGRES_USER=test-user

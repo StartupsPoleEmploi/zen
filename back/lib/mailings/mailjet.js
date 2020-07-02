@@ -42,7 +42,7 @@ async function manageContact({ email, name, properties }) {
 }
 
 function formatDateForSegmentFilter(date) {
-  return parseInt(format(date, 'YYYYMM'), 10);
+  return parseInt(format(new Date(date), 'YYYYMM'), 10);
 }
 
 // https://dev.mailjet.com/reference/email/contacts/contact-list/

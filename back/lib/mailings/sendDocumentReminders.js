@@ -20,7 +20,7 @@ const WAIT_TIME_AFTER_ERROR = 300000; // wait 5 minutes before retrying after an
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 const getFormattedMonthAndYear = (date) =>
-  format(date, 'MMMM YYYY', { locale: fr });
+  format(new Date(date), 'MMMM YYYY', { locale: fr });
 
 const getMissingDocumentLabelsFromDeclaration = (declaration) =>
   declaration.infos

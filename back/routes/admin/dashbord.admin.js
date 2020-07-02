@@ -78,21 +78,21 @@ router.get('/metrics', async (req, res) => {
     ? await DeclarationMonth.query().findById(secondMonthId) : null;
 
   // Get longer period duration
-  const firstPeriodDuration = differenceInCalendarDays(firstDeclarationMonth.endDate,
+  const firstPeriodDuration = differenceInCalendarDays(new Date(firstDeclarationMonth.endDate),
     firstDeclarationMonth.startDate);
 
   const secondPeriodDuration = hasSecondPeriod
-    ? differenceInCalendarDays(secondDeclarationMonth.endDate,
+    ? differenceInCalendarDays(new Date(secondDeclarationMonth.endDate),
       secondDeclarationMonth.startDate) : 0;
   const periodDuration = firstPeriodDuration > secondPeriodDuration
     ? firstPeriodDuration : secondPeriodDuration;
 
   // Compute periods start and end dates
-  const startFirstPeriod = firstDeclarationMonth.startDate;
-  const endFirstPeriod = addDays(firstDeclarationMonth.startDate, periodDuration);
+  const startFirstPeriod = new Date(firstDeclarationMonth.startDate);
+  const endFirstPeriod = addDays(new Date(firstDeclarationMonth.startDate), periodDuration);
   const startSecondPeriod = hasSecondPeriod ? secondDeclarationMonth.startDate : null;
   const endSecondPeriod = hasSecondPeriod
-    ? addDays(secondDeclarationMonth.startDate, periodDuration) : null;
+    ? addDays(new Date(secondDeclarationMonth.startDate), periodDuration) : null;
 
   // 2 - New users
   const newUsersFirstPeriodData = await User.query()

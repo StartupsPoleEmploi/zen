@@ -29,7 +29,7 @@ const getValidateFileActivityLog = (logs, { id: declarationId }) =>
 const computeFields = (declarationMonths) => {
   const months = [];
   declarationMonths.forEach((month) => {
-    const label = format(month.month, 'MM/YYYY');
+    const label = format(new Date(month.month), 'MM/YYYY');
     months.push({
       label: `${label} - Actu envoyee`,
       value: (row, field) => {

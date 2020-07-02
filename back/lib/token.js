@@ -28,13 +28,13 @@ const clientAuthorizationCode = new AuthorizationCode(credentials);
 const MAX_DELAY_FOR_REFRESH = 45;
 
 const isRefreshPossible = (loginDate) => {
-  isBefore(new Date(), addMinutes(loginDate, MAX_DELAY_FOR_REFRESH));
+  isBefore(new Date(), addMinutes(new Date(loginDate), MAX_DELAY_FOR_REFRESH));
 };
 
 // Check that the user token is valid (note: since we may need to do heavy operations
 // we actually consider the token as invalid a full minute before it actually is.
 const isUserTokenValid = (tokenExpiration) =>
-  isBefore(new Date(), subMinutes(tokenExpiration, 1));
+  isBefore(new Date(), subMinutes(new Date(tokenExpiration), 1));
 
 async function refreshToken(req) {
   if (!req.session.userSecret) throw new Error('No token');

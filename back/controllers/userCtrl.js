@@ -45,7 +45,8 @@ async function getUserinfo(authToken) {
 async function getAuthToken(code, nonce) {
   const authToken = await clientAuthorizationCode
     .getToken({ redirect_uri: redirectUri, code })
-    .then((result) => clientAuthorizationCode.createToken(result));
+    .then((result) => clientAuthorizationCode.createToken(result))
+    .then((result) => result.token);
   const tokenClaims = jwt.decode(authToken.token.id_token);
   if (!tokenClaims.iss.startsWith(tokenHost)) throw new Error('Wrong iss');
   if (tokenClaims.aud !== clientId) throw new Error('Wrong aud');

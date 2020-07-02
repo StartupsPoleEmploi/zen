@@ -33,12 +33,12 @@ const formatIntervalDates = (startDate, endDate) => {
 };
 
 const generatePdfName = (declaration) => {
-  const declarationDate = format(declaration.declarationMonth.month, 'YYYY-MM');
+  const declarationDate = format(new Date(declaration.declarationMonth.month), 'YYYY-MM');
   return `${declarationDate}__${declaration.userId}.pdf`;
 };
 
 function getFriendlyPdfName({ declarationMonth: { month } }) {
-  const declarationDate = format(month, 'MMMM-YYYY', { locale: fr });
+  const declarationDate = format(new Date(month), 'MMMM-YYYY', { locale: fr });
   return `declaration-${declarationDate}.pdf`;
 }
 

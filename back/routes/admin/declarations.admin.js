@@ -100,7 +100,7 @@ router.get('/declarations/:declarationId/files', (req, res) => {
       if (!declaration) return res.status(404).json('No such declaration');
 
       const formattedMonth = format(
-        declaration.declarationMonth.month,
+        new Date(declaration.declarationMonth.month),
         'MM-YYYY',
       );
 

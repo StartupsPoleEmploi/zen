@@ -87,7 +87,7 @@ const BoxLine = styled(Typography)`
   }
 `;
 
-const MissingCell = ({ lastMonthId, width, declaration }) => {
+const MissingCell = ({ width, declaration }) => {
   const missingFilesNumber = getDeclarationMissingFilesNb(declaration);
 
   function renderAllFilesSend() {
@@ -164,7 +164,6 @@ const MissingCell = ({ lastMonthId, width, declaration }) => {
 
 MissingCell.propTypes = {
   declaration: PropTypes.object,
-  lastMonthId: PropTypes.number.isRequired,
   width: PropTypes.string.isRequired,
 };
 

@@ -13,32 +13,26 @@ describe('History page', () => {
 
   it('should display 3 declarations : 2 done on Zen & 1 not done on Zen', () => {
     // First declaration is done with 2 missing documents
-    getDeclarationStatus('#declaration-history-1').should(
-      'have.text',
+    getDeclarationStatus('#declaration-history-1').contains(
       'Actualisation envoyée',
     );
-    getDeclarationText('#declaration-history-1').should(
-      'have.text',
+    getDeclarationText('#declaration-history-1').contains(
       'Tous les justificatifs envoyés',
     );
 
     // Second was not done on Zen
-    getDeclarationStatus('#declaration-history-2').should(
-      'have.text',
+    getDeclarationStatus('#declaration-history-2').contains(
       "Pas d'actualisation sur Zen",
     );
-    getDeclarationText('#declaration-history-2').should(
-      'have.text',
+    getDeclarationText('#declaration-history-2').contains(
       'Aucune information sur Zen',
     );
 
     // Third is completely done
-    getDeclarationStatus('#declaration-history-3').should(
-      'have.text',
+    getDeclarationStatus('#declaration-history-3').contains(
       'Actualisation envoyée',
     );
-    getDeclarationText('#declaration-history-3').should(
-      'have.text',
+    getDeclarationText('#declaration-history-3').contains(
       '2 justificatifs manquants',
     );
   });

@@ -14,10 +14,7 @@ describe('History page', () => {
   it('should display 3 declarations : 2 done on Zen & 1 not done on Zen', () => {
     // First declaration is done with 2 missing documents
     getDeclarationStatus('#declaration-history-1').contains(
-      'Actualisation envoyée',
-    );
-    getDeclarationText('#declaration-history-1').contains(
-      'Tous les justificatifs envoyés',
+      'ACTUALISATION ENVOYÉE',
     );
 
     // Second was not done on Zen
@@ -30,7 +27,7 @@ describe('History page', () => {
 
     // Third is completely done
     getDeclarationStatus('#declaration-history-3').contains(
-      'Actualisation envoyée',
+      'ACTUALISATION ENVOYÉE',
     );
     getDeclarationText('#declaration-history-3').contains(
       '2 justificatifs manquants',

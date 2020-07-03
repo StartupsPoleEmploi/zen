@@ -19,7 +19,7 @@ import {
 import { formattedDeclarationMonth } from '../../lib/date';
 
 const StyledHistory = styled.div`
-  max-width: 93rem;
+  max-width: 108rem;
   margin: 5rem auto 0 auto;
   @media (max-width: 1200px) {
     margin: 5rem 2rem 0 2rem;

@@ -139,12 +139,11 @@ const MissingCell = ({ lastMonthId, width, declaration }) => {
 
       <BoxMissingDocs display="flex">
         {renderAllFilesSend()}
+        {missingFilesNumber !== 0 && (
         <BoxLine>
           <Box flex={1}>
             <Link
-              href={`/files${
-                lastMonthId === declaration.declarationMonth.id ? '' : '?tab=old'
-              }`}
+              href="/files"
               style={{ paddingLeft: width === 'xs' ? '3.2rem' : null, color: errorOrange }}
             >
               {missingFilesNumber}
@@ -157,6 +156,7 @@ const MissingCell = ({ lastMonthId, width, declaration }) => {
           <PriorityHighIcon style={{ color: errorRed, marginRight: '1rem' }} />
           <Typography>Ajouter</Typography>
         </BoxLine>
+        )}
       </BoxMissingDocs>
     </StyledMissingCell>
   );

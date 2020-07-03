@@ -7,5 +7,5 @@ export function getDeclarationText(id) {
 }
 
 export function getDeclarationMissingFiles(id) {
-  return cy.get(`${id} .text a`);
+  return cy.get(`${id} .text`);
 }

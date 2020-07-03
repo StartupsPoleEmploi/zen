@@ -5,6 +5,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import styled from 'styled-components';
 import withWidth from '@material-ui/core/withWidth';
 
+import moment from 'moment';
 import { intermediaryBreakpoint, mobileBreakpoint } from '../../constants';
 import MissingCell from './MissingCell';
 import FileCell from './FileCell';
@@ -16,6 +17,11 @@ const Row = styled.div`
 
   @media (max-width: ${intermediaryBreakpoint}) {
     grid-template-columns: 1fr;
+
+    > div {
+      justify-content: flex-start;
+      padding-left: 0;
+    }
   }
 `;
 
@@ -39,33 +45,38 @@ const Cell = styled.div`
   }
   @media (max-width: ${mobileBreakpoint}) {
     justify-content: left;
-    padding: 0;
+    padding: 2rem 0;
   }
 `;
 
-function DeclarationHistory({ lastMonthId, declaration, width }) {
+function DeclarationHistory({ declaration, width }) {
   return (
     <Row>
-      <Cell className="status">
-        <Typography style={{ textTransform: 'uppercase', display: 'flex' }}>
+      <Cell>
+        <Typography style={{ display: 'flex' }}>
           <StyledDoneIcon />
-          <strong>Actualisation envoyée</strong>
+          <div>
+            <strong style={{ textTransform: 'uppercase' }} className="status">Actualisation envoyée</strong>
+            <Typography>
+              Le
+              {' '}
+              {moment(declaration.transmittedAt).format('DD MMMM YYYY')}
+            </Typography>
+          </div>
         </Typography>
       </Cell>
 
+      <FileCell declaration={declaration} />
       <MissingCell
-        lastMonthId={lastMonthId}
         declaration={declaration}
         width={width}
       />
-      <FileCell declaration={declaration} />
     </Row>
   );
 }
 
 DeclarationHistory.propTypes = {
   declaration: PropTypes.object,
-  lastMonthId: PropTypes.number.isRequired,
   width: PropTypes.string.isRequired,
 };
 

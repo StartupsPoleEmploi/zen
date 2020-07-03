@@ -17,10 +17,6 @@ describe('History page', () => {
       'have.text',
       'Actualisation envoyée',
     );
-    getDeclarationText('#declaration-history-1').should(
-      'have.text',
-      'Tous les justificatifs envoyés',
-    );
 
     // Second was not done on Zen
     getDeclarationStatus('#declaration-history-2').should(

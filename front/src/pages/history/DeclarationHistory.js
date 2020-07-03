@@ -52,11 +52,11 @@ const Cell = styled.div`
 function DeclarationHistory({ declaration, width }) {
   return (
     <Row>
-      <Cell className="status">
+      <Cell>
         <Typography style={{ display: 'flex' }}>
           <StyledDoneIcon />
           <div>
-            <strong style={{ textTransform: 'uppercase' }}>Actualisation envoyée</strong>
+            <strong style={{ textTransform: 'uppercase' }} className="status">Actualisation envoyée</strong>
             <Typography>
               Le
               {' '}

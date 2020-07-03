@@ -135,7 +135,7 @@ const MissingCell = ({ width, declaration }) => {
   }
 
   return (
-    <StyledMissingCell className="text">
+    <StyledMissingCell>
 
       <BoxMissingDocs display="flex">
         {renderAllFilesSend()}
@@ -145,6 +145,7 @@ const MissingCell = ({ width, declaration }) => {
             <Link
               href="/files"
               style={{ paddingLeft: width === 'xs' ? '3.2rem' : null, color: errorOrange }}
+              className="text"
             >
               {missingFilesNumber}
               {' '}

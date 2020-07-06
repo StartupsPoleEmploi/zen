@@ -7,8 +7,8 @@ const ActivityLog = require('../models/ActivityLog');
 const salarySheetType = 'salarySheet';
 const employerCertificateType = 'employerCertificate';
 
-const hasMissingEmployersDocuments = (declaration) =>
-  declaration.employers.reduce((prev, employer) => {
+function hasMissingEmployersDocuments(declaration) {
+  return declaration.employers.reduce((prev, employer) => {
     if (!employer.hasEndedThisMonth) {
       return prev + (get(employer, 'documents[0].isTransmitted') ? 0 : 1);
     }
@@ -27,53 +27,40 @@ const hasMissingEmployersDocuments = (declaration) =>
     if (hasEmployerCertificate) return prev + 0;
     return prev + (hasSalarySheet ? 1 : 2);
   }, 0) !== 0;
+}
 
-const hasMissingDeclarationDocuments = (declaration) =>
-  declaration.infos.filter(
+function hasMissingDeclarationDocuments(declaration) {
+  return declaration.infos.filter(
     ({ type, isTransmitted }) => type !== 'jobSearch' && !isTransmitted,
   ).length !== 0;
+}
 
-const fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated = ({
+async function fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
   declarationId,
   userId,
-}) =>
-  Declaration.query()
-    .eager('[infos, employers.documents]')
-    .findOne({
-      id: declarationId,
+}) {
+  const declaration = await Declaration.query()
+    .eager('[infos, employers.documents, declarationMonth]')
+    .findOne({ id: declarationId, userId });
+
+  if (hasMissingEmployersDocuments(declaration) || hasMissingDeclarationDocuments(declaration)) {
+    return declaration;
+  }
+
+  declaration.isFinished = true;
+  await transaction(Declaration.knex(), (trx) => Promise.all([
+    declaration.$query(trx).patch({ isFinished: true }),
+    ActivityLog.query(trx).insert({
       userId,
-    })
-    .then((declaration) => {
-      if (
-        hasMissingEmployersDocuments(declaration)
-        || hasMissingDeclarationDocuments(declaration)
-      ) {
-        return declaration;
-      }
+      action: ActivityLog.actions.VALIDATE_FILES,
+      metadata: JSON.stringify({
+        declarationId,
+      }),
+    }),
+  ]));
 
-      declaration.isFinished = true;
-
-      return transaction(Declaration.knex(), (trx) =>
-        Promise.all([
-          declaration.$query(trx).upsertGraph(),
-          ActivityLog.query(trx).insert({
-            userId,
-            action: ActivityLog.actions.VALIDATE_FILES,
-            metadata: JSON.stringify({
-              declarationId,
-            }),
-          }),
-        ]).then(() =>
-          // Note : we don't use upsertGraphAndFetch above because we want the declarationMonth with the declaration
-          // And add it in the initial query will cause some trouble with the date :
-          //   See => https://github.com/StartupsPoleEmploi/zen/commit/d10e639179881ca67c63968054ab44f848b0d824
-          Declaration.query()
-            .eager('[infos, employers.documents, declarationMonth]')
-            .findOne({
-              id: declarationId,
-              userId,
-            })));
-    });
+  return declaration;
+}
 
 module.exports = {
   hasMissingEmployersDocuments,

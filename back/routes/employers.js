@@ -3,10 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const router = express.Router();
-const { transaction } = require('objection');
-const {
-  get, isBoolean, isInteger, isNumber, isString,
-} = require('lodash');
+const { get } = require('lodash');
 const { uploadsDirectory: uploadDestination } = require('config');
 
 const {
@@ -27,6 +24,7 @@ const Declaration = require('../models/Declaration');
 const Employer = require('../models/Employer');
 const EmployerDocument = require('../models/EmployerDocument');
 const ActivityLog = require('../models/ActivityLog');
+const declarationCtrl = require('../controllers/declarationCtrl');
 
 const { DECLARATION_STATUSES } = require('../constants');
 
@@ -37,20 +35,6 @@ const {
   handleNewFileUpload,
   IMG_EXTENSIONS,
 } = require('../lib/pdf-utils');
-
-const getSanitizedEmployer = ({ employer, declaration, user }) => {
-  const workHours = parseFloat(employer.workHours);
-  const salary = parseFloat(employer.salary);
-
-  return {
-    ...employer,
-    userId: user.id,
-    declarationId: declaration.id,
-    // Save temp data as much as possible
-    workHours: !Number.isNaN(workHours) ? workHours : null,
-    salary: !Number.isNaN(salary) ? salary : null,
-  };
-};
 
 router.post('/remove-file-page', (req, res, next) => {
   const { documentType: type, employerId } = req.body;
@@ -117,13 +101,12 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
   const sentEmployers = req.body.employers || [];
   if (!sentEmployers.length) return res.status(400).json('No data');
 
-  return Declaration.query()
+  const getDeclarationDeep = () => Declaration.query()
     .eager('[employers, infos]')
-    .findOne({
-      userId: req.session.user.id,
-      monthId: req.activeMonth.id,
-    })
-    .then((declaration) => {
+    .findOne({ userId: req.session.user.id, monthId: req.activeMonth.id });
+
+  return getDeclarationDeep()
+    .then(async (declaration) => {
       if (!declaration) {
         return res.status(400).json('Please send declaration first');
       }
@@ -132,101 +115,70 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
       const updatedEmployers = sentEmployers.filter(({ id }) =>
         declaration.employers.some((employer) => employer.id === id));
 
-      declaration.employers = newEmployers
-        .concat(updatedEmployers)
-        .map((employer) =>
-          getSanitizedEmployer({
-            employer,
-            user: req.session.user,
-            declaration,
-          }));
-
-      const shouldLog = req.body.isFinished && !declaration.hasFinishedDeclaringEmployers;
+      try {
+        declaration = await declarationCtrl.updateDeclartionDeep({
+          userId: req.session.user.id,
+          declaration,
+          newEmployers,
+          updatedEmployers,
+        });
+      } catch (err) {
+        if (err.status === 400) { return res.status(400).json(err.message); }
+      }
 
       if (!req.body.isFinished) {
         // Temp saving for the user to come back later
-        return declaration
-          .$query()
-          .upsertGraph()
-          .then(() => res.json(declaration));
-      }
-
-      // Additional check: Employers declaration is finished and all should be filled
-      if (
-        declaration.employers.some(
-          (employer) =>
-            !isString(employer.employerName)
-            || employer.employerName.length === 0
-            || !isInteger(employer.workHours)
-            || !isNumber(employer.salary)
-            || !isBoolean(employer.hasEndedThisMonth),
-        )
-      ) {
-        return res.status(400).json('Invalid employers declaration');
+        return res.json(declaration);
       }
 
       if (!isUserTokenValid(req.user.tokenExpirationDate)) {
-        return declaration
-          .$query()
-          .upsertGraph()
-          .then(() => res.status(401).json('Expired token'));
+        return res.status(401).json('Expired token');
       }
 
       // Sending declaration to pe.fr
-      return sendDeclaration({
+      const { body } = await sendDeclaration({
         declaration,
         userId: req.session.user.id,
         accessToken: req.session.userSecret.accessToken,
         ignoreErrors: req.body.ignoreErrors,
         isFakeAuth: req.session.user.isFakeAuth,
-      })
-        .then(({ body }) => {
-          if (body.statut !== DECLARATION_STATUSES.SAVED) {
-            return declaration
-              .$query()
-              .upsertGraph()
-              .then(() =>
-                // This is a custom error, we want to show a different feedback to users
-                res
-                  .status(
-                    body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400,
-                  )
-                  .json({
-                    consistencyErrors: body.erreursIncoherence || [],
-                    validationErrors: Object.values(
-                      body.erreursValidation || {},
-                    ),
-                  }));
-          }
+      });
 
-          winston.info(`Sent declaration for user ${req.session.user.id} to PE`);
+      if (body.statut !== DECLARATION_STATUSES.SAVED) {
+        // This is a custom error, we want to show a different feedback to users
+        return res
+          .status(body.statut === DECLARATION_STATUSES.TECH_ERROR ? 503 : 400)
+          .json({
+            consistencyErrors: body.erreursIncoherence || [],
+            validationErrors: Object.values(
+              body.erreursValidation || {},
+            ),
+          });
+      }
 
-          declaration.hasFinishedDeclaringEmployers = true;
-          declaration.transmittedAt = new Date();
+      winston.info(`Sent declaration for user ${req.session.user.id} to PE`);
 
-          return transaction(Declaration.knex(), (trx) =>
-            Promise.all([
-              declaration.$query(trx).upsertGraph(),
-              shouldLog
-                ? ActivityLog.query(trx).insert({
-                  userId: req.session.user.id,
-                  action: ActivityLog.actions.VALIDATE_EMPLOYERS,
-                  metadata: JSON.stringify({
-                    declarationId: declaration.id,
-                  }),
-                })
-                : Promise.resolve(),
-            ])).then(() => res.json(declaration));
-        })
-        .catch((err) =>
-          // If we could not save the declaration on pe.fr
-          // We still save the data the user sent us
-          declaration
-            .$query()
-            .upsertGraph()
-            .then(() => {
-              throw err;
-            }));
+      const shouldLog = req.body.isFinished && !declaration.hasFinishedDeclaringEmployers;
+      declaration.hasFinishedDeclaringEmployers = true;
+      declaration.transmittedAt = new Date();
+
+      return Declaration.transaction(async (trx) => {
+        await Declaration.query(trx).findById(declaration.id)
+          .patch({
+            hasFinishedDeclaringEmployers: declaration.hasFinishedDeclaringEmployers,
+            transmittedAt: declaration.transmittedAt,
+          });
+        if (shouldLog) {
+          await ActivityLog.query(trx).insert({
+            userId: req.session.user.id,
+            action: ActivityLog.actions.VALIDATE_EMPLOYERS,
+            metadata: JSON.stringify({
+              declarationId: declaration.id,
+            }),
+          });
+        }
+        res.json(declaration);
+      });
     })
     .catch(next);
 });

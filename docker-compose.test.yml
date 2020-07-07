@@ -46,6 +46,7 @@ services:
       - REACT_APP_ZEN_ENV=test
       - TZ=Europe/Paris
       - BUNDLE_TOKEN_ANALYZER=${BUNDLE_TOKEN_ANALYZER}
+      - CI=${CI}
     expose:
       - "3000"
 

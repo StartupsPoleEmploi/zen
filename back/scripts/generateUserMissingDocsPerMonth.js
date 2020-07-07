@@ -53,7 +53,7 @@ for (let i = 1; i < 16; i += 1) {
   Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
     Declaration.query()
-      .eager('[declarationMonth, infos, user, employers.documents]')
+      .withGraphFetched('[declarationMonth, infos, user, employers.documents]')
       .join('Users', 'Users.id', '=', 'declarations.userId')
       .where({
         isFinished: false,

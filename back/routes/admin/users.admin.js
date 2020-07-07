@@ -30,7 +30,7 @@ router.get('/users/csv', async (req, res, next) => {
 
   try {
     const users = await User.query()
-      .eager('[declarations.[declarationMonth], activityLogs]')
+      .withGraphFetched('[declarations.[declarationMonth], activityLogs]')
       .where({ isAuthorized })
       .whereNotNull('registeredAt');
 
@@ -89,7 +89,7 @@ router.delete('/delete-user', (req, res, next) => {
   if (!userId) throw new Error('No user id given');
 
   User.query()
-    .eager('[employers.documents, declarations.[infos,review]]')
+    .withGraphFetched('[employers.documents, declarations.[infos,review]]')
     .findById(userId)
     .then((user) => {
       if (!user) throw new Error('No such user id');
@@ -101,7 +101,7 @@ router.delete('/delete-user', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
   User.query()
-    .eager('[activityLogs, declarations.[infos, review, employers.documents]]')
+    .withGraphFetched('[activityLogs, declarations.[infos, review, employers.documents]]')
     .findById(req.params.id)
     .then((user) => {
       if (!user) return res.send(404, 'User not found');

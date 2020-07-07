@@ -46,7 +46,7 @@ router.post('/remove-file-page', (req, res, next) => {
 
   const fetchEmployer = () =>
     Employer.query()
-      .eager('documents')
+      .withGraphFetched('documents')
       .findOne({
         id: employerId,
         userId: req.session.user.id,
@@ -102,7 +102,7 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
   if (!sentEmployers.length) return res.status(400).json('No data');
 
   const getDeclarationDeep = () => Declaration.query()
-    .eager('[employers, infos]')
+    .withGraphFetched('[employers, infos]')
     .findOne({ userId: req.session.user.id, monthId: req.activeMonth.id });
 
   return getDeclarationDeep()
@@ -187,7 +187,7 @@ router.get('/files', (req, res, next) => {
   if (!req.query.documentId) return res.status(400).json('Missing employerId');
 
   return EmployerDocument.query()
-    .eager('employer.user')
+    .withGraphFetched('employer.user')
     .findOne({
       id: req.query.documentId,
     })
@@ -231,7 +231,7 @@ router.post(
 
     const fetchEmployer = () =>
       Employer.query()
-        .eager('[documents, declaration]')
+        .withGraphFetched('[documents, declaration]')
         .findOne({
           id: employerId,
           userId: req.session.user.id,
@@ -322,7 +322,7 @@ router.post('/files/validate', (req, res, next) => {
   }
 
   return EmployerDocument.query()
-    .eager(
+    .withGraphFetched(
       'employer.[documents, declaration.[user, employers.[documents], declarationMonth, infos]]',
     )
     .findOne({ id: req.body.id })
@@ -351,7 +351,7 @@ router.post('/files/validate', (req, res, next) => {
           // FIXME this needs to change, optimal choice is probably to return declaration
           .then(() =>
             Employer.query()
-              .eager('documents')
+              .withGraphFetched('documents')
               .findOne({
                 id: employerDoc.employer.id,
                 userId: req.session.user.id,

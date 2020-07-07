@@ -65,7 +65,7 @@ async function sendDeclarationConfirmationEmails() {
 
   try {
     const declarations = await Declaration.query()
-      .eager('[declarationMonth, user, employers, infos]')
+      .withGraphFetched('[declarationMonth, user, employers, infos]')
       .where({ hasFinishedDeclaringEmployers: true, isEmailSent: false });
 
     await async.eachSeries(declarations, async (declaration) => {

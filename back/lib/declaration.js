@@ -40,7 +40,7 @@ async function fetchDeclarationAndSaveAsFinishedIfAllDocsAreValidated({
   userId,
 }) {
   const declaration = await Declaration.query()
-    .eager('[infos, employers.documents, declarationMonth]')
+    .withGraphFetched('[infos, employers.documents, declarationMonth]')
     .findOne({ id: declarationId, userId });
 
   if (hasMissingEmployersDocuments(declaration) || hasMissingDeclarationDocuments(declaration)) {

@@ -51,7 +51,7 @@ router.get('/metrics/global', async (req, res) => {
 
   // Declarations done by monthId
   results.declarationsDoneByMonth = await Declaration.query()
-    .eager('declarationMonth')
+    .withGraphFetched('declarationMonth')
     .select()
     .count('id')
     .where({ hasFinishedDeclaringEmployers: true })
@@ -253,7 +253,7 @@ router.get('/repartition/region', async (req, res) => {
   }
 
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({ monthId, hasFinishedDeclaringEmployers: true })
     .andWhere('user.agencyCode', 'in', agencies);
 
@@ -276,7 +276,7 @@ router.get('/repartition/unregistered-users-region/csv', async (req, res) => {
 
   // Get all userId with a declaration in this region
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({ monthId })
     .andWhere('user.agencyCode', 'in', agencies);
   const declarationsUserId = declarations.map((d) => d.userId);
@@ -323,7 +323,7 @@ router.get('/repartition/department', async (req, res) => {
   }
 
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({ monthId, hasFinishedDeclaringEmployers: true })
     .andWhere('user.agencyCode', 'in', agencies);
 
@@ -338,7 +338,7 @@ router.get('/repartition/agency', async (req, res) => {
   }
 
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({
       monthId,
       hasFinishedDeclaringEmployers: true,
@@ -369,7 +369,7 @@ router.get('/repartition/agency/csv', async (req, res) => {
     filename = `demandeurs-agence-${agencyCode}`;
   } else {
     const declarations = await Declaration.query()
-      .joinEager('user')
+      .withGraphJoined('user')
       .where({
         monthId,
         hasFinishedDeclaringEmployers: true,
@@ -464,7 +464,7 @@ router.get('/retention', async (req, res) => {
 
   // Declaration 24h after their first login
   const startDeclarationLess24h = await Declaration.query()
-    .joinRelation('user')
+    .joinRelated('user')
     .where({ monthId })
     .andWhere(
       'declarations.createdAt',

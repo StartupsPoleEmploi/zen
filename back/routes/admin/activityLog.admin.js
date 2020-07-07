@@ -9,7 +9,7 @@ router.use(zip());
 // No login form for now, users must be inserted in db manually.
 router.get('/activityLog', (req, res) => {
   ActivityLog.query()
-    .eager('user')
+    .withGraphFetched('user')
     .orderBy('createdAt', 'desc')
     .limit(1000)
     .then((logs) => res.json(logs));

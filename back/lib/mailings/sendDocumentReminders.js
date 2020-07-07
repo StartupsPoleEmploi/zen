@@ -96,7 +96,7 @@ const sendAllDocumentsReminders = () =>
   Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
     User.query()
-      .eager('[declarations.[declarationMonth, infos, employers.documents]]')
+      .withGraphFetched('[declarations.[declarationMonth, infos, employers.documents]]')
       .join('declarations', 'declarations.userId', '=', 'Users.id')
       .where(function where() {
         this.where(
@@ -203,7 +203,7 @@ const sendCurrentDeclarationDocsReminders = () => {
       return Promise.all([
         // Get unfinished declarations from users who have not received a reminder in the last day
         Declaration.query()
-          .eager('[declarationMonth, infos, user, employers.documents]')
+          .withGraphFetched('[declarationMonth, infos, user, employers.documents]')
           .join('Users', 'Users.id', '=', 'declarations.userId')
           .where({
             isFinished: false,

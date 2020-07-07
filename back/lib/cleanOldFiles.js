@@ -23,7 +23,7 @@ const cleanOldFiles = () => {
   const minimumDate = subMonths(new Date(), MONTH_DELTA);
 
   return Declaration.query()
-    .eager('[declarationMonth, infos, employers.documents]')
+    .withGraphFetched('[declarationMonth, infos, employers.documents]')
     .where('isFinished', true)
     .where('isCleanedUp', false)
     .where('transmittedAt', '<', minimumDate) // 6 month old declarations

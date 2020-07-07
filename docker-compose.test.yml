@@ -34,6 +34,7 @@ services:
       - API_HOST=https://api-r.es-qvr.fr
       - NODE_ENV=test
       - ZEN_ENV=test
+      - WINSTON_ENABLE_LOG=true
 
   front:
     build:

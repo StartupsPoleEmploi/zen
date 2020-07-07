@@ -6,7 +6,6 @@ Object {
   "accept-encoding": "gzip",
   "authorization": "Bearer 1234567890",
   "host": "localhost",
-  "user-agent": "node-superagent/3.8.3",
 }
 `;
 
@@ -18,7 +17,6 @@ Object {
   "content-length": 11379,
   "host": "localhost",
   "media": "M",
-  "user-agent": "node-superagent/3.8.3",
 }
 `;
 
@@ -35,6 +33,5 @@ Object {
   "authorization": "Bearer 1234567890",
   "content-length": 13,
   "host": "localhost",
-  "user-agent": "node-superagent/3.8.3",
 }
 `;

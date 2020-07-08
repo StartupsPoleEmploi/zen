@@ -502,6 +502,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
       return sendDocument({
         document: declarationInfo,
         accessToken: req.session.userSecret.accessToken,
+        isFakeAuth: req.session.user.isFakeAuth,
       })
         .then(() =>
           Declaration.query()

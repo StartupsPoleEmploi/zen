@@ -23,6 +23,7 @@ const userRouter = require('./routes/user');
 const declarationsRouter = require('./routes/declarations');
 const declarationMonthsRouter = require('./routes/declarationMonths');
 const employersRouter = require('./routes/employers');
+const filesRouter = require('./routes/files');
 
 require('./lib/db'); // setup db connection
 
@@ -134,6 +135,7 @@ app.use('/declarationMonths', declarationMonthsRouter);
 
 app.use('/declarations', declarationsRouter);
 app.use('/employers', employersRouter);
+app.use('/files', filesRouter);
 
 if (sentryUrl) {
   app.use(Raven.errorHandler());

@@ -231,7 +231,7 @@ export const Layout = ({
                 }}
               >
                 <PopoverLine>
-                  <a href="mailto:?subject=Test&body=https://zen.pole-emploi.fr/">
+                  <a href="mailto:?subject=Découvrez ZEN pôle emploi, le service d'actualisation adapté aux assistantes maternelles&body=https://zen.pole-emploi.fr/">
                     <EmailOutlinedIcon style={{ color: primaryBlue }} />
                     <Typography>
                       Envoyer par mail

@@ -181,7 +181,7 @@ export const Layout = ({
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const handleClickInvitation = (event) => setAnchorElInvitation(event.currentTarget);
-  const handleCloseInvitation = () => setAnchorEl(null);
+  const handleCloseInvitation = () => setAnchorElInvitation(null);
 
   const NavComponent = () => (
     <ZnNavLogin

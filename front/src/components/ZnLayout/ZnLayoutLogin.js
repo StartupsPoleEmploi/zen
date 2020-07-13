@@ -210,11 +210,13 @@ export const Layout = ({
             </HeaderElem>
             <HeaderElem first>
               <ButtonMail aria-describedby="invitation-popover" onClick={handleClickInvitation}>
-                <TagTypo>NOUVEAU</TagTypo>
+                {!useMobileVersion && (<TagTypo>NOUVEAU</TagTypo>)}
                 <PersonAddOutlinedIcon style={{ color: primaryBlue }} />
+                {!useMobileVersion && (
                 <Typography>
                   Inviter vos contacts sur Zen
                 </Typography>
+                )}
               </ButtonMail>
               <Popover
                 id="invitation-popover"

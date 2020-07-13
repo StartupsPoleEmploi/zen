@@ -9,6 +9,7 @@ import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 
 import PriorityHighIcon from '@material-ui/icons/PriorityHighOutlined';
 import moment from 'moment';
+import { sortBy } from 'lodash';
 import { getDeclarationMissingFilesNb } from '../../lib/file';
 import {
   intermediaryBreakpoint, mobileBreakpoint, primaryBlue, errorRed, errorOrange, darkBlue,
@@ -162,8 +163,7 @@ const MissingCell = ({ width, declaration }) => {
   });
   allDocSentWithZen = allDocSentWithZen.concat(declaration.infos
     .filter(({ isTransmitted }) => isTransmitted));
-
-  console.log('allDocSentWithZen', allDocSentWithZen);
+  allDocSentWithZen = sortBy(allDocSentWithZen, 'file');
 
   // init radio button var
   useEffect(() => {
@@ -257,7 +257,7 @@ const MissingCell = ({ width, declaration }) => {
               {' '}
               - transmis
               {' '}
-              {file ? 'le' : 'via PE'}
+              {file ? 'le' : 'via Pôle emploi le'}
               {' '}
               {moment(startDate).format('DD/MM/YYYY')}
             </BoxLinePopup>

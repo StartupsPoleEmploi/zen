@@ -156,12 +156,14 @@ const MissingCell = ({ width, declaration }) => {
   let allDocSentWithZen = [];
   declaration.employers.forEach(({ documents, employerName }) => {
     allDocSentWithZen = allDocSentWithZen.concat(
-      documents.filter(({ isTransmitted, file }) => isTransmitted && file)
+      documents.filter(({ isTransmitted }) => isTransmitted)
         .map((d) => ({ ...d, employerName })),
     );
   });
   allDocSentWithZen = allDocSentWithZen.concat(declaration.infos
-    .filter(({ isTransmitted, file }) => isTransmitted && file));
+    .filter(({ isTransmitted }) => isTransmitted));
+
+  console.log('allDocSentWithZen', allDocSentWithZen);
 
   // init radio button var
   useEffect(() => {
@@ -181,23 +183,14 @@ const MissingCell = ({ width, declaration }) => {
   function renderAllFilesSend() {
     const filesByType = {};
 
-    declaration.infos.forEach(({ type }) => {
+    allDocSentWithZen.forEach(({ type }) => {
       if (filesByType[type] === undefined) filesByType[type] = 1;
       else {
         filesByType[type] += 1;
       }
     });
 
-    declaration.employers.forEach((employer) => {
-      employer.documents.forEach(({ type }) => {
-        if (filesByType[type] === undefined) filesByType[type] = 1;
-        else {
-          filesByType[type] += 1;
-        }
-      });
-    });
-
-    const totalFilesSent = Object.entries(filesByType).length;
+    const totalFilesSent = allDocSentWithZen.length;
 
     const tooltipContent = (
       <Ul>
@@ -215,16 +208,18 @@ const MissingCell = ({ width, declaration }) => {
             {totalFilesSent === 1 && `${totalFilesSent} justificatif envoyé`}
             {totalFilesSent > 1 && `${totalFilesSent} justificatifs envoyés`}
           </Box>
-          {allDocSentWithZen.length !== 0 && (
-            <VisualizeBt
-              onClick={allDocSentWithZen.length === 1 ?
-                () => onShowFile(allDocSentWithZen[0].file) :
-                () => setShowDialog(true)}
-              aria-hidden="true"
-            >
-              <VisibilityIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
-              <Typography>Visualiser</Typography>
-            </VisualizeBt>
+          {totalFilesSent !== 0 &&
+           ((totalFilesSent === 1 && allDocSentWithZen[0].file) ||
+           totalFilesSent > 1) && (
+           <VisualizeBt
+             onClick={totalFilesSent === 1 ?
+               () => onShowFile(allDocSentWithZen[0].file) :
+               () => setShowDialog(true)}
+             aria-hidden="true"
+           >
+             <VisibilityIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
+             <Typography>Visualiser</Typography>
+           </VisualizeBt>
           )}
         </BoxLine>
       </TooltipOnFocus>
@@ -241,10 +236,12 @@ const MissingCell = ({ width, declaration }) => {
       }) => (
         <FormControl
           value={file}
+          disabled={!file}
           control={(
             <StyledRadio
               style={{
-                color: file === radioSelected ? primaryBlue : 'rgba(0, 0, 0, 0.54)',
+                color: file === radioSelected ?
+                  primaryBlue : 'rgba(0, 0, 0, 0.54)',
               }}
             />
             )}
@@ -258,7 +255,9 @@ const MissingCell = ({ width, declaration }) => {
               )}
               {DOCUMENT_LABELS_FORMAT_SIMPLE[type]}
               {' '}
-              - transmis le
+              - transmis
+              {' '}
+              {file ? 'le' : 'via PE'}
               {' '}
               {moment(startDate).format('DD/MM/YYYY')}
             </BoxLinePopup>

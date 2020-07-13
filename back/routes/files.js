@@ -8,13 +8,14 @@ router.get('/:fileName', (req, res, next) => {
   if (!req.session.user) return res.status(400).json('No user');
 
   return Declaration.query()
-    .joinRelation('[employers.[documents], infos]')
+    .leftJoinRelation('[employers.[documents], infos]')
     .where((builder) => {
       builder.where('employers:documents.file', '=', req.params.fileName)
         .orWhere('infos.file', '=', req.params.fileName);
     })
-    .andWhere('declarations.userId', req.session.user.id)
+    .where('declarations.userId', req.session.user.id)
     .then((declarations) => {
+      console.log('declarations', declarations);
       if (!declarations || declarations.length === 0) {
         res.status(400).json('Document not found');
       } else {

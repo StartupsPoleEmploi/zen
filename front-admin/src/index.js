@@ -10,7 +10,6 @@ const browserHistory = createBrowserHistory({
   basename: '/zen-admin',
 });
 
-
 export default function Main() {
   return (
     <Router history={browserHistory}>

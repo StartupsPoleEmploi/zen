@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import './lib/external/gtm';
+import { GTM } from './lib/external/gtm';
 import './lib/external/hotjar';
 
 import { version } from '../package.json';
@@ -28,6 +28,10 @@ if (environment !== 'development') {
       environment,
     },
   ).install();
+}
+
+if (process.env.REACT_APP_GOOGLE_TAG_MANAGER_KEY) {
+  GTM(process.env.REACT_APP_GOOGLE_TAG_MANAGER_KEY);
 }
 
 moment.locale('fr');

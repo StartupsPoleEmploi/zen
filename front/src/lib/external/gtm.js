@@ -1,5 +1,5 @@
 /* eslint-disable */
-;(function(w, d, s, l, i) {
+export const GTM = function(i, w = window, d = document, s = 'script', l = 'dataLayer') {
   w[l] = w[l] || []
   w[l].push({
     'gtm.start': new Date().getTime(),
@@ -11,4 +11,4 @@
   j.async = true
   j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`
   f.parentNode.insertBefore(j, f)
-})(window, document, 'script', 'dataLayer', 'GTM-TQ4ZBQR')
+}

@@ -37,7 +37,7 @@
     "fs-extra": "^8.1.0",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "jest": "^24.9.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mini-css-extract-plugin": "^0.9.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.27",

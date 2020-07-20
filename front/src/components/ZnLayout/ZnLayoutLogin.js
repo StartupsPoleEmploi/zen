@@ -24,8 +24,6 @@ import {
   secondaryBlue, errorOrange, mobileBreakpoint, primaryBlue,
 } from '../../constants';
 import dashboardBg from '../../images/dashboard-bg.svg';
-import Covid19Warning from '../Generic/Covid19Warning';
-import Codiv19Justif from '../Generic/Codiv19Justif';
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -94,13 +92,6 @@ const HeaderElem = styled.div`
     .logout-text {
       display: none;
     }
-  }
-`;
-
-const CovidContainer = styled.div`
-  padding: 0 15% 1rem 15%;
-  @media (max-width: 1400px) {
-    padding: 0 5% 1rem 5%;
   }
 `;
 
@@ -300,10 +291,6 @@ export const Layout = ({
             </HeaderElem>
           </Header>
           <Main addBackground={false}>
-            <CovidContainer>
-              <Covid19Warning />
-              <Codiv19Justif />
-            </CovidContainer>
             {children}
           </Main>
         </div>

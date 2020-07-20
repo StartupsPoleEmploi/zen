@@ -84,7 +84,7 @@ const WorkSummary = ({ employers }) => {
       </li>
 
       <li className="salary-total">
-        <Label>Rémunération déclarée : </Label>
+        <Label>Salaire brut déclaré : </Label>
         <Value>
           <b>
             {_isNaN(totalSalary) || totalSalary === 0 ? (

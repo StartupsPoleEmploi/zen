@@ -485,31 +485,30 @@ export class Files extends Component {
       />
     );
 
-    return (isCertificatDocTransmitted && isSalaryDocTransmitted) ||
-      (certificateDoc && !salaryDoc) ? <></> : (
-        <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
-          <StyledUl>
-            {certificateUpload}
-            {certificateDoc && !salaryDoc ? (
-              <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
-                <span
-                  aria-hidden
-                  style={{
-                    display: 'inline-block',
-                    paddingRight: '0.5rem',
-                  }}
-                >
-                  👍
-                </span>
-                Nous n'avons pas besoin de votre bulletin de salaire pour cet
-                employeur, car vous nous avez déjà transmis votre attestation
-              </Typography>
-            ) : (
-              salarySheetUpload
-            )}
-          </StyledUl>
-        </DocumentsGroup>
-      );
+    return (isCertificatDocTransmitted || isSalaryDocTransmitted) ? <></> : (
+      <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
+        <StyledUl>
+          {certificateUpload}
+          {certificateDoc && !salaryDoc ? (
+            <Typography variant="caption" style={{ fontSize: '1.6rem' }}>
+              <span
+                aria-hidden
+                style={{
+                  display: 'inline-block',
+                  paddingRight: '0.5rem',
+                }}
+              >
+                👍
+              </span>
+              Nous n'avons pas besoin de votre bulletin de salaire pour cet
+              employeur, car vous nous avez déjà transmis votre attestation
+            </Typography>
+          ) : (
+            salarySheetUpload
+          )}
+        </StyledUl>
+      </DocumentsGroup>
+    );
   }
 
   onCollapseMonth = (id) => {
@@ -760,7 +759,7 @@ Files.propTypes = {
   width: PropTypes.string,
   snackError: PropTypes.string,
   snackSuccess: PropTypes.string,
-  showSurvey: PropTypes.bool.isRequired,
+  showSurvey: PropTypes.bool,
 };
 
 export default connect(

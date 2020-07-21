@@ -387,7 +387,8 @@ router.post('/files/validate', (req, res, next) => {
       return (
         sendDocument({
           document: employerDoc,
-          accessToken: req.session.userSecret.accessToken,
+          accessToken: req.session.userSecret && req.session.userSecret.accessToken
+            ? req.session.userSecret.accessToken : null,
           isFakeAuth: req.session.user.isFakeAuth,
         })
           .then(() =>

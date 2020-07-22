@@ -1,5 +1,6 @@
 const { BelongsToOneRelation, HasManyRelation } = require('objection');
 const BaseModel = require('./BaseModel');
+const EmployerDocument = require('./EmployerDocument');
 
 class Employer extends BaseModel {
   static get tableName() {
@@ -22,6 +23,16 @@ class Employer extends BaseModel {
         documentId: { type: ['integer'] },
       },
     };
+  }
+
+  async $beforeDelete(queryContext) {
+    await super.$beforeDelete(queryContext);
+    const list = await EmployerDocument.query().where('employerId', '=', this.id);
+
+    await Promise.all(
+      list.map(async (d) =>
+        d.$query().delete()),
+    );
   }
 
   // This object defines the relations to other models.

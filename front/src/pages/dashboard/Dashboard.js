@@ -63,6 +63,7 @@ class Dashboard extends PureComponent {
       <StyledDashboard width={width}>
         <Title>
           Bonjour
+          {' '}
           {user.firstName}
         </Title>
         <Grid container spacing={4}>

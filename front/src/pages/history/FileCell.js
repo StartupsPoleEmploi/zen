@@ -3,8 +3,8 @@ import { Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import PrintIcon from '@material-ui/icons/Print';
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottomOutlined';
+import PrintIcon from '@material-ui/icons/PrintOutlined';
 
 import {
   intermediaryBreakpoint,
@@ -37,13 +37,14 @@ const StyledFileCell = styled(Cell)`
 
     @media (max-width: ${intermediaryBreakpoint}) {
       border-left: none;
-      align-items: center;
       border-top: solid 1px #ddd;
+      justify-content: flex-start;
+      padding-left: 0;
     }
     @media (max-width: ${mobileBreakpoint}) {
       align-items: flex-start;
       border-top: solid 1px #ececec;
-      padding: 2rem 1rem 1rem 0rem;
+      padding: 2rem 1rem 2rem 0rem;
     }
   }
 `;
@@ -103,12 +104,12 @@ const FileCell = ({ declaration }) => {
           <VerticalAlignBottomIcon
             style={{ color: primaryBlue, marginRight: '1rem' }}
           />
-          <Typography>Télécharger ma déclaration</Typography>
+          <Typography>Télécharger votre actualisation</Typography>
         </ActionLink>
 
         <ActionLink href="#" onClick={printDeclaration}>
           <PrintIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
-          <Typography>Imprimer ma déclaration</Typography>
+          <Typography>Imprimer votre actualisation</Typography>
         </ActionLink>
       </StyledFileCell>
 

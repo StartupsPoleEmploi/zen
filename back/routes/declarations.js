@@ -290,6 +290,7 @@ router.post('/', [requireActiveMonth, refreshAccessToken], (req, res, next) => {
           userId: req.session.user.id,
           accessToken: req.session.userSecret.accessToken,
           ignoreErrors: req.body.ignoreErrors,
+          isFakeAuth: req.session.user.isFakeAuth,
         })
           .then(({ body }) => {
             if (body.statut !== DECLARATION_STATUSES.SAVED) {
@@ -501,6 +502,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
       return sendDocument({
         document: declarationInfo,
         accessToken: req.session.userSecret.accessToken,
+        isFakeAuth: req.session.user.isFakeAuth,
       })
         .then(() =>
           Declaration.query()

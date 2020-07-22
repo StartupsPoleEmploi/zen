@@ -2,23 +2,28 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import copy from 'copy-to-clipboard';
 
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
+import LinkOutlinedIcon from '@material-ui/icons/LinkOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+import { Box } from '@material-ui/core';
 import AppTitle from '../Generic/AppTitle';
 import ZnNavLogin from './ZnNavLogin';
-import { secondaryBlue, errorOrange, mobileBreakpoint } from '../../constants';
+import {
+  secondaryBlue, errorOrange, mobileBreakpoint, primaryBlue,
+} from '../../constants';
 import dashboardBg from '../../images/dashboard-bg.svg';
-import Covid19Warning from '../Generic/Covid19Warning';
-import Codiv19Justif from '../Generic/Codiv19Justif';
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -65,6 +70,7 @@ const PopoverMailContainer = styled(Typography)`
 const HeaderElem = styled.div`
   display: ${({ logo }) => (logo ? 'none' : 'flex')};
   align-items: center;
+  margin-left: ${({ first }) => (first ? '1rem' : '0')};
   padding-left: ${({ first }) => (first ? '3rem' : '1.5rem')};
   padding-right: ${({ end }) => (end ? '3rem' : '1.5rem')};
   height: 100%;
@@ -89,13 +95,6 @@ const HeaderElem = styled.div`
   }
 `;
 
-const CovidContainer = styled.div`
-  padding: 0 15% 1rem 15%;
-  @media (max-width: 1400px) {
-    padding: 0 5% 1rem 5%;
-  }
-`;
-
 const Main = styled.main.attrs({ role: 'main' })`
   padding: 7rem 1rem;
   flex-grow: 1;
@@ -116,6 +115,45 @@ const Main = styled.main.attrs({ role: 'main' })`
   }
 `;
 
+const PopoverLine = styled(Box)`
+  margin: 2rem; 
+  display: flex;
+  cursor: pointer;
+
+  svg {
+    margin-right: 1rem;
+  }
+
+  a {
+    display: flex;
+    text-decoration: none;
+    color: black;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    color: ${primaryBlue};
+
+    a {
+      color: ${primaryBlue};
+    }
+  }
+`;
+
+const TagTypo = styled(Typography)`
+  && {
+    color: white;
+    background-color: ${primaryBlue};
+    position: absolute;
+    right: 0;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 4px 8px;
+    letter-spacing: 2px;
+    top: -16px;
+  }
+`;
+
 export const Layout = ({
   activeMonth,
   activeDeclaration,
@@ -126,12 +164,15 @@ export const Layout = ({
   history: { push },
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElInvitation, setAnchorElInvitation] = React.useState(null);
   const isNavVisible = routesWithDisplayedNav.includes(pathname);
 
   const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const handleClickInvitation = (event) => setAnchorElInvitation(event.currentTarget);
+  const handleCloseInvitation = () => setAnchorElInvitation(null);
 
   const NavComponent = () => (
     <ZnNavLogin
@@ -145,6 +186,7 @@ export const Layout = ({
   );
 
   const openMail = Boolean(anchorEl);
+  const openInvitation = Boolean(anchorElInvitation);
   const idMail = openMail ? 'simple-popover' : undefined;
 
   return (
@@ -156,6 +198,46 @@ export const Layout = ({
           <Header>
             <HeaderElem logo>
               <AppTitle />
+            </HeaderElem>
+            <HeaderElem first>
+              <ButtonMail aria-describedby="invitation-popover" onClick={handleClickInvitation}>
+                {!useMobileVersion && (<TagTypo>NOUVEAU</TagTypo>)}
+                <PersonAddOutlinedIcon style={{ color: primaryBlue }} />
+                {!useMobileVersion && (
+                <Typography>
+                  Inviter vos contacts sur Zen
+                </Typography>
+                )}
+              </ButtonMail>
+              <Popover
+                id="invitation-popover"
+                open={openInvitation}
+                anchorEl={anchorElInvitation}
+                onClose={handleCloseInvitation}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              >
+                <PopoverLine>
+                  <a href="mailto:?subject=Découvrez ZEN pôle emploi, le service d'actualisation adapté aux assistantes maternelles&body=https://zen.pole-emploi.fr/">
+                    <EmailOutlinedIcon style={{ color: primaryBlue }} />
+                    <Typography>
+                      Envoyer par mail
+                    </Typography>
+                  </a>
+                </PopoverLine>
+                <PopoverLine onClick={() => copy('https://zen.pole-emploi.fr/')}>
+                  <LinkOutlinedIcon style={{ color: primaryBlue }} />
+                  <Typography>
+                    Copier le lien
+                  </Typography>
+                </PopoverLine>
+              </Popover>
             </HeaderElem>
             <HeaderElem first>
               <AccountCircleOutlinedIcon />
@@ -209,10 +291,6 @@ export const Layout = ({
             </HeaderElem>
           </Header>
           <Main addBackground={false}>
-            <CovidContainer>
-              <Covid19Warning />
-              <Codiv19Justif />
-            </CovidContainer>
             {children}
           </Main>
         </div>

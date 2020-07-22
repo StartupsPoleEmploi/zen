@@ -286,7 +286,7 @@ export class Files extends Component {
     const now = new Date();
 
     const showSurvey = lastResponse === null ||
-     new Date(lastResponse).getMonth() !== now.getMonth();
+      new Date(lastResponse).getMonth() !== now.getMonth();
     this.setState({ showSurvey });
   }
 
@@ -403,9 +403,9 @@ export class Files extends Component {
               isLoading={info.isLoading}
               error={info.error}
               useLightVersion={
-            muiBreakpoints.xs === this.props.width ||
-            muiBreakpoints.sm === this.props.width
-          }
+                muiBreakpoints.xs === this.props.width ||
+                muiBreakpoints.sm === this.props.width
+              }
 
             />
           </StyledUl>
@@ -485,8 +485,7 @@ export class Files extends Component {
       />
     );
 
-    return (isCertificatDocTransmitted && isSalaryDocTransmitted) ||
-    (certificateDoc && !salaryDoc) ? <></> : (
+    return (isCertificatDocTransmitted || isSalaryDocTransmitted) ? <></> : (
       <DocumentsGroup key={employer.id} width={this.props.width} className="employer-row">
         <StyledUl>
           {certificateUpload}
@@ -688,7 +687,7 @@ export class Files extends Component {
       // fetch if document have an error
       declarations.map((declaration) => {
         if ((declaration.employers || []).some((d) => d.salarySheetError) ||
-        (declaration.infos || []).some((d) => d.error)) {
+          (declaration.infos || []).some((d) => d.error)) {
           error = 'Un problème est survenu veuillez réessayer plus tard';
         }
 
@@ -715,7 +714,7 @@ export class Files extends Component {
           onConfirm={this.state.skipFileCallback}
         />
         {(showEmployerPreview || showInfoDocPreview) && (
-        <DocumentDialog isOpened {...previewProps} />
+          <DocumentDialog isOpened {...previewProps} />
         )}
 
         {snackSuccess && (
@@ -760,7 +759,7 @@ Files.propTypes = {
   width: PropTypes.string,
   snackError: PropTypes.string,
   snackSuccess: PropTypes.string,
-  showSurvey: PropTypes.bool.isRequired,
+  showSurvey: PropTypes.bool,
 };
 
 export default connect(

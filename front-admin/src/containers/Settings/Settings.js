@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
-import { Switch, Form } from 'antd';
+import { Switch, Form, Button } from 'antd';
 
 
 import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
+import { useDeclarations } from '../../common/contexts/declarationsCtx';
 
 export default function Settings() {
   const [isGlobalActivated, setIsGlobalActivated] = useState(null);
   const [isFilesActivated, setIsFilesActivated] = useState(null);
+  const { removeDeclarations } = useDeclarations();
   const { logoutIfNeed } = useUseradmin();
 
   useEffect(() => {
-    superagent.get('/api/status').then(({ body }) => {
+    superagent.get('/zen-admin-api/settings/status').then(({ body }) => {
       setIsGlobalActivated(body.global.up);
       setIsFilesActivated(body.files.up);
     }).catch(logoutIfNeed);
@@ -21,14 +23,14 @@ export default function Settings() {
 
   const updateGlobalStatus = () => {
     superagent
-      .post('/zen-admin-api/status-global', { up: !isGlobalActivated })
+      .post('/zen-admin-api/settings/status-global', { up: !isGlobalActivated })
       .then(({ body }) => setIsGlobalActivated(body.up))
       .catch(logoutIfNeed);
   };
 
   const updateFilesStatus = () => {
     superagent
-      .post('/zen-admin-api/status-files', { up: !isFilesActivated })
+      .post('/zen-admin-api/settings/status-files', { up: !isFilesActivated })
       .then(({ body }) => setIsFilesActivated(body.isFilesServiceUp))
       .catch(logoutIfNeed);
   };
@@ -81,6 +83,20 @@ export default function Settings() {
             </Form.Item>
           </div>
         )}
+      </ZnContent>
+
+      <hr />
+
+      <ZnContent>
+        <b>
+        Ce bouton permet, après confirmation, de supprimer toutes les
+        actualisations de ce mois-ci. Ne pas manipuler sans raison !
+        </b>
+        <ZnContent>
+          <Button onClick={removeDeclarations} danger>
+          Supprimer les actualisations du mois
+          </Button>
+        </ZnContent>
       </ZnContent>
     </div>
   );

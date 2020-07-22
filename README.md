@@ -6,6 +6,8 @@
 
 **For front-end Sentry use, a `front/.env.local` needs creation and configuration too.**
 
+**For Google Tag Mananger use, a `front/.env.local` and add "REACT_APP_GOOGLE_TAG_MANAGER_KEY=GTM-T35N6BL" for production.**
+
 Install Docker, Docker-Compose and yarn, then
 
 ```

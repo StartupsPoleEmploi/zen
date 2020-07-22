@@ -2,7 +2,7 @@
 /* eslint-disable no-await-in-loop */
 const fs = require('fs');
 const util = require('util');
-const { format, subDays } = require('date-fns');
+const { format } = require('date-fns');
 const { startCase, toLower } = require('lodash');
 
 const winston = require('./log');
@@ -24,7 +24,7 @@ const readdir = util.promisify(fs.readdir);
 async function $getFile() {
   const FOLDER = '/mnt/datalakepe/depuis_datalake';
   const files = await readdir(FOLDER);
-  const dateFormated = format(subDays(new Date(), 1), 'YYYYMMDD');
+  const dateFormated = format(new Date(), 'YYYYMMDD');
   const startWith = `zen_de_eligible_full_${dateFormated}`;
   const file = files.find((f) => f.startsWith(startWith) && f.endsWith('.bz2'));
   if (!file) throw new Error(`No file found that start with ${startWith}`);

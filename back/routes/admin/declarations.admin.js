@@ -151,9 +151,11 @@ router.post('/declarations/review', (req, res, next) => {
     return res.status(400).json('Incomplete request');
   }
 
+  const declarationId = +req.body.declarationId;
+
   Declaration.query()
     .eager('review')
-    .findById(req.body.declarationId)
+    .findById(declarationId)
     .then((declaration) => {
       const declarationNoteObj = {};
 
@@ -173,7 +175,7 @@ router.post('/declarations/review', (req, res, next) => {
 
       return DeclarationReview.query()
         .insert({
-          declarationId: req.body.declarationId,
+          declarationId,
           ...declarationNoteObj,
         })
         .then(() => res.json('ok'));

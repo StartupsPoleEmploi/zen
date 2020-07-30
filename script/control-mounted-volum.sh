@@ -7,9 +7,8 @@ DOCKERNAME=zen_node_1
 MOUNTEDFOLDER=uploads
 
 TESTCMD=$(docker exec -it $DOCKERNAME ls $MOUNTEDFOLDER)
-echo "Check mounted status"
+echo "$(date) - Check mounted status"
 if [[ $TESTCMD =~ ^ls:* ]] ; then
-  echo "$(date)"
   echo "${TESTCMD}"
   echo "Restarting docker $DOCKERNAME"
   docker restart $DOCKERNAME    
@@ -23,5 +22,5 @@ fi
 
 # add to cron
 # crontab -e
-# */5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh > /home/docker/zen/logs/control-mounted-volum.log 2>&1
+# */5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh >> /home/docker/zen/logs/control-mounted-volum.log
 

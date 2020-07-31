@@ -6,7 +6,7 @@
 DOCKERNAME=zen_node_1
 MOUNTEDFOLDER=uploads
 
-TESTCMD=$(docker exec -it $DOCKERNAME ls $MOUNTEDFOLDER)
+TESTCMD=$(docker exec -t $DOCKERNAME ls $MOUNTEDFOLDER)
 echo "$(date) - Check mounted status"
 if [[ $TESTCMD =~ ^ls:* ]] ; then
   echo "${TESTCMD}"

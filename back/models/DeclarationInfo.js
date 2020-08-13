@@ -95,7 +95,7 @@ class DeclarationInfo extends Model {
         endDate: { type: ['string', 'object', 'null'] },
         file: { type: ['string', 'null'] },
         originalFileName: { type: ['string', 'null'] },
-        isTransmitted: { type: 'boolean' },
+        isTransmitted: { type: 'boolean' }, // si isTransmitted = true et que file=NULL als la personne a déjà transmit le doc directement via PE
         isCleanedUp: { default: false, type: 'boolean' },
       },
     };

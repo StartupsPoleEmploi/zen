@@ -8,7 +8,6 @@ import { URLS } from '../routes';
 
 const UseradminContext = React.createContext();
 
-
 export function UseradminProvider(props) {
   const [useradmin, _setUseradmin] = useState(null);
   const history = useHistory();
@@ -66,7 +65,6 @@ export function UseradminProvider(props) {
     />
   );
 }
-
 
 export const useUseradmin = () => {
   const context = React.useContext(UseradminContext);

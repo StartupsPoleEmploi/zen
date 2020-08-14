@@ -14,7 +14,6 @@ import generateExecFromJson from './generateExcel';
 
 import './Repartition.css';
 
-
 function sort(obj) {
   return Object.entries(obj).sort(
     ([, r1Total], [, r2Total]) => r2Total - r1Total,
@@ -122,7 +121,6 @@ function RepartitionRegionDepartment({
             {exportOnGoing ? <Spin /> : 'Exporter comme excel'}
           </Button>
         </div>
-
 
         {region && !department && (
           <div style={{ flex: 1 }}>

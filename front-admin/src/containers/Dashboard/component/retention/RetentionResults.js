@@ -5,7 +5,6 @@ import superagent from 'superagent';
 import { Spin } from 'antd';
 import moment from 'moment';
 
-
 import { useUseradmin } from '../../../../common/contexts/useradminCtx';
 
 function RetentionResults({ startMonth }) {

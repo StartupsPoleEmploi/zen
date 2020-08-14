@@ -55,9 +55,9 @@ export default function DeclarationDetails({ declaration }: Props) {
             <tr>
               <td>
                 <b>
-                Avoir une nouvelle pension d'invalidité
+                  Avoir une nouvelle pension d'invalidité
                   <br />
-                de 2eme ou 3eme catégorie ?
+                  de 2eme ou 3eme catégorie ?
                 </b>
               </td>
               <td><IconBoolean val={declaration.hasInvalidity} /></td>

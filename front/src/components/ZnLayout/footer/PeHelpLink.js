@@ -32,7 +32,7 @@ const StyledButton = styled.button`
     display: flex;
     cursor: pointer;
     background: none;
-    border: none
+    border: none;
     text-align: left;
     padding: 0;
     width: 100%;

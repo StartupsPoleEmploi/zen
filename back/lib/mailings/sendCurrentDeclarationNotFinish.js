@@ -36,7 +36,7 @@ async function sendCurrentDeclarationNotFinish() {
   const currentMonth = await $getCurrentMonth();
   if (!currentMonth) throw new Error('[sendDeclarationNotFinish] No active month');
 
-  const declarations = await Declaration.query().eager('[user]')
+  const declarations = await Declaration.query().withGraphFetched('[user]')
     .where({ hasFinishedDeclaringEmployers: false, monthId: currentMonth.id });
   await Promise.all(
     declarations.map((declaration) => $sendDeclarationOfUser(declaration.user)

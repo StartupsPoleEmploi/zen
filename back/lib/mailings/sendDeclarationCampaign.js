@@ -22,7 +22,7 @@ function $getFormatedDate() {
  */
 async function sendDeclarationCampaign() {
   winston.info('[CRON] DEBUT_ACTUALISATION: START');
-  const CustomCampaign = `Lancement actu ${format(new Date(), 'MM/YYYY')}`;
+  const CustomCampaign = `Lancement actu ${format(new Date(), 'MM/yyyy')}`;
   const date = $getFormatedDate();
   const allUsers = await userCtrl.getActiveUsers();
 

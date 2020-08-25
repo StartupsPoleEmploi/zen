@@ -16,7 +16,6 @@ async function putUseradmin(data) {
     .post('/zen-admin-api/useradmins/add', data);
 }
 
-
 export default function UseradminAdd() {
   const history = useHistory();
   const { logoutIfNeed } = useUseradmin();

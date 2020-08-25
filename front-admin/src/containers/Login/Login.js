@@ -7,7 +7,6 @@ import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
 import { useUseradmin } from '../../common/contexts/useradminCtx';
 
-
 type Props = { form: Object }
 
 function Login({ form }: Props) {

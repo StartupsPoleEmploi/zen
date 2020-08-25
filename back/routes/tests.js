@@ -226,8 +226,8 @@ router.post('/db/reset-for-files', (req, res, next) =>
           infos: [
             {
               type: 'sickLeave',
-              startDate: startOfMonth(declarationMonth.month),
-              endDate: endOfMonth(declarationMonth.month),
+              startDate: startOfMonth(new Date(declarationMonth.month)),
+              endDate: endOfMonth(new Date(declarationMonth.month)),
             },
           ],
           ...req.body.declarationOverride,
@@ -297,8 +297,8 @@ router.post('/db/reset-for-history', (req, res, next) =>
           infos: [
             {
               type: 'sickLeave',
-              startDate: startOfMonth(declarationMonths[3].month),
-              endDate: endOfMonth(declarationMonths[3].month),
+              startDate: startOfMonth(new Date(declarationMonths[3].month)),
+              endDate: endOfMonth(new Date(declarationMonths[3].month)),
             },
           ],
         },

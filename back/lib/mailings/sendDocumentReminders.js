@@ -20,7 +20,7 @@ const WAIT_TIME_AFTER_ERROR = 300000; // wait 5 minutes before retrying after an
 
 const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 const getFormattedMonthAndYear = (date) =>
-  format(date, 'MMMM YYYY', { locale: fr });
+  format(new Date(date), 'MMMM yyyy', { locale: fr });
 
 const getMissingDocumentLabelsFromDeclaration = (declaration) =>
   declaration.infos
@@ -96,7 +96,7 @@ const sendAllDocumentsReminders = () =>
   Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
     User.query()
-      .eager('[declarations.[declarationMonth, infos, employers.documents]]')
+      .withGraphFetched('[declarations.[declarationMonth, infos, employers.documents]]')
       .join('declarations', 'declarations.userId', '=', 'Users.id')
       .where(function where() {
         this.where(
@@ -191,7 +191,7 @@ const sendAllDocumentsReminders = () =>
  */
 const sendCurrentDeclarationDocsReminders = () => {
   const lastMonth = subMonths(new Date(), 1);
-  const formattedMonthInFrench = format(lastMonth, 'MMMM YYYY', { locale: fr });
+  const formattedMonthInFrench = format(lastMonth, 'MMMM yyyy', { locale: fr });
 
   return DeclarationMonth.query()
     .where('endDate', '>', new Date())
@@ -203,7 +203,7 @@ const sendCurrentDeclarationDocsReminders = () => {
       return Promise.all([
         // Get unfinished declarations from users who have not received a reminder in the last day
         Declaration.query()
-          .eager('[declarationMonth, infos, user, employers.documents]')
+          .withGraphFetched('[declarationMonth, infos, user, employers.documents]')
           .join('Users', 'Users.id', '=', 'declarations.userId')
           .where({
             isFinished: false,

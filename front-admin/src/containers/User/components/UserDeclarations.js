@@ -9,7 +9,6 @@ import ZnTable from '../../../components/ZnTable';
 import { URLS } from '../../../common/routes';
 import { useDeclarations } from '../../../common/contexts/declarationsCtx';
 
-
 function formatDate(availableMonths, monthId) {
   if (!monthId) return '';
   const dateFind = availableMonths.find((e) => e.id === monthId);
@@ -57,7 +56,6 @@ export default function UserDeclarations({ declarations = [] }: Props) {
       ),
     },
   ];
-
 
   return (
     <Card title="Declarations" style={{ marginBottom: '20px' }}>

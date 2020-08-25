@@ -9,7 +9,7 @@ const EmployerDocument = require('../models/EmployerDocument');
 const { DOCUMENT_LABELS } = require('../constants');
 
 const getFormattedMonthAndYear = (date) =>
-  format(date, 'MMMM YYYY', { locale: fr });
+  format(new Date(date), 'MMMM yyyy', { locale: fr });
 
 const getMissingDocumentLabelsFromDeclaration = (declaration) =>
   declaration.infos
@@ -53,7 +53,7 @@ for (let i = 1; i < 16; i += 1) {
   Promise.all([
     // Get unfinished declarations from users who have not received a reminder in the last day
     Declaration.query()
-      .eager('[declarationMonth, infos, user, employers.documents]')
+      .withGraphFetched('[declarationMonth, infos, user, employers.documents]')
       .join('Users', 'Users.id', '=', 'declarations.userId')
       .where({
         isFinished: false,
@@ -70,8 +70,8 @@ for (let i = 1; i < 16; i += 1) {
   ])
     .then(([declarations]) => {
       const monthLabel = format(
-        declarations[0].declarationMonth.month,
-        'MM-YYYY',
+        new Date(declarations[0].declarationMonth.month),
+        'MM-yyyy',
       );
 
       const csv = declarations.map((declaration) => {

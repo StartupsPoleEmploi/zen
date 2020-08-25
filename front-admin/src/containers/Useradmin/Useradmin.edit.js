@@ -16,7 +16,6 @@ async function updateUseradmin(id, data) {
     .post(`/zen-admin-api/useradmins/${id}/update`, data);
 }
 
-
 type Props = {
   match: Object,
 }
@@ -33,7 +32,6 @@ export default function UseradminEdit({ match }: Props) {
       .catch(logoutIfNeed);
   }, [logoutIfNeed, useradminId]);
 
-
   const onSubmit = (values) => {
     updateUseradmin(useradminId, values).then(() => {
       notification.success({ message: 'Modification bien prise en compte' });
@@ -48,7 +46,6 @@ export default function UseradminEdit({ match }: Props) {
         }
       });
   };
-
 
   const showDeleteConfirm = () => {
     Modal.confirm({

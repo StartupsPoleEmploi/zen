@@ -72,7 +72,6 @@ export function DeclarationsProvider(props) {
   );
 }
 
-
 export const useDeclarations = () => {
   const context = React.useContext(DeclarationsContext);
   if (!context) throw new Error('useDeclarations must be used in DeclarationsProvider');

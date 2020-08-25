@@ -17,11 +17,11 @@ function formatQueryResults({
 
   for (let i = 0; i < firstPeriodData.length; i += 1) {
     // Graph labels
-    let label = format(addDays(startFirstPeriod, i), 'DD/MM');
-    if (hasSecondPeriod) label += ` vs ${format(addDays(startSecondPeriod, i), 'DD/MM')}`;
+    let label = format(addDays(new Date(startFirstPeriod), i), 'dd/MM');
+    if (hasSecondPeriod) label += ` vs ${format(addDays(startSecondPeriod, i), 'dd/MM')}`;
 
-    let labelPreviousDay = format(addDays(startFirstPeriod, i - 1), 'DD/MM');
-    if (hasSecondPeriod) labelPreviousDay += ` vs ${format(addDays(startSecondPeriod, i - 1), 'DD/MM')}`;
+    let labelPreviousDay = format(addDays(new Date(startFirstPeriod), i - 1), 'dd/MM');
+    if (hasSecondPeriod) labelPreviousDay += ` vs ${format(addDays(startSecondPeriod, i - 1), 'dd/MM')}`;
 
     // First period
     const { count: firstCount = 0 } = firstPeriodData[i] || {};

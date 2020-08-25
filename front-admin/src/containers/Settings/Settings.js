@@ -84,19 +84,22 @@ export default function Settings() {
         )}
       </ZnContent>
 
-      <hr />
-
-      <ZnContent>
-        <b>
-          Ce bouton permet, après confirmation, de supprimer toutes les
-          actualisations de ce mois-ci. Ne pas manipuler sans raison !
-        </b>
-        <ZnContent>
-          <Button onClick={removeDeclarations} danger>
-            Supprimer les actualisations du mois
-          </Button>
-        </ZnContent>
-      </ZnContent>
+      {process.env.REACT_APP_ZEN_ENV !== 'production' && (
+        <>
+          <hr />
+          <ZnContent>
+            <b>
+            Ce bouton permet, après confirmation, de supprimer toutes les
+            actualisations de ce mois-ci. Ne pas manipuler sans raison !
+            </b>
+            <ZnContent>
+              <Button onClick={removeDeclarations} danger>
+              Supprimer les actualisations du mois
+              </Button>
+            </ZnContent>
+          </ZnContent>
+        </>
+      ) }
     </div>
   );
 }

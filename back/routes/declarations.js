@@ -52,7 +52,7 @@ router.post('/remove-file-page', (req, res, next) => {
   }
 
   return DeclarationInfo.query()
-    .eager('declaration.user')
+    .withGraphFetched('declaration.user')
     .findById(req.body.declarationInfoId)
     .then((declarationInfo) => {
       if (
@@ -97,7 +97,7 @@ router.post('/remove-file-page', (req, res, next) => {
         })
         .then(() =>
           Declaration.query()
-            .eager(eagerDeclarationString)
+            .withGraphFetched(eagerDeclarationString)
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,
@@ -116,7 +116,7 @@ router.get('/', (req, res, next) => {
     || 'active' in req.query
   ) {
     return Declaration.query()
-      .eager(eagerDeclarationString)
+      .withGraphFetched(eagerDeclarationString)
       .where({ userId: req.session.user.id })
       .orderBy('createdAt', 'desc')
       .orderBy('id', 'asc')
@@ -151,7 +151,7 @@ router.get('/', (req, res, next) => {
       : MAX_MONTHS_TO_FETCH;
 
   return Declaration.query()
-    .eager(eagerDeclarationString)
+    .withGraphFetched(eagerDeclarationString)
     .where({ userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .limit(limit)
@@ -338,7 +338,7 @@ router.get('/summary-file', (req, res, next) => {
   const download = req.query.download === 'true';
 
   return Declaration.query()
-    .eager('[declarationMonth, user, employers, infos]')
+    .withGraphFetched('[declarationMonth, user, employers, infos]')
     .findOne({ id: req.query.id, userId: req.session.user.id })
     .orderBy('createdAt', 'desc')
     .skipUndefined()
@@ -370,7 +370,7 @@ router.get('/files', (req, res, next) => {
   }
 
   return DeclarationInfo.query()
-    .eager('declaration.user')
+    .withGraphFetched('declaration.user')
     .findById(req.query.declarationInfoId)
     .then((declarationInfo) => {
       if (get(declarationInfo, 'declaration.user.id') !== req.session.user.id) {
@@ -402,7 +402,7 @@ router.post(
     }
 
     return DeclarationInfo.query()
-      .eager('declaration.user')
+      .withGraphFetched('declaration.user')
       .findById(req.body.declarationInfoId)
       .then(async (declarationInfo) => {
         if (
@@ -459,7 +459,7 @@ router.post(
           .patch(documentFileObj)
           .then(() =>
             Declaration.query()
-              .eager(eagerDeclarationString)
+              .withGraphFetched(eagerDeclarationString)
               .findOne({
                 id: declarationInfo.declaration.id,
                 userId: req.session.user.id,
@@ -485,7 +485,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
   }
 
   return DeclarationInfo.query()
-    .eager(`declaration.${eagerDeclarationString}`)
+    .withGraphFetched(`declaration.${eagerDeclarationString}`)
     .findOne({ id: req.body.id })
     .then((declarationInfo) => {
       if (
@@ -506,7 +506,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
       })
         .then(() =>
           Declaration.query()
-            .eager('[employers.documents, infos, declarationMonth]')
+            .withGraphFetched('[employers.documents, infos, declarationMonth]')
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,
@@ -518,7 +518,7 @@ router.post('/files/validate', refreshAccessToken, (req, res, next) => {
           }))
         .then(() =>
           Declaration.query()
-            .eager('[employers.documents, infos, declarationMonth]')
+            .withGraphFetched('[employers.documents, infos, declarationMonth]')
             .findOne({
               id: declarationInfo.declaration.id,
               userId: req.session.user.id,

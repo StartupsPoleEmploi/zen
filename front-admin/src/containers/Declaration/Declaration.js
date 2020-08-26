@@ -12,7 +12,6 @@ import {
   Icon,
 } from 'antd';
 
-
 import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import { URLS } from '../../common/routes';
@@ -55,7 +54,6 @@ export default function Declaration({ match }: Props) {
     setIsVerified(!!(declaration && declaration.review && declaration.review.isVerified));
     setNotes((declaration && declaration.review && declaration.review.notes) || '');
   }, [declaration]);
-
 
   function onSubmit() {
     updateDeclaration({ notes, isVerified, id })

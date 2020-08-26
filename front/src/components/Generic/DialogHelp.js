@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import MessageOutlined from '@material-ui/icons/MessageOutlined';
 
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import ComputerOutlinedIcon from '@material-ui/icons/ComputerOutlined';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
@@ -101,11 +100,6 @@ function DialogHelp({ isOpened, onClose }) {
       content={(
         <Container>
           <Grid container spacing={2}>
-            <BlockItem
-              Icon={InfoOutlinedIcon}
-              text="COVID-19"
-              section="cat=15"
-            />
             <BlockItem
               Icon={ComputerOutlinedIcon}
               text="S'actualiser sur Zen pour la première fois"

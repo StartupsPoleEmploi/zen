@@ -13,7 +13,7 @@ const docTypes = DeclarationInfo.types;
 const DEFAULT_WAIT_TIME = process.env.NODE_ENV !== 'test' ? 1000 : 0;
 const wait = (ms = DEFAULT_WAIT_TIME) =>
   new Promise((resolve) => setTimeout(() => resolve(), ms));
-const convertDate = (date) => format(date, 'DDMMYYYY');
+const convertDate = (date) => format(new Date(date), 'ddMMyyyy');
 
 const JOB_SEARCH_STOP_MOTIVES = {
   WORK: 0,
@@ -59,7 +59,7 @@ const convertDeclarationToAPIFormat = (declaration) => {
         .filter(({ type }) => type === docTypes.internship)
         .reduce(
           (prev, { startDate }) =>
-            (isBefore(prev, startDate) ? prev : startDate),
+            (isBefore(new Date(prev), new Date(startDate)) ? prev : startDate),
           declaration.infos.find(({ type }) => type === docTypes.internship)
             .startDate,
         ),
@@ -68,7 +68,7 @@ const convertDeclarationToAPIFormat = (declaration) => {
       declaration.infos
         .filter(({ type }) => type === docTypes.internship)
         .reduce(
-          (prev, { endDate }) => (isAfter(prev, endDate) ? prev : endDate),
+          (prev, { endDate }) => (isAfter(new Date(prev), new Date(endDate)) ? prev : endDate),
           declaration.infos.find(({ type }) => type === docTypes.internship)
             .endDate,
         ),
@@ -80,7 +80,7 @@ const convertDeclarationToAPIFormat = (declaration) => {
         .filter(({ type }) => type === docTypes.sickLeave)
         .reduce(
           (prev, { startDate }) =>
-            (isBefore(prev, startDate) ? prev : startDate),
+            (isBefore(new Date(prev), new Date(startDate)) ? prev : startDate),
           declaration.infos.find(({ type }) => type === docTypes.sickLeave)
             .startDate,
         ),
@@ -89,7 +89,7 @@ const convertDeclarationToAPIFormat = (declaration) => {
       declaration.infos
         .filter(({ type }) => type === docTypes.sickLeave)
         .reduce(
-          (prev, { endDate }) => (isAfter(prev, endDate) ? prev : endDate),
+          (prev, { endDate }) => (isAfter(new Date(prev), new Date(endDate)) ? prev : endDate),
           declaration.infos.find(({ type }) => type === docTypes.sickLeave)
             .endDate,
         ),

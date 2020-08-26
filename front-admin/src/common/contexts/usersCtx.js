@@ -40,7 +40,6 @@ export function UsersProvider(props) {
   );
 }
 
-
 export const useUsers = () => {
   const context = React.useContext(UsersContext);
   if (!context) throw new Error('useUsers must be used in UsersProvider');

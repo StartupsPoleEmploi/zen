@@ -51,7 +51,7 @@ router.get('/metrics/global', async (req, res) => {
 
   // Declarations done by monthId
   results.declarationsDoneByMonth = await Declaration.query()
-    .eager('declarationMonth')
+    .withGraphFetched('declarationMonth')
     .select()
     .count('id')
     .where({ hasFinishedDeclaringEmployers: true })
@@ -78,34 +78,34 @@ router.get('/metrics', async (req, res) => {
     ? await DeclarationMonth.query().findById(secondMonthId) : null;
 
   // Get longer period duration
-  const firstPeriodDuration = differenceInCalendarDays(firstDeclarationMonth.endDate,
+  const firstPeriodDuration = differenceInCalendarDays(new Date(firstDeclarationMonth.endDate),
     firstDeclarationMonth.startDate);
 
   const secondPeriodDuration = hasSecondPeriod
-    ? differenceInCalendarDays(secondDeclarationMonth.endDate,
+    ? differenceInCalendarDays(new Date(secondDeclarationMonth.endDate),
       secondDeclarationMonth.startDate) : 0;
   const periodDuration = firstPeriodDuration > secondPeriodDuration
     ? firstPeriodDuration : secondPeriodDuration;
 
   // Compute periods start and end dates
-  const startFirstPeriod = firstDeclarationMonth.startDate;
-  const endFirstPeriod = addDays(firstDeclarationMonth.startDate, periodDuration);
+  const startFirstPeriod = new Date(firstDeclarationMonth.startDate);
+  const endFirstPeriod = addDays(new Date(firstDeclarationMonth.startDate), periodDuration);
   const startSecondPeriod = hasSecondPeriod ? secondDeclarationMonth.startDate : null;
   const endSecondPeriod = hasSecondPeriod
-    ? addDays(secondDeclarationMonth.startDate, periodDuration) : null;
+    ? addDays(new Date(secondDeclarationMonth.startDate), periodDuration) : null;
 
   // 2 - New users
   const newUsersFirstPeriodData = await User.query()
     .select(raw('to_char("registeredAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('registeredAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('registeredAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('registeredAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('registeredAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("registeredAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const newUsersSecondPeriodData = hasSecondPeriod ? await User.query()
     .select(raw('to_char("registeredAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('registeredAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('registeredAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('registeredAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('registeredAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("registeredAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
 
@@ -119,15 +119,15 @@ router.get('/metrics', async (req, res) => {
   // 3 - Declarations started
   const declarationStartedFirstPeriodData = await Declaration.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const declarationStartedSecondPeriodData = hasSecondPeriod ? await Declaration.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
 
@@ -141,16 +141,16 @@ router.get('/metrics', async (req, res) => {
   // 4 - Declarations finished for two periods of time
   const declarationFinishedFirstPeriodData = await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const declarationFinishedSecondPeriodData = hasSecondPeriod ? await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_EMPLOYERS')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
@@ -165,16 +165,16 @@ router.get('/metrics', async (req, res) => {
   // 5 - Files transmitted
   const filesTransmittedFirstPeriodData = await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startFirstPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endFirstPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startFirstPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endFirstPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date');
 
   const filesTransmittedSecondPeriodData = hasSecondPeriod ? await ActivityLog.query()
     .select(raw('to_char("createdAt", \'yyyy-mm-dd\') as date, count(*)'))
-    .where('createdAt', '>', format(startSecondPeriod, 'YYYY-MM-DD'))
-    .andWhere('createdAt', '<', format(endSecondPeriod, 'YYYY-MM-DD'))
+    .where('createdAt', '>', format(startSecondPeriod, 'yyyy-MM-dd'))
+    .andWhere('createdAt', '<', format(endSecondPeriod, 'yyyy-MM-dd'))
     .andWhere('action', '=', 'VALIDATE_FILES')
     .groupByRaw('to_char("createdAt", \'yyyy-mm-dd\')')
     .orderBy('date') : null;
@@ -253,7 +253,7 @@ router.get('/repartition/region', async (req, res) => {
   }
 
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({ monthId, hasFinishedDeclaringEmployers: true })
     .andWhere('user.agencyCode', 'in', agencies);
 
@@ -276,7 +276,7 @@ router.get('/repartition/unregistered-users-region/csv', async (req, res) => {
 
   // Get all userId with a declaration in this region
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({ monthId })
     .andWhere('user.agencyCode', 'in', agencies);
   const declarationsUserId = declarations.map((d) => d.userId);
@@ -302,7 +302,7 @@ router.get('/repartition/unregistered-users-region/csv', async (req, res) => {
   const csv = json2csvParser.parse(users);
   res.set(
     'Content-disposition',
-    `attachment; filename=${filename}-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+    `attachment; filename=${filename}-${format(new Date(), 'yyyy-MM-dd')}.csv`,
   );
   res.set('Content-type', 'text/csv');
   return res.send(csv);
@@ -323,7 +323,7 @@ router.get('/repartition/department', async (req, res) => {
   }
 
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({ monthId, hasFinishedDeclaringEmployers: true })
     .andWhere('user.agencyCode', 'in', agencies);
 
@@ -338,7 +338,7 @@ router.get('/repartition/agency', async (req, res) => {
   }
 
   const declarations = await Declaration.query()
-    .joinEager('user')
+    .withGraphJoined('user')
     .where({
       monthId,
       hasFinishedDeclaringEmployers: true,
@@ -369,7 +369,7 @@ router.get('/repartition/agency/csv', async (req, res) => {
     filename = `demandeurs-agence-${agencyCode}`;
   } else {
     const declarations = await Declaration.query()
-      .joinEager('user')
+      .withGraphJoined('user')
       .where({
         monthId,
         hasFinishedDeclaringEmployers: true,
@@ -390,7 +390,7 @@ router.get('/repartition/agency/csv', async (req, res) => {
   const csv = json2csvParser.parse(users);
   res.set(
     'Content-disposition',
-    `attachment; filename=${filename}-${format(new Date(), 'YYYY-MM-DD')}.csv`,
+    `attachment; filename=${filename}-${format(new Date(), 'yyyy-MM-dd')}.csv`,
   );
   res.set('Content-type', 'text/csv');
   return res.send(csv);
@@ -464,7 +464,7 @@ router.get('/retention', async (req, res) => {
 
   // Declaration 24h after their first login
   const startDeclarationLess24h = await Declaration.query()
-    .joinRelation('user')
+    .joinRelated('user')
     .where({ monthId })
     .andWhere(
       'declarations.createdAt',

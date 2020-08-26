@@ -115,8 +115,8 @@ const formatDeclarationInfoDoc = (doc) => {
   return {
     filePath: `${uploadsDirectory}${doc.file}`,
     label: `${typeInfos.label} - ${format(
-      doc.declaration.declarationMonth.month,
-      'MM-YYYY',
+      new Date(doc.declaration.declarationMonth.month),
+      'MM-yyyy',
     )}`,
     dbDocument: doc,
     confirmationData: typeInfos.confirmationData,
@@ -129,8 +129,8 @@ const formatEmployerDoc = (doc) => ({
     `${
       doc.type === EmployerDocument.types.employerCertificate ? 'AE' : 'BS'
     } - ${doc.employer.employerName} - ${format(
-      doc.employer.declaration.declarationMonth.month,
-      'MM-YYYY',
+      new Date(doc.employer.declaration.declarationMonth.month),
+      'MM-yyyy',
     )}`,
   ),
   dbDocument: doc,

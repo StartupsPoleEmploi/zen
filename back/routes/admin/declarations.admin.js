@@ -33,7 +33,7 @@ router.get('/declarations', (req, res, next) => {
   }
 
   Declaration.query()
-    .eager('user')
+    .withGraphFetched('user')
     .where(conditions)
     .then((declarations) => res.json(declarations))
     .catch(next);
@@ -51,7 +51,7 @@ router.get('/declaration/users/csv', async (req, res, next) => {
 
   // Query
   const query = Declaration.query()
-    .eager('user')
+    .withGraphFetched('user')
     .where({ monthId });
 
   if (condition === 'hasFinishedDeclaringEmployers') {
@@ -71,7 +71,7 @@ router.get('/declaration/users/csv', async (req, res, next) => {
       'Content-disposition',
       `attachment; filename=${filename}-${format(
         new Date(),
-        'YYYY-MM-DD',
+        'yyyy-MM-dd',
       )}.csv`,
     );
     res.set('Content-type', 'text/csv');
@@ -83,7 +83,7 @@ router.get('/declaration/users/csv', async (req, res, next) => {
 
 router.get('/declarations/:id', (req, res, next) => {
   Declaration.query()
-    .eager('[user, employers.documents, review, infos, declarationMonth]')
+    .withGraphFetched('[user, employers.documents, review, infos, declarationMonth]')
     .findById(req.params.id)
     .then((declaration) => {
       if (!declaration) return res.send(404, 'Declaration not found');
@@ -94,14 +94,14 @@ router.get('/declarations/:id', (req, res, next) => {
 
 router.get('/declarations/:declarationId/files', (req, res) => {
   Declaration.query()
-    .eager('[infos, employers.documents, user, declarationMonth]')
+    .withGraphFetched('[infos, employers.documents, user, declarationMonth]')
     .findById(req.params.declarationId)
     .then((declaration) => {
       if (!declaration) return res.status(404).json('No such declaration');
 
       const formattedMonth = format(
-        declaration.declarationMonth.month,
-        'MM-YYYY',
+        new Date(declaration.declarationMonth.month),
+        'MM-yyyy',
       );
 
       const files = declaration.infos
@@ -151,9 +151,11 @@ router.post('/declarations/review', (req, res, next) => {
     return res.status(400).json('Incomplete request');
   }
 
+  const declarationId = +req.body.declarationId;
+
   Declaration.query()
-    .eager('review')
-    .findById(req.body.declarationId)
+    .withGraphFetched('review')
+    .findById(declarationId)
     .then((declaration) => {
       const declarationNoteObj = {};
 
@@ -173,7 +175,7 @@ router.post('/declarations/review', (req, res, next) => {
 
       return DeclarationReview.query()
         .insert({
-          declarationId: req.body.declarationId,
+          declarationId,
           ...declarationNoteObj,
         })
         .then(() => res.json('ok'));

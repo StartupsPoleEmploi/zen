@@ -13,7 +13,7 @@ class EmployerDocument extends BaseModel {
 
       properties: {
         id: { type: 'integer' },
-        type: { type: ['string'] },
+        type: { type: ['string'] }, // "salarySheet", "employerCertificate"
         employerId: { type: 'integer' },
         file: { type: ['string', 'null'] },
         originalFileName: { type: ['string', 'null'] },

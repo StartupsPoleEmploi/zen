@@ -1,6 +1,6 @@
 {
   "name": "zen",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "",
   "scripts": {
     "lint": "bash script/lint-all.sh",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/StartupsPoleEmploi/actualisation#readme",
   "devDependencies": {
-    "husky": "^3.0.2"
+    "husky": "^4.2.5"
   },
   "husky": {
     "hooks": {

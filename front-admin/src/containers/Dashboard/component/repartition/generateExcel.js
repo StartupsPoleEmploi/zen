@@ -70,7 +70,6 @@ function $generateSheetRegion({ usersGlobalRepartition, byRegionTotal, workbook 
   });
 }
 
-
 export default function generateExecFromJson({
   usersGlobalRepartition,
   byAgencyTotal,

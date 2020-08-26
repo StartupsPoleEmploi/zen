@@ -11,7 +11,7 @@ const getActiveMonth = () =>
 
 const getDeclarationsForMonth = (monthId) =>
   Declaration.query()
-    .eager('[user, employers, review, infos]')
+    .withGraphFetched('[user, employers, review, infos]')
     .where({ monthId });
 
 const postDeclarationStatusToSlack = () =>

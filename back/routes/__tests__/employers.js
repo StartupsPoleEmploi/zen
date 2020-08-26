@@ -42,6 +42,7 @@ const employer1 = {
   employerName: 'Paul',
   workHours: 20,
   salary: 200,
+  hasEndedThisMonth: false,
 };
 
 const employer2 = { ...employer1, employerName: 'Jacques' };

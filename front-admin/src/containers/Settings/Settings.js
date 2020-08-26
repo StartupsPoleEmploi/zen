@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import superagent from 'superagent';
 import { Switch, Form, Button } from 'antd';
 
-
 import { useUseradmin } from '../../common/contexts/useradminCtx';
 import ZnContent from '../../components/ZnContent';
 import ZnHeader from '../../components/ZnHeader';
@@ -85,19 +84,22 @@ export default function Settings() {
         )}
       </ZnContent>
 
-      <hr />
-
-      <ZnContent>
-        <b>
-        Ce bouton permet, après confirmation, de supprimer toutes les
-        actualisations de ce mois-ci. Ne pas manipuler sans raison !
-        </b>
-        <ZnContent>
-          <Button onClick={removeDeclarations} danger>
-          Supprimer les actualisations du mois
-          </Button>
-        </ZnContent>
-      </ZnContent>
+      {process.env.REACT_APP_ZEN_ENV !== 'production' && (
+        <>
+          <hr />
+          <ZnContent>
+            <b>
+            Ce bouton permet, après confirmation, de supprimer toutes les
+            actualisations de ce mois-ci. Ne pas manipuler sans raison !
+            </b>
+            <ZnContent>
+              <Button onClick={removeDeclarations} danger>
+              Supprimer les actualisations du mois
+              </Button>
+            </ZnContent>
+          </ZnContent>
+        </>
+      ) }
     </div>
   );
 }

@@ -49,7 +49,7 @@ function Global() {
           <strong>
             {values.globalUserRegistered}
             {' '}
-utilisateurs
+            utilisateurs
           </strong>
           {' '}
           enregistrés (au moins une connexion)
@@ -62,10 +62,10 @@ utilisateurs
           <strong>
             {values.globalDeclarationsDone}
             {' '}
-actualisations
+            actualisations
           </strong>
           {' '}
-faites
+          faites
           sur Zen
         </p>
       </section>

@@ -23,7 +23,7 @@ function isPro(req) {
   const ALLOWED_IP = process.env.PE_IP;
   if (!ALLOWED_IP) return false;
 
-  let ip = req.ip || (req.connection && req.connection.remoteAddress);
+  let ip = `${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`.split(',')[0];
   // Clean IP : remove ::ffff at beginning
   const ipV4Startindex = ip.lastIndexOf(':');
   if (ipV4Startindex !== -1) ip = ip.substr(ipV4Startindex + 1);

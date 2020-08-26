@@ -26,8 +26,8 @@ class DeclarationInfo extends Model {
     This resolves it by relying on the node server to correctly format dates to YYYY-MM-DD.
   */
   convertUTCDatesToPGDates() {
-    if (this.startDate) this.startDate = format(this.startDate, 'YYYY-MM-DD');
-    if (this.endDate) this.endDate = format(this.endDate, 'YYYY-MM-DD');
+    if (this.startDate) this.startDate = format(new Date(this.startDate), 'yyyy-MM-dd');
+    if (this.endDate) this.endDate = format(new Date(this.endDate), 'yyyy-MM-dd');
   }
 
   $beforeUpdate() {
@@ -59,7 +59,7 @@ class DeclarationInfo extends Model {
       });
       if (
         datesToValidate.length === 2
-        && isAfter(datesToValidate[0], datesToValidate[1])
+        && isAfter(new Date(datesToValidate[0]), new Date(datesToValidate[1]))
       ) {
         throwValidationError(type);
       }
@@ -95,7 +95,7 @@ class DeclarationInfo extends Model {
         endDate: { type: ['string', 'object', 'null'] },
         file: { type: ['string', 'null'] },
         originalFileName: { type: ['string', 'null'] },
-        isTransmitted: { type: 'boolean' },
+        isTransmitted: { type: 'boolean' }, // si isTransmitted = true et que file=NULL als la personne a déjà transmit le doc directement via PE
         isCleanedUp: { default: false, type: 'boolean' },
       },
     };

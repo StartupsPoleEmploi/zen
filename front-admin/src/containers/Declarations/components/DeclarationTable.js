@@ -8,7 +8,6 @@ import { Button, Icon } from 'antd';
 import ZnTable from '../../../components/ZnTable';
 import { URLS } from '../../../common/routes';
 
-
 type Props = {
   declarations: Array<Object>,
   history: Object,
@@ -74,7 +73,6 @@ class DeclarationTable extends React.PureComponent<Props> {
         declaration.review && declaration.review.isVerified ? 'oui' : 'non',
       notes: (declaration.review && declaration.review.notes) || '',
     }));
-
 
     return (
       <ZnTable

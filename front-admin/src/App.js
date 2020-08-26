@@ -12,7 +12,6 @@ import { UsersProvider } from './common/contexts/usersCtx';
 import { useUseradmin } from './common/contexts/useradminCtx';
 import Login from './containers/Login';
 
-
 export default function App() {
   const { useradmin, logout } = useUseradmin();
   if (!useradmin) return <Login />;

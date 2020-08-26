@@ -26,7 +26,6 @@ export default function User({ match }: Props) {
       .catch(logoutIfNeed);
   }, [logoutIfNeed, userId]);
 
-
   return (
     <div>
       <ZnHeader title={`Utilisateurs ${userId}`} />

@@ -94,7 +94,7 @@ async function $updateUserIntoMailjet(userInDb, userFromFile) {
   // if User email has changed. Changing email in mailjet
   const hasEmailChange = !!userFromFile.email
     && !!userInDb.email
-    && userFromFile.email !== userInDb.email;
+    && userFromFile.email.toLowerCase() !== userInDb.email.toLowerCase();
   if (isUserRegistered && hasEmailChange) {
     winston.info(
       `E-mail changed for user ${userInDb.id}: old="${userInDb.email}"; new="${userFromFile.email}"`,

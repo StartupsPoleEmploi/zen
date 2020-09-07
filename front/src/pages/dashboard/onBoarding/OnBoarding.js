@@ -236,7 +236,7 @@ function OnBoarding({
             img={step4}
             list={[
               <>
-                Pour éviter les risques de trop-perçu, Zen vous rapelle les
+                Pour éviter les risques de trop-perçu, Zen vous rappelle les
                 justificatifs que vous devez fournir pour que
                 {' '}
                 <strong>votre situation Zen Pôle emploi soit à jour</strong>

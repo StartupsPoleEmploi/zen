@@ -23,6 +23,10 @@ export const fetchUser = () => (dispatch) => {
         id: user.id,
       });
 
+      if (window.heap) {
+        window.heap.addUserProperties(user);
+      }
+
       dispatch({ type: FETCH_USER_SUCCESS, payload: user });
     })
     .catch(catchMaintenance)

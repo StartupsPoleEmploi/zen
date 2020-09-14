@@ -91,6 +91,16 @@ class App extends Component {
       .then(() => {
         this.setState({ hasFinishedInitialLoading: true });
       });
+
+    // import tag commander
+    const script = document.createElement('script');
+    if (process.env.NODE_ENV === 'development') {
+      script.src = 'http://cdn.tagcommander.com/5220/uat/tc_zen_31.js';
+    } else {
+      script.src = 'http://cdn.tagcommander.com/5220/tc_zen_31.js';
+    }
+    script.async = true;
+    document.body.appendChild(script);
   }
 
   componentDidUpdate(prevProps) {

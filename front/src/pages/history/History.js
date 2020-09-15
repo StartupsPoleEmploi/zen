@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 
@@ -19,7 +20,6 @@ import {
 } from '../../constants';
 import { formattedDeclarationMonth } from '../../lib/date';
 import TooltipOnFocus from '../../components/Generic/TooltipOnFocus';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 const StyledHistory = styled.div`
   max-width: 108rem;
@@ -112,9 +112,10 @@ function History({
   if (declarations.length === 0) {
     return (
       <StyledHistory>
-        <StyledH1>L'historique de votre actualisation sur Zen
+        <StyledH1>
+          L'historique de votre actualisation sur Zen
           <TooltipOnFocus content="Les justificatifs affichés dans cette rubrique sont visibles sur une durée maximale de 6 mois.">
-                  <InfoImg />
+            <InfoImg />
           </TooltipOnFocus>
         </StyledH1>
         <Typography>Pas d'historique pour le moment</Typography>
@@ -157,9 +158,10 @@ function History({
 
   return (
     <StyledHistory>
-      <StyledH1>L'historique de votre actualisation sur Zen
+      <StyledH1>
+        L'historique de votre actualisation sur Zen
         <TooltipOnFocus content="Les justificatifs affichés dans cette rubrique sont visibles sur une durée maximale de 6 mois.">
-           <InfoImg />
+          <InfoImg />
         </TooltipOnFocus>
       </StyledH1>
 

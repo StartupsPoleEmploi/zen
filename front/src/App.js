@@ -94,7 +94,7 @@ class App extends Component {
 
     // import tag commander
     const script = document.createElement('script');
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       script.src = 'http://cdn.tagcommander.com/5220/uat/tc_zen_31.js';
     } else {
       script.src = 'http://cdn.tagcommander.com/5220/tc_zen_31.js';

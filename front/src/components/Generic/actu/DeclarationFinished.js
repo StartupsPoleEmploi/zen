@@ -107,7 +107,7 @@ const DeclarationFinished = ({ declaration, width }) => {
       <ActuHr />
       <div style={{ margin: '2rem auto 2rem auto' }}>
         <Grid container>
-          <Grid item xs={5} sm={4} md={4} lg={3} justify="center" alignItems="center">
+          <Grid item xs={4} sm={4} md={4} lg={3} justify="center" alignItems="center">
             <Block>
               <div>
                 <Typography>Employeur(s)</Typography>
@@ -118,7 +118,7 @@ const DeclarationFinished = ({ declaration, width }) => {
             </Block>
           </Grid>
           <Grid item><Hr width={width} /></Grid>
-          <Grid item xs={5} sm={4}>
+          <Grid item xs={6} sm={4}>
             <Block>
               <div>
                 <Typography>Salaire brut déclaré</Typography>

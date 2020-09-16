@@ -18,3 +18,5 @@ front-admin-old/
 
 wordpress
 .env.development
+
+.ignore/

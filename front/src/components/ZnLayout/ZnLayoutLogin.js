@@ -24,6 +24,7 @@ import {
   secondaryBlue, errorOrange, mobileBreakpoint, primaryBlue,
 } from '../../constants';
 import dashboardBg from '../../images/dashboard-bg.svg';
+import SuccessSnackBar from '../Generic/SuccessSnackBar';
 
 const routesWithDisplayedNav = [
   '/actu',
@@ -164,6 +165,7 @@ export const Layout = ({
   history: { push },
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [copySnack, setCopySnack] = React.useState(0);
   const [anchorElInvitation, setAnchorElInvitation] = React.useState(null);
   const isNavVisible = routesWithDisplayedNav.includes(pathname);
 
@@ -173,6 +175,11 @@ export const Layout = ({
   const handleClose = () => setAnchorEl(null);
   const handleClickInvitation = (event) => setAnchorElInvitation(event.currentTarget);
   const handleCloseInvitation = () => setAnchorElInvitation(null);
+  const isCopy = () => {
+    copy('https://zen.pole-emploi.fr/');
+    handleCloseInvitation();
+    setCopySnack(copySnack + 1);
+  };
 
   const NavComponent = () => (
     <ZnNavLogin
@@ -231,7 +238,7 @@ export const Layout = ({
                     </Typography>
                   </a>
                 </PopoverLine>
-                <PopoverLine onClick={() => copy('https://zen.pole-emploi.fr/')}>
+                <PopoverLine onClick={isCopy}>
                   <LinkOutlinedIcon style={{ color: primaryBlue }} />
                   <Typography>
                     Copier le lien
@@ -295,6 +302,12 @@ export const Layout = ({
           </Main>
         </div>
       </div>
+      {copySnack !== 0 && (
+      <SuccessSnackBar
+        message="Copié"
+        onHide={() => setCopySnack(0)}
+      />
+      )}
     </StyledLayout>
   );
 };

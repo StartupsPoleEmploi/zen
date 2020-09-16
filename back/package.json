@@ -54,7 +54,7 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "pm2": "^4.4.0",
-    "puppeteer": "^4.0.0",
+    "puppeteer": "^4.0.1",
     "raven": "^2.6.4",
     "sharp": "^0.25.4",
     "simple-oauth2": "^4.1.0",

@@ -13,6 +13,7 @@ import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Check from '@material-ui/icons/Check';
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
+import { Link } from 'react-router-dom';
 import thankImg from '../../images/thank.svg';
 
 import StatusFilesError from '../../components/Actu/StatusFilesError';
@@ -685,7 +686,7 @@ export class Files extends Component {
             employer.documents.length === 1) {
             this.props.showSnackbarUpload();
           } else {
-            this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' });
+            this.setState({ snackSuccess: <> Justificatif visible dans votre <Link to="/history">historique</Link> });
           }
         }),
 
@@ -698,7 +699,12 @@ export class Files extends Component {
         onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideInfoFilePreview(props); },
         submitFile: uploadDeclarationInfoFile,
         removePage: removeDeclarationInfoFilePage,
-        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
+        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({
+          snackSuccess: <>
+            Justificatif visible dans votre
+            <Link to="/history">historique</Link>
+          </>,
+        })),
         url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
         ...previewedInfoDoc,
       };
@@ -794,7 +800,7 @@ Files.propTypes = {
   isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
   snackError: PropTypes.string,
-  snackSuccess: PropTypes.string,
+  snackSuccess: PropTypes.object,
   showSurvey: PropTypes.bool,
 };
 

@@ -31,7 +31,7 @@ const StyledOnBoarding = styled.div`
 
 const Thanks = styled(Typography)`
   && {
-    font-size: 4rem;
+    font-size: 3rem;
     display: block;
     font-weight: bold;
     text-align: center;

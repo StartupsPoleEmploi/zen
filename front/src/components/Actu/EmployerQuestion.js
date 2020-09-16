@@ -13,7 +13,7 @@ import EuroInput from '../Generic/EuroInput';
 import HourInput from '../Generic/HourInput';
 import YesNoRadioGroup from '../Generic/YesNoRadioGroup';
 import TooltipOnFocus from '../Generic/TooltipOnFocus';
-import warn from '../../images/warn.png';
+import warn from '../../images/warn.svg';
 
 const StyledContainer = styled.div`
   display: flex;

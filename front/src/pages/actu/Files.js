@@ -31,6 +31,10 @@ import {
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
   validateEmployerDoc as validateEmployerDocAction,
 } from '../../redux/actions/declarations';
+import {
+  showSnackbarUpload as showSnackbarUploadAction,
+  hideSnackbarUpload as hideSnackbarUploadAction,
+} from '../../redux/actions/thanks';
 import DocumentUpload from '../../components/Actu/DocumentUpload';
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog';
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
@@ -48,7 +52,7 @@ import ErrorSnackBar from '../../components/Generic/ErrorSnackBar';
 import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
 import MainActionButton from '../../components/Generic/MainActionButton';
 
-const { getEmployerLoadingKey, getEmployerErrorKey } = utils;
+const { findEmployer, getEmployerLoadingKey, getEmployerErrorKey } = utils;
 
 const StyledFiles = styled.div`
   display: flex;
@@ -574,6 +578,8 @@ export class Files extends Component {
       validateEmployerDoc,
       isFilesServiceUp,
       validateDeclarationInfoDoc,
+      hideSnackbarUpload,
+      showSnackbarUploadSuccess,
       user,
     } = this.props;
 
@@ -664,10 +670,25 @@ export class Files extends Component {
 
     if (showEmployerPreview) {
       previewProps = {
-        onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideEmployerFilePreview(props); },
+        onCancel: (props) => {
+          this.setState({ snackError: 'Un justificatif n\'a pas été validé' });
+          return hideEmployerFilePreview(props);
+        },
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
-        validateDoc: (props) => validateEmployerDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
+        validateDoc: (props) => validateEmployerDoc(props).then(() => {
+          const employer = findEmployer({
+            declarations: allDeclarations,
+            employerId: props.employerId,
+          });
+          if (props.employerDocType === employerCertificateType &&
+            employer.documents.length === 1) {
+            this.props.showSnackbarUpload();
+          } else {
+            this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' });
+          }
+        }),
+
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,
@@ -718,6 +739,17 @@ export class Files extends Component {
           <DocumentDialog isOpened {...previewProps} />
         )}
 
+        {showSnackbarUploadSuccess && (
+          <SuccessSnackBar
+            message={"Nous n'avons pas besoin de votre bulletin de salaire pour cet employeur car vous venez de nous transmettre l'attestation employeur."}
+            onHide={() => {
+              hideSnackbarUpload();
+              this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' });
+            }}
+            closeIcon
+            duraction={null}
+          />
+        )}
         {snackSuccess && (
           <SuccessSnackBar
             message={snackSuccess}
@@ -742,6 +774,9 @@ Files.propTypes = {
   declarations: PropTypes.arrayOf(PropTypes.object),
   collapsedMonth: PropTypes.arrayOf(PropTypes.number),
   fetchDeclarations: PropTypes.func.isRequired,
+  showSnackbarUpload: PropTypes.func.isRequired,
+  hideSnackbarUpload: PropTypes.func.isRequired,
+  showSnackbarUploadSuccess: PropTypes.func.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
   uploadEmployerFile: PropTypes.func.isRequired,
@@ -766,6 +801,7 @@ Files.propTypes = {
 export default connect(
   (state) => ({
     declarations: state.declarationsReducer.declarations,
+    showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
     totalMissingFiles: state.declarationsReducer.missingFiles,
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
@@ -788,5 +824,7 @@ export default connect(
     hideInfoFilePreview: hideInfoFilePreviewAction,
     validateEmployerDoc: validateEmployerDocAction,
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
+    showSnackbarUpload: showSnackbarUploadAction,
+    hideSnackbarUpload: hideSnackbarUploadAction,
   },
 )(withWidth()(withStyles(styles)(Files)));

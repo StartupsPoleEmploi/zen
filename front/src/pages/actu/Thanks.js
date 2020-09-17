@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -7,6 +8,10 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import MainActionButton from '../../components/Generic/MainActionButton';
 import sendDoc from '../../images/sendDoc.svg';
+import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
+import {
+  hideSnackbarUpload as hideSnackbarUploadAction,
+} from '../../redux/actions/thanks';
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file';
 
@@ -43,14 +48,16 @@ const Complementary = styled.div`
   border-top: 1px solid black;
 `;
 
-export default class Thanks extends Component {
+export class Thanks extends Component {
   constructor(props) {
     super(props);
 
     this.printIframe = React.createRef();
   }
 
-  state = { showPrintIframe: false }
+  state = {
+    showPrintIframe: false,
+  }
 
   printDeclaration = (e) => {
     e.preventDefault();
@@ -78,7 +85,7 @@ export default class Thanks extends Component {
 
   render() {
     const { showPrintIframe } = this.state;
-
+    const { hideSnackbarUpload, showSnackbarUploadSuccess } = this.props;
     return (
       <StyledThanks>
         <StyledImg src={sendDoc} alt="" />
@@ -181,6 +188,14 @@ export default class Thanks extends Component {
             </Typography>
           </>
         )}
+        {showSnackbarUploadSuccess && (
+          <SuccessSnackBar
+            message={"Nous n'avons pas besoin de votre bulletin de salaire pour cet employeur car vous venez de nous transmettre l'attestation employeur"}
+            onHide={() => hideSnackbarUpload()}
+            closeIcon
+            duraction={null}
+          />
+        )}
       </StyledThanks>
     );
   }
@@ -188,4 +203,15 @@ export default class Thanks extends Component {
 
 Thanks.propTypes = {
   location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
+  showSnackbarUploadSuccess: PropTypes.bool.isRequired,
+  hideSnackbarUpload: PropTypes.func.isRequired,
 };
+
+export default connect(
+  (state) => ({
+    showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
+  }),
+  {
+    hideSnackbarUpload: hideSnackbarUploadAction,
+  },
+)(Thanks);

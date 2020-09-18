@@ -8,12 +8,17 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
 import Check from '@material-ui/icons/Check';
 
+import { Redirect } from 'react-router';
 import MainActionButton from '../../components/Generic/MainActionButton';
 import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
 import {
   hideSnackbarUpload as hideSnackbarUploadAction,
 } from '../../redux/actions/thanks';
 import thankImg from '../../images/thank.svg';
+
+import {
+  fetchDeclarations as fetchDeclarationAction,
+} from '../../redux/actions/declarations';
 
 const DECLARATION_FILE_URL = '/api/declarations/summary-file';
 
@@ -97,6 +102,8 @@ export class Thanks extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchDeclarations();
+
     const lastResponse = localStorage.getItem(`survey-response-${this.props.user.id}`);
     const now = new Date();
 
@@ -137,6 +144,14 @@ export class Thanks extends Component {
   render() {
     const { showPrintIframe } = this.state;
     const { hideSnackbarUpload, showSnackbarUploadSuccess } = this.props;
+
+    if (this.props.declarations.every((d) => d.isFinished) === false) {
+      if (this.props.totalMissingFiles !== 0) {
+        return <Redirect to="/files" />;
+      }
+      return <Redirect to="/dashboard" />;
+    }
+
     return (
       <StyledThanks>
         {!this.props.location.search.includes('later') ? (
@@ -282,14 +297,20 @@ Thanks.propTypes = {
   showSnackbarUploadSuccess: PropTypes.bool.isRequired,
   hideSnackbarUpload: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  fetchDeclarations: PropTypes.func.isRequired,
+  declarations: PropTypes.arrayOf(PropTypes.object),
+  totalMissingFiles: PropTypes.number,
 };
 
 export default connect(
   (state) => ({
+    declarations: state.declarationsReducer.declarations,
+    totalMissingFiles: state.declarationsReducer.missingFiles,
     showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
     user: state.userReducer.user,
   }),
   {
+    fetchDeclarations: fetchDeclarationAction,
     hideSnackbarUpload: hideSnackbarUploadAction,
   },
 )(Thanks);

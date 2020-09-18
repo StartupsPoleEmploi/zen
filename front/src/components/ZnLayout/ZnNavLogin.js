@@ -135,7 +135,7 @@ const StyledTab = styled(Tab)`
     text-transform: none;
     overflow: visible;
     padding-top: 2rem;
-    opacity: ${props => props.disabled ? 0.5 : 1};
+    opacity: ${(props) => (props.disabled ? 0.5 : 1)};
     color: black;
     border-top: solid 1px #e2e2e2;
 

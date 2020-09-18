@@ -21,9 +21,11 @@ async function sendDeclarationReminderCampaign2Days() {
         TemplateID: 1107170,
         TemplateLanguage: true,
         Subject: 'Plus que 2 jours pour vous actualiser !',
+        Title: 'Plus que 2 jours pour vous actualiser !',
         Variables: {
           prenom: user.firstName,
         },
+        CustomCampaign: 'Plus que 2 jours pour vous actualiser !',
       })),
     }).catch((err) => {
       winston.error(`There was an error while sending email "RAPPEL_ACTU_2J" : ${err}`);

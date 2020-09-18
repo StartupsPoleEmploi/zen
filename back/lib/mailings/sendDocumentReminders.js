@@ -169,6 +169,8 @@ const sendAllDocumentsReminders = () =>
         });
 
         await sendMail({
+          Title: 'Rappel docs global',
+          CustomCampaign: 'Rappel docs global',
           Messages: messages,
         });
 
@@ -261,6 +263,8 @@ const sendCurrentDeclarationDocsReminders = () => {
             });
 
             await sendMail({
+              Title: 'Rappel docs actu',
+              CustomCampaign: 'Rappel docs actu',
               Messages: messages,
             });
 

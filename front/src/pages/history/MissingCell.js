@@ -202,8 +202,13 @@ const MissingCell = ({ width, declaration }) => {
 
     return (
       <TooltipOnFocus content={tooltipContent}>
-        <BoxLine style={{ paddingLeft: width === 'xs' ? '3.2rem ' : null }}>
-          <Box flex={1}>
+        <BoxLine
+          style={{ paddingLeft: width === 'xs' ? '3.2rem ' : null }}
+          onClick={totalFilesSent === 1 ?
+            () => onShowFile(allDocSentWithZen[0].file) :
+            () => setShowDialog(true)}
+        >
+          <Box flex={1} style={{ textAlign: 'left' }}>
             {width !== 'xs' && missingFilesNumber === 0 && <StyledDoneIcon />}
             {totalFilesSent === 1 && `${totalFilesSent} justificatif envoyé`}
             {totalFilesSent > 1 && `${totalFilesSent} justificatifs envoyés`}
@@ -212,9 +217,6 @@ const MissingCell = ({ width, declaration }) => {
            ((totalFilesSent === 1 && allDocSentWithZen[0].file) ||
            totalFilesSent > 1) && (
            <VisualizeBt
-             onClick={totalFilesSent === 1 ?
-               () => onShowFile(allDocSentWithZen[0].file) :
-               () => setShowDialog(true)}
              aria-hidden="true"
            >
              <VisibilityIcon style={{ color: primaryBlue, marginRight: '1rem' }} />
@@ -289,7 +291,7 @@ const MissingCell = ({ width, declaration }) => {
               </Link>
             </Box>
             <PriorityHighIcon style={{ color: errorRed, marginRight: '1rem' }} />
-            <Typography>Ajouter</Typography>
+            <Typography style={{ marginRight: '8px' }}>Ajouter</Typography>
           </BoxLine>
         )}
       </BoxMissingDocs>

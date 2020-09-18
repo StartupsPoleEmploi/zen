@@ -59,6 +59,7 @@ const ActionLink = styled.a`
   }
   &:hover {
     text-decoration: underline;
+    color: ${primaryBlue};
   }
 `;
 

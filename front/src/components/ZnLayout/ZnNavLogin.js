@@ -67,7 +67,7 @@ const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
 const Nav = styled.nav.attrs({ role: 'navigation' })`
   flex-shrink: 0
   background: #fafafa;
-  width: 25rem;
+  width: 28rem;
   border-right: 1px #ddd solid;
   min-height: 100vh;
 `;
@@ -135,7 +135,7 @@ const StyledTab = styled(Tab)`
     text-transform: none;
     overflow: visible;
     padding-top: 2rem;
-    opacity: 1;
+    opacity: ${(props) => (props.disabled ? 0.5 : 1)};
     color: black;
     border-top: solid 1px #e2e2e2;
 
@@ -162,7 +162,7 @@ const HomeTab = styled(StyledTab)`
 `;
 
 const FileIcon = styled(DescriptionOutlined)`
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-right: 1.4rem;
   margin-left: 0.2rem;
   color: #1e2c59;
@@ -173,7 +173,7 @@ const FileIcon = styled(DescriptionOutlined)`
   }
 `;
 const HomeIcon = styled(HomeOutlined)`
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-right: 1rem;
   color: #1e2c59;
   opacity: 0.7;
@@ -183,7 +183,7 @@ const HomeIcon = styled(HomeOutlined)`
 `;
 
 const ListIcon = styled(DnsOutlined)`
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-right: 1.1rem;
   color: #1e2c59;
   opacity: 0.7;

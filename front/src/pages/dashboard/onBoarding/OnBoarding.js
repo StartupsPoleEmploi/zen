@@ -31,7 +31,7 @@ const StyledOnBoarding = styled.div`
 
 const Thanks = styled(Typography)`
   && {
-    font-size: 4rem;
+    font-size: 3rem;
     display: block;
     font-weight: bold;
     text-align: center;
@@ -236,7 +236,7 @@ function OnBoarding({
             img={step4}
             list={[
               <>
-                Pour éviter les risques de trop-perçu, Zen vous rappelle les
+                Pour éviter les risques de trop-perçu, Zen vous rappel les
                 justificatifs que vous devez fournir pour que
                 {' '}
                 <strong>votre situation Zen Pôle emploi soit à jour</strong>

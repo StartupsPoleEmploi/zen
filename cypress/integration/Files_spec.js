@@ -36,7 +36,7 @@ describe('Files page - Declaration started but employers not finished', () => {
   });
 
   it('should display declaration on going', () => {
-    cy.get('h1').should('have.text', 'Bonjour');
+    cy.get('h1').should('contain', 'Bonjour');
   });
 });
 
@@ -61,7 +61,7 @@ describe('Files page', () => {
     clickSendToPoleEmploiModalButton();
 
     cy.url().should('contain', '/thanks');
-    cy.get('h1').should(
+    cy.get('.error-title').should(
       'contain',
       'Félicitations, votre dossier est à jour.',
     );
@@ -73,7 +73,7 @@ describe('Files page', () => {
     skipDeclarationInfoFile({ index: 0 });
 
     cy.url().should('contain', '/thanks');
-    cy.get('h1').should(
+    cy.get('.error-title').should(
       'contain',
       'Félicitations, votre dossier est à jour.',
     );

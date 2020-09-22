@@ -659,8 +659,7 @@ export class Files extends Component {
           onConfirm={() => {
             this.state.skipFileCallback();
             this.props.showSnackbarAlreadyKnown();
-          }
-          }
+          }}
         />
         {(showEmployerPreview || showInfoDocPreview) && (
           <DocumentDialog isOpened {...previewProps} />
@@ -687,7 +686,7 @@ export class Files extends Component {
         )}
         {showSnackbarAlreadyKnownSuccess && (
           <SuccessSnackBar
-            message={"Information prise en compte."}
+            message="Information prise en compte."
             onHide={() => hideSnackbarAlreadyKnown()}
             closeIcon
             duraction={null}
@@ -713,7 +712,8 @@ Files.propTypes = {
   hideSnackbarUpload: PropTypes.func.isRequired,
   showSnackbarAlreadyKnown: PropTypes.func.isRequired,
   hideSnackbarAlreadyKnown: PropTypes.func.isRequired,
-  showSnackbarUploadSuccess: PropTypes.func.isRequired,
+  showSnackbarUploadSuccess: PropTypes.bool.isRequired,
+  showSnackbarAlreadyKnownSuccess: PropTypes.bool.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
   uploadEmployerFile: PropTypes.func.isRequired,

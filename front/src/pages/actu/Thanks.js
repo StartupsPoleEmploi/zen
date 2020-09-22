@@ -144,7 +144,10 @@ export class Thanks extends Component {
 
   render() {
     const { showPrintIframe } = this.state;
-    const { hideSnackbarUpload, hideSnackbarAlreadyKnown, showSnackbarUploadSuccess, showSnackbarAlreadyKnownSuccess } = this.props;
+    const {
+      hideSnackbarUpload, hideSnackbarAlreadyKnown,
+      showSnackbarUploadSuccess, showSnackbarAlreadyKnownSuccess,
+    } = this.props;
 
     if (this.props.declarations.every((d) => d.isFinished) === false) {
       if (this.props.totalMissingFiles !== 0) {
@@ -290,7 +293,7 @@ export class Thanks extends Component {
         )}
         {showSnackbarAlreadyKnownSuccess && (
           <SuccessSnackBar
-            message={"Information prise en compte."}
+            message="Information prise en compte."
             onHide={() => hideSnackbarAlreadyKnown()}
             closeIcon
             duraction={null}
@@ -305,6 +308,7 @@ Thanks.propTypes = {
   location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
   showSnackbarUploadSuccess: PropTypes.bool.isRequired,
   showSnackbarAlreadyKnownSuccess: PropTypes.bool.isRequired,
+  hideSnackbarAlreadyKnown: PropTypes.func.isRequired,
   hideSnackbarUpload: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   fetchDeclarations: PropTypes.func.isRequired,

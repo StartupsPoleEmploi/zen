@@ -23,6 +23,6 @@ fi
 # add to cron
 # crontab -e
 # */5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh zen_node_1 uploads >> /home/docker/zen/logs/control-mounted-volum.log
-# */5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh zen_node_1 datalake >> /home/docker/zen/logs/control-mounted-volum.log
+# 2-59/5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh zen_node_1 datalake >> /home/docker/zen/logs/control-mounted-volum.log
 # */5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh zen_cron_1 datalake >> /home/docker/zen/logs/control-mounted-volum.log
 

@@ -248,9 +248,11 @@ export const Layout = ({
             </HeaderElem>
             <HeaderElem first>
               <AccountCircleOutlinedIcon />
+              {!useMobileVersion && (
               <Typography>
                 {user.firstName}
               </Typography>
+              )}
             </HeaderElem>
             <HeaderElem>
               <ButtonMail aria-describedby={idMail} onClick={handleClick}>

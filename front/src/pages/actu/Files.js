@@ -32,6 +32,8 @@ import {
 import {
   showSnackbarUpload as showSnackbarUploadAction,
   hideSnackbarUpload as hideSnackbarUploadAction,
+  showSnackbarAlreadyKnown as showSnackbarAlreadyKnownAction,
+  hideSnackbarAlreadyKnown as hideSnackbarAlreadyKnownAction,
 } from '../../redux/actions/thanks';
 import DocumentUpload from '../../components/Actu/DocumentUpload';
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog';
@@ -524,7 +526,9 @@ export class Files extends Component {
       isFilesServiceUp,
       validateDeclarationInfoDoc,
       hideSnackbarUpload,
+      hideSnackbarAlreadyKnown,
       showSnackbarUploadSuccess,
+      showSnackbarAlreadyKnownSuccess,
       user,
     } = this.props;
 
@@ -652,7 +656,11 @@ export class Files extends Component {
         <FileTransmittedToPE
           isOpened={this.state.showSkipConfirmation}
           onCancel={this.closeSkipModal}
-          onConfirm={this.state.skipFileCallback}
+          onConfirm={() => {
+            this.state.skipFileCallback();
+            this.props.showSnackbarAlreadyKnown();
+          }
+          }
         />
         {(showEmployerPreview || showInfoDocPreview) && (
           <DocumentDialog isOpened {...previewProps} />
@@ -677,6 +685,14 @@ export class Files extends Component {
             duraction={null}
           />
         )}
+        {showSnackbarAlreadyKnownSuccess && (
+          <SuccessSnackBar
+            message={"Information prise en compte."}
+            onHide={() => hideSnackbarAlreadyKnown()}
+            closeIcon
+            duraction={null}
+          />
+        )}
         {error && <ErrorSnackBar message={error} closeIcon duraction={null} />}
       </>
     );
@@ -695,6 +711,8 @@ Files.propTypes = {
   fetchDeclarations: PropTypes.func.isRequired,
   showSnackbarUpload: PropTypes.func.isRequired,
   hideSnackbarUpload: PropTypes.func.isRequired,
+  showSnackbarAlreadyKnown: PropTypes.func.isRequired,
+  hideSnackbarAlreadyKnown: PropTypes.func.isRequired,
   showSnackbarUploadSuccess: PropTypes.func.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
@@ -720,6 +738,7 @@ export default connect(
   (state) => ({
     declarations: state.declarationsReducer.declarations,
     showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
+    showSnackbarAlreadyKnownSuccess: state.thanksReducer.showSnackbarAlreadyKnownSuccess,
     totalMissingFiles: state.declarationsReducer.missingFiles,
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
@@ -744,5 +763,7 @@ export default connect(
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
     showSnackbarUpload: showSnackbarUploadAction,
     hideSnackbarUpload: hideSnackbarUploadAction,
+    showSnackbarAlreadyKnown: showSnackbarAlreadyKnownAction,
+    hideSnackbarAlreadyKnown: hideSnackbarAlreadyKnownAction,
   },
 )(withWidth()(withStyles(styles)(Files)));

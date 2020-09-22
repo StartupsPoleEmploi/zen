@@ -13,11 +13,14 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   SHOW_SNACKBAR_UPLOAD_SUCCESS,
   HIDE_SNACKBAR_UPLOAD_SUCCESS,
+  SHOW_SNACKBAR_ALREADY_KNOWN_SUCCESS,
+  HIDE_SNACKBAR_ALREADY_KNOWN_SUCCESS,
 } from '../actions/actionNames';
 
 export default createReducer(
   {
     showSnackbarUploadSuccess: false,
+    showSnackbarAlreadyKnownSuccess: false,
   },
   {
     [SHOW_SNACKBAR_UPLOAD_SUCCESS]: (state) => {
@@ -25,6 +28,12 @@ export default createReducer(
     },
     [HIDE_SNACKBAR_UPLOAD_SUCCESS]: (state) => {
       state.showSnackbarUploadSuccess = false;
+    },
+    [SHOW_SNACKBAR_ALREADY_KNOWN_SUCCESS]: (state) => {
+      state.showSnackbarAlreadyKnownSuccess = true;
+    },
+    [HIDE_SNACKBAR_ALREADY_KNOWN_SUCCESS]: (state) => {
+      state.showSnackbarAlreadyKnownSuccess = false;
     },
   },
 );

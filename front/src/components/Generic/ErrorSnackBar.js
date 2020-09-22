@@ -20,11 +20,14 @@ const SnackbarWarning = styled(Snackbar)`
     background-color: #F3F3F3; 
     margin-top: 65px;
     box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.1),0px 6px 10px 0px rgba(0,0,0,0.1),0px 1px 18px 0px rgba(0,0,0,0.1);
+    max-width: 600px;
+    text-align: left;
 
     > div {
       display: flex;
       flex-direction: row;
       color: black;
+      align-items: center;
     }
   } 
 `;

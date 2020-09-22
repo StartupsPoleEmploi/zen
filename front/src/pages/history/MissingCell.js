@@ -81,6 +81,7 @@ const Ul = styled.ul`
 const StyledDoneIcon = styled(DoneIcon)`
   && {
     margin-right: 1rem;
+    margin-left: 0;
     vertical-align: bottom;
     color: green;
   }
@@ -277,7 +278,7 @@ const MissingCell = ({ width, declaration }) => {
         {renderAllFilesSend()}
         {missingFilesNumber !== 0 && (
           <BoxLine>
-            <Box flex={1}>
+            <Box flex={1} style={{ textAlign: 'left' }}>
               <Link
                 href="/files"
                 style={{ paddingLeft: width === 'xs' ? '3.2rem' : null, color: errorOrange }}

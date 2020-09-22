@@ -593,6 +593,7 @@ export class Files extends Component {
               snackSuccess: (
                 <>
                   Justificatif visible dans votre
+                  {' '}
                   <Link to="/history">historique</Link>
                 </>
               ),
@@ -612,6 +613,7 @@ export class Files extends Component {
           snackSuccess: (
             <>
               Justificatif visible dans votre
+              {' '}
               <Link to="/history">historique</Link>
             </>
           ),

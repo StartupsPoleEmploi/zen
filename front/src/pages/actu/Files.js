@@ -39,7 +39,8 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog';
 import { muiBreakpoints, secondaryBlue } from '../../constants';
 import { formattedDeclarationMonth } from '../../lib/date';
-import { getDeclarationMissingFilesNb } from '../../lib/file';
+import { getDeclarationMissingFilesNb, getMissingFilesNb } from '../../lib/file';
+
 import {
   selectPreviewedEmployerDoc,
   selectPreviewedInfoDoc,
@@ -510,7 +511,6 @@ export class Files extends Component {
   render() {
     const {
       declarations,
-      totalMissingFiles,
       isLoading,
       previewedEmployerDoc,
       previewedInfoDoc,
@@ -636,6 +636,8 @@ export class Files extends Component {
       });
     }
 
+    const totalMissingFiles = getMissingFilesNb(allDeclarations);
+
     return (
       <>
         <H1Title className="declaration-title">
@@ -689,7 +691,6 @@ Files.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
-  totalMissingFiles: PropTypes.number,
   declarations: PropTypes.arrayOf(PropTypes.object),
   collapsedMonth: PropTypes.arrayOf(PropTypes.number),
   fetchDeclarations: PropTypes.func.isRequired,
@@ -720,7 +721,6 @@ export default connect(
   (state) => ({
     declarations: state.declarationsReducer.declarations,
     showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
-    totalMissingFiles: state.declarationsReducer.missingFiles,
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),

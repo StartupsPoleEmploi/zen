@@ -663,7 +663,15 @@ export class Files extends Component {
             message={"Nous n'avons pas besoin de votre bulletin de salaire pour cet employeur car vous venez de nous transmettre l'attestation employeur."}
             onHide={() => {
               hideSnackbarUpload();
-              this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' });
+              this.setState({
+                snackSuccess: (
+                  <>
+                    Justificatif visible dans votre
+                    {' '}
+                    <Link to="/history">historique</Link>
+                  </>
+                ),
+              });
             }}
             closeIcon
             duraction={null}

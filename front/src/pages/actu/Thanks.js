@@ -13,6 +13,7 @@ import MainActionButton from '../../components/Generic/MainActionButton';
 import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
 import {
   hideSnackbarUpload as hideSnackbarUploadAction,
+  hideSnackbarAlreadyKnown as hideSnackbarAlreadyKnownAction,
 } from '../../redux/actions/thanks';
 import thankImg from '../../images/thank.svg';
 
@@ -143,7 +144,10 @@ export class Thanks extends Component {
 
   render() {
     const { showPrintIframe } = this.state;
-    const { hideSnackbarUpload, showSnackbarUploadSuccess } = this.props;
+    const {
+      hideSnackbarUpload, hideSnackbarAlreadyKnown,
+      showSnackbarUploadSuccess, showSnackbarAlreadyKnownSuccess,
+    } = this.props;
 
     if (this.props.declarations.every((d) => d.isFinished) === false) {
       if (this.props.totalMissingFiles !== 0) {
@@ -287,6 +291,14 @@ export class Thanks extends Component {
             duraction={null}
           />
         )}
+        {showSnackbarAlreadyKnownSuccess && (
+          <SuccessSnackBar
+            message="Information prise en compte."
+            onHide={() => hideSnackbarAlreadyKnown()}
+            closeIcon
+            duraction={null}
+          />
+        )}
       </StyledThanks>
     );
   }
@@ -295,6 +307,8 @@ export class Thanks extends Component {
 Thanks.propTypes = {
   location: PropTypes.shape({ search: PropTypes.string.isRequired }).isRequired,
   showSnackbarUploadSuccess: PropTypes.bool.isRequired,
+  showSnackbarAlreadyKnownSuccess: PropTypes.bool.isRequired,
+  hideSnackbarAlreadyKnown: PropTypes.func.isRequired,
   hideSnackbarUpload: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   fetchDeclarations: PropTypes.func.isRequired,
@@ -307,10 +321,12 @@ export default connect(
     declarations: state.declarationsReducer.declarations,
     totalMissingFiles: state.declarationsReducer.missingFiles,
     showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
+    showSnackbarAlreadyKnownSuccess: state.thanksReducer.showSnackbarAlreadyKnownSuccess,
     user: state.userReducer.user,
   }),
   {
     fetchDeclarations: fetchDeclarationAction,
     hideSnackbarUpload: hideSnackbarUploadAction,
+    hideSnackbarAlreadyKnown: hideSnackbarAlreadyKnownAction,
   },
 )(Thanks);

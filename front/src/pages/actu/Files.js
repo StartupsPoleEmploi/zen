@@ -28,6 +28,7 @@ import {
   uploadEmployerFile as uploadEmployerFileAction,
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
   validateEmployerDoc as validateEmployerDocAction,
+  fetchNbFiles as fetchNbFilesAction,
 } from '../../redux/actions/declarations';
 import {
   showSnackbarUpload as showSnackbarUploadAction,
@@ -39,7 +40,7 @@ import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
 import DocumentDialog from '../../components/Generic/documents/DocumentDialog';
 import { muiBreakpoints, secondaryBlue } from '../../constants';
 import { formattedDeclarationMonth } from '../../lib/date';
-import { getDeclarationMissingFilesNb, getMissingFilesNb } from '../../lib/file';
+import { getDeclarationMissingFilesNb } from '../../lib/file';
 
 import {
   selectPreviewedEmployerDoc,
@@ -525,6 +526,8 @@ export class Files extends Component {
       validateDeclarationInfoDoc,
       hideSnackbarUpload,
       showSnackbarUploadSuccess,
+      fetchNbFiles,
+      totalMissingFiles,
       user,
     } = this.props;
 
@@ -636,7 +639,7 @@ export class Files extends Component {
       });
     }
 
-    const totalMissingFiles = getMissingFilesNb(allDeclarations);
+    fetchNbFiles(allDeclarations);
 
     return (
       <>
@@ -691,11 +694,13 @@ Files.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
+  totalMissingFiles: PropTypes.number,
   declarations: PropTypes.arrayOf(PropTypes.object),
   collapsedMonth: PropTypes.arrayOf(PropTypes.number),
   fetchDeclarations: PropTypes.func.isRequired,
   showSnackbarUpload: PropTypes.func.isRequired,
   hideSnackbarUpload: PropTypes.func.isRequired,
+  fetchNbFiles: PropTypes.func.isRequired,
   showSnackbarUploadSuccess: PropTypes.func.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
@@ -722,6 +727,7 @@ export default connect(
     declarations: state.declarationsReducer.declarations,
     showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
     isLoading: state.declarationsReducer.isLoading,
+    totalMissingFiles: state.declarationsReducer.missingFiles,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
     isFilesServiceUp: state.statusReducer.isFilesServiceUp,
@@ -744,5 +750,6 @@ export default connect(
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
     showSnackbarUpload: showSnackbarUploadAction,
     hideSnackbarUpload: hideSnackbarUploadAction,
+    fetchNbFiles: fetchNbFilesAction,
   },
 )(withWidth()(withStyles(styles)(Files)));

@@ -19,6 +19,7 @@ import {
   SHOW_DECLARATION_TRANSMITTED_DIALOG,
   SET_USER_LOGGED_OUT,
   HIDE_DECLARATION_TRANSMITTED_DIALOG,
+  FETCH_NB_FILES,
 } from './actionNames';
 import { MAX_PDF_PAGE } from '../../constants';
 import { utils } from '../../selectors/declarations';
@@ -53,6 +54,10 @@ export const fetchDeclarations = ({ limit } = {}) => (dispatch) => {
     });
 
   return fetchDeclarationsPromise;
+};
+
+export const fetchNbFiles = () => (dispatch) => {
+  dispatch({ type: FETCH_NB_FILES });
 };
 
 let fetchActiveDeclarationPromise = null;

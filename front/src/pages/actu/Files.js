@@ -383,7 +383,9 @@ export class Files extends Component {
       showTooltip,
       skipFile: (params) =>
         this.askToSkipFile(() => {
-          this.props.uploadEmployerFile({ ...params, skip: true }).then(() => this.props.fetchNbFiles());
+          this.props.uploadEmployerFile({ ...params, skip: true }).then(
+            () => this.props.fetchNbFiles(),
+          );
           this.closeSkipModal();
         }),
       allowSkipFile,

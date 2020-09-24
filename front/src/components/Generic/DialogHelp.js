@@ -66,7 +66,7 @@ function BlockItem({ Icon, text, section }) {
           marginBottom: '1rem', marginTop: '1rem', color: primaryBlue, fontSize: '4rem',
         }}
         />
-        <Typography>{text}</Typography>
+        <Typography style={{ fontSize: '1.4rem' }}>{text}</Typography>
       </A>
     </Grid>
   );

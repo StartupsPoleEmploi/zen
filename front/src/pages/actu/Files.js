@@ -11,9 +11,7 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
-import Check from '@material-ui/icons/Check';
-import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
-import thankImg from '../../images/thank.svg';
+import { Link, Redirect } from 'react-router-dom';
 
 import StatusFilesError from '../../components/Actu/StatusFilesError';
 import { H1 } from '../../components/Generic/Titles';
@@ -31,6 +29,12 @@ import {
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
   validateEmployerDoc as validateEmployerDocAction,
 } from '../../redux/actions/declarations';
+import {
+  showSnackbarUpload as showSnackbarUploadAction,
+  hideSnackbarUpload as hideSnackbarUploadAction,
+  showSnackbarAlreadyKnown as showSnackbarAlreadyKnownAction,
+  hideSnackbarAlreadyKnown as hideSnackbarAlreadyKnownAction,
+} from '../../redux/actions/thanks';
 import DocumentUpload from '../../components/Actu/DocumentUpload';
 import FileTransmittedToPE from '../../components/Actu/FileTransmittedToPEDialog';
 import LoginAgainDialog from '../../components/Actu/LoginAgainDialog';
@@ -46,9 +50,8 @@ import {
 import NotAutorized from '../other/NotAutorized';
 import ErrorSnackBar from '../../components/Generic/ErrorSnackBar';
 import SuccessSnackBar from '../../components/Generic/SuccessSnackBar';
-import MainActionButton from '../../components/Generic/MainActionButton';
 
-const { getEmployerLoadingKey, getEmployerErrorKey } = utils;
+const { findEmployer, getEmployerLoadingKey, getEmployerErrorKey } = utils;
 
 const StyledFiles = styled.div`
   display: flex;
@@ -58,13 +61,6 @@ const StyledFiles = styled.div`
   width: 100%;
   margin: auto;
   padding-bottom: 2rem;
-`;
-
-const StyledTitle = styled(Typography)`
-  && {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
 `;
 
 const MonthInfoTitle = styled(Typography)`
@@ -141,35 +137,18 @@ const H1Title = styled(H1)`
 const DialogContentTextLabel = styled(Typography)`
   && {
     color: black;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.6;
+    }
   }
 `;
 
 const CollapsedTitle = styled.div`
   display: flex;
   align-items: center;
-  cursor: pointer;
   transition: opacity 0.4s;
   margin-bottom: 1rem;
-  &:hover {
-    opacity: 0.6;
-  }
-`;
-
-const Text = styled(Typography)`
-font-size: 18px;
-`;
-
-const StyledThxImg = styled.img`
-  max-width: 30rem;
-  width: 80%;
-`;
-
-const CheckIcon = styled(Check)`
-  && {
-    margin-right: 1rem;
-    color: green;
-    vertical-align: sub;
-  }
 `;
 
 const styles = () => ({
@@ -184,21 +163,6 @@ const ArrowDown = styled(ArrowDropDown)`
 
 const ArrowUp = styled(ArrowDropUp)`
   color: #0065DB;
-`;
-
-const TitleThx = styled(Typography).attrs({ component: 'h1' })`
-  padding: 0 0 0.5rem 0;
-  font-size: 22px !important;
-`;
-
-const BtnThx = styled(MainActionButton)`
-white-space: nowrap;
-width: auto !important;
-padding: 0 4rem !important;
-`;
-
-const StyledArrowRightAlt = styled(ArrowRightAlt)`
-  margin-left: 1rem;
 `;
 
 const infoSpecs = [
@@ -275,19 +239,11 @@ export class Files extends Component {
       snackError: null,
       snackSuccess: null,
       collapsedMonth: [],
-      showSurvey: false,
     };
   }
 
   componentDidMount() {
     this.props.fetchDeclarations();
-
-    const lastResponse = localStorage.getItem(`survey-response-${this.props.user.id}`);
-    const now = new Date();
-
-    const showSurvey = lastResponse === null ||
-      new Date(lastResponse).getMonth() !== now.getMonth();
-    this.setState({ showSurvey });
   }
 
   componentDidUpdate(prevProps) {
@@ -533,7 +489,7 @@ export class Files extends Component {
 
     return (
       <FilesSection key={declaration.id} width={this.props.width}>
-        <CollapsedTitle onClick={() => this.onCollapseMonth(declaration.id)}>
+        <CollapsedTitle>
           <MonthInfoTitle variant="h6" component="h2">
             {formattedMonth}
             {' '}
@@ -543,7 +499,7 @@ export class Files extends Component {
               )
             </MonthNumberTitle>
           </MonthInfoTitle>
-          <DialogContentTextLabel>{isCollapsed ? 'AFFICHER' : 'MASQUER'}</DialogContentTextLabel>
+          <DialogContentTextLabel onClick={() => this.onCollapseMonth(declaration.id)}>{isCollapsed ? 'AFFICHER' : 'MASQUER'}</DialogContentTextLabel>
           {!isCollapsed ?
             <ArrowDown /> :
             <ArrowUp />}
@@ -551,11 +507,6 @@ export class Files extends Component {
         {!isCollapsed && this.renderDocumentList(declaration)}
       </FilesSection>
     );
-  }
-
-  onMemorizeAction = () => {
-    localStorage.setItem(`survey-response-${this.props.user.id}`, new Date());
-    this.setState({ showSurvey: false });
   }
 
   render() {
@@ -574,6 +525,10 @@ export class Files extends Component {
       validateEmployerDoc,
       isFilesServiceUp,
       validateDeclarationInfoDoc,
+      hideSnackbarUpload,
+      hideSnackbarAlreadyKnown,
+      showSnackbarUploadSuccess,
+      showSnackbarAlreadyKnownSuccess,
       user,
     } = this.props;
 
@@ -612,49 +567,8 @@ export class Files extends Component {
       );
     }
 
-    if (!allDeclarations || allDeclarations.length === 0) {
-      return (
-        <StyledFiles>
-          <StyledTitle variant="h4" className="error-title">
-            Félicitations, votre dossier est à jour.
-          </StyledTitle>
-          <Text paragraph>
-            Soyez Zen, aucun justificatif à transmettre
-          </Text>
-          <StyledThxImg src={thankImg} alt="" />
-          {this.state.showSurvey ? (
-            <>
-              <TitleThx variant="h4" style={{ marginTop: '4rem' }}>
-                Quelques minutes devant vous ?
-              </TitleThx>
-              <Text paragraph>
-                Aidez-nous à améliorer Zen en donnant votre avis
-              </Text>
-              <a href="https://surveys.hotjar.com/s?siteId=929102&surveyId=156996" rel="noopener noreferrer" target="_blank" style={{ textDecoration: 'none' }} onClick={this.onMemorizeAction}>
-                <BtnThx color="primary" primary>
-                  Je donne mon avis
-                  <StyledArrowRightAlt />
-                </BtnThx>
-              </a>
-            </>
-          ) : (
-            <>
-              <TitleThx variant="h4" style={{ marginTop: '4rem' }}>
-                <CheckIcon />
-                {' '}
-                Merci, vous avez participé ce mois-ci
-              </TitleThx>
-              <Text paragraph>
-                Rendez-vous le mois prochain pour nous aider à améliorer Zen
-              </Text>
-              <BtnThx color="primary" primary disabled>
-                Je donne mon avis
-                <StyledArrowRightAlt />
-              </BtnThx>
-            </>
-          )}
-        </StyledFiles>
-      );
+    if (declarations.every((d) => d.isFinished)) {
+      return <Redirect to="/thanks" />;
     }
 
     const showEmployerPreview = !!get(previewedEmployerDoc, 'file');
@@ -664,10 +578,32 @@ export class Files extends Component {
 
     if (showEmployerPreview) {
       previewProps = {
-        onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideEmployerFilePreview(props); },
+        onCancel: (props) => {
+          this.setState({ snackError: 'Un justificatif n\'a pas été validé' });
+          return hideEmployerFilePreview(props);
+        },
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
-        validateDoc: (props) => validateEmployerDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
+        validateDoc: (props) => validateEmployerDoc(props).then(() => {
+          const employer = findEmployer({
+            declarations: allDeclarations,
+            employerId: props.employerId,
+          });
+          if (props.employerDocType === employerCertificateType &&
+            employer.documents.length === 1) {
+            this.props.showSnackbarUpload();
+          } else {
+            this.setState({
+              snackSuccess: (
+                <>
+                  Justificatif visible dans votre
+                  {' '}
+                  <Link to="/history">historique</Link>
+                </>
+              ),
+            });
+          }
+        }),
         url: computeDocUrl({ id: previewedEmployerDoc.id, type: employerType }),
         employerDocType: previewedEmployerDoc.type, // renaming it to avoid confusion
         ...previewedEmployerDoc,
@@ -677,7 +613,15 @@ export class Files extends Component {
         onCancel: (props) => { this.setState({ snackError: 'Un justificatif n\'a pas été validé' }); return hideInfoFilePreview(props); },
         submitFile: uploadDeclarationInfoFile,
         removePage: removeDeclarationInfoFilePage,
-        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({ snackSuccess: 'Justificatif envoyé disponible dans l\'historique' })),
+        validateDoc: (props) => validateDeclarationInfoDoc(props).then(() => this.setState({
+          snackSuccess: (
+            <>
+              Justificatif visible dans votre
+              {' '}
+              <Link to="/history">historique</Link>
+            </>
+          ),
+        })),
         url: computeDocUrl({ id: previewedInfoDoc.id, type: infoType }),
         ...previewedInfoDoc,
       };
@@ -712,16 +656,46 @@ export class Files extends Component {
         <FileTransmittedToPE
           isOpened={this.state.showSkipConfirmation}
           onCancel={this.closeSkipModal}
-          onConfirm={this.state.skipFileCallback}
+          onConfirm={() => {
+            this.state.skipFileCallback();
+            this.props.showSnackbarAlreadyKnown();
+          }}
         />
         {(showEmployerPreview || showInfoDocPreview) && (
           <DocumentDialog isOpened {...previewProps} />
         )}
 
+        {showSnackbarUploadSuccess && (
+          <SuccessSnackBar
+            message={"Nous n'avons pas besoin de votre bulletin de salaire pour cet employeur car vous venez de nous transmettre l'attestation employeur."}
+            onHide={() => {
+              hideSnackbarUpload();
+              this.setState({
+                snackSuccess: (
+                  <>
+                    Justificatif visible dans votre
+                    {' '}
+                    <Link to="/history">historique</Link>
+                  </>
+                ),
+              });
+            }}
+            closeIcon
+            duraction={null}
+          />
+        )}
         {snackSuccess && (
           <SuccessSnackBar
             message={snackSuccess}
             onHide={() => this.setState({ snackSuccess: null })}
+            closeIcon
+            duraction={null}
+          />
+        )}
+        {showSnackbarAlreadyKnownSuccess && (
+          <SuccessSnackBar
+            message="Information prise en compte."
+            onHide={() => hideSnackbarAlreadyKnown()}
             closeIcon
             duraction={null}
           />
@@ -742,6 +716,12 @@ Files.propTypes = {
   declarations: PropTypes.arrayOf(PropTypes.object),
   collapsedMonth: PropTypes.arrayOf(PropTypes.number),
   fetchDeclarations: PropTypes.func.isRequired,
+  showSnackbarUpload: PropTypes.func.isRequired,
+  hideSnackbarUpload: PropTypes.func.isRequired,
+  showSnackbarAlreadyKnown: PropTypes.func.isRequired,
+  hideSnackbarAlreadyKnown: PropTypes.func.isRequired,
+  showSnackbarUploadSuccess: PropTypes.bool.isRequired,
+  showSnackbarAlreadyKnownSuccess: PropTypes.bool.isRequired,
   removeDeclarationInfoFilePage: PropTypes.func.isRequired,
   removeEmployerFilePage: PropTypes.func.isRequired,
   uploadEmployerFile: PropTypes.func.isRequired,
@@ -759,13 +739,14 @@ Files.propTypes = {
   isFilesServiceUp: PropTypes.bool.isRequired,
   width: PropTypes.string,
   snackError: PropTypes.string,
-  snackSuccess: PropTypes.string,
-  showSurvey: PropTypes.bool,
+  snackSuccess: PropTypes.object,
 };
 
 export default connect(
   (state) => ({
     declarations: state.declarationsReducer.declarations,
+    showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
+    showSnackbarAlreadyKnownSuccess: state.thanksReducer.showSnackbarAlreadyKnownSuccess,
     totalMissingFiles: state.declarationsReducer.missingFiles,
     isLoading: state.declarationsReducer.isLoading,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
@@ -788,5 +769,9 @@ export default connect(
     hideInfoFilePreview: hideInfoFilePreviewAction,
     validateEmployerDoc: validateEmployerDocAction,
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
+    showSnackbarUpload: showSnackbarUploadAction,
+    hideSnackbarUpload: hideSnackbarUploadAction,
+    showSnackbarAlreadyKnown: showSnackbarAlreadyKnownAction,
+    hideSnackbarAlreadyKnown: hideSnackbarAlreadyKnownAction,
   },
 )(withWidth()(withStyles(styles)(Files)));

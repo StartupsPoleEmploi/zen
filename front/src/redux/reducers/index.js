@@ -5,6 +5,7 @@ import userReducer from './user';
 import statusReducer from './status';
 import activeMonthReducer from './activeMonth';
 import helpPopup from './helpPopup';
+import thanksReducer from './thanks';
 
 export default combineReducers({
   declarationsReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   statusReducer,
   activeMonthReducer,
   helpPopup,
+  thanksReducer,
 });

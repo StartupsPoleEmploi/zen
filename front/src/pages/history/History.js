@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 
@@ -12,11 +13,13 @@ import EmptyDeclaration from './EmptyDeclaration';
 import { fetchDeclarations as fetchDeclarationAction } from '../../redux/actions/declarations';
 import { fetchDeclarationMonths as fetchDeclarationMonthsAction } from '../../redux/actions/declarationMonths';
 import {
+  helpColor,
   darkBlue,
   mobileBreakpoint,
   intermediaryBreakpoint,
 } from '../../constants';
 import { formattedDeclarationMonth } from '../../lib/date';
+import TooltipOnFocus from '../../components/Generic/TooltipOnFocus';
 
 const StyledHistory = styled.div`
   max-width: 108rem;
@@ -54,6 +57,14 @@ const StyledH2 = styled(H2)`
     text-transform: capitalize;
     font-weight: normal;
     margin-bottom: 2rem;
+  }
+`;
+
+const InfoImg = styled(InfoOutlinedIcon)`
+  && {
+    color: ${helpColor};
+    vertical-align: sub;
+    margin-left: 0.5rem;
   }
 `;
 
@@ -101,7 +112,12 @@ function History({
   if (declarations.length === 0) {
     return (
       <StyledHistory>
-        <StyledH1>L'historique de votre actualisation sur Zen</StyledH1>
+        <StyledH1>
+          L'historique de votre actualisation sur Zen
+          <TooltipOnFocus content="Les justificatifs affichés dans cette rubrique sont visibles sur une durée maximale de 6 mois.">
+            <InfoImg />
+          </TooltipOnFocus>
+        </StyledH1>
         <Typography>Pas d'historique pour le moment</Typography>
       </StyledHistory>
     );
@@ -142,7 +158,12 @@ function History({
 
   return (
     <StyledHistory>
-      <StyledH1>L'historique de votre actualisation sur Zen</StyledH1>
+      <StyledH1>
+        L'historique de votre actualisation sur Zen
+        <TooltipOnFocus content="Les justificatifs affichés dans cette rubrique sont visibles sur une durée maximale de 6 mois.">
+          <InfoImg />
+        </TooltipOnFocus>
+      </StyledH1>
 
       {filledDeclarations.map((d, index) => (
         <MonthContainer

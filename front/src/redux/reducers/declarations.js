@@ -70,7 +70,6 @@ const declarationsReducer = createReducer(
     [FETCH_DECLARATIONS_FAILURE]: (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
-      state.missingFiles = getMissingFilesNb(state.declarations);
     },
     [FETCH_NB_FILES]: (state) => {
       state.missingFiles = getMissingFilesNb(state.declarations);

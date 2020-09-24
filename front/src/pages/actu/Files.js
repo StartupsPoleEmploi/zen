@@ -383,7 +383,7 @@ export class Files extends Component {
       showTooltip,
       skipFile: (params) =>
         this.askToSkipFile(() => {
-          this.props.uploadEmployerFile({ ...params, skip: true });
+          this.props.uploadEmployerFile({ ...params, skip: true }).then(() => this.props.fetchNbFiles());
           this.closeSkipModal();
         }),
       allowSkipFile,
@@ -584,6 +584,7 @@ export class Files extends Component {
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
         validateDoc: (props) => validateEmployerDoc(props).then(() => {
+          fetchNbFiles();
           const employer = findEmployer({
             declarations: allDeclarations,
             employerId: props.employerId,
@@ -634,12 +635,9 @@ export class Files extends Component {
           (declaration.infos || []).some((d) => d.error)) {
           error = 'Un problème est survenu veuillez réessayer plus tard';
         }
-
         return declaration;
       });
     }
-
-    fetchNbFiles(allDeclarations);
 
     return (
       <>

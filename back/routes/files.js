@@ -15,7 +15,6 @@ router.get('/:fileName', (req, res, next) => {
     })
     .where('declarations.userId', req.session.user.id)
     .then((declarations) => {
-      console.log('declarations', declarations);
       if (!declarations || declarations.length === 0) {
         res.status(400).json('Document not found');
       } else {

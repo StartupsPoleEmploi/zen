@@ -43,15 +43,20 @@ const getPDF = (document, directory) => {
         return resolve(pdfFileName);
       }
 
-      imagesToPdf([imgFilePath], pdfFilePath)
-        .then(() => document.$query().patch({ file: pdfFileName }))
-        .then(() =>
-          fs.unlink(imgFilePath, (deleteError) =>
-            (deleteError ? reject(deleteError) : resolve(pdfFileName))))
-        .catch((err) => {
-          winston.warn(err);
-          reject(err);
-        });
+      try {
+        imagesToPdf([imgFilePath], pdfFilePath)
+          .then(() => document.$query().patch({ file: pdfFileName }))
+          .then(() =>
+            fs.unlink(imgFilePath, (deleteError) =>
+              (deleteError ? reject(deleteError) : resolve(pdfFileName))))
+          .catch((err) => {
+            winston.warn(err);
+            reject(err);
+          });
+      } catch (err) {
+        winston.warn(err);
+        reject(err);
+      }
     });
   });
 };

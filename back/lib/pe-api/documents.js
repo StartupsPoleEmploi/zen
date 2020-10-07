@@ -220,7 +220,7 @@ async function sendDocument({ accessToken, document, isFakeAuth = false }) {
     const docId = infosToSendDocument.dbDocument.id;
     err.message = `Error while ${errorFrom} document ${docId} with type "${documentType}" of user "${userId}" (HTTP ${err.status}) => ${err.message}`;
     winston.error(err.message, {
-      url: err.response.request.url,
+      url: err.response && err.response.request ? err.response.request.url : null,
       userId,
       doc: { docId, ...pick(infosToSendDocument, ['filePath', 'label', 'confirmationData']) },
       err,

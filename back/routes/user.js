@@ -24,6 +24,7 @@ router.get('/', refreshAccessToken, async (req, res) => {
   }
 
   return res.json({
+    peId: dbUser.peId,
     isBlocked: dbUser.isBlocked,
     needOnBoarding: dbUser.needOnBoarding,
     needEmployerOnBoarding: dbUser.needEmployerOnBoarding,

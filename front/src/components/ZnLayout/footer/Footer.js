@@ -96,7 +96,7 @@ function Footer() {
         <Left>
           <Ul>
             <Li>
-              <StyledLink href="cgu">
+              <StyledLink href="/cgu">
                 <Typography>Conditions Générales d'Utilisation</Typography>
                 <span style={{ textAlign: 'right' }}>
                   <ChevronRight />

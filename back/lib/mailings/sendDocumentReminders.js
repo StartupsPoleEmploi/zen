@@ -79,6 +79,7 @@ const getMessage = ({
   Subject: subject,
   Variables: {
     prenom: user.firstName,
+    peid: user.peId,
   },
   CustomCampaign: campaignName,
 });
@@ -108,6 +109,7 @@ const sendAllDocumentsReminders = () =>
       .andWhere({
         'declarations.isFinished': false,
         'declarations.hasFinishedDeclaringEmployers': true,
+        'Users.isSubscribedEmail': true,
       }),
     getTemplate(ALL_DOCS_REMINDER_TEMPLATE_ID),
   ])
@@ -130,32 +132,37 @@ const sendAllDocumentsReminders = () =>
           const remainingDocumentsNb = documents.length - listedDocuments.length;
 
           const regexpDocs = new RegExp('{{var:documents:""}}', 'ig');
+          const regexpPeid = new RegExp('{{var:peid:""}}', 'ig');
 
-          const interpolatedHtml = html.replace(
-            regexpDocs,
-            listedDocuments.length > 0
-              ? listedDocuments
-                .map((doc) => `<li>${doc}</li>`)
-                .concat(
-                  remainingDocumentsNb > 0
-                    ? `<li>et ${remainingDocumentsNb} autres justificatifs</li>`
-                    : '',
-                )
-                .join('')
-              : '<li>Merci de vous connecter pour <b>valider</b> les justificatifs transmis</li>',
-          );
-          const interpolatedText = text.replace(
-            regexpDocs,
-            listedDocuments.length > 0
-              ? listedDocuments
-                .concat(
-                  remainingDocumentsNb > 0
-                    ? `Et ${remainingDocumentsNb} autres justificatifs\n`
-                    : '',
-                )
-                .join('\n')
-              : 'Merci de vous connecter pour *valider* les justificatifs transmis\n',
-          );
+          const interpolatedHtml = html
+            .replace(regexpPeid, user.peId)
+            .replace(
+              regexpDocs,
+              listedDocuments.length > 0
+                ? listedDocuments
+                  .map((doc) => `<li>${doc}</li>`)
+                  .concat(
+                    remainingDocumentsNb > 0
+                      ? `<li>et ${remainingDocumentsNb} autres justificatifs</li>`
+                      : '',
+                  )
+                  .join('')
+                : '<li>Merci de vous connecter pour <b>valider</b> les justificatifs transmis</li>',
+            );
+          const interpolatedText = text
+            .replace(regexpPeid, user.peId)
+            .replace(
+              regexpDocs,
+              listedDocuments.length > 0
+                ? listedDocuments
+                  .concat(
+                    remainingDocumentsNb > 0
+                      ? `Et ${remainingDocumentsNb} autres justificatifs\n`
+                      : '',
+                  )
+                  .join('\n')
+                : 'Merci de vous connecter pour *valider* les justificatifs transmis\n',
+            );
 
           return getMessage({
             user,
@@ -212,6 +219,7 @@ const sendCurrentDeclarationDocsReminders = () => {
             hasFinishedDeclaringEmployers: true,
             monthId: activeMonth.id,
           })
+          .andWhere('Users.isSubscribedEmail', '=', true)
           .andWhere(function andWhere() {
             this.where(
               'Users.lastDocsReminderDate',
@@ -232,8 +240,10 @@ const sendCurrentDeclarationDocsReminders = () => {
 
               const regexpDate = new RegExp('{{var:date:""}}', 'ig');
               const regexpDocs = new RegExp('{{var:documents:""}}', 'ig');
+              const regexpPeid = new RegExp('{{var:peid:""}}', 'ig');
 
               const interpolatedHtml = html
+                .replace(regexpPeid, declaration.user.peId)
                 .replace(regexpDate, formattedMonthInFrench)
                 .replace(
                   regexpDocs,
@@ -242,6 +252,7 @@ const sendCurrentDeclarationDocsReminders = () => {
                     : '<li>Merci de vous connecter pour <b>valider</b> les justificatifs transmis</li>',
                 );
               const interpolatedText = text
+                .replace(regexpPeid, declaration.user.peId)
                 .replace(regexpDate, formattedMonthInFrench)
                 .replace(
                   regexpDocs,

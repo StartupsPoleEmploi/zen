@@ -8,7 +8,7 @@ exports.up = async function up(knex) {
 };
 
 exports.down = async function down(knex) {
-  knex.schema.table('Users', (table) => {
+  await knex.schema.table('Users', (table) => {
     table.dropColumn('isSubscribedEmail');
   });
 };

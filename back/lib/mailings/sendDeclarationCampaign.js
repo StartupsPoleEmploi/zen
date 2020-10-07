@@ -24,7 +24,7 @@ async function sendDeclarationCampaign() {
   winston.info('[CRON] DEBUT_ACTUALISATION: START');
   const CustomCampaign = `Lancement actu ${format(new Date(), 'MM/yyyy')}`;
   const date = $getFormatedDate();
-  const allUsers = await userCtrl.getActiveUsers();
+  const allUsers = await userCtrl.getUsersSubscribeToEmail();
 
   while (allUsers.length) {
     winston.info(`[CRON] DEBUT_ACTUALISATION: Still ${allUsers.length} users`);
@@ -38,7 +38,7 @@ async function sendDeclarationCampaign() {
         TemplateLanguage: true,
         Subject: 'L’actualisation Zen commence aujourd’hui',
         Title: CustomCampaign,
-        Variables: { prenom: user.firstName, date },
+        Variables: { prenom: user.firstName, peid: user.peId, date },
         CustomCampaign,
       })),
     }).catch((err) => {

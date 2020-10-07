@@ -39,6 +39,7 @@ const sendDeclarationConfirmationEmail = (declaration) =>
             Variables: {
               prenom: declaration.user.firstName,
               date: formattedDeclarationMonth,
+              peid: declaration.user.peId,
             },
             Attachments: [
               {

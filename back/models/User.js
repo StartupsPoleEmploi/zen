@@ -32,6 +32,7 @@ class User extends BaseModel {
         needEmployerOnBoarding: { default: true, type: 'boolean' },
         lastDocsReminderDate: { type: ['string', 'object', 'null'] },
         registeredAt: { type: ['string', 'object', 'null'] },
+        isSubscribedEmail: { default: true, type: 'boolean' },
       },
     };
   }

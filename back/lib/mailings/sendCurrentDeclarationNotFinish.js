@@ -18,6 +18,7 @@ async function $sendDeclarationOfUser(user) {
         Subject: 'Vous êtes à quelques clics de valider votre actualisation...',
         Variables: {
           prenom: user.firstName,
+          peid: user.peId,
         },
         CustomCampaign: 'Déclaration non finie',
       },

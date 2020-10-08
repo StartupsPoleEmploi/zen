@@ -24,6 +24,7 @@ router.get('/', refreshAccessToken, async (req, res) => {
   }
 
   return res.json({
+    peId: dbUser.peId,
     isBlocked: dbUser.isBlocked,
     needOnBoarding: dbUser.needOnBoarding,
     needEmployerOnBoarding: dbUser.needEmployerOnBoarding,
@@ -149,6 +150,29 @@ router.patch('/', (req, res, next) => {
       res.json(req.session.user);
     })
     .catch(next);
+});
+
+router.get('/subscribe-email-info/:peId', async (req, res) => {
+  const user = await User.query().findOne({ peId: req.params.peId });
+  if (!user) {
+    return res.status(404).json('Invalid link');
+  }
+
+  return res.status(200).json({ isSubscribedEmail: user.isSubscribedEmail });
+});
+
+router.patch('/subscribe-email/:peId', async (req, res) => {
+  const user = await User.query().findOne({ peId: req.params.peId });
+  if (!user) {
+    return res.status(404).json('Invalid link');
+  }
+
+  user.$query()
+    .patch({ isSubscribedEmail: req.body.isSubscribedEmail })
+    .returning('isSubscribedEmail')
+    .then((result) => {
+      res.status(201).json({ isSubscribedEmail: result.isSubscribedEmail });
+    });
 });
 
 module.exports = router;

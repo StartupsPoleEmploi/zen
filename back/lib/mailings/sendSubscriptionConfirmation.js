@@ -11,6 +11,7 @@ async function sendSubscriptionConfirmation(user) {
         Subject: 'Bienvenue sur Zen !',
         Variables: {
           prenom: user.firstName,
+          peid: user.peId,
         },
         CustomCampaign: "Confirmation d'inscription",
       },

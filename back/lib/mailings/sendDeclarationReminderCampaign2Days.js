@@ -24,6 +24,7 @@ async function sendDeclarationReminderCampaign2Days() {
         Title: 'Plus que 2 jours pour vous actualiser !',
         Variables: {
           prenom: user.firstName,
+          peid: user.peId,
         },
         CustomCampaign: 'Plus que 2 jours pour vous actualiser !',
       })),

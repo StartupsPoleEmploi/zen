@@ -16,25 +16,17 @@ import HomeOutlined from '@material-ui/icons/HomeOutlined';
 import DnsOutlined from '@material-ui/icons/DnsOutlined';
 import DescriptionOutlined from '@material-ui/icons/DescriptionOutlined';
 
-import AppTitle from '../Generic/AppTitle';
-import { primaryBlue, mobileBreakpoint } from '../../constants';
+import AppTitle from '../../Generic/AppTitle';
+import { primaryBlue, mobileBreakpoint } from '../../../constants';
+import { STEPPER_ROUTES, isNavigationVisible } from './routes';
 
-const stepperRoutes = [
-  '/actu',
-  '/employers',
-  '/files',
-  '/dashboard',
-  '/history',
-  '/cgu',
-];
 const [
   declarationRoute,
   employersRoute,
   filesRoute,
   dashboardRoute,
   historyRoute,
-] = stepperRoutes;
-const routesWithDisplayedNav = stepperRoutes.concat('/thanks');
+] = STEPPER_ROUTES;
 
 const StyledTabs = styled(Tabs).attrs({ component: 'nav', role: 'navigation' })`
   && {
@@ -275,7 +267,7 @@ export const NavLogin = ({
   history: { push },
   missingFiles,
 }) => {
-  const isNavVisible = routesWithDisplayedNav.includes(pathname);
+  const isNavVisible = isNavigationVisible(pathname);
 
   const useMobileVersion = useMediaQuery(`(max-width:${mobileBreakpoint})`);
 

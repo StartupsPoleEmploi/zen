@@ -30,6 +30,7 @@ import {
   FETCH_ACTIVE_DECLARATION_FAILURE,
   SHOW_DECLARATION_TRANSMITTED_DIALOG,
   HIDE_DECLARATION_TRANSMITTED_DIALOG,
+  FETCH_NB_FILES,
 } from '../actions/actionNames';
 import { utils } from '../../selectors/declarations';
 
@@ -69,6 +70,9 @@ const declarationsReducer = createReducer(
     [FETCH_DECLARATIONS_FAILURE]: (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
+    },
+    [FETCH_NB_FILES]: (state) => {
+      state.missingFiles = getMissingFilesNb(state.declarations);
     },
     [POST_DECLARATION_INFO_LOADING]: (
       { declarations },

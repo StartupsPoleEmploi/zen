@@ -28,6 +28,7 @@ import {
   uploadEmployerFile as uploadEmployerFileAction,
   validateDeclarationInfoDoc as validateDeclarationInfoDocAction,
   validateEmployerDoc as validateEmployerDocAction,
+  fetchNbFiles as fetchNbFilesAction,
 } from '../../redux/actions/declarations';
 import {
   showSnackbarUpload as showSnackbarUploadAction,
@@ -42,6 +43,7 @@ import DocumentDialog from '../../components/Generic/documents/DocumentDialog';
 import { muiBreakpoints, secondaryBlue } from '../../constants';
 import { formattedDeclarationMonth } from '../../lib/date';
 import { getDeclarationMissingFilesNb } from '../../lib/file';
+
 import {
   selectPreviewedEmployerDoc,
   selectPreviewedInfoDoc,
@@ -383,7 +385,9 @@ export class Files extends Component {
       showTooltip,
       skipFile: (params) =>
         this.askToSkipFile(() => {
-          this.props.uploadEmployerFile({ ...params, skip: true });
+          this.props.uploadEmployerFile({ ...params, skip: true }).then(
+            () => this.props.fetchNbFiles(),
+          );
           this.closeSkipModal();
         }),
       allowSkipFile,
@@ -512,7 +516,6 @@ export class Files extends Component {
   render() {
     const {
       declarations,
-      totalMissingFiles,
       isLoading,
       previewedEmployerDoc,
       previewedInfoDoc,
@@ -528,6 +531,8 @@ export class Files extends Component {
       hideSnackbarUpload,
       hideSnackbarAlreadyKnown,
       showSnackbarUploadSuccess,
+      fetchNbFiles,
+      totalMissingFiles,
       showSnackbarAlreadyKnownSuccess,
       user,
     } = this.props;
@@ -585,6 +590,7 @@ export class Files extends Component {
         submitFile: uploadEmployerFile,
         removePage: removeEmployerFilePage,
         validateDoc: (props) => validateEmployerDoc(props).then(() => {
+          fetchNbFiles();
           const employer = findEmployer({
             declarations: allDeclarations,
             employerId: props.employerId,
@@ -635,7 +641,6 @@ export class Files extends Component {
           (declaration.infos || []).some((d) => d.error)) {
           error = 'Un problème est survenu veuillez réessayer plus tard';
         }
-
         return declaration;
       });
     }
@@ -718,6 +723,7 @@ Files.propTypes = {
   fetchDeclarations: PropTypes.func.isRequired,
   showSnackbarUpload: PropTypes.func.isRequired,
   hideSnackbarUpload: PropTypes.func.isRequired,
+  fetchNbFiles: PropTypes.func.isRequired,
   showSnackbarAlreadyKnown: PropTypes.func.isRequired,
   hideSnackbarAlreadyKnown: PropTypes.func.isRequired,
   showSnackbarUploadSuccess: PropTypes.bool.isRequired,
@@ -747,8 +753,8 @@ export default connect(
     declarations: state.declarationsReducer.declarations,
     showSnackbarUploadSuccess: state.thanksReducer.showSnackbarUploadSuccess,
     showSnackbarAlreadyKnownSuccess: state.thanksReducer.showSnackbarAlreadyKnownSuccess,
-    totalMissingFiles: state.declarationsReducer.missingFiles,
     isLoading: state.declarationsReducer.isLoading,
+    totalMissingFiles: state.declarationsReducer.missingFiles,
     previewedEmployerDoc: selectPreviewedEmployerDoc(state),
     previewedInfoDoc: selectPreviewedInfoDoc(state),
     isFilesServiceUp: state.statusReducer.isFilesServiceUp,
@@ -771,6 +777,7 @@ export default connect(
     validateDeclarationInfoDoc: validateDeclarationInfoDocAction,
     showSnackbarUpload: showSnackbarUploadAction,
     hideSnackbarUpload: hideSnackbarUploadAction,
+    fetchNbFiles: fetchNbFilesAction,
     showSnackbarAlreadyKnown: showSnackbarAlreadyKnownAction,
     hideSnackbarAlreadyKnown: hideSnackbarAlreadyKnownAction,
   },

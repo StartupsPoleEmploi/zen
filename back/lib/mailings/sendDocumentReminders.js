@@ -186,9 +186,8 @@ const sendAllDocumentsReminders = () =>
     })
     .catch((err) => {
       winston.error(
-        'There was an error while sending reminder emails. The process will start again in 5 minutes.',
+        `[sendAllDocumentsReminders] There was an error while sending reminder emails. The process will start again in 5 minutes: ${err}`,
       );
-      winston.error(err);
       setTimeout(sendAllDocumentsReminders, WAIT_TIME_AFTER_ERROR);
     });
 
@@ -286,9 +285,8 @@ const sendCurrentDeclarationDocsReminders = () => {
         })
         .catch((err) => {
           winston.error(
-            'There was an error while sending reminder emails. The process will start again in 5 minutes.',
+            `[sendCurrentDeclarationDocsReminders] There was an error while sending reminder emails. The process will start again in 5 minutes : ${err}`,
           );
-          winston.error(err);
           setTimeout(sendCurrentDeclarationDocsReminders, WAIT_TIME_AFTER_ERROR);
         });
     });

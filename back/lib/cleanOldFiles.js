@@ -43,7 +43,7 @@ const cleanOldFiles = () => {
             );
             declarationIds.push(declaration.id);
           } catch (err) {
-            winston.warn(err);
+            winston.warn(`[cleanOldFiles] Error on remove employerDocuments: ${employer} => ${err}`);
           }
         }
 
@@ -53,7 +53,7 @@ const cleanOldFiles = () => {
             infoIds.push(info.id);
             declarationIds.push(declaration.id);
           } catch (err) {
-            winston.warn(err);
+            winston.warn(`[cleanOldFiles] Error on remove infoDocuments: ${info.id} => ${err}`);
           }
         }
 

@@ -41,7 +41,6 @@
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-pngquant": "^9.0.0",
     "images-to-pdf": "^1.0.3",
-    "ip-range-check": "^0.2.0",
     "json2csv": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",

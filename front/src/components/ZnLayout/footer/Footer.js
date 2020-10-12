@@ -5,7 +5,6 @@ import { Typography } from '@material-ui/core';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
 import AppTitle from '../../Generic/AppTitle';
-import PeHelpLink from './PeHelpLink';
 import { secondaryBlue, mobileBreakpoint } from '../../../constants';
 
 const FooterContainer = styled.footer`
@@ -103,7 +102,6 @@ function Footer() {
                 </span>
               </StyledLink>
             </Li>
-            <PeHelpLink />
           </Ul>
         </Left>
         <Right style={{ textAlign: 'center' }}>

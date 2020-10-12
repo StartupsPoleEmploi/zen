@@ -45,7 +45,6 @@ app.use('/',
 
 app.use(checkAdmin);
 app.use('/',
-  require('./routes/admin/conseillerHelps.admin'),
   require('./routes/admin/setting.admin'),
   require('./routes/admin/useradmins.admin'));
 

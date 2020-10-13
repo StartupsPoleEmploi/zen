@@ -2,7 +2,6 @@ version: '2.4'
 services:
   node:
     volumes:
-      - "/mnt/backups/prod/uploads:/home/back/uploads"
       - '/mnt/datalakepe/:/mnt/datalakepe/'
     environment:
       - NODE_ENV=production

@@ -14,7 +14,6 @@ import Useradmins from './containers/Useradmins';
 import UseradminAdd from './containers/Useradmin/Useradmin.add';
 import UseradminEdit from './containers/Useradmin/Useradmin.edit';
 import Dashboard from './containers/Dashboard';
-import ConseillersHelp from './containers/ConseillersHelp';
 
 const Routes = () => (
   <Switch>
@@ -25,7 +24,6 @@ const Routes = () => (
     <Route path={URLS.SETTINGS} exact component={Settings} />
     <Route path={URLS.USERS.BASE} exact component={Users} />
     <Route path={URLS.USERS.VIEW} exact component={User} />
-    <Route path={URLS.CONSEILLERS} exact component={ConseillersHelp} />
     <Route path={URLS.USERADMINS.BASE} exact component={Useradmins} />
     <Route path={URLS.USERADMINS.ADD} exact component={UseradminAdd} />
     <Route path={URLS.USERADMINS.EDIT} exact component={UseradminEdit} />

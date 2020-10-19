@@ -10,8 +10,8 @@ const eraseFile = (filePath) =>
 
       fs.unlink(filePath, (deleteError) => {
         if (deleteError) {
-          winston.warn(deleteError);
-          return reject(accessError);
+          winston.warn(`[eraseFile] filePath ${filePath}: ${deleteError}`);
+          return reject(deleteError);
         }
 
         // Return true in all case

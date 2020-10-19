@@ -65,6 +65,8 @@ services:
       - WINSTON_ENABLE_LOG=${WINSTON_ENABLE_LOG}
       - WINSTON_ENABLE_FILE=${WINSTON_ENABLE_FILE}
       - WINSTON_FILE_FOLDER=/var/log/zen_node
+      - WINSTON_ENABLE_SENTRY=${WINSTON_ENABLE_SENTRY}
+      - PE_IP=${PE_IP}
 
   front:
     restart: unless-stopped

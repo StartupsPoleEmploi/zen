@@ -49,7 +49,7 @@ const getPDF = (document, directory) => {
           fs.unlink(imgFilePath, (deleteError) =>
             (deleteError ? reject(deleteError) : resolve(pdfFileName))))
         .catch((err) => {
-          winston.warn(err);
+          winston.warn(`[getPDF] global error: ${err}`);
           reject(err);
         });
     });

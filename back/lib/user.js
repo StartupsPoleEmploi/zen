@@ -11,6 +11,7 @@ const DeclarationInfo = require('../models/DeclarationInfo');
 const Employer = require('../models/Employer');
 const EmployerDocument = require('../models/EmployerDocument');
 const DeclarationReview = require('../models/DeclarationReview');
+const winston = require('./log');
 
 const extractFileAndIdsFromEmployers = (employers) => {
   const employerDocumentFiles = [];
@@ -97,7 +98,10 @@ const deleteUser = (user) => {
             employerDocumentFiles.map((doc) =>
               eraseFile(`${uploadDestination}${doc}`)),
           ),
-          mailjet.deleteUser(user.email),
+          mailjet
+            .deleteUser(user.email)
+            .catch((err) =>
+              winston.warn(`[Mailjet] unable to delete email ${user.email} to mailjet. ${err}`)),
         ])));
 };
 

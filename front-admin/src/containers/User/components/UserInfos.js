@@ -43,8 +43,9 @@ export default function UserInfos({ user }: Props) {
     isBlocked: <IconBoolean val={user.isBlocked} />,
     isActuDone: <IconBoolean val={user.isActuDone} />,
     agencyCode: getAgenceName(user.agencyCode),
+    isSubscribedEmail: <IconBoolean val={user.isSubscribedEmail} />,
   };
-  const iconsKeys = ['isAuthorized', 'isBlocked', 'isActuDone'];
+  const iconsKeys = ['isAuthorized', 'isBlocked', 'isActuDone', 'isSubscribedEmail'];
 
   const removeUser = () => {
     Modal.confirm({

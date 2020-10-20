@@ -27,6 +27,7 @@ const LABELS = {
   agencyCode: 'Code agence',
   situationRegardEmploiId: 'Situation regard emploi',
   isActuDone: 'ActuFait (PeDump)',
+  isSubscribedEmail: 'Souscrit au e-mail',
 };
 
 type Props = {

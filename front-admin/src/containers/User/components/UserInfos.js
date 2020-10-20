@@ -56,7 +56,7 @@ export default function UserInfos({ user }: Props) {
       cancelText: 'Annuler',
       async onOk() {
         await superagent
-          .delete(`/zen-admin-api/delete-user?userId=${user.id}`)
+          .delete(`/zen-admin-api/delete-user/${user.id}`)
           .then(() => {
             notification.success({ message: "L'utilisateur a bien été supprimé" });
             history.replace(URLS.USERS.BASE);

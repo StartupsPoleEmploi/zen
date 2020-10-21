@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DialogHelp from '../Generic/DialogHelp';
-import ZnLayoutLogin from './ZnLayoutLogin';
+import ZnLayoutLogin from './ZnLayoutLogin/ZnLayoutLogin';
 import ZnLayoutLogout from './ZnLayoutLogout';
 import HelpLink from './HelpLink';
 import Footer from './footer/Footer';

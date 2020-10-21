@@ -1,14 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import superagent from 'superagent';
 
 import { useUseradmin } from './useradminCtx';
-
-async function fetchUsers(showAuthorizedUsers) {
-  return superagent
-    .get(`/zen-admin-api/users?authorized=${showAuthorizedUsers ? 'true' : 'false'}`)
-    .then(({ body }) => body);
-}
 
 const UsersContext = React.createContext();
 
@@ -18,13 +12,18 @@ export function UsersProvider(props) {
   const [showAuthorizedUsers, setAuthorizedUsers] = useState(true);
   const { logoutIfNeed } = useUseradmin();
 
-  useEffect(() => {
+  const fetchUsers = useCallback(async () => {
     _setIsLoading(true);
-    fetchUsers(showAuthorizedUsers)
-      .then(_setUsers)
+    superagent
+      .get(`/zen-admin-api/users?authorized=${showAuthorizedUsers ? 'true' : 'false'}`)
+      .then(({ body }) => _setUsers(body))
       .catch(logoutIfNeed)
       .finally(() => _setIsLoading(false));
   }, [logoutIfNeed, showAuthorizedUsers]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
     <UsersContext.Provider
@@ -35,6 +34,7 @@ export function UsersProvider(props) {
         isLoading,
         // function
         setAuthorizedUsers,
+        fetchUsers,
       }}
     />
   );

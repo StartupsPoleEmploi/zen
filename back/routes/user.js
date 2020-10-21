@@ -7,12 +7,8 @@ const {
 } = require('../lib/middleware/refreshAccessTokenMiddleware');
 const mailjet = require('../lib/mailings/mailjet');
 const winston = require('../lib/log');
-const { isPro } = require('../lib/user');
 const sendSubscriptionConfirmation = require('../lib/mailings/sendSubscriptionConfirmation');
 const User = require('../models/User');
-const ConseillersHelpQuery = require('../models/ConseillersHelpQuery');
-
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const router = express.Router();
 
@@ -24,6 +20,7 @@ router.get('/', refreshAccessToken, async (req, res) => {
   }
 
   return res.json({
+    peId: dbUser.peId,
     isBlocked: dbUser.isBlocked,
     needOnBoarding: dbUser.needOnBoarding,
     needEmployerOnBoarding: dbUser.needEmployerOnBoarding,
@@ -32,37 +29,6 @@ router.get('/', refreshAccessToken, async (req, res) => {
     csrfToken: req.csrfToken && req.csrfToken(),
     isTokenValid: isUserTokenValid(req.session.user.tokenExpirationDate),
   });
-});
-
-// Based on : https://github.com/StartupsPoleEmploi/labonneboite/blob/master/labonneboite/common/pro.py
-router.get('/is-pro', (req, res) => {
-  const isUserPro = isPro(req);
-
-  return res
-    .status(200)
-    .json({ status: isUserPro ? 'Authorized' : 'Unauthorized' });
-});
-
-// Based on : https://github.com/StartupsPoleEmploi/labonneboite/blob/master/labonneboite/common/pro.py
-router.post('/save-email', async (req, res) => {
-  const isUserPro = isPro(req);
-  if (!isUserPro) return res.send(400);
-
-  const { email } = req.body;
-  if (
-    !email
-    || !EMAIL_REGEX.test(email)
-    || !email.endsWith('@pole-emploi.fr')
-  ) {
-    return res.send(400);
-  }
-  try {
-    await ConseillersHelpQuery.query().insert({ email });
-  } catch (err) {
-    return res.send(400);
-  }
-
-  return res.send(200);
 });
 
 // Set needOnBoarding to false
@@ -149,6 +115,29 @@ router.patch('/', (req, res, next) => {
       res.json(req.session.user);
     })
     .catch(next);
+});
+
+router.get('/subscribe-email-info/:peId', async (req, res) => {
+  const user = await User.query().findOne({ peId: req.params.peId });
+  if (!user) {
+    return res.status(404).json('Invalid link');
+  }
+
+  return res.status(200).json({ isSubscribedEmail: user.isSubscribedEmail });
+});
+
+router.patch('/subscribe-email/:peId', async (req, res) => {
+  const user = await User.query().findOne({ peId: req.params.peId });
+  if (!user) {
+    return res.status(404).json('Invalid link');
+  }
+
+  user.$query()
+    .patch({ isSubscribedEmail: req.body.isSubscribedEmail })
+    .returning('isSubscribedEmail')
+    .then((result) => {
+      res.status(201).json({ isSubscribedEmail: result.isSubscribedEmail });
+    });
 });
 
 module.exports = router;

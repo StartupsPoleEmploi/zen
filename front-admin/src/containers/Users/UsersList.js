@@ -23,6 +23,7 @@ export default function UsersList() {
     ...user,
     isAuthorized: user.isAuthorized ? 'oui' : 'non',
     isActuDone: user.isActuDone ? 'oui' : 'non',
+    isSubscribedEmail: user.isSubscribedEmail ? 'oui' : 'non',
     registeredAt: moment(user.createdAt).format('YYYY/MM/DD HH:mm:ss'),
     createdAt: moment(user.createdAt).format('YYYY/MM/DD HH:mm:ss'),
   }));
@@ -32,7 +33,16 @@ export default function UsersList() {
     { dataIndex: 'firstName', title: 'Prénom' },
     { dataIndex: 'lastName', title: 'Nom' },
     { dataIndex: 'email', title: 'E-mail' },
-    { dataIndex: 'postalCode', title: 'Code postal' },
+    {
+      dataIndex: 'postalCode',
+      title: (
+        <>
+          Code
+          <br />
+          postal
+        </>
+      ),
+    },
     {
       dataIndex: 'isAuthorized',
       title: 'Autorisé',
@@ -46,7 +56,13 @@ export default function UsersList() {
     },
     {
       dataIndex: 'isActuDone',
-      title: 'ActuFait (PeDump)',
+      title: (
+        <>
+          ActuFait
+          <br />
+          (PeDump)
+        </>
+      ),
       znSort: null,
       znSearchable: null,
       filters: [
@@ -54,6 +70,23 @@ export default function UsersList() {
         { text: 'Non', value: 'non' },
       ],
       onFilter: (value, record) => record.isActuDone === value,
+    },
+    {
+      dataIndex: 'isSubscribedEmail',
+      title: (
+        <>
+          Souscrit
+          <br />
+          E-mail
+        </>
+      ),
+      znSort: null,
+      znSearchable: null,
+      filters: [
+        { text: 'Oui', value: 'oui' },
+        { text: 'Non', value: 'non' },
+      ],
+      onFilter: (value, record) => record.isSubscribedEmail === value,
     },
     { dataIndex: 'registeredAt', title: 'Inscrit le' },
     {

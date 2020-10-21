@@ -52,6 +52,9 @@ export function UseradminProvider(props) {
     }
   }, [history, logout]);
 
+
+  const isAdmin = () => useradmin.type === 'admin';
+
   return (
     <UseradminContext.Provider
       {...props}
@@ -61,6 +64,7 @@ export function UseradminProvider(props) {
         autologin,
         logout,
         logoutIfNeed,
+        isAdmin,
       }}
     />
   );

@@ -147,17 +147,19 @@ async function getUsersWithoutDeclaration(declarationMonthId) {
     .andWhere('Users.isBlocked', '=', false)
     .andWhere('Users.isAuthorized', '=', true)
     .andWhere('Users.isActuDone', '=', false)
+    .andWhere('Users.isSubscribedEmail', '=', true)
     .whereNotIn('id', declarations.map((d) => d.userId));
 }
 
 /**
  * @returns {Promise<User[]>}
  */
-async function getActiveUsers() {
+async function getUsersSubscribeToEmail() {
   return User.query()
     .whereNotNull('Users.registeredAt')
     .andWhere('Users.isBlocked', '=', false)
-    .andWhere('Users.isAuthorized', '=', true);
+    .andWhere('Users.isAuthorized', '=', true)
+    .andWhere('Users.isSubscribedEmail', '=', true);
 }
 
 module.exports = {
@@ -167,5 +169,5 @@ module.exports = {
   getPostalCode,
   isAuthorized,
   getUsersWithoutDeclaration,
-  getActiveUsers,
+  getUsersSubscribeToEmail,
 };

@@ -205,7 +205,7 @@ async function importUserFromDatalake() {
       );
     }
   } catch (error) {
-    winston.error(`[ImportUserFromDatalake] ${error}`, error);
+    winston.error(`[ImportUserFromDatalake] global error ${error}`, error);
   }
 
   winston.info('[ImportUserFromDatalake] END');

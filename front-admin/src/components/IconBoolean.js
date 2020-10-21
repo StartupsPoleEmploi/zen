@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// @Flow
+// @flow
 import React from 'react';
 import { Icon } from 'antd';
 

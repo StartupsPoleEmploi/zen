@@ -1,6 +1,5 @@
 const { transaction } = require('objection');
 const { uploadsDirectory: uploadDestination } = require('config');
-const ipRangeCheck = require('ip-range-check');
 
 const { eraseFile } = require('./files');
 const mailjet = require('./mailings/mailjet');
@@ -12,25 +11,7 @@ const DeclarationInfo = require('../models/DeclarationInfo');
 const Employer = require('../models/Employer');
 const EmployerDocument = require('../models/EmployerDocument');
 const DeclarationReview = require('../models/DeclarationReview');
-
-/**
- * To detect is a user is a pro, meaning a member of the Pôle emploi staff,
- * we need to detect if this user :
- *  - have an IP is a certain range
- *  - haven't got PILA in their user-agent (PILA refers to the computers in free access in Pôle emploi agencies for job attendees)
- */
-function isPro(req) {
-  const ALLOWED_IP = process.env.PE_IP;
-  if (!ALLOWED_IP) return false;
-
-  let ip = `${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`.split(',')[0];
-  // Clean IP : remove ::ffff at beginning
-  const ipV4Startindex = ip.lastIndexOf(':');
-  if (ipV4Startindex !== -1) ip = ip.substr(ipV4Startindex + 1);
-  const userAgent = req.headers['user-agent'];
-
-  return ipRangeCheck(ip, ALLOWED_IP) && !userAgent.includes('Pila');
-}
+const winston = require('./log');
 
 const extractFileAndIdsFromEmployers = (employers) => {
   const employerDocumentFiles = [];
@@ -117,11 +98,13 @@ const deleteUser = (user) => {
             employerDocumentFiles.map((doc) =>
               eraseFile(`${uploadDestination}${doc}`)),
           ),
-          mailjet.deleteUser(user.email),
+          mailjet
+            .deleteUser(user.email)
+            .catch((err) =>
+              winston.warn(`[Mailjet] unable to delete email ${user.email} to mailjet. ${err}`)),
         ])));
 };
 
 module.exports = {
   deleteUser,
-  isPro,
 };

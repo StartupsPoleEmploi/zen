@@ -5,6 +5,7 @@ const { Parser } = require('json2csv');
 
 const { deleteUser } = require('../../lib/user');
 const { computeFields, DATA_EXPORT_FIELDS } = require('../../lib/exportUserList');
+const { checkAdmin } = require('../../lib/middleware/checkAccessAdminMiddleware');
 
 const DeclarationMonth = require('../../models/DeclarationMonth');
 const User = require('../../models/User');
@@ -84,8 +85,8 @@ router.post('/users/filter', (req, res, next) => {
     .catch(next);
 });
 
-router.delete('/delete-user', (req, res, next) => {
-  const { userId } = req.query;
+router.delete('/delete-user/:userId', checkAdmin, (req, res, next) => {
+  const { userId } = req.params;
   if (!userId) throw new Error('No user id given');
 
   User.query()

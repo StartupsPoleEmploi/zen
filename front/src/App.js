@@ -36,6 +36,7 @@ import ZnLayout from './components/ZnLayout';
 import NotAutorized from './pages/other/NotAutorized';
 import AddEmail from './pages/other/AddEmail';
 import Cgu from './pages/other/Cgu';
+import EmailSubscribing from './pages/other/EmailSubscribing';
 
 class App extends Component {
   constructor(props) {
@@ -144,7 +145,8 @@ class App extends Component {
       // User isn't logged
       if (
         pathname !== '/' &&
-        !pathname.startsWith('/cgu')
+        !pathname.startsWith('/cgu') &&
+        !pathname.startsWith('/email-subscribing')
       ) {
         return <Redirect to="/" />;
       }
@@ -195,6 +197,7 @@ class App extends Component {
         >
           <Route exact path="/" component={Home} />
           <Route path="/cgu" component={Cgu} />
+          <Route path="/email-subscribing/:peId" component={EmailSubscribing} />
           {!status.isLoading && (
             <StatusErrorDialog isOpened={!status.isServiceUp} />
           )}
@@ -311,6 +314,7 @@ class App extends Component {
 
           <Route exact path="/loggedOut" component={LoggedOut} />
           <Route path="/cgu" component={Cgu} />
+          <Route path="/email-subscribing/:peId" component={EmailSubscribing} />
           <Route render={() => <div>404</div>} />
         </Switch>
         <StatusErrorDialog isOpened={!!this.state.isServiceDown} />

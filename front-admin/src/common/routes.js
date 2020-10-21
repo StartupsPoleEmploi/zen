@@ -21,7 +21,6 @@ export const URLS: Object = {
     EDIT: '/useradmins/edit/:id',
     ADD: '/useradmins/add',
   },
-  CONSEILLERS: '/aide-conseillers',
 };
 
 const formatUrl = (url: string, id: *) => url
@@ -64,14 +63,6 @@ export const MENU_ITEMS = [
     key: 'users',
     match: (pathname) => pathname.startsWith(URLS.USERS.BASE),
     access: ['admin', 'viewer'],
-  },
-  {
-    name: 'Aide conseillers',
-    iconName: 'plus',
-    to: URLS.CONSEILLERS,
-    key: 'conseillers-helps',
-    match: (pathname) => pathname.startsWith(URLS.CONSEILLERS),
-    access: ['admin'],
   },
   {
     name: 'Utilisateurs admin',

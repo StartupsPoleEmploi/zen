@@ -24,6 +24,7 @@ async function sendDeclarationReminderCampaign() {
         Title: 'Avez-vous pensé à vous actualiser ?',
         Variables: {
           prenom: user.firstName,
+          peid: user.peId,
         },
         CustomCampaign: 'Avez-vous pensé à vous actualiser ?',
       })),

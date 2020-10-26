@@ -1,0 +1,35 @@
+# Edit this file to introduce tasks to be run by cron.
+#
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+#
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').#
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+#
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+#
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+#
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+# m h  dom mon dow   command
+
+0 * * * *  docker exec zen_db_1 /usr/bin/pg_dump -U zen-user actualisation > /mnt/backups/prod-data_$(date '+\%Y-\%m-\%d_\%H-\%M').sql
+0 0 * * *  docker exec zen_db_1 /usr/bin/pg_dump -U zen-user actualisation > /var/backups/zen/prod-data_$(date '+\%Y-\%m-\%d_\%H-\%M').sql
+
+# Restart docker when volume is unmouted
+2-59/5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh zen_node_1 /mnt/datalakepe >> /home/docker/zen/logs/control-mounted-volum.log
+*/5 * * * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/control-mounted-volum.sh zen_cron_1 /mnt/datalakepe >> /home/docker/zen/logs/control-mounted-volum.log
+
+# Remove all pdf generate at the end of an actu that are older than 6 month
+0 0 18 */1 * DATE_SUB=$(date --date="$date -6 month" '+\%Y-\%m-01') && find /home/docker/zen/back/uploads/declarations -maxdepth 1 -type f ! -newermt $DATE_SUB -delete
+
+# This script clean environment unused files and system
+1 1 1 * * mkdir -p /home/docker/zen/logs/ && /home/docker/zen/script/clean-env.sh >> /home/docker/zen/logs/zen-clean-env-cron.log

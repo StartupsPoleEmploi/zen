@@ -111,7 +111,7 @@ export class EmployerQuestion extends PureComponent {
     super(props);
     this.state = {
       onpenModal: false,
-    }
+    };
   }
 
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
@@ -133,7 +133,7 @@ export class EmployerQuestion extends PureComponent {
 
   onChangeSalaryModal = (value) => {
     document.activeElement.blur();
-    this.props.onChange({ name: 'salary', value, index: this.props.index })
+    this.props.onChange({ name: 'salary', value, index: this.props.index });
   }
 
   onCloseModal = () => {
@@ -301,7 +301,7 @@ export class EmployerQuestion extends PureComponent {
         >
           <DeleteIcon />
         </RemoveButton>
-        <EmployerQuestionSalaryModal 
+        <EmployerQuestionSalaryModal
           index={index}
           onChange={this.onChangeSalaryModal}
           onClose={this.onCloseModal}

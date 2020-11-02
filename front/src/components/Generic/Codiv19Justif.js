@@ -1,10 +1,9 @@
+import React from 'react';
+import styled from 'styled-components';
+import { Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-import React from 'react'
-import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
-import PropTypes from 'prop-types'
-
-import { errorOrange, intermediaryBreakpoint } from '../../constants'
+import { errorOrange, intermediaryBreakpoint } from '../../constants';
 
 const Container = styled.div`
   width: 100%;
@@ -21,7 +20,7 @@ const Container = styled.div`
   @media (max-width: ${intermediaryBreakpoint}) {
     grid-template-columns: 5px 1fr;
   }
-`
+`;
 
 const ExclamationMark = styled.div`
   color: ${errorOrange};
@@ -29,17 +28,17 @@ const ExclamationMark = styled.div`
   font-size: 2.5rem;
   position: relative;
   top: -3px;
-`
+`;
 const Title = styled.h2`
   text-transform: uppercase;
   margin: 0;
   font-size: 2rem;
-`
+`;
 
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 function Codiv19Justif({ whiteBg = false }) {
   if (!window.location.pathname.startsWith('/files')) {
     return null;
@@ -52,7 +51,8 @@ function Codiv19Justif({ whiteBg = false }) {
       </div>
       <Text>
         <Title>
-          Justificatif <span style={{ color: errorOrange }} >COVID-19</span>
+          Justificatif
+          <span style={{ color: errorOrange }}>COVID-19</span>
         </Title>
         <Typography>
           Pour donner votre attestation d'activité partielle :
@@ -63,17 +63,16 @@ function Codiv19Justif({ whiteBg = false }) {
               <a href="https://www.pole-emploi.fr" target="_blank" rel="noopener noreferrer"> pole-emploi.fr</a>
               {' '}
               et envoyer l'attestation activité partielle dfans la cotégorie Bullettin de salaire.
-            </li> 
+            </li>
           </ul>
         </Typography>
       </Text>
     </Container>
-  )
+  );
 }
 
 Codiv19Justif.propTypes = {
   whiteBg: PropTypes.bool,
-}
+};
 
-export default Codiv19Justif
-
+export default Codiv19Justif;

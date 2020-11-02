@@ -80,18 +80,18 @@ export default function EmployerQuestionSalaryModal(props) {
         <div style={{ textAlign: 'left' }}>
           <Typography>
             <b>
-              Au mois de
+              Au mois de&nbsp;
               {moment(activeMonth).format('MMMM')}
-              ,
+              ,&nbsp;
             </b>
             pour cet employeur
           </Typography>
           <ul>
             <li style={{ marginBottom: '3rem' }}>
               <Typography>
-                Vous avez travaillé
+                Vous avez travaillé&nbsp;
                 <b>OU</b>
-                avez eu un maintien de la mensualisation, déclarez:
+                &nbsp;avez eu un maintien de la mensualisation, déclarez :
               </Typography>
               <StyledTextField
                 id={`modal-salary[${index}]`}
@@ -118,7 +118,7 @@ export default function EmployerQuestionSalaryModal(props) {
             </li>
             <li style={{ marginBottom: '5rem' }}>
               <Typography style={{ textAlign: 'left' }}>
-                En activité partielle, déclarez
+                En activité partielle, déclarez :
               </Typography>
               <StyledTextField
                 id={`modal-partial[${index}]`}
@@ -168,7 +168,7 @@ export default function EmployerQuestionSalaryModal(props) {
         <>
           RÉMUNÉRATION €
           <br />
-          CRISE
+          CRISE&nbsp;
           <span style={{ color: errorOrange }}>COVID-19</span>
         </>
       )}

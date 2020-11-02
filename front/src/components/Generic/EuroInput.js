@@ -47,7 +47,7 @@ export class EuroInput extends Component {
         getInputRef={inputRef}
         thousandSeparator=" "
         decimalSeparator=","
-        suffix="€ brut"
+        suffix="€"
         maxLength={16}
         allowNegative={false}
         decimalScale={2}

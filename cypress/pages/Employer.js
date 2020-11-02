@@ -17,10 +17,10 @@ export const checkTotalHoursAndSalary = ({ hoursExpected, salaryExpected }) => {
     .should('contain', `Heures déclarées : ${hoursExpected} h`);
 
   cy.get('li.salary-total')
-    .contains('Salaire brut déclaré')
+    .contains('Rémunération déclaré')
     .parent()
     // eslint-disable-next-line no-irregular-whitespace
-    .should('contain', `Salaire brut déclaré : ${salaryExpected} €`);
+    .should('contain', `Rémunération déclaré : ${salaryExpected} €`);
 };
 
 export const sendDeclaration = () => {

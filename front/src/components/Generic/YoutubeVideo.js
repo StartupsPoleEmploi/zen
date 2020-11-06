@@ -96,7 +96,6 @@ export class YoutubeVideo extends Component {
             height: '100%',
             width: '100%',
           }}
-          tag="1001"
         >
           <img src={player} alt="" />
         </div>

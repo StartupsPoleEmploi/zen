@@ -19,9 +19,9 @@ export function YoutubeVideo({ id }) {
     <div style={{ ...style, ...shadowStyle }} id={id} tag="1001">
       <ReactComment text={`<iframe sandbox="allow-scripts allow-same-origin allow-presentation" 
       title="Vidéo de présentation du service Zen" 
-      src="https://www.youtube.com/embed/lnOxn6yzMyw?autoplay=1&amp;rel=0" 
+      src="https://www.youtube.com/embed/lnOxn6yzMyw" 
       frameborder="0" 
-      allow="autoplay; encrypted-media" 
+      allow="encrypted-media" 
       allowfullscreen="" 
       style="width: 100%; height: 35rem;"></iframe>`}
       />

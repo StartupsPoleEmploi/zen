@@ -7,7 +7,7 @@ import DeclarationQuestion from '../DeclarationQuestion';
 
 const defaultProps = {
   name: 'hasWorked',
-  label: "Avez-vous travaillé ?",
+  label: 'Avez-vous travaillé ?',
   onAnswer: action('onAnswer'),
 };
 

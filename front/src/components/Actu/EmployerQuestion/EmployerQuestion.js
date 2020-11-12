@@ -106,7 +106,6 @@ const InfoImg = styled.img`
 `;
 
 export class EmployerQuestion extends PureComponent {
-
   onChange = ({ target: { name: fieldName, value: _value }, type }) => {
     let value = _value;
     if (type === 'blur' && fieldName.startsWith('employerName')) {

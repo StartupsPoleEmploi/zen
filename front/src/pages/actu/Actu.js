@@ -693,7 +693,7 @@ export class Actu extends Component {
             <StyledList>
               <DeclarationQuestion
                 verticalLayout={useVerticalLayoutForQuestions}
-                label="Avez-vous travaillé ou reçu une indemnité d'activité partielle ?"
+                label="Avez-vous travaillé ?"
                 name="hasWorked"
                 value={this.state.hasWorked}
                 onAnswer={this.onAnswer}

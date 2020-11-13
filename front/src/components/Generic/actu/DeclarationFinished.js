@@ -121,7 +121,7 @@ const DeclarationFinished = ({ declaration, width }) => {
           <Grid item xs={6} sm={4}>
             <Block>
               <div>
-                <Typography>Rémunération déclarée</Typography>
+                <Typography>Salaire brut déclaré</Typography>
                 <Typography variant="h2" style={{ lineHeight: '1' }}>
                   <NumberFormat
                     thousandSeparator=" "

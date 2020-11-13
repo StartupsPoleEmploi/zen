@@ -220,7 +220,7 @@ exports[`Storyshots DeclarationQuestion default 1`] = `
             <p
               className="MuiTypography-root sc-fznJRM eXceFO MuiTypography-body1"
             >
-              Avez-vous travaillé ou reçu une indemnité d'activité partielle ?
+              Avez-vous travaillé ?
             </p>
             <fieldset
               className="MuiFormControl-root sc-fznWqX gNiuPx"
@@ -466,7 +466,7 @@ exports[`Storyshots DeclarationQuestion no 1`] = `
             <p
               className="MuiTypography-root sc-fznJRM eXceFO MuiTypography-body1"
             >
-              Avez-vous travaillé ou reçu une indemnité d'activité partielle ?
+              Avez-vous travaillé ?
             </p>
             <fieldset
               className="MuiFormControl-root sc-fznWqX gNiuPx"
@@ -712,7 +712,7 @@ exports[`Storyshots DeclarationQuestion vertical layout 1`] = `
             <p
               className="MuiTypography-root sc-fznJRM eXceFO MuiTypography-body1"
             >
-              Avez-vous travaillé ou reçu une indemnité d'activité partielle ?
+              Avez-vous travaillé ?
             </p>
             <fieldset
               className="MuiFormControl-root sc-fznWqX gNiuPx"
@@ -958,7 +958,7 @@ exports[`Storyshots DeclarationQuestion with children on no 1`] = `
             <p
               className="MuiTypography-root sc-fznJRM eXceFO MuiTypography-body1"
             >
-              Avez-vous travaillé ou reçu une indemnité d'activité partielle ?
+              Avez-vous travaillé ?
             </p>
             <fieldset
               className="MuiFormControl-root sc-fznWqX gNiuPx"
@@ -1207,7 +1207,7 @@ exports[`Storyshots DeclarationQuestion with children on yes 1`] = `
             <p
               className="MuiTypography-root sc-fznJRM eXceFO MuiTypography-body1"
             >
-              Avez-vous travaillé ou reçu une indemnité d'activité partielle ?
+              Avez-vous travaillé ?
             </p>
             <fieldset
               className="MuiFormControl-root sc-fznWqX gNiuPx"
@@ -1456,7 +1456,7 @@ exports[`Storyshots DeclarationQuestion yes 1`] = `
             <p
               className="MuiTypography-root sc-fznJRM eXceFO MuiTypography-body1"
             >
-              Avez-vous travaillé ou reçu une indemnité d'activité partielle ?
+              Avez-vous travaillé ?
             </p>
             <fieldset
               className="MuiFormControl-root sc-fznWqX gNiuPx"
@@ -1975,7 +1975,7 @@ exports[`Storyshots EuroInput with big float value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="10 200,40€"
+          value="10 200,40€ brut"
         />
         <div>
           <div
@@ -2048,7 +2048,7 @@ exports[`Storyshots EuroInput with big integer value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="10 000,00€"
+          value="10 000,00€ brut"
         />
         <div>
           <div
@@ -2121,7 +2121,7 @@ exports[`Storyshots EuroInput with float value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="1,20€"
+          value="1,20€ brut"
         />
         <div>
           <div
@@ -2194,7 +2194,7 @@ exports[`Storyshots EuroInput with integer value 1`] = `
           onKeyDown={[Function]}
           onMouseUp={[Function]}
           type="text"
-          value="1,00€"
+          value="1,00€ brut"
         />
         <div>
           <div
@@ -2402,18 +2402,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-fznyYp hSekPU"
+          className="sc-fzoJus fATwAx"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fznLxA iYdrEL"
+            className="sc-fzoVTD glxirR"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-fznXWL beznpT"
+            className="sc-fzpisO ljBoXT"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -2480,18 +2480,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-fznyYp kywQzo"
+          className="sc-fzoJus kIxsJJ"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fznLxA iYdrEL"
+            className="sc-fzoVTD glxirR"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-fznXWL beznpT"
+            className="sc-fzpisO ljBoXT"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -2558,7 +2558,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-fzowVh drAFRO"
+          className="sc-fzomuh jwiMmD"
         >
           <p
             className="MuiTypography-root MuiTypography-body1"
@@ -2566,7 +2566,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
           <div
-            className="sc-fzoJus kGhxNp"
+            className="sc-fzqAui VaXCe"
             style={
               Object {
                 "paddingTop": "3rem",
@@ -2597,7 +2597,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden={true}
-                  className="MuiSvgIcon-root sc-fzoVTD joLUPR"
+                  className="MuiSvgIcon-root sc-fzqMdD klYvDw"
                   focusable="false"
                   viewBox="0 0 24 24"
                 >
@@ -2671,7 +2671,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
         data-css-10e2wtd=""
       >
         <button
-          className="sc-fzpisO kpWvUt"
+          className="sc-fzowVh kpqNHu"
           id="video"
           onClick={[Function]}
           style={

@@ -25,7 +25,7 @@ const EMPLOYER_SLIDES = [
   {
     selector: '.employer-question:nth-child(1)  .root-salary',
     content: (
-      <Typography>Déclarez la rémunération pour cet employeur</Typography>
+      <Typography>Déclarez le salaire brut pour cet employeur</Typography>
     ),
   },
   {
@@ -33,7 +33,7 @@ const EMPLOYER_SLIDES = [
     content: (
       <Typography>
         Si votre employeur vous a payé des congés, n’oubliez pas d’inclure cette
-        somme dans la rémunération déclarée
+        somme dans le salaire brut déclaré
       </Typography>
     ),
   },

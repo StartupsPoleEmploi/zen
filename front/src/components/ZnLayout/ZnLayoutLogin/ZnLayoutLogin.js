@@ -11,18 +11,9 @@ import { isNavigationVisible } from './routes';
 import dashboardBg from '../../../images/dashboard-bg.svg';
 import SuccessSnackBar from '../../Generic/SuccessSnackBar';
 import ZnLayoutHeader from './ZnLayoutHeader';
-import Covid19Warning from '../../Generic/Covid19Warning';
-import Codiv19Justif from '../../Generic/Codiv19Justif';
 
 const StyledLayout = styled.div`
   margin: auto;
-`;
-
-const CovidContainer = styled.div`
-  padding: 0 15% 1rem 15%;
-  @media (max-width: 1400px) {
-    padding: 0 5% 1rem 5%;
-  }
 `;
 
 const Main = styled.main.attrs({ role: 'main' })`
@@ -81,10 +72,6 @@ export const Layout = ({
             user={user}
           />
           <Main addBackground={false}>
-            <CovidContainer>
-              <Covid19Warning />
-              <Codiv19Justif />
-            </CovidContainer>
             {children}
           </Main>
         </div>

@@ -2402,18 +2402,18 @@ exports[`Storyshots PEConnectLink dark 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-fznyYp fATwAx"
+          className="sc-fzoVTD fATwAx"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fznLxA glxirR"
+            className="sc-fzoVTD glxirR"
             height="31"
             src="PEConnectIcon-white.svg"
             width="34"
           />
           <span
-            className="sc-fznXWL ljBoXT"
+            className="sc-fzpisO ljBoXT"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -2480,18 +2480,18 @@ exports[`Storyshots PEConnectLink light 1`] = `
         data-css-10e2wtd=""
       >
         <a
-          className="sc-fznyYp kIxsJJ"
+          className="sc-fzoJus kIxsJJ"
           href="/api/login"
         >
           <img
             alt=""
-            className="sc-fznLxA glxirR"
+            className="sc-fzoVTD glxirR"
             height="31"
             src="PEConnectIcon-blue.svg"
             width="34"
           />
           <span
-            className="sc-fznXWL ljBoXT"
+            className="sc-fzpisO ljBoXT"
           >
             Se connecter avec Pôle emploi
           </span>
@@ -2558,7 +2558,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
         data-css-10e2wtd=""
       >
         <div
-          className="sc-fzowVh jwiMmD"
+          className="sc-fzomuh jwiMmD"
         >
           <p
             className="MuiTypography-root MuiTypography-body1"
@@ -2566,7 +2566,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
             Si vous êtes créateur / créatrice d'entreprise ou auto-entrepreneur, vous ne pouvez pas effectuer votre actualisation sur Zen.
           </p>
           <div
-            className="sc-fzoJus VaXCe"
+            className="sc-fzqAui VaXCe"
             style={
               Object {
                 "paddingTop": "3rem",
@@ -2597,7 +2597,7 @@ exports[`Storyshots UserJobCheck default 1`] = `
                 J'ai compris
                 <svg
                   aria-hidden={true}
-                  className="MuiSvgIcon-root sc-fzoVTD klYvDw"
+                  className="MuiSvgIcon-root sc-fzqMdD klYvDw"
                   focusable="false"
                   viewBox="0 0 24 24"
                 >
@@ -2671,7 +2671,7 @@ exports[`Storyshots YoutubeVideo default 1`] = `
         data-css-10e2wtd=""
       >
         <button
-          className="sc-fzpisO kpqNHu"
+          className="sc-fzowVh kpqNHu"
           id="video"
           onClick={[Function]}
           style={

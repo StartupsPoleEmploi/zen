@@ -159,7 +159,7 @@ const DeclarationSummaryDialog = ({
 
                 <div>
                   <DeclarationHeader>
-                    Salaire(s) brut déclaré(s)
+                    Salaire(s) brut déclarée(s)
                   </DeclarationHeader>
                   <DeclarationValues className="total-salary-declared">
                     {_isNaN(totalSalary) || totalSalary === 0 ? (

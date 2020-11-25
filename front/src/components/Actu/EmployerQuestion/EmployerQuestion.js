@@ -9,11 +9,11 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import withWidth from '@material-ui/core/withWidth';
 
-import EuroInput from '../Generic/EuroInput';
-import HourInput from '../Generic/HourInput';
-import YesNoRadioGroup from '../Generic/YesNoRadioGroup';
-import TooltipOnFocus from '../Generic/TooltipOnFocus';
-import warn from '../../images/warn.svg';
+import EuroInput from '../../Generic/EuroInput';
+import HourInput from '../../Generic/HourInput';
+import YesNoRadioGroup from '../../Generic/YesNoRadioGroup';
+import TooltipOnFocus from '../../Generic/TooltipOnFocus';
+import warn from '../../../images/warn.png';
 
 const StyledContainer = styled.div`
   display: flex;

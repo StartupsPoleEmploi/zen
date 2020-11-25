@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
 import PropTypes from 'prop-types';
+import ReactComment from './ReactComment';
+
 import image from '../../images/youtube-video-thumb.jpg';
 import player from '../../images/player.svg';
 
@@ -51,8 +52,16 @@ export class YoutubeVideo extends Component {
 
     if (this.state.showVideo) {
       return (
-        <div style={{ ...style, ...shadowStyle }} id={this.props.id}>
-          <iframe
+        <div style={{ ...style, ...shadowStyle }} id={this.props.id} tag="1001">
+          <ReactComment text={`<iframe sandbox="allow-scripts allow-same-origin allow-presentation" 
+          title="Vidéo de présentation du service Zen" 
+          src="https://www.youtube.com/embed/lnOxn6yzMyw?autoplay=1&amp;rel=0" 
+          frameborder="0" 
+          allow="autoplay; encrypted-media" 
+          allowfullscreen="" 
+          style="width: 100%; height: 35rem;"></iframe>`}
+          />
+          {/* <iframe
             sandbox="allow-scripts allow-same-origin allow-presentation"
             title={title}
             src="https://www.youtube.com/embed/lnOxn6yzMyw?autoplay=1&rel=0"
@@ -63,7 +72,7 @@ export class YoutubeVideo extends Component {
               width: '100%',
               height: '35rem',
             }}
-          />
+          /> */}
         </div>
       );
     }

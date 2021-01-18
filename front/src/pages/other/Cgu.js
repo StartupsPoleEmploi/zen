@@ -96,7 +96,7 @@ function Cgu({ isLogin }) {
         s’imposent à l’utilisateur dès leur mise en ligne. L’utilisateur est
         donc invité à consulter régulièrement la dernière version mise à jour.
       </Text>
-      <Text>Dernière modification : 09/12/2020</Text>
+      <Text>Dernière modification : 20/01/2021</Text>
 
       <Title2 num="1">Directeur de la publication et hébergeur</Title2>
       <Text>
@@ -261,7 +261,7 @@ function Cgu({ isLogin }) {
         déposés ainsi que leurs finalités précises, vous pouvez consulter la
         plateforme de gestion du consentement,&nbsp;
         <Link onClick={showPrivacy}>
-          disponible ici
+          disponible ici.
         </Link>
       </Text>
       <Text>
@@ -289,7 +289,7 @@ function Cgu({ isLogin }) {
       <Text>
         Pour les cookies donnant lieu à consentement préalable, l’utilisateur peut accepter
         ou refuser le dépôt de tout ou partie des cookies, à tout moment, en formulant des
-        choix sur la plateforme de gestion du consentement &nbsp;
+        choix sur la plateforme de gestion du consentement&nbsp;
         <Link to="" onClick={showPrivacy}>
           via ce lien dédié.
         </Link>

@@ -232,7 +232,7 @@ function Cgu({ isLogin }) {
         . Les différentes finalités de ces cookies sont décrites ci-dessous.
       </Text>
       <Text>
-        <b>Les cookies strictement nécessaires au fonctionnement du site :</b>
+        <b>Les cookies strictement nécessaires au fonctionnement du site :</b>{' '}
         ces cookies sont utilisés
         pour permettre le bon fonctionnement du site et l’utilisation de ses
         principales fonctionnalités et ne sont pas soumis au consentement de
@@ -245,7 +245,7 @@ function Cgu({ isLogin }) {
         Ces cookies sont exclusivement déposés par Pôle emploi.
       </Text>
       <Text>
-        <b>Les cookies statistiques ou de mesure d’audience :</b>
+        <b>Les cookies statistiques ou de mesure d’audience :</b>{' '}
         ces cookies ont pour finalités l’analyse statistique,
         la mesure d'audience, l’analyse des comportements et de la navigation
         dans le but d'améliorer l'expérience utilisateur et la performance du
@@ -257,7 +257,7 @@ function Cgu({ isLogin }) {
       <Text>
         Pour plus d’informations sur les cookies notamment sur le type de cookies
         déposés ainsi que leurs finalités précises, vous pouvez consulter la
-        plateforme de gestion du consentement, &nbsp;
+        plateforme de gestion du consentement,&nbsp;
         <Link onClick={showPrivacy}>
           disponible ici
         </Link>

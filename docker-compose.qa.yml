@@ -10,6 +10,7 @@ services:
     environment:
       - NODE_ENV=qa
       - REACT_APP_ZEN_ENV=qa
+    cpus: '1.5'
     mem_limit: 2G
 
   front:

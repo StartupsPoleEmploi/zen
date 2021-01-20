@@ -18,6 +18,7 @@ module.exports = {
       code: 100,
     }],
     'react/jsx-props-no-spreading': 0,
+    'jsx-a11y/anchor-is-valid': 0,
     'react/static-property-placement': 0,
     'react/state-in-constructor': 0,
     'implicit-arrow-linebreak': 0,

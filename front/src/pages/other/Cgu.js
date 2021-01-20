@@ -84,6 +84,7 @@ Text.propTypes = { children: PropTypes.node.isRequired };
 
 function Cgu({ isLogin }) {
   const classes = useStyles({ isLogin });
+  const showPrivacy = () => window.tC.privacyCenter.showPrivacyCenter();
   return (
     <div container className={classes.container}>
       <H1 style={{ fontSize: '3rem' }} className={classes.title}>
@@ -95,7 +96,7 @@ function Cgu({ isLogin }) {
         s’imposent à l’utilisateur dès leur mise en ligne. L’utilisateur est
         donc invité à consulter régulièrement la dernière version mise à jour.
       </Text>
-      <Text>Dernière modification : 25/11/2019</Text>
+      <Text>Dernière modification : 20/01/2021</Text>
 
       <Title2 num="1">Directeur de la publication et hébergeur</Title2>
       <Text>
@@ -201,7 +202,7 @@ function Cgu({ isLogin }) {
       </Text>
 
       <Title2 num="5">Cookies et autres traceurs</Title2>
-      <Title3>Qu’est-ce qu’un cookie ?</Title3>
+      <Title2 num="5.1">Qu’est-ce qu’un cookie ?</Title2>
       <Text>
         Un cookie est un petit fichier texte déposé sur le terminal des
         utilisateurs (par exemple un ordinateur, une tablette, un « Smartphone
@@ -220,80 +221,80 @@ function Cgu({ isLogin }) {
         modifier les informations qui y sont contenues.
       </Text>
 
-      <Title3>Les cookies déposés sur le site</Title3>
+      <Title2 num="5.2">Les cookies déposés sur le site</Title2>
       <Text>
         Sous réserve du choix de l’utilisateur, plusieurs cookies peuvent être
-        utilisés sur le site internet http://zen.pole-emploi.fr. Les différentes
-        finalités de ces cookies sont décrites ci-dessous.
+        utilisés sur le site internet
+        {' '}
+        <Link href="https://zen.pole-emploi.fr">
+          https://zen.pole-emploi.fr
+        </Link>
+        . Les différentes finalités de ces cookies sont décrites ci-dessous.
       </Text>
       <Text>
-        <b>
-          Cookies strictement nécessaires au fonctionnement du site : cookies
-          zen et emploi store développeur/pole-emploi.fr.
-        </b>
+        <b>Les cookies strictement nécessaires au fonctionnement du site :</b>
+        {' '}
+        ces cookies sont utilisés
+        pour permettre le bon fonctionnement du site et l’utilisation de ses
+        principales fonctionnalités et ne sont pas soumis au consentement de
+        l’utilisateur (par exemple, cookie permettant l’authentification).
+        Sans ces cookies, l’utilisation du site peut être dégradée et l’accès
+        à certains services être rendu impossible (par exemple, refus d’accès
+        au service permettant de réaliser l’actualisation du demandeur d’emploi).
+        Il est déconseillé de les désactiver. L’utilisateur peut cependant
+        s’opposer à leur dépôt en suivant les indications données au point 5.3.
+        Ces cookies sont exclusivement déposés par Pôle emploi.
       </Text>
       <Text>
-        <b>
-          Cookies statistiques ou de mesure d’audience : google analytics,
-          hotjar, mailjet.
-        </b>
+        <b>Les cookies statistiques ou de mesure d’audience :</b>
+        {' '}
+        ces cookies ont pour finalités l’analyse statistique,
+        la mesure d'audience, l’analyse des comportements et de la navigation
+        dans le but d'améliorer l'expérience utilisateur et la performance du
+        site internet. Ils sont déposés par des tiers pour le compte de Pôle emploi.
+        L’utilisateur peut paramétrer le dépôt des cookies en suivant les indications
+        données au point 5.3. Le fait de refuser la mise en œuvre de tels cookies
+        n'a pas d'incidence sur la navigation sur le site.
       </Text>
-      <div className={classes.cookieContainer}>
-        <Text color="primary" className={classes.cookieBlock}>
-          <b>Mailjet</b>
-          <br />
-          Typologie :
-          {' '}
-          <b>Pixel invisible mailjet</b>
-          <br />
-          Finalites : Suivi d’ouverture des courriels
-          <br />
-          Duree de vie et de conservation : 13 mois
-        </Text>
-        <Text color="primary" className={classes.cookieBlock}>
-          <b>Google analytics</b>
-          <br />
-          Typologie :
-          {' '}
-          <b>_ga</b>
-          <br />
-          Finalites : Ce cookie est utilisé pour l’analyse Google Analytics. Il
-          permet de suivre les performances des pages consultées par les
-          utilisateurs du Site.
-          <br />
-          Duree de vie et de conservation : 13 mois
-        </Text>
-        <Text color="primary" className={classes.cookieBlock}>
-          Typologie :
-          {' '}
-          <b>_gat_UA-119908609-2</b>
-          <br />
-          Finalites : Ce cookie est utilisé par Google Analytics pour diminuer
-          le taux de requêtes en cas de fort trafic.
-          <br />
-          Duree de vie et de conservation : 12 mois
-        </Text>
-        <Text color="primary" className={classes.cookieBlock}>
-          Typologie :
-          {' '}
-          <b>_gid</b>
-          <br />
-          Finalites : Ce cookie est utilisé par Google Universal Analytics pour
-          enregistrer un identifiant unique afin de générer des données
-          statistiques sur la façon dont le visiteur utilise le site.
-          <br />
-          Duree de vie et de conservation : 12 mois
-          <br />
-        </Text>
-        <Text color="primary" className={classes.cookieBlock}>
-          <b>Hotjar</b>
-          <br />
-          Cookies fonctionnels ou de personnalisation : hotjar.
-          <br />
-        </Text>
-      </div>
-
-      <Title3>Accepter ou refuser les cookies</Title3>
+      <Text>
+        Pour plus d’informations sur les cookies notamment sur le type de cookies
+        déposés ainsi que leurs finalités précises, vous pouvez consulter la
+        plateforme de gestion du consentement,&nbsp;
+        <Link onClick={showPrivacy}>
+          disponible ici.
+        </Link>
+      </Text>
+      <Text>
+        Dans le cadre de l’actualisation des demandeurs d’emploi, les courriels
+        envoyés aux usagers contiennent un traceur de type « pixel invisible »
+        qui a pour finalité le suivi d’ouverture des courriels. Ce traceur est
+        déposé par Mailjet pour le compte de Pôle emploi. Il a une fonction
+        technique et ne collecte pas les données personnelles de l’utilisateur.
+      </Text>
+      <Title2 num="5.3">Accepter ou refuser les cookies</Title2>
+      <Text>
+        L’utilisateur dispose de différents moyens pour gérer ses choix en matière de cookies.
+        Les modalités de gestion diffèrent selon que le cookie est soumis ou non à
+        consentement préalable. L’utilisateur peut modifier ses choix à tout moment.
+        Pour information, le paramétrage des cookies est susceptible de modifier
+        les conditions de navigation sur le site internet
+        {' '}
+        <Link href="https://zen.pole-emploi.fr">
+          https://zen.pole-emploi.fr
+        </Link>
+        , ainsi que les conditions d’accès à certains services et d’entrainer des
+        dysfonctionnements de certaines fonctionnalités.
+      </Text>
+      <Text><b>La plateforme de gestion du consentement</b></Text>
+      <Text>
+        Pour les cookies donnant lieu à consentement préalable, l’utilisateur peut accepter
+        ou refuser le dépôt de tout ou partie des cookies, à tout moment, en formulant des
+        choix sur la plateforme de gestion du consentement&nbsp;
+        <Link to="" onClick={showPrivacy}>
+          via ce lien dédié.
+        </Link>
+      </Text>
+      <Text><b>Le paramétrage du navigateur</b></Text>
       <Text>
         L’utilisateur peut accepter ou refuser le dépôt de tout ou partie des
         cookies, à tout moment, en modifiant les paramètres de son navigateur
@@ -302,18 +303,39 @@ function Cgu({ isLogin }) {
         <ul>
           <li>
             Google Chrome :
-            (https://support.google.com/chrome/answer/95647?hl=fr)
+            {' '}
+            (
+            <Link href="https://support.google.com/chrome/answer/95647?hl=fr">
+              https://support.google.com/chrome/answer/95647?hl=fr
+            </Link>
+            )
           </li>
           <li>
-            Internet Explorer : (https://support.microsoft.com/fr-fr/help/17442)
+            Internet Explorer :
+            {' '}
+            (
+            <Link href="https://support.microsoft.com/fr-fr/help/17442">
+              https://support.microsoft.com/fr-fr/help/17442
+            </Link>
+            )
           </li>
           <li>
             Mozilla Firefox :
-            (https://support.mozilla.org/fr/kb/activer-desactiver-cookies)
+            {' '}
+            (
+            <Link href="https://support.mozilla.org/fr/kb/activer-desactiver-cookies">
+              https://support.mozilla.org/fr/kb/activer-desactiver-cookies
+            </Link>
+            )
           </li>
           <li>
             Safari :
-            (https://support.apple.com/fr-fr/guide/safari/sfri11471/mac)
+            {' '}
+            (
+            <Link href="https://support.apple.com/fr-fr/guide/safari/sfri11471/mac">
+              https://support.apple.com/fr-fr/guide/safari/sfri11471/mac
+            </Link>
+            )
           </li>
         </ul>
       </Text>
@@ -329,7 +351,11 @@ function Cgu({ isLogin }) {
         Pour plus d’informations sur les cookies et les moyens permettant
         d’empêcher leur installation, l’utilisateur peut se rendre sur la page
         dédiée sur le site internet de la CNIL :
-        https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser.
+        {' '}
+        <Link href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser">
+          https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser.
+        </Link>
+        {' '}
       </Text>
 
       <Title2 num="6">Usages non autorisés et sanctions</Title2>

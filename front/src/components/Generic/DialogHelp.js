@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, Link } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import MessageOutlined from '@material-ui/icons/MessageOutlined';
@@ -59,6 +59,7 @@ function BlockItem({ Icon, text, section }) {
     <Grid item xs={12} sm={6} md={4}>
       <A
         href={`https://zen.pole-emploi.fr/zen-doc/?${section}`}
+        disabled="true"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -90,6 +91,17 @@ function DialogHelp({ isOpened, onClose }) {
             <b>quel sujet</b>
             {' '}
             porte votre demande ?
+          </Typography>
+          <Typography style={{
+            fontSize: '1.4rem', marginTop: '3rem', textAlign: 'left', textTransform: 'none',
+          }}
+          >
+              La FAQ est momentanément indisponible. Cliquez ici pour 
+              {' '}
+              <Link href="mailto:zen.00322@pole-emploi.fr">
+                nous contacter
+              </Link>
+              .
           </Typography>
         </div>
       )}

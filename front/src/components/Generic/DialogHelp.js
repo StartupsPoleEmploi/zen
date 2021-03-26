@@ -96,12 +96,12 @@ function DialogHelp({ isOpened, onClose }) {
             fontSize: '1.4rem', marginTop: '3rem', textAlign: 'left', textTransform: 'none',
           }}
           >
-              La FAQ est momentanément indisponible. Cliquez ici pour 
-              {' '}
-              <Link href="mailto:zen.00322@pole-emploi.fr">
-                nous contacter
-              </Link>
-              .
+            La FAQ est momentanément indisponible. Cliquez ici pour
+            {' '}
+            <Link href="mailto:zen.00322@pole-emploi.fr">
+              nous contacter
+            </Link>
+            .
           </Typography>
         </div>
       )}

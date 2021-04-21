@@ -167,7 +167,7 @@ services:
   wordpress:
     depends_on:
       - db-wordpress
-    image: wordpress:5.1.1-php7.3-apache
+    image: wordpress:5.7.1-php7.4-apache
     restart: always
     networks:
       actualisation_network:

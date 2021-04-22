@@ -111,7 +111,7 @@ services:
       actualisation_network:
         ipv4_address: 172.0.0.150
     volumes:
-      - postgres-data:/var/lib/postgresql
+      - ./postgres-data:/var/lib/postgresql
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -153,7 +153,7 @@ services:
   db-wordpress:
     image: mysql:5.7
     volumes:
-      - db-wordpress-data:/var/lib/mysql
+      - ./db-wordpress-data:/var/lib/mysql
     restart: always
     networks:
       actualisation_network:
@@ -167,7 +167,7 @@ services:
   wordpress:
     depends_on:
       - db-wordpress
-    image: wordpress:5.7.1-php7.4-apache
+    image: wordpress:5.6-php8.0-apache
     restart: always
     networks:
       actualisation_network:
@@ -179,7 +179,17 @@ services:
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_MYSQL_PASSWORD}
     volumes:
       - ./wordpress:/var/www/html
-       
+  
+  backups:
+    restart: always
+    hostname: backups
+    build:
+      context: .
+      dockerfile: dockerfile_backups
+    volumes:
+      - .:/home/docker
+      - ./backups/home/backups:/home/backups
+      - /mnt:/mnt
        
 networks:
   actualisation_network:
@@ -189,6 +199,6 @@ networks:
         - subnet: 172.0.0.0/16
           gateway: 172.0.0.1
 
-volumes:
-  postgres-data:
-  db-wordpress-data:
+          #volumes:
+          #postgres-data:
+          #db-wordpress-data:

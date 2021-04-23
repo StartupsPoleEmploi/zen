@@ -4,6 +4,7 @@
 /.env.prod
 node_modules
 nginx/entrust-zen.pole-emploi.fr-key.pem
+nginx/zen.crt
 nginx/.htpasswd*
 nginx/var/
 .vscode/settings.json

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Typography, Grid, Link } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import MessageOutlined from '@material-ui/icons/MessageOutlined';

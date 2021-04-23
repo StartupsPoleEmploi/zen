@@ -1,2 +1,9 @@
 **/node_modules
 back/uploads*
+db-wordpress-data/
+postgres-data/
+nginx/
+logs/
+.git/
+front-admin/
+backups/

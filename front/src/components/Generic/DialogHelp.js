@@ -14,7 +14,7 @@ import VerticalSplitOutlinedIcon from '@material-ui/icons/VerticalSplitOutlined'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
-import DonutLargeOutlinedIcon from '@material-ui/icons/DonutLargeOutlined';
+import DonutLargeOutlinedIcon from '@material-ui/icons/DonutLargeOutlined';   
 
 import { primaryBlue } from '../../constants';
 import { CustomDialog } from './CustomDialog';

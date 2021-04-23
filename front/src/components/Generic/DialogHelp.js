@@ -13,6 +13,7 @@ import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined';
 import VerticalSplitOutlinedIcon from '@material-ui/icons/VerticalSplitOutlined';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
+import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import DonutLargeOutlinedIcon from '@material-ui/icons/DonutLargeOutlined';
 
 import { primaryBlue } from '../../constants';
@@ -59,7 +60,6 @@ function BlockItem({ Icon, text, section }) {
     <Grid item xs={12} sm={6} md={4}>
       <A
         href={`https://zen.pole-emploi.fr/zen-doc/?${section}`}
-        disabled="true"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -92,17 +92,6 @@ function DialogHelp({ isOpened, onClose }) {
             {' '}
             porte votre demande ?
           </Typography>
-          <Typography style={{
-            fontSize: '1.4rem', marginTop: '3rem', textAlign: 'left', textTransform: 'none',
-          }}
-          >
-            La FAQ est momentanément indisponible. Cliquez ici pour
-            {' '}
-            <Link href="mailto:zen.00322@pole-emploi.fr">
-              nous contacter
-            </Link>
-            .
-          </Typography>
         </div>
       )}
       titleId="HelpDialogContentText"
@@ -115,42 +104,47 @@ function DialogHelp({ isOpened, onClose }) {
             <BlockItem
               Icon={ComputerOutlinedIcon}
               text="S'actualiser sur Zen pour la première fois"
-              section="cat=16"
+              section="p=299"
             />
             <BlockItem
               Icon={AccountCircleOutlinedIcon}
               text="Mon compte"
-              section="cat=22"
+              section="p=278"
             />
             <BlockItem
               Icon={DescriptionOutlinedIcon}
               text="Ma déclaration"
-              section="cat=17"
+              section="p=266"
             />
             <BlockItem
               Icon={DnsOutlinedIcon}
               text="Mes employeurs"
-              section="cat=18"
+              section="p=55"
             />
             <BlockItem
               Icon={VerticalSplitOutlinedIcon}
               text="Mon actualisation"
-              section="cat=19"
+              section="p=27"
             />
             <BlockItem
               Icon={FileCopyOutlinedIcon}
               text="Mes justificatifs"
-              section="cat=20"
+              section="p=35"
             />
             <BlockItem
               Icon={DonutLargeOutlinedIcon}
               text="Mes allocations chomâge"
-              section="cat=21"
+              section="p=32"
+            />
+            <BlockItem
+              Icon={WarningOutlinedIcon}
+              text="Informations COVID-19"
+              section="p=347"
             />
             <BlockItem
               Icon={EmailOutlinedIcon}
               text="Contactez Pôle emploi"
-              section="p=298"
+              section="p=336"
             />
           </Grid>
         </Container>

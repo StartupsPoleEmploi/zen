@@ -17,7 +17,7 @@ function $formatLine(line) {
     migre, // Migré : OUI => NON
     personnalisable, // Personnalisable: OUI => NON
     login, // Login :
-    password, // Mot de passe : 123456-A
+    password, // Mot de passe :
     RSIN, // RSIN :
     MOT_DE_PASSE_INDIVIDU, // MOT_DE_PASSE_INDIVIDU :
     CODEPOSTAL, // CODEPOSTAL :

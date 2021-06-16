@@ -6,9 +6,11 @@ RUN echo "LANG=\"$LANG\"\nLANGUAGE=\"fr_FR:fr\"\nLC_NUMERIC=\"$LANG\"\nLC_TIME=\
 
 
 RUN apt-get update && \
-    apt-get -y install cron bzip2 tar language-pack-fr vim
+    apt-get -y install cron bzip2 tar language-pack-fr vim postgresql-client-common iputils-ping postgresql-client-12
 
-RUN echo "0 2 * * * root bash /home/backups/BACKUP.sh >>/var/log/backup.log" >>/etc/cron.d/backups;
+RUN echo "0 2 * * * root bash /home/backups/BACKUP.sh >>/var/log/backup.log" >>/etc/cron.d/backups; \
+    echo "0 0 * * * root bash /home/backups/BACKUP_DB.sh matin >>/var/log/backup_db.log" >>/etc/cron.d/backups_db; \
+    echo "0 12 * * * root bash /home/backups/BACKUP_DB.sh midi >>/var/log/backup_db.log" >>/etc/cron.d/backups_db;
 
 WORKDIR /home/backups
 

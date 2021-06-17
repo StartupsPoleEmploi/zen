@@ -14,5 +14,6 @@ RUN echo "0 2 * * * root bash /home/backups/BACKUP.sh >>/var/log/backup.log" >>/
 
 WORKDIR /home/backups
 
-CMD service cron start; \
+CMD printenv | grep -E "^POSTGRES_" >/root/db_env.sh; \
+    service cron start; \
     sleep infinity;

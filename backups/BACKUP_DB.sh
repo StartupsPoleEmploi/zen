@@ -15,4 +15,6 @@ DIR2="/home/backups";
 
 mkdir -p "$DIR1";
 
-PGPASSWORD="$POSTGRES_PASSWORD" $NICE pg_dump -h db -U zen-user actualisation | bzip2 -cq9 | tee $DIR1/$NAME >$DIR2/$NAME;
+source /root/db_env.sh
+
+PGPASSWORD="$POSTGRES_PASSWORD" $NICE /usr/bin/pg_dump -h db -U zen-user actualisation | bzip2 -cq9 | tee $DIR1/$NAME >$DIR2/$NAME;

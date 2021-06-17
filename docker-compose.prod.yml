@@ -64,3 +64,7 @@ services:
       - REACT_APP_ZEN_ENV=production
       - NPM_CONFIG_PRODUCTION=false
       - YARN_PRODUCTION=false
+
+  backups:
+    environment:
+      - BACKUPS_ENV=production

@@ -25,3 +25,7 @@ services:
   db:
     cpus: '1.5'
     mem_limit: 2G
+
+  backups:
+    environment:
+      - BACKUPS_ENV=recette

@@ -153,12 +153,19 @@ services:
   backups:
     restart: always
     hostname: backups
+    networks:
+      actualisation_network:
+        ipv4_address: 172.0.0.166
     build:
       context: .
       dockerfile: dockerfile_backups
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - .:/home/docker
-      - ./backups/home/backups:/home/backups
+      - ./backups:/home/backups
       - /mnt:/mnt
        
 networks:

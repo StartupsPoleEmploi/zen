@@ -27,5 +27,6 @@ services:
     mem_limit: 2G
 
   backups:
-    environment:
-      - BACKUPS_ENV=recette
+    build:
+      args:
+        - BACKUPS_ENV=recette

@@ -1,0 +1,11 @@
+FROM base/debian-apt:stretch AS configApt
+
+FROM node:12.18.0
+
+COPY --from=configApt / /
+
+WORKDIR /home/front
+
+CMD (which yarn || npm i -g yarn@1.15.2) \
+    && yarn install \
+    && yarn start;

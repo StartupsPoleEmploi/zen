@@ -1,3 +1,6 @@
+db-wordpress-data
+backups
+postgres-data
 /.env
 /.env.dev
 /.env.qa

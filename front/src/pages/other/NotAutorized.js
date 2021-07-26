@@ -25,7 +25,7 @@ export default function NotAutorized() {
   return (
     <StyledNotAutorized>
       <LandingText component="h1" style={{ marginBottom: '5rem' }}>
-        Malheureusement, vous n'êtes pas autorisé à utiliser Zen.
+        Malheureusement, vous n'êtes pas autorisé.e à utiliser Zen.
       </LandingText>
 
       <Text paragraph style={{ marginBottom: '5rem' }}>
@@ -39,18 +39,17 @@ export default function NotAutorized() {
         {' '}
         <span aria-label="inscrit ou inscrite">inscrit.e</span>
         {' '}
-        à Pôle emploi exerçant une activité en France est autorisé à utiliser Zen,
-        {' '}
-        excepté en Bourgogne-Franche-Comté, Centre Val de
-        Loire et les DOM TOM.
+        à Pôle emploi exerçant une activité en France (excepté en Bourgogne-France-Comté,
+        Centre Val de Loire et les DOM TOM), est autorisé.e à utiliser ZEN.
       </Text>
 
       <Text paragraph variant="subtitle1">
         Si vous pensez être éligible pour utiliser Zen,
-        merci de nous contacter par
+        merci de nous contacter via
         {' '}
-        <a href="mailto:zen.00322@pole-emploi.fr">par e-mail</a>
-        .
+        notre formulaire de contact,
+        {' '}
+        <a href="https://zen.pole-emploi.fr/zen-doc/?p=336"> en cliquant ici.</a>
       </Text>
     </StyledNotAutorized>
   );

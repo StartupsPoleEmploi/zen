@@ -7,7 +7,7 @@ NICE="/usr/bin/nice -n 15";
 DATE="$WEEKDAY";
 
 OPTION=${1:-matin};
-BACKUP_ENV=${2:-production};
+BACKUPS_ENV=${2:-production};
 
 # ex: prod-data_18_matin.tar.bz2  (le cron déclenche 2 sauvegardes par jour sur 31 jours)
 NAME="${BACKUPS_ENV}-data_${DAY}_${OPTION}.tar.bz2";

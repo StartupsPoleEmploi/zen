@@ -58,3 +58,4 @@ The entrust-zen.pole-emploi.fr-key.pem file must be put in the nginx folder
 - restart the wordpress container
 
   `docker restart zen_wordpress_1`
+- 

@@ -26,6 +26,8 @@ import photo1 from '../../images/photo1.jpg';
 import photo2 from '../../images/photo2.jpg';
 import photo3 from '../../images/photo3.jpg';
 
+import HelpLinkHome from '../../components/ZnLayout/HelpLinkHome';
+
 const VIDEO_ID = 'home-video';
 
 const windowWidthElement = `
@@ -371,7 +373,7 @@ export const Home = ({ location: { search } }) => {
             <Tagline>
               Zen est un service Pôle emploi dédié aux
               {' '}
-              <strong>personnes ayant un ou plusieurs employeurs.</strong>
+              <strong>assistant.e.s maternel.le.s ayant un ou plusieurs employeurs.</strong>
               <br />
               Bénéficiez d'une actualisation et d'un envoi de justificatifs
               simplifiés.
@@ -485,7 +487,7 @@ export const Home = ({ location: { search } }) => {
 
       <FullWidthSection>
         <SectionTitle style={{ color: '#fff' }}>
-          Zen est pour vous si ...
+          L’accès à ZEN est réservé aux utilisateurs autorisés.
         </SectionTitle>
         <ZenIsForYouContainer>
           <ZenIsForYouSubSection>
@@ -498,24 +500,15 @@ export const Home = ({ location: { search } }) => {
                   height: 'auto',
                 }}
               />
-              <strong>
-                Vous êtes
-                {' '}
-                <span aria-label="assistants ou assistantes maternels">
-                  assistant.e maternel.le
-                </span>
-              </strong>
-              <br />
-              <span aria-label="inscrits ou inscrites">inscrit.e</span>
+              Découvrez les conditions d’accès à ZEN en cliquant
               {' '}
-              à Pôle
-              emploi
+              <a href="https://zen.pole-emploi.fr/zen-doc/?p=299" target="_blank" rel="noopener noreferrer">ici</a>
+              {' '}
               <br />
-              Exerçant une activité en France,
-              <br />
-              excepté en Bourgogne-Franche-Comté, Centre-Val de Loire
-              <br />
-              et dans les DOM-TOM
+              Des questions ? Consultez notre
+              {' '}
+              <HelpLinkHome />
+              {' '}
             </ZenIsForYouText>
           </ZenIsForYouSubSection>
         </ZenIsForYouContainer>

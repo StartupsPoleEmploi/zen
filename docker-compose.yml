@@ -6,7 +6,7 @@ services:
     ports:
       - '80:80'
       - '443:443'
-    cpus: '0.50'
+    cpus: 0.50
     mem_limit: 300M
     volumes:
       - './nginx/production.conf:/etc/nginx/conf.d/default.conf'
@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile_back
-    cpus: '2.5'
+    cpus: 2.5
     mem_limit: 4G
     volumes:
       - './back:/home/back'
@@ -73,7 +73,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile_front
-    cpus: '0.50'
+    cpus: 0.50
     mem_limit: 2G
     volumes:
       - './front:/home/front'
@@ -90,7 +90,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile_front
-    cpus: '0.50'
+    cpus: 0.50
     mem_limit: 2G
     volumes:
       - './front-admin:/home/front'
@@ -105,7 +105,7 @@ services:
   db:
     image: postgres:10.4
     restart: always
-    cpus: '4.0'
+    cpus: 4.0
     mem_limit: 8G
     networks:
       actualisation_network:
@@ -149,7 +149,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_MYSQL_PASSWORD}
     volumes:
       - ./wordpress:/var/www/html
-  
+
   backups:
     restart: always
     hostname: backups
@@ -167,7 +167,7 @@ services:
       - .:/home/docker
       - ./backups:/home/backups
       - /mnt:/mnt
-       
+
 networks:
   actualisation_network:
     driver: bridge

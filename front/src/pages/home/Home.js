@@ -313,6 +313,7 @@ const ZenIsForYouText = styled(Typography)`
     text-align: center;
     color: white;
     margin: auto;
+    font-size: 2.5em;
   }
 `;
 
@@ -502,7 +503,7 @@ export const Home = ({ location: { search } }) => {
               />
               Découvrez les conditions d’accès à ZEN en cliquant
               {' '}
-              <a href="https://zen.pole-emploi.fr/zen-doc/?p=299" target="_blank" rel="noopener noreferrer">ici</a>
+              <a style={{ color: 'white' }} href="https://zen.pole-emploi.fr/zen-doc/?p=299" target="_blank" rel="noopener noreferrer">ici</a>
               {' '}
               <br />
               Des questions ? Consultez notre

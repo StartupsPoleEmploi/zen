@@ -13,12 +13,17 @@ const A = styled.a`
 
 function HelpLinkHome({ onClick }) {
   return (
-    <A
-      onClick={onClick}
-      title="Consulter notre page d'aide"
-    >
-      « Foire aux Questions »
-    </A>
+    <span>
+      «&nbsp;
+      <A
+        onClick={onClick}
+        title="Consulter notre page d'aide"
+        style={{ color: 'white' }}
+      >
+        Foire aux Questions
+      </A>
+      &nbsp;»
+    </span>
   );
 }
 

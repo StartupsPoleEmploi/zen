@@ -3,6 +3,11 @@ const fs = require('fs')
 const pgp = require('pg-promise')();
 
 const cn = {
+    //-- Recette
+    // connectionString: 'postgres://qa-user:qa-pass@localhost:5000/actualisation',
+    //-- Prod (password dans /home/docker/zen/.env)
+    // connectionString: 'postgres://zen-user:[password]@localhost:5000/actualisation',
+    //-- local
     connectionString: 'postgres://postgres:admin@localhost:5432/actualisation',
     max: 30
 };
@@ -49,7 +54,7 @@ async function updateUser(userEmail) {
         throw new Error("user email can not be null !");
     }
     try {
-        await db.none('update users set "isAuthorized" = false where email = $1', userEmail);
+        await db.none('update "Users" set "isAuthorized" = false where "email" = $1', userEmail);
     } catch (e) {
         console.error('Error', e);
     }
@@ -57,7 +62,7 @@ async function updateUser(userEmail) {
 
 async function countUsersNotAuthorized() {
     try {
-        const data = await db.one('select count(*) from users where "isAuthorized" = true');
+        const data = await db.one('select count(*) from "Users" where "isAuthorized" = true');
         return data.count;
     } catch (e) {
         console.error('Error', e);

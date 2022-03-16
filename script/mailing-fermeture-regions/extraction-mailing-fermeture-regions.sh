@@ -37,22 +37,22 @@ bzip2 -dcq "$nom_fichier_backup">dump_backup_BDD_zen.sql
 echo "Démarrage du docker postgresql"
 docker-compose up -d
 echo "Copie du script backup SQL dans le container docker"
-docker cp dump_backup_BDD_zen.sql mailing-fermeture-regions-db-1:/dump_backup_BDD_zen.sql
+docker cp dump_backup_BDD_zen.sql mailing-fermeture-regions_db_1:/dump_backup_BDD_zen.sql
 echo "Chargement du script backup SQL dans la BDD"
-docker exec -it mailing-fermeture-regions-db-1 psql -U zen-user -d actualisation -f /dump_backup_BDD_zen.sql
+docker exec -it mailing-fermeture-regions_db_1 psql -U zen-user -d actualisation -f /dump_backup_BDD_zen.sql
 
 echo "Copie du script creation_table_de_eligible SQL et du fichier csv dans le container docker"
-docker cp creation_table_de_eligible.sql mailing-fermeture-regions-db-1:/creation_table_de_eligible.sql
-docker cp zen_de_eligible_full.csv mailing-fermeture-regions-db-1:/zen_de_eligible_full.csv
+docker cp creation_table_de_eligible.sql mailing-fermeture-regions_db_1:/creation_table_de_eligible.sql
+docker cp zen_de_eligible_full.csv mailing-fermeture-regions_db_1:/zen_de_eligible_full.csv
 echo "Création et peuplement de la table de_eligible depuis le fichier PEDUMP"
-docker exec -it mailing-fermeture-regions-db-1 psql -U zen-user -d actualisation -f /creation_table_de_eligible.sql
+docker exec -it mailing-fermeture-regions_db_1 psql -U zen-user -d actualisation -f /creation_table_de_eligible.sql
 
 #Les tables sont chargées et prêtes à être requetées. On utilise la liste des codes postaux du fichier texte.
 file="liste_code_postaux.txt"
 read -d $'\x04' liste_code_postaux < "$file"
 
 echo "Extrait la liste des DE pour la campagne de mail sur les départements : "$liste_code_postaux
-docker exec -it mailing-fermeture-regions-db-1 psql -U zen-user -d actualisation -c '\COPY
+docker exec -it mailing-fermeture-regions_db_1 psql -U zen-user -d actualisation -c '\COPY
 (SELECT DISTINCT ON ("u"."email", "u"."firstName","u"."lastName") "u"."email","u"."lastName","u"."firstName","u"."gender","u"."postalCode","u"."agencyCode","e"."id_rci","e"."id_individu", "u"."id", "u"."registeredAt", "u"."isBlocked"
  FROM "Users" as "u"
  JOIN "de_eligible" "e" ON "u"."email" = "e"."email"
@@ -64,11 +64,11 @@ docker exec -it mailing-fermeture-regions-db-1 psql -U zen-user -d actualisation
 TO /tmp/extraction-mailing.csv WITH CSV HEADER;'
 
 #On extrait le résultat de la requête dans un fichier CSV qu'on vient copier dans notre répertoire courant
-docker cp mailing-fermeture-regions-db-1:/tmp/extraction-mailing.csv .
+docker cp mailing-fermeture-regions_db_1:/tmp/extraction-mailing.csv .
 
 #On fait le ménage
 echo "Drop la DB actualisation"
-docker exec -it mailing-fermeture-regions-db-1 psql -U zen-user -d postgres -c "DROP DATABASE actualisation WITH (FORCE)"
+docker exec -it mailing-fermeture-regions_db_1 psql -U zen-user -d postgres -c "DROP DATABASE actualisation WITH (FORCE)"
 
 #echo "Stop le container et le détruit"
 docker-compose stop

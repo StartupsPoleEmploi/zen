@@ -24,7 +24,7 @@
     "verbose": true
   },
   "dependencies": {
-    "async": "^3.2.0",
+    "async": "^3.2.2",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.1",
     "connect-pg-simple": "^6.1.0",

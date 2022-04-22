@@ -3,12 +3,12 @@ const fs = require('fs')
 const pgp = require('pg-promise')();
 
 const cn = {
-    //-- Recette
+    // -- Recette
     // connectionString: 'postgres://qa-user:qa-pass@localhost:5000/actualisation',
     //-- Prod (password dans /home/docker/zen/.env)
-    // connectionString: 'postgres://zen-user:[password]@localhost:5000/actualisation',
+    connectionString: 'postgres://zen-user:6zMsr6DqmhLqmPaIJNOd@localhost:5000/actualisation',
     //-- local
-    connectionString: 'postgres://postgres:admin@localhost:5432/actualisation',
+    // connectionString: 'postgres://postgres:admin@localhost:5432/actualisation',
     max: 30
 };
 const db = pgp(cn);
@@ -34,7 +34,7 @@ function readCsvFileAndReturnUsersEmails(csvFile) {
         const usersEmails = [];
         fs.createReadStream(csvFile)
             .pipe(csv({separator: '|'}))
-            .on('data', (data) => usersEmails.push(data['EMAIL']))
+            .on('data', (data) => usersEmails.push(data['email']))
             .on('end', () => {
                 resolve(usersEmails);
             });

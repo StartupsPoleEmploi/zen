@@ -32,8 +32,12 @@ $ ssh -L 5000:172.0.0.150:5432 jdevy@137.74.27.5
 #### Vérification
 
 Vérifier qu'on se connecte bien à la base distante
+Dans un autre terminal :
 ```shell
 $ psql postgres://qa-user:qa-pass@localhost:5000/actualisation
+
+# vérifier pour un DE du fichier si on a bien le flag isAuthorized=t avant et isAuthorized=f après
+$ actualisation=# select * from "Users" where "email"='aanja11@yahoo.fr';
 $ actualisation=# \q
 ```
 
@@ -45,3 +49,22 @@ Copier le fichier [mon_fichier].csv dans ce dossier ./update-users
 ```shell
 $ node update-zen-users.js [mon_fichier].csv
 ```
+
+Remarques : 
+- dans le script update-zen-users.js, penser à basculer la connection ligne 7 (recette/prod)
+- pour trouver le mdp de connection pour la prod (ligne 9) (normalement pas besoin), il faut entrer dans le container de prod zen_db_1 et faire 'env'
+```bash
+jdevy@dlx046:/home/docker/zen$ docker exec -it zen_db_1 /bin/bash
+root@9ddccbbe27a3:/# env
+LANG=en_US.utf8
+TZ=Europe/Paris
+HOSTNAME=9ddccbbe27a3
+GOSU_VERSION=1.10
+PGDATA=/var/lib/postgresql/data
+POSTGRES_DB=actualisation
+TERM=xterm
+POSTGRES_USER=zen-user
+POSTGRES_PASSWORD=...
+...
+```
+

@@ -46,6 +46,10 @@ $ actualisation=# \q
 #### Lancer le script
 
 Copier le fichier [mon_fichier].csv dans ce dossier ./update-users
+> Remarque 1 : le csv est celui de l'extract avec juste les 3 premières colonnes avec séparateur "|"
+> Remarque 2 : vérifier qu'il s'agit bien du .csv correspondant au mois de l'actu (ne pas prendre
+> l'extract de mailing fait en même temps mais qui lui est destiné au mois suivant)
+
 ```shell
 $ node update-zen-users.js [mon_fichier].csv
 ```

@@ -55,7 +55,7 @@
     "pm2": "^4.4.0",
     "puppeteer": "^4.0.1",
     "raven": "^2.6.4",
-    "sharp": "^0.25.4",
+    "sharp": "^0.30.5",
     "simple-oauth2": "^4.1.0",
     "superagent": "^5.2.2",
     "unbzip2-stream": "^1.4.3",

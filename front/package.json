@@ -26,7 +26,7 @@
     "dotenv": "^8.2.0",
     "jest": "^24.9.0",
     "lodash": "^4.17.21",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.31",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

@@ -33,7 +33,7 @@
     "csurf": "^1.11.0",
     "date-fns": "^2.14.0",
     "debug": "~4.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-easy-zip": "^1.1.5",
     "express-session": "^1.17.1",
     "helmet": "^3.23.0",

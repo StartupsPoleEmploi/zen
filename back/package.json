@@ -42,7 +42,7 @@
     "imagemin-pngquant": "^9.0.0",
     "images-to-pdf": "^1.0.3",
     "json2csv": "^5.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "knex": "^0.21.1",
     "lodash": "^4.17.21",
     "multer": "^1.4.2",
